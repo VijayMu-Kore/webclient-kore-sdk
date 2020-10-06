@@ -3377,6 +3377,9 @@
                                         if (msgData.message[0].component.payload.template_type === 'listView') {
                                             msgData.message[0].component.payload.fromHistory = true;
                                         }
+                                        if (msgData.message[0].component.payload.template_type === 'List') {
+                                            msgData.message[0].component.payload.fromHistory = true;
+                                        }
                                         if (msgData.message[0].component.payload.template_type === 'feedbackTemplate') {
                                             msgData.message[0].component.payload.fromHistory = true;
                                             msgData.message[0].cInfo.body="Rate this chat session";
