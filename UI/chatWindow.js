@@ -1413,7 +1413,7 @@
                 _chatContainer.off('click', '.buttonTmplContentBox li,.listTmplContentChild .buyBtn,.viewMoreList .viewMore,.listItemPath,.quickReply,.carouselImageContent,.listRightContent,.checkboxBtn,.likeDislikeDiv').on('click', '.buttonTmplContentBox li,.listTmplContentChild .buyBtn, .viewMoreList .viewMore,.listItemPath,.quickReply,.carouselImageContent,.listRightContent,.checkboxBtn,.likeDislikeDiv', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    var type = $(this).attr('type');
+                    var type = $(this).attr('type'),focus = true;
                     if (type) {
                         type = type.toLowerCase();
                     }
@@ -1423,14 +1423,15 @@
                         var _innerText = ($(this)[0] && $(this)[0].innerText) ? $(this)[0].innerText.trim() : "" || ($(this) && $(this).attr('data-value')) ? $(this).attr('data-value').trim() : "";
                         me.sendMessage($('.chatInputBox'), _innerText);
                     } else if (type == "url" || type == "web_url") {
+                        var msgData;
+                        try {
+                            msgData = JSON.parse($(this).attr('msgData'));
+                        } catch (err) {
+
+                        }
                         if($(this).attr('msgData')!==undefined){
-                            var msgData;
-                            try {
-                                msgData = JSON.parse($(this).attr('msgData'));
-                               } catch (err) {
-               
-                            }
-                            if(msgData && msgData.message && msgData.message[0].component && (msgData.message[0].component.formData || (msgData.message[0].component.payload &&  msgData.message[0].component.payload.formData))){
+                            
+                            if(msgData && msgData.message && msgData.message[0].component && (msgData.message[0].component.formData || (msgData.message[0].component.payload &&  msgData.message[0].component.payload.formData)) && (msgData.message[0].component.payload && !msgData.message[0].component.payload.isDeflect)){
                                 if(msgData.message[0].component.formData){
                                    msgData.message[0].component.payload.formData = msgData.message[0].component.formData;
                                 }
@@ -1442,7 +1443,20 @@
                         if (a_link.indexOf("http:") < 0 && a_link.indexOf("https:") < 0) {
                             a_link = "http:////" + a_link;
                         }
-                        me.openExternalLink(a_link);
+
+                        if (msgData && msgData.message && msgData.message[0].component && msgData.message[0].component.payload && !msgData.message[0].component.payload.isDeflect) {
+                            me.openExternalLink(a_link);
+                        } else {
+                            focus = false;
+                            $("#iframeContainer").show();
+                            setTimeout(function () {
+                                $("#iframeContainer").addClass('open');
+                                $("#iframeContainer").show();
+                                $("#iframeContainer").append("<div class='close'></div><iframe id='iframe' src='" + a_link + "'></iframe>");
+                                $(".back-drop").show();
+                            }, 100);
+                        }
+                        
                     }
                     if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[1] === 'likeDiv') {
                         $(".likeImg").addClass('hide');
@@ -1477,10 +1491,12 @@
                             _parentQuikReplyEle.parentElement.removeChild(_parentQuikReplyEle);
                         }, 50);
                     }
-                    setTimeout(function () {
-                        var _chatInput = _chatContainer.find('.kore-chat-footer .chatInputBox');
-                        _chatInput.focus();
-                    }, 600);
+                    if (focus) {
+                        setTimeout(function () {
+                            var _chatInput = _chatContainer.find('.kore-chat-footer .chatInputBox');
+                            _chatInput.focus();
+                        }, 600);
+                    }
                 });
 
                 _chatContainer.off('click', '.close-btn').on('click', '.close-btn', function (event) {
@@ -2005,7 +2021,36 @@
                 messageHtml = me.customTemplateObj.renderMessage(msgData);
                 if (messageHtml === '' && msgData && msgData.message && msgData.message[0]) {
 
-                    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "button") {
+                    var _patternTextStart="OK, you've selected";
+                    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.text && msgData.message[0].component.payload.text.indexOf(_patternTextStart)===0) {
+                        var _messsageText=msgData.message[0].component.payload.text, _foundLink;
+                        var _regExForLink = /((?:http\:\/\/|https\:\/\/|www\.)+\S*\.(?:(?:\.\S)*[^\,\s\.])*\/?)/gi;
+                        if(_messsageText && _messsageText.match(_regExForLink).length){
+                            _foundLink= _messsageText.match(_regExForLink)[0];
+                            msgData.message[0].component = {
+                                "type": "template",
+                                "payload": {
+                                    "template_type": "button",
+                                    "text": "Please use the below button to submit your request to our agent",//"What do you want to do next?",
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": _foundLink,
+                                            "title": "Submit Request"
+                                        }
+                                    ],
+                                    "isDeflect": true
+                                },
+                            }
+                            messageHtml = $(me.getChatTemplate("templatebutton")).tmpl({
+                                'msgData': msgData,
+                                'helpers': helpers,
+                                'extension': extension
+                            });
+                        }
+
+                    }
+                    else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "button") {
                         messageHtml = $(me.getChatTemplate("templatebutton")).tmpl({
                             'msgData': msgData,
                             'helpers': helpers,
@@ -3671,6 +3716,38 @@
                 }
             }
             this.botDetails = function (response, botInfo) {
+                response = chatContainerConfig.config.brandingInfo;
+                if(response) {
+                    if(response.botName !== ""){
+                        chatContainerConfig.config.chatTitle = response.botName;
+                        $('.kore-chat-header .header-title').html(chatContainerConfig.config.chatTitle).attr('title', chatContainerConfig.config.chatTitle);
+                    }
+                    var cssPrefix = "--custom-";
+                    var cssBrandingVariables = {
+                        "botchatBgColor":"bot-chat-bubble-background-color",
+                        "botchatTextColor":"bot-chat-bubble-text-color",
+                        "buttonActiveBgColor":"button-active-background-color",
+                        "buttonActiveTextColor":"button-active-text-color",
+                        "buttonInactiveBgColor":"button-inactive-background-color",
+                        "buttonInactiveTextColor":"button-inactive-text-color",
+                        "userchatBgColor":"user-chat-bubble-background-color",
+                        "userchatTextColor":"user-chat-bubble-text-color",
+                        "widgetBgColor":"widget-background-color",
+                        "widgetTextColor":"widget-text-color",
+                        "widgetBorderColor":"widget-border-color",
+                        "widgetDividerColor":"widget-divider-color",
+                    };
+                    var cssVariable = "";
+                    
+                    // console.log(cssVariable);
+                    for (var key in response) {
+                        if(key !== "theme"){
+                            cssVariable = cssPrefix + cssBrandingVariables[key];
+                            document.documentElement.style.setProperty(cssVariable,response[key]);
+                        }
+                    }
+                    $(".kore-chat-window").addClass('customBranding-theme');
+                }
                 /* Remove hide class for tts and speech if sppech not enabled for this bot */
                 /*setTimeout(function () {
                     fetchBotDetails(response,botInfo);
@@ -5183,6 +5260,40 @@
                 }
                 kfrm.net.HttpRequest = HttpRequest;
             }();
+
+            function emptyIframeContainer() {
+
+                $("#iframeContainer").removeClass('open');
+                $(".back-drop").hide();
+
+                setTimeout(function () {
+                    $("#iframeContainer").hide();
+                    $("#iframeContainer iframe").remove();
+                    $('#iframeContainer .close').remove();
+                }, 1000);
+            }
+
+            function registerIframeListners(data) {
+
+                var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+                var eventer = window[eventMethod];
+                var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+                // Listen to message from child window
+                eventer(messageEvent, function (e) {
+                    var key = e.message ? "message" : "data";
+                    var data = e[key];
+                    //run function//
+                    console.log("Action exection done" + data);
+                    emptyIframeContainer()
+
+                }, false);
+
+                $('#iframeContainer').on('click', '.close', function () {
+                    emptyIframeContainer()
+                })
+            }
+            registerIframeListners();
 
             return {
                 initToken: initToken,
