@@ -853,13 +853,13 @@
                         if (btnsParentDiv[0].scrollLeft > 0) {
                             leftScrollBtn[0].classList.remove('hide');
                         }
-                        else {
+                        else if(leftScrollBtn && leftScrollBtn.length && leftScrollBtn[0]){
                             leftScrollBtn[0].classList.add('hide');
                         }
                         if (btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
                             rightScrollBtn[0].classList.remove('hide');
                         }
-                        else {
+                        else if(rightScrollBtn && rightScrollBtn.length && rightScrollBtn[0]){
                             rightScrollBtn[0].classList.add('hide');
                         }
                     }
