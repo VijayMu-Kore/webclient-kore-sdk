@@ -17,8 +17,8 @@
     // botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
     // botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
 
-    botOptions.koreAPIUrl = "https://bankingassistant-qa.kore.ai/api";
-    botOptions.brandingAPIUrl = botOptions.koreAPIUrl + '/1.1/wbservice/workbench/sdkBranding';
+    botOptions.koreAPIUrl = "https://uat.kore.ai/api";
+    botOptions.brandingAPIUrl = botOptions.koreAPIUrl + '/1.1/smartassist/apps/:appId/settings/widget';
     botOptions.accountId = "5f84847183c72b4b6ac3fabd";
 
     botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";

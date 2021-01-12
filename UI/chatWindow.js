@@ -3716,13 +3716,46 @@
                 }
             }
             this.botDetails = function (response, botInfo) {
-                response = chatContainerConfig.config.brandingInfo;
+                response = response || chatContainerConfig.config.brandingInfo;
+                console.log(response);
                 if(response) {
                     if(response.botName !== ""){
                         chatContainerConfig.config.chatTitle = response.botName;
-                        $('.kore-chat-header .header-title').html(chatContainerConfig.config.chatTitle).attr('title', chatContainerConfig.config.chatTitle);
+                        $('.kore-chat-header .header-title').html(chatContainerConfig.config.chatTitle).attr('title', response.assistantName || chatContainerConfig.config.chatTitle);
                     }
                     var cssPrefix = "--custom-";
+                    // var cssBrandingVariables = {
+                    //     "botchatBgColor":"bot-chat-bubble-background-color",
+                    //     "botchatTextColor":"bot-chat-bubble-text-color",
+                    //     "buttonActiveBgColor":"button-active-background-color",
+                    //     "buttonActiveTextColor":"button-active-text-color",
+                    //     "buttonInactiveBgColor":"button-inactive-background-color",
+                    //     "buttonInactiveTextColor":"button-inactive-text-color",
+                    //     "userchatBgColor":"user-chat-bubble-background-color",
+                    //     "userchatTextColor":"user-chat-bubble-text-color",
+                    //     "widgetBgColor":"widget-background-color",
+                    //     "widgetTextColor":"widget-text-color",
+                    //     "widgetBorderColor":"widget-border-color",
+                    //     "widgetDividerColor":"widget-divider-color",
+                    // };
+
+                    // "assistantName": "SmartAssist AI 1610432239777",
+                    // "bodyBgColor": "#FFFFFF",
+                    // "botIconEnabled": false,
+                    // "botchatBgColor": "#F4F4F4",
+                    // "botchatTextColor": "#26344A",
+                    // "buttonBgColor": "#FFFFFF",
+                    // "buttonTextColor": "#26344A",
+                    // "descEnabled": false,
+                    // "font": "Inter",
+                    // "headerBgColor": "#FFFFFF",
+                    // "headerTemplate": "type1",
+                    // "headerTextColor": "#26344A",
+                    // "logoEnabled": false,
+                    // "userIconEnabled": false,
+                    // "userchatBgColor": "#EFF4FF",
+                    // "userchatTextColor": "#26344A"
+
                     var cssBrandingVariables = {
                         "botchatBgColor":"bot-chat-bubble-background-color",
                         "botchatTextColor":"bot-chat-bubble-text-color",
@@ -3732,17 +3765,16 @@
                         "buttonInactiveTextColor":"button-inactive-text-color",
                         "userchatBgColor":"user-chat-bubble-background-color",
                         "userchatTextColor":"user-chat-bubble-text-color",
-                        "widgetBgColor":"widget-background-color",
-                        "widgetTextColor":"widget-text-color",
-                        "widgetBorderColor":"widget-border-color",
-                        "widgetDividerColor":"widget-divider-color",
+                        "bodyBgColor":"widget-background-color",
                     };
                     var cssVariable = "";
                     
                     // console.log(cssVariable);
                     for (var key in response) {
                         if(key !== "theme"){
-                            cssVariable = cssPrefix + cssBrandingVariables[key];
+
+                            if(key === 'botchatBgColor') console.log("===",response[key]);
+                            cssVariable = cssPrefix + (cssBrandingVariables[key] || '');
                             document.documentElement.style.setProperty(cssVariable,response[key]);
                         }
                     }
