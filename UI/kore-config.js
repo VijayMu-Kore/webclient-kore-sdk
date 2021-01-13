@@ -17,7 +17,15 @@
     // botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
     // botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
 
-    botOptions.koreAPIUrl = "https://uat.kore.ai/api";
+    var url = window.location.protocol + '//' + window.location.host;
+    if (url === 'https://qa-app.smartassist.ai') url = 'https://qa-bots.kore.ai';
+    else if (url === 'https://qa1-app.smartassist.ai') url = 'https://qa1-bots.kore.ai';
+    else if (url === 'https://uat-app.smartassist.ai') url = 'https://uat.kore.ai';
+    else if (url === 'https://staging-app.deflect.ai' || url === 'https://staging-app.smartassist.ai') url = 'https://staging-bots.korebots.com';
+    else if (url === 'https://pilots-app.deflect.ai' || url === 'https://pilots-app.smartassist.ai') url = 'https://pilot-bots.kore.ai';
+    else if (url === 'https://app.deflect.ai' || url === 'https://app.smartassist.ai') url = 'https://bots.kore.ai';
+
+    botOptions.koreAPIUrl = url + "/api";
     botOptions.brandingAPIUrl = botOptions.koreAPIUrl + '/1.1/smartassist/apps/:appId/settings/widget';
     botOptions.accountId = "";
 
