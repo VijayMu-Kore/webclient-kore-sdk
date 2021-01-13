@@ -1991,6 +1991,14 @@
                 var me = this, messageHtml = '', extension = '', _extractedFileName = '';
                 var helpers=me.helpers;
                 msgData.createdOnTimemillis=new Date(msgData.createdOn).valueOf();
+
+                // update icons
+                if (msgData.type === 'currentUser' || msgData.type === 'user_message') {
+                    msgData.icon = me.config.brandingInfo.userIcon || msgData.icon;
+                } else {
+                    msgData.icon = me.config.brandingInfo.botIcon || msgData.icon;
+                }
+
                 me.customTemplateObj.helpers = me.helpers;
                 me.customTemplateObj.extension = extension;
                 graphLibGlob = me.config.graphLib || "d3";
@@ -2817,7 +2825,11 @@
                     <div class="minimized-title"></div> \
                     <div class="minimized"><span class="messages"></span></div> \
                     <div class="kore-chat-header"> \
-                        <div id="botHeaderTitle" aria-labelledby="botHeaderTitle" class="header-title" title="${chatTitle}">${chatTitle}</div> \
+                        <div class="h-image-block"><img src="https://uat.kore.ai:443/api/getMediaStream/market/f-62dc2611-2f49-5007-a048-a44d1586041b.png?n=9980719301&s=IlNkclRySGFrNVlZa0Y0WGJYYmNMVjRKZ09HWFRQOXhkTVlOQWdVSzZ0Mkk9Ig$$"></div>\
+                        <div class="titles-sec">\
+                            <div id="botHeaderTitle" aria-labelledby="botHeaderTitle" class="header-title" title="${chatTitle}">${chatTitle}</div> \
+                            <div class="header-title-desc"></div>\
+                        </div>\
                         <div class="chat-box-controls"> \
                             {{if botMessages.availableLanguages}}\
                                 <select class="lang-selector" >\
@@ -2877,7 +2889,8 @@
                                 <li data-time="${msgData.createdOnTimemillis}" id="${msgData.messageId || msgItem.clientMessageId}"\
                                      class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}}\ {{if msgData.icon}}with-icon{{/if}} {{if msgData.fromAgent}}from-agent{{/if}}"> \
                                     {{if msgData.createdOn}}<div aria-hidden="true" aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                                    {{if msgData.icon}}<div aria-hidden="true"  aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})" title="User Avatar"></div> </div> {{/if}} \
+                                    {{if msgData.icon && msgData.type === "bot_response"}}<div aria-hidden="true"  aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})" title="User Avatar"></div> </div> {{/if}} \
+                                    {{if msgData.icon && (msgData.type === "currentUser" || msgData.type === "user_message") }}<div aria-live="off" class="profile-photo userBubbleIcon"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> {{/if}}</div> \
                                     <div class="messageBubble">\
                                         <div> \
                                             {{if msgData.type === "bot_response"}} \
@@ -3716,45 +3729,14 @@
                 }
             }
             this.botDetails = function (response, botInfo) {
-                response = response || chatContainerConfig.config.brandingInfo;
-                console.log(response);
-                if(response) {
-                    if(response.botName !== ""){
-                        chatContainerConfig.config.chatTitle = response.botName;
-                        $('.kore-chat-header .header-title').html(chatContainerConfig.config.chatTitle).attr('title', response.assistantName || chatContainerConfig.config.chatTitle);
+                chatContainerConfig.config.brandingInfo = $.extend(chatContainerConfig.config.brandingInfo, response);
+                var brandingInfo = chatContainerConfig.config.brandingInfo;
+                if(brandingInfo.theme) {
+                    if(brandingInfo.assistantName !== ""){
+                        chatContainerConfig.config.chatTitle = brandingInfo.assistantName;
+                        $('.kore-chat-header .header-title').html(chatContainerConfig.config.chatTitle).attr('title', chatContainerConfig.config.chatTitle);
                     }
                     var cssPrefix = "--custom-";
-                    // var cssBrandingVariables = {
-                    //     "botchatBgColor":"bot-chat-bubble-background-color",
-                    //     "botchatTextColor":"bot-chat-bubble-text-color",
-                    //     "buttonActiveBgColor":"button-active-background-color",
-                    //     "buttonActiveTextColor":"button-active-text-color",
-                    //     "buttonInactiveBgColor":"button-inactive-background-color",
-                    //     "buttonInactiveTextColor":"button-inactive-text-color",
-                    //     "userchatBgColor":"user-chat-bubble-background-color",
-                    //     "userchatTextColor":"user-chat-bubble-text-color",
-                    //     "widgetBgColor":"widget-background-color",
-                    //     "widgetTextColor":"widget-text-color",
-                    //     "widgetBorderColor":"widget-border-color",
-                    //     "widgetDividerColor":"widget-divider-color",
-                    // };
-
-                    // "assistantName": "SmartAssist AI 1610432239777",
-                    // "bodyBgColor": "#FFFFFF",
-                    // "botIconEnabled": false,
-                    // "botchatBgColor": "#F4F4F4",
-                    // "botchatTextColor": "#26344A",
-                    // "buttonBgColor": "#FFFFFF",
-                    // "buttonTextColor": "#26344A",
-                    // "descEnabled": false,
-                    // "font": "Inter",
-                    // "headerBgColor": "#FFFFFF",
-                    // "headerTemplate": "type1",
-                    // "headerTextColor": "#26344A",
-                    // "logoEnabled": false,
-                    // "userIconEnabled": false,
-                    // "userchatBgColor": "#EFF4FF",
-                    // "userchatTextColor": "#26344A"
 
                     var cssBrandingVariables = {
                         "botchatBgColor":"bot-chat-bubble-background-color",
@@ -3770,14 +3752,78 @@
                     var cssVariable = "";
                     
                     // console.log(cssVariable);
-                    for (var key in response) {
-                        if(key !== "theme"){
-
-                            if(key === 'botchatBgColor') console.log("===",response[key]);
-                            cssVariable = cssPrefix + (cssBrandingVariables[key] || '');
-                            document.documentElement.style.setProperty(cssVariable,response[key]);
+                    for (var key in brandingInfo) {
+                        if(cssBrandingVariables[key]){
+                            cssVariable = cssPrefix + cssBrandingVariables[key];
+                            document.documentElement.style.setProperty(cssVariable,brandingInfo[key]);
                         }
                     }
+
+                    document.documentElement.style.setProperty('--custom-widget-divider-color', brandingInfo.botchatBgColor);
+                    document.documentElement.style.setProperty('--custom-button-active-background-color', brandingInfo.buttonBgColor);
+                    document.documentElement.style.setProperty('--custom-button-active-text-color', brandingInfo.buttonTextColor);
+                    document.documentElement.style.setProperty('--custom-button-inactive-background-color', brandingInfo.buttonBgColor);
+                    document.documentElement.style.setProperty('--custom-button-inactive-text-color', brandingInfo.buttonTextColor);
+
+                    document.documentElement.style.setProperty('--custom-header-background-color', brandingInfo.headerBgColor);
+                    document.documentElement.style.setProperty('--custom-header-text-color', brandingInfo.headerTextColor);
+
+                    document.documentElement.style.setProperty('--custom-widget-text-color', brandingInfo.userchatTextColor);
+
+
+                    const chatWindow = $('.kore-chat-window');
+                    if(brandingInfo.logo){
+                        chatWindow.find('.h-image-block img').attr('src', brandingInfo.logo);
+                    }
+
+                    chatWindow.find('.header-title-desc').text(brandingInfo.desc);
+
+                    chatWindow.attr('style', 'font-family:' + brandingInfo.font + ' !important');
+
+                    switch (brandingInfo.headerTemplate) {
+                        case 'type1':
+                            chatWindow.find('.h-image-block, .header-title-desc').css({ display: 'block' });
+                            break;
+                        case 'type2':
+                            chatWindow.find('.h-image-block').css({ display: 'none' });
+                            chatWindow.find('.header-title-desc').css({ display: 'block' });
+                            break;
+                        case 'type3':
+                            chatWindow.find('.h-image-block').css({ display: 'block' });
+                            chatWindow.find('.header-title-desc').css({ display: 'none' });
+                            break;
+                        case 'type4':
+                            chatWindow.find('.h-image-block, .header-title-desc').css({ display: 'none' });
+                            break;
+                    }
+
+
+                    if (brandingInfo.timeStampEnabled) {
+                        chatWindow.find('li .extra-info').css({ visibility: 'visible' })
+                    } else {
+                        chatWindow.find('li .extra-info').css({ visibility: 'hidden' })
+                    }
+
+                    if (brandingInfo.userIconEnabled && brandingInfo.userIcon) {
+                        chatWindow.find('li.fromCurrentUser .messageBubble').removeClass('adjust-margin');
+                        chatWindow.find('.profile-photo.userBubbleIcon').css({ 'background-image': brandingInfo.userIcon, display: 'block' });
+                    } else {
+                        chatWindow.find('.profile-photo.userBubbleIcon').css({ display: 'none' });
+                        chatWindow.find('li.fromCurrentUser .messageBubble').addClass('adjust-margin');
+                    }
+
+
+                    if (brandingInfo.botIconEnabled && brandingInfo.botIcon) {
+                        chatWindow.find('li.fromOtherUsers .messageBubble').removeClass('adjust-margin');
+                        chatWindow.find('.profile-photo.botBubbleIcon').css({ 'background-image': brandingInfo.botIcon, display: 'block' });
+                    } else {
+                        chatWindow.find('.profile-photo.botBubbleIcon').css({ display: 'none' });
+                        chatWindow.find('li.fromOtherUsers .messageBubble').addClass('adjust-margin');
+                    }
+
+
+
+                    
                     $(".kore-chat-window").addClass('customBranding-theme');
                 }
                 /* Remove hide class for tts and speech if sppech not enabled for this bot */

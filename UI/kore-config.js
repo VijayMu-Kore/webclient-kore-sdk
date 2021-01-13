@@ -19,13 +19,7 @@
 
     botOptions.koreAPIUrl = "https://uat.kore.ai/api";
     botOptions.brandingAPIUrl = botOptions.koreAPIUrl + '/1.1/smartassist/apps/:appId/settings/widget';
-    botOptions.accountId = "5f84847183c72b4b6ac3fabd";
-
-    botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
-    botOptions.userIdentity = '';// Provide users email id here
-    botOptions.botInfo = { name: "Banking Assist", "_id": "st-cdefce0f-9eed-54c5-b3d7-3c1b2f83b8ec" }; // bot name is case sensitive
-    botOptions.clientId = "cs-7a64f3e5-c653-5ed7-9197-84c0e77cc21e";
-    botOptions.clientSecret = "wg5jbOXUIwrRcKFrPKHosGsAQsdgX/primRgWTK4Zmc=";
+    botOptions.accountId = "";
 
     // To modify the web socket url use the following option
     // botOptions.reWriteSocketURL = {
@@ -37,26 +31,26 @@
     var chatConfig = {
         botOptions: botOptions,
         brandingInfo: {
-            "botName": "Smartassist Bot",
-            "widgetBgImage": "",
-            "bankLogo": "https://bankingassistant-qa.kore.ai:443/api/getMediaStream/market/f-d372add1-3ee4-59f4-9e36-d6e5a2a54369.png?e=1604992197&n=8660621990&s=IjVxejNJNUNjT2Z6NVJjUU9zczlKU2c0R2QyNnJ6S0I1R0ZyNk5WdC85bDQ9Ig$$",
-            "botchatBgColor": "#1372ff",
-            "botchatTextColor": "#FFFFFF",
-            "buttonActiveBgColor": "#D3D3D3",
-            "buttonActiveTextColor": "#26344A",
-            "buttonInactiveBgColor": "#D3D3D3",
-            "buttonInactiveTextColor": "#26344A",
-            "createdBy": "u-7397a65f-80c1-588c-9d79-dcc42824beac",
-            "lastModifiedBy": "u-7397a65f-80c1-588c-9d79-dcc42824beac",
-            "theme": "Theme11",
-            "userchatBgColor": "#34363b",
-            "userchatTextColor": "#FFFFFF",
-            "widgetBgColor": "#000000",
-            "widgetBorderColor": "#000000",
-            "widgetDividerColor": "#275481",
-            "widgetTextColor": "#FFFFFF",
-            "createdOn": "2020-10-22T06:03:18.996Z",
-            "lastModifiedOn": "2020-10-22T06:03:18.996Z"
+            assistantName: "SmartAssist.ai",
+            bodyBgColor: "#FFFFFF",
+            botIcon: "",
+            botIconEnabled: false,
+            botchatBgColor: "#F4F4F4",
+            botchatTextColor: "#26344A",
+            buttonBgColor: "#FFFFFF",
+            buttonTextColor: "#26344A",
+            desc: "",
+            descEnabled: false,
+            font: "Inter",
+            headerBgColor: "#FFFFFF",
+            headerTemplate: "type1",
+            headerTextColor: "#26344A",
+            logo: "",
+            logoEnabled: false,
+            userIcon: "",
+            userIconEnabled: false,
+            userchatBgColor: "#EFF4FF",
+            userchatTextColor: "#26344A",
         },
         allowIframe: false, 			// set true, opens authentication links in popup window, default value is "false"
         isSendButton: false, 			// set true, to show send button below the compose bar
