@@ -2136,6 +2136,10 @@
                         }
                     }
 
+                    if(me.config.botOptions.webhookConfig.useSDKChannelResponses){
+                        payload.preferredChannelForResponse='rtm';
+                    }
+                        
                     if(me.config.botOptions.webhookConfig.apiVersion && me.config.botOptions.webhookConfig.apiVersion===2){
                         payload.message={
                             "type": "text",
