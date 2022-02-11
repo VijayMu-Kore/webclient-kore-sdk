@@ -4,25 +4,26 @@
 
     var botOptions = {};
     botOptions.logLevel = 'debug';
-    botOptions.koreAPIUrl = "https://bots.kore.ai/api/";
+    botOptions.koreAPIUrl = "https://qa-bots.kore.ai/api/";
     botOptions.koreSpeechAPIUrl = "";//deprecated
     //botOptions.bearer = "bearer xyz-------------------";
     //botOptions.ttsSocketUrl = '';//deprecated
     botOptions.koreAnonymousFn = koreAnonymousFn;
     botOptions.recorderWorkerPath = '../libs/recorderWorker.js';
 
-    botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";
-    botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';// Provide users email id here
-    botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
+    botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
+    botOptions.userIdentity = 'sri.harsha@kore.com';// Provide users email id here
+    botOptions.botInfo = { name: "SDK Theme", "_id": "st-e600c836-0cfe-5a56-bbfe-36ef2d08d2ca" }; // bot name is case sensitive
 
     /* 
     Important Note: These keys are provided here for quick demos to generate JWT token at client side but not for Production environment.
     Refer below document for JWT token generation at server side. Client Id and Client secret should maintained at server end.
     https://developer.kore.ai/docs/bots/sdks/user-authorization-and-assertion/
     **/
-    botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
-    botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
-
+    botOptions.clientId = "cs-52f98a93-1fbf-5b2b-af23-f6a5661cfa05";
+    botOptions.clientSecret = "jUCeTemRqqq8VqePN4CQ/jo2grS3PI1EkARffQcNGCY=";
+    botOptions.enableThemes = true;
+    botOptions.brandingAPIUrl = botOptions.koreAPIUrl +'websdkthemes/'+  botOptions.botInfo._id+'/activetheme';
 // for webhook based communication use following option 
 // botOptions.webhookConfig={
 //     enable:true,
