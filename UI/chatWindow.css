@@ -1243,9 +1243,9 @@
 }
 
 .kore-chat-window .listTmplContent .buyBtn {
-    background: var(--sdk-chat-window-btn-default-bg);
+    /* background: var(--sdk-chat-window-btn-default-bg); */
     border: 0;
-    color: var(--sdk-chat-window-btn-font-clr) !important;
+    color: var(--sdk-chat-window-btn-default-bg) !important;
     cursor: pointer;
     float: right;
     font-weight: bold;
