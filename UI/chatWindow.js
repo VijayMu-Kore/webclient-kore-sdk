@@ -3802,6 +3802,12 @@
                                 }
                             }
                         }
+                        case 'buttons':
+                            if(key  && typeof response[key] === 'object') {
+                                for (var property in response[key]){
+                                    this.applyVariableValue(property,response[key][property],key);
+                                }
+                            }
                         break;
                         default:
                         break;
