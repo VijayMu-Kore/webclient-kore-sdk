@@ -11,7 +11,7 @@ body{
     transform: translate(-50%,-50%) !important;
     max-height: 100% !important;
     height: 100% !important;
-    box-shadow: 0px 5px 20px rgba(32, 33, 36, 0.2) !important;
+    box-shadow: var(--sdk-chat-window-box-shadow) !important;
     border-top-left-radius: 20px !important;
     border-top-right-radius: 20px !important;
     font-family: 'Inter';
@@ -19,11 +19,11 @@ body{
 .kore-chat-window .kore-chat-header{
     border-top-left-radius: 20px !important;
     border-top-right-radius: 20px !important;
-    background-color: #0D6EFD !important;
+    background-color: var(--sdk-chat-window-header-bg) !important;
     font-weight: 600 !important;
     font-size: 16px !important;
     height: 60px !important;
-    color: #fff !important;
+    color: var(--sdk-chat-window-header-font-clr) !important;
     line-height: 59px !important;
 }
 .kore-chat-window .kore-chat-header .chat-box-controls button.minimize-btn{
@@ -51,10 +51,10 @@ body{
     cursor: pointer;
 }
 .kore-chat-window ul.chat-container li.fromCurrentUser .messageBubble{
-    background-color: #0D6EFD !important;
+    background-color: var(--sdk-chat-window-user-bubble-bg) !important;
 }
 .kore-chat-window ul.chat-container li.fromOtherUsers .messageBubble{
-    background-color: #EFF0F1 !important
+    background-color: var(--sdk-chat-window-bot-bubble-bg) !important;
 }
 .kore-chat-window .kore-chat-footer .chatSendMsg{
     display: none;
@@ -125,7 +125,7 @@ body{
     right: 0;
     top: 0;
     bottom: 0;
-    background: #ffffff;
+    background: var(--sdk-chat-widow-default-white);
     z-index: 9999;
     display: none;
 }
@@ -195,7 +195,9 @@ body{
 .kr-sdkEmptyState .bummySDK .sdkDummy .bummyHeader{
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    background-color: #0D6EFD;
+    background-color: var(--sdk-chat-window-header-bg);
+    color: var(--sdk-chat-window-header-font-clr);
+    border: 1px solid var(--sdk-chat-window-header-border-clr);
     font-weight: 600;
     font-size: 16px;
     height: 60px;
@@ -274,5 +276,5 @@ body{
     font-weight: normal !important;
     font-size: 14px !important;
     line-height: 17px !important;
-    color: #9AA0A6 !important;
+    color: var(--sdk-chat-window-footer-input-placeholder) !important;
   }
