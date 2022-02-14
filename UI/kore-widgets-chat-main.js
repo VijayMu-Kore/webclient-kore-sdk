@@ -218,7 +218,7 @@
         }
 
         function getBrandingInformation(options) {
-            if (hashObj && hashObj.jwt) {
+            if (hashObj && hashObj.jwt && chatConfig.botOptions.brandingAPIUrl) {
                 var brandingAPIUrl = (chatConfig.botOptions.brandingAPIUrl || '').replace(':appId', chatConfig.botOptions.botInfo._id);
                 $.ajax({
                     url: brandingAPIUrl,
@@ -232,7 +232,9 @@
                     type: 'get',
                     dataType: 'json',
                     success: function (data) {
-                        options.botDetails = koreBot.botDetails(data);
+                        if(koreBot && koreBot.applySDKBranding) {
+                            koreBot.applySDKBranding(data);
+                        }
                         if (koreBot && koreBot.initToken) {
                             koreBot.initToken(options);
                         }
@@ -243,6 +245,9 @@
                 });
             }
 
+        }
+        function onJWTGrantSuccess(options){
+            getBrandingInformation(options);
         }
         function onJWTGrantError(res){
             if (hashObj && hashObj.jwt) {
@@ -276,7 +281,7 @@
         var chatConfig = window.KoreSDK.chatConfig;
         chatConfig.botOptions.userIdentity = uuId;
         chatConfig.botOptions.assertionFn = assertion;
-        chatConfig.botOptions.jwtgrantSuccessCB = getBrandingInformation;
+        chatConfig.botOptions.jwtgrantSuccessCB = onJWTGrantSuccess;
         chatConfig.onJWTGrantError=onJWTGrantError;
         if (hashObj && hashObj.botInfo) {
             chatConfig.botOptions.botInfo = hashObj.botInfo;
