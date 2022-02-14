@@ -289,7 +289,7 @@
 
         if (hashObj.koreAPIUrl) {
             chatConfig.botOptions.koreAPIUrl = hashObj.koreAPIUrl + '/api/';
-            chatConfig.botOptions.brandingAPIUrl = chatConfig.botOptions.koreAPIUrl + '1.1/smartassist/apps/:appId/settings/widget';
+            // chatConfig.botOptions.brandingAPIUrl = chatConfig.botOptions.koreAPIUrl + '1.1/smartassist/apps/:appId/settings/widget';
         }
 
         if (hashObj.brand && hashObj.brand.headerTitle) {
