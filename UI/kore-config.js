@@ -4,7 +4,7 @@
 
     var botOptions = {};
     botOptions.logLevel = 'debug';
-    botOptions.koreAPIUrl = "https://qa1-bots.kore.ai/api/";
+    botOptions.koreAPIUrl = (window.JWT_OBJ && (window.JWT_OBJ.koreAPIUrl))? window.JWT_OBJ.koreAPIUrl:"https://bots.kore.ai" ;
     botOptions.koreSpeechAPIUrl = "";//deprecated
     //botOptions.bearer = "bearer xyz-------------------";
     //botOptions.ttsSocketUrl = '';//deprecated
@@ -13,7 +13,7 @@
 
     botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
     botOptions.userIdentity = 'sri.harsha@kore.com';// Provide users email id here
-    botOptions.botInfo = { name: "SDK Theme", "_id": "st-e600c836-0cfe-5a56-bbfe-36ef2d08d2ca" }; // bot name is case sensitive
+    botOptions.botInfo = (window.JWT_OBJ && (window.JWT_OBJ.botInfo))?window.JWT_OBJ.botInfo:{ name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive // bot name is case sensitive
 
     /* 
     Important Note: These keys are provided here for quick demos to generate JWT token at client side but not for Production environment.

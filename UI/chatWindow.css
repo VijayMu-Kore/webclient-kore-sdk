@@ -352,7 +352,7 @@
     --sdk-chat-window-footer-bg:var(--sdk-chat-custom--widgetBody-backgroundColor);
     --sdk-chat-window-footer-font-clr:var(--sdk-chat-custom--botMessage-fontColor);
     --sdk-chat-window-footer-border-clr:#e5e8ec;
-    --sdk-chat-window-footer-input-placeholder:var(--sdk-chat-custom--userMessage-fontColor);;
+    --sdk-chat-window-footer-input-placeholder:var(--sdk-chat-custom--userMessage-fontColor);
 
 
     --sdk-chat-widow-default-white: #ffffff;
