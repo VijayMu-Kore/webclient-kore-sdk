@@ -3798,6 +3798,14 @@
                         }
                         break;
                         case 'widgetBody':
+                        case 'widgetFooter':
+                        if(key  && typeof response[key] === 'object') {
+                            for (var property in response[key]){
+                                this.applyVariableValue(property,response[key][property],key);
+                            }
+                        }
+                        break;
+                        case 'widgetBody':
                         if(key  && typeof response[key] === 'object') {
                             for (var property in response[key]){
                                 if(key === 'backgroundImage' && response[key] && response[key]['useBackgroundImage']){

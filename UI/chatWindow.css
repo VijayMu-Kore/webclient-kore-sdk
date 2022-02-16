@@ -349,10 +349,10 @@
 
     /* Bot Footer Variables */
 
-    --sdk-chat-window-footer-bg:var(--sdk-chat-custom--widgetBody-backgroundColor);
-    --sdk-chat-window-footer-font-clr:var(--sdk-chat-custom--userMessage-fontColor);
-    --sdk-chat-window-footer-border-clr:#e5e8ec;
-    --sdk-chat-window-footer-input-placeholder:var(--sdk-chat-custom--userMessage-fontColor);
+    --sdk-chat-window-footer-bg:var(--sdk-chat-custom--widgetFooter-backgroundColor);
+    --sdk-chat-window-footer-font-clr:var(--sdk-chat-custom--widgetFooter-fontColor);
+    --sdk-chat-window-footer-border-clr:var(--sdk-chat-custom--widgetFooter-borderColor);;
+    --sdk-chat-window-footer-input-placeholder:var(--sdk-chat-custom--widgetFooter-placeHolderColor);
 
 
     --sdk-chat-widow-default-white: #ffffff;
