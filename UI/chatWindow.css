@@ -79,65 +79,65 @@
 
     /* Chat Window Main */
 
-    --sdk-chat-window-bg-color:#FFFFFF;
+    --sdk-chat-window-bg-color:#000000;
     --sdk-chat-window-font-style:"Inter";
     --sdk-chat-window-box-shadow:0 10px 25px 0 rgba(0, 0, 0, 0.2);
     --sdk-chat-window-border-color:#e5e8ec;
 
     /* Bot message variable */
 
-    --sdk-chat-window-bot-bubble-bg:#F1F0F0;
-    --sdk-chat-window-bot-bubble-font-clr:#333;
+    --sdk-chat-window-bot-bubble-bg:#262626;
+    --sdk-chat-window-bot-bubble-font-clr:#fff;
     --sdk-chat-window-bot-bubble-shape:12px 12px 12px 2px;
-    --sdk-chat-window-bot-bubble-border-clr:#F1F0F0;
+    --sdk-chat-window-bot-bubble-border-clr:#262626;
     --sdk-chat-window-bot-bubble-agent-bg:#bef3e7;
 
     /* User Message Variable */
 
-    --sdk-chat-window-user-bubble-bg:#009dab;
+    --sdk-chat-window-user-bubble-bg:#333333;
     --sdk-chat-window-user-bubble-font-clr:#FFFFFF;
     --sdk-chat-window-user-bubble-shape:12px 12px 2px 12px;
-    --sdk-chat-window-user-bubble-border-clr:#009dab;
+    --sdk-chat-window-user-bubble-border-clr:#333333;
 
     /* button colors chat window */
 
-    --sdk-chat-window-btn-default-bg:#FFFFFF;
-    --sdk-chat-window-btn-border-clr:#009dab;
-    --sdk-chat-window-btn-font-clr:#009dab;
-    --sdk-chat-window-btn-hover-bg:#009dab;
-    --sdk-chat-window-btn-hover-border-clr:#009dab;
+    --sdk-chat-window-btn-default-bg:#262626;
+    --sdk-chat-window-btn-border-clr:#262626;
+    --sdk-chat-window-btn-font-clr:#fff;
+    --sdk-chat-window-btn-hover-bg:#3a3a3a;
+    --sdk-chat-window-btn-hover-border-clr:#3a3a3a;
     --sdk-chat-window-btn-hover-font-clr:#FFFFFF;
 
 
     /* Bot Header Variables */
 
-    --sdk-chat-window-header-bg:#FFFFFF;
-    --sdk-chat-window-header-font-clr:#26344a;
-    --sdk-chat-window-header-border-clr:#e5e8ec;
+    --sdk-chat-window-header-bg:#262626;
+    --sdk-chat-window-header-font-clr:#ffffff;
+    --sdk-chat-window-header-border-clr:#8a959f;
     
 
     /* Bot Body Variables */
 
-    --sdk-chat-window-body-bg:#FFFFFF;
+    --sdk-chat-window-body-bg:#000000;
     --sdk-chat-window-body-bg-image:url("");
 
 
 
     /* Bot Footer Variables */
 
-    --sdk-chat-window-footer-bg:#FFFFFF;
-    --sdk-chat-window-footer-font-clr:#26344a;
-    --sdk-chat-window-footer-border-clr:#e5e8ec;
+    --sdk-chat-window-footer-bg:#262626;
+    --sdk-chat-window-footer-font-clr:#ffffff;
+    --sdk-chat-window-footer-border-clr:#8a959f;
     --sdk-chat-window-footer-input-placeholder:#D0D0D0;
 
 
     --sdk-chat-widow-default-white: #262626;
     --sdk-chat-widow-primary-font-color: #ffffff;
     --sdk-chat-widow-primary-border-color: rgba(255, 255, 255, .2);
-    --sdk-chat-widow-primary-blue-color: #009dab;
-    --sdk-chat-widow-primary-bg-color: #000000;
+    --sdk-chat-widow-primary-blue-color: #262626;
+    --sdk-chat-widow-primary-bg-color: #ffffff;
     --sdk-chat-widow-panel-header-bg-color:#262626;
-    --sdk-chat-widow-secondary-font-color: #7c7c7c;
+    --sdk-chat-widow-secondary-font-color: #8a959f;
 /*     
     --sdk-chat-widow-btn-light-color: #223233;
     --sdk-chat-widow-primary-box-shadow: none;
@@ -160,33 +160,33 @@
 
     /* Bot message variable */
 
-    --sdk-chat-window-bot-bubble-bg:#F1F0F0;
-    --sdk-chat-window-bot-bubble-font-clr:#333;
+    --sdk-chat-window-bot-bubble-bg:#EFF0F1;
+    --sdk-chat-window-bot-bubble-font-clr:#202124;
     --sdk-chat-window-bot-bubble-shape:12px 12px 12px 2px;
-    --sdk-chat-window-bot-bubble-border-clr:#F1F0F0;
+    --sdk-chat-window-bot-bubble-border-clr:#EFF0F1;
     --sdk-chat-window-bot-bubble-agent-bg:#bef3e7;
 
     /* User Message Variable */
 
-    --sdk-chat-window-user-bubble-bg:#009dab;
-    --sdk-chat-window-user-bubble-font-clr:#FFFFFF;
+    --sdk-chat-window-user-bubble-bg:#E7F1FF;
+    --sdk-chat-window-user-bubble-font-clr:#202124;
     --sdk-chat-window-user-bubble-shape:12px 12px 2px 12px;
-    --sdk-chat-window-user-bubble-border-clr:#009dab;
+    --sdk-chat-window-user-bubble-border-clr:#E7F1FF;
 
     /* button colors chat window */
 
-    --sdk-chat-window-btn-default-bg:#FFFFFF;
-    --sdk-chat-window-btn-border-clr:#009dab;
-    --sdk-chat-window-btn-font-clr:#009dab;
-    --sdk-chat-window-btn-hover-bg:#009dab;
-    --sdk-chat-window-btn-hover-border-clr:#009dab;
-    --sdk-chat-window-btn-hover-font-clr:#FFFFFF;
+    --sdk-chat-window-btn-default-bg:#0D6EFD;
+    --sdk-chat-window-btn-border-clr:#0D6EFD;
+    --sdk-chat-window-btn-font-clr:#ffffff;
+    --sdk-chat-window-btn-hover-bg:#0659d2;
+    --sdk-chat-window-btn-hover-border-clr:#0659d2;
+    --sdk-chat-window-btn-hover-font-clr:#ffffff;
 
 
     /* Bot Header Variables */
 
-    --sdk-chat-window-header-bg:#FFFFFF;
-    --sdk-chat-window-header-font-clr:#26344a;
+    --sdk-chat-window-header-bg:#F8F9FA;
+    --sdk-chat-window-header-font-clr:#202124;
     --sdk-chat-window-header-border-clr:#e5e8ec;
     
 
@@ -207,11 +207,11 @@
 
 
     --sdk-chat-widow-default-white: #ffffff;
-    --sdk-chat-widow-primary-font-color: #515365;
-    --sdk-chat-widow-primary-blue-color: #4741fa;
+    --sdk-chat-widow-primary-font-color: #202124;
+    --sdk-chat-widow-primary-blue-color: #0D6EFD;
     --sdk-chat-widow-primary-border-color: #e9eff5;
-    --sdk-chat-widow-primary-bg-color: #ededef;
-    --sdk-chat-widow-panel-header-bg-color:#ededef;
+    --sdk-chat-widow-primary-bg-color: #ffffff;
+    --sdk-chat-widow-panel-header-bg-color:#F8F9FA;
     --sdk-chat-widow-secondary-font-color: #767688;
 /*     
     --sdk-chat-widow-btn-light-color: #E1E0FC;
@@ -228,40 +228,40 @@
 
     /* Chat Window Main */
 
-    --sdk-chat-window-bg-color:#FFFFFF;
+    --sdk-chat-window-bg-color:#262626;
     --sdk-chat-window-font-style:"Inter";
     --sdk-chat-window-box-shadow:0 10px 25px 0 rgba(0, 0, 0, 0.2);
     --sdk-chat-window-border-color:#e5e8ec;
 
     /* Bot message variable */
 
-    --sdk-chat-window-bot-bubble-bg:#F1F0F0;
-    --sdk-chat-window-bot-bubble-font-clr:#333;
+    --sdk-chat-window-bot-bubble-bg:#262626;
+    --sdk-chat-window-bot-bubble-font-clr:#ffffff;
     --sdk-chat-window-bot-bubble-shape:12px 12px 12px 2px;
     --sdk-chat-window-bot-bubble-border-clr:#F1F0F0;
     --sdk-chat-window-bot-bubble-agent-bg:#bef3e7;
 
     /* User Message Variable */
 
-    --sdk-chat-window-user-bubble-bg:#009dab;
+    --sdk-chat-window-user-bubble-bg:#333333;
     --sdk-chat-window-user-bubble-font-clr:#FFFFFF;
     --sdk-chat-window-user-bubble-shape:12px 12px 2px 12px;
-    --sdk-chat-window-user-bubble-border-clr:#009dab;
+    --sdk-chat-window-user-bubble-border-clr:#333333;
 
     /* button colors chat window */
 
-    --sdk-chat-window-btn-default-bg:#FFFFFF;
-    --sdk-chat-window-btn-border-clr:#009dab;
-    --sdk-chat-window-btn-font-clr:#009dab;
-    --sdk-chat-window-btn-hover-bg:#009dab;
-    --sdk-chat-window-btn-hover-border-clr:#009dab;
-    --sdk-chat-window-btn-hover-font-clr:#FFFFFF;
+    --sdk-chat-window-btn-default-bg:#3a3a3a;
+    --sdk-chat-window-btn-border-clr:#3a3a3a;
+    --sdk-chat-window-btn-font-clr:#d48440;
+    --sdk-chat-window-btn-hover-bg:#201f1f;
+    --sdk-chat-window-btn-hover-border-clr:#201f1f;
+    --sdk-chat-window-btn-hover-font-clr:#d48440;
 
 
     /* Bot Header Variables */
 
-    --sdk-chat-window-header-bg:#FFFFFF;
-    --sdk-chat-window-header-font-clr:#26344a;
+    --sdk-chat-window-header-bg:#161620;
+    --sdk-chat-window-header-font-clr:#ffffff;
     --sdk-chat-window-header-border-clr:#e5e8ec;
     
 
@@ -274,17 +274,17 @@
 
     /* Bot Footer Variables */
 
-    --sdk-chat-window-footer-bg:#FFFFFF;
-    --sdk-chat-window-footer-font-clr:#26344a;
+    --sdk-chat-window-footer-bg:#161620;
+    --sdk-chat-window-footer-font-clr:#ffffff;
     --sdk-chat-window-footer-border-clr:#e5e8ec;
     --sdk-chat-window-footer-input-placeholder:#D0D0D0;
 
 
 
-    --sdk-chat-widow-default-white: #161620;
+    --sdk-chat-widow-default-white: #262626;
     --sdk-chat-widow-primary-font-color: #ffffff;
     --sdk-chat-widow-primary-border-color: #3e3e3e;
-    --sdk-chat-widow-primary-blue-color: #F79540;
+    --sdk-chat-widow-primary-blue-color: #3a3a3a;
     --sdk-chat-widow-primary-bg-color: #28293b;
     --sdk-chat-widow-panel-header-bg-color:#161620;
     --sdk-chat-widow-secondary-font-color: #dadada;

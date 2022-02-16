@@ -222,13 +222,6 @@
                 var brandingAPIUrl = (chatConfig.botOptions.brandingAPIUrl || '').replace(':appId', chatConfig.botOptions.botInfo._id);
                 $.ajax({
                     url: brandingAPIUrl,
-                    headers: {
-                        'tenantId': chatConfig.botOptions.accountId,
-                        'Authorization': "bearer " + options.authorization.accessToken,
-                        'Accept-Language': 'en_US',
-                        'Accepts-version': '1',
-                        'state': 'published'
-                    },
                     type: 'get',
                     dataType: 'json',
                     success: function (data) {
