@@ -218,7 +218,7 @@
         }
 
         function getBrandingInformation(options) {
-            if (hashObj && hashObj.jwt && chatConfig.botOptions.brandingAPIUrl) {
+            if (chatConfig.botOptions.enableThemes) {
                 var brandingAPIUrl = (chatConfig.botOptions.brandingAPIUrl || '').replace(':appId', chatConfig.botOptions.botInfo._id);
                 $.ajax({
                     url: brandingAPIUrl,

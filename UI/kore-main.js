@@ -219,16 +219,12 @@
         }
 
         function getBrandingInformation(options) {
-            if (hashObj && hashObj.jwt && chatConfig.botOptions.brandingAPIUrl) {
+            if (chatConfig.botOptions.enableThemes) {
                 var brandingAPIUrl = (chatConfig.botOptions.brandingAPIUrl || '').replace(':appId', chatConfig.botOptions.botInfo._id);
                 $.ajax({
                     url: brandingAPIUrl,
                     headers: {
-                        'tenantId': chatConfig.botOptions.accountId,
                         'Authorization': "bearer " + options.authorization.accessToken,
-                        'Accept-Language': 'en_US',
-                        'Accepts-version': '1',
-                        'state': 'published'
                     },
                     type: 'get',
                     dataType: 'json',
@@ -287,16 +283,16 @@
             chatConfig.botOptions.botInfo = hashObj.botInfo;
         }
 
-        if (hashObj.koreAPIUrl) {
+        if (hashObj && hashObj.koreAPIUrl) {
             chatConfig.botOptions.koreAPIUrl = hashObj.koreAPIUrl + 'api/';
             chatConfig.botOptions.brandingAPIUrl = chatConfig.botOptions.koreAPIUrl +'websdkthemes/'+  hashObj.botInfo._id+'/activetheme';
         }
 
-        if (hashObj.brand && hashObj.brand.headerTitle) {
+        if (hashObj && hashObj.brand && hashObj.brand.headerTitle) {
             chatConfig.chatTitleOverride = hashObj.brand.headerTitle;
         }
         //chatConfig.tasktotrigger="Write To Us";    
-        if (hashObj.tasktotrigger) {
+        if (hashObj && hashObj.tasktotrigger) {
             chatConfig.tasktotrigger = hashObj.tasktotrigger;
         }
 
