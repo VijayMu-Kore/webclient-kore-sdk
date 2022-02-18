@@ -3760,7 +3760,7 @@
                     if(value === 'square'){
                         value = '12px 12px 2px 12px'
                     }else if(value === 'circle'){
-                        value = '20px 20px 20px 20px;'
+                        value = '20px 20px 20px 20px'
                     }
                     if(cssVariable){
                         document.documentElement.style.setProperty(cssVariable, value);
