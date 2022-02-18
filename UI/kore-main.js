@@ -275,6 +275,9 @@
             }
         }
         var chatConfig = window.KoreSDK.chatConfig;
+        if (hashObj && hashObj.ity) {
+            uuId = hashObj.ity;
+        }
         chatConfig.botOptions.userIdentity = uuId;
         chatConfig.botOptions.assertionFn = assertion;
         chatConfig.botOptions.jwtgrantSuccessCB = onJWTGrantSuccess;
