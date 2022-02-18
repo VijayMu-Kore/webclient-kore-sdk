@@ -3752,18 +3752,23 @@
                 }
             }
             chatWindow.prototype.applyVariableValue = function(key,value,type){
-                var cssPrefix = "--sdk-chat-custom-";
-                var cssVariable = "";
-                cssVariable = cssPrefix + '-' + type +'-' +key;
-                console.log(cssVariable+":",value);
-                if(value === 'square'){
-                    value = '12px 12px 2px 12px'
-                }else if(value === 'circle'){
-                    value = '20px 20px 20px 20px;'
+                try{
+                    var cssPrefix = "--sdk-chat-custom-";
+                    var cssVariable = "";
+                    cssVariable = cssPrefix + '-' + type +'-' +key;
+                    // console.log(cssVariable+":",value);
+                    if(value === 'square'){
+                        value = '12px 12px 2px 12px'
+                    }else if(value === 'circle'){
+                        value = '20px 20px 20px 20px;'
+                    }
+                    if(cssVariable){
+                        document.documentElement.style.setProperty(cssVariable, value);
+                    }
+                } catch(e){
+                    console.log(e);
                 }
-                if(cssVariable){
-                    document.documentElement.style.setProperty(cssVariable, value);
-                }
+                
             }
             chatWindow.prototype.applySDKBranding = function (response) {
                 if (response && response.activeTheme) {
@@ -3822,6 +3827,22 @@
                                 }
                             }
                         break;
+                        case 'digitalViews':
+                            var defaultTheme = 'defaultTheme-kore';
+                            if(response && response[key] && response[key].panelTheme){
+                              var digitalViewsThemeMapping = {
+                                  'theme_one':"defaultTheme-kore",
+                                  'theme_two':"darkTheme-kore",
+                                  'theme_three':"defaultTheme-kora",
+                                  'theme_four':"darkTheme-kora"
+                              }
+                              if(digitalViewsThemeMapping[response[key].panelTheme]){
+                                defaultTheme = digitalViewsThemeMapping[response[key].panelTheme];
+                                $('.kr-wiz-menu-chat').addClass(defaultTheme);
+                                $('.kr-wiz-menu-chat').removeClass('defaultTheme-kore');
+                                
+                              }
+                            }
                         default:
                         break;
                     }
