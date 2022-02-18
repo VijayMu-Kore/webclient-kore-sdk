@@ -18,6 +18,7 @@ import ListViewTemplate from './templates/listViewTemplate/listViewTemplate';
 // import LineChartTemplate from './templates/lineChartTemplate/lineChartTemplate';
 // import BarChartTemplate from './templates/barChartTemplate/barChartTemplate';
 // import PieChartTemplate from './templates/pieChartTemplate/pieChartTemplate';
+import SearchListViewTemplate from './templates/searchListViewTemplate/searchListViewTemplate';
 
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
 
@@ -71,6 +72,7 @@ import '../../../libs/purejscarousel.css';
 
 		this.installTemplate(new IframeTemplate());
 		//this.installTemplate(new MessageTemplate());
+		this.installTemplate(new SearchListViewTemplate());
 
 	};
 	/**

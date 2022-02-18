@@ -50,7 +50,7 @@ function FindlySDK(config) {
 }
 
 //FindlySDK.prototype = Object.create($.prototype);
-
+FindlySDK.prototype.$ = $;
 FindlySDK.prototype.parentEvent = function (event) {
   if (
     this.config &&
@@ -8453,18 +8453,18 @@ FindlySDK.prototype.handleSearchRes = function (res) {
               $("#searchChatContainer")
                 .off("scroll")
                 .on("scroll", function () {
-                  if (
-                    $("#searchChatContainer").prop("offsetHeight") >=
-                    $(
-                      ".finalResults .resultsOfSearch .bottom-search-show-all-results"
-                    )
-                      .last()
-                      .position().top
-                  ) {
-                    $(".more-results").css("display", "none");
-                  } else {
-                    $(".more-results").css("display", "block");
-                  }
+                  // if (
+                  //   $("#searchChatContainer").prop("offsetHeight") >=
+                  //   $(
+                  //     ".finalResults .resultsOfSearch .bottom-search-show-all-results"
+                  //   )
+                  //     .last()
+                  //     .position().top
+                  // ) {
+                  //   $(".more-results").css("display", "none");
+                  // } else {
+                  //   $(".more-results").css("display", "block");
+                  // }
                 });
               $(".more-results").css("display", "block");
             }
@@ -10408,7 +10408,7 @@ function isChrome() {
 }
 FindlySDK.prototype.initializeCustomTemplate = function (findlyConfig) {
   var _self = this;
-  _self.customTemplateObj = new customTemplate(null, _self);
+  _self.customTemplateObj = new customTemplate(_self);
   _self.customTemplateObj.helpers = helpers;
   _self.customTemplateObj.config = findlyConfig;
   _self.searchTemplateObj = new searchTemplate(_self);
@@ -14345,14 +14345,13 @@ FindlySDK.prototype.openPanel = function (panelName, resPopUp, heightToggle) {
     $(".sdkBotIcon").addClass("selected");
     localPanelDetail[panelName] = "";
     _self.clearWidgetPolling();
-    // $(_self.config.container.content).hide(
-    //   "slide",
-    //   {
-    //     direction: _self.config.direction === "left" ? "left" : "right",
-    //   },
-    //   500
-    // );
-    $(_self.config.container.content).hide();
+    $(_self.config.container.content).hide(
+      "slide",
+      {
+        direction: _self.config.direction === "left" ? "left" : "right",
+      },
+      500
+    );
     return false;
   }
 
@@ -14434,14 +14433,13 @@ FindlySDK.prototype.openPanel = function (panelName, resPopUp, heightToggle) {
       $(_self.config.container.content).hide();
     }
 
-    $(_self.config.container.content).show();
-    // $(_self.config.container.content).show(
-    //   "slide",
-    //   {
-    //     direction: _self.config.direction, //$.jStorage.get('menuPosition')
-    //   },
-    //   250
-    // );
+    $(_self.config.container.content).show(
+      "slide",
+      {
+        direction: _self.config.direction, //$.jStorage.get('menuPosition')
+      },
+      250
+    );
     $(_self.config.container.content).html(
       '<div class="loaderRing"><div></div><div></div><div></div><div></div></div>'
     );
@@ -16883,14 +16881,13 @@ FindlySDK.prototype.setChatFocus = function () {
   }
 
   if ($(_self.config.container.content).is(":visible")) {
-    // $(_self.config.container.content).hide(
-    //   "slide",
-    //   {
-    //     direction: _self.config.direction, //$.jStorage.get('menuPosition')
-    //   },
-    //   500
-    // );
-    $(_self.config.container.content).hide();
+    $(_self.config.container.content).hide(
+      "slide",
+      {
+        direction: _self.config.direction, //$.jStorage.get('menuPosition')
+      },
+      500
+    );
   }
 
   $(".chatInputBox").focus();
@@ -19100,35 +19097,72 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
     if ((data.dataObj.data || []).length && !isMapping) {
       isMapped = false;
     }
-    var dataHTML = $(finalTemplate).tmplProxy({
-      isClickable: data.isClickable,
-      structuredData: structuredData,
-      config: config,
-      viewType: viewType,
-      isFullResults: data.isFullResults,
-      selectedFacet: data.selectedFacet,
-      isSearch: data.isSearch,
-      devMode: devMode,
-      isLiveSearch: data.isLiveSearch,
-      appearanceType: "data",
-      maxSearchResultsAllowed: maxSearchResultsAllowed,
-      isDropdownEnabled: isDropdownEnabled,
-      tour: _self.vars.customTourResultRank,
-      isTopdown: isTopDown,
-      helpers: helpers,
-      isMapping: isMapped,
-      renderTitle: data.renderTitle,
-      titleName: data.titleName,
-      listType: data.listType,
-      textAlignment: data.textAlignment,
-      behaviour: data.behaviour,
-      groupResults: data.groupResults,
-      groupName: groupName,
-      doc_count: doc_count || 0,
-      pageNumber: 0,
-      templateName: groupName.replaceAll(" ", ""),
-      fieldName: data.fieldName,
-    });
+    // Temp Object 
+    var msgData={
+      message:[{
+          component:{
+              payload:{
+                  template_type: selected[groupName + templateInterfaceType + "TemplateType"]+"Template"+selected[groupName + templateInterfaceType + "LayoutType"],
+                  isClickable: data.isClickable,
+                  structuredData: structuredData,
+                  config: config,
+                  viewType: viewType,
+                  isFullResults: data.isFullResults,
+                  selectedFacet: data.selectedFacet,
+                  isSearch: data.isSearch,
+                  devMode: devMode,
+                  isLiveSearch: data.isLiveSearch,
+                  appearanceType: "data",
+                  maxSearchResultsAllowed: maxSearchResultsAllowed,
+                  isDropdownEnabled: isDropdownEnabled,
+                  tour: _self.vars.customTourResultRank,
+                  helpers: helpers,
+                  renderTitle: data.renderTitle,
+                  titleName: data.titleName,
+                  listType: data.listType,
+                  textAlignment: data.textAlignment,
+                  behaviour: data.behaviour,
+                  groupResults: data.groupResults,
+                  groupName: groupName,
+                  doc_count: doc_count || 0,
+                  pageNumber: 0,
+                  templateName: groupName.replaceAll(" ", ""),
+                  fieldName: data.fieldName
+              }
+          }
+      }]
+  }
+    var dataHTML = _self.customTemplateObj.renderMessage(msgData);
+    //var dataHTML = $(finalTemplate).tmplProxy({
+      // isClickable: data.isClickable,
+      // structuredData: structuredData,
+      // config: config,
+      // viewType: viewType,
+      // isFullResults: data.isFullResults,
+      // selectedFacet: data.selectedFacet,
+      // isSearch: data.isSearch,
+      // devMode: devMode,
+      // isLiveSearch: data.isLiveSearch,
+      // appearanceType: "data",
+      // maxSearchResultsAllowed: maxSearchResultsAllowed,
+      // isDropdownEnabled: isDropdownEnabled,
+      // tour: _self.vars.customTourResultRank,
+      // isTopdown: isTopDown,
+      // helpers: helpers,
+      // isMapping: isMapped,
+      // renderTitle: data.renderTitle,
+      // titleName: data.titleName,
+      // listType: data.listType,
+      // textAlignment: data.textAlignment,
+      // behaviour: data.behaviour,
+      // groupResults: data.groupResults,
+      // groupName: groupName,
+      // doc_count: doc_count || 0,
+      // pageNumber: 0,
+      // templateName: groupName.replaceAll(" ", ""),
+      // fieldName: data.fieldName,
+    //});
+    
     // _self.vars.customizeView = true;
     if (data && data.container && data.container.length) {
       container = data.container;
