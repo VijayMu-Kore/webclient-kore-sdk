@@ -52,7 +52,7 @@ import '../../../libs/purejscarousel.css';
 		this.installTemplate(new DropdownTemplate());
 		this.installTemplate(new LikeDislikeTemplate());
 		this.installTemplate(new FormTemplate());
-		this.installTemplate(new AdvancedMultiSelectTemplate());
+		//this.installTemplate(new AdvancedMultiSelectTemplate());
 		this.installTemplate(new TableListTemplate());
 		this.installTemplate(new RatingTemplate());
 		this.installTemplate(new ListWidgetTemplate());
