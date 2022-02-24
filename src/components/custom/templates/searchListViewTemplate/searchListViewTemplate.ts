@@ -15,63 +15,68 @@ class SearchListViewTemplate {
     }
     bindEvents(messageHtml: any) {
         let me: any = this;
-        let chatWindowInstance = me.hostInstance;
+        let hostWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
         var _innerText;
-        if(me.hostInstance.hasOwnProperty('FindlySDK')){
-            if (me.vars.customizeView) {
+        //if(me.hostInstance.hasOwnProperty('FindlySDK')){
+            if (!hostWindowInstance.vars.customizeView) {
                 setTimeout(function () {
-                  $(".results-wrap").sortable({
-                    items: "li:not(.ui-state-disabled)",
-                    cancel: ".ui-state-disabled",
-                    stop: function (event : any, ui: any) {
-                      var element = ui.item[0];
-                      if ($(element).find(".pinning").length) {
-                        var pinningElement = $(element).find(".pinning")[0];
-                        if (pinningElement) {
-                          $(pinningElement).closest(".pinning").attr("type", "Pin");
-                          $(pinningElement).trigger("click");
-                        }
-                      } else if ($(element).attr("manuallyadded") == "true") {
-                        var pinIndex = 0;
-                        var _selectedElement = ui.item[0];
-                        var _parentElement = $(event.target).closest(".results-wrap");
-                        var childNodes = Array.prototype.slice.call(
-                          _parentElement[0].children
-                        );
-                        pinIndex = childNodes.indexOf(_selectedElement);
-                        if (pinIndex >= 0) {
-                            me.performRankActionsOnFullPage(
-                            ui.item,
-                            { pinIndex: pinIndex },
-                            me.vars.searchObject.searchText,
-                            "pinning",
-                            true
-                          );
-                          //
-                        }
-                      }
-                    },
-                  });
+                  // $(".results-wrap").sortable({
+                  //   items: "li:not(.ui-state-disabled)",
+                  //   cancel: ".ui-state-disabled",
+                  //   stop: function (event : any, ui: any) {
+                  //     var element = ui.item[0];
+                  //     if ($(element).find(".pinning").length) {
+                  //       var pinningElement = $(element).find(".pinning")[0];
+                  //       if (pinningElement) {
+                  //         $(pinningElement).closest(".pinning").attr("type", "Pin");
+                  //         $(pinningElement).trigger("click");
+                  //       }
+                  //     } else if ($(element).attr("manuallyadded") == "true") {
+                  //       var pinIndex = 0;
+                  //       var _selectedElement = ui.item[0];
+                  //       var _parentElement = $(event.target).closest(".results-wrap");
+                  //       var childNodes = Array.prototype.slice.call(
+                  //         _parentElement[0].children
+                  //       );
+                  //       pinIndex = childNodes.indexOf(_selectedElement);
+                  //       if (pinIndex >= 0) {
+                  //           hostWindowInstance.performRankActionsOnFullPage(
+                  //           ui.item,
+                  //           { pinIndex: pinIndex },
+                  //           hostWindowInstance.vars.searchObject.searchText,
+                  //           "pinning",
+                  //           true
+                  //         );
+                  //         //
+                  //       }
+                  //     }
+                  //   },
+                  // });
                 }, 200);
               }
     // Boost / Pin
+    $(".template-3-classic-list-collapse")
+    .off("click",".click-here")
+    .on("click",".click-here", function (event: any) {
+      console.log("********")
+    });
     $(".customization")
     .off("click", ".visibility")
     .on("click", ".visibility", function (event: any) {
       // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
       if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-        me.performRankActionsOnFullPage(
+        hostWindowInstance.performRankActionsOnFullPage(
           event,
           { visible: false },
-          me.vars.searchObject.searchText,
+          hostWindowInstance.vars.searchObject.searchText,
           "visibility"
         );
       } else {
-        me.performRankActionsOnFullPage(
+        hostWindowInstance.performRankActionsOnFullPage(
           event,
           { visible: true },
-          me.vars.searchObject.searchText,
+          hostWindowInstance.vars.searchObject.searchText,
           "visibility"
         );
       }
@@ -81,10 +86,10 @@ class SearchListViewTemplate {
   $(".customization")
     .off("click", ".unpin_added_result")
     .on("click", ".unpin_added_result", function (event : any) {
-      me.performRankActionsOnFullPage(
+      hostWindowInstance.performRankActionsOnFullPage(
         event,
         { pinIndex: -1 },
-        me.vars.searchObject.searchText,
+        hostWindowInstance.vars.searchObject.searchText,
         "unpin_added_result"
       );
     });
@@ -102,10 +107,10 @@ class SearchListViewTemplate {
         } else {
           pinIndex = childNodes.indexOf(_selectedElement[0]);
         }
-        me.performRankActionsOnFullPage(
+        hostWindowInstance.performRankActionsOnFullPage(
           event,
           { pinIndex: pinIndex },
-          me.vars.searchObject.searchText,
+          hostWindowInstance.vars.searchObject.searchText,
           "pinning"
         );
       }
@@ -121,12 +126,23 @@ class SearchListViewTemplate {
           $(event.target).closest(".data-wrap").attr("boost")
         );
         boostByValue = boostByValue + 0.25;
-        me.performRankActionsOnFullPage(
-          event,
-          { boost: boostByValue },
-          me.vars.searchObject.searchText,
-          "boosting"
-        );
+        let messageText = "customizationOnResults";
+        let option = null;
+        let serverMessageObject = null;
+        let clientMessageObject = {
+          event :event,
+          boost: boostByValue ,
+          searchText : hostWindowInstance.vars.searchObject.searchText,
+          action :"boosting"
+        } 
+        /**  Emitting the Data to Host Instance */
+        hostWindowInstance.sendMessage(messageText,option,serverMessageObject,clientMessageObject)
+        // hostWindowInstance.performRankActionsOnFullPage(
+        //   event,
+        //   { boost: boostByValue },
+        //   hostWindowInstance.vars.searchObject.searchText,
+        //   "boosting"
+        // );
       }
     });
   $(".customization")
@@ -141,26 +157,26 @@ class SearchListViewTemplate {
         );
         if (buryByValue > 0.25) {
           buryByValue = buryByValue - 0.25;
-          me.performRankActionsOnFullPage(
+          hostWindowInstance.performRankActionsOnFullPage(
             event,
             { boost: buryByValue },
-            me.vars.searchObject.searchText,
+            hostWindowInstance.vars.searchObject.searchText,
             "burying"
           );
         } else if (buryByValue != 0) {
           buryByValue = 0.25 - buryByValue;
-          me.performRankActionsOnFullPage(
+          hostWindowInstance.performRankActionsOnFullPage(
             event,
             { boost: buryByValue },
-            me.vars.searchObject.searchText,
+            hostWindowInstance.vars.searchObject.searchText,
             "burying"
           );
         } else {
           buryByValue = 0;
-          me.performRankActionsOnFullPage(
+          hostWindowInstance.performRankActionsOnFullPage(
             event,
             { boost: buryByValue },
-            me.vars.searchObject.searchText,
+            hostWindowInstance.vars.searchObject.searchText,
             "burying"
           );
         }
@@ -178,21 +194,21 @@ class SearchListViewTemplate {
             ? $(".search-top-down").val()
             : $(".bottom-up-search").val()
         ) {
-          me.vars.searchObject.searchText = $("body").hasClass("top-down")
+          hostWindowInstance.vars.searchObject.searchText = $("body").hasClass("top-down")
             ? $(".search-top-down").val()
             : $(".bottom-up-search").val();
         }
       } else {
         structure = "bottom";
       }
-      if (me.vars.searchObject && me.vars.searchObject.searchText) {
+      if (hostWindowInstance.vars.searchObject && hostWindowInstance.vars.searchObject.searchText) {
         var responseObject = {
           type: "addNew",
           data: true,
-          query: me.vars.searchObject.searchText,
+          query: hostWindowInstance.vars.searchObject.searchText,
           structure: structure,
         };
-        me.parentEvent(responseObject);
+        hostWindowInstance.parentEvent(responseObject);
       }
     });
   //Tour RR
@@ -215,11 +231,11 @@ class SearchListViewTemplate {
     .off("click")
     .on("click", function (e: any) {
       $(".tours-information").hide();
-      me.vars.customTourResultRank = false;
+      hostWindowInstance.vars.customTourResultRank = false;
     });
   //Tour RR 
-        }
-        //bindAllResultRankingOperations
+//}
+        //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
 
     }
     getTemplateString(type: any) {
@@ -279,7 +295,7 @@ class SearchListViewTemplate {
                 {{if isClickable == false}}\
                     <div class="template-3-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-collapse mb-15 click-to-navigate-url faqs-shadow" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
                         <div class="collapse-item-list accordion" id="1">\
-                            <div class="text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div><div class="text-desc-">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                            <div class="text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div><span class="click-here">Click</span><div class="text-desc-">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                         </div>\
                     </div>\
                 {{/if}}\
@@ -346,7 +362,7 @@ class SearchListViewTemplate {
                     {{/if}}\
                     {{if template_type="listTemplatel3"}}\
                         <div class="{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-item{{if renderTitle}}-result{{/if}} click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
-                            <div class="heading-text" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                            <div class="heading-text " title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                             <div class="text-desc two-line-description" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                         </div>\
                     {{/if}}\
@@ -584,7 +600,7 @@ class SearchListViewTemplate {
                 </li>\
               {{/each}}\
               <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
-                  <div>Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
+                  // <div>Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
             </div>\
             </ul>\
             <!-- <div class="moreStructredData custom-show-more-container {{if isFullResults == true}} {{if selectedFacet != appearanceType}} display-block{{/if}}{{/if}}">Show All</div> -->\
@@ -599,7 +615,7 @@ class SearchListViewTemplate {
         } else if (type === 'listTemplatel2') {
             return listTemplatel2;
         }else if (type === 'listTemplatel3') {
-            return listTemplate //listTemplatel3;
+            return listTemplatel3;
         }else if (type === 'listTemplatel4') {
             return listTemplatel4;
         }

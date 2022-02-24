@@ -51,6 +51,40 @@ function FindlySDK(config) {
 
 //FindlySDK.prototype = Object.create($.prototype);
 FindlySDK.prototype.$ = $;
+/**
+ * [#]{@link findlyWindow#sendMessage} Send message to bot including rendering 
+ * @param {String} messageText message text to send
+ * @param {Object} [options] additional options
+ * @param {Object} options.renderMsg override message to show in UI
+ * @param {Object} [serverMessageObject] overrides the properties of message object before sending to websocket
+ * @param {Object} serverMessageObject.customdata customdata to send bot
+ * @param {Object} serverMessageObject.message.metaTags metaTags to send bot
+ * @param {Object} serverMessageObject.message.nlMeta nlMeta to send bot
+ * @param {Object} [clientMessageObject] overrides the properties of message object before sending to UI renderMessage method
+ * @param {Object} clientMessageObject.createdOn customdata to send bot
+ * @param {Object} clientMessageObject.message.clientMessageId metaTags to send bot
+ * @param {Object} clientMessageObject.message.cInfo.body nlMeta to send bot
+ * @param clientMessageObject.____ and more
+*/
+FindlySDK.prototype.sendMessage = function (messageText,options, serverMessageObject,clientMessageObject) {
+  var _self = this;
+  // const _chatContainer = me.chatEle;
+  // const _chatInput = _chatContainer.find('.kore-chat-footer .chatInputBox');
+  _self.sendMessageToBot(messageText, options, serverMessageObject,clientMessageObject);
+};
+
+FindlySDK.prototype.sendMessageToBot= function (messageText, options, serverMessageObject,clientMessageObject){
+  var _self = this;
+  if(messageText == "customizationOnResults"){
+    _self.performRankActionsOnFullPage(
+      eclientMessageObject.event,
+      { boost: clientMessageObject.boostByValue },
+      clientMessageObject.searchText,
+      clientMessageObject.action
+    );
+    //_self.bindAllResultRankingOperations()
+  }
+}
 FindlySDK.prototype.parentEvent = function (event) {
   if (
     this.config &&
@@ -3141,7 +3175,7 @@ FindlySDK.prototype.bindSearchAccordion = function () {
     .on("click", ".accordion", function (evet) {
       $(evet.target).closest(".accordion").toggleClass("acc-active");
       var panel = $(evet.target).closest(".accordion").next();
-      if (
+      if (panel.length &&
         panel[0].scrollHeight == "16" &&
         $(evet.target).closest(".accordion").hasClass("best-match")
       ) {
@@ -3163,7 +3197,7 @@ FindlySDK.prototype.bindSearchAccordion = function () {
         );
         return;
       }
-      if (
+      if (panel.length &&
         panel[0].scrollHeight == "16" &&
         !$(evet.target).closest(".accordion").hasClass("best-match")
       ) {
@@ -3183,7 +3217,7 @@ FindlySDK.prototype.bindSearchAccordion = function () {
       }
 
       //if($(evet.target).next().length){
-      if (panel[0].style.maxHeight || $(evet.target).hasClass("best-match")) {
+      if (panel.length && panel[0].style.maxHeight || $(evet.target).hasClass("best-match")) {
         if (
           panel[0].style.maxHeight &&
           panel[0].style.maxHeight.toString().split("px")[0] == "16"
@@ -3211,7 +3245,7 @@ FindlySDK.prototype.bindSearchAccordion = function () {
             .show();
           panel[0].style.maxHeight = null;
         }, 150);
-      } else {
+      } else if(panel.length){
         $(evet.target)
           .closest(".tile-heading.accordion")
           .children(".tile-description.defalut-show")
@@ -20416,7 +20450,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
     selectedFacet = _self.vars.selectedFacetFromSearch;
   }
 
-  slecetFacetFunc = function (selectedFacet) {
+  var slecetFacetFunc = function (selectedFacet) {
     var selectedFacet_temp = selectedFacet ? selectedFacet : "all results";
     var dataObj = data ? data.dataObj : _self.vars.searchObject.liveData;
 
@@ -20534,7 +20568,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       };
       // setTimeout(hide, 1000);
     });
-  cancelAllRecord = function () {
+  var cancelAllRecord = function () {
     if (_self.vars.countOfSelectedFilters > 0) {
       $("#loaderDIV").show();
     }
@@ -20579,7 +20613,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       $(".tab-name.see-all-result-nav.active-tab").removeClass("active-tab");
       selectClass(event, "target");
     });
-  selectClass = function (event, related) {
+  var selectClass = function (event, related) {
     event.stopPropagation();
     event.stopImmediatePropagation();
     var classificationselected = $(event.target)
@@ -20602,7 +20636,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       $("#actions-full-search-container").hide();
     }
   };
-  removeActive = function (selectedFacet) {
+  var removeActive = function (selectedFacet) {
     $(".see-all-result-nav").each(function (index, element) {
       if ($(element).attr("classification") == selectedFacet) {
         $(element).removeClass("active-tab");
@@ -20746,7 +20780,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
     .on("change", function (event) {
       var optionId = $(e.target).closest(".sdk-top-facet-option").attr("id");
     });
-  countFunc = function () {
+  var countFunc = function () {
     if (facetData.length) {
       var arr = [];
       var mainArr = [];
