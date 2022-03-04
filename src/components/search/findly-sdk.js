@@ -318,6 +318,7 @@ FindlySDK.prototype.initVariables = function () {
   vars.availableGroupsOrder = [];
   vars.defaultTabsList = [];
   vars.tabFacetFieldName = "";
+  vars.resultSettings =  {};
   vars.experimentsObject = {}; // Local Object for Storing Experiments-Related Data (QueryPipelineID, Relay, RequestID)
 
   var IPBasedLocationURL = "http://ip-api.com/json";
@@ -3944,7 +3945,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
           };
           _self.parentEvent(responseObject);
         }
-
+        var responseData = res;
         $(".custom-insights-control-container").hide();
         var faqs = [],
           web = [],
@@ -4013,6 +4014,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                 isSearch: false,
                 facetData: searchFacets,
                 dataObj,
+                responseData: responseData
               });
               setTimeout(() => {
                 _self.pubSub.publish("sa-action-full-search", {
@@ -4077,14 +4079,14 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                     $(".empty-full-results-container").addClass("hide");
                   }
                   var publishSearchData = "sa-" + groupName + "-search-data";
-                  _self.pubSub.publish(publishSearchData, {
-                    container: ".full-search-data-container",
-                    isFullResults: true,
-                    selectedFacet: "all results",
-                    isLiveSearch: false,
-                    isSearch: false,
-                    dataObj,
-                  });
+                  // _self.pubSub.publish(publishSearchData, {
+                  //   container: ".full-search-data-container",
+                  //   isFullResults: true,
+                  //   selectedFacet: "all results",
+                  //   isLiveSearch: false,
+                  //   isSearch: false,
+                  //   dataObj,
+                  // });
                 });
               } else {
                 var dataObj = {
@@ -4125,14 +4127,14 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
               };
               res.results = results;
               if (totalResultsCount || (res.tasks || []).length) {
-                _self.pubSub.publish("sa-defaultTemplate-search-data", {
-                  container: ".full-search-data-container",
-                  isFullResults: true,
-                  selectedFacet: "all results",
-                  isLiveSearch: false,
-                  isSearch: false,
-                  dataObj,
-                });
+                // _self.pubSub.publish("sa-defaultTemplate-search-data", {
+                //   container: ".full-search-data-container",
+                //   isFullResults: true,
+                //   selectedFacet: "all results",
+                //   isLiveSearch: false,
+                //   isSearch: false,
+                //   dataObj,
+                // });
                 if (!$(".empty-full-results-container").hasClass("hide")) {
                   $(".empty-full-results-container").addClass("hide");
                 }
@@ -18676,6 +18678,7 @@ FindlySDK.prototype.getSearchResultsConfig = function (url, type) {
     headers: headers,
     success: function (data) {
       _self.vars.searchInterfaceConfig = data.settings;
+      _self.vars.resultSettings = data;
       _self.pubSub.publish("sa-register-all-template", data.settings);
       // _self.pubSub.publish('sa-register-template', data.settings);
       _self.pubSub.publish(
@@ -19138,7 +19141,7 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
             payload:{
               type:'template',
               payload:{
-                  template_type: 'search_list_template',
+                  template_type: "search_"+selected[groupName + templateInterfaceType + 'TemplateType']+"_template",
                   // template_type: selected[groupName + templateInterfaceType + "TemplateType"]+"Template"+selected[groupName + templateInterfaceType + "LayoutType"],
                   isClickable: data.isClickable,
                   structuredData: structuredData,
@@ -19850,28 +19853,40 @@ FindlySDK.prototype.showAllResults = function () {
       } else {
         isFilterEnabled = false;
       }
-      var showAllHTML = $(showAllResultsContainerTemplate).tmpl({
-        facets: _self.vars.tabsList,
-        count: count,
-        view: view,
-        isDev: _self.isDev,
-        isFilterEnabled: isFilterEnabled,
-      });
-    //   var msgData={
-    //     message:[{
-    //         component:{
-    //             payload:{
-    //                 template_type: "full_search_results_template",
-    //                 facets: _self.vars.tabsList,
-    //                 count: count,
-    //                 view: view,
-    //                 isDev: _self.isDev,
-    //                 isFilterEnabled: isFilterEnabled,
-    //             }
-    //         }
-    //     }]
-    // }
-    // var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
+      // var showAllHTML = $(showAllResultsContainerTemplate).tmpl({
+      //   facets: _self.vars.tabsList,
+      //   count: count,
+      //   view: view,
+      //   isDev: _self.isDev,
+      //   isFilterEnabled: isFilterEnabled,
+      // });
+      
+    var devMode = _self.isDev ? true : false;
+    var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+      var msgData={
+        message:[{
+            component:{
+              payload:{
+                type:'template',
+                payload:{
+                  template_type: "full_search_results_template",
+                  facets: _self.vars.tabsList,
+                  count: count,
+                  view: view,
+                  isDev: _self.isDev,
+                  isFilterEnabled: isFilterEnabled,
+                  devMode: devMode,
+                  viewType: viewType,
+                  facetPosition: _self.vars.filterConfiguration.aligned,
+                  resultSettings: _self.vars.resultSettings,
+                  responseData:data.responseData,
+                  searchConfigurationCopy : searchConfigurationCopy
+              }
+              }
+            }
+        }]
+    }
+    var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
       $(data.container).empty().append(showAllHTML);
       // _self.vars.seeAllResultsOSObj = new KRPerfectScrollbar(data.container);
       setTimeout(() => {
@@ -19930,15 +19945,15 @@ FindlySDK.prototype.showAllResults = function () {
     _self.vars["facetObjectGlobal"] = facetObj;
     _self.facetReset(facetObj, facetData);
 
-    var devMode = _self.isDev ? true : false;
-    var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+    // var devMode = _self.isDev ? true : false;
+    // var viewType = _self.vars.customizeView ? "Customize" : "Preview";
 
-    var fullResultAllType = $(_self.fullResultAllType()).tmpl({
-      devMode: devMode,
-      viewType: viewType,
-      facetPosition: _self.vars.filterConfiguration.aligned,
-    });
-    $("#fullResultAllTypeId").append(fullResultAllType);
+    // var fullResultAllType = $(_self.fullResultAllType()).tmpl({
+    //   devMode: devMode,
+    //   viewType: viewType,
+    //   facetPosition: _self.vars.filterConfiguration.aligned,
+    // });
+    // $("#fullResultAllTypeId").append(fullResultAllType);
     _self.appendActionsContainerForBottomUp();
     var resultRanking = $(_self.fullResultRanking()).tmpl({
       data: data.dataObj,
@@ -21327,14 +21342,6 @@ FindlySDK.prototype.fullResultAllType = function () {
         <div class="title-info">Please try searching with another term</div>\
         </div>\
         <div class="full-search-data-container matched-structured-data-contaniers">\
-        </div>\
-        <div class="faqs-full-search-container matched-structured-data-contaniers">\
-        </div>\
-        <div class="web-full-search-container matched-structured-data-contaniers">\
-        </div>\
-        <div class="structured-data-full-search-container matched-structured-data-contaniers">\
-        </div>\
-        <div class="files-full-search-container matched-structured-data-contaniers">\
         </div>\
         <div class="kore-sdk-pagination-div">\
           <div class="kore-sdk-custom-pagination">\

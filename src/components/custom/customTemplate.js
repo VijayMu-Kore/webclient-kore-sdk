@@ -75,7 +75,6 @@ import '../../../libs/purejscarousel.css';
 		//this.installTemplate(new MessageTemplate());
 		this.installTemplate(new SearchListViewTemplate());
 		this.installTemplate(new FullSearchResultsTemplate());
-
 	};
 	/**
 	 * purpose: Function to render bot message for a given custom template
