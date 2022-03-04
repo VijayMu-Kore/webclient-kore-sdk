@@ -577,7 +577,7 @@ body{
 .searchAssist-kore-chat-window.search-container.conversation.active{
    height: calc(100% - 55px);
    background: var(--sdk-white-bg);
-   box-shadow: -7px 4px 30px rgba(18, 61, 101, 0.2), inset -8px -6px 80px rgba(255, 255, 255, 0.18);
+   box-shadow: -7px 4px 30px rgba(18, 61, 101, 0.2), inset -8px -6px 80px rgba(255, 255, 255, 0.18) !important;
    border-radius: 6px;
 }
 .searchAssist-kore-chat-window.search-container.conversation.active.no-history{
@@ -8558,7 +8558,7 @@ a.tile-heading{
     line-height: 15px;
     color: #9AA0A6;
 }
-.one-line-hight{
+.one-line-height{
     min-height: 18px;
     max-height: 18px;
 }

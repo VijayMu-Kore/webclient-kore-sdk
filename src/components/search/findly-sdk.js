@@ -19135,8 +19135,11 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
     var msgData={
       message:[{
           component:{
+            payload:{
+              type:'template',
               payload:{
-                  template_type: selected[groupName + templateInterfaceType + "TemplateType"]+"Template"+selected[groupName + templateInterfaceType + "LayoutType"],
+                  template_type: 'search_list_template',
+                  // template_type: selected[groupName + templateInterfaceType + "TemplateType"]+"Template"+selected[groupName + templateInterfaceType + "LayoutType"],
                   isClickable: data.isClickable,
                   structuredData: structuredData,
                   config: config,
@@ -19163,6 +19166,7 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
                   templateName: groupName.replaceAll(" ", ""),
                   fieldName: data.fieldName
               }
+            }
           }
       }]
   }
@@ -19853,16 +19857,31 @@ FindlySDK.prototype.showAllResults = function () {
         isDev: _self.isDev,
         isFilterEnabled: isFilterEnabled,
       });
+    //   var msgData={
+    //     message:[{
+    //         component:{
+    //             payload:{
+    //                 template_type: "full_search_results_template",
+    //                 facets: _self.vars.tabsList,
+    //                 count: count,
+    //                 view: view,
+    //                 isDev: _self.isDev,
+    //                 isFilterEnabled: isFilterEnabled,
+    //             }
+    //         }
+    //     }]
+    // }
+    // var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
       $(data.container).empty().append(showAllHTML);
       // _self.vars.seeAllResultsOSObj = new KRPerfectScrollbar(data.container);
       setTimeout(() => {
-        _self.bindPerfectScroll(
-          showAllHTML,
-          ".data-body-sec",
-          null,
-          "y",
-          "see-all-results"
-        );
+        // _self.bindPerfectScroll(
+        //   showAllHTML,
+        //   ".data-body-sec",
+        //   null,
+        //   "y",
+        //   "see-all-results"
+        // );
         if (false) {
           // disabling the infiniteScroll for now
           let data_body_sec_element = document.querySelector(".data-body-sec");

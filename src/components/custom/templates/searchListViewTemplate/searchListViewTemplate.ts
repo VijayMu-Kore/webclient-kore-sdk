@@ -8,7 +8,7 @@ class SearchListViewTemplate {
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
         if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload) {
-            me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+            me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.payload.template_type)).tmpl(msgData.message[0].component.payload.payload);
             me.bindEvents(me.messageHtml);
             return me.messageHtml;
         }
@@ -417,6 +417,61 @@ class SearchListViewTemplate {
         <div>\
     {{/if}}\
     </script>';
+    var searchListTemplates = '<script type="text/x-jqury-tmpl">\
+    {{if structuredData.length}}\
+        <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
+        <div class="template-4-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list{{if isClickable==false}}-collapse{{/if}} {{if isClickable==false}}template-4-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-collapse-result{{/if}} mb-15">\
+            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+                {{if isClickable == true}}\
+                        <div class="{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-item click-to-navigate-url faqs-shadow isClickable {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+                        {{if data.img && data.img.length}}\
+                        <div class="img-block">\
+                                <img src="${data.img}">\
+                            </div>\
+                            {{/if}}\
+                            <div class="content_sec {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}">\
+                            {{if data.heading && data.heading.length}}\
+                                <div class="heading text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                            {{/if}}\
+                            {{if data.description && data.description.length}}\
+                                <div class="text_desc single-line-description" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                                {{/if}}\
+                            </div>\
+                        </div>\
+                {{/if}}\
+                {{if isClickable == false}}\
+                            <div class="collapse-item-list-parent click-to-navigate-url faqs-shadow" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+                                <div class="collapse-item-list accordion {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}" id="1">\
+                                {{if data.heading && data.heading.length}}\
+                                    <div class="text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                                    {{if data.description && data.description.length}}\
+                                       <div class="text-description defalut-show text-truncate one-line-height">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                                    {{/if}}\
+                                    {{else}}\
+                                    {{html helpers.convertMDtoHTML(data.description)}}\
+                                    {{/if}}\
+                                </div>\
+                                <div class="panel">\
+                                    <div class="content_sec {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}">\
+                                    {{if data.img && data.img.length}}\
+                                        <div class="img-block">\
+                                            <img src="${data.img}">\
+                                        </div>\
+                                        {{/if}}\
+                                        {{if data.description && data.description.length}}\
+                                        <div class="{{if !data.img || !data.img.length}}pl-0 {{/if}}text-desc four-line-description">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                                        {{/if}}\
+                                    </div>\
+                                </div>\
+                            </div>\
+                            {{/if}}\
+            {{/each}}\
+                    <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+                        <div class="searchassist-show-more-button">Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
+                    </div>\
+        <div>\
+    {{/if}}\
+    </script>';
     var customizeList = '<script type="text/x-jqury-tmpl">\
     {{if structuredData.length}}\
     <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
@@ -610,14 +665,8 @@ class SearchListViewTemplate {
     {{/if}}\
   </script>';
 
-        if (type === 'listTemplatel1') {
-            return listTemplatel1;
-        } else if (type === 'listTemplatel2') {
-            return listTemplatel2;
-        }else if (type === 'listTemplatel3') {
-            return listTemplatel3;
-        }else if (type === 'listTemplatel4') {
-            return listTemplatel4;
+        if (type === 'search_list_template') {
+            return searchListTemplates;
         }
 
     }
