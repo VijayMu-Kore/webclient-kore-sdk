@@ -25,8 +25,8 @@ class FullSearchResultsTemplate {
         let hostWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
         var _innerText;
-        me.searchConfigurationCopy = msgData.message[0].component.payload.payload.searchConfigurationCopy;
-        let formatedTemplatesData:any = me.getMergedData(msgData.message[0].component.payload.payload.resultSettings,msgData.message[0].component.payload.payload.responseData,'isFullResults');
+        me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
+        let formatedTemplatesData:any = me.getMergedData(msgData.message[0].component.payload.resultSettings,msgData.message[0].component.payload.responseData,'isFullResults');
         
        setTimeout(()=>{
         $(messageHtml).find('.full-search-data-container').empty();
@@ -322,7 +322,23 @@ class FullSearchResultsTemplate {
               else {
                 maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
               }
-      
+              let gridLayoutType = '';
+              if (config?.type === 'grid') {
+                if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+                  gridLayoutType = 'img_common'
+                }
+                else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l5') {
+                  gridLayoutType = 'img_large'
+                }
+                else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l6') {
+                  gridLayoutType = 'img_left'
+                }
+                else if (['l7', 'l8'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+                  gridLayoutType = 'img_top'
+                }
+              }
+              const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
+
               var isDropdownEnabled = true;
               var messageData = {
                 "message": [
@@ -330,7 +346,7 @@ class FullSearchResultsTemplate {
                     "component": {
                         "type":'template',
                         "payload": {
-                         "template_type": "search_"+selected[groupName + templateInterfaceType + 'TemplateType']+"_template",
+                         "template_type": "search" + searchTemplateType + "Template",
                          'isClickable': data.isClickable,
                          'structuredData': structuredData,
                          'viewType': viewType,
@@ -353,7 +369,8 @@ class FullSearchResultsTemplate {
                          'doc_count': doc_count || 0,
                          'pageNumber': 0,
                          'templateName': groupName.replaceAll(' ', ''),
-                         'fieldName': data.fieldName
+                         'fieldName': data.fieldName,
+                         'gridLayoutType': gridLayoutType
                       }
                     }
                 }
