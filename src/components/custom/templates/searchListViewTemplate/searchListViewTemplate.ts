@@ -6,9 +6,12 @@ class SearchListViewTemplate {
   renderMessage(msgData: any) {
     let me: any = this;
     let $ = me.hostInstance.$;
-    let helpersObj = helpers;
-    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.payload?.template_type == 'search_list_template') {
-      me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.payload.template_type)).tmpl(msgData.message[0].component.payload.payload);
+    me.helpersObj = helpers;
+    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'searchListTemplate') {
+      if (!msgData.message[0].component.payload.helpers) {
+        msgData.message[0].component.payload['helpers'] = me.helpersObj;
+      }
+      me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
       me.bindEvents(me.messageHtml);
       return me.messageHtml;
     }
@@ -19,7 +22,7 @@ class SearchListViewTemplate {
     let $ = me.hostInstance.$;
     var _innerText;
     //if(me.hostInstance.hasOwnProperty('FindlySDK')){
-    if (!hostWindowInstance.vars.customizeView) {
+    if (!hostWindowInstance.vars || !hostWindowInstance.vars.customizeView) {
       setTimeout(function () {
         // $(".results-wrap").sortable({
         //   items: "li:not(.ui-state-disabled)",
@@ -665,7 +668,7 @@ class SearchListViewTemplate {
     {{/if}}\
   </script>';
 
-    if (type === 'search_list_template') {
+    if (type === 'searchListTemplate') {
       return searchListTemplates;
     }
 

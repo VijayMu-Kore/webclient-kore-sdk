@@ -21,6 +21,7 @@ import ListViewTemplate from './templates/listViewTemplate/listViewTemplate';
 import SearchListViewTemplate from './templates/searchListViewTemplate/searchListViewTemplate';
 import SearchGridViewTemplate from './templates/searchGridViewTemplate/searchGridViewTemplate';
 import FullSearchResultsTemplate from './templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
+import FinalResultsTemplate from './templates/finalResultsTemplate/finalResultsTemplate';
 
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
 
@@ -76,7 +77,8 @@ customTemplate.prototype.installDefaultTemplates = function () {
 	//this.installTemplate(new MessageTemplate());
 	this.installTemplate(new SearchListViewTemplate());
 	this.installTemplate(new SearchGridViewTemplate());
-	// this.installTemplate(new FullSearchResultsTemplate());
+	this.installTemplate(new FullSearchResultsTemplate());
+	this.installTemplate(new FinalResultsTemplate());
 };
 /**
  * purpose: Function to render bot message for a given custom template
@@ -99,104 +101,109 @@ customTemplate.prototype.renderMessage = function (msgData) {
 		if (messageHtml) {
 			return messageHtml;
 		}
+		templatesIndex++
 	}
+	if (messageHtml) {
+		return messageHtml;
+	}
+}
 
-	// if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "dropdown_template") {
-	// 	messageHtml = $(this.getChatTemplate("dropdown_template")).tmpl({
-	// 		'msgData': msgData,
-	// 		'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// 	this.bindEvents(messageHtml);
-	// } 
-	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "multi_select") {
-	// 	messageHtml = $(this.getChatTemplate("checkBoxesTemplate")).tmpl({
-	// 		'msgData': msgData,
-	// 		'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// } 
-	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "like_dislike") {
-	// 	messageHtml = $(this.getChatTemplate("likeDislikeTemplate")).tmpl({
-	// 		'msgData': msgData,
-	// 		'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// }
-	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "form_template") {
-	// 	messageHtml = $(this.getChatTemplate("formTemplate")).tmpl({
-	// 		'msgData': msgData,
-	// 		'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// 	this.bindEvents(messageHtml);
-	//     if(msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.fromHistory){
-	//         $(messageHtml).find(".formMainComponent form").addClass("hide");
-	//     }
-	// }
-	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "advanced_multi_select") {
-	// 	messageHtml = $(this.getChatTemplate("advancedMultiSelect")).tmpl({
-	// 		'msgData': msgData,
-	// 		 'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// 	$(messageHtml).data(msgData);
-	// 	this.bindEvents(messageHtml);
-	// } 
-	//  if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "tableList") {
-	// 	messageHtml = $(this.getChatTemplate("tableListTemplate")).tmpl({
-	// 		'msgData': msgData,
-	// 		'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// 	this.bindEvents(messageHtml);
-	// }
-	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listView") {
-	// 	messageHtml = $(this.getChatTemplate("templatelistView")).tmpl({
-	// 		'msgData': msgData,
-	// 		'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// 	this.bindEvents(messageHtml);
-	// 	$(messageHtml).data(msgData);
-	// 	if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.fromHistory){
-	// 		$(messageHtml).css({"pointer-events":"none"});
-	// 	}
-	// }
-	// else if(msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.template_type === "feedbackTemplate" && (msgData.message[0].component.payload.view==="star"|| msgData.message[0].component.payload.view ==="emojis"))){
-	// 	messageHtml = $(this.getChatTemplate("ratingTemplate")).tmpl({
-	// 		'msgData': msgData,
-	// 		 'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// 	if(msgData.message[0].component.payload.selectedfeedbackValue){
-	// 		$(messageHtml).find(".ratingMainComponent").css({"pointer-events":"none"});
-	// 		var _innerText = msgData.message[0].component.payload.selectedfeedbackValue;
-	// 		if($(messageHtml).find(".ratingMainComponent label.active")){
-	// 			$(messageHtml).find(".ratingMainComponent label").removeClass("active");
-	// 		}
-	// 		for(i=parseInt(_innerText);i>0;i--){
-	// 			$(messageHtml).find('.ratingMainComponent label[for="'+i+'-stars"]').addClass("active");
-	// 		}
-	// 	}
-	// 	 this.bindEvents(messageHtml);
-	// 	 $(messageHtml).data(msgData);
-	// }
-	// else if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listWidget"){
-	// 	messageHtml = $(this.getChatTemplate("listWidget")).tmpl({
-	// 		'msgData': msgData,
-	// 		'tempdata':msgData.message[0].component.payload,
-	// 		'dataItems': msgData.message[0].component.payload.elements || {},
-	// 		'viewmore': null,
-	// 		 'helpers': this.helpers,
-	// 		'extension': this.extension
-	// 	});
-	// 	 this.templateEvents(messageHtml, 'listWidget');
-	// 	 $(messageHtml).data(messageHtml);
-	// }
-	return messageHtml;
+// if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "dropdown_template") {
+// 	messageHtml = $(this.getChatTemplate("dropdown_template")).tmpl({
+// 		'msgData': msgData,
+// 		'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// 	this.bindEvents(messageHtml);
+// } 
+// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "multi_select") {
+// 	messageHtml = $(this.getChatTemplate("checkBoxesTemplate")).tmpl({
+// 		'msgData': msgData,
+// 		'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// } 
+// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "like_dislike") {
+// 	messageHtml = $(this.getChatTemplate("likeDislikeTemplate")).tmpl({
+// 		'msgData': msgData,
+// 		'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// }
+// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "form_template") {
+// 	messageHtml = $(this.getChatTemplate("formTemplate")).tmpl({
+// 		'msgData': msgData,
+// 		'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// 	this.bindEvents(messageHtml);
+//     if(msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.fromHistory){
+//         $(messageHtml).find(".formMainComponent form").addClass("hide");
+//     }
+// }
+// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "advanced_multi_select") {
+// 	messageHtml = $(this.getChatTemplate("advancedMultiSelect")).tmpl({
+// 		'msgData': msgData,
+// 		 'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// 	$(messageHtml).data(msgData);
+// 	this.bindEvents(messageHtml);
+// } 
+//  if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "tableList") {
+// 	messageHtml = $(this.getChatTemplate("tableListTemplate")).tmpl({
+// 		'msgData': msgData,
+// 		'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// 	this.bindEvents(messageHtml);
+// }
+// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listView") {
+// 	messageHtml = $(this.getChatTemplate("templatelistView")).tmpl({
+// 		'msgData': msgData,
+// 		'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// 	this.bindEvents(messageHtml);
+// 	$(messageHtml).data(msgData);
+// 	if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.fromHistory){
+// 		$(messageHtml).css({"pointer-events":"none"});
+// 	}
+// }
+// else if(msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.template_type === "feedbackTemplate" && (msgData.message[0].component.payload.view==="star"|| msgData.message[0].component.payload.view ==="emojis"))){
+// 	messageHtml = $(this.getChatTemplate("ratingTemplate")).tmpl({
+// 		'msgData': msgData,
+// 		 'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// 	if(msgData.message[0].component.payload.selectedfeedbackValue){
+// 		$(messageHtml).find(".ratingMainComponent").css({"pointer-events":"none"});
+// 		var _innerText = msgData.message[0].component.payload.selectedfeedbackValue;
+// 		if($(messageHtml).find(".ratingMainComponent label.active")){
+// 			$(messageHtml).find(".ratingMainComponent label").removeClass("active");
+// 		}
+// 		for(i=parseInt(_innerText);i>0;i--){
+// 			$(messageHtml).find('.ratingMainComponent label[for="'+i+'-stars"]').addClass("active");
+// 		}
+// 	}
+// 	 this.bindEvents(messageHtml);
+// 	 $(messageHtml).data(msgData);
+// }
+// else if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listWidget"){
+// 	messageHtml = $(this.getChatTemplate("listWidget")).tmpl({
+// 		'msgData': msgData,
+// 		'tempdata':msgData.message[0].component.payload,
+// 		'dataItems': msgData.message[0].component.payload.elements || {},
+// 		'viewmore': null,
+// 		 'helpers': this.helpers,
+// 		'extension': this.extension
+// 	});
+// 	 this.templateEvents(messageHtml, 'listWidget');
+// 	 $(messageHtml).data(messageHtml);
+// }
+return messageHtml;
 
-	return "";
+return "";
 }; // end of renderMessage method
 
 
