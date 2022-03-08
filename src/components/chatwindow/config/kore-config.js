@@ -1,9 +1,9 @@
 // var KoreSDK = KoreSDK || {};
-var chatConfig={};
+var chatConfig = {};
 
 var botOptions = {};
 botOptions.logLevel = 'debug';
-botOptions.koreAPIUrl = "https://bots.kore.ai/api/";
+botOptions.koreAPIUrl = "https://qa1-bots.kore.ai/api/";
 // botOptions.koreAPIUrl = "https://qa1-bots.kore.ai/api/";
 botOptions.koreSpeechAPIUrl = "";//deprecated
 //botOptions.bearer = "bearer xyz-------------------";
@@ -14,10 +14,10 @@ botOptions.recorderWorkerPath = '../libs/recorderWorker.js';
 
 
 botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
-botOptions.userIdentity = 'rajasekhar.balla@kore.com';// Provide users email id here
-botOptions.botInfo = { name: "SDKBot", "_id": "st-b9889c46-218c-58f7-838f-73ae9203488c" }; // bot name is case sensitive
-botOptions.clientId = "cs-1e845b00-81ad-5757-a1e7-d0f6fea227e9";
-botOptions.clientSecret = "5OcBSQtH/k6Q/S6A3bseYfOee02YjjLLTNoT1qZDBso=";
+botOptions.userIdentity = 'rushivar.takhur@kore.com';// Provide users email id here
+botOptions.botInfo = { name: "SDK2.0", "_id": "st-76c5b67e-e4e3-54fa-9197-57ed4eff1dad" }; // bot name is case sensitive
+botOptions.clientId = "cs-a5ea6d09-fb18-5620-b3aa-dd6fc69612d6";
+botOptions.clientSecret = "HzA3X8BdP7EvkIxxwISCwMBc+FClQJER0UYeqpvYoE4=";
 // botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 // botOptions.userIdentity = 'rakesh.manda@kore.com';// Provide users email id here
 // botOptions.botInfo = { name: "sdk2.0", "_id": "st-9d3aeb34-9872-5f55-a88b-19e127f9f519" }; // bot name is case sensitive
@@ -48,7 +48,7 @@ botOptions.clientSecret = "5OcBSQtH/k6Q/S6A3bseYfOee02YjjLLTNoT1qZDBso=";
 
 chatConfig = {
     botOptions: botOptions,
-    container:'body',
+    container: 'body',
     allowIframe: false, 			// set true, opens authentication links in popup window, default value is "false"
     isSendButton: false, 			// set true, to show send button below the compose bar
     isTTSEnabled: false,			// set true, to hide speaker icon
@@ -75,8 +75,8 @@ chatConfig = {
         showTaskMenuPickerIcon: false,       //set true to show TaskMenu Template icon
         showradioOptionMenuPickerIcon: false //set true to show Radio Option Template icon
     },
-    pingPong:{
-        interval:30000 //In milli sec, To keep the websocket alive skd send ping message in this interval      
+    pingPong: {
+        interval: 30000 //In milli sec, To keep the websocket alive skd send ping message in this interval      
     }
 };
 /* 

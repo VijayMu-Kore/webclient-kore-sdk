@@ -3,242 +3,242 @@ import helpers from '../../../../utils/helpers';
 import './searchListViewTemplate.scss';
 class SearchListViewTemplate {
 
-    renderMessage(msgData: any) {
-        let me: any = this;
-        let $ = me.hostInstance.$;
-        let helpersObj = helpers;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.payload.template_type == 'search_list_template') {
-            me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.payload.template_type)).tmpl(msgData.message[0].component.payload.payload);
-            me.bindEvents(me.messageHtml);
-            return me.messageHtml;
-        }
+  renderMessage(msgData: any) {
+    let me: any = this;
+    let $ = me.hostInstance.$;
+    let helpersObj = helpers;
+    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.payload?.template_type == 'search_list_template') {
+      me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.payload.template_type)).tmpl(msgData.message[0].component.payload.payload);
+      me.bindEvents(me.messageHtml);
+      return me.messageHtml;
     }
-    bindEvents(messageHtml: any) {
-        let me: any = this;
-        let hostWindowInstance = me.hostInstance;
-        let $ = me.hostInstance.$;
-        var _innerText;
-        //if(me.hostInstance.hasOwnProperty('FindlySDK')){
-            if (!hostWindowInstance.vars.customizeView) {
-                setTimeout(function () {
-                  // $(".results-wrap").sortable({
-                  //   items: "li:not(.ui-state-disabled)",
-                  //   cancel: ".ui-state-disabled",
-                  //   stop: function (event : any, ui: any) {
-                  //     var element = ui.item[0];
-                  //     if ($(element).find(".pinning").length) {
-                  //       var pinningElement = $(element).find(".pinning")[0];
-                  //       if (pinningElement) {
-                  //         $(pinningElement).closest(".pinning").attr("type", "Pin");
-                  //         $(pinningElement).trigger("click");
-                  //       }
-                  //     } else if ($(element).attr("manuallyadded") == "true") {
-                  //       var pinIndex = 0;
-                  //       var _selectedElement = ui.item[0];
-                  //       var _parentElement = $(event.target).closest(".results-wrap");
-                  //       var childNodes = Array.prototype.slice.call(
-                  //         _parentElement[0].children
-                  //       );
-                  //       pinIndex = childNodes.indexOf(_selectedElement);
-                  //       if (pinIndex >= 0) {
-                  //           hostWindowInstance.performRankActionsOnFullPage(
-                  //           ui.item,
-                  //           { pinIndex: pinIndex },
-                  //           hostWindowInstance.vars.searchObject.searchText,
-                  //           "pinning",
-                  //           true
-                  //         );
-                  //         //
-                  //       }
-                  //     }
-                  //   },
-                  // });
-                }, 200);
-              }
+  }
+  bindEvents(messageHtml: any) {
+    let me: any = this;
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    var _innerText;
+    //if(me.hostInstance.hasOwnProperty('FindlySDK')){
+    if (!hostWindowInstance.vars.customizeView) {
+      setTimeout(function () {
+        // $(".results-wrap").sortable({
+        //   items: "li:not(.ui-state-disabled)",
+        //   cancel: ".ui-state-disabled",
+        //   stop: function (event : any, ui: any) {
+        //     var element = ui.item[0];
+        //     if ($(element).find(".pinning").length) {
+        //       var pinningElement = $(element).find(".pinning")[0];
+        //       if (pinningElement) {
+        //         $(pinningElement).closest(".pinning").attr("type", "Pin");
+        //         $(pinningElement).trigger("click");
+        //       }
+        //     } else if ($(element).attr("manuallyadded") == "true") {
+        //       var pinIndex = 0;
+        //       var _selectedElement = ui.item[0];
+        //       var _parentElement = $(event.target).closest(".results-wrap");
+        //       var childNodes = Array.prototype.slice.call(
+        //         _parentElement[0].children
+        //       );
+        //       pinIndex = childNodes.indexOf(_selectedElement);
+        //       if (pinIndex >= 0) {
+        //           hostWindowInstance.performRankActionsOnFullPage(
+        //           ui.item,
+        //           { pinIndex: pinIndex },
+        //           hostWindowInstance.vars.searchObject.searchText,
+        //           "pinning",
+        //           true
+        //         );
+        //         //
+        //       }
+        //     }
+        //   },
+        // });
+      }, 200);
+    }
     // Boost / Pin
     $(".template-3-classic-list-collapse")
-    .off("click",".click-here")
-    .on("click",".click-here", function (event: any) {
-      console.log("********")
-    });
+      .off("click", ".click-here")
+      .on("click", ".click-here", function (event: any) {
+        console.log("********")
+      });
     $(".customization")
-    .off("click", ".visibility")
-    .on("click", ".visibility", function (event: any) {
-      // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
-      if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-        hostWindowInstance.performRankActionsOnFullPage(
-          event,
-          { visible: false },
-          hostWindowInstance.vars.searchObject.searchText,
-          "visibility"
-        );
-      } else {
-        hostWindowInstance.performRankActionsOnFullPage(
-          event,
-          { visible: true },
-          hostWindowInstance.vars.searchObject.searchText,
-          "visibility"
-        );
-      }
-      // }
-    });
-
-  $(".customization")
-    .off("click", ".unpin_added_result")
-    .on("click", ".unpin_added_result", function (event : any) {
-      hostWindowInstance.performRankActionsOnFullPage(
-        event,
-        { pinIndex: -1 },
-        hostWindowInstance.vars.searchObject.searchText,
-        "unpin_added_result"
-      );
-    });
-
-  $(".customization")
-    .off("click", ".pinning")
-    .on("click", ".pinning", function (event: any) {
-      if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-        var _selectedElement = $(event.target).closest(".structure-data-wrp");
-        var _parentElement = $(event.target).closest(".results-wrap");
-        var childNodes = Array.prototype.slice.call(_parentElement[0].children);
-        var pinIndex = 0;
-        if ($(event.target).closest(".pinning").attr("type") == "UnPin") {
-          pinIndex = -1;
-        } else {
-          pinIndex = childNodes.indexOf(_selectedElement[0]);
-        }
-        hostWindowInstance.performRankActionsOnFullPage(
-          event,
-          { pinIndex: pinIndex },
-          hostWindowInstance.vars.searchObject.searchText,
-          "pinning"
-        );
-      }
-    });
-  $(".customization")
-    .off("click", ".boosting")
-    .on("click", ".boosting", function (event : any) {
-      if (
-        $(event.target).closest(".data-wrap").attr("visible") == "true" &&
-        parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
-      ) {
-        var boostByValue = parseFloat(
-          $(event.target).closest(".data-wrap").attr("boost")
-        );
-        boostByValue = boostByValue + 0.25;
-        let messageText = "customizationOnResults";
-        let option = null;
-        let serverMessageObject = null;
-        let clientMessageObject = {
-          event :event,
-          boost: boostByValue ,
-          searchText : hostWindowInstance.vars.searchObject.searchText,
-          action :"boosting"
-        } 
-        /**  Emitting the Data to Host Instance */
-        hostWindowInstance.sendMessage(messageText,option,serverMessageObject,clientMessageObject)
-        // hostWindowInstance.performRankActionsOnFullPage(
-        //   event,
-        //   { boost: boostByValue },
-        //   hostWindowInstance.vars.searchObject.searchText,
-        //   "boosting"
-        // );
-      }
-    });
-  $(".customization")
-    .off("click", ".burying")
-    .on("click", ".burying", function (event : any) {
-      if (
-        $(event.target).closest(".data-wrap").attr("visible") == "true" &&
-        parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
-      ) {
-        var buryByValue = parseFloat(
-          $(event.target).closest(".data-wrap").attr("boost")
-        );
-        if (buryByValue > 0.25) {
-          buryByValue = buryByValue - 0.25;
+      .off("click", ".visibility")
+      .on("click", ".visibility", function (event: any) {
+        // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
+        if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
           hostWindowInstance.performRankActionsOnFullPage(
             event,
-            { boost: buryByValue },
+            { visible: false },
             hostWindowInstance.vars.searchObject.searchText,
-            "burying"
-          );
-        } else if (buryByValue != 0) {
-          buryByValue = 0.25 - buryByValue;
-          hostWindowInstance.performRankActionsOnFullPage(
-            event,
-            { boost: buryByValue },
-            hostWindowInstance.vars.searchObject.searchText,
-            "burying"
+            "visibility"
           );
         } else {
-          buryByValue = 0;
           hostWindowInstance.performRankActionsOnFullPage(
             event,
-            { boost: buryByValue },
+            { visible: true },
             hostWindowInstance.vars.searchObject.searchText,
-            "burying"
+            "visibility"
           );
         }
-      }
-    });
+        // }
+      });
 
-  $(".custom-add-result-container")
-    .off("click", ".link-text")
-    .on("click", ".link-text", function (event : any) {
-      var structure = "bottom";
-      if ($("body").hasClass("top-down")) {
-        structure = "top";
+    $(".customization")
+      .off("click", ".unpin_added_result")
+      .on("click", ".unpin_added_result", function (event: any) {
+        hostWindowInstance.performRankActionsOnFullPage(
+          event,
+          { pinIndex: -1 },
+          hostWindowInstance.vars.searchObject.searchText,
+          "unpin_added_result"
+        );
+      });
+
+    $(".customization")
+      .off("click", ".pinning")
+      .on("click", ".pinning", function (event: any) {
+        if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
+          var _selectedElement = $(event.target).closest(".structure-data-wrp");
+          var _parentElement = $(event.target).closest(".results-wrap");
+          var childNodes = Array.prototype.slice.call(_parentElement[0].children);
+          var pinIndex = 0;
+          if ($(event.target).closest(".pinning").attr("type") == "UnPin") {
+            pinIndex = -1;
+          } else {
+            pinIndex = childNodes.indexOf(_selectedElement[0]);
+          }
+          hostWindowInstance.performRankActionsOnFullPage(
+            event,
+            { pinIndex: pinIndex },
+            hostWindowInstance.vars.searchObject.searchText,
+            "pinning"
+          );
+        }
+      });
+    $(".customization")
+      .off("click", ".boosting")
+      .on("click", ".boosting", function (event: any) {
         if (
-          $("body").hasClass("top-down")
-            ? $(".search-top-down").val()
-            : $(".bottom-up-search").val()
+          $(event.target).closest(".data-wrap").attr("visible") == "true" &&
+          parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
         ) {
-          hostWindowInstance.vars.searchObject.searchText = $("body").hasClass("top-down")
-            ? $(".search-top-down").val()
-            : $(".bottom-up-search").val();
+          var boostByValue = parseFloat(
+            $(event.target).closest(".data-wrap").attr("boost")
+          );
+          boostByValue = boostByValue + 0.25;
+          let messageText = "customizationOnResults";
+          let option = null;
+          let serverMessageObject = null;
+          let clientMessageObject = {
+            event: event,
+            boost: boostByValue,
+            searchText: hostWindowInstance.vars.searchObject.searchText,
+            action: "boosting"
+          }
+          /**  Emitting the Data to Host Instance */
+          hostWindowInstance.sendMessage(messageText, option, serverMessageObject, clientMessageObject)
+          // hostWindowInstance.performRankActionsOnFullPage(
+          //   event,
+          //   { boost: boostByValue },
+          //   hostWindowInstance.vars.searchObject.searchText,
+          //   "boosting"
+          // );
         }
-      } else {
-        structure = "bottom";
-      }
-      if (hostWindowInstance.vars.searchObject && hostWindowInstance.vars.searchObject.searchText) {
-        var responseObject = {
-          type: "addNew",
-          data: true,
-          query: hostWindowInstance.vars.searchObject.searchText,
-          structure: structure,
-        };
-        hostWindowInstance.parentEvent(responseObject);
-      }
-    });
-  //Tour RR
-  $(".sdk-tours-info-nxt")
-    .off("click")
-    .on("click", function (e : any) {
-      $(".sdk-tours-info-start").hide();
-      $(".sdk-tours-info-end").removeClass("hide");
-      $(".sdk-tours-info-end").show();
-    });
-  $(".sdk-tours-info-pre")
-    .off("click")
-    .on("click", function (e: any) {
-      $(".sdk-tours-info-start").show();
-      //$("sdk-tours-info-end").removeClass("hide");
-      $(".sdk-tours-info-end").hide();
-    });
+      });
+    $(".customization")
+      .off("click", ".burying")
+      .on("click", ".burying", function (event: any) {
+        if (
+          $(event.target).closest(".data-wrap").attr("visible") == "true" &&
+          parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
+        ) {
+          var buryByValue = parseFloat(
+            $(event.target).closest(".data-wrap").attr("boost")
+          );
+          if (buryByValue > 0.25) {
+            buryByValue = buryByValue - 0.25;
+            hostWindowInstance.performRankActionsOnFullPage(
+              event,
+              { boost: buryByValue },
+              hostWindowInstance.vars.searchObject.searchText,
+              "burying"
+            );
+          } else if (buryByValue != 0) {
+            buryByValue = 0.25 - buryByValue;
+            hostWindowInstance.performRankActionsOnFullPage(
+              event,
+              { boost: buryByValue },
+              hostWindowInstance.vars.searchObject.searchText,
+              "burying"
+            );
+          } else {
+            buryByValue = 0;
+            hostWindowInstance.performRankActionsOnFullPage(
+              event,
+              { boost: buryByValue },
+              hostWindowInstance.vars.searchObject.searchText,
+              "burying"
+            );
+          }
+        }
+      });
 
-  $(".sdk-tours-info-close")
-    .off("click")
-    .on("click", function (e: any) {
-      $(".tours-information").hide();
-      hostWindowInstance.vars.customTourResultRank = false;
-    });
-  //Tour RR 
-//}
-        //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
+    $(".custom-add-result-container")
+      .off("click", ".link-text")
+      .on("click", ".link-text", function (event: any) {
+        var structure = "bottom";
+        if ($("body").hasClass("top-down")) {
+          structure = "top";
+          if (
+            $("body").hasClass("top-down")
+              ? $(".search-top-down").val()
+              : $(".bottom-up-search").val()
+          ) {
+            hostWindowInstance.vars.searchObject.searchText = $("body").hasClass("top-down")
+              ? $(".search-top-down").val()
+              : $(".bottom-up-search").val();
+          }
+        } else {
+          structure = "bottom";
+        }
+        if (hostWindowInstance.vars.searchObject && hostWindowInstance.vars.searchObject.searchText) {
+          var responseObject = {
+            type: "addNew",
+            data: true,
+            query: hostWindowInstance.vars.searchObject.searchText,
+            structure: structure,
+          };
+          hostWindowInstance.parentEvent(responseObject);
+        }
+      });
+    //Tour RR
+    $(".sdk-tours-info-nxt")
+      .off("click")
+      .on("click", function (e: any) {
+        $(".sdk-tours-info-start").hide();
+        $(".sdk-tours-info-end").removeClass("hide");
+        $(".sdk-tours-info-end").show();
+      });
+    $(".sdk-tours-info-pre")
+      .off("click")
+      .on("click", function (e: any) {
+        $(".sdk-tours-info-start").show();
+        //$("sdk-tours-info-end").removeClass("hide");
+        $(".sdk-tours-info-end").hide();
+      });
 
-    }
-    getTemplateString(type: any) {
+    $(".sdk-tours-info-close")
+      .off("click")
+      .on("click", function (e: any) {
+        $(".tours-information").hide();
+        hostWindowInstance.vars.customTourResultRank = false;
+      });
+    //Tour RR 
+    //}
+    //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
+
+  }
+  getTemplateString(type: any) {
     var listTemplatel1 = '<script type="text/x-jqury-tmpl">\
         {{if structuredData.length}}\
             <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
@@ -665,11 +665,11 @@ class SearchListViewTemplate {
     {{/if}}\
   </script>';
 
-        if (type === 'search_list_template') {
-            return searchListTemplates;
-        }
-
+    if (type === 'search_list_template') {
+      return searchListTemplates;
     }
+
+  }
 
 }
 
