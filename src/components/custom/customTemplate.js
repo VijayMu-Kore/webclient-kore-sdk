@@ -19,10 +19,9 @@ import ListViewTemplate from './templates/listViewTemplate/listViewTemplate';
 // import BarChartTemplate from './templates/barChartTemplate/barChartTemplate';
 // import PieChartTemplate from './templates/pieChartTemplate/pieChartTemplate';
 import SearchListViewTemplate from './templates/searchListViewTemplate/searchListViewTemplate';
-import SearchGridViewTemplate from './templates/searchGridViewTemplate/searchGridViewTemplate';
 import FullSearchResultsTemplate from './templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
 import FinalResultsTemplate from './templates/finalResultsTemplate/finalResultsTemplate';
-
+import SearchGridViewTemplate from './templates/searchGridViewTemplate/searchGridViewTemplate';
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
 
 
@@ -101,109 +100,104 @@ customTemplate.prototype.renderMessage = function (msgData) {
 		if (messageHtml) {
 			return messageHtml;
 		}
-		templatesIndex++
 	}
-	if (messageHtml) {
-		return messageHtml;
-	}
-}
 
-// if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "dropdown_template") {
-// 	messageHtml = $(this.getChatTemplate("dropdown_template")).tmpl({
-// 		'msgData': msgData,
-// 		'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// 	this.bindEvents(messageHtml);
-// } 
-// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "multi_select") {
-// 	messageHtml = $(this.getChatTemplate("checkBoxesTemplate")).tmpl({
-// 		'msgData': msgData,
-// 		'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// } 
-// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "like_dislike") {
-// 	messageHtml = $(this.getChatTemplate("likeDislikeTemplate")).tmpl({
-// 		'msgData': msgData,
-// 		'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// }
-// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "form_template") {
-// 	messageHtml = $(this.getChatTemplate("formTemplate")).tmpl({
-// 		'msgData': msgData,
-// 		'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// 	this.bindEvents(messageHtml);
-//     if(msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.fromHistory){
-//         $(messageHtml).find(".formMainComponent form").addClass("hide");
-//     }
-// }
-// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "advanced_multi_select") {
-// 	messageHtml = $(this.getChatTemplate("advancedMultiSelect")).tmpl({
-// 		'msgData': msgData,
-// 		 'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// 	$(messageHtml).data(msgData);
-// 	this.bindEvents(messageHtml);
-// } 
-//  if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "tableList") {
-// 	messageHtml = $(this.getChatTemplate("tableListTemplate")).tmpl({
-// 		'msgData': msgData,
-// 		'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// 	this.bindEvents(messageHtml);
-// }
-// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listView") {
-// 	messageHtml = $(this.getChatTemplate("templatelistView")).tmpl({
-// 		'msgData': msgData,
-// 		'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// 	this.bindEvents(messageHtml);
-// 	$(messageHtml).data(msgData);
-// 	if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.fromHistory){
-// 		$(messageHtml).css({"pointer-events":"none"});
-// 	}
-// }
-// else if(msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.template_type === "feedbackTemplate" && (msgData.message[0].component.payload.view==="star"|| msgData.message[0].component.payload.view ==="emojis"))){
-// 	messageHtml = $(this.getChatTemplate("ratingTemplate")).tmpl({
-// 		'msgData': msgData,
-// 		 'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// 	if(msgData.message[0].component.payload.selectedfeedbackValue){
-// 		$(messageHtml).find(".ratingMainComponent").css({"pointer-events":"none"});
-// 		var _innerText = msgData.message[0].component.payload.selectedfeedbackValue;
-// 		if($(messageHtml).find(".ratingMainComponent label.active")){
-// 			$(messageHtml).find(".ratingMainComponent label").removeClass("active");
-// 		}
-// 		for(i=parseInt(_innerText);i>0;i--){
-// 			$(messageHtml).find('.ratingMainComponent label[for="'+i+'-stars"]').addClass("active");
-// 		}
-// 	}
-// 	 this.bindEvents(messageHtml);
-// 	 $(messageHtml).data(msgData);
-// }
-// else if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listWidget"){
-// 	messageHtml = $(this.getChatTemplate("listWidget")).tmpl({
-// 		'msgData': msgData,
-// 		'tempdata':msgData.message[0].component.payload,
-// 		'dataItems': msgData.message[0].component.payload.elements || {},
-// 		'viewmore': null,
-// 		 'helpers': this.helpers,
-// 		'extension': this.extension
-// 	});
-// 	 this.templateEvents(messageHtml, 'listWidget');
-// 	 $(messageHtml).data(messageHtml);
-// }
-return messageHtml;
+	// if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "dropdown_template") {
+	// 	messageHtml = $(this.getChatTemplate("dropdown_template")).tmpl({
+	// 		'msgData': msgData,
+	// 		'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// 	this.bindEvents(messageHtml);
+	// } 
+	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "multi_select") {
+	// 	messageHtml = $(this.getChatTemplate("checkBoxesTemplate")).tmpl({
+	// 		'msgData': msgData,
+	// 		'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// } 
+	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "like_dislike") {
+	// 	messageHtml = $(this.getChatTemplate("likeDislikeTemplate")).tmpl({
+	// 		'msgData': msgData,
+	// 		'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// }
+	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "form_template") {
+	// 	messageHtml = $(this.getChatTemplate("formTemplate")).tmpl({
+	// 		'msgData': msgData,
+	// 		'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// 	this.bindEvents(messageHtml);
+	//     if(msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.fromHistory){
+	//         $(messageHtml).find(".formMainComponent form").addClass("hide");
+	//     }
+	// }
+	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "advanced_multi_select") {
+	// 	messageHtml = $(this.getChatTemplate("advancedMultiSelect")).tmpl({
+	// 		'msgData': msgData,
+	// 		 'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// 	$(messageHtml).data(msgData);
+	// 	this.bindEvents(messageHtml);
+	// } 
+	//  if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "tableList") {
+	// 	messageHtml = $(this.getChatTemplate("tableListTemplate")).tmpl({
+	// 		'msgData': msgData,
+	// 		'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// 	this.bindEvents(messageHtml);
+	// }
+	// else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listView") {
+	// 	messageHtml = $(this.getChatTemplate("templatelistView")).tmpl({
+	// 		'msgData': msgData,
+	// 		'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// 	this.bindEvents(messageHtml);
+	// 	$(messageHtml).data(msgData);
+	// 	if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.fromHistory){
+	// 		$(messageHtml).css({"pointer-events":"none"});
+	// 	}
+	// }
+	// else if(msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.template_type === "feedbackTemplate" && (msgData.message[0].component.payload.view==="star"|| msgData.message[0].component.payload.view ==="emojis"))){
+	// 	messageHtml = $(this.getChatTemplate("ratingTemplate")).tmpl({
+	// 		'msgData': msgData,
+	// 		 'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// 	if(msgData.message[0].component.payload.selectedfeedbackValue){
+	// 		$(messageHtml).find(".ratingMainComponent").css({"pointer-events":"none"});
+	// 		var _innerText = msgData.message[0].component.payload.selectedfeedbackValue;
+	// 		if($(messageHtml).find(".ratingMainComponent label.active")){
+	// 			$(messageHtml).find(".ratingMainComponent label").removeClass("active");
+	// 		}
+	// 		for(i=parseInt(_innerText);i>0;i--){
+	// 			$(messageHtml).find('.ratingMainComponent label[for="'+i+'-stars"]').addClass("active");
+	// 		}
+	// 	}
+	// 	 this.bindEvents(messageHtml);
+	// 	 $(messageHtml).data(msgData);
+	// }
+	// else if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listWidget"){
+	// 	messageHtml = $(this.getChatTemplate("listWidget")).tmpl({
+	// 		'msgData': msgData,
+	// 		'tempdata':msgData.message[0].component.payload,
+	// 		'dataItems': msgData.message[0].component.payload.elements || {},
+	// 		'viewmore': null,
+	// 		 'helpers': this.helpers,
+	// 		'extension': this.extension
+	// 	});
+	// 	 this.templateEvents(messageHtml, 'listWidget');
+	// 	 $(messageHtml).data(messageHtml);
+	// }
+	return messageHtml;
 
-return "";
+	return "";
 }; // end of renderMessage method
 
 
@@ -460,7 +454,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 	"image_url":"https://miro.medium.com/max/1161/1*cJUVJJSWPj9WFIJlvf7dKg.jpeg"
 	}
 	]
-	
 	},
 	{
 	'collectionTitle':"Collection 2",
@@ -822,7 +815,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 	// </script>';
 
 	/*TABLE LIST TEMPLATE
-	
 	var message={
 		"type": "template",
 		"payload": {
@@ -833,8 +825,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 						"type":"text",
 						"text":"Comics",
 					},
-	
-	
 		"elements":[
 			{
 				"sectionHeader":"Marvel Comics",
@@ -854,7 +844,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 								"title":"Captain Marvel",
 								"subtitle":"Cosmic energy",
 							},
-	
 							"rowColor":"blue" //text color to entire row
 						},
 						"value":{
@@ -972,12 +961,10 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 					}
 				]
 			}
-	
 		]
 	}
 	};
 	print(JSON.stringify(message));
-	
 	*/
 
 	//  var tableListTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
@@ -1111,7 +1098,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 		};
 	message.payload.starArrays.push(starArray);
 	}
-	
 	}
 	else if(message.payload.view === "emojis"){
 		for(var i=1;i<=5;i++){
@@ -1205,7 +1191,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 			},
 		  }
 		],
-	
 	  },
 	  "elements": [
 		{
@@ -1238,7 +1223,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 					},
 					"description": "$250.00 - Jul 26th - ONLINE BANKING TRANSFER TO 0175 552393******8455"
 				}],
-	
 		  "default_action": {
 			"type": "postback",
 			"payload": "New Value",
@@ -1359,7 +1343,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 					},
 					"description": "$250.00 - Jul 26th - ONLINE BANKING TRANSFER TO 0175 552393******8455"
 				}],
-	
 		  "default_action": {
 			"type": "postback",
 			"payload": "New Value",
@@ -1395,7 +1378,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 					},
 					"description": "$250.00 - Jul 26th - ONLINE BANKING TRANSFER TO 0175 552393******8455"
 				}],
-	
 		  "default_action": {
 			"type": "postback",
 			"payload": "New Value",
@@ -1431,7 +1413,6 @@ customTemplate.prototype.getChatTemplate = function (tempType) {
 					},
 					"description": "$250.00 - Jul 26th - ONLINE BANKING TRANSFER TO 0175 552393******8455"
 				}],
-	
 		  "default_action": {
 			"type": "postback",
 			"payload": "New Value",
