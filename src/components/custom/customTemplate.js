@@ -20,6 +20,7 @@ import ListViewTemplate from './templates/listViewTemplate/listViewTemplate';
 // import PieChartTemplate from './templates/pieChartTemplate/pieChartTemplate';
 import SearchListViewTemplate from './templates/searchListViewTemplate/searchListViewTemplate';
 import FullSearchResultsTemplate from './templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
+import FinalResultsTemplate from './templates/finalResultsTemplate/finalResultsTemplate';
 
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
 
@@ -75,6 +76,7 @@ import '../../../libs/purejscarousel.css';
 		//this.installTemplate(new MessageTemplate());
 		this.installTemplate(new SearchListViewTemplate());
 		this.installTemplate(new FullSearchResultsTemplate());
+		this.installTemplate(new FinalResultsTemplate());
 	};
 	/**
 	 * purpose: Function to render bot message for a given custom template

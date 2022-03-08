@@ -2,15 +2,19 @@
 import helpers from '../../../../utils/helpers';
 import './fullsearchResultsTemplate.scss';
 import customTemplate from '../../customTemplate';
-
+import korejquery from "../../../../libs/korejquery";
+const $ = korejquery;
 class FullSearchResultsTemplate {
 
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
-        let helpersObj = helpers;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.payload.template_type == 'full_search_results_template') {
-            me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.payload.template_type)).tmpl(msgData.message[0].component.payload.payload);
+        me.helpersObj = helpers;
+        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'fullSearchResultsTemplate') {
+          if(msgData.message[0].component.payload.helpers){
+            me.helpersObj = msgData.message[0].component.payload.helpers
+          }
+          me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
             me.bindEvents(me.messageHtml,msgData);
             me.customTemplateObj = new customTemplate(me);
             return me.messageHtml;
@@ -29,7 +33,7 @@ class FullSearchResultsTemplate {
         if(formatedTemplatesData && formatedTemplatesData.length){
           formatedTemplatesData.forEach((d:any)=>{
             var groupsName:any = Object.keys(d)
-            var showAllHTML = me.customTemplateObj.renderMessage(groupsName[0].msgData);
+            var showAllHTML = me.customTemplateObj.renderMessage(d[groupsName[0]]);
             $(messageHtml).find('.full-search-data-container').append(showAllHTML);
           })
         }
@@ -148,20 +152,21 @@ class FullSearchResultsTemplate {
       </div>\
     </div>\
     </script>';
-        if (type === 'full_search_results_template') {
+        if (type === 'fullSearchResultsTemplate') {
             return fullSearchResultsTemplate;
         }
 
     }
 
     getMergedData(settingData:any,responseData:any,searchType:any){
+      let response = Object.assign({},responseData.template);
       let me:any =this;
       settingData = settingData.settings || [];
       var configurationSettings:any = {};
      var isFullResults = false;
      var isSearch=false;
      var isLiveSearch = false;
-     var mergedata:any  = [];
+     me.mergedData = [];
      if (searchType == 'isFullResults') {
        isFullResults = true;
        searchType = 'fullSearch';
@@ -255,29 +260,174 @@ class FullSearchResultsTemplate {
                  selected[groupName + templateInterface + 'LayoutType'] = 'l1'
                }
            });
+            // Search call back
+            me.getConfigData = function(data:any){
+              var structuredData:any = [];
+              var templateConfiguration:any = {};
+              var templateInterfaceType = '';
+              var groupName = data.dataObj.groupName;
+              var doc_count = data.dataObj.doc_count;
+              if (isLiveSearch) {
+                templateInterfaceType = 'liveSearch';
+                templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
+              } else if (isSearch) {
+                templateInterfaceType = 'conversationalSearch';
+                templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
+              } else {
+                templateInterfaceType = 'fullSearch';
+                templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
+              }
+              structuredData = me.designDataWithMappings(data.dataObj.data, templateConfiguration.mapping);
+              if (templateConfiguration && templateConfiguration.layout) {
+                data['isClickable'] = templateConfiguration.layout.isClickable;
+                data['behaviour'] = templateConfiguration.layout.behaviour;
+                data['listType'] = templateConfiguration.layout.listType;
+                data['titleName'] = templateConfiguration.layout.title;
+                data['textAlignment'] = templateConfiguration.layout.textAlignment;
+                data['renderTitle'] = templateConfiguration.layout.renderTitle;
+                data['groupResults'] = templateConfiguration.groupResults;
+                data['fieldName'] = templateConfiguration.fieldName;
+                config = templateConfiguration;
+              }
+             
+              // this should only be applied for 'search' interface
+              data['structuredData'] = [];
+              data['structuredData'] = structuredData;
+              var viewType = 'Preview';
+              var devMode = this.isDev ? true : false;
+              if (!data.selectedFacet) {
+                viewType = 'Preview';
+              }
+              if (!structuredData || !structuredData.length) {
+                structuredData = [];
+              }
+              var maxSearchResultsAllowed = 2;
+              if (data.isLiveSearch) {
+                maxSearchResultsAllowed = (me.searchConfigurationCopy.liveSearchResultsLimit || (me.searchConfigurationCopy.liveSearchResultsLimit == 0)) ? me.searchConfigurationCopy.liveSearchResultsLimit : 2;
+              }
+              else if (isSearch) {
+                if (selected[groupName + templateInterfaceType + 'TemplateType'] === 'grid') {
+                  maxSearchResultsAllowed = 4;
+                }
+                else if (selected[groupName + templateInterfaceType + 'TemplateType'] === 'carousel') {
+                  maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
+                }
+                else {
+                  maxSearchResultsAllowed = 2;
+                }
+              }
+              else if (isFullResults) {
+                maxSearchResultsAllowed = 5;
+              }
+              else {
+                maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
+              }
+      
+              var isDropdownEnabled = true;
+              var messageData = {
+                "message": [
+                {
+                    "component": {
+                        "type":'template',
+                        "payload": {
+                         "template_type": "search_"+selected[groupName + templateInterfaceType + 'TemplateType']+"_template",
+                         'isClickable': data.isClickable,
+                         'structuredData': structuredData,
+                         'viewType': viewType,
+                         'isFullResults': data.isFullResults,
+                         'isSearch': isSearch,
+                         'devMode': devMode,
+                         'isLiveSearch': isLiveSearch,
+                         'appearanceType': 'data',
+                         'maxSearchResultsAllowed': maxSearchResultsAllowed,
+                         'isDropdownEnabled': isDropdownEnabled,
+                         'tour': false,
+                         'helpers': me.helpersObj,
+                         'renderTitle': data.renderTitle,
+                         'titleName': data.titleName,
+                         'listType': data.listType,
+                         'textAlignment': data.textAlignment,
+                         'behaviour': data.behaviour,
+                         'groupResults': data.groupResults,
+                         'groupName': groupName,
+                         'doc_count': doc_count || 0,
+                         'pageNumber': 0,
+                         'templateName': groupName.replaceAll(' ', ''),
+                         'fieldName': data.fieldName
+                      }
+                    }
+                }
+            ]
+        }
+              if(structuredData && structuredData.length){
+                me.mergedData.push({[groupName]:messageData});
+              }
+            }
+           me.designDataWithMappings=function (data:any, mapping:any) {
+              var dataArr:any = [];
+              if (data && data.length && mapping && Object.values(mapping).length) {
+                data.forEach((obj:any) => {
+                  var item:any = {};
+                  if (obj[mapping.heading]) {
+                    item.heading = obj[mapping.heading];
+                  }
+                  if (obj[mapping.description]) {
+                    item.description = obj[mapping.description];
+                  }
+                  if (obj[mapping.img]) {
+                    item.img = obj[mapping.img];
+                  }
+                  if (obj[mapping.url]) {
+                    item.url = obj[mapping.url];
+                  }
+                  if (!item.heading || !item.heading.toString().length) {
+                    item.heading = '';
+                  }
+                  if (!item.description || !item.description.toString().length) {
+                    item.description = '';
+                  }
+                  if (!item.img || !item.img.length) {
+                    item.img = '';
+                  }
+                  if (!item.url || !item.url.length) {
+                    item.url = '';
+                  }
+                  item.config = obj.config;
+                  item.feedback = obj.feedback;
+                  item.customization = null;
+                  item.sys_content_type = obj.sys_content_type;
+                  item.contentId = obj.contentId;
+                  item.addedResult = (obj.addedResult || (obj.addedResult == false)) ? obj.addedResult : false;
+                  item.bestMatch = (obj.bestMatch || (obj.bestMatch == false)) ? obj.bestMatch : false;
+                  if (item.heading || item.description || item.img || item.url) {
+                    dataArr.push(item);
+                  }
+                });
+                return dataArr;
+              }
+            }
            //response modification start //
-           var res = responseData.template;
-           if (((res.results || {}).data || []).length || (res.resultType == "grouped" && Object.keys(res.results).length)) {
-             if (res && res.results && res.resultType == "grouped") {
-               var resAvailableGroups = Object.keys(res.results);
+           if (((response.results || {}).data || []).length || (response.results && response.resultType == "grouped" && Object.keys(response.results).length)) {
+             if (response && response.results && response.resultType == "grouped") {
+               var resAvailableGroups = Object.keys(response.results);
                if (resAvailableGroups && resAvailableGroups.length) {
                  resAvailableGroups.forEach((group) => {
-                   var results = res.results[group].data;
+                   var results = response.results[group].data;
                    var groupName = group == 'default_group' ? 'defaultTemplate' : group;
                    var dataObj = {
                      data: results,
                      groupName: groupName,
-                     doc_count: res.results[group].doc_count
+                     doc_count: response.results[group].doc_count
                    }
                    me.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
                  });
                } 
              } else {
-               var results = res.results.data;
+               var results = response.results.data;
                var dataObj = {
                  data: results,
                  groupName: 'defaultTemplate',
-                 doc_count: res.results.doc_count
+                 doc_count: response.results.doc_count
                }
                if (results && results.length) {
                  me.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
@@ -285,165 +435,17 @@ class FullSearchResultsTemplate {
              }
            }
            //response modification end //
-               // Search call back
-              me.getConfigData = function(data:any){
-                 var structuredData:any = [];
-                 var templateConfiguration:any = {};
-                 var templateInterfaceType = '';
-                 var groupName = data.dataObj.groupName;
-                 var doc_count = data.dataObj.doc_count;
-                 if (isLiveSearch) {
-                   templateInterfaceType = 'liveSearch';
-                   templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
-                 } else if (isSearch) {
-                   templateInterfaceType = 'conversationalSearch';
-                   templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
-                 } else {
-                   templateInterfaceType = 'fullSearch';
-                   templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
-                 }
-                 structuredData = me.designDataWithMappings(data.dataObj.data, templateConfiguration.mapping);
-                 if (templateConfiguration && templateConfiguration.layout) {
-                   data['isClickable'] = templateConfiguration.layout.isClickable;
-                   data['behaviour'] = templateConfiguration.layout.behaviour;
-                   data['listType'] = templateConfiguration.layout.listType;
-                   data['titleName'] = templateConfiguration.layout.title;
-                   data['textAlignment'] = templateConfiguration.layout.textAlignment;
-                   data['renderTitle'] = templateConfiguration.layout.renderTitle;
-                   data['groupResults'] = templateConfiguration.groupResults;
-                   data['fieldName'] = templateConfiguration.fieldName;
-                   config = templateConfiguration;
-                 }
-                
-                 // this should only be applied for 'search' interface
-                 data['structuredData'] = [];
-                 data['structuredData'] = structuredData;
-                 var viewType = 'Preview';
-                 var devMode = this.isDev ? true : false;
-                 if (!data.selectedFacet) {
-                   viewType = 'Preview';
-                 }
-                 if (!structuredData || !structuredData.length) {
-                   structuredData = [];
-                 }
-                 var maxSearchResultsAllowed = 2;
-                 if (data.isLiveSearch) {
-                   maxSearchResultsAllowed = (me.searchConfigurationCopy.liveSearchResultsLimit || (me.searchConfigurationCopy.liveSearchResultsLimit == 0)) ? me.searchConfigurationCopy.liveSearchResultsLimit : 2;
-                 }
-                 else if (isSearch) {
-                   if (selected[groupName + templateInterfaceType + 'TemplateType'] === 'grid') {
-                     maxSearchResultsAllowed = 4;
-                   }
-                   else if (selected[groupName + templateInterfaceType + 'TemplateType'] === 'carousel') {
-                     maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
-                   }
-                   else {
-                     maxSearchResultsAllowed = 2;
-                   }
-                 }
-                 else if (isFullResults) {
-                   maxSearchResultsAllowed = 5;
-                 }
-                 else {
-                   maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
-                 }
-         
-                 var isDropdownEnabled = true;
-                 if ($('body').hasClass('top-down')) {
-                   isDropdownEnabled = false;
-                 }
-                 var messageData = {
-                   "message": [
-                   {
-                       "component": {
-                         "payload":{
-                           "type":'template',
-                           "payload": {
-                            "template_type": "search_"+selected[groupName + templateInterfaceType + 'TemplateType']+"_template",
-                            'isClickable': data.isClickable,
-                            'structuredData': structuredData,
-                            'viewType': viewType,
-                            'isFullResults': data.isFullResults,
-                            'isSearch': isSearch,
-                            'devMode': devMode,
-                            'isLiveSearch': isLiveSearch,
-                            'appearanceType': 'data',
-                            'maxSearchResultsAllowed': maxSearchResultsAllowed,
-                            'isDropdownEnabled': isDropdownEnabled,
-                            'tour': false,
-                            'helpers': helpers,
-                            'renderTitle': data.renderTitle,
-                            'titleName': data.titleName,
-                            'listType': data.listType,
-                            'textAlignment': data.textAlignment,
-                            'behaviour': data.behaviour,
-                            'groupResults': data.groupResults,
-                            'groupName': groupName,
-                            'doc_count': doc_count || 0,
-                            'pageNumber': 0,
-                            'templateName': groupName.replaceAll(' ', ''),
-                            'fieldName': data.fieldName
-                        }
-                         }
-                       }
-                   }
-               ]
-           }
-                 if(structuredData && structuredData.length){
-                   mergedata.push({[groupName]:messageData});
-                 }
-               }
-              me.designDataWithMappings=function (data:any, mapping:any) {
-                 var dataArr:any = [];
-                 if (data && data.length && mapping && Object.values(mapping).length) {
-                   data.forEach((obj:any) => {
-                     var item:any = {};
-                     if (obj[mapping.heading]) {
-                       item.heading = obj[mapping.heading];
-                     }
-                     if (obj[mapping.description]) {
-                       item.description = obj[mapping.description];
-                     }
-                     if (obj[mapping.img]) {
-                       item.img = obj[mapping.img];
-                     }
-                     if (obj[mapping.url]) {
-                       item.url = obj[mapping.url];
-                     }
-                     if (!item.heading || !item.heading.toString().length) {
-                       item.heading = '';
-                     }
-                     if (!item.description || !item.description.toString().length) {
-                       item.description = '';
-                     }
-                     if (!item.img || !item.img.length) {
-                       item.img = '';
-                     }
-                     if (!item.url || !item.url.length) {
-                       item.url = '';
-                     }
-                     item.config = obj.config;
-                     item.feedback = obj.feedback;
-                     item.customization = null;
-                     item.sys_content_type = obj.sys_content_type;
-                     item.contentId = obj.contentId;
-                     item.addedResult = (obj.addedResult || (obj.addedResult == false)) ? obj.addedResult : false;
-                     item.bestMatch = (obj.bestMatch || (obj.bestMatch == false)) ? obj.bestMatch : false;
-                     if (item.heading || item.description || item.img || item.url) {
-                       dataArr.push(item);
-                     }
-                   });
-                   return dataArr;
-                 }
-               }
-               return mergedata;
+              console.log("mergedeata", me.mergedData);
+               return me.mergedData;
          }, 200);
        }
        });
       
      }
    }
-
+   $=$;
+   
 }
+FullSearchResultsTemplate.prototype.$ = $;
 
 export default FullSearchResultsTemplate;

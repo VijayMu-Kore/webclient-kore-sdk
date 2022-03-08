@@ -11,7 +11,7 @@ class FinalResultsTemplate {
     let me: any = this;
     let $ = me.hostInstance.$;
     me.helpersObj = helpers;
-    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'final_results_template') {
+    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'finalResultsTemplate') {
       if(msgData.message[0].component.payload.helpers){
         me.helpersObj = msgData.message[0].component.payload.helpers
       }
@@ -83,7 +83,7 @@ class FinalResultsTemplate {
         </div>\
     </div>\
 </script>';
-    if (type === 'final_results_template') {
+    if (type === 'finalResultsTemplate') {
       return finalResultsTemplate;
     }
 
