@@ -8304,7 +8304,6 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       var msgData={
         message:[{
             component:{
-              payload:{
                 type:'template',
                 payload:{
                   text:'Sure, please find the matched results below',
@@ -8322,7 +8321,6 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                   searchConfigurationCopy : searchConfigurationCopy,
                   searchType:'isSearch',
                   helpers:helpers
-              }
               }
             }
         }]
@@ -19904,7 +19902,6 @@ FindlySDK.prototype.showAllResults = function () {
       var msgData={
         message:[{
             component:{
-              payload:{
                 type:'template',
                 payload:{
                   template_type: "fullSearchResultsTemplate",
@@ -19919,7 +19916,6 @@ FindlySDK.prototype.showAllResults = function () {
                   resultSettings: _self.vars.resultSettings,
                   responseData:data.responseData,
                   searchConfigurationCopy : searchConfigurationCopy
-              }
               }
             }
         }]
