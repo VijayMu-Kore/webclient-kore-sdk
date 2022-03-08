@@ -19191,7 +19191,6 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
     var msgData = {
       message: [{
         component: {
-          payload: {
             type: 'template',
             payload: {
               template_type: "search" + searchTemplateType + "Template",
@@ -19223,7 +19222,6 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
               fieldName: data.fieldName,
               gridLayoutType: gridLayoutType
             }
-          }
         }
       }]
     }

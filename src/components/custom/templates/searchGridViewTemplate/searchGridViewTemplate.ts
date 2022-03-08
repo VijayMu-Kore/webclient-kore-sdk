@@ -6,8 +6,11 @@ class SearchGridViewTemplate {
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
-        let helpersObj = helpers;
+        me.helpersObj = helpers;
         if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.template_type == 'searchGridTemplate') {
+            if (!msgData.message[0].component.payload.helpers) {
+                msgData.message[0].component.payload['helpers'] = me.helpersObj;
+              }
             me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
             me.bindEvents(me.messageHtml);
             return me.messageHtml;
