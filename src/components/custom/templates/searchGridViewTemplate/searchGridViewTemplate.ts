@@ -8,7 +8,7 @@ class SearchGridViewTemplate {
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
         if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.template_type == 'searchGridTemplate') {
-            me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.payload.template_type)).tmpl(msgData.message[0].component.payload);
+            me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
             me.bindEvents(me.messageHtml);
             return me.messageHtml;
         }
@@ -24,7 +24,7 @@ class SearchGridViewTemplate {
 <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
 {{if gridLayoutType==="img_common"}}\
 <div class="template-4-grid-list mb-15">\
-    {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+    {{each(key, data) structuredData.slice(0, 5)}}\
     {{if isClickable == true}}\
     <div class="grid-data-item click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         <div class="inner-content-list">\
@@ -63,7 +63,7 @@ class SearchGridViewTemplate {
         {{/if}}\
         {{if gridLayoutType==="img_large"}}\
         <div class="template-5-grid-list mb-15">\
-            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+            {{each(key, data) structuredData.slice(0, 5)}}\
             {{if isClickable == true}}\
             <div class="grid-data-item click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
                 <div class="inner-content-list ">\
@@ -83,7 +83,7 @@ class SearchGridViewTemplate {
         {{/if}}\
         {{if gridLayoutType==="img_left"}}\
         <div class="template-6-grid-list">\
-            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+            {{each(key, data) structuredData.slice(0, 5)}}\
             <div class="grid-data-item faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
                 <div class="inner-content-list {{if textAlignment==" center"}}text-center{{/if}}">\
                     <div class="heading-main text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
@@ -102,7 +102,7 @@ class SearchGridViewTemplate {
         {{/if}}\
         {{if gridLayoutType==="img_top"}}\
         <div class="template-7-grid-list mb-15">\
-            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+            {{each(key, data) structuredData.slice(0, 5)}}\
             {{if isClickable == true}}\
             <div class="grid-data-item  click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
                 {{else}}\
