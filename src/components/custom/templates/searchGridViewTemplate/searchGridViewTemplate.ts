@@ -28,7 +28,7 @@ class SearchGridViewTemplate {
         <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
         {{if gridLayoutType==="img_common"}}\
   <div class="template-4-grid-list mb-15">\
-    {{each(key, data) structuredData.slice(0, 5)}}\
+    {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
     {{if isClickable == true}}\
     <div class="grid-data-item click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         <div class="inner-content-list">\
@@ -39,11 +39,11 @@ class SearchGridViewTemplate {
                 </div>\
                 {{/if}}\
                 {{if data?.heading?.length}}\
-                <div class="info-title two-line-heading" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                <div class="info-title two-line-heading {{if textAlignment=="center"}}text-center{{/if}}" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                 {{/if}}\
             </div>\
             {{if data?.description?.length}}\
-            <div class="title-item two-line-description" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+            <div class="title-item two-line-description {{if textAlignment=="center"}}text-center{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
             {{/if}}\
         </div>\
     </div>\
@@ -52,12 +52,18 @@ class SearchGridViewTemplate {
     <div class="grid-data-item click-to-navigate-url faqs-shadow" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
         <div class="inner-content-list">\
             <div class="image-with-title">\
+               {{if data?.img?.length}}\
                 <div class="img-block">\
                     <img src=${data.img}>\
                 </div>\
-                <div class="info-title two-line-heading" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                {{/if}}\
+                {{if data?.heading?.length}}\
+                <div class="info-title two-line-heading" title="${data.heading} {{if textAlignment=="center"}}text-center{{/if}}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                {{/if}}\
             </div>\
-            <div class="title-item two-line-description" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+            {{if data?.description?.length}}\
+            <div class="title-item two-line-description {{if textAlignment=="center"}}text-center{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+            {{/if}}\
         </div>\
     </div>\
     {{/if}}\
@@ -66,7 +72,7 @@ class SearchGridViewTemplate {
 {{/if}}\
 {{if gridLayoutType==="img_large"}}\
 <div class="template-5-grid-list mb-15">\
-    {{each(key, data) structuredData.slice(0, 5)}}\
+    {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
     {{if isClickable == true}}\
     <div class="grid-data-item click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         <div class="inner-content-list ">\
@@ -86,7 +92,7 @@ class SearchGridViewTemplate {
 {{/if}}\
 {{if gridLayoutType==="img_left"}}\
 <div class="template-6-grid-list">\
-    {{each(key, data) structuredData.slice(0, 5)}}\
+    {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
     <div class="grid-data-item faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
         <div class="inner-content-list {{if textAlignment=="center"}}text-center{{/if}}">\
             <div class="heading-main text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
@@ -105,7 +111,7 @@ class SearchGridViewTemplate {
 {{/if}}\
 {{if gridLayoutType==="img_top"}}\
 <div class="template-7-grid-list mb-15">\
-    {{each(key, data) structuredData.slice(0, 5)}}\
+    {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
     {{if isClickable == true}}\
     <div class="grid-data-item  click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         {{else}}\

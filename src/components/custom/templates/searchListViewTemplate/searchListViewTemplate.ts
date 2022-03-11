@@ -11,6 +11,7 @@ class SearchListViewTemplate {
       if (!msgData.message[0].component.payload.helpers) {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
+      msgData.message[0].component.payload['helpers'] = me.helpersObj.helpers;
       me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
       me.bindEvents(me.messageHtml);
       return me.messageHtml;
@@ -239,7 +240,18 @@ class SearchListViewTemplate {
     //Tour RR 
     //}
     //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
-
+    $(".full-search-data-container")
+      .off("click", ".show-more-list")
+      .on("click", ".show-more-list", function (e: any) {
+        const showMoreData = {
+          groupName: $(e.currentTarget).attr("groupName"),
+          templateName: $(e.currentTarget).attr("templateName"),
+          pageNumber: Number($(e.currentTarget).attr("pageNumber")) + 1,
+          fieldName: $(e.currentTarget).attr("fieldName"),
+        };
+        const result = hostWindowInstance.showMoreClick(showMoreData);
+        console.log("list result", result);
+      });
   }
   getTemplateString(type: any) {
     var listTemplatel1 = '<script type="text/x-jqury-tmpl">\
@@ -469,10 +481,12 @@ class SearchListViewTemplate {
                             </div>\
                             {{/if}}\
             {{/each}}\
-                    <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
-                        <div class="searchassist-show-more-button">Show more <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAATCAYAAABobNZCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAALJSURBVEiJ5ZU/TBNhGId/75090gIV6z8SIQSDRKJCKSA6sIBRExnE2BhJW0sLpZQFB9SFpFEHlaCDJtALLQUc1AYHwTSAQGKiixCwQx2VSeNAIsZCgN7nAAdHEWwVJ9/xed/v97xf7i5HFnvDdQJaQOxl5JvaGgg8mMM/KqPxqlqzc84PRueI2G1ebygOAkgBcGSHsHQy/2heXygUWtxusdlsTlapqZ+ASgACgFKOgFF5gAjlnJActNlsqdspttlsqZyQHCRCuQKPcQIvVYPwSgHLoiSMWSyNu7dDbLU2pUVJGAJQpsCvebZg4kRRjGjVqkqA+hXNIlJFhy87HHv+Rlzd0LCL8fODAE7IjBgGI7Pqsz6f7zvJ0Gg0Chqt7ilA5xXnP0R5qeKxKH5OVGx2OvdxixgGkK/AQYrOX/D7/fMAwMk0EAgsRGZnLjHQc8VwHhflxiwW54FExFarK51bxMg6McOAVqOqksUAQLEHjUYjr9Hq/ACZFPiTREvlvZ2dH38nrqlxZUqcNALg0CokPEviJJMoiuu+Ij72cDgcZrk5B18ISZosAPoVnEbgqo4Zjg+EJt/NbCa22xuzoiSNAshR4CfTmemmvra2pdj5DTdX9qx25yMGuBTsCyexiq4uTzh22FJXl0sSPwIgYy2BvNkZ+x1ut1v6lWDDzZU1NTkeLCgq0RFQuoJSGNHFwgLD4NTUxFd5zupwHIbEjwJYezcYE7Mz052biYGtb746c6W2/j4YNSnYjMTYmV6fZ9xa59IzSRoCsFfRb+/2djQCYFsGxyEHAFhq6+8Ro2blAgQ0M6AVgE6GjFhrT6fnWjyZccsBYPknxO5sHsbu+r2eG/HmbfnMY+v95PibAkPJPAGnYnuMwd3t87QkkpeQXF5Abyj6AdDpNUotPb6OW4lmJSxfXmDibWFh8TQ4pDDQzR5v+8M/yfl/6ycjUebLjIBgoQAAAABJRU5ErkJggg==" height="6" width="10" /></div>\
-                    </div>\
         <div>\
+        {{if groupName.length}}\
+        <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+               <div>Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
+            </div>\
+        {{/if}}\
     {{/if}}\
     </script>';
     var customizeList = '<script type="text/x-jqury-tmpl">\

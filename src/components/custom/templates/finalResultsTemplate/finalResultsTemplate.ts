@@ -12,7 +12,7 @@ class FinalResultsTemplate {
     let $ = me.hostInstance.$;
     me.helpersObj = helpers;
     if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'finalResultsTemplate') {
-      if(msgData.message[0].component.payload.helpers){
+      if (msgData.message[0].component.payload.helpers) {
         me.helpersObj = msgData.message[0].component.payload.helpers
       }
       me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
@@ -232,9 +232,9 @@ class FinalResultsTemplate {
               if (!structuredData || !structuredData.length) {
                 structuredData = [];
               }
-              var maxSearchResultsAllowed = 2;
+              var maxSearchResultsAllowed = 5;
               if (data.isLiveSearch) {
-                maxSearchResultsAllowed = (me.searchConfigurationCopy.liveSearchResultsLimit || (me.searchConfigurationCopy.liveSearchResultsLimit == 0)) ? me.searchConfigurationCopy.liveSearchResultsLimit : 2;
+                maxSearchResultsAllowed = (me.searchConfigurationCopy.liveSearchResultsLimit || (me.searchConfigurationCopy.liveSearchResultsLimit == 0)) ? me.searchConfigurationCopy.liveSearchResultsLimit : 5;
               }
               else if (isSearch) {
                 if (selected[groupName + templateInterfaceType + 'TemplateType'] === 'grid') {
@@ -244,7 +244,7 @@ class FinalResultsTemplate {
                   maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
                 }
                 else {
-                  maxSearchResultsAllowed = 2;
+                  maxSearchResultsAllowed = 5;
                 }
               }
               else if (isFullResults) {
@@ -254,7 +254,7 @@ class FinalResultsTemplate {
                 maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
               }
               let gridLayoutType = '';
-              if (config?.type === 'grid') {
+              if (['grid', 'carousel'].includes(config?.type)) {
                 if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
                   gridLayoutType = 'img_common'
                 }
@@ -275,33 +275,33 @@ class FinalResultsTemplate {
                 "message": [
                   {
                     "component": {
-                        "type":'template',
-                        "payload": {
-                          "template_type": "search" + searchTemplateType + "Template",
-                          'isClickable': data.isClickable,
-                          'structuredData': structuredData,
-                          'viewType': viewType,
-                          'isFullResults': data.isFullResults,
-                          'isSearch': isSearch,
-                          'devMode': devMode,
-                          'isLiveSearch': isLiveSearch,
-                          'appearanceType': 'data',
-                          'maxSearchResultsAllowed': maxSearchResultsAllowed,
-                          'isDropdownEnabled': isDropdownEnabled,
-                          'tour': false,
-                          'helpers': me.helpersObj,
-                          'renderTitle': data.renderTitle,
-                          'titleName': data.titleName,
-                          'listType': data.listType,
-                          'textAlignment': data.textAlignment,
-                          'behaviour': data.behaviour,
-                          'groupResults': data.groupResults,
-                          'groupName': groupName,
-                          'doc_count': doc_count || 0,
-                          'pageNumber': 0,
-                          'templateName': groupName.replaceAll(' ', ''),
-                          'fieldName': data.fieldName,
-                          'gridLayoutType': gridLayoutType
+                      "type": 'template',
+                      "payload": {
+                        "template_type": "search" + searchTemplateType + "Template",
+                        'isClickable': data.isClickable,
+                        'structuredData': structuredData,
+                        'viewType': viewType,
+                        'isFullResults': data.isFullResults,
+                        'isSearch': isSearch,
+                        'devMode': devMode,
+                        'isLiveSearch': isLiveSearch,
+                        'appearanceType': 'data',
+                        'maxSearchResultsAllowed': maxSearchResultsAllowed,
+                        'isDropdownEnabled': isDropdownEnabled,
+                        'tour': false,
+                        'helpers': me.helpersObj,
+                        'renderTitle': data.renderTitle,
+                        'titleName': data.titleName,
+                        'listType': data.listType,
+                        'textAlignment': data.textAlignment,
+                        'behaviour': data.behaviour,
+                        'groupResults': data.groupResults,
+                        'groupName': groupName,
+                        'doc_count': doc_count || 0,
+                        'pageNumber': 0,
+                        'templateName': groupName.replaceAll(' ', ''),
+                        'fieldName': data.fieldName,
+                        'gridLayoutType': gridLayoutType
                       }
                     }
                   }

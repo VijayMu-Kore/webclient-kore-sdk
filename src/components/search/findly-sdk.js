@@ -4219,32 +4219,37 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
             $(".content-data-sec").scrollTop(0);
             $(".data-body-sec").scrollTop(0);
           } else {
-            var dataObj = {
-              facets: facets || [],
-              searchFacets: searchFacets || [],
-              originalQuery: res.originalQuery || "",
-              customSearchResult: _self.customSearchResult,
-              data: res.results.data,
-              groupName: showMoreData.groupName,
-              doc_count: res.results.doc_count,
-              ShowMoreData: {
-                templateName: showMoreData.templateName,
-              },
-            };
-            var publishSearchData =
-              "sa-" + showMoreData.groupName + "-search-data";
-            _self.pubSub.publish(publishSearchData, {
-              container: ".full-search-data-container",
-              isFullResults: true,
-              selectedFacet: "all results",
-              isLiveSearch: false,
-              isSearch: false,
-              dataObj,
+            // var dataObj = {
+            //   facets: facets || [],
+            //   searchFacets: searchFacets || [],
+            //   originalQuery: res.originalQuery || "",
+            //   customSearchResult: _self.customSearchResult,
+            //   data: res.results.data,
+            //   groupName: showMoreData.groupName,
+            //   doc_count: res.results.doc_count,
+            //   ShowMoreData: {
+            //     templateName: showMoreData.templateName,
+            //   },
+            // };
+            // var publishSearchData =
+            //   "sa-" + showMoreData.groupName + "-search-data";
+            // _self.pubSub.publish(publishSearchData, {
+            //   container: ".full-search-data-container",
+            //   isFullResults: true,
+            //   selectedFacet: "all results",
+            //   isLiveSearch: false,
+            //   isSearch: false,
+            //   dataObj,
+            // });
+            const response = res?.results?.data;
+            // return response;
+            _self.pubSub.publish("sa-search-show-more-result", {
+              data: response
             });
           }
-          _self.pubSub.publish("facet-selected", {
-            selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
-          });
+          // _self.pubSub.publish("facet-selected", {
+          //   selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
+          // });
         }
       });
   } else {
@@ -19171,7 +19176,7 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
       isMapped = false;
     }
     let gridLayoutType = '';
-    if (config?.type === 'grid') {
+    if (['grid', 'carousel'].includes(config?.type)) {
       if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
         gridLayoutType = 'img_common'
       }
@@ -19191,37 +19196,37 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
     var msgData = {
       message: [{
         component: {
-            type: 'template',
-            payload: {
-              template_type: "search" + searchTemplateType + "Template",
-              // template_type: selected[groupName + templateInterfaceType + "TemplateType"]+"Template"+selected[groupName + templateInterfaceType + "LayoutType"],
-              isClickable: data.isClickable,
-              structuredData: structuredData,
-              config: config,
-              viewType: viewType,
-              isFullResults: data.isFullResults,
-              selectedFacet: data.selectedFacet,
-              isSearch: data.isSearch,
-              devMode: devMode,
-              isLiveSearch: data.isLiveSearch,
-              appearanceType: "data",
-              maxSearchResultsAllowed: maxSearchResultsAllowed,
-              isDropdownEnabled: isDropdownEnabled,
-              tour: _self.vars.customTourResultRank,
-              helpers: helpers,
-              renderTitle: data.renderTitle,
-              titleName: data.titleName,
-              listType: data.listType,
-              textAlignment: data.textAlignment,
-              behaviour: data.behaviour,
-              groupResults: data.groupResults,
-              groupName: groupName,
-              doc_count: doc_count || 0,
-              pageNumber: 0,
-              templateName: groupName.replaceAll(" ", ""),
-              fieldName: data.fieldName,
-              gridLayoutType: gridLayoutType
-            }
+          type: 'template',
+          payload: {
+            template_type: "search" + searchTemplateType + "Template",
+            // template_type: selected[groupName + templateInterfaceType + "TemplateType"]+"Template"+selected[groupName + templateInterfaceType + "LayoutType"],
+            isClickable: data.isClickable,
+            structuredData: structuredData,
+            config: config,
+            viewType: viewType,
+            isFullResults: data.isFullResults,
+            selectedFacet: data.selectedFacet,
+            isSearch: data.isSearch,
+            devMode: devMode,
+            isLiveSearch: data.isLiveSearch,
+            appearanceType: "data",
+            maxSearchResultsAllowed: maxSearchResultsAllowed,
+            isDropdownEnabled: isDropdownEnabled,
+            tour: _self.vars.customTourResultRank,
+            helpers: helpers,
+            renderTitle: data.renderTitle,
+            titleName: data.titleName,
+            listType: data.listType,
+            textAlignment: data.textAlignment,
+            behaviour: data.behaviour,
+            groupResults: data.groupResults,
+            groupName: groupName,
+            doc_count: doc_count || 0,
+            pageNumber: 0,
+            templateName: groupName.replaceAll(" ", ""),
+            fieldName: data.fieldName,
+            gridLayoutType: gridLayoutType
+          }
         }
       }]
     }
@@ -24857,21 +24862,28 @@ FindlySDK.prototype.appendPopularSearchResults = function (popularSearches) {
       $("#search").trigger(e);
     });
 };
-FindlySDK.prototype.showMoreClick = function () {
+FindlySDK.prototype.showMoreClick = function (data) {
   var _self = this;
-  $(".full-search-data-container")
-    .off("click", ".show-more-list")
-    .on("click", ".show-more-list", function (e) {
-      var showMoreData = {
-        groupName: $(this).attr("groupName"),
-        templateName: $(this).attr("templateName"),
-        pageNumber: Number($(this).attr("pageNumber")) + 1,
-        fieldName: $(this).attr("fieldName"),
-      };
-      $(this).attr("pageNumber", Number($(this).attr("pageNumber")) + 1);
-      _self.vars.showingMatchedResults = true;
-      _self.invokeSearch(showMoreData);
+  if (data) {
+    _self.invokeSearch(data);
+    _self.pubSub.subscribe("sa-search-show-more-result", (msg, data) => {
+      console.log("result", data);
+      return data;
     });
+  }
+  // $(".full-search-data-container")
+  //   .off("click", ".show-more-list")
+  //   .on("click", ".show-more-list", function (e) {
+  //     var showMoreData = {
+  //       groupName: $(this).attr("groupName"),
+  //       templateName: $(this).attr("templateName"),
+  //       pageNumber: Number($(this).attr("pageNumber")) + 1,
+  //       fieldName: $(this).attr("fieldName"),
+  //     };
+  //     $(this).attr("pageNumber", Number($(this).attr("pageNumber")) + 1);
+  //     _self.vars.showingMatchedResults = true;
+  //     _self.invokeSearch(showMoreData);
+  //   });
 };
 
 FindlySDK.prototype.rearrangeTabsList = function (facets) {

@@ -6,40 +6,40 @@ import korejquery from "../../../../libs/korejquery";
 const $ = korejquery;
 class FullSearchResultsTemplate {
 
-    renderMessage(msgData: any) {
-        let me: any = this;
-        let $ = me.hostInstance.$;
-        me.helpersObj = helpers;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'fullSearchResultsTemplate') {
-          if(msgData.message[0].component.payload.helpers){
-            me.helpersObj = msgData.message[0].component.payload.helpers
-          }
-          me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
-            me.bindEvents(me.messageHtml,msgData);
-            me.customTemplateObj = new customTemplate(me);
-            return me.messageHtml;
-        }
+  renderMessage(msgData: any) {
+    let me: any = this;
+    let $ = me.hostInstance.$;
+    me.helpersObj = helpers;
+    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'fullSearchResultsTemplate') {
+      if (!msgData.message[0].component.payload.helpers) {
+        msgData.message[0].component.payload['helpers'] = me.helpersObj;
+      }
+      me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+      me.bindEvents(me.messageHtml, msgData);
+      me.customTemplateObj = new customTemplate(me);
+      return me.messageHtml;
     }
-    bindEvents(messageHtml: any, msgData:any) {
-        let me: any = this;
-        let hostWindowInstance = me.hostInstance;
-        let $ = me.hostInstance.$;
-        var _innerText;
-        me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
-        let formatedTemplatesData:any = me.getMergedData(msgData.message[0].component.payload.resultSettings,msgData.message[0].component.payload.responseData,'isFullResults');
-        
-       setTimeout(()=>{
-        $(messageHtml).find('.full-search-data-container').empty();
-        if(formatedTemplatesData && formatedTemplatesData.length){
-          formatedTemplatesData.forEach((d:any)=>{
-            var groupsName:any = Object.keys(d)
-            var showAllHTML = me.customTemplateObj.renderMessage(d[groupsName[0]]);
-            $(messageHtml).find('.full-search-data-container').append(showAllHTML);
-          })
-        }
-       },300);
-    }
-    getTemplateString(type: any) {
+  }
+  bindEvents(messageHtml: any, msgData: any) {
+    let me: any = this;
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    var _innerText;
+    me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
+    let formatedTemplatesData: any = me.getMergedData(msgData.message[0].component.payload.resultSettings, msgData.message[0].component.payload.responseData, 'isFullResults');
+
+    setTimeout(() => {
+      $(messageHtml).find('.full-search-data-container').empty();
+      if (formatedTemplatesData && formatedTemplatesData.length) {
+        formatedTemplatesData.forEach((d: any) => {
+          var groupsName: any = Object.keys(d)
+          var showAllHTML = me.customTemplateObj.renderMessage(d[groupsName[0]]);
+          $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+        })
+      }
+    }, 300);
+  }
+  getTemplateString(type: any) {
     var fullSearchResultsTemplate = '<script type="text/x-jqury-tmpl">\
     <div>\
       <div class="show-all-results-outer-wrap" id="">\
@@ -152,118 +152,118 @@ class FullSearchResultsTemplate {
       </div>\
     </div>\
     </script>';
-        if (type === 'fullSearchResultsTemplate') {
-            return fullSearchResultsTemplate;
-        }
-
+    if (type === 'fullSearchResultsTemplate') {
+      return fullSearchResultsTemplate;
     }
 
-    getMergedData(settingData:any,responseData:any,searchType:any){
-      let response = Object.assign({},responseData.template);
-      let me:any =this;
-      settingData = settingData.settings || [];
-      var configurationSettings:any = {};
-     var isFullResults = false;
-     var isSearch=false;
-     var isLiveSearch = false;
-     me.mergedData = [];
-     if (searchType == 'isFullResults') {
-       isFullResults = true;
-       searchType = 'fullSearch';
-     } else if (searchType == 'isSearch') {
-       isSearch = true;
-       searchType = "conversationalSearch";
-     } else if (searchType == 'isLiveSearch') {
-       isLiveSearch = true;
-       searchType = "liveSearch";
-     }
-     var selected:any = {};
-     if (settingData && settingData.length) {
-       settingData.forEach((config:any) => {
-         var availableGroupNames:any = [];
-         if (config.interface === searchType) {
-           if (config.groupResults) {
-             availableGroupNames = config.groupSetting.conditions.map(function (group:any) {
-               return group.fieldValue;
-             })
-           }
-         
-         availableGroupNames.push('defaultTemplate');
-         availableGroupNames.forEach((group:any) => {
-           if (!configurationSettings[group + 'Config']) {
-             configurationSettings[group + 'Config'] = {
-               liveSearchInterface: {
-                 layout: {}
-               },
-               conversationalSearchInterface: {
-                 layout: {}
-               },
-               fullSearchInterface: {
-                 layout: {}
-               }
-             };
-           }
-         })
-         //design template config start//
-         var conditions = [];
-         if (config.groupResults) {
-           conditions = config.groupSetting.conditions;
-         }
-         conditions.push({ "fieldValue": 'defaultTemplate', "template": config.defaultTemplate });
-         conditions.forEach((condition:any) => {
-           var template = condition.template || {};
-           // writing conditions only for StructuredData
-           if (template && template.layout) {
-             configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'] = template;
-             if (template.layout && template.layout.layoutType) {
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.templateType = template.type;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.template = '';
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.maxSearchResultsAllowed = 5;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.layoutType = template.layout.layoutType;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.textAlignment = template.layout.textAlignment;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.listType = template.layout.listType;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.isClickable = template.layout.isClickable;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.behaviour = template.layout.behaviour;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.renderTitle = template.layout.renderTitle;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.title = template.layout.title;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].mapping = template.mapping;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].groupResults = (condition.fieldValue == 'defaultTemplate') ? false : config.groupResults;
-               configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].fieldName = (condition.fieldValue == 'defaultTemplate') ? '' : config.groupSetting.fieldName;
-             }
-           }
-         });
-         //design template config end//
-         setTimeout(function () {
-           availableGroupNames.forEach((group:any) => {
-             //initialize template config start//
-             var templateInterface  = config.interface;
-             var templateConfig = configurationSettings[group + 'Config'];
-             var groupName = group;
-             var customTemplateConfig = [];
-               if (!selected[groupName + templateInterface + 'TemplateType']) {
-                 selected[groupName + templateInterface + 'TemplateType'] = '';
-                 selected[groupName + templateInterface + 'LayoutType'] = '';
-               }
-               var searchTemplate = '';
-               var fullSearchTemplate = '';
-               var liveSearchTemplate = '';
-               if (templateConfig && templateConfig[templateInterface + 'Interface'] && templateConfig[templateInterface + 'Interface'].layout) {
-                 // will take the templateType and layoutType from AJAX config
-                 if (templateConfig[templateInterface + 'Interface'].layout.templateType && templateConfig[templateInterface + 'Interface'].layout.templateType.length) {
-                   selected[groupName + templateInterface + 'TemplateType'] = templateConfig[templateInterface + 'Interface'].layout.templateType;
-                   selected[groupName + templateInterface + 'LayoutType'] = templateConfig[templateInterface + 'Interface'].layout.layoutType;
-                 }
-               }
-               if (!selected[groupName + templateInterface + 'TemplateType'] || !selected[groupName + templateInterface + 'TemplateType'].length) {
-                 // default case
-                 selected[groupName + templateInterface + 'TemplateType'] = 'list';
-                 selected[groupName + templateInterface + 'LayoutType'] = 'l1'
-               }
-           });
+  }
+
+  getMergedData(settingData: any, responseData: any, searchType: any) {
+    let response = Object.assign({}, responseData.template);
+    let me: any = this;
+    settingData = settingData.settings || [];
+    var configurationSettings: any = {};
+    var isFullResults = false;
+    var isSearch = false;
+    var isLiveSearch = false;
+    me.mergedData = [];
+    if (searchType == 'isFullResults') {
+      isFullResults = true;
+      searchType = 'fullSearch';
+    } else if (searchType == 'isSearch') {
+      isSearch = true;
+      searchType = "conversationalSearch";
+    } else if (searchType == 'isLiveSearch') {
+      isLiveSearch = true;
+      searchType = "liveSearch";
+    }
+    var selected: any = {};
+    if (settingData && settingData.length) {
+      settingData.forEach((config: any) => {
+        var availableGroupNames: any = [];
+        if (config.interface === searchType) {
+          if (config.groupResults) {
+            availableGroupNames = config.groupSetting.conditions.map(function (group: any) {
+              return group.fieldValue;
+            })
+          }
+
+          availableGroupNames.push('defaultTemplate');
+          availableGroupNames.forEach((group: any) => {
+            if (!configurationSettings[group + 'Config']) {
+              configurationSettings[group + 'Config'] = {
+                liveSearchInterface: {
+                  layout: {}
+                },
+                conversationalSearchInterface: {
+                  layout: {}
+                },
+                fullSearchInterface: {
+                  layout: {}
+                }
+              };
+            }
+          })
+          //design template config start//
+          var conditions = [];
+          if (config.groupResults) {
+            conditions = config.groupSetting.conditions;
+          }
+          conditions.push({ "fieldValue": 'defaultTemplate', "template": config.defaultTemplate });
+          conditions.forEach((condition: any) => {
+            var template = condition.template || {};
+            // writing conditions only for StructuredData
+            if (template && template.layout) {
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'] = template;
+              if (template.layout && template.layout.layoutType) {
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.templateType = template.type;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.template = '';
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.maxSearchResultsAllowed = 5;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.layoutType = template.layout.layoutType;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.textAlignment = template.layout.textAlignment;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.listType = template.layout.listType;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.isClickable = template.layout.isClickable;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.behaviour = template.layout.behaviour;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.renderTitle = template.layout.renderTitle;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.title = template.layout.title;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].mapping = template.mapping;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].groupResults = (condition.fieldValue == 'defaultTemplate') ? false : config.groupResults;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].fieldName = (condition.fieldValue == 'defaultTemplate') ? '' : config.groupSetting.fieldName;
+              }
+            }
+          });
+          //design template config end//
+          setTimeout(function () {
+            availableGroupNames.forEach((group: any) => {
+              //initialize template config start//
+              var templateInterface = config.interface;
+              var templateConfig = configurationSettings[group + 'Config'];
+              var groupName = group;
+              var customTemplateConfig = [];
+              if (!selected[groupName + templateInterface + 'TemplateType']) {
+                selected[groupName + templateInterface + 'TemplateType'] = '';
+                selected[groupName + templateInterface + 'LayoutType'] = '';
+              }
+              var searchTemplate = '';
+              var fullSearchTemplate = '';
+              var liveSearchTemplate = '';
+              if (templateConfig && templateConfig[templateInterface + 'Interface'] && templateConfig[templateInterface + 'Interface'].layout) {
+                // will take the templateType and layoutType from AJAX config
+                if (templateConfig[templateInterface + 'Interface'].layout.templateType && templateConfig[templateInterface + 'Interface'].layout.templateType.length) {
+                  selected[groupName + templateInterface + 'TemplateType'] = templateConfig[templateInterface + 'Interface'].layout.templateType;
+                  selected[groupName + templateInterface + 'LayoutType'] = templateConfig[templateInterface + 'Interface'].layout.layoutType;
+                }
+              }
+              if (!selected[groupName + templateInterface + 'TemplateType'] || !selected[groupName + templateInterface + 'TemplateType'].length) {
+                // default case
+                selected[groupName + templateInterface + 'TemplateType'] = 'list';
+                selected[groupName + templateInterface + 'LayoutType'] = 'l1'
+              }
+            });
             // Search call back
-            me.getConfigData = function(data:any){
-              var structuredData:any = [];
-              var templateConfiguration:any = {};
+            me.getConfigData = function (data: any) {
+              var structuredData: any = [];
+              var templateConfiguration: any = {};
               var templateInterfaceType = '';
               var groupName = data.dataObj.groupName;
               var doc_count = data.dataObj.doc_count;
@@ -289,7 +289,7 @@ class FullSearchResultsTemplate {
                 data['fieldName'] = templateConfiguration.fieldName;
                 config = templateConfiguration;
               }
-             
+
               // this should only be applied for 'search' interface
               data['structuredData'] = [];
               data['structuredData'] = structuredData;
@@ -323,7 +323,7 @@ class FullSearchResultsTemplate {
                 maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
               }
               let gridLayoutType = '';
-              if (config?.type === 'grid') {
+              if (['grid', 'carousel'].includes(config?.type)) {
                 if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
                   gridLayoutType = 'img_common'
                 }
@@ -342,49 +342,49 @@ class FullSearchResultsTemplate {
               var isDropdownEnabled = true;
               var messageData = {
                 "message": [
-                {
+                  {
                     "component": {
-                        "type":'template',
-                        "payload": {
-                         "template_type": "search" + searchTemplateType + "Template",
-                         'isClickable': data.isClickable,
-                         'structuredData': structuredData,
-                         'viewType': viewType,
-                         'isFullResults': data.isFullResults,
-                         'isSearch': isSearch,
-                         'devMode': devMode,
-                         'isLiveSearch': isLiveSearch,
-                         'appearanceType': 'data',
-                         'maxSearchResultsAllowed': maxSearchResultsAllowed,
-                         'isDropdownEnabled': isDropdownEnabled,
-                         'tour': false,
-                         'helpers': me.helpersObj,
-                         'renderTitle': data.renderTitle,
-                         'titleName': data.titleName,
-                         'listType': data.listType,
-                         'textAlignment': data.textAlignment,
-                         'behaviour': data.behaviour,
-                         'groupResults': data.groupResults,
-                         'groupName': groupName,
-                         'doc_count': doc_count || 0,
-                         'pageNumber': 0,
-                         'templateName': groupName.replaceAll(' ', ''),
-                         'fieldName': data.fieldName,
-                         'gridLayoutType': gridLayoutType
+                      "type": 'template',
+                      "payload": {
+                        "template_type": "search" + searchTemplateType + "Template",
+                        'isClickable': data.isClickable,
+                        'structuredData': structuredData,
+                        'viewType': viewType,
+                        'isFullResults': data.isFullResults,
+                        'isSearch': isSearch,
+                        'devMode': devMode,
+                        'isLiveSearch': isLiveSearch,
+                        'appearanceType': 'data',
+                        'maxSearchResultsAllowed': maxSearchResultsAllowed,
+                        'isDropdownEnabled': isDropdownEnabled,
+                        'tour': false,
+                        'helpers': me.helpersObj,
+                        'renderTitle': data.renderTitle,
+                        'titleName': data.titleName,
+                        'listType': data.listType,
+                        'textAlignment': data.textAlignment,
+                        'behaviour': data.behaviour,
+                        'groupResults': data.groupResults,
+                        'groupName': groupName,
+                        'doc_count': doc_count || 0,
+                        'pageNumber': 0,
+                        'templateName': groupName.replaceAll(' ', ''),
+                        'fieldName': data.fieldName,
+                        'gridLayoutType': gridLayoutType
                       }
                     }
-                }
-            ]
-        }
-              if(structuredData && structuredData.length){
-                me.mergedData.push({[groupName]:messageData});
+                  }
+                ]
+              }
+              if (structuredData && structuredData.length) {
+                me.mergedData.push({ [groupName]: messageData });
               }
             }
-           me.designDataWithMappings=function (data:any, mapping:any) {
-              var dataArr:any = [];
+            me.designDataWithMappings = function (data: any, mapping: any) {
+              var dataArr: any = [];
               if (data && data.length && mapping && Object.values(mapping).length) {
-                data.forEach((obj:any) => {
-                  var item:any = {};
+                data.forEach((obj: any) => {
+                  var item: any = {};
                   if (obj[mapping.heading]) {
                     item.heading = obj[mapping.heading];
                   }
@@ -423,45 +423,45 @@ class FullSearchResultsTemplate {
                 return dataArr;
               }
             }
-           //response modification start //
-           if (((response.results || {}).data || []).length || (response.results && response.resultType == "grouped" && Object.keys(response.results).length)) {
-             if (response && response.results && response.resultType == "grouped") {
-               var resAvailableGroups = Object.keys(response.results);
-               if (resAvailableGroups && resAvailableGroups.length) {
-                 resAvailableGroups.forEach((group) => {
-                   var results = response.results[group].data;
-                   var groupName = group == 'default_group' ? 'defaultTemplate' : group;
-                   var dataObj = {
-                     data: results,
-                     groupName: groupName,
-                     doc_count: response.results[group].doc_count
-                   }
-                   me.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
-                 });
-               } 
-             } else {
-               var results = response.results.data;
-               var dataObj = {
-                 data: results,
-                 groupName: 'defaultTemplate',
-                 doc_count: response.results.doc_count
-               }
-               if (results && results.length) {
-                 me.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
-               }
-             }
-           }
-           //response modification end //
-              console.log("mergedeata", me.mergedData);
-               return me.mergedData;
-         }, 200);
-       }
-       });
-      
-     }
-   }
-   $=$;
-   
+            //response modification start //
+            if (((response.results || {}).data || []).length || (response.results && response.resultType == "grouped" && Object.keys(response.results).length)) {
+              if (response && response.results && response.resultType == "grouped") {
+                var resAvailableGroups = Object.keys(response.results);
+                if (resAvailableGroups && resAvailableGroups.length) {
+                  resAvailableGroups.forEach((group) => {
+                    var results = response.results[group].data;
+                    var groupName = group == 'default_group' ? 'defaultTemplate' : group;
+                    var dataObj = {
+                      data: results,
+                      groupName: groupName,
+                      doc_count: response.results[group].doc_count
+                    }
+                    me.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
+                  });
+                }
+              } else {
+                var results = response.results.data;
+                var dataObj = {
+                  data: results,
+                  groupName: 'defaultTemplate',
+                  doc_count: response.results.doc_count
+                }
+                if (results && results.length) {
+                  me.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
+                }
+              }
+            }
+            //response modification end //
+            console.log("mergedeata", me.mergedData);
+            return me.mergedData;
+          }, 200);
+        }
+      });
+
+    }
+  }
+  $ = $;
+
 }
 FullSearchResultsTemplate.prototype.$ = $;
 
