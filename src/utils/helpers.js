@@ -1,11 +1,11 @@
 import $ from '../libs/korejquery'
-class KoreHelpers{
+class KoreHelpers {
     static helpers = {
         'nl2br': function (str, runEmojiCheck) {
-             //todo:raj
-               //  if (runEmojiCheck) {
-               //      str = window.emojione.shortnameToImage(str);
-               //  }
+            //todo:raj
+            //  if (runEmojiCheck) {
+            //      str = window.emojione.shortnameToImage(str);
+            //  }
             str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
             return str;
         },
@@ -33,18 +33,18 @@ class KoreHelpers{
             }
             return d.toDateString() + " at " + this.formatAMPM(d);
         },
-        'convertMDtoHTML': function (val, responseType,msgItem) {
-            if(typeof val==='object'){
+        'convertMDtoHTML': function (val, responseType, msgItem) {
+            if (typeof val === 'object') {
                 try {
-                    val=JSON.stringify(val);
+                    val = JSON.stringify(val);
                 } catch (error) {
-                    val="";
+                    val = "";
                 }
             }
             var hyperLinksMap = {};
             var mdre = {};
-            if(msgItem && msgItem.cInfo && msgItem.cInfo.ignoreCheckMark){
-                var ignoreCheckMark=msgItem.cInfo.ignoreCheckMark;
+            if (msgItem && msgItem.cInfo && msgItem.cInfo.ignoreCheckMark) {
+                var ignoreCheckMark = msgItem.cInfo.ignoreCheckMark;
             }
             //mdre.date = new RegExp(/\\d\(\s*(.{10})\s*\)/g);
             mdre.date = new RegExp(/\\d\(\s*(.{10})\s*(?:,\s*["'](.+?)["']\s*)?\)/g);
@@ -53,7 +53,7 @@ class KoreHelpers{
             mdre.datetime = new RegExp(/\\(d|dt|t)\(\s*([-0-9]{10}[T][0-9:.]{12})([z]|[Z]|[+-]\d{4})[\s]*,[\s]*["']([a-zA-Z\W]+)["']\s*\)/g);
             mdre.num = new RegExp(/\\#\(\s*(\d*.\d*)\s*\)/g);
             mdre.curr = new RegExp(/\\\$\((\d*.\d*)[,](\s*[\"\']\s*\w{3}\s*[\"\']\s*)\)|\\\$\((\d*.\d*)[,](\s*\w{3}\s*)\)/g);
-    
+
             var regEx = {};
             regEx.SPECIAL_CHARS = /[\=\`\~\!@#\$\%\^&\*\(\)_\-\+\{\}\:"\[\];\',\.\/<>\?\|\\]+/;
             regEx.EMAIL = /^[-a-z0-9~!$%^&*_=+}{\']+(\.[-a-z0-9~!$%^&*_=+}{\']+)*@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,255})+$/i;
@@ -91,7 +91,7 @@ class KoreHelpers{
             }
             function xssAttack(txtStr) {
                 //   if (compObj && compObj[0] && compObj[0].componentType === "text") {
-            
+
                 var textHasXSS;
                 if (txtStr) {
                     textHasXSS = txtStr.isNotAllowedHTMLTags();
@@ -223,11 +223,11 @@ class KoreHelpers{
             // } catch (e) {
             //     str = str || '';
             // }
-            if(typeof str === 'number'){
-                str =  str.toString(); 
+            if (typeof str === 'number') {
+                str = str.toString();
             }
             str = str || '';
-            
+
             var newStr = '', wrapper1;
             if (responseType === 'user') {
                 str = str.replace(/onerror=/gi, 'abc-error=');
@@ -248,16 +248,16 @@ class KoreHelpers{
                     var linkArray = str.match(/<a[^>]*>([^<]+)<\/a>/g);
                     for (var x = 0; x < linkArray.length; x++) {
                         var _newLA = document.createElement('div');
-                        var _detectedLink=linkArray[x];
+                        var _detectedLink = linkArray[x];
                         _newLA.innerHTML = linkArray[x];
                         //for mailto: links, new line character need to be repaced with %0A 
                         if (_detectedLink.indexOf("href='mailto:") > -1 || _detectedLink.indexOf('href="mailto:') > -1) {
                             _detectedLink = _detectedLink.split('\n').join("%0A")
-    
+
                         }
                         var _randomKey = "korerandom://" + Object.keys(hyperLinksMap).length;
                         _newLA.innerHTML = _detectedLink;
-    
+
                         var _aEle = _newLA.getElementsByTagName('a');
                         if (_aEle && _aEle[0] && _aEle[0].href) {
                             hyperLinksMap[_randomKey] = _aEle[0].href;
@@ -270,10 +270,10 @@ class KoreHelpers{
                     str = wrapper1.innerHTML.replace(_regExForLink, linkreplacer);
                 }
             }
-            if(ignoreCheckMark){
-                str=val;
-            }else{
-            str = this.checkMarkdowns(str, hyperLinksMap);
+            if (ignoreCheckMark) {
+                str = val;
+            } else {
+                str = this.checkMarkdowns(str, hyperLinksMap);
             }
             var hrefRefs = Object.keys(hyperLinksMap);
             if (hrefRefs && hrefRefs.length) {
@@ -293,10 +293,10 @@ class KoreHelpers{
         },
         'checkMarkdowns': function (val, hyperLinksMap) {
             function isEven(n) {
-              n = Number(n);
-              return n === 0 || !!(n && !(n % 2));
+                n = Number(n);
+                return n === 0 || !!(n && !(n % 2));
             }
-             if(val===''){
+            if (val === '') {
                 return val;
             }
             var txtArr = val.split(/\r?\n/);
@@ -328,26 +328,26 @@ class KoreHelpers{
                         txtArr[i] = '\r\n&#9679; ' + txtArr[i].substring(1);
                         _lineBreakAdded = true;
                     }
-                }  else if (txtArr[i].indexOf('>>') === 0) {
-                    if(txtArr[i].substring(2).indexOf('*') === 0){
+                } else if (txtArr[i].indexOf('>>') === 0) {
+                    if (txtArr[i].substring(2).indexOf('*') === 0) {
                         if (!isEven(txtArr[i].substring(2).split('*').length - 1)) {
                             txtArr[i] = '\r\n&#9679; ' + txtArr[i].substring(3);
                             _lineBreakAdded = true;
                         }
                         txtArr[i] = '<p class="indent">' + txtArr[i] + '</p>';
-                    }else{
-                    txtArr[i] = '<p class="indent">' + txtArr[i].substring(2) + '</p>';
+                    } else {
+                        txtArr[i] = '<p class="indent">' + txtArr[i].substring(2) + '</p>';
                     }
                     _lineBreakAdded = true;
                 } else if (txtArr[i].indexOf('&gt;&gt;') === 0) {
-                    if(txtArr[i].substring(8).indexOf('*') === 0){ // add ">>*" for sub bullet point 
+                    if (txtArr[i].substring(8).indexOf('*') === 0) { // add ">>*" for sub bullet point 
                         if (!isEven(txtArr[i].substring(8).split('*').length - 1)) {
                             txtArr[i] = '\r\n&#9679; ' + txtArr[i].substring(9);
                             _lineBreakAdded = true;
                         }
                         txtArr[i] = '<p class="indent">' + txtArr[i] + '</p>';
-                    }else{
-                    txtArr[i] = '<p class="indent">' + txtArr[i].substring(8) + '</p>';
+                    } else {
+                        txtArr[i] = '<p class="indent">' + txtArr[i].substring(8) + '</p>';
                     }
                     _lineBreakAdded = true;
                 } else if (txtArr[i].indexOf('---') === 0 || txtArr[i].indexOf('___') === 0) {
@@ -405,14 +405,14 @@ class KoreHelpers{
                     for (j = 0; j < _matchAstrik.length; j++) {
                         var _boldTxt = _matchAstrik[j];
                         var validBoldGroup = true;
-                        if(_boldTxt.includes('*')){
-                            var _tempStr = _boldTxt.replace(/\*/g,'');
+                        if (_boldTxt.includes('*')) {
+                            var _tempStr = _boldTxt.replace(/\*/g, '');
                             // var letterNumber = /^[0-9a-zA-Z!@#$%^&()_ +\-=\[\]{};':"\\|,.<>\/?]+$/;
                             if (!(_tempStr && _tempStr.length)) {
                                 validBoldGroup = false;
                             }
                         }
-                        if(validBoldGroup){
+                        if (validBoldGroup) {
                             _boldTxt = _boldTxt.substring(1, _boldTxt.length - 1);
                             _boldTxt = '<b>' + _boldTxt.trim() + '</b>';
                             txtArr[i] = txtArr[i].replace(_matchAstrik[j], _boldTxt);
@@ -433,25 +433,25 @@ class KoreHelpers{
                     }
                 }
                 // Matches italic markup _test_ doesnot match _ test _, _test _, _ test_. If all these are required then replace \S with \s
-                    var _matchItalic = txtArr[i].match(/\_\S([^*]*?)\S\_/g);
-                    if (_matchItalic && _matchItalic.length > 0) {
-                        for (j = 0; j < _matchItalic.length; j++) {
-                            var _italicTxt = _matchItalic[j];
-                            if ((txtArr[i].indexOf(_italicTxt) === 0) || (txtArr[i][txtArr[i].indexOf(_italicTxt) - 1] === ' ') || txtArr[i].indexOf(_italicTxt) !== -1) {
+                var _matchItalic = txtArr[i].match(/\_\S([^*]*?)\S\_/g);
+                if (_matchItalic && _matchItalic.length > 0) {
+                    for (j = 0; j < _matchItalic.length; j++) {
+                        var _italicTxt = _matchItalic[j];
+                        if ((txtArr[i].indexOf(_italicTxt) === 0) || (txtArr[i][txtArr[i].indexOf(_italicTxt) - 1] === ' ') || txtArr[i].indexOf(_italicTxt) !== -1) {
                             var validItalicMark = true;
-                                if(txtArr[i][txtArr[i].indexOf(_italicTxt) + _italicTxt.length]){
-                                    if(txtArr[i][txtArr[i].indexOf(_italicTxt) + _italicTxt.length] !== ' '){
+                            if (txtArr[i][txtArr[i].indexOf(_italicTxt) + _italicTxt.length]) {
+                                if (txtArr[i][txtArr[i].indexOf(_italicTxt) + _italicTxt.length] !== ' ') {
                                     validItalicMark = false;
-                                    }
                                 }
-                                if(validItalicMark){
+                            }
+                            if (validItalicMark) {
                                 _italicTxt = _italicTxt.substring(1, _italicTxt.length - 1) + ' ';
                                 _italicTxt = '<i class="markdownItalic">' + _italicTxt + '</i>';
                                 txtArr[i] = txtArr[i].replace(_matchItalic[j], _italicTxt);
-                                }
                             }
                         }
                     }
+                }
                 // Matches bold markup ~test~ doesnot match ~ test ~, ~test ~, ~ test~. If all these are required then replace \S with \s
                 var _matchItalic = txtArr[i].match(/\~\S([^*]*?)\S\~/g);
                 if (_matchItalic && _matchItalic.length > 0) {
@@ -494,175 +494,175 @@ class KoreHelpers{
         }
     };
     static {
-        debugger;
+        //debugger;
         String.prototype.isNotAllowedHTMLTags = function () {
-          const wrapper = document.createElement("div");
-          wrapper.innerHTML = this;
+            const wrapper = document.createElement("div");
+            wrapper.innerHTML = this;
 
-          const setFlags = {
-            isValid: true,
-            key: "",
-          };
-          try {
-            if (
-              $(wrapper).find("script").length ||
-              $(wrapper).find("video").length ||
-              $(wrapper).find("audio").length
-            ) {
-              setFlags.isValid = false;
-            }
-            if (
-              $(wrapper).find("link").length &&
-              $(wrapper).find("link").attr("href").indexOf("script") !== -1
-            ) {
-              if (detectScriptTag.test($(wrapper).find("link").attr("href"))) {
-                setFlags.isValid = false;
-              } else {
-                setFlags.isValid = true;
-              }
-            }
-            if (
-              $(wrapper).find("a").length &&
-              $(wrapper).find("a").attr("href").indexOf("script") !== -1
-            ) {
-              if (detectScriptTag.test($(wrapper).find("a").attr("href"))) {
-                setFlags.isValid = false;
-              } else {
-                setFlags.isValid = true;
-              }
-            }
-            if (
-              $(wrapper).find("img").length &&
-              $(wrapper).find("img").attr("src").indexOf("script") !== -1
-            ) {
-              if (detectScriptTag.test($(wrapper).find("img").attr("href"))) {
-                setFlags.isValid = false;
-              } else {
-                setFlags.isValid = true;
-              }
-            }
-            if ($(wrapper).find("object").length) {
-              setFlags.isValid = false;
-            }
+            const setFlags = {
+                isValid: true,
+                key: "",
+            };
+            try {
+                if (
+                    $(wrapper).find("script").length ||
+                    $(wrapper).find("video").length ||
+                    $(wrapper).find("audio").length
+                ) {
+                    setFlags.isValid = false;
+                }
+                if (
+                    $(wrapper).find("link").length &&
+                    $(wrapper).find("link").attr("href").indexOf("script") !== -1
+                ) {
+                    if (detectScriptTag.test($(wrapper).find("link").attr("href"))) {
+                        setFlags.isValid = false;
+                    } else {
+                        setFlags.isValid = true;
+                    }
+                }
+                if (
+                    $(wrapper).find("a").length &&
+                    $(wrapper).find("a").attr("href").indexOf("script") !== -1
+                ) {
+                    if (detectScriptTag.test($(wrapper).find("a").attr("href"))) {
+                        setFlags.isValid = false;
+                    } else {
+                        setFlags.isValid = true;
+                    }
+                }
+                if (
+                    $(wrapper).find("img").length &&
+                    $(wrapper).find("img").attr("src").indexOf("script") !== -1
+                ) {
+                    if (detectScriptTag.test($(wrapper).find("img").attr("href"))) {
+                        setFlags.isValid = false;
+                    } else {
+                        setFlags.isValid = true;
+                    }
+                }
+                if ($(wrapper).find("object").length) {
+                    setFlags.isValid = false;
+                }
 
-            return setFlags;
-          } catch (e) {
-            return setFlags;
-          }
+                return setFlags;
+            } catch (e) {
+                return setFlags;
+            }
         };
 
         String.prototype.escapeHTML = function () {
-          // '&': '&amp;',
-          const escapeTokens = {
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#x27;",
-          };
-          const htmlTags = /[<>"']/g;
-          return `${this}`.replace(htmlTags, (match) => escapeTokens[match]);
+            // '&': '&amp;',
+            const escapeTokens = {
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#x27;",
+            };
+            const htmlTags = /[<>"']/g;
+            return `${this}`.replace(htmlTags, (match) => escapeTokens[match]);
         };
 
         String.prototype.replaceAll = function (search, replacement) {
-          const target = this;
-          return target.replace(new RegExp(search, "g"), replacement);
+            const target = this;
+            return target.replace(new RegExp(search, "g"), replacement);
         };
 
         if (!String.prototype.includes) {
-          String.prototype.includes = function (search, start) {
-            if (search instanceof RegExp) {
-              throw TypeError("first argument must not be a RegExp");
-            }
-            if (start === undefined) {
-              start = 0;
-            }
-            return this.indexOf(search, start) !== -1;
-          };
+            String.prototype.includes = function (search, start) {
+                if (search instanceof RegExp) {
+                    throw TypeError("first argument must not be a RegExp");
+                }
+                if (start === undefined) {
+                    start = 0;
+                }
+                return this.indexOf(search, start) !== -1;
+            };
         }
         String.prototype.isNotAllowedHTMLTags = function () {
-          const wrapper = document.createElement("div");
-          wrapper.innerHTML = this;
+            const wrapper = document.createElement("div");
+            wrapper.innerHTML = this;
 
-          const setFlags = {
-            isValid: true,
-            key: "",
-          };
-          try {
-            if (
-              $(wrapper).find("script").length ||
-              $(wrapper).find("video").length ||
-              $(wrapper).find("audio").length
-            ) {
-              setFlags.isValid = false;
-            }
-            if (
-              $(wrapper).find("link").length &&
-              $(wrapper).find("link").attr("href").indexOf("script") !== -1
-            ) {
-              if (detectScriptTag.test($(wrapper).find("link").attr("href"))) {
-                setFlags.isValid = false;
-              } else {
-                setFlags.isValid = true;
-              }
-            }
-            if (
-              $(wrapper).find("a").length &&
-              $(wrapper).find("a").attr("href").indexOf("script") !== -1
-            ) {
-              if (detectScriptTag.test($(wrapper).find("a").attr("href"))) {
-                setFlags.isValid = false;
-              } else {
-                setFlags.isValid = true;
-              }
-            }
-            if (
-              $(wrapper).find("img").length &&
-              $(wrapper).find("img").attr("src").indexOf("script") !== -1
-            ) {
-              if (detectScriptTag.test($(wrapper).find("img").attr("href"))) {
-                setFlags.isValid = false;
-              } else {
-                setFlags.isValid = true;
-              }
-            }
-            if ($(wrapper).find("object").length) {
-              setFlags.isValid = false;
-            }
+            const setFlags = {
+                isValid: true,
+                key: "",
+            };
+            try {
+                if (
+                    $(wrapper).find("script").length ||
+                    $(wrapper).find("video").length ||
+                    $(wrapper).find("audio").length
+                ) {
+                    setFlags.isValid = false;
+                }
+                if (
+                    $(wrapper).find("link").length &&
+                    $(wrapper).find("link").attr("href").indexOf("script") !== -1
+                ) {
+                    if (detectScriptTag.test($(wrapper).find("link").attr("href"))) {
+                        setFlags.isValid = false;
+                    } else {
+                        setFlags.isValid = true;
+                    }
+                }
+                if (
+                    $(wrapper).find("a").length &&
+                    $(wrapper).find("a").attr("href").indexOf("script") !== -1
+                ) {
+                    if (detectScriptTag.test($(wrapper).find("a").attr("href"))) {
+                        setFlags.isValid = false;
+                    } else {
+                        setFlags.isValid = true;
+                    }
+                }
+                if (
+                    $(wrapper).find("img").length &&
+                    $(wrapper).find("img").attr("src").indexOf("script") !== -1
+                ) {
+                    if (detectScriptTag.test($(wrapper).find("img").attr("href"))) {
+                        setFlags.isValid = false;
+                    } else {
+                        setFlags.isValid = true;
+                    }
+                }
+                if ($(wrapper).find("object").length) {
+                    setFlags.isValid = false;
+                }
 
-            return setFlags;
-          } catch (e) {
-            return setFlags;
-          }
+                return setFlags;
+            } catch (e) {
+                return setFlags;
+            }
         };
 
         String.prototype.escapeHTML = function () {
-          // '&': '&amp;',
-          const escapeTokens = {
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#x27;",
-          };
-          const htmlTags = /[<>"']/g;
-          return `${this}`.replace(htmlTags, (match) => escapeTokens[match]);
+            // '&': '&amp;',
+            const escapeTokens = {
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#x27;",
+            };
+            const htmlTags = /[<>"']/g;
+            return `${this}`.replace(htmlTags, (match) => escapeTokens[match]);
         };
 
         String.prototype.replaceAll = function (search, replacement) {
-          const target = this;
-          return target.replace(new RegExp(search, "g"), replacement);
+            const target = this;
+            return target.replace(new RegExp(search, "g"), replacement);
         };
 
         if (!String.prototype.includes) {
-          String.prototype.includes = function (search, start) {
-            if (search instanceof RegExp) {
-              throw TypeError("first argument must not be a RegExp");
-            }
-            if (start === undefined) {
-              start = 0;
-            }
-            return this.indexOf(search, start) !== -1;
-          };
+            String.prototype.includes = function (search, start) {
+                if (search instanceof RegExp) {
+                    throw TypeError("first argument must not be a RegExp");
+                }
+                if (start === undefined) {
+                    start = 0;
+                }
+                return this.indexOf(search, start) !== -1;
+            };
         }
     }
-} 
+}
 export default KoreHelpers

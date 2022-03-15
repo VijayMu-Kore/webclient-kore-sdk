@@ -249,8 +249,9 @@ class SearchListViewTemplate {
           pageNumber: Number($(e.currentTarget).attr("pageNumber")) + 1,
           fieldName: $(e.currentTarget).attr("fieldName"),
         };
-        const result = hostWindowInstance.showMoreClick(showMoreData);
-        console.log("list result", result);
+        hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
+          console.log("list result", result);
+        })
       });
   }
   getTemplateString(type: any) {

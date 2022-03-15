@@ -337,6 +337,7 @@ FindlySDK.prototype.initVariables = function () {
   vars.customTourResultRank = false;
   vars.scrollPageNumber = 0;
   vars.totalNumOfResults = 0;
+  vars.mergedData = [];
 }; //********************original widget.js start */
 
 FindlySDK.prototype.show = function (dataConfig, sel) {
@@ -4242,10 +4243,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
             //   dataObj,
             // });
             const response = res?.results?.data;
-            // return response;
-            _self.pubSub.publish("sa-search-show-more-result", {
-              data: response
-            });
+            // return response;           
           }
           // _self.pubSub.publish("facet-selected", {
           //   selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
@@ -4475,17 +4473,17 @@ FindlySDK.prototype.bindAllResultsView = function () {
   //   _self.invokeSearch();
   //   _self.vars.customizeView = true;
   // })
-  $(".show-all-results")
-    .off("click")
-    .on("click", function (e) {
-      _self.vars.scrollPageNumber = 0;
-      _self.vars.selectedFacetFromSearch = "all results";
-      _self.vars.showingMatchedResults = true;
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      _self.invokeSearch(false, true);
-      // $('#loaderDIV').show()
-    });
+  // $(".show-all-results")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     _self.vars.scrollPageNumber = 0;
+  //     _self.vars.selectedFacetFromSearch = "all results";
+  //     _self.vars.showingMatchedResults = true;
+  //     e.preventDefault();
+  //     e.stopImmediatePropagation();
+  //     _self.invokeSearch(false, true);
+  //     // $('#loaderDIV').show()
+  //   });
   // $('.full-search-close').off('click').on('click', function (e)
   $(".custom-chevron-right-icon")
     .off("click")
@@ -8304,35 +8302,36 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             customSearchResult: _self.customSearchResult,
             totalSearchResults: _self.vars.totalNumOfResults,
           });
-          var devMode = _self.isDev ? true : false;
-          var viewType = _self.vars.customizeView ? "Customize" : "Preview";
-          var msgData = {
-            message: [{
-              component: {
-                type: 'template',
-                payload: {
-                  text: 'Sure, please find the matched results below',
-                  template_type: "finalResultsTemplate",
-                  isDev: _self.isDev,
-                  devMode: devMode,
-                  viewType: viewType,
-                  showAllResults: true,
-                  noResults: false,
-                  taskPrefix: "MATCHED",
-                  customSearchResult: _self.customSearchResult,
-                  totalSearchResults: _self.vars.totalNumOfResults,
-                  resultSettings: _self.vars.resultSettings,
-                  responseData: responseData,
-                  searchConfigurationCopy: searchConfigurationCopy,
-                  searchType: 'isSearch',
-                  helpers: helpers
-                }
-              }
-            }]
-          }
-          var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
-          $("#searchChatContainer").append(showAllHTML);
+          _self.getMergedData(_self.vars.resultSettings, responseData, 'isSearch');
+
           setTimeout(function () {
+            let me = this;
+            var devMode = _self.isDev ? true : false;
+            var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+            var msgData = {
+              message: [{
+                component: {
+                  type: 'template',
+                  payload: {
+                    text: 'Sure, please find the matched results below',
+                    template_type: "finalResultsTemplate",
+                    isDev: _self.isDev,
+                    devMode: devMode,
+                    viewType: viewType,
+                    showAllResults: true,
+                    noResults: false,
+                    taskPrefix: "MATCHED",
+                    customSearchResult: _self.customSearchResult,
+                    totalSearchResults: _self.vars.totalNumOfResults,
+                    groupData: _self.vars.mergedData,
+                    searchType: 'isSearch',
+                    helpers: helpers
+                  }
+                }
+              }]
+            }
+            var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
+            $("#searchChatContainer").append(showAllHTML);
             _self.appendActionsContainerForBottomUp("search");
             _self.pubSub.publish("sa-action-full-search", {
               container: ".actions-search-container",
@@ -24862,14 +24861,82 @@ FindlySDK.prototype.appendPopularSearchResults = function (popularSearches) {
       $("#search").trigger(e);
     });
 };
-FindlySDK.prototype.showMoreClick = function (data) {
+FindlySDK.prototype.showMoreClick = function (showMoreData) {
   var _self = this;
-  if (data) {
-    _self.invokeSearch(data);
-    _self.pubSub.subscribe("sa-search-show-more-result", (msg, data) => {
-      console.log("result", data);
-      return data;
-    });
+  if (showMoreData) {
+    var url = _self.API.searchUrl;
+    var payload = {
+      query: _self.vars.searchObject.searchText,
+      // "maxNumOfResults": 9,
+      maxNumOfResults: 5,
+      userId: _self.API.uuid,
+      streamId: _self.API.streamId,
+      lang: "en",
+      // "isDev": true,
+      isDev: _self.isDev,
+      searchRequestId: _self.vars.requestId,
+    };
+    if (_self.isDev) {
+      payload["customize"] = _self.vars.customizeView;
+    }
+    if (showMoreData) {
+      if (showMoreData.fieldName) {
+        payload["resultGroups"] = {
+          filter: {
+            fieldName: showMoreData.fieldName,
+            facetValue: [showMoreData.groupName],
+          },
+        };
+      } else if (showMoreData.groupName == "defaultTemplate") {
+        payload["defaultGroups"] = _self.vars.availableGroupsList;
+      }
+      payload["pageNumber"] = showMoreData.pageNumber;
+    }
+
+    if (_self.vars.filterObject.length > 0) {
+      payload.filters = JSON.parse(JSON.stringify(_self.vars.filterObject));
+    }
+
+    if (
+      _self.vars.selectedFacetFromSearch &&
+      _self.vars.selectedFacetFromSearch !== "all results"
+    ) {
+      var tabConfig = {
+        filter: {
+          fieldName: _self.vars.tabFacetFieldName,
+          facetValue: [_self.vars.selectedFacetFromSearch],
+        },
+      };
+      payload.tabConfig = tabConfig;
+    } else {
+      let filters = payload.filters;
+      for (let i = (filters || []).length - 1; i >= 0; i--) {
+        if (
+          filters[i].facetValue[0] == "faq" ||
+          filters[i].facetValue[0] == "task" ||
+          filters[i].facetValue[0] == "web" ||
+          filters[i].facetValue[0] == "file" ||
+          filters[i].facetValue[0] == "data"
+        ) {
+          payload.filters.splice(i, 1);
+        }
+      }
+    }
+
+    if (_self.vars.resultRankingActionPerformed == true) {
+      _self.vars.resultRankingActionPerformed = false;
+    }
+    return new Promise((resolve, reject) => {
+      _self
+        .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
+          _self.getMergedData(_self.vars.resultSettings, data, 'isFullResults').then(ress => {
+            resolve(_self.vars.mergedData);
+          })
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
   }
   // $(".full-search-data-container")
   //   .off("click", ".show-more-list")
@@ -24994,6 +25061,320 @@ FindlySDK.prototype.getJWT = function (options, callback) {
     error: function (err) { },
   });
 };
+FindlySDK.prototype.getMergedData = function (settingData, responseData, searchType) {
+  let response = Object.assign({}, responseData.template);
+  var _self = this;
+  settingData = settingData.settings || [];
+  var configurationSettings = {};
+  var isFullResults = false;
+  var isSearch = false;
+  var isLiveSearch = false;
+  _self.vars.mergedData = [];
+  if (searchType == 'isFullResults') {
+    isFullResults = true;
+    searchType = 'fullSearch';
+  } else if (searchType == 'isSearch') {
+    isSearch = true;
+    searchType = "conversationalSearch";
+  } else if (searchType == 'isLiveSearch') {
+    isLiveSearch = true;
+    searchType = "liveSearch";
+  }
+  var selected = {};
+  if (settingData && settingData.length) {
+    settingData.forEach((config) => {
+      var availableGroupNames = [];
+      if (config.interface === searchType) {
+        if (config.groupResults) {
+          availableGroupNames = config.groupSetting.conditions.map(function (group) {
+            return group.fieldValue;
+          })
+        }
 
+        availableGroupNames.push('defaultTemplate');
+        availableGroupNames.forEach((group) => {
+          if (!configurationSettings[group + 'Config']) {
+            configurationSettings[group + 'Config'] = {
+              liveSearchInterface: {
+                layout: {}
+              },
+              conversationalSearchInterface: {
+                layout: {}
+              },
+              fullSearchInterface: {
+                layout: {}
+              }
+            };
+          }
+        })
+        //design template config start//
+        var conditions = [];
+        if (config.groupResults) {
+          conditions = config.groupSetting.conditions;
+        }
+        conditions.push({ "fieldValue": 'defaultTemplate', "template": config.defaultTemplate });
+        conditions.forEach((condition) => {
+          var template = condition.template || {};
+          // writing conditions only for StructuredData
+          if (template && template.layout) {
+            configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'] = template;
+            if (template.layout && template.layout.layoutType) {
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.templateType = template.type;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.template = '';
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.maxSearchResultsAllowed = 5;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.layoutType = template.layout.layoutType;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.textAlignment = template.layout.textAlignment;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.listType = template.layout.listType;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.isClickable = template.layout.isClickable;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.behaviour = template.layout.behaviour;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.renderTitle = template.layout.renderTitle;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.title = template.layout.title;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].mapping = template.mapping;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].groupResults = (condition.fieldValue == 'defaultTemplate') ? false : config.groupResults;
+              configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].fieldName = (condition.fieldValue == 'defaultTemplate') ? '' : config.groupSetting.fieldName;
+            }
+          }
+        });
+        //design template config end//
+        // setTimeout(function () {
+        availableGroupNames.forEach((group) => {
+          //initialize template config start//
+          var templateInterface = config.interface;
+          var templateConfig = configurationSettings[group + 'Config'];
+          var groupName = group;
+          var customTemplateConfig = [];
+          if (!selected[groupName + templateInterface + 'TemplateType']) {
+            selected[groupName + templateInterface + 'TemplateType'] = '';
+            selected[groupName + templateInterface + 'LayoutType'] = '';
+          }
+          var searchTemplate = '';
+          var fullSearchTemplate = '';
+          var liveSearchTemplate = '';
+          if (templateConfig && templateConfig[templateInterface + 'Interface'] && templateConfig[templateInterface + 'Interface'].layout) {
+            // will take the templateType and layoutType from AJAX config
+            if (templateConfig[templateInterface + 'Interface'].layout.templateType && templateConfig[templateInterface + 'Interface'].layout.templateType.length) {
+              selected[groupName + templateInterface + 'TemplateType'] = templateConfig[templateInterface + 'Interface'].layout.templateType;
+              selected[groupName + templateInterface + 'LayoutType'] = templateConfig[templateInterface + 'Interface'].layout.layoutType;
+            }
+          }
+          if (!selected[groupName + templateInterface + 'TemplateType'] || !selected[groupName + templateInterface + 'TemplateType'].length) {
+            // default case
+            selected[groupName + templateInterface + 'TemplateType'] = 'list';
+            selected[groupName + templateInterface + 'LayoutType'] = 'l1'
+          }
+        });
+        // Search call back
+        _self.getConfigData = function (data) {
+          var structuredData = [];
+          var templateConfiguration = {};
+          var templateInterfaceType = '';
+          var groupName = data.dataObj.groupName;
+          var doc_count = data.dataObj.doc_count;
+          if (isLiveSearch) {
+            templateInterfaceType = 'liveSearch';
+            templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
+          } else if (isSearch) {
+            templateInterfaceType = 'conversationalSearch';
+            templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
+          } else {
+            templateInterfaceType = 'fullSearch';
+            templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
+          }
+          structuredData = _self.designDataWithMappings(data.dataObj.data, templateConfiguration.mapping);
+          if (templateConfiguration && templateConfiguration.layout) {
+            data['isClickable'] = templateConfiguration.layout.isClickable;
+            data['behaviour'] = templateConfiguration.layout.behaviour;
+            data['listType'] = templateConfiguration.layout.listType;
+            data['titleName'] = templateConfiguration.layout.title;
+            data['textAlignment'] = templateConfiguration.layout.textAlignment;
+            data['renderTitle'] = templateConfiguration.layout.renderTitle;
+            data['groupResults'] = templateConfiguration.groupResults;
+            data['fieldName'] = templateConfiguration.fieldName;
+            config = templateConfiguration;
+          }
+
+          // this should only be applied for 'search' interface
+          data['structuredData'] = [];
+          data['structuredData'] = structuredData;
+          var viewType = 'Preview';
+          var devMode = this.isDev ? true : false;
+          if (!data.selectedFacet) {
+            viewType = 'Preview';
+          }
+          if (!structuredData || !structuredData.length) {
+            structuredData = [];
+          }
+          var maxSearchResultsAllowed = 2;
+          if (data.isLiveSearch) {
+            maxSearchResultsAllowed = (searchConfigurationCopy.liveSearchResultsLimit || (searchConfigurationCopy.liveSearchResultsLimit == 0)) ? searchConfigurationCopy.liveSearchResultsLimit : 2;
+          }
+          else if (isSearch) {
+            if (selected[groupName + templateInterfaceType + 'TemplateType'] === 'grid') {
+              maxSearchResultsAllowed = 4;
+            }
+            else if (selected[groupName + templateInterfaceType + 'TemplateType'] === 'carousel') {
+              maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
+            }
+            else {
+              maxSearchResultsAllowed = 2;
+            }
+          }
+          else if (isFullResults) {
+            maxSearchResultsAllowed = 5;
+          }
+          else {
+            maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
+          }
+          let gridLayoutType = '';
+          if (config?.type === 'grid' || config?.type === 'carousel') {
+            if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+              gridLayoutType = 'img_common'
+            }
+            else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l5') {
+              gridLayoutType = 'img_large'
+            }
+            else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l6') {
+              gridLayoutType = 'img_left'
+            }
+            else if (['l7', 'l8'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+              gridLayoutType = 'img_top'
+            }
+          }
+          const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
+
+          var isDropdownEnabled = true;
+          var messageData = {
+            "message": [
+              {
+                "component": {
+                  "type": 'template',
+                  "payload": {
+                    "template_type": "search" + searchTemplateType + "Template",
+                    'isClickable': data.isClickable,
+                    'structuredData': structuredData,
+                    'viewType': viewType,
+                    'isFullResults': data.isFullResults,
+                    'isSearch': isSearch,
+                    'devMode': devMode,
+                    'isLiveSearch': isLiveSearch,
+                    'appearanceType': 'data',
+                    'maxSearchResultsAllowed': maxSearchResultsAllowed,
+                    'isDropdownEnabled': isDropdownEnabled,
+                    'tour': false,
+                    'helpers': helpers,
+                    'renderTitle': data.renderTitle,
+                    'titleName': data.titleName,
+                    'listType': data.listType,
+                    'textAlignment': data.textAlignment,
+                    'behaviour': data.behaviour,
+                    'groupResults': data.groupResults,
+                    'groupName': groupName,
+                    'doc_count': doc_count || 0,
+                    'pageNumber': 0,
+                    'templateName': groupName.replaceAll(' ', ''),
+                    'fieldName': data.fieldName,
+                    'gridLayoutType': gridLayoutType
+                  }
+                }
+              }
+            ]
+          }
+          if (structuredData && structuredData.length) {
+            _self.vars.mergedData.push(messageData);
+          }
+        }
+        _self.designDataWithMappings = function (data, mapping) {
+          var dataArr = [];
+          if (data && data.length && mapping && Object.values(mapping).length) {
+            data.forEach((obj) => {
+              var item = {};
+              if (obj[mapping.heading]) {
+                item.heading = obj[mapping.heading];
+              }
+              if (obj[mapping.description]) {
+                item.description = obj[mapping.description];
+              }
+              if (obj[mapping.img]) {
+                item.img = obj[mapping.img];
+              }
+              if (obj[mapping.url]) {
+                item.url = obj[mapping.url];
+              }
+              if (!item.heading || !item.heading.toString().length) {
+                item.heading = '';
+              }
+              if (!item.description || !item.description.toString().length) {
+                item.description = '';
+              }
+              if (!item.img || !item.img.length) {
+                item.img = '';
+              }
+              if (!item.url || !item.url.length) {
+                item.url = '';
+              }
+              item.config = obj.config;
+              item.feedback = obj.feedback;
+              item.customization = null;
+              item.sys_content_type = obj.sys_content_type;
+              item.contentId = obj.contentId;
+              item.addedResult = (obj.addedResult || (obj.addedResult == false)) ? obj.addedResult : false;
+              item.bestMatch = (obj.bestMatch || (obj.bestMatch == false)) ? obj.bestMatch : false;
+              if (item.heading || item.description || item.img || item.url) {
+                dataArr.push(item);
+              }
+            });
+            return dataArr;
+          }
+        }
+        //response modification start //
+        if (((response.results || {}).data || []).length || (response.results && response.resultType == "grouped" && Object.keys(response.results).length)) {
+          if (response && response.results && response.resultType == "grouped") {
+            var resAvailableGroups = Object.keys(response.results);
+            if (resAvailableGroups && resAvailableGroups.length) {
+              resAvailableGroups.forEach((group) => {
+                var results = response.results[group].data;
+                var groupName = group == 'default_group' ? 'defaultTemplate' : group;
+                var dataObj = {
+                  data: results,
+                  groupName: groupName,
+                  doc_count: response.results[group].doc_count
+                }
+                _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
+              });
+            }
+          } else {
+            var results = response.results.data;
+            var dataObj = {
+              data: results,
+              groupName: 'defaultTemplate',
+              doc_count: response.results.doc_count
+            }
+            if (results && results.length) {
+              _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
+            }
+          }
+        }
+        if ((response.tasks || []).length) {
+
+        }
+        //response modification end //
+        console.log("mergedeata", _self.vars.mergedData);
+        return _self.vars.mergedData;
+        // }, 200);
+      }
+    });
+
+  }
+}
+FindlySDK.prototype.seeAllBtnClickEvent = function (e) {
+  var _self = this;
+  _self.vars.scrollPageNumber = 0;
+  _self.vars.selectedFacetFromSearch = "all results";
+  _self.vars.showingMatchedResults = true;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  _self.invokeSearch(false, true);
+  // $('#loaderDIV').show()
+}
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
