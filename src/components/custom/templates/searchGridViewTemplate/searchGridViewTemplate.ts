@@ -19,8 +19,28 @@ class SearchGridViewTemplate {
     }
     bindEvents(messageHtml: any) {
         let me: any = this;
-        // let chatWindowInstance = me.cwInstance;
-        // let $ = me.cwInstance.$;
+        let hostWindowInstance = me.hostInstance;
+        let $ = me.hostInstance.$;
+        $(".full-search-data-container")
+            .off("click", ".show-more-list")
+            .on("click", ".show-more-list", function (e: any) {
+                const showMoreData = {
+                    groupName: $(e.currentTarget).attr("groupName"),
+                    templateName: $(e.currentTarget).attr("templateName"),
+                    pageNumber: Number($(e.currentTarget).attr("pageNumber")) + 1,
+                    fieldName: $(e.currentTarget).attr("fieldName"),
+                };
+                hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
+                    const listHTML = $(me.getTemplateString(result.message[0].component.payload.template_type)).tmpl(result.message[0].component.payload);
+                    $(listHTML).find(".show-more-list").remove();
+                    $(
+                        ".full-search-data-container [templateName=" +
+                        showMoreData.templateName +
+                        "]"
+                    ).before($(listHTML).find(".parent-list-template").children());
+                })
+                $(e.currentTarget).attr("pageNumber", Number($(e.currentTarget).attr("pageNumber")) + 1);
+            });
     }
     getTemplateString(type: any) {
         const searchGridTemplate = '<script type="text/x-jqury-tmpl">\
@@ -131,6 +151,11 @@ class SearchGridViewTemplate {
         </div>\
         {{/each}}\
     </div>\
+    {{/if}}\
+    {{if groupName.length}}\
+    <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+           <div>Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
+        </div>\
     {{/if}}\
         {{/if}}\
         </script>'

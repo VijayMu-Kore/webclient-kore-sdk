@@ -250,8 +250,15 @@ class SearchListViewTemplate {
           fieldName: $(e.currentTarget).attr("fieldName"),
         };
         hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
-          console.log("list result", result);
+          const listHTML = $(me.getTemplateString(result.message[0].component.payload.template_type)).tmpl(result.message[0].component.payload);
+          $(listHTML).find(".show-more-list").remove();
+          $(
+            ".full-search-data-container [templateName=" +
+            showMoreData.templateName +
+            "]"
+          ).before($(listHTML).find(".parent-list-template").children());
         })
+        $(e.currentTarget).attr("pageNumber", Number($(e.currentTarget).attr("pageNumber")) + 1);
       });
   }
   getTemplateString(type: any) {
@@ -435,8 +442,9 @@ class SearchListViewTemplate {
     </script>';
     var searchListTemplates = '<script type="text/x-jqury-tmpl">\
     {{if structuredData.length}}\
+        <div>\
         <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
-        <div class="template-4-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list{{if isClickable==false}}-collapse{{/if}} {{if isClickable==false}}template-4-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-collapse-result{{/if}} mb-15">\
+        <div class="template-4-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list{{if isClickable==false}}-collapse{{/if}} {{if isClickable==false}}template-4-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-collapse-result{{/if}} mb-15 parent-list-template">\
             {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                 {{if isClickable == true}}\
                         <div class="{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-item click-to-navigate-url faqs-shadow isClickable {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
@@ -488,6 +496,7 @@ class SearchListViewTemplate {
                <div>Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
             </div>\
         {{/if}}\
+        </div>\
     {{/if}}\
     </script>';
     var customizeList = '<script type="text/x-jqury-tmpl">\
