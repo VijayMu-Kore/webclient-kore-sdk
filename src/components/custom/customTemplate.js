@@ -22,7 +22,7 @@ import SearchListViewTemplate from './templates/searchListViewTemplate/searchLis
 import FullSearchResultsTemplate from './templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
 import FinalResultsTemplate from './templates/finalResultsTemplate/finalResultsTemplate';
 import SearchGridViewTemplate from './templates/searchGridViewTemplate/searchGridViewTemplate';
-import searchCarouselTemplate from './templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+import SearchCarouselViewTemplate from './templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
 
 
@@ -77,7 +77,7 @@ customTemplate.prototype.installDefaultTemplates = function () {
 	//this.installTemplate(new MessageTemplate());
 	this.installTemplate(new SearchListViewTemplate());
 	this.installTemplate(new SearchGridViewTemplate());
-	this.installTemplate(new searchCarouselTemplate());
+	this.installTemplate(new SearchCarouselViewTemplate());
 	this.installTemplate(new FullSearchResultsTemplate());
 	this.installTemplate(new FinalResultsTemplate());
 };

@@ -1,4 +1,3 @@
-
 import helpers from '../../../../utils/helpers';
 import './finalResultsTemplate.scss';
 import customTemplate from '../../customTemplate';
@@ -89,7 +88,7 @@ class FinalResultsTemplate {
     }
 
   }
-  botActionTrigger(event:any) {
+  botActionTrigger(event: any) {
     let me: any = this;
     me.hostInstance.botActionTrigger(event);
   };

@@ -4220,34 +4220,32 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
             $(".content-data-sec").scrollTop(0);
             $(".data-body-sec").scrollTop(0);
           } else {
-            // var dataObj = {
-            //   facets: facets || [],
-            //   searchFacets: searchFacets || [],
-            //   originalQuery: res.originalQuery || "",
-            //   customSearchResult: _self.customSearchResult,
-            //   data: res.results.data,
-            //   groupName: showMoreData.groupName,
-            //   doc_count: res.results.doc_count,
-            //   ShowMoreData: {
-            //     templateName: showMoreData.templateName,
-            //   },
-            // };
-            // var publishSearchData =
-            //   "sa-" + showMoreData.groupName + "-search-data";
-            // _self.pubSub.publish(publishSearchData, {
-            //   container: ".full-search-data-container",
-            //   isFullResults: true,
-            //   selectedFacet: "all results",
-            //   isLiveSearch: false,
-            //   isSearch: false,
-            //   dataObj,
-            // });
-            const response = res?.results?.data;
-            // return response;           
+            var dataObj = {
+              facets: facets || [],
+              searchFacets: searchFacets || [],
+              originalQuery: res.originalQuery || "",
+              customSearchResult: _self.customSearchResult,
+              data: res.results.data,
+              groupName: showMoreData.groupName,
+              doc_count: res.results.doc_count,
+              ShowMoreData: {
+                templateName: showMoreData.templateName,
+              },
+            };
+            var publishSearchData =
+              "sa-" + showMoreData.groupName + "-search-data";
+            _self.pubSub.publish(publishSearchData, {
+              container: ".full-search-data-container",
+              isFullResults: true,
+              selectedFacet: "all results",
+              isLiveSearch: false,
+              isSearch: false,
+              dataObj,
+            });
           }
-          // _self.pubSub.publish("facet-selected", {
-          //   selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
-          // });
+          _self.pubSub.publish("facet-selected", {
+            selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
+          });
         }
       });
   } else {
@@ -19175,7 +19173,7 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
       isMapped = false;
     }
     let gridLayoutType = '';
-    if (['grid', 'carousel'].includes(config?.type)) {
+    if (config?.type === 'grid') {
       if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
         gridLayoutType = 'img_common'
       }
@@ -25284,7 +25282,6 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             }
             if (structuredData && structuredData.length) {
               _self.vars.mergedData.push(messageData);
-              return messageData;
             }
           }
           _self.designDataWithMappings = function (data, mapping) {
@@ -25355,7 +25352,6 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               }
               if (results && results.length) {
                 const final_result = _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
-                console.log("final_result", final_result);
                 resolve(final_result);
               }
             }
@@ -25403,8 +25399,8 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             ;
           }
           //response modification end //
-          // console.log("mergedeata", _self.vars.mergedData);
-          // return _self.vars.mergedData;
+          console.log("mergedeata", _self.vars.mergedData);
+          return _self.vars.mergedData;
           // }, 200);
         }
       });

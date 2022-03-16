@@ -494,7 +494,7 @@ class KoreHelpers {
         }
     };
     static {
-        //debugger;
+        // debugger;
         String.prototype.isNotAllowedHTMLTags = function () {
             const wrapper = document.createElement("div");
             wrapper.innerHTML = this;
