@@ -3,7 +3,7 @@ import requireKr from "../../../kore-bot-sdk-client";
 import korejquery from "../../libs/korejquery";
 import customTemplate from '../custom/customTemplate';
 import searchTemplate from './searchTemplate'
-
+import _ from 'lodash';
 import PubSub from 'pubsub-js'
 
 import './css/findly-sdk.scss'
@@ -5065,104 +5065,104 @@ FindlySDK.prototype.closeGreetingMsg = function () {
 };
 FindlySDK.prototype.bindSearchActionEvents = function () {
   var _self = this;
-  $(".search-task")
-    .off("click")
-    .on("click", function (e) {
-      e.stopPropagation();
-      var ele = $(e.target).closest(".search-task");
-      var scrollBottom =
-        $("#searchChatContainer").scrollTop() +
-        $("#searchChatContainer").height();
-      $("#searchChatContainer").animate({ scrollTop: scrollBottom });
-      _self.pubSub.publish("sa-action-clicked", e);
-      var taskName = e.currentTarget.title.toLowerCase();
-      var payload;
-      if (
-        _self.vars.searchObject &&
-        _self.vars.searchObject.searchText &&
-        _self.vars.searchObject.searchText.length
-      ) {
-        payload = b64EncodeUnicode(
-          "Execute_" + _self.vars.searchObject.searchText
-        );
-        // payload = _self.vars.searchObject.searchText;
-      } else {
-        payload = $(e.currentTarget).attr("payload");
-      }
-      if (
-        !_self.vars.searchObject.recentTasks.length ||
-        (_self.vars.searchObject.recentTasks.length &&
-          _self.vars.searchObject.recentTasks.indexOf(taskName.toLowerCase()) ==
-          -1)
-      ) {
-        _self.vars.searchObject.recentTasks.unshift(taskName.toLowerCase());
-      }
-      var recentItem = [];
-      recentItem.push(taskName);
-      _self.vars.searchObject.recentTasks = _.uniq(
-        recentItem.concat(_self.vars.searchObject.recentTasks)
-      );
-      if (
-        _self.vars.searchObject.recentTasks &&
-        _self.vars.searchObject.recentTasks.length
-      ) {
-        _self.vars.searchObject.recentTasks = _.filter(
-          _self.vars.searchObject.recentTasks,
-          function (task) {
-            return task;
-          }
-        );
-      }
-      if (_self.vars.showingMatchedResults == true) {
-        _self.captureClickAnalytics(
-          e,
-          $(e.currentTarget).attr("contentType"),
-          "click",
-          $(e.currentTarget).attr("contentId"),
-          $(e.currentTarget).attr("id"),
-          $(e.currentTarget).attr("title")
-        );
-      }
-      window.localStorage.setItem(
-        "recentTasks",
-        JSON.stringify(_self.vars.searchObject.recentTasks)
-      );
-      if (!$("body").hasClass("top-down")) {
-        _self.bindFrequentData();
-      }
-      if (_self.config.viaSocket) {
-        var nlMeta = {
-          linkedBotNLMeta: {
-            intent: $(e.currentTarget).attr("title"),
-            seqLogId: $(e.currentTarget).attr("seqLogId") || null,
-            childBotName: $(e.currentTarget).attr("childBotName") || null,
-            isRefresh: true,
-          },
-        };
-        _self.sendMessage(payload, null, nlMeta);
-      }
-      if ($("body").hasClass("top-down")) {
-        _self.sendMessageToSearch(
-          "user",
-          null,
-          null,
-          _self.isDev == true ? true : false
-        );
-        _self.resetPingMessage();
-        _self.resetSocketDisconnection();
-      }
-      if (_self.isDev || _self.vars.loggedInUser) {
-        _self.vars.searchObject.searchText =
-          e.currentTarget.title.toLowerCase();
-        _self.sendMessageToSearch("botAction");
-      } else if (
-        e.currentTarget.title.toLowerCase() === "pay bill" ||
-        e.currentTarget.title.toLowerCase() === "pay credit card bill"
-      ) {
-        _self.userLogin(e.currentTarget.title.toLowerCase());
-      } else {
-      }
-    });
+  // $(".search-task")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     e.stopPropagation();
+  //     var ele = $(e.target).closest(".search-task");
+  //     var scrollBottom =
+  //       $("#searchChatContainer").scrollTop() +
+  //       $("#searchChatContainer").height();
+  //     $("#searchChatContainer").animate({ scrollTop: scrollBottom });
+  //     _self.pubSub.publish("sa-action-clicked", e);
+  //     var taskName = e.currentTarget.title.toLowerCase();
+  //     var payload;
+  //     if (
+  //       _self.vars.searchObject &&
+  //       _self.vars.searchObject.searchText &&
+  //       _self.vars.searchObject.searchText.length
+  //     ) {
+  //       payload = b64EncodeUnicode(
+  //         "Execute_" + _self.vars.searchObject.searchText
+  //       );
+  //       // payload = _self.vars.searchObject.searchText;
+  //     } else {
+  //       payload = $(e.currentTarget).attr("payload");
+  //     }
+  //     if (
+  //       !_self.vars.searchObject.recentTasks.length ||
+  //       (_self.vars.searchObject.recentTasks.length &&
+  //         _self.vars.searchObject.recentTasks.indexOf(taskName.toLowerCase()) ==
+  //         -1)
+  //     ) {
+  //       _self.vars.searchObject.recentTasks.unshift(taskName.toLowerCase());
+  //     }
+  //     var recentItem = [];
+  //     recentItem.push(taskName);
+  //     _self.vars.searchObject.recentTasks = _.uniq(
+  //       recentItem.concat(_self.vars.searchObject.recentTasks)
+  //     );
+  //     if (
+  //       _self.vars.searchObject.recentTasks &&
+  //       _self.vars.searchObject.recentTasks.length
+  //     ) {
+  //       _self.vars.searchObject.recentTasks = _.filter(
+  //         _self.vars.searchObject.recentTasks,
+  //         function (task) {
+  //           return task;
+  //         }
+  //       );
+  //     }
+  //     if (_self.vars.showingMatchedResults == true) {
+  //       _self.captureClickAnalytics(
+  //         e,
+  //         $(e.currentTarget).attr("contentType"),
+  //         "click",
+  //         $(e.currentTarget).attr("contentId"),
+  //         $(e.currentTarget).attr("id"),
+  //         $(e.currentTarget).attr("title")
+  //       );
+  //     }
+  //     window.localStorage.setItem(
+  //       "recentTasks",
+  //       JSON.stringify(_self.vars.searchObject.recentTasks)
+  //     );
+  //     if (!$("body").hasClass("top-down")) {
+  //       _self.bindFrequentData();
+  //     }
+  //     if (_self.config.viaSocket) {
+  //       var nlMeta = {
+  //         linkedBotNLMeta: {
+  //           intent: $(e.currentTarget).attr("title"),
+  //           seqLogId: $(e.currentTarget).attr("seqLogId") || null,
+  //           childBotName: $(e.currentTarget).attr("childBotName") || null,
+  //           isRefresh: true,
+  //         },
+  //       };
+  //       _self.sendMessage(payload, null, nlMeta);
+  //     }
+  //     if ($("body").hasClass("top-down")) {
+  //       _self.sendMessageToSearch(
+  //         "user",
+  //         null,
+  //         null,
+  //         _self.isDev == true ? true : false
+  //       );
+  //       _self.resetPingMessage();
+  //       _self.resetSocketDisconnection();
+  //     }
+  //     if (_self.isDev || _self.vars.loggedInUser) {
+  //       _self.vars.searchObject.searchText =
+  //         e.currentTarget.title.toLowerCase();
+  //       _self.sendMessageToSearch("botAction");
+  //     } else if (
+  //       e.currentTarget.title.toLowerCase() === "pay bill" ||
+  //       e.currentTarget.title.toLowerCase() === "pay credit card bill"
+  //     ) {
+  //       _self.userLogin(e.currentTarget.title.toLowerCase());
+  //     } else {
+  //     }
+  //   });
   $(".search-container")
     .off("click", ".visibility")
     .on("click", ".visibility", function (event) {
@@ -8332,15 +8332,15 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             }
             var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
             $("#searchChatContainer").append(showAllHTML);
-            _self.appendActionsContainerForBottomUp("search");
-            _self.pubSub.publish("sa-action-full-search", {
-              container: ".actions-search-container",
-              isFullResults: false,
-              selectedFacet: "all results",
-              isLiveSearch: false,
-              isSearch: true,
-              dataObj,
-            });
+            // _self.appendActionsContainerForBottomUp("search");
+            // _self.pubSub.publish("sa-action-full-search", {
+            //   container: ".actions-search-container",
+            //   isFullResults: false,
+            //   selectedFacet: "all results",
+            //   isLiveSearch: false,
+            //   isSearch: true,
+            //   dataObj,
+            // });
           }, 300);
           setTimeout(function () {
             _self.bindSearchActionEvents();
@@ -19224,7 +19224,8 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
             pageNumber: 0,
             templateName: groupName.replaceAll(" ", ""),
             fieldName: data.fieldName,
-            gridLayoutType: gridLayoutType
+            gridLayoutType: gridLayoutType,
+            isButtonTemplate: false
           }
         }
       }]
@@ -25274,7 +25275,8 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'pageNumber': 0,
                       'templateName': groupName.replaceAll(' ', ''),
                       'fieldName': data.fieldName,
-                      'gridLayoutType': gridLayoutType
+                      'gridLayoutType': gridLayoutType,
+                      "isButtonTemplate": false
                     }
                   }
                 }
@@ -25359,7 +25361,46 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             }
           }
           if ((response.tasks || []).length) {
-
+            var tasksTemplateType = "grid";
+            if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
+              tasksTemplateType = searchConfigurationCopy.botConfig.botActionTemplate;
+            }
+            var viewType = 'Preview';
+            var devMode = this.isDev ? true : false;
+            var messageData = {
+              "message": [
+                {
+                  "component": {
+                    "type": 'template',
+                    "payload": {
+                      "template_type": "search" + tasksTemplateType.charAt(0).toUpperCase() + tasksTemplateType.slice(1) + "Template",
+                      'structuredData': response.tasks,
+                      'viewType': viewType,
+                      'isFullResults': isFullResults,
+                      'isSearch': isSearch,
+                      'devMode': devMode,
+                      'isLiveSearch': isLiveSearch,
+                      'appearanceType': 'task',
+                      'tour': false,
+                      'helpers': helpers,
+                      "selectedFacet": "all results",
+                      "isButtonTemplate": true
+                    }
+                  }
+                }
+              ]
+            }
+            var actionsPosition = "bottom";
+            if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
+              actionsPosition =
+                searchConfigurationCopy.botConfig.botActionResultsExperience;
+            }
+            if (actionsPosition === "top") {
+              _self.vars.mergedData.unshift(messageData)
+            } else {
+              _self.vars.mergedData.push(messageData)
+            }
+            ;
           }
           //response modification end //
           // console.log("mergedeata", _self.vars.mergedData);
@@ -25380,6 +25421,101 @@ FindlySDK.prototype.seeAllBtnClickEvent = function (e) {
   e.stopImmediatePropagation();
   _self.invokeSearch(false, true);
   // $('#loaderDIV').show()
+}
+FindlySDK.prototype.botActionTrigger = function (e) {
+  var _self = this;
+  var scrollBottom =
+    $("#searchChatContainer").scrollTop() +
+    $("#searchChatContainer").height();
+  $("#searchChatContainer").animate({ scrollTop: scrollBottom });
+  _self.pubSub.publish("sa-action-clicked", e);
+  var taskName = e.currentTarget.title.toLowerCase();
+  var payload;
+  if (
+    _self.vars.searchObject &&
+    _self.vars.searchObject.searchText &&
+    _self.vars.searchObject.searchText.length
+  ) {
+    payload = b64EncodeUnicode(
+      "Execute_" + _self.vars.searchObject.searchText
+    );
+    // payload = _self.vars.searchObject.searchText;
+  } else {
+    payload = $(e.currentTarget).attr("payload");
+  }
+  if (
+    !_self.vars.searchObject.recentTasks.length ||
+    (_self.vars.searchObject.recentTasks.length &&
+      _self.vars.searchObject.recentTasks.indexOf(taskName.toLowerCase()) ==
+      -1)
+  ) {
+    _self.vars.searchObject.recentTasks.unshift(taskName.toLowerCase());
+  }
+  var recentItem = [];
+  recentItem.push(taskName);
+  _self.vars.searchObject.recentTasks = _.uniq(
+    recentItem.concat(_self.vars.searchObject.recentTasks)
+  );
+  if (
+    _self.vars.searchObject.recentTasks &&
+    _self.vars.searchObject.recentTasks.length
+  ) {
+    _self.vars.searchObject.recentTasks = _.filter(
+      _self.vars.searchObject.recentTasks,
+      function (task) {
+        return task;
+      }
+    );
+  }
+  if (_self.vars.showingMatchedResults == true) {
+    _self.captureClickAnalytics(
+      e,
+      $(e.currentTarget).attr("contentType"),
+      "click",
+      $(e.currentTarget).attr("contentId"),
+      $(e.currentTarget).attr("id"),
+      $(e.currentTarget).attr("title")
+    );
+  }
+  window.localStorage.setItem(
+    "recentTasks",
+    JSON.stringify(_self.vars.searchObject.recentTasks)
+  );
+  if (!$("body").hasClass("top-down")) {
+    _self.bindFrequentData();
+  }
+  if (_self.config.viaSocket) {
+    var nlMeta = {
+      linkedBotNLMeta: {
+        intent: $(e.currentTarget).attr("title"),
+        seqLogId: $(e.currentTarget).attr("seqLogId") || null,
+        childBotName: $(e.currentTarget).attr("childBotName") || null,
+        isRefresh: true,
+      },
+    };
+    _self.sendMessage(payload, null, nlMeta);
+  }
+  if ($("body").hasClass("top-down")) {
+    _self.sendMessageToSearch(
+      "user",
+      null,
+      null,
+      _self.isDev == true ? true : false
+    );
+    _self.resetPingMessage();
+    _self.resetSocketDisconnection();
+  }
+  if (_self.isDev || _self.vars.loggedInUser) {
+    _self.vars.searchObject.searchText =
+      e.currentTarget.title.toLowerCase();
+    _self.sendMessageToSearch("botAction");
+  } else if (
+    e.currentTarget.title.toLowerCase() === "pay bill" ||
+    e.currentTarget.title.toLowerCase() === "pay credit card bill"
+  ) {
+    _self.userLogin(e.currentTarget.title.toLowerCase());
+  } else {
+  }
 }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

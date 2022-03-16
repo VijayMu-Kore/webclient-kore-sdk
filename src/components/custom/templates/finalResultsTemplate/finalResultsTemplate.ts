@@ -89,7 +89,10 @@ class FinalResultsTemplate {
     }
 
   }
-
+  botActionTrigger(event:any) {
+    let me: any = this;
+    me.hostInstance.botActionTrigger(event);
+  };
   $ = $;
 
 }
