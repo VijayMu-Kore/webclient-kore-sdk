@@ -10,13 +10,12 @@
     display: block;
 }
 .kore-chat-window .slide {
-    border: 10px solid var(--sdk-chat-widow-default-white);
-    color: var(--sdk-chat-widow-default-white);
+    border: 5px solid var(--sdk-chat-widow-default-white);
     float: left;
-    font-size: 20px;
+    font-size: 14;
     height: auto;
-    text-align: center;
-    width: 254px;
+    // text-align: center;
+    width: 230px;
 }
 
 .kore-chat-window .carouselImageContent {
