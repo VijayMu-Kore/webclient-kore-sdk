@@ -278,3 +278,36 @@ body{
     line-height: 17px !important;
     color: var(--sdk-chat-window-footer-input-placeholder) !important;
   }
+
+
+@media (max-width: 767px){
+    .kore-chat-window {
+        width: 100% !important;
+        margin: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        max-width: 400px;
+        height: 100% !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        transform: none !important;
+        position: absolute !important;
+        min-width: 100%;
+        border: 0 !important;
+        min-width: 100% !important;
+        position: fixed !important;
+        overflow: hidden !important;
+    }
+    .kore-chat-window .sendBtnCnt .sendButton{
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        border: 0 !important;
+        /* opacity: 1 !important; */
+        bottom: 17px !important;
+        right: 18px !important;
+    }
+    .kore-chat-window .kore-chat-footer .footerContainer{
+        padding-right: 48px !important;
+    }
+}
