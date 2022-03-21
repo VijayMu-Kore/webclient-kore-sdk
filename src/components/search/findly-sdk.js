@@ -19183,7 +19183,7 @@ FindlySDK.prototype.initilizeTemplateConfig = function (
       else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l6') {
         gridLayoutType = 'img_left'
       }
-      else if (['l7', 'l8'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+      else if (['l7', 'l8', 'l9'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
         gridLayoutType = 'img_top'
       }
     }
@@ -25236,8 +25236,13 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l6') {
                 gridLayoutType = 'img_left'
               }
-              else if (['l7', 'l8'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+              else if (['l7', 'l8', 'l9'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
                 gridLayoutType = 'img_top'
+              }
+            }
+            if (config?.type === 'list') {
+              if (['l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+                gridLayoutType = 'img_left'
               }
             }
             const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
@@ -25282,6 +25287,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             }
             if (structuredData && structuredData.length) {
               _self.vars.mergedData.push(messageData);
+              return messageData;
             }
           }
           _self.designDataWithMappings = function (data, mapping) {
@@ -25352,6 +25358,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               }
               if (results && results.length) {
                 const final_result = _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
+                console.log("final_result", final_result);
                 resolve(final_result);
               }
             }

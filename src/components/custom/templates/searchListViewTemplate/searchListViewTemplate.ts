@@ -6,7 +6,7 @@ class SearchListViewTemplate {
     let me: any = this;
     let $ = me.hostInstance.$;
     me.helpersObj = helpers;
-    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component?.payload?.template_type == 'searchListTemplate') {
+    if (msgData?.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.template_type == 'searchListTemplate') {
       if (!msgData.message[0].component.payload.helpers) {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
@@ -238,7 +238,26 @@ class SearchListViewTemplate {
     //Tour RR 
     //}
     //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
-
+    $(".full-search-data-container")
+    .off("click", ".show-more-list")
+    .on("click", ".show-more-list", function (e: any) {
+    const showMoreData = {
+      groupName: $(e.currentTarget).attr("groupName"),
+      templateName: $(e.currentTarget).attr("templateName"),
+      pageNumber: Number($(e.currentTarget).attr("pageNumber")) + 1,
+      fieldName: $(e.currentTarget).attr("fieldName"),
+    };
+    hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
+      const listHTML = $(me.getTemplateString(result?.message[0].component.payload.template_type)).tmpl(result?.message[0].component.payload);
+      $(listHTML).find(".show-more-list").remove();
+      $(
+        ".full-search-data-container [templateName=" +
+        showMoreData.templateName +
+        "]"
+      ).before($(listHTML).find(".parent-list-template").children());
+    })
+    $(e.currentTarget).attr("pageNumber", Number($(e.currentTarget).attr("pageNumber")) + 1);
+    });
 
     //tasks click events//
     $(messageHtml)
@@ -430,62 +449,61 @@ class SearchListViewTemplate {
     </script>';
     var searchListTemplates = '<script type="text/x-jqury-tmpl">\
     {{if isButtonTemplate == false}}\
-    {{if structuredData.length}}\
-        <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
-        <div class="template-4-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list{{if isClickable==false}}-collapse{{/if}} {{if isClickable==false}}template-4-{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-collapse-result{{/if}} mb-15">\
-            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-                {{if isClickable == true}}\
-                        <div class="{{if listType=="classic"}}classic{{else}}plain{{/if}}-list-item click-to-navigate-url faqs-shadow isClickable {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
-                        {{if data.img && data.img.length}}\
-                        <div class="img-block">\
-                                <img src="${data.img}">\
-                            </div>\
-                            {{/if}}\
-                            <div class="content_sec {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}">\
-                            {{if data.heading && data.heading.length}}\
-                                <div class="heading text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                            {{/if}}\
-                            {{if data.description && data.description.length}}\
-                                <div class="text_desc single-line-description" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                                {{/if}}\
-                            </div>\
-                        </div>\
+    {{if structuredData?.length }}\
+    {{if renderTitle}}\
+    <div class="title-list-heading">${titleName}</div>\
+    {{/if}}\
+    <div class="search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}{{if gridLayoutType==""&&groupResults==true }}-group{{/if}}{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
+        {{if isClickable == true}}\
+        {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+        <div class="content-info {{if textAlignment==" center"}}text-center{{/if}}">\
+            {{if data.img.length}}\
+            <div class="img_block">\
+                <img src="${data.img}">\
+            </div>\
+            {{/if}}\
+            {{if data.heading.length}}\
+            <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+            {{/if}}\
+            {{if data.description.length}}\
+            <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+            {{/if}}\
+        </div>\
+        {{/each}}\
+        {{/if}}\
+        {{if isClickable == false}}\
+        {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+        <div class="accordion-content-info">\
+            <div class="content-info accordion" id="1">\
+                {{if data.heading.length}}\
+                <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                 {{/if}}\
-                {{if isClickable == false}}\
-                            <div class="collapse-item-list-parent click-to-navigate-url faqs-shadow" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
-                                <div class="collapse-item-list accordion {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}" id="1">\
-                                {{if data.heading && data.heading.length}}\
-                                    <div class="text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                                    {{if data.description && data.description.length}}\
-                                       <div class="text-description defalut-show text-truncate one-line-height">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                                    {{/if}}\
-                                    {{else}}\
-                                    {{html helpers.convertMDtoHTML(data.description)}}\
-                                    {{/if}}\
-                                </div>\
-                                <div class="panel">\
-                                    <div class="content_sec {{if (!data.description || !data.description.length) && textAlignment=="center"}}text-center{{/if}}">\
-                                    {{if data.img && data.img.length}}\
-                                        <div class="img-block">\
-                                            <img src="${data.img}">\
-                                        </div>\
-                                        {{/if}}\
-                                        {{if data.description && data.description.length}}\
-                                        <div class="{{if !data.img || !data.img.length}}pl-0 {{/if}}text-desc four-line-description">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                                        {{/if}}\
-                                    </div>\
-                                </div>\
-                            </div>\
-                            {{/if}}\
-            {{/each}}\
-                    <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
-                        <div class="searchassist-show-more-button">Show more <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAATCAYAAABobNZCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAALJSURBVEiJ5ZU/TBNhGId/75090gIV6z8SIQSDRKJCKSA6sIBRExnE2BhJW0sLpZQFB9SFpFEHlaCDJtALLQUc1AYHwTSAQGKiixCwQx2VSeNAIsZCgN7nAAdHEWwVJ9/xed/v97xf7i5HFnvDdQJaQOxl5JvaGgg8mMM/KqPxqlqzc84PRueI2G1ebygOAkgBcGSHsHQy/2heXygUWtxusdlsTlapqZ+ASgACgFKOgFF5gAjlnJActNlsqdspttlsqZyQHCRCuQKPcQIvVYPwSgHLoiSMWSyNu7dDbLU2pUVJGAJQpsCvebZg4kRRjGjVqkqA+hXNIlJFhy87HHv+Rlzd0LCL8fODAE7IjBgGI7Pqsz6f7zvJ0Gg0Chqt7ilA5xXnP0R5qeKxKH5OVGx2OvdxixgGkK/AQYrOX/D7/fMAwMk0EAgsRGZnLjHQc8VwHhflxiwW54FExFarK51bxMg6McOAVqOqksUAQLEHjUYjr9Hq/ACZFPiTREvlvZ2dH38nrqlxZUqcNALg0CokPEviJJMoiuu+Ij72cDgcZrk5B18ISZosAPoVnEbgqo4Zjg+EJt/NbCa22xuzoiSNAshR4CfTmemmvra2pdj5DTdX9qx25yMGuBTsCyexiq4uTzh22FJXl0sSPwIgYy2BvNkZ+x1ut1v6lWDDzZU1NTkeLCgq0RFQuoJSGNHFwgLD4NTUxFd5zupwHIbEjwJYezcYE7Mz052biYGtb746c6W2/j4YNSnYjMTYmV6fZ9xa59IzSRoCsFfRb+/2djQCYFsGxyEHAFhq6+8Ro2blAgQ0M6AVgE6GjFhrT6fnWjyZccsBYPknxO5sHsbu+r2eG/HmbfnMY+v95PibAkPJPAGnYnuMwd3t87QkkpeQXF5Abyj6AdDpNUotPb6OW4lmJSxfXmDibWFh8TQ4pDDQzR5v+8M/yfl/6ycjUebLjIBgoQAAAABJRU5ErkJggg==" height="6" width="10" /></div>\
+                {{if data.description.length}}\
+                <div class="desc_text_info clamp-text">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                {{/if}}\
+            </div>\
+            <div class="panel">\
+                {{if data.img.length}}\
+                <div class="inner-content-panel-data">\
+                    <div class="img_content">\
+                        <img src="${data.img}">\
                     </div>\
-        <div>\
+                    <div class="desc-text-info-img">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                </div>\
+                {{/if}}\
+            </div>\
+        </div>\
+        {{/each}}\
         {{/if}}\
-        {{/if}}\
-        {{if isButtonTemplate}}\
-        {{if structuredData && structuredData.length}}\
+        <div class="show-more-data {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}} show-more-list" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+           <span>Show more</span>\
+           <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS4zNjQzNyA1LjE0OTQ5QzUuMTc0OTcgNS4zMzgzNyA0Ljg3NDgxIDUuMzQ5NDggNC42NzIzOSA1LjE4MjgyTDQuNjM1NjMgNS4xNDk0OUwwLjE1MDkyNyAwLjg3NzI2NUMtMC4wNTAzMDkxIDAuNjc2NTc5IC0wLjA1MDMwOTEgMC4zNTEyMDIgMC4xNTA5MjcgMC4xNTA1MTVDMC4zNDAzMjYgLTAuMDM4MzY2NCAwLjY0MDQ4IC0wLjA0OTQ3NzMgMC44NDI5MDkgMC4xMTcxODNMMC44Nzk2NjggMC4xNTA1MTVMNSA0LjA1OTI4TDkuMTIwMzMgMC4xNTA1MTVDOS4zMDk3MyAtMC4wMzgzNjY0IDkuNjA5ODggLTAuMDQ5NDc3MyA5LjgxMjMxIDAuMTE3MTgzTDkuODQ5MDcgMC4xNTA1MTVDMTAuMDM4NSAwLjMzOTM5NyAxMC4wNDk2IDAuNjM4NzMxIDkuODgyNSAwLjg0MDYwN0w5Ljg0OTA3IDAuODc3MjY1TDUuMzY0MzcgNS4xNDk0OVoiIGZpbGw9IiM1RjYzNjgiLz4KPC9zdmc+Cg==">\
+        </div>\
+    </div>\
+    {{/if}}\
+    {{/if}}\
+    {{if isButtonTemplate}}\
+    {{if structuredData?.length}}\
         {{if devMode == true && viewType == "Customize" && selectedFacet == appearanceType}}\
           <div class="bot-actions-customize-info ">\
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFnSURBVHgBpVNNSsNQEH4zabXLuFXEHsGCqLjQ9gTqCWJP0AsUk0j26tJdegLrCczKnyL0CDbgAbKzhvjGmZBIfIQScODxHt/8fzNPqRXSOfS6clbZgAm09sZ9tCxHkToDULZgRCphyykC+MsXb1G1x78ZfRfRumfDGBF6X68+yJG3YET0uLZ/6dZWIM5E+gIABmaWaksShE+Yzq783wClwnRmvK91ZqezYFoNojXNtf4+z96CKG9BE3F2mpiZAWgXsWVXMbHhlm5znoSzHGXCELFnlvz57N+oegm59DnfQyjKfxeyTCsmzJOb+/VM3fqBS2C1u6j+KSg9yZw7R8FOU6diuZLl0zguKqAHnaVD1VjAIaXyyeQBmMCQRzgy15bxhRwzu+yLbGUeqqLwmEyn4SJNSmKtUpl9RFF7e7DBymtr68Tmd8xYUjri5vGIuQq53bvqVKAui9aaDeC05jPJskWqqTT5zj8FOrqqP5/xLgAAAABJRU5ErkJggg==" alt="actions-info">\
@@ -515,8 +533,9 @@ class SearchListViewTemplate {
             {{/each}}\
           </div>\
         {{/if}}\
-      {{/if}}\
-      {{if !structuredData || structuredData.length === 0 }}\
+        {{/if}}\
+        {{/if}}\
+        {{if !structuredData || structuredData.length === 0 }}\
         {{if selectedFacet != "all results"}}\
           {{if selectedFacet == appearanceType}}\
             {{if isFullResults == true}}\
@@ -529,8 +548,8 @@ class SearchListViewTemplate {
           {{/if}}\
         {{/if}}\
       {{/if}}\
-        {{/if}}\
     </script>';
+  
     var customizeList = '<script type="text/x-jqury-tmpl">\
     {{if structuredData.length}}\
     <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\

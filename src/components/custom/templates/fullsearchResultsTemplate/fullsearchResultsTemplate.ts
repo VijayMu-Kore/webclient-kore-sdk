@@ -1,4 +1,3 @@
-
 import helpers from '../../../../utils/helpers';
 import './fullsearchResultsTemplate.scss';
 import customTemplate from '../../customTemplate';
@@ -323,7 +322,7 @@ class FullSearchResultsTemplate {
                 maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
               }
               let gridLayoutType = '';
-              if (['grid', 'carousel'].includes(config?.type)) {
+              if (config?.type === 'grid' || config?.type === 'carousel') {
                 if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
                   gridLayoutType = 'img_common'
                 }
@@ -333,8 +332,13 @@ class FullSearchResultsTemplate {
                 else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l6') {
                   gridLayoutType = 'img_left'
                 }
-                else if (['l7', 'l8'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+                else if (['l7', 'l8', 'l9'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
                   gridLayoutType = 'img_top'
+                }
+              }
+              if (config?.type === 'list') {
+                if (['l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+                  gridLayoutType = 'img_left'
                 }
               }
               const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);

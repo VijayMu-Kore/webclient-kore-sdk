@@ -13,6 +13,11 @@ class SearchCarouselViewTemplate {
                 msgData.message[0].component.payload['helpers'] = me.helpersObj.helpers;
             }
             msgData.message[0].component.payload['helpers'] = me.helpersObj.helpers;
+            if (msgData?.message[0].component?.payload && msgData?.message[0].component?.payload.gridLayoutType === 'img_common') {
+                const payload = msgData?.message[0].component?.payload?.structuredData;
+                const checkImg = payload.some((res: any) => res !== '');
+                msgData.message[0].component.payload.templateType = checkImg ? 'L4' : '';
+            }
             me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
             setTimeout(() => {
                 const me: any = this;
@@ -124,112 +129,85 @@ class SearchCarouselViewTemplate {
     getTemplateString(type: any) {
         const searchCarouselTemplate = '<script type="text/x-jqury-tmpl">\
         {{if structuredData.length}}\
-        <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
+        {{if renderTitle}}\
+        <div class="title-list-heading">${titleName}</div>\
+        {{/if}}\
         {{if gridLayoutType==="img_common"}}\
-        <div class="template-4-carousel-list mb-15">\
+        <div class="search-list-template-carousel{{if templateType==="L4"}}-img-title{{/if}}">\
         <div class="carousel">\
-            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-            {{if isClickable == true}}\
-            <div class="slide click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
-                {{else}}\
-                <div class="slide click-to-navigate-url faqs-shadow" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
-                    {{/if}}\
-                    <div class="inner-content-list">\
-                        <div class="image-with-title">\
-                            {{if data.img.length}}\
-                            <div class="img-block">\
-                                <img src="${data.img}">\
-                            </div>\
-                            {{/if}}\
-                            {{if data.heading.length}}\
-                            <div class="info-title two-line-heading" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                            {{/if}}\
-                        </div>\
-                        {{if data.description.length}}\
-                        <div class="title-item two-line-description" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                        {{/if}}\
+        {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+            <div class="slide grid-item-col">\
+                <div class="content-info-grid">\
+                    <div class="heading-title text_overflow">\
+                    {{if data.img.length}}\
+                    <div class="img_block">\
+                       <img src="${data.img}"/>\
                     </div>\
+                    {{/if}}\
+                    <span title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                    </div>\
+                    <div class="desc_text_info clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 </div>\
-                {{/each}}\
             </div>\
+        {{/each}}\
         </div>\
-    </div>\
+       </div>\
         {{/if}}\
         {{if gridLayoutType==="img_large"}}\
-        <div class="template-5-carousel-list mb-15">\
-        <div class="carousel">\
-            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed) }}\
-            {{if isClickable == true }}\
-            <div class="slide click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
-                {{else}}\
-                <div class="slide click-to-navigate-url faqs-shadow" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
-                    {{/if}}\
-                    <div class="inner-content-list">\
+        <div class="search-list-template-carousel-grid-img">\
+          <div class="carousel">\
+            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+            <div class="slide grid-item-col">\
+                <div class="content-info-grid">\
+                    <div class="img-block-data">\
                         <img src="${data.img}">\
                     </div>\
                 </div>\
-                {{/each}}\
             </div>\
+            {{/each}}\
+          </div>\
         </div>\
-    </div>\
         {{/if}}\
         {{if gridLayoutType==="img_left"}}\
-        <div class="template-6-carousel-list mb-15 {{if textAlignment==" center"}}text-center{{/if}}">\
-        <div class="carousel">\
+        <div class="search-list-template-carousel-title-img-desc">\
+          <div class="carousel">\
             {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-            {{if isClickable == true}}\
-            <div class="slide click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
-                {{else}}\
-                <div class="slide click-to-navigate-url faqs-shadow" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
-                    {{/if}}\
-                    <div class="inner-content-list {{if textAlignment==" center"}}text-center{{/if}}">\
-                        {{if data.heading.length}}\
-                        <div class="title-main text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                        {{/if}}\
-                        {{each(key, res) [0,1,2]}}\
-                        <div class="img-with-text">\
-                            {{if data.img.length}}\
-                            <div class="img-block">\
-                                <img src="${data.img}">\
-                            </div>\
-                            {{/if}}\
-                            {{if data.description.length}}\
-                            <div class="info-text two-line-description" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                            {{/if}}\
+            <div class="slide grid-item-col">\
+                <div class="content-info-grid">\
+                    <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                    <div class="img-with-desc">\
+                        <div class="img_info">\
+                            <img src="${data.img}">\
                         </div>\
-                        {{/each}}\
+                        <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                     </div>\
                 </div>\
-                {{/each}}\
             </div>\
+            {{/each}}\
+          </div>\
         </div>\
         {{/if}}\
         {{if gridLayoutType==="img_top"}}\
-        <div class="template-7-carousel-list mb-15 {{if textAlignment==" center"}}text-center{{/if}}">\
+        <div class="search-list-template-carousel-title-img-card">\
         <div class="carousel">\
             {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-            {{if isClickable == true}}\
-            <div class="slide click-to-navigate-url faqs-shadow isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
-                {{else}}\
-                <div class="slide click-to-navigate-url faqs-shadow" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
-                    {{/if}}\
-                    <div class="inner-content-list {{if textAlignment==" center"}}text-center{{/if}}">\
-                        {{if data.img.length}}\
-                        <div class="main-img-block">\
-                            <img src="${data.img}">\
-                        </div>\
-                        {{/if}}\
-                        {{if data.heading.length}}\
-                        <div class="heading- text-truncate one-line-height" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                        {{/if}}\
-                        {{if data.description.length}}\
-                        <div class="desc-text-info four-line-description" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                        {{/if}}\
+            <div class="slide grid-item-col">\
+                <div class="content-info-grid">\
+                    <div class="main-img-block">\
+                        <img src="${data.img}" height="10">\
                     </div>\
+                    {{if data.heading.length}}\
+                    <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                    {{/if}}\
+                    {{if data.description.length}}\
+                    <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                    {{/if}}\
+                    <div class="price-tag">$156</div>\
                 </div>\
-                {{/each}}\
             </div>\
+            {{/each}}\
         </div>\
+       </div>\
         {{/if}}\
         {{/if}}\
         </script>'
@@ -240,7 +218,7 @@ class SearchCarouselViewTemplate {
 
 
 
-    
+
 
 }
 
