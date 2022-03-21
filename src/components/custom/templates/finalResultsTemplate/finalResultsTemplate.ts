@@ -26,24 +26,25 @@ class FinalResultsTemplate {
     let $ = me.hostInstance.$;
     me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
     me.groupData = msgData.message[0].component.payload.groupData;
-    let container = '.search-data-container';
-    if (msgData.message[0].component.payload.searchType == 'isSearch') {
-      container = '.search-data-container'
-    } else if (msgData.message[0].component.payload.searchType == 'isLiveSearch') {
-      container = '.live-search-data-container'
-    }
-    if (me.groupData && me.groupData.length) {
-      me.groupData.forEach((d: any) => {
-        var showAllHTML = me.customTemplateObj.renderMessage(d);
-        $(messageHtml).find(container).append(showAllHTML);
-      })
-    }
-    setTimeout(() => {
-      $(".show-all-results").off("click").on("click", function (e: any) {
-        hostWindowInstance.seeAllBtnClickEvent(e);
-      });
-    }, 300)
-
+      let container = '.search-data-container';
+      if (msgData.message[0].component.payload.searchType == 'isSearch') {
+        container = '.search-data-container'
+      } else if (msgData.message[0].component.payload.searchType == 'isLiveSearch') {
+        container = '.live-search-data-container'
+      }
+      if (me.groupData && me.groupData.length) {
+        me.groupData.forEach((d: any) => {
+          
+          var showAllHTML = me.customTemplateObj.renderMessage.bind(me,d);
+          $(messageHtml).find(container).append(showAllHTML);
+        })
+      }
+      setTimeout(()=>{
+        $(".show-all-results").off("click").on("click", function (e:any) {
+          hostWindowInstance.seeAllBtnClickEvent(e);
+        });
+      },300)
+      
   }
   getTemplateString(type: any) {
     var finalResultsTemplate = '<script type="text/x-jqury-tmpl">\
@@ -88,10 +89,10 @@ class FinalResultsTemplate {
     }
 
   }
-  botActionTrigger(event: any) {
-    let me: any = this;
-    me.hostInstance.botActionTrigger(event);
-  };
+  // botActionTrigger(event:any) {
+  //   let me: any = this;
+  //   me.hostInstance.botActionTrigger(event);
+  // };
   $ = $;
 
 }
