@@ -329,7 +329,7 @@
     --sdk-chat-window-btn-border-clr:#009dab;
     --sdk-chat-window-btn-font-clr:var(--sdk-chat-custom--buttons-defaultFontColor);
     --sdk-chat-window-btn-hover-bg:var(--sdk-chat-custom--buttons-onHoverButtonColor);
-    --sdk-chat-window-btn-hover-border-clr:var(--sdk-chat-custom--buttons-backgroundColor);
+    --sdk-chat-window-btn-hover-border-clr:var(--sdk-chat-custom--buttons-onHoverButtonColor);
     --sdk-chat-window-btn-hover-font-clr:var(--sdk-chat-custom--buttons-onHoverFontColor);
 
 
@@ -1153,6 +1153,7 @@
     display: table-cell;
     padding: 10px 10px 7px 0;
     border: none;
+    background-color:transparent !important;
 }
 
 .kore-chat-window .buttonTmplContent .buttonTmplContentChild .quickReply {
