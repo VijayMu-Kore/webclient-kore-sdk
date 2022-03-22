@@ -23,6 +23,8 @@ import FullSearchResultsTemplate from './templates/fullsearchResultsTemplate/ful
 import FinalResultsTemplate from './templates/finalResultsTemplate/finalResultsTemplate';
 import SearchGridViewTemplate from './templates/searchGridViewTemplate/searchGridViewTemplate';
 import SearchCarouselViewTemplate from './templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+
+
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
 
 
