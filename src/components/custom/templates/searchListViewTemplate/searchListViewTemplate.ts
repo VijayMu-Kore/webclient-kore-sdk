@@ -10,13 +10,12 @@ class SearchListViewTemplate {
       if (!msgData.message[0].component.payload.helpers) {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
-      me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
-      me.bindEvents(me.messageHtml);
-      return me.messageHtml;
+      me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+      SearchListViewTemplate.prototype.bindEvents(me, me.messageListHtml);
+      return me.messageListHtml;
     }
   }
-  bindEvents(messageHtml: any) {
-    let me: any = this;
+  bindEvents(me:any, messageHtml: any) {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     var _innerText;

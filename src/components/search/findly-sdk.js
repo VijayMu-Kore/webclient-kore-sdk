@@ -8300,46 +8300,48 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             customSearchResult: _self.customSearchResult,
             totalSearchResults: _self.vars.totalNumOfResults,
           });
-          _self.getMergedData(_self.vars.resultSettings, responseData, 'isSearch');
-
-          setTimeout(function () {
-            let me = this;
-            var devMode = _self.isDev ? true : false;
-            var viewType = _self.vars.customizeView ? "Customize" : "Preview";
-            var msgData = {
-              message: [{
-                component: {
-                  type: 'template',
-                  payload: {
-                    text: 'Sure, please find the matched results below',
-                    template_type: "finalResultsTemplate",
-                    isDev: _self.isDev,
-                    devMode: devMode,
-                    viewType: viewType,
-                    showAllResults: true,
-                    noResults: false,
-                    taskPrefix: "MATCHED",
-                    customSearchResult: _self.customSearchResult,
-                    totalSearchResults: _self.vars.totalNumOfResults,
-                    groupData: _self.vars.mergedData,
-                    searchType: 'isSearch',
-                    helpers: helpers
+          _self.getMergedData(_self.vars.resultSettings, responseData, 'isSearch').then((res) => {
+            // setTimeout(function () {
+              let me = this;
+              var devMode = _self.isDev ? true : false;
+              var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+              var msgData = {
+                message: [{
+                  component: {
+                    type: 'template',
+                    payload: {
+                      text: 'Sure, please find the matched results below',
+                      template_type: "finalResultsTemplate",
+                      isDev: _self.isDev,
+                      devMode: devMode,
+                      viewType: viewType,
+                      showAllResults: true,
+                      noResults: false,
+                      taskPrefix: "MATCHED",
+                      customSearchResult: _self.customSearchResult,
+                      totalSearchResults: _self.vars.totalNumOfResults,
+                      groupData: _self.vars.mergedData,
+                      searchType: 'isSearch',
+                      helpers: helpers
+                    }
                   }
-                }
-              }]
-            }
-            var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
-            $("#searchChatContainer").append(showAllHTML);
-            // _self.appendActionsContainerForBottomUp("search");
-            // _self.pubSub.publish("sa-action-full-search", {
-            //   container: ".actions-search-container",
-            //   isFullResults: false,
-            //   selectedFacet: "all results",
-            //   isLiveSearch: false,
-            //   isSearch: true,
-            //   dataObj,
-            // });
-          }, 300);
+                }]
+              }
+              var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
+              $("#searchChatContainer").append(showAllHTML);
+              // _self.appendActionsContainerForBottomUp("search");
+              // _self.pubSub.publish("sa-action-full-search", {
+              //   container: ".actions-search-container",
+              //   isFullResults: false,
+              //   selectedFacet: "all results",
+              //   isLiveSearch: false,
+              //   isSearch: true,
+              //   dataObj,
+              // });
+            // }, 300);
+          });
+
+          
           setTimeout(function () {
             _self.bindSearchActionEvents();
           }, 500);
@@ -25348,6 +25350,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                   }
                   _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
                 });
+                
               }
             } else {
               var results = response.results.data;
@@ -25406,6 +25409,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             ;
           }
           //response modification end //
+          resolve( _self.vars.mergedData);
           console.log("mergedeata", _self.vars.mergedData);
           return _self.vars.mergedData;
           // }, 200);

@@ -1,6 +1,9 @@
 import helpers from '../../../../utils/helpers';
 import './finalResultsTemplate.scss';
 import customTemplate from '../../customTemplate';
+import searchListViewTemplate from '../../templates/searchListViewTemplate/searchListViewTemplate';
+import searchGridViewTemplate from '../../templates/searchGridViewTemplate/searchGridViewTemplate';
+import searchCarouselViewTemplate from '../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
 import korejquery from "../../../../libs/korejquery";
 const $ = korejquery;
 
@@ -14,37 +17,50 @@ class FinalResultsTemplate {
       if (msgData.message[0].component.payload.helpers) {
         me.helpersObj = msgData.message[0].component.payload.helpers
       }
-      me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+      me.messageResultHtml = $(FinalResultsTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
       me.customTemplateObj = new customTemplate(me);
-      me.bindEvents(me.messageHtml, msgData);
-      return me.messageHtml;
+      me.listTemplateObj = new searchListViewTemplate();
+      me.gridTemplateObj = new searchGridViewTemplate();
+      me.carouselTemplateObj = new searchCarouselViewTemplate();
+
+      FinalResultsTemplate.prototype.bindEvents(me,me.messageResultHtml, msgData);
+      return me.messageResultHtml;
     }
   }
-  bindEvents(messageHtml: any, msgData: any) {
-    let me: any = this;
+  bindEvents(me:any,messageHtml: any, msgData: any) {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
-    me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
+    // if(msgData.message[0].component.payload.searchConfigurationCopy){
+    //   me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
+    // }
     me.groupData = msgData.message[0].component.payload.groupData;
-    let container = '.search-data-container';
-    if (msgData.message[0].component.payload.searchType == 'isSearch') {
-      container = '.search-data-container'
-    } else if (msgData.message[0].component.payload.searchType == 'isLiveSearch') {
-      container = '.live-search-data-container'
-    }
-    if (me.groupData && me.groupData.length) {
-      me.groupData.forEach((d: any) => {
-
-        var showAllHTML = me.customTemplateObj.renderMessage(d);
-        $(messageHtml).find(container).append(showAllHTML);
-      })
-    }
-    setTimeout(() => {
-      $(".show-all-results").off("click").on("click", function (e: any) {
-        hostWindowInstance.seeAllBtnClickEvent(e);
-      });
-    }, 300)
-
+      let container = '.search-data-container';
+      if (msgData.message[0].component.payload.searchType == 'isSearch') {
+        container = '.search-data-container'
+      } else if (msgData.message[0].component.payload.searchType == 'isLiveSearch') {
+        container = '.live-search-data-container'
+      }
+      if (me.groupData && me.groupData.length) {
+        me.groupData.forEach((d: any) => {
+          var showAllHTML ;
+          if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+            showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+          } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+            showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+          } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+            showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+          }
+          // var showAllHTML = me.customTemplateObj.renderMessage.bind(me.hostInstance,d);
+          $(messageHtml).find(container).append(showAllHTML);
+          
+        })
+      }
+      setTimeout(()=>{
+        $(".show-all-results").off("click").on("click", function (e:any) {
+          hostWindowInstance.seeAllBtnClickEvent(e);
+        });
+      },300)
+      
   }
   getTemplateString(type: any) {
     var finalResultsTemplate = '<script type="text/x-jqury-tmpl">\
