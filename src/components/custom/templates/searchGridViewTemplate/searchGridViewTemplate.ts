@@ -28,6 +28,9 @@ class SearchGridViewTemplate {
                 var ele = $(event.target).closest(".search-task");
                 hostWindowInstance.botActionTrigger(event);
             });
+        $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
+            hostWindowInstance.captureClickAnalytics(e);
+        });
     }
     getTemplateString(type: any) {
         const searchGridTemplate = '<script type="text/x-jqury-tmpl">\
@@ -37,7 +40,7 @@ class SearchGridViewTemplate {
         {{if gridLayoutType==="img_common"}}\
         <div class="search-list-template-grid-img-title">\
         {{each(key, data) structuredData.slice(0, 5)}}\
-          <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}}">\
+          <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}} click-log-metrics">\
             <div class="content-info-grid">\
               {{if data.heading.length}}\
               <div class="heading-title">\
@@ -60,7 +63,7 @@ class SearchGridViewTemplate {
      {{if gridLayoutType==="img_large"}}\
        <div class="search-list-template-grid-img">\
        {{each(key, data) structuredData.slice(0, 5)}}\
-          <div class="grid-item-col">\
+          <div class="grid-item-col click-log-metrics">\
              <div class="content-info-grid">\
                  <div class="img-block-data">\
                    <img src="${data.img}" />\
@@ -73,7 +76,7 @@ class SearchGridViewTemplate {
      {{if gridLayoutType==="img_left"}}\
      <div class="search-list-template-grid-title-img-desc">\
      {{each(key, data) structuredData.slice(0, 5)}}\
-     <div class="grid-item-col">\
+     <div class="grid-item-col click-log-metrics">\
          <div class="content-info-grid">\
              <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
              {{each(key, res) [0,1,2]}}\
@@ -92,7 +95,7 @@ class SearchGridViewTemplate {
      {{if gridLayoutType==="img_top"}}\
      <div class="search-list-template-grid-title-img-card">\
      {{each(key, data) structuredData.slice(0, 5)}}\
-       <div class="grid-item-col">\
+       <div class="grid-item-col click-log-metrics">\
            <div class="content-info-grid">\
                <div class="main-img-block">\
                    <img src="${data.img}" height="10"/>\
