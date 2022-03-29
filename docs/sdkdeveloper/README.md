@@ -33,7 +33,12 @@ npm run build-umd (for umd build)
 ## 💡 ESLint
 
 ```bash
-./node_modules/.bin/eslint src/index.js 
+npm run eslint
+npm run eslint-fix
+
+npm run prettier
+npm run prettier-fix
+npm run prettier-v (verbose for detailed errors) 
 
 ```
 

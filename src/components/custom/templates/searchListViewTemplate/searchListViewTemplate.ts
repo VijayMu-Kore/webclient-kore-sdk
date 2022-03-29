@@ -267,9 +267,9 @@ class SearchListViewTemplate {
       var ele = $(event.target).closest(".search-task");
       hostWindowInstance.botActionTrigger(event);
     });
-    // $(messageHtml).off("click",".click-log-metrics").on("click",".click-log-metrics", function (e: any) {
-    //   hostWindowInstance?.captureClickAnalytics(e);
-    // });
+    $(messageHtml).off("click",".click-log-metrics").on("click",".click-log-metrics", function (e: any) {
+      hostWindowInstance?.captureClickAnalytics(e);
+    });
     $(messageHtml).off("click",".click-to-navigate-url").on("click",".click-to-navigate-url", function (e: any) {
       hostWindowInstance?.clickNavigateToUrl(e);
     });

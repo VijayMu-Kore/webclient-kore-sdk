@@ -1,5 +1,6 @@
 import helpers from '../../../../utils/helpers';
 import './searchGridViewTemplate.scss';
+
 class SearchGridViewTemplate {
 
     renderMessage(msgData: any) {
@@ -10,16 +11,13 @@ class SearchGridViewTemplate {
             if (!msgData.message[0].component.payload.helpers) {
                 msgData.message[0].component.payload['helpers'] = me.helpersObj;
             }
-            me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
-            me.bindEvents(me.messageHtml);
-            return me.messageHtml;
+            me.messageGridHtml = $(SearchGridViewTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+            SearchGridViewTemplate.prototype.bindEvents(me, me.messageGridHtml);
+            return me.messageGridHtml;
         }
     }
-    bindEvents(messageHtml: any) {
-        let me: any = this;
+    bindEvents(me: any, messageHtml: any) {
         let hostWindowInstance = me.hostInstance;
-        // let chatWindowInstance = me.cwInstance;
-        // let $ = me.cwInstance.$;
         let $ = me.hostInstance.$;
         $(messageHtml)
             .off("click", ".search-task")
@@ -34,29 +32,63 @@ class SearchGridViewTemplate {
     }
     getTemplateString(type: any) {
         const searchGridTemplate = '<script type="text/x-jqury-tmpl">\
-        {{if renderTitle}}\
-        <div class="title-list-heading">${titleName}</div>\
+        {{if isButtonTemplate == false}}\
+            {{if renderTitle}}\
+            <div class="title-list-heading">${titleName}</div>\
+            {{/if}}\
+            {{if gridLayoutType==="img_common"}}\
+            <div class="search-list-template-grid-img-title">\
+            {{each(key, data) structuredData.slice(0, 5)}}\
+            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}}">\
+                <div class="content-info-grid">\
+                {{if data.heading.length}}\
+                <div class="heading-title">\
+                {{if data.img.length}}\
+                <div class="img_block">\
+                <img src="${data.img}" />\
+                </div>\
+                {{/if}}\
+                    <span>{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                </div>\
+                {{/if}}\
+                {{if data.description}}\
+                <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                {{/if}}\
+                </div>\
+            </div>\
+            {{/each}}\
+            </div>\
         {{/if}}\
-        {{if gridLayoutType==="img_common"}}\
-        <div class="search-list-template-grid-img-title">\
+        {{if gridLayoutType==="img_large"}}\
+        <div class="search-list-template-grid-img">\
         {{each(key, data) structuredData.slice(0, 5)}}\
           <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}} click-log-metrics">\
-            <div class="content-info-grid">\
-              {{if data.heading.length}}\
-              <div class="heading-title">\
-              {{if data.img.length}}\
-              <div class="img_block">\
-               <img src="${data.img}" />\
-               </div>\
-               {{/if}}\
-                <span>{{html helpers.convertMDtoHTML(data.heading)}}</span>\
-              </div>\
-              {{/if}}\
-              {{if data.description}}\
-              <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-              {{/if}}\
+            <div class="grid-item-col">\
+                <div class="content-info-grid">\
+                    <div class="img-block-data">\
+                    <img src="${data.img}" />\
+                    </div>\
+                </div>\
             </div>\
-          </div>\
+            {{/each}}\
+        </div>\
+        {{/if}}\
+        {{if gridLayoutType==="img_left"}}\
+        <div class="search-list-template-grid-title-img-desc">\
+        {{each(key, data) structuredData.slice(0, 5)}}\
+        <div class="grid-item-col">\
+            <div class="content-info-grid">\
+                <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                {{each(key, res) [0,1,2]}}\
+                <div class="img-with-desc">\
+                    <div class="img_info">\
+                        <img src="${data.img}" />\
+                    </div>\
+                    <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                </div>\
+                {{/each}}\
+            </div>\
+        </div>\
         {{/each}}\
         </div>\
      {{/if}}\
@@ -112,6 +144,61 @@ class SearchGridViewTemplate {
       {{/each}}\
    </div>\
      {{/if}}\
+        {{/if}}\
+        {{if gridLayoutType==="img_top"}}\
+        <div class="search-list-template-grid-title-img-card">\
+        {{each(key, data) structuredData.slice(0, 5)}}\
+        <div class="grid-item-col">\
+            <div class="content-info-grid">\
+                <div class="main-img-block">\
+                    <img src="${data.img}" height="10"/>\
+                </div>\
+                {{if data.heading.length}}\
+                <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                {{/if}}\
+                {{if data.description.length}}\
+                <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                {{/if}}\
+                <div class="price-tag">$156</div>\
+            </div>\
+        </div>\
+        {{/each}}\
+    </div>\
+        {{/if}}\
+    {{/if}}\
+    {{if isButtonTemplate}}\
+    {{if structuredData && structuredData.length > 0 }}\
+    {{if devMode == true && viewType == "Customize" && selectedFacet == appearanceType}}\
+      <div class="bot-actions-customize-info ">\
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFnSURBVHgBpVNNSsNQEH4zabXLuFXEHsGCqLjQ9gTqCWJP0AsUk0j26tJdegLrCczKnyL0CDbgAbKzhvjGmZBIfIQScODxHt/8fzNPqRXSOfS6clbZgAm09sZ9tCxHkToDULZgRCphyykC+MsXb1G1x78ZfRfRumfDGBF6X68+yJG3YET0uLZ/6dZWIM5E+gIABmaWaksShE+Yzq783wClwnRmvK91ZqezYFoNojXNtf4+z96CKG9BE3F2mpiZAWgXsWVXMbHhlm5znoSzHGXCELFnlvz57N+oegm59DnfQyjKfxeyTCsmzJOb+/VM3fqBS2C1u6j+KSg9yZw7R8FOU6diuZLl0zguKqAHnaVD1VjAIaXyyeQBmMCQRzgy15bxhRwzu+yLbGUeqqLwmEyn4SJNSmKtUpl9RFF7e7DBymtr68Tmd8xYUjri5vGIuQq53bvqVKAui9aaDeC05jPJskWqqTT5zj8FOrqqP5/xLgAAAABJRU5ErkJggg==" alt="actions-info">\
+        <span class="info-text">Bot Actions cannot be customized</span>\
+      </div>\
+    {{/if}}\
+    {{if selectedFacet !== appearanceType && selectedFacet == "all results"}}\
+      <div class="structured-data-header total-structured-data-wrap" appearanceType="task">\
+        ACTIONS\
+        <div class="search-heads show-all sdk-show-classification display-none">\
+          Show all Actions\
+        </div>\
+      </div>\
+    {{/if}}\
+    {{if selectedFacet == appearanceType || selectedFacet == "all results"}}\
+      <div class="action-results-container btn_block_actions main-content-title-grid-data new-grid-search-data">\
+        {{each(key, task) structuredData}}\
+          <div class="title-box-data">\
+              <div id="${key}" class="search-task search-grid-item text-truncate one-line-height" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">\
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJ1BMVEUAAAAAVaoEbq4DbK8GbK4Gbq8Gba0Fba8Fba4Fbq4Eba4Fba7////SVqJwAAAAC3RSTlMAA0hJVYKDqKmq4875bAAAAAABYktHRAyBs1FjAAAAP0lEQVQI12NgwACMJi5A4CzAwLobDBIYOCaAxDknMLCvnAkEsyYwcECkkBicMDV4GGwQxQEMjCogK5wEMC0HALyTIMofpWLWAAAAAElFTkSuQmCC" class="credit-card display-none">\
+              <div class="name-title">${task.titleText}</div>\
+              {{if task.childBotName !=="" && task.childBotName !== undefined}}\
+                <div class="child-bot">${task.childBotName}</div>\
+              {{/if}}\
+              </div>\
+          </div>\
+        {{/each}}\
+      </div>\
+    {{/if}}\
+  {{/if}}\
+    {{/if}}\
         </script>'
         if (type === 'searchGridTemplate') {
             return searchGridTemplate;

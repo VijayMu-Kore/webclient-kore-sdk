@@ -23,6 +23,9 @@ import FullSearchResultsTemplate from './templates/fullsearchResultsTemplate/ful
 import FinalResultsTemplate from './templates/finalResultsTemplate/finalResultsTemplate';
 import SearchGridViewTemplate from './templates/searchGridViewTemplate/searchGridViewTemplate';
 import SearchCarouselViewTemplate from './templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+import FullSearchResultTopdownTemplate from './templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate';
+
+
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
 
 
@@ -80,6 +83,7 @@ customTemplate.prototype.installDefaultTemplates = function () {
 	this.installTemplate(new SearchCarouselViewTemplate());
 	this.installTemplate(new FullSearchResultsTemplate());
 	this.installTemplate(new FinalResultsTemplate());
+	this.installTemplate(new FullSearchResultTopdownTemplate());
 };
 /**
  * purpose: Function to render bot message for a given custom template

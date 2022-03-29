@@ -18,197 +18,240 @@ class SearchCarouselViewTemplate {
                 const checkImg = payload.some((res: any) => res !== '');
                 msgData.message[0].component.payload.templateType = checkImg ? 'L4' : '';
             }
-            me.messageHtml = $(me.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
-            setTimeout(() => {
-                const me: any = this;
-                let newCarouselTemplateCount = 0;
-                let newCarouselEles = [];
-                newCarouselTemplateCount += 1;
-                me.messageHtml
-                    .find(".carousel:last")
-                    .addClass("carouselTemplate" + newCarouselTemplateCount);
-                var count = me.messageHtml
-                    .find(".carouselTemplate" + newCarouselTemplateCount)
-                    .children().length;
-                if (count > 1) {
-                    var carouselOneByOne = new PureJSCarousel({
-                        carousel: ".carouselTemplate" + newCarouselTemplateCount,
-                        slide: ".slide",
-                        oneByOne: true,
-                        jq: $,
-                    });
-                    $(".carousel" + newCarouselTemplateCount)
-                        .parent()
-                        .show();
-                    newCarouselEles.push(carouselOneByOne);
-                    if (
-                        $(".carouselTemplate" + newCarouselTemplateCount).width() >=
-                        $(
-                            ".carouselTemplate" +
-                            newCarouselTemplateCount +
-                            " .purejscarousel-slides-container"
-                        ).children().length *
-                        $(
-                            ".carouselTemplate" +
-                            newCarouselTemplateCount +
-                            " .purejscarousel-slides-container .slide:first"
-                        ).width()
-                    ) {
-                        $(
-                            ".carouselTemplate" +
-                            newCarouselTemplateCount +
-                            " .purejscarousel-btn-prev"
-                        ).hide();
-                        $(
-                            ".carouselTemplate" +
-                            newCarouselTemplateCount +
-                            " .purejscarousel-btn-next"
-                        ).hide();
-                    }
-                    $(
-                        ".carouselTemplate" +
-                        newCarouselTemplateCount +
-                        " .purejscarousel-btn-prev::after"
-                    ).css(
-                        "height",
-                        $(
-                            ".carouselTemplate" +
-                            newCarouselTemplateCount +
-                            ".purejscarousel-slides-container"
-                        ).height() + "px"
-                    );
-                    $(
-                        ".carouselTemplate" +
-                        newCarouselTemplateCount +
-                        " .purejscarousel-btn-next::after"
-                    ).css(
-                        "height",
-                        $(
-                            ".carouselTemplate" +
-                            newCarouselTemplateCount +
-                            ".purejscarousel-slides-container"
-                        ).height() + "px"
-                    );
-                    $("body").append(
-                        "<style>.carouselTemplate" +
-                        newCarouselTemplateCount +
-                        " .purejscarousel-btn-next::after,.carouselTemplate" +
-                        newCarouselTemplateCount +
-                        " .purejscarousel-btn-prev::after {height:" +
-                        ($(
-                            ".carouselTemplate" +
-                            newCarouselTemplateCount +
-                            " .purejscarousel-slides-container"
-                        ).height() -
-                            8) +
-                        "px !important; top:-" +
-                        ($(
-                            ".carouselTemplate" +
-                            newCarouselTemplateCount +
-                            " .purejscarousel-btn-next"
-                        ).position().top -
-                            27.5) +
-                        "px !important;}</style>"
-                    );
-
-                    var evt = document.createEvent("HTMLEvents");
-                    evt.initEvent("resize", true, false);
-                    window.dispatchEvent(evt);
-                }
-            });
-            me.bindEvents(me.messageHtml);
-            return me.messageHtml;
+            me.messageCarouselHtml = $(SearchCarouselViewTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+            
+            SearchCarouselViewTemplate.prototype.bindEvents(me, me.messageCarouselHtml);
+            return me.messageCarouselHtml;
         }
     }
-    bindEvents(messageHtml: any) {
-        let me: any = this;
-        // let chatWindowInstance = me.cwInstance;
-        // let $ = me.cwInstance.$;
+    bindEvents(me:any, messageHtml: any) {
+        let hostWindowInstance = me.hostInstance;
+        let $ = me.hostInstance.$;
+        setTimeout(() => {
+            const me: any = this;
+            let newCarouselTemplateCount = $('.carousel').length;
+            let newCarouselEles = [];
+            newCarouselTemplateCount += 1;
+            messageHtml
+                .find(".carousel:last")
+                .addClass("carouselTemplate" + newCarouselTemplateCount);
+            var count = messageHtml
+                .find(".carouselTemplate" + newCarouselTemplateCount)
+                .children().length;
+            if (count > 1) {
+                var carouselOneByOne = new PureJSCarousel({
+                    carousel: ".carouselTemplate" + newCarouselTemplateCount,
+                    slide: ".slide",
+                    oneByOne: true,
+                    jq: $,
+                });
+                $(".carousel" + newCarouselTemplateCount)
+                    .parent()
+                    .show();
+                newCarouselEles.push(carouselOneByOne);
+                if (
+                    $(".carouselTemplate" + newCarouselTemplateCount).width() >=
+                    $(
+                        ".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-slides-container"
+                    ).children().length *
+                    $(
+                        ".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-slides-container .slide:first"
+                    ).width()
+                ) {
+                    $(
+                        ".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-btn-prev"
+                    ).hide();
+                    $(
+                        ".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-btn-next"
+                    ).hide();
+                }
+                $(
+                    ".carouselTemplate" +
+                    newCarouselTemplateCount +
+                    " .purejscarousel-btn-prev::after"
+                ).css(
+                    "height",
+                    $(
+                        ".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        ".purejscarousel-slides-container"
+                    ).height() + "px"
+                );
+                $(
+                    ".carouselTemplate" +
+                    newCarouselTemplateCount +
+                    " .purejscarousel-btn-next::after"
+                ).css(
+                    "height",
+                    $(
+                        ".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        ".purejscarousel-slides-container"
+                    ).height() + "px"
+                );
+                $("body").append(
+                    "<style>.carouselTemplate" +
+                    newCarouselTemplateCount +
+                    " .purejscarousel-btn-next::after,.carouselTemplate" +
+                    newCarouselTemplateCount +
+                    " .purejscarousel-btn-prev::after {height:" +
+                    ($(
+                        ".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-slides-container"
+                    ).height() -
+                        8) +
+                    "px !important; top:-" +
+                    ($(
+                        ".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-btn-next"
+                    ).position().top -
+                        27.5) +
+                    "px !important;}</style>"
+                );
+
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("resize", true, false);
+                window.dispatchEvent(evt);
+            }
+        },500);
+        $(messageHtml)
+            .off("click", ".search-task")
+            .on("click", ".search-task", function (event: any) {
+                event.stopPropagation();
+                var ele = $(event.target).closest(".search-task");
+                hostWindowInstance.botActionTrigger(event);
+            });
     }
 
     getTemplateString(type: any) {
         const searchCarouselTemplate = '<script type="text/x-jqury-tmpl">\
-        {{if structuredData.length}}\
-        {{if renderTitle}}\
-        <div class="title-list-heading">${titleName}</div>\
-        {{/if}}\
-        {{if gridLayoutType==="img_common"}}\
-        <div class="search-list-template-carousel{{if templateType==="L4"}}-img-title{{/if}}">\
-        <div class="carousel">\
-        {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-            <div class="slide grid-item-col">\
-                <div class="content-info-grid">\
-                    <div class="heading-title text_overflow">\
-                    {{if data.img.length}}\
-                    <div class="img_block">\
-                       <img src="${data.img}"/>\
-                    </div>\
-                    {{/if}}\
-                    <span title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
-                    </div>\
-                    <div class="desc_text_info clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                </div>\
-            </div>\
-        {{/each}}\
-        </div>\
-       </div>\
-        {{/if}}\
-        {{if gridLayoutType==="img_large"}}\
-        <div class="search-list-template-carousel-grid-img">\
-          <div class="carousel">\
+        {{if isButtonTemplate == false}}\
+            {{if structuredData.length}}\
+            {{if renderTitle}}\
+            <div class="title-list-heading">${titleName}</div>\
+            {{/if}}\
+            {{if gridLayoutType==="img_common"}}\
+            <div class="search-list-template-carousel{{if templateType==="L4"}}-img-title{{/if}}">\
+            <div class="carousel">\
             {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-            <div class="slide grid-item-col">\
-                <div class="content-info-grid">\
-                    <div class="img-block-data">\
-                        <img src="${data.img}">\
+                <div class="slide grid-item-col">\
+                    <div class="content-info-grid">\
+                        <div class="heading-title text_overflow">\
+                        {{if data.img.length}}\
+                        <div class="img_block">\
+                        <img src="${data.img}"/>\
+                        </div>\
+                        {{/if}}\
+                        <span title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                        </div>\
+                        <div class="desc_text_info clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                     </div>\
                 </div>\
-            </div>\
             {{/each}}\
-          </div>\
+            </div>\
         </div>\
-        {{/if}}\
-        {{if gridLayoutType==="img_left"}}\
-        <div class="search-list-template-carousel-title-img-desc">\
-          <div class="carousel">\
-            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-            <div class="slide grid-item-col">\
-                <div class="content-info-grid">\
-                    <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                    <div class="img-with-desc">\
-                        <div class="img_info">\
+            {{/if}}\
+            {{if gridLayoutType==="img_large"}}\
+            <div class="search-list-template-carousel-grid-img">\
+            <div class="carousel">\
+                {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+                <div class="slide grid-item-col">\
+                    <div class="content-info-grid">\
+                        <div class="img-block-data">\
                             <img src="${data.img}">\
                         </div>\
-                        <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                     </div>\
                 </div>\
+                {{/each}}\
             </div>\
+            </div>\
+            {{/if}}\
+            {{if gridLayoutType==="img_left"}}\
+            <div class="search-list-template-carousel-title-img-desc">\
+            <div class="carousel">\
+                {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+                <div class="slide grid-item-col">\
+                    <div class="content-info-grid">\
+                        <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                        <div class="img-with-desc">\
+                            <div class="img_info">\
+                                <img src="${data.img}">\
+                            </div>\
+                            <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                        </div>\
+                    </div>\
+                </div>\
+                {{/each}}\
+            </div>\
+            </div>\
+            {{/if}}\
+            {{if gridLayoutType==="img_top"}}\
+            <div class="search-list-template-carousel-title-img-card">\
+            <div class="carousel">\
+                {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+                <div class="slide grid-item-col">\
+                    <div class="content-info-grid">\
+                        <div class="main-img-block">\
+                            <img src="${data.img}" height="10">\
+                        </div>\
+                        {{if data.heading.length}}\
+                        <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                        {{/if}}\
+                        {{if data.description.length}}\
+                        <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                        {{/if}}\
+                        <div class="price-tag">$156</div>\
+                    </div>\
+                </div>\
+                {{/each}}\
+            </div>\
+        </div>\
+            {{/if}}\
+            {{/if}}\
+        {{/if}}\
+        {{if isButtonTemplate}}\
+        {{if structuredData && structuredData.length > 0 }}\
+        <div class="action-carousel-parent-container">\
+        {{if devMode == true && viewType == "Customize" && selectedFacet == appearanceType}}\
+          <div class="bot-actions-customize-info ">\
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFnSURBVHgBpVNNSsNQEH4zabXLuFXEHsGCqLjQ9gTqCWJP0AsUk0j26tJdegLrCczKnyL0CDbgAbKzhvjGmZBIfIQScODxHt/8fzNPqRXSOfS6clbZgAm09sZ9tCxHkToDULZgRCphyykC+MsXb1G1x78ZfRfRumfDGBF6X68+yJG3YET0uLZ/6dZWIM5E+gIABmaWaksShE+Yzq783wClwnRmvK91ZqezYFoNojXNtf4+z96CKG9BE3F2mpiZAWgXsWVXMbHhlm5znoSzHGXCELFnlvz57N+oegm59DnfQyjKfxeyTCsmzJOb+/VM3fqBS2C1u6j+KSg9yZw7R8FOU6diuZLl0zguKqAHnaVD1VjAIaXyyeQBmMCQRzgy15bxhRwzu+yLbGUeqqLwmEyn4SJNSmKtUpl9RFF7e7DBymtr68Tmd8xYUjri5vGIuQq53bvqVKAui9aaDeC05jPJskWqqTT5zj8FOrqqP5/xLgAAAABJRU5ErkJggg==" alt="actions-info">\
+            <span class="info-text">Bot Actions cannot be customized</span>\
+          </div>\
+        {{/if}}\
+        {{if selectedFacet !== appearanceType && selectedFacet == "all results"}}\
+          <div class="structured-data-header total-structured-data-wrap" appearanceType="task">\
+            ACTIONS\
+            <div class="search-heads show-all sdk-show-classification display-none">\
+              Show all Actions\
+            </div>\
+          </div>\
+        {{/if}}\
+        {{if selectedFacet == appearanceType || selectedFacet == "all results"}}\
+          <div class="carousel action-results-container carousel-search-data-items">\
+            {{each(key, task) structuredData}}\
+              <div class="slide">\
+                <div class="title-box-data text-truncate">\
+                    <div id="${key}" class="search-task search-grid-item text-truncate one-line-height" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">${task.titleText}</div>\
+                    {{if task.childBotName !=="" && task.childBotName !== undefined}}\
+                      <div class="child-bot">${task.childBotName}</div>\
+                    {{/if}}\
+                </div>\
+              </div>\
             {{/each}}\
           </div>\
-        </div>\
         {{/if}}\
-        {{if gridLayoutType==="img_top"}}\
-        <div class="search-list-template-carousel-title-img-card">\
-        <div class="carousel">\
-            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-            <div class="slide grid-item-col">\
-                <div class="content-info-grid">\
-                    <div class="main-img-block">\
-                        <img src="${data.img}" height="10">\
-                    </div>\
-                    {{if data.heading.length}}\
-                    <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                    {{/if}}\
-                    {{if data.description.length}}\
-                    <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                    {{/if}}\
-                    <div class="price-tag">$156</div>\
-                </div>\
-            </div>\
-            {{/each}}\
         </div>\
-       </div>\
-        {{/if}}\
+      {{/if}}\
         {{/if}}\
         </script>'
         if (type === 'searchCarouselTemplate') {
