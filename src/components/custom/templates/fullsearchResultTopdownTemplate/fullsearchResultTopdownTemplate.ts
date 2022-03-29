@@ -60,6 +60,12 @@ class FullSearchResultTopdownTemplate {
         }
       }
       }, 300);
+          
+      let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
+          facets: msgData.message[0].component.payload.tabsList
+      });
+      $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
+      FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,tabsHtml,msgData.message[0].component.payload.tabsList,'all results');
   }
   getTemplateString(type: any) {
     
@@ -130,7 +136,89 @@ class FullSearchResultTopdownTemplate {
     }
 
   }
+  getTopDownFacetsTabs() {
+    var topDownFacetsTabs =
+      '<script id="top-down-tabs-template" type="text/x-jqury-tmpl">\
+                                  <div class="tab-sec">\
+                                    {{each(key, facet) facets }}\
+                                     <div class="tab-name capital un-selected-type facet {{= facet.className}}" id="{{= facet.key}}" apperance="{{= facet.key}}" title="{{= facet.name}} ({{= facet.doc_count}})"><span class="tab-title text-truncate one-line-height"> {{= facet.name}}</span> <span class="tab-count text-truncate one-line-height"> ({{= facet.doc_count}}</span><span class="tab-count-right-bracket">)</span></div>\
+                                    {{/each}}\
+                                    </div>\
+                                </script>';
+    return topDownFacetsTabs;
+  };
+  bindTabsClickEvent(me:any, messageHtml:any,tabsHtml:any ,facets:any, facetSelected:any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+        var doc_count = 0;
+        var isAction = false;
+        $(tabsHtml).find(".active-tab .tab-count").show();
+        $(tabsHtml).find(".active-tab .tab-count-right-bracket").show();
+          facets.forEach(function (facet:any) {
+            if (facet && facet.key) {
+              if (facetSelected == facet.key) {
+                doc_count = facet.doc_count;
+              }
+              if (facet.key == "task") {
+                isAction = true;
+              }
+              $(tabsHtml).find("." + facet.key.replaceAll(" ", "-"))
+                .removeClass('active-tab')
+                .addClass("un-selected-type");
+            }
+          });
+          $(tabsHtml).find("." + facetSelected.replaceAll(" ", "-"))
+            .removeClass("un-selected-type")
+            .addClass('active-tab');
+          if (!facetSelected || facetSelected === "all results") {
+            $(tabsHtml).find(".facet:first").removeClass("un-selected-type");
+            $(tabsHtml).find(".facet:first").addClass('active-tab');
+          }
 
+
+      $(tabsHtml).off("click", ".facet").on("click", ".facet", function (e: any) {
+          var selectedFacet = $(e.target).closest('.facet').attr("id");
+          $(tabsHtml).find(".tab-name.capital.facet.active-tab")
+              .removeClass("active-tab")
+              .addClass('un-selected-type');
+          $(tabsHtml).find("." + selectedFacet.replaceAll(" ", "-"))
+              .removeClass("un-selected-type").addClass('active-tab');
+
+          hostWindowInstance.tabFacetTrigger(e).then((result: any) => {
+              if(selectedFacet !== 'task'){
+                  let index = result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+                        if(index>-1){
+                            result.splice(index,1)
+                        }
+              }
+              let formatedTemplatesData: any = result;
+              setTimeout(() => {
+                  $(messageHtml).find('.full-search-data-container').empty();
+                  if (formatedTemplatesData && formatedTemplatesData.length) {
+                      formatedTemplatesData.forEach((d: any) => {
+                          var showAllHTML;
+                          if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+                              showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+                          } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+                              showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+                          } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+                              showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+                          }
+                          $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+                      })
+                  }
+
+                  if (!$(".full-search-data-container").children().length) {
+                      $(".empty-full-results-container").removeClass("hide");
+                  } else {
+                      if (!$(".empty-full-results-container").hasClass("hide")) {
+                          $(".empty-full-results-container").addClass("hide");
+                      }
+                  }
+              }, 300);
+          })
+      });
+  }
 }
 
 export default FullSearchResultTopdownTemplate;
