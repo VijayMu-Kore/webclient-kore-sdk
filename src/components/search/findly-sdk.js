@@ -7,6 +7,7 @@ import _ from 'lodash';
 import PubSub from 'pubsub-js'
 
 import './css/findly-sdk.scss'
+import './css/search-bar-experience.scss'
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // import './findly-demo.scss'
@@ -8362,137 +8363,165 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           }
           // $("#searchChatContainer").append(searchData);
         }
-      }
-      if ($('body').hasClass('top-down')) {
-        if (res && res.results && res.resultType == "grouped") {
-          var availableGroups = Object.keys(res.results);
-          _self.vars.availableGroupsOrder = availableGroups;
-          if (!(res.tabFacet || {}).buckets) {
-            totalResultsCount = 0;
-          }
-          if (availableGroups && availableGroups.length) {
-            availableGroups.forEach((group) => {
-              var results = res.results[group].data;
-              if (!(res.tabFacet || {}).buckets) {
-                totalResultsCount =
-                  totalResultsCount + res.results[group].doc_count;
-              }
-              var groupName =
-                group == "default_group" ? "defaultTemplate" : group;
-              var dataObj = {
-                facets: facets,
-                searchFacets: searchFacets,
-                originalQuery: res.originalQuery || "",
-                customSearchResult: _self.customSearchResult,
-                data: results,
-                groupName: groupName,
-                doc_count: res.results[group].doc_count,
-              };
-              var publishSearchData = "sa-" + groupName + "-search-data";
-              if ($('body').hasClass('top-down')) {
-                _self.pubSub.publish(publishSearchData, {
-                  container: searchContainerName,
-                  isFullResults: $("body").hasClass("top-down") ? true : false,
-                  selectedFacet: "all results",
-                  isLiveSearch: false,
-                  isSearch: $("body").hasClass("top-down") ? false : true,
-                  dataObj,
-                });
-              }
-              if (!$(".empty-full-results-container").hasClass("hide")) {
-                $(".empty-full-results-container").addClass("hide");
-              }
-            });
-            _self.vars.totalNumOfResults = totalResultsCount;
-            res.results = results;
-            if (!$(".full-search-data-container").children().length) {
-              if (_self.isDev) {
-                $(".no-templates-defined-full-results-container").show();
-              } else {
-                $(".empty-full-results-container").removeClass("hide");
-              }
-            }
-          } else {
-            var dataObj = {
-              facets: facets || [],
-              searchFacets: searchFacets || [],
-              originalQuery: res.originalQuery || "",
-              customSearchResult: _self.customSearchResult,
-              data: [],
-              groupName: "defaultTemplate",
-            };
-            // _self.pubSub.publish('sa-defaultTemplate-search-data', { container: searchContainerName, isFullResults: true, selectedFacet: 'all results', isLiveSearch: false, isSearch: false, dataObj });
-            if (!(res.tasks || []).length) {
-              $(".empty-full-results-container").removeClass("hide");
-              $(".no-templates-defined-full-results-container").hide();
-            }
-          }
-        } else {
-          var results = res.results.data;
-          if (!(res.tabFacet || {}).buckets) {
-            totalResultsCount = res.results.doc_count || 0;
-          }
-          _self.vars.totalNumOfResults = totalResultsCount;
-          var dataObj = {
-            facets: facets || [],
-            searchFacets: searchFacets || [],
-            originalQuery: res.originalQuery || "",
-            customSearchResult: _self.customSearchResult,
-            data: results,
-            groupName: "defaultTemplate",
-            doc_count: res.results.doc_count,
-          };
-          res.results = results;
-          if (totalResultsCount) {
-            if ($('body').hasClass('top-down')) {
-              _self.pubSub.publish("sa-defaultTemplate-search-data", {
-                container: searchContainerName,
-                isFullResults: $("body").hasClass("top-down") ? true : false,
-                selectedFacet: "all results",
-                isLiveSearch: false,
-                isSearch: $("body").hasClass("top-down") ? false : true,
-                dataObj,
-              });
-            }
-            if (!$(".empty-full-results-container").hasClass("hide")) {
-              $(".empty-full-results-container").addClass("hide");
-            }
+      } else {
+        _self.countTotalResults(res, totalResultsCount);
 
-            if (!$(".full-search-data-container").children().length) {
-              if (_self.isDev) {
-                $(".no-templates-defined-full-results-container").show();
-              } else {
-                $(".empty-full-results-container").removeClass("hide");
-              }
+        _self.getMergedData(_self.vars.resultSettings, responseData, 'isFullResults').then((res) => {
+            let me = this;
+            var devMode = _self.isDev ? true : false;
+            var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+            var msgData = {
+              message: [{
+                component: {
+                  type: 'template',
+                  payload: {
+                    template_type: "fullSearchResultTopdownTemplate",
+                    isDev: _self.isDev,
+                    devMode: devMode,
+                    viewType: viewType,
+                    totalSearchResults: _self.vars.totalNumOfResults,
+                    groupData: _self.vars.mergedData,
+                    searchType: 'isFullResults',
+                    helpers: helpers
+                  }
+                }
+              }]
             }
-          } else {
-            if (!(res.tasks || []).length) {
-              $(".empty-full-results-container").removeClass("hide");
-              $(".no-templates-defined-full-results-container").hide();
-            }
-          }
-        }
-        if ((res.tasks || []).length) {
-          var dataObj = {
-            facets: facets || [],
-            searchFacets: searchFacets || [],
-            originalQuery: res.originalQuery || "",
-            customSearchResult: _self.customSearchResult,
-            tasks: res.tasks || [],
-          };
-          _self.pubSub.publish("sa-search-result", {
-            ...dataObj,
-            ...{
-              isLiveSearch: false,
-              isFullResults: true,
-              selectedFacet: _self.vars.isFromTopDownKeyDown
-                ? "data"
-                : "all results",
-            },
-          });
-        }
+            var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
+            $("#top-down-full-results-container").empty().append(showAllHTML);
+            $(".skelton-load-img").hide();
+        });
       }
+      // if ($('body').hasClass('top-down')) {
+        // if (res && res.results && res.resultType == "grouped") {
+        //   var availableGroups = Object.keys(res.results);
+        //   _self.vars.availableGroupsOrder = availableGroups;
+        //   if (!(res.tabFacet || {}).buckets) {
+        //     totalResultsCount = 0;
+        //   }
+        //   if (availableGroups && availableGroups.length) {
+        //     availableGroups.forEach((group) => {
+        //       var results = res.results[group].data;
+        //       if (!(res.tabFacet || {}).buckets) {
+        //         totalResultsCount =
+        //           totalResultsCount + res.results[group].doc_count;
+        //       }
+        //       var groupName =
+        //         group == "default_group" ? "defaultTemplate" : group;
+        //       var dataObj = {
+        //         facets: facets,
+        //         searchFacets: searchFacets,
+        //         originalQuery: res.originalQuery || "",
+        //         customSearchResult: _self.customSearchResult,
+        //         data: results,
+        //         groupName: groupName,
+        //         doc_count: res.results[group].doc_count,
+        //       };
+        //       var publishSearchData = "sa-" + groupName + "-search-data";
+        //       if ($('body').hasClass('top-down')) {
+        //         _self.pubSub.publish(publishSearchData, {
+        //           container: searchContainerName,
+        //           isFullResults: $("body").hasClass("top-down") ? true : false,
+        //           selectedFacet: "all results",
+        //           isLiveSearch: false,
+        //           isSearch: $("body").hasClass("top-down") ? false : true,
+        //           dataObj,
+        //         });
+        //       }
+        //       if (!$(".empty-full-results-container").hasClass("hide")) {
+        //         $(".empty-full-results-container").addClass("hide");
+        //       }
+        //     });
+        //     _self.vars.totalNumOfResults = totalResultsCount;
+        //     res.results = results;
+        //     if (!$(".full-search-data-container").children().length) {
+        //       if (_self.isDev) {
+        //         $(".no-templates-defined-full-results-container").show();
+        //       } else {
+        //         $(".empty-full-results-container").removeClass("hide");
+        //       }
+        //     }
+        //   } else {
+        //     var dataObj = {
+        //       facets: facets || [],
+        //       searchFacets: searchFacets || [],
+        //       originalQuery: res.originalQuery || "",
+        //       customSearchResult: _self.customSearchResult,
+        //       data: [],
+        //       groupName: "defaultTemplate",
+        //     };
+        //     // _self.pubSub.publish('sa-defaultTemplate-search-data', { container: searchContainerName, isFullResults: true, selectedFacet: 'all results', isLiveSearch: false, isSearch: false, dataObj });
+        //     if (!(res.tasks || []).length) {
+        //       $(".empty-full-results-container").removeClass("hide");
+        //       $(".no-templates-defined-full-results-container").hide();
+        //     }
+        //   }
+        // } else {
+        //   var results = res.results.data;
+        //   if (!(res.tabFacet || {}).buckets) {
+        //     totalResultsCount = res.results.doc_count || 0;
+        //   }
+        //   _self.vars.totalNumOfResults = totalResultsCount;
+        //   var dataObj = {
+        //     facets: facets || [],
+        //     searchFacets: searchFacets || [],
+        //     originalQuery: res.originalQuery || "",
+        //     customSearchResult: _self.customSearchResult,
+        //     data: results,
+        //     groupName: "defaultTemplate",
+        //     doc_count: res.results.doc_count,
+        //   };
+        //   res.results = results;
+        //   if (totalResultsCount) {
+        //     if ($('body').hasClass('top-down')) {
+        //       _self.pubSub.publish("sa-defaultTemplate-search-data", {
+        //         container: searchContainerName,
+        //         isFullResults: $("body").hasClass("top-down") ? true : false,
+        //         selectedFacet: "all results",
+        //         isLiveSearch: false,
+        //         isSearch: $("body").hasClass("top-down") ? false : true,
+        //         dataObj,
+        //       });
+        //     }
+        //     if (!$(".empty-full-results-container").hasClass("hide")) {
+        //       $(".empty-full-results-container").addClass("hide");
+        //     }
 
+        //     if (!$(".full-search-data-container").children().length) {
+        //       if (_self.isDev) {
+        //         $(".no-templates-defined-full-results-container").show();
+        //       } else {
+        //         $(".empty-full-results-container").removeClass("hide");
+        //       }
+        //     }
+        //   } else {
+        //     if (!(res.tasks || []).length) {
+        //       $(".empty-full-results-container").removeClass("hide");
+        //       $(".no-templates-defined-full-results-container").hide();
+        //     }
+        //   }
+        // }
+        // if ((res.tasks || []).length) {
+        //   var dataObj = {
+        //     facets: facets || [],
+        //     searchFacets: searchFacets || [],
+        //     originalQuery: res.originalQuery || "",
+        //     customSearchResult: _self.customSearchResult,
+        //     tasks: res.tasks || [],
+        //   };
+        //   _self.pubSub.publish("sa-search-result", {
+        //     ...dataObj,
+        //     ...{
+        //       isLiveSearch: false,
+        //       isFullResults: true,
+        //       selectedFacet: _self.vars.isFromTopDownKeyDown
+        //         ? "data"
+        //         : "all results",
+        //     },
+        //   });
+        // }
+      // }
+      
 
       var liveResult = res.results;
       var topMatch;
@@ -22217,14 +22246,7 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
           $("#frequently-searched-box").hide();
         }
       });
-    var resultsContainerHtml = $(".all-product-details");
-    _self.bindPerfectScroll(
-      resultsContainerHtml,
-      ".content-data-sec",
-      null,
-      "y",
-      "resultsContainer"
-    );
+  
     var headingDataHTML = $("#heading");
     _self.bindPerfectScroll(
       headingDataHTML,
@@ -23014,139 +23036,33 @@ FindlySDK.prototype.configureSearchInterface = function (botOptions) {
 // Top -down Template //
 FindlySDK.prototype.getTopDownTemplate = function () {
   var topDownTemplate = `<div>
-      <div class="top-down-wrapper searchAssist-kore-chat-window">
-        <div class="topdown-search-main-container">
-        <!--<div class="logo_img">-->
-            
-             <!-- </div>-->
-            <div id="heading" class="search-input-box">
-                <div id="search-box-container" class="search-box-container-data">
-                <div class="cancel-search">
-                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII="/>
+  <div class="top-down-wrapper searchAssist-kore-chat-window">
+      <div class="topdown-search-main-container">
+          <div id="heading" class="search-input-box">
+              <div id="search-box-container" class="search-box-container-data">
+                  <div class="cancel-search">
+                      <img
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII=" />
                   </div>
-                </div>
-                <div id="greeting-msg-top-down"></div>
-                <div id="frequently-searched-box" class="frequently_searched_box"> </div>
-                <div id="live-search-result-box" class="live_search_result_box">
-                    <div id="auto-query-box" class="auto_query_box">
-                        <!-- suggestion query result-->
-                    </div>
-                    <div class="data-container">
-                        <!-- <div id="faq-query-container"> -->
-                            <!-- faq query result-->
-                        <!-- </div> -->
-                        <div class="live-search-data-container">
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-
-            <div class="all-result-container">
-            <div class="skelton-load-img">
-              <img alt="" />
-            </div>
-            <div id="conversation-container" class="conversation-container">
-                    <div class="conversation-title">
-                        <div class="custom-header-container-left searchAssist" style="padding-left: 20px;">
-                            <!--<img class="searchAssistIcon" src="data:image/png;base64,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">-->
-                            <div class="searchAssistHeader">  Search Assist </div>
-                        </div>
-                        <div class="close-conv">
-                            <img class="close-conv-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBbZHRDcIwDERju+zTSizSCWgl8sFM+Ug26AwsUDIGO9A05AChprV/osjPd2eZLtfbg2gZg3PRKDUMts3SeAaUV5kGa1sVYpkoLaPEeX525+4OGC/+FbSmPgQX6T9dFAETp968jNlC6FNl9YNNLo0NhOIqVFEC9Bk/1Xn5ELwowX6/oGjBtQVpD2mZ4cBZ2GsQCkf4xmj8GzsLeh0gnVcbAAAAAElFTkSuQmCC" />
-                        </div>
-                    </div>
-                    <div id="conversations" class="conversations">
-                        <!-- <div id="action-title"></div> -->
-                        <div id="conversation-body">
-                            <!-- all conversations happen here -->
-                        </div>
-                    </div>
-                    <div id="conversation-box-container" class="conv">
-                        <!-- conversation text box here-->
-                    </div>
-                </div>
-                <!--<div id="loaderDIV" class="loader-container">Loading...</div>-->\
-                <div class="full-results-data-container">
-                <div class="back-search" style="cursor: pointer;position: absolute;right: 34px;z-index: 100000;">
-                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII="/>
+              </div>
+              <div id="greeting-msg-top-down"></div>
+              <div id="frequently-searched-box" class="frequently_searched_box"> </div>
+              <div id="live-search-result-box" class="live_search_result_box">
+                  <div id="auto-query-box" class="auto_query_box">
                   </div>
-                    <div id="filters-left-sec"></div>
-                  <div class="all-product-details ">
-                    <div class="show_insights_top_down" data-displayInsights="true">\
-                      <span class="query_analytics_top_down"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAD4SURBVHgBlVDbTcNAEJzZjQSfoQOX4A6gA8QvEtgkgMwX7iDQQfgz4nVUEKUCTAd0QNIBfxFSfMsdERGgRIpXOq1uZ0Y7s8SGlednqakMuBosu7E7N/xYkkVH9M0BV5Gt8/kC7xMQtTd7FchlJDt39yaHQf1bYDp7Imz8/Hi7Q/KGlPSHHHEe9wsX1ux6w7WETsHU3VdXa6KACxtF4hWlRN8PVYm2lZ8We/H9nx/1zss/oWMeFU3DMPnOA0zUo3aumsR/1ivemfUvRmxmJ9bZGjRzjlWRmWG6uAASUTgD9zsmw7k1dbBt4UrbXRjTtR7NlpigZbUWfAEi/12gzLS2XQAAAABJRU5ErkJggg==">Query Analytics</span>\
-                  </div>\
-                    <div class="custom-header-container-center top-down-customize-btns display-none">\
-                      <ul class="custom-header-nav">\
-                        <li id="viewTypePreview" class="custom-header-nav-link-item nav-link-item-active"><a class="custom-header-nav-link">Preview</a></li>\
-                        <li id="viewTypeCustomize" class="custom-header-nav-link-item"><a class="custom-header-nav-link">Customize</a></li>\
-                      </ul>\
-                    </div>\
-                        <div id="top-down-tab-sec"></div>
-                        <div id="filters-center-sec" > </div>
-                        <div class="filters-added-data display-none" id="show-filters-added-data">
-                          </div>
-                        <div class="content-data-sec">
-                        <div class="scroll-top-container">
-                          <div class="title-scroll-top">
-                            <img>Scroll to top
-                          </div>
-                        </div>
-                          <div class="no-templates-defined-full-results-container">\
-                          <div class="img-block"><img class="no-data-mapped">
-                            <div class="title">Result templates are not mapped with a proper field value</div>\
-                          </div>\
-                        </div>\
-                            <div class="empty-full-results-container hide" id="top-down-all-tab-empty-state">\
-                              <div class="img-block"><img src="data:image/png;base64,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"></div>\
-                              <div class="title">Sorry, we could not find any results for that</div>\
-                              <div class="title-info">Please try searching with another term</div>\
-                            </div>\
-                            <div class="full-search-data-container">\
-                            </div>\
-                            <div class="kore-sdk-pagination-div hide">\
-                            <div class="kore-sdk-custom-pagination">\
-                              <div class="kore-sdk-bottom-up-first pagination-tootlip-buttons">\
-                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAAQABADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+zn9pz9o/XPhre6B8H/gxpfhzxb+0d8Q9H1XxB4esPF8t9B8MfhH8OtBmjh8WfH74+6vpdzZXXh34V+Et722l6XFqWk+IPin4vFt4F8I3th/xUvirwe0r77fi/JeYiT9mv49eP/2j9X8SfEbRPCulaJ+y3/ZVjpXwe8b61p+taZ49+POsxXLtrnxc8OaBd33keEPgTfQKlj8NW1221DxV8RoXm8cW0ujeDG8M3PjAat69fLy9e4LX0Iv2m/2bda+JWoaD8Yvg1q2g+Ef2jvh9oupeHdAvvFYvZfhj8Xfh1rU4uPFPwB+PujafZ6nL4g+FXi9g89jqtvpOp+Jvhj4qa38beD7e7ceIfDPisT6Pb8vNef5g/wAST9mv4C/ED9nDV/Enw50XxVpWufst/wBlWOq/B7wRrWo61qfj74DazLcuuufCLw5r93YeR4v+BNjAyXvw0Gu3On+KvhzAk3ge3i1nwYnhm38IDaevXr2fn5PuMP/Z">\
-                                <span class="tooltip_text"> First</span>\
-                                </div>\
-                              <div class="kore-sdk-bottom-up-previous pagination-tootlip-buttons">\
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACuSURBVHgB3VKxDcIwEDwTD2AEA3xk0zMCbMAGrMAIGYWSjhFQJgipEcIlnTMAknloaPImSZecZMnS3+nuTw+MAkRk+FHbbNZBTFBZBegd+uLrnLuKyBUSR6XEUPqCGEvv7weJJ6+g9JnFdUoM2d0Vn+hduEKC1xGI3Lzr7/5Lwcjtg6zdp3iZNGgYxixL/p7MYv5sQqgxLMlqzX0EXmfTNv97SN7frohqy50Qpok3s14tS5MeJgUAAAAASUVORK5CYII=">\
-                                <span class="tooltip_text"> Previous</span>\
-                                </div>\
-                              <div class="input-text-data">\
-                                <div class="title">Page</div>\
-                                <div>\
-                                  <input id="kore-current-page-number" class="kore-current-page-number" type="text" value="1">\
-                                </div>\
-                                <div class="title">of</div>\
-                                <div id="kore-total-page-number" class="kore-total-page-number">15</div>\
-                              </div>\
-                              <div class="kore-sdk-bottom-up-next pagination-tootlip-buttons">\
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAALCAYAAABcUvyWAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBXY+xDQIxEAT3bAIiZEQD99gf4xKgEuiEkDY+JUJUQEoGxAjhCsAhwUvmEHqw/8LZW2lWM9femNEwyiE7BaQ5SB+Y2eSBjvFxNGYyBqmNNLdSfH0C6j6YbQOiGVK7CCFE1QUh3FZI6QIa7IrGr1m5ExL2qoBTtxYZkWibP7R2yZW9ix33oHuWUAZ+Ye17A+GRSBSv5zx4A80eMIB299aVAAAAAElFTkSuQmCC">\
-                                <span class="tooltip_text"> Next</span>\
-                                </div>\
-                              <div class="kore-sdk-bottom-up-last pagination-tootlip-buttons">\
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAC8SURBVHgB3ZKxEcIwDEUVZwAEWUCJnJ5R2AA2YAQYIRswAkdJyQRQ0kEJTewFOBBxjos5QkI68htbOn//d7YA+iWK9Z4oHb9q4owSvfjmCasF4vAKAawRo621+QVxcAQIMhxFaE2+g1YUxDMhMSRytSjmUx1J+N6w1hwciVoJweYseq4dSPSySCZCj4R5Wj2nam9QcC936PVv8kqN6Uk6L9PJSxeqZrMgdjcTT9wPuFn4yVwYPg1SW/P/6gGaqz4/5BlCXQAAAABJRU5ErkJggg==">\
-                                <span class="tooltip_text"> Last</span>\
-                                </div>\
-                            </div>\
-                          </div>\
-                            <div class="custom-add-result-container display-none">\
-                              <div class="custom-add-new-result-content">\
-                                <div class="bold-text">Not finding the result?</div>\
-                                <div class="link-text"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABrSURBVHgBzVHBCYAwEMuV/lRwBDdykoojuIoTiBs5Qt8KjVZfLdeHD8FAyJEQOO4ABZXbx0gts5opIi0KMHiJ7wvSuLBcmu4s7G6lbHnBgmGGZAWa/hnCmvrw0FAPxxSpZT+8kvppkr5UOAH/GRicle7qIwAAAABJRU5ErkJggg==">Add from repository</div>\
-                              </div>\
-                            </div>\
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      <div>
-    <div>`;
+                  <div class="data-container">
+                      <div class="live-search-data-container">
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="skelton-load-img" style="display:none">\
+          <img alt="" />\
+          </div>\
+          <div id="top-down-full-results-container"></div>
+      </div>
+  <div>
+<div>`;
   return topDownTemplate;
 };
 
@@ -23174,7 +23090,7 @@ FindlySDK.prototype.initializeTopDown = function (
   $(container).append(dataHTML);
   var findlyConfig = findlyConfig
     ? findlyConfig
-    : window["KoreSDK"].findlyConfig;
+    : _self.config;
   findlyConfig.baseAPIServer = "http://localhost:4200";
   // var findlySdk = new FindlySDK(findlyConfig);
   $("#conversation-container").hide();
@@ -23183,6 +23099,9 @@ FindlySDK.prototype.initializeTopDown = function (
   _self.initialize(findlyConfig, _self.isDev);
   _self.getRecentSearches(_self.API.recentSearchUrl, "GET");
   _self.initializeTopSearchTemplate();
+  if(!$("body").hasClass("searchAssist-defaultTheme-kore")){
+    $("body").addClass("searchAssist-defaultTheme-kore")
+  }
   if ($(".search-background-div").length) {
     $(".search-background-div").remove();
   }
