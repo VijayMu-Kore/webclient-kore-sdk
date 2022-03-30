@@ -20756,14 +20756,14 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
     .on("click", function (event) {
       selectClass(event, "child");
     });
-  $(".see-all-result-nav")
-    .off("click")
-    .on("click", function (event) {
-      _self.vars.scrollPageNumber = 0;
-      $(".sdk-facet-count").show();
-      $(".tab-name.see-all-result-nav.active-tab").removeClass("active-tab");
-      selectClass(event, "target");
-    });
+  // $(".see-all-result-nav")
+  //   .off("click")
+  //   .on("click", function (event) {
+  //     _self.vars.scrollPageNumber = 0;
+  //     $(".sdk-facet-count").show();
+  //     $(".tab-name.see-all-result-nav.active-tab").removeClass("active-tab");
+  //     selectClass(event, "target");
+  //   });
   var selectClass = function (event, related) {
     event.stopPropagation();
     event.stopImmediatePropagation();
@@ -25466,9 +25466,9 @@ FindlySDK.prototype.botActionTrigger = function (e) {
   } else {
   }
 }
-FindlySDK.prototype.tabFacetTrigger = function (e) {
+FindlySDK.prototype.tabFacetTrigger = function (e,facetSelected) {
   var _self = this;
-  var selectedFacet = $(e.target).closest('.facet').attr("id");
+  var selectedFacet =facetSelected;
   _self.vars.selectedFacetFromSearch = selectedFacet;
   var url = _self.API.searchUrl;
   var payload = {

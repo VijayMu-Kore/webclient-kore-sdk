@@ -184,8 +184,8 @@ class FullSearchResultTopdownTemplate {
           $(tabsHtml).find("." + selectedFacet.replaceAll(" ", "-"))
               .removeClass("un-selected-type").addClass('active-tab');
 
-          hostWindowInstance.tabFacetTrigger(e).then((result: any) => {
-              if(selectedFacet !== 'task'){
+          hostWindowInstance.tabFacetTrigger(e, selectedFacet).then((result: any) => {
+              if(selectedFacet !== 'task' && selectedFacet !== 'all results'){
                   let index = result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
                         if(index>-1){
                             result.splice(index,1)
