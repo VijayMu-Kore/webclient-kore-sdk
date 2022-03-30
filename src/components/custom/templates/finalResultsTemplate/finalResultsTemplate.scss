@@ -2,10 +2,10 @@
 
  @keyframes glowKeyFrame {
     0% {
-      -webkit-box-shadow: 0px 0px 20px 0px var(--sdk-border-azure-radiane-blue-color);
+      -webkit-box-shadow: 0px 0px 20px 0px #007FFF;
     }
     50% {
-      -webkit-box-shadow: 0px 0px 20px 2px var(--sdk-border-azure-radiane-blue-color);
+      -webkit-box-shadow: 0px 0px 20px 2px #007FFF;
     }
     100% {
       -webkit-box-shadow: none;
@@ -38,22 +38,23 @@
                 .card{
                     border: 0;
                     border-radius: 0;
-                    background: var(--sdk-white-bg);
+                    background: #ffffff;
                     .card-header{
                         border: 0;
                         border-radius: 0;
-                        background: var(--sdk-white-bg);
+                        background: #ffffff;
                         padding: 0;
                         .btn-link {
                             font-size: 14px;
                             font-weight: normal;
-                            color: var(--sdk-mirage-color);
+                            color: #161928;
                             display: block;
                             text-align: left;
                             text-decoration: none;
                             padding-left: 0;
                             .right-arrow{
-                                margin-right: 15px;transform: rotate(90deg);
+                                margin-right: 15px;
+                                transform: rotate(90deg);
                                 margin-left: 1px;
                                 opacity: .5;
                                 position: relative;
@@ -72,7 +73,7 @@
             .external-linkDiv{
                 font-size: 14px;
                 font-weight: normal;
-                color: var(--sdk-mirage-color);
+                color: #161928;
                 margin-top: 15px;
                 p{
                     margin: 0;
@@ -91,10 +92,10 @@
                     display: block;
                 }
                 .faq{
-                    background: var(--sdk-bg-zumthor-color);
-                    border: 1px solid var(--sdk-border-malibu-color);
+                    background: #E7F1FF;
+                    border: 1px solid #85B7FE;
                     border-radius: 4px;
-                    color: var(--sdk-primary-blue-color);
+                    color: #0D6EFD;
                     max-width: 180px;
                     overflow: hidden;
                     white-space: nowrap;
@@ -118,7 +119,7 @@
             }
         }
         .search-heads {
-            color: var(--sdk-gray-color);
+            color: #9AA0A6;
             font-weight: 600;
             font-size: 11px;
             margin-bottom: 6px;
@@ -129,11 +130,11 @@
         .suggestionsResult{
             padding-bottom: 10px;
             margin-bottom: 10px;
-            border-bottom: solid 1px var(--sdk-primary-border-color);
+            border-bottom: solid 1px #e5e8ec;
             .faq{
                 font-size: 14px;
                 font-weight: normal;
-                color: var(--sdk-mirage-color);
+                color: #161928;
                 position: relative;
                 padding-left: 25px;
                 .searchIcon{
@@ -149,7 +150,7 @@
             .contactDetails{
                 flex: 1;
                 .contacts-ksa{
-                    color: var(--sdk-mirage-color);
+                    color: #161928;
                     font-size: 14px;
                     font-weight: normal;
                     line-height: 2;
@@ -169,13 +170,13 @@
                     }
                     .contactNum{
                         margin-left: 25px;
-                        color: var(--sdk-allports-color);
+                        color: #056dae;
                     }
                 }
             }
         }
         .highlightedText {
-            background-color: var(--sdk-bg-yellow-color);
+            background-color: #fefd00;
         }
     }
 }
@@ -185,7 +186,7 @@
 .search-body-full .faqs-wrp-content.faq-highlight,
 .live_search_result_box .task-wrp.faq-highlight,
 .all-product-details .task-wrp.faq-highlight{
-    border: 1px solid var(--sdk-border-french-gray-color);
+    border: 1px solid #c6c6cb;
 }
 .searchAssist-kore-chat-window .finalResults .task-wrp.faq-highlight,
 .show-all-results-outer-wrap .task-wrp.faq-highlight,

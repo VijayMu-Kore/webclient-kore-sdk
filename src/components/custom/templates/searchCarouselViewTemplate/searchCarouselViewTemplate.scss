@@ -516,9 +516,9 @@
                 align-items: center;
                 cursor: pointer;
                 &:hover{
-                    background: var(--sdk-bg-zumthor-color);
-                    border: 1px solid var(--sdk-border-blue-ribbon-approx-color);
-                    color: var(--sdk-catalina-blue-color);
+                    background: #E7F1FF;
+                    border: 1px solid #0D6EFD;
+                    color: #07377F;
                     .child-bot{
                         display: none;
                     }
