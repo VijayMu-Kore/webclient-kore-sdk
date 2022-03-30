@@ -172,31 +172,6 @@ class FullSearchResultsTemplate {
   bindTabsClickEvent(me:any, messageHtml:any ,facets:any, facetSelected:any){
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
-    //     var doc_count = 0;
-    //     var isAction = false;
-    //     $(tabsHtml).find(".active-tab .tab-count").show();
-    //     $(tabsHtml).find(".active-tab .tab-count-right-bracket").show();
-    //       facets.forEach(function (facet:any) {
-    //         if (facet && facet.key) {
-    //           if (facetSelected == facet.key) {
-    //             doc_count = facet.doc_count;
-    //           }
-    //           if (facet.key == "task") {
-    //             isAction = true;
-    //           }
-    //           $(tabsHtml).find("." + facet.key.replaceAll(" ", "-"))
-    //             .removeClass('active-tab')
-    //             .addClass("un-selected-type");
-    //         }
-    //       });
-    //       $(tabsHtml).find("." + facetSelected.replaceAll(" ", "-"))
-    //         .removeClass("un-selected-type")
-    //         .addClass('active-tab');
-    //       if (!facetSelected || facetSelected === "all results") {
-    //         $(tabsHtml).find(".facet:first").removeClass("un-selected-type");
-    //         $(tabsHtml).find(".facet:first").addClass('active-tab');
-    //       }
-
     $(messageHtml).off("click",".see-all-result-nav").on("click",".see-all-result-nav", function (e:any) {
           var selectedFacet = $(e.target).closest(".see-all-result-nav")
       .attr("classification");
