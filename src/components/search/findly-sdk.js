@@ -4935,44 +4935,44 @@ FindlySDK.prototype.getTopDownFacetsAddedList = function (isRadioBtn = false) {
 
 FindlySDK.prototype.bindFacetsToggle = function () {
   var _self = this;
-  $(".facet")
-    .off("click")
-    .on("click", function (e) {
-      var facetThis = this;
-      var selectedFacet = $(this).attr("id");
-      // if (_self.vars.selectedFacetFromSearch === selectedFacet) {
-      //   return;
-      // }
-      _self.vars.selectedFacetFromSearch = selectedFacet;
-      _self.pubSub.publish("facet-selected", { selectedFacet: selectedFacet });
-      if ($("body").hasClass("top-down")) {
-        _self.vars.scrollPageNumber = 0;
-        if (selectedFacet === "all results") {
-          $(".kore-sdk-pagination-div").hide();
-          if (_self.vars.totalNumOfResults == 0) {
-            $("#top-down-all-tab-empty-state").removeClass("hide");
-          } else {
-            $("#top-down-all-tab-empty-state").addClass("hide");
-          }
-          _self.invokeSpecificSearch(selectedFacet);
-          // _self.prepAllSearchData(selectedFacet, true);
-        } else {
-          if (!$("#top-down-all-tab-empty-state").hasClass("hide")) {
-            $("#top-down-all-tab-empty-state").addClass("hide");
-          }
-          _self.invokeSpecificSearch(selectedFacet);
-        }
+  // $(".facet")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     var facetThis = this;
+  //     var selectedFacet = $(this).attr("id");
+  //     // if (_self.vars.selectedFacetFromSearch === selectedFacet) {
+  //     //   return;
+  //     // }
+  //     _self.vars.selectedFacetFromSearch = selectedFacet;
+  //     _self.pubSub.publish("facet-selected", { selectedFacet: selectedFacet });
+  //     if ($("body").hasClass("top-down")) {
+  //       _self.vars.scrollPageNumber = 0;
+  //       if (selectedFacet === "all results") {
+  //         $(".kore-sdk-pagination-div").hide();
+  //         if (_self.vars.totalNumOfResults == 0) {
+  //           $("#top-down-all-tab-empty-state").removeClass("hide");
+  //         } else {
+  //           $("#top-down-all-tab-empty-state").addClass("hide");
+  //         }
+  //         _self.invokeSpecificSearch(selectedFacet);
+  //         // _self.prepAllSearchData(selectedFacet, true);
+  //       } else {
+  //         if (!$("#top-down-all-tab-empty-state").hasClass("hide")) {
+  //           $("#top-down-all-tab-empty-state").addClass("hide");
+  //         }
+  //         _self.invokeSpecificSearch(selectedFacet);
+  //       }
 
-        $(".content-data-sec").scrollTop(0);
-        if (selectedFacet == "all results" || selectedFacet == "task") {
-          $("#actions-container").show();
-        } else {
-          $("#actions-container").hide();
-        }
-      } else {
-        _self.prepAllSearchData(selectedFacet);
-      }
-    });
+  //       $(".content-data-sec").scrollTop(0);
+  //       if (selectedFacet == "all results" || selectedFacet == "task") {
+  //         $("#actions-container").show();
+  //       } else {
+  //         $("#actions-container").hide();
+  //       }
+  //     } else {
+  //       _self.prepAllSearchData(selectedFacet);
+  //     }
+  //   });
 };
 FindlySDK.prototype.recentClick = function () {
   var _self = this;
@@ -8365,7 +8365,37 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         }
       } else {
         _self.countTotalResults(res, totalResultsCount);
-
+        if ($("body").hasClass("top-down")) {
+          // _self.showMoreClick();
+          facets.push({
+            key: "all results",
+            doc_count: _self.vars.totalNumOfResults,
+            name: "ALL",
+          });
+          facets = facets.concat((res.tabFacet || {}).buckets || []);
+          facets = _self.rearrangeTabsList(facets);
+          if ((res.tasks || []).length) {
+            facets.push({
+              key: "task",
+              doc_count: (res.tasks || []).length,
+              name: "Actions",
+            });
+          }
+          facets.forEach((tab) => {
+            if (tab && tab.key) {
+              tab["className"] = tab.key.replaceAll(" ", "-");
+            }
+          });
+          _self.vars.tabsList = facets;
+          if (!_self.vars.searchObject.liveData) {
+            _self.vars.searchObject.liveData = { facets: facets };
+          } else {
+            _self.vars.searchObject.liveData.facets = facets;
+          }
+          // _self.pubSub.publish("sa-source-type", facets);
+          // _self.pubSub.publish("sa-search-facets", searchFacets);
+          // _self.pubSub.publish("facet-selected", { selectedFacet: "all results" });
+        }
         _self.getMergedData(_self.vars.resultSettings, responseData, 'isFullResults').then((res) => {
           let me = this;
           var devMode = _self.isDev ? true : false;
@@ -8382,9 +8412,11 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                   totalSearchResults: _self.vars.totalNumOfResults,
                   groupData: _self.vars.mergedData,
                   searchType: 'isFullResults',
-                  helpers: helpers
+                  helpers: helpers,
+                  tabsList: _self.vars.tabsList
                 }
               }
+
             }]
           }
           var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
@@ -8903,32 +8935,32 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       _self.vars.totalNumOfResults = 0;
     }
 
-    if ($("body").hasClass("top-down")) {
-      _self.showMoreClick();
-      facets.push({
-        key: "all results",
-        doc_count: _self.vars.totalNumOfResults + (res.tasks || []).length,
-        name: "ALL",
-      });
-      facets = facets.concat((res.tabFacet || {}).buckets || []);
-      facets = _self.rearrangeTabsList(facets);
-      if ((res.tasks || []).length) {
-        facets.push({
-          key: "task",
-          doc_count: (res.tasks || []).length,
-          name: "Actions",
-        });
-      }
-      _self.vars.tabsList = facets;
-      if (!_self.vars.searchObject.liveData) {
-        _self.vars.searchObject.liveData = { facets: facets };
-      } else {
-        _self.vars.searchObject.liveData.facets = facets;
-      }
-      _self.pubSub.publish("sa-source-type", facets);
-      _self.pubSub.publish("sa-search-facets", searchFacets);
-      _self.pubSub.publish("facet-selected", { selectedFacet: "all results" });
-    }
+    // if ($("body").hasClass("top-down")) {
+    //   _self.showMoreClick();
+    //   facets.push({
+    //     key: "all results",
+    //     doc_count: _self.vars.totalNumOfResults + (res.tasks || []).length,
+    //     name: "ALL",
+    //   });
+    //   facets = facets.concat((res.tabFacet || {}).buckets || []);
+    //   facets = _self.rearrangeTabsList(facets);
+    //   if ((res.tasks || []).length) {
+    //     facets.push({
+    //       key: "task",
+    //       doc_count: (res.tasks || []).length,
+    //       name: "Actions",
+    //     });
+    //   }
+    //   _self.vars.tabsList = facets;
+    //   if (!_self.vars.searchObject.liveData) {
+    //     _self.vars.searchObject.liveData = { facets: facets };
+    //   } else {
+    //     _self.vars.searchObject.liveData.facets = facets;
+    //   }
+    //   _self.pubSub.publish("sa-source-type", facets);
+    //   _self.pubSub.publish("sa-search-facets", searchFacets);
+    //   _self.pubSub.publish("facet-selected", { selectedFacet: "all results" });
+    // }
     _self.fullResultsScrollTop();
     $(".content-data-sec").scrollTop(0);
     $(".data-body-sec").scrollTop(0);
@@ -10729,132 +10761,132 @@ FindlySDK.prototype.addGreetingMsgControl = function (config) {
 
 FindlySDK.prototype.addSourceType = function (config) {
   var _self = this;
-  _self.pubSub.unsubscribe("facet-selected");
-  _self.pubSub.subscribe("facet-selected", (topic, data) => {
-    var doc_count = 0;
-    var isAction = false;
-    $(".active-tab .tab-count").show();
-    $(".active-tab .tab-count-right-bracket").show();
-    $(".no-templates-defined-full-results-container").hide();
-    $(".sdk-facet-count").show();
-    if ((((_self.vars || {}).searchObject || {}).liveData || {}).facets) {
-      var facets = _self.vars.searchObject.liveData.facets;
-      facets.forEach(function (facet) {
-        if (facet && facet.key) {
-          if (data.selectedFacet == facet.key) {
-            doc_count = facet.doc_count;
-          }
-          if (facet.key == "task") {
-            isAction = true;
-          }
-          $("." + facet.key.replaceAll(" ", "-"))
-            .removeClass(config.selectedClass)
-            .addClass(config.unSelectedClass);
-        }
-      });
-      $("." + data.selectedFacet.replaceAll(" ", "-"))
-        .removeClass(config.unSelectedClass)
-        .addClass(config.selectedClass);
-      if (!data.selectedFacet || data.selectedFacet === "all results") {
-        $(".facet:first").removeClass(config.unSelectedClass);
-        $(".facet:first").addClass(config.selectedClass);
-      }
-    }
-    if (
-      (!$(".full-search-data-container").children().length &&
-        doc_count &&
-        ((data.selectedFacet == "all results" && !isAction) ||
-          (data.selectedFacet !== "task" &&
-            data.selectedFacet !== "all results"))) ||
-      (!$(".full-search-data-container").children().length &&
-        doc_count &&
-        data.selectedFacet == "task" &&
-        !$(".actions-full-search-container").children().length)
-    ) {
-      if (_self.isDev) {
-        $(".no-templates-defined-full-results-container").show();
-      } else {
-        $(".empty-full-results-container").removeClass("hide");
-      }
-      if (data.selectedFacet) {
-        $("." + data.selectedFacet.replaceAll(" ", "-") + " .tab-count").hide();
-        $(
-          "." +
-          data.selectedFacet.replaceAll(" ", "-") +
-          " .tab-count-right-bracket"
-        ).hide();
-        $(".active-tab .sdk-facet-count").hide();
-      } else {
-        $(".all-results .tab-count").hide();
-        $(".all-results .tab-count-right-bracket").hide();
-        $(".active-tab .sdk-facet-count").hide();
-      }
-    } else if (
-      !$(".full-search-data-container").children().length &&
-      !doc_count
-    ) {
-      $(".empty-full-results-container").removeClass("hide");
-    } else {
-      if (!$(".empty-full-results-container").hasClass("hide")) {
-        $(".empty-full-results-container").addClass("hide");
-      }
-    }
-  });
+  // _self.pubSub.unsubscribe("facet-selected");
+  // _self.pubSub.subscribe("facet-selected", (topic, data) => {
+  //   var doc_count = 0;
+  //   var isAction = false;
+  //   $(".active-tab .tab-count").show();
+  //   $(".active-tab .tab-count-right-bracket").show();
+  //   $(".no-templates-defined-full-results-container").hide();
+  //   $(".sdk-facet-count").show();
+  //   if ((((_self.vars || {}).searchObject || {}).liveData || {}).facets) {
+  //     var facets = _self.vars.searchObject.liveData.facets;
+  //     facets.forEach(function (facet) {
+  //       if (facet && facet.key) {
+  //         if (data.selectedFacet == facet.key) {
+  //           doc_count = facet.doc_count;
+  //         }
+  //         if (facet.key == "task") {
+  //           isAction = true;
+  //         }
+  //         $("." + facet.key.replaceAll(" ", "-"))
+  //           .removeClass(config.selectedClass)
+  //           .addClass(config.unSelectedClass);
+  //       }
+  //     });
+  //     $("." + data.selectedFacet.replaceAll(" ", "-"))
+  //       .removeClass(config.unSelectedClass)
+  //       .addClass(config.selectedClass);
+  //     if (!data.selectedFacet || data.selectedFacet === "all results") {
+  //       $(".facet:first").removeClass(config.unSelectedClass);
+  //       $(".facet:first").addClass(config.selectedClass);
+  //     }
+  //   }
+  //   if (
+  //     (!$(".full-search-data-container").children().length &&
+  //       doc_count &&
+  //       ((data.selectedFacet == "all results" && !isAction) ||
+  //         (data.selectedFacet !== "task" &&
+  //           data.selectedFacet !== "all results"))) ||
+  //     (!$(".full-search-data-container").children().length &&
+  //       doc_count &&
+  //       data.selectedFacet == "task" &&
+  //       !$(".actions-full-search-container").children().length)
+  //   ) {
+  //     if (_self.isDev) {
+  //       $(".no-templates-defined-full-results-container").show();
+  //     } else {
+  //       $(".empty-full-results-container").removeClass("hide");
+  //     }
+  //     if (data.selectedFacet) {
+  //       $("." + data.selectedFacet.replaceAll(" ", "-") + " .tab-count").hide();
+  //       $(
+  //         "." +
+  //         data.selectedFacet.replaceAll(" ", "-") +
+  //         " .tab-count-right-bracket"
+  //       ).hide();
+  //       $(".active-tab .sdk-facet-count").hide();
+  //     } else {
+  //       $(".all-results .tab-count").hide();
+  //       $(".all-results .tab-count-right-bracket").hide();
+  //       $(".active-tab .sdk-facet-count").hide();
+  //     }
+  //   } else if (
+  //     !$(".full-search-data-container").children().length &&
+  //     !doc_count
+  //   ) {
+  //     $(".empty-full-results-container").removeClass("hide");
+  //   } else {
+  //     if (!$(".empty-full-results-container").hasClass("hide")) {
+  //       $(".empty-full-results-container").addClass("hide");
+  //     }
+  //   }
+  // });
   _self.pubSub.unsubscribe("sa-source-type");
-  _self.pubSub.subscribe("sa-source-type", (msg, data) => {
-    data.forEach((tab) => {
-      if (tab && tab.key) {
-        tab["className"] = tab.key.replaceAll(" ", "-");
-      }
-    });
-    var facets = data;
-    if (config.templateId) {
-      if (config.templateId === "top-down-tabs-template") {
-        var dataHTML = $(_self.getTopDownFacetsTabs()).tmplProxy({
-          facets: facets,
-          getFacetDisplayName: getFacetDisplayName,
-        });
-      } else {
-        var dataHTML = $("#" + config.templateId).tmplProxy({
-          facets: facets,
-          getFacetDisplayName: getFacetDisplayName,
-        });
-      }
-      $("#" + config.container)
-        .empty()
-        .append(dataHTML);
-    } else if (config.template) {
-      var dataHTML = $(config.template).tmplProxy({
-        facets: facets,
-        getFacetDisplayName: getFacetDisplayName,
-      });
-      $("#" + config.container)
-        .empty()
-        .append(dataHTML);
-    } else {
-      var dataHTML = $(_self.getSourceTypeTemplate()).tmplProxy({
-        facets: facets,
-        getFacetDisplayName: getFacetDisplayName,
-      });
-      $("#" + config.container)
-        .empty()
-        .append(dataHTML);
-    }
-    $("#openFacetFilterControl")
-      .off("click")
-      .on("click", function (event) {
-        if ($(".filters-container").css("display") == "block") {
-          $(".filters-container").hide();
-        } else {
-          $(".filters-container").show();
-        }
-      });
-    _self.bindFacetsToggle();
-    _self.bindAllResultsView();
-    if (!$("body").hasClass("top-down")) {
-      _self.markSelectedFilters();
-    }
-  });
+  // _self.pubSub.subscribe("sa-source-type", (msg, data) => {
+  //   data.forEach((tab) => {
+  //     if (tab && tab.key) {
+  //       tab["className"] = tab.key.replaceAll(" ", "-");
+  //     }
+  //   });
+  //   var facets = data;
+  //   if (config.templateId) {
+  //     if (config.templateId === "top-down-tabs-template") {
+  //       var dataHTML = $(_self.getTopDownFacetsTabs()).tmplProxy({
+  //         facets: facets,
+  //         getFacetDisplayName: getFacetDisplayName,
+  //       });
+  //     } else {
+  //       var dataHTML = $("#" + config.templateId).tmplProxy({
+  //         facets: facets,
+  //         getFacetDisplayName: getFacetDisplayName,
+  //       });
+  //     }
+  //     $("#" + config.container)
+  //       .empty()
+  //       .append(dataHTML);
+  //   } else if (config.template) {
+  //     var dataHTML = $(config.template).tmplProxy({
+  //       facets: facets,
+  //       getFacetDisplayName: getFacetDisplayName,
+  //     });
+  //     $("#" + config.container)
+  //       .empty()
+  //       .append(dataHTML);
+  //   } else {
+  //     var dataHTML = $(_self.getSourceTypeTemplate()).tmplProxy({
+  //       facets: facets,
+  //       getFacetDisplayName: getFacetDisplayName,
+  //     });
+  //     $("#" + config.container)
+  //       .empty()
+  //       .append(dataHTML);
+  //   }
+  //   $("#openFacetFilterControl")
+  //     .off("click")
+  //     .on("click", function (event) {
+  //       if ($(".filters-container").css("display") == "block") {
+  //         $(".filters-container").hide();
+  //       } else {
+  //         $(".filters-container").show();
+  //       }
+  //     });
+  //   _self.bindFacetsToggle();
+  //   _self.bindAllResultsView();
+  //   if (!$("body").hasClass("top-down")) {
+  //     _self.markSelectedFilters();
+  //   }
+  // });
 };
 FindlySDK.prototype.addSearchFacets = function (config) {
   var _self = this;
@@ -20725,14 +20757,14 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
     .on("click", function (event) {
       selectClass(event, "child");
     });
-  $(".see-all-result-nav")
-    .off("click")
-    .on("click", function (event) {
-      _self.vars.scrollPageNumber = 0;
-      $(".sdk-facet-count").show();
-      $(".tab-name.see-all-result-nav.active-tab").removeClass("active-tab");
-      selectClass(event, "target");
-    });
+  // $(".see-all-result-nav")
+  //   .off("click")
+  //   .on("click", function (event) {
+  //     _self.vars.scrollPageNumber = 0;
+  //     $(".sdk-facet-count").show();
+  //     $(".tab-name.see-all-result-nav.active-tab").removeClass("active-tab");
+  //     selectClass(event, "target");
+  //   });
   var selectClass = function (event, related) {
     event.stopPropagation();
     event.stopImmediatePropagation();
@@ -23296,17 +23328,7 @@ FindlySDK.prototype.initializeTopDown = function (
     _self.initKorePicker(findlyConfig);
   }
 };
-FindlySDK.prototype.getTopDownFacetsTabs = function () {
-  var topDownFacetsTabs =
-    '<script id="top-down-tabs-template" type="text/x-jqury-tmpl">\
-                                <div class="tab-sec">\
-                                  {{each(key, facet) facets }}\
-                                   <div class="tab-name capital un-selected-type facet {{= facet.className}}" id="{{= facet.key}}" apperance="{{= facet.key}}" title="{{= facet.name}} ({{= facet.doc_count}})"><span class="tab-title text-truncate one-line-height"> {{= facet.name}}</span> <span class="tab-count text-truncate one-line-height"> ({{= facet.doc_count}}</span><span class="tab-count-right-bracket">)</span></div>\
-                                  {{/each}}\
-                                  </div>\
-                              </script>';
-  return topDownFacetsTabs;
-};
+
 FindlySDK.prototype.getTopDownActionTemplate = function () {
   var _self = this;
   var type = "grid";
@@ -25440,6 +25462,65 @@ FindlySDK.prototype.botActionTrigger = function (e) {
     _self.userLogin(e.currentTarget.title.toLowerCase());
   } else {
   }
+}
+FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
+  var _self = this;
+  var selectedFacet = facetSelected;
+  _self.vars.selectedFacetFromSearch = selectedFacet;
+  var url = _self.API.searchUrl;
+  var payload = {
+    query: _self.vars.searchObject.searchText,
+    // "maxNumOfResults": 9,
+    maxNumOfResults: 5,
+    userId: _self.API.uuid,
+    streamId: _self.API.streamId,
+    lang: "en",
+    // "isDev": true,
+    isDev: _self.isDev,
+    searchRequestId: _self.vars.requestId,
+  };
+  if (_self.isDev) {
+    payload["customize"] = _self.vars.customizeView;
+  }
+  if (_self.vars.filterObject.length > 0) {
+    payload.filters = JSON.parse(JSON.stringify(_self.vars.filterObject));
+  }
+  if (
+    _self.vars.selectedFacetFromSearch &&
+    _self.vars.selectedFacetFromSearch !== "all results"
+  ) {
+    var tabConfig = {
+      filter: {
+        fieldName: _self.vars.tabFacetFieldName,
+        facetValue: [_self.vars.selectedFacetFromSearch],
+      },
+    };
+    payload.tabConfig = tabConfig;
+  } else {
+    let filters = payload.filters;
+    for (let i = (filters || []).length - 1; i >= 0; i--) {
+      if (
+        filters[i].facetValue[0] == "faq" ||
+        filters[i].facetValue[0] == "task" ||
+        filters[i].facetValue[0] == "web" ||
+        filters[i].facetValue[0] == "file" ||
+        filters[i].facetValue[0] == "data"
+      ) {
+        payload.filters.splice(i, 1);
+      }
+    }
+  }
+  return new Promise((resolve, reject) => {
+    _self
+      .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
+        _self.getMergedData(_self.vars.resultSettings, data, 'isFullResults').then((res) => {
+          resolve(res);
+        })
+      })
+      .catch((error) => {
+        reject(error);
+      })
+  })
 }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

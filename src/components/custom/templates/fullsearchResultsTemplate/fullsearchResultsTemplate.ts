@@ -48,6 +48,8 @@ class FullSearchResultsTemplate {
         })
       }
     }, 300);
+    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,msgData.message[0].component.payload.tabsList,'all results');
+
   }
   getTemplateString(type: any) {
     var fullSearchResultsTemplate = '<script type="text/x-jqury-tmpl">\
@@ -167,7 +169,52 @@ class FullSearchResultsTemplate {
     }
 
   }
+  bindTabsClickEvent(me:any, messageHtml:any ,facets:any, facetSelected:any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml).off("click",".see-all-result-nav").on("click",".see-all-result-nav", function (e:any) {
+          var selectedFacet = $(e.target).closest(".see-all-result-nav")
+      .attr("classification");
+          $(messageHtml).find(".tab-name.see-all-result-nav.active-tab")
+              .removeClass("active-tab")
+    //           .addClass('un-selected-type');
+    $(e.target).closest(".see-all-result-nav").addClass('active-tab');
 
+          hostWindowInstance.tabFacetTrigger(e,selectedFacet).then((result: any) => {
+              if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+                  let index = result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+                        if(index>-1){
+                            result.splice(index,1)
+                        }
+              }
+              let formatedTemplatesData: any = result;
+              setTimeout(() => {
+                  $(messageHtml).find('.full-search-data-container').empty();
+                  if (formatedTemplatesData && formatedTemplatesData.length) {
+                      formatedTemplatesData.forEach((d: any) => {
+                          var showAllHTML;
+                          if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+                              showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+                          } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+                              showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+                          } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+                              showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+                          }
+                          $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+                      })
+                  }
+
+                  if (!$(".full-search-data-container").children().length) {
+                      $(".empty-full-results-container").removeClass("hide");
+                  } else {
+                      if (!$(".empty-full-results-container").hasClass("hide")) {
+                          $(".empty-full-results-container").addClass("hide");
+                      }
+                  }
+              }, 300);
+          })
+      });
+  }
   $ = $;
 
 }
