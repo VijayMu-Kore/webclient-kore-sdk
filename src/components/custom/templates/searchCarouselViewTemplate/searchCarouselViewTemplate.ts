@@ -19,12 +19,12 @@ class SearchCarouselViewTemplate {
                 msgData.message[0].component.payload.templateType = checkImg ? 'L4' : '';
             }
             me.messageCarouselHtml = $(SearchCarouselViewTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
-            
+
             SearchCarouselViewTemplate.prototype.bindEvents(me, me.messageCarouselHtml);
             return me.messageCarouselHtml;
         }
     }
-    bindEvents(me:any, messageHtml: any) {
+    bindEvents(me: any, messageHtml: any) {
         let hostWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
         setTimeout(() => {
@@ -123,7 +123,7 @@ class SearchCarouselViewTemplate {
                 evt.initEvent("resize", true, false);
                 window.dispatchEvent(evt);
             }
-        },500);
+        }, 500);
         $(messageHtml)
             .off("click", ".search-task")
             .on("click", ".search-task", function (event: any) {
@@ -131,6 +131,17 @@ class SearchCarouselViewTemplate {
                 var ele = $(event.target).closest(".search-task");
                 hostWindowInstance.botActionTrigger(event);
             });
+        $(messageHtml).off("click", ".click-to-navigate-url").on("click", ".click-to-navigate-url", function (e: any) {
+            hostWindowInstance?.clickNavigateToUrl(e);
+        });
+        $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
+            hostWindowInstance?.captureClickAnalytics(e,
+                $(e.currentTarget).closest(".faqs-shadow").attr("contentType"),
+                "click",
+                $(e.currentTarget).closest(".faqs-shadow").attr("contentId"),
+                $(e.currentTarget).closest(".faqs-shadow").attr("id"),
+                $(e.currentTarget).attr("title"));
+        });
     }
 
     getTemplateString(type: any) {
@@ -144,7 +155,11 @@ class SearchCarouselViewTemplate {
             <div class="search-list-template-carousel{{if templateType==="L4"}}-img-title{{/if}}">\
             <div class="carousel">\
             {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-                <div class="slide grid-item-col">\
+            {{if isClickable == true}}\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="slide grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
                     <div class="content-info-grid">\
                         <div class="heading-title text_overflow">\
                         {{if data.img.length}}\
@@ -165,7 +180,11 @@ class SearchCarouselViewTemplate {
             <div class="search-list-template-carousel-grid-img">\
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-                <div class="slide grid-item-col">\
+                {{if isClickable == true}}\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="slide grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
                     <div class="content-info-grid">\
                         <div class="img-block-data">\
                             <img src="${data.img}">\
@@ -180,7 +199,11 @@ class SearchCarouselViewTemplate {
             <div class="search-list-template-carousel-title-img-desc">\
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-                <div class="slide grid-item-col">\
+                {{if isClickable == true}}\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="slide grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
                     <div class="content-info-grid">\
                         <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                         <div class="img-with-desc">\
@@ -199,7 +222,11 @@ class SearchCarouselViewTemplate {
             <div class="search-list-template-carousel-title-img-card">\
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-                <div class="slide grid-item-col">\
+                {{if isClickable == true}}\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="slide grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
                     <div class="content-info-grid">\
                         <div class="main-img-block">\
                             <img src="${data.img}" height="10">\

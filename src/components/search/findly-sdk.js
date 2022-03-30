@@ -24638,43 +24638,36 @@ FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
   }
 };
 FindlySDK.prototype.clickNavigateToUrl = function (e) {
-  console.log("clickNavigateToUrl", e)
   var _self = this;
-  setTimeout(function () {
-    $(".click-to-navigate-url")
-      .off("click")
-      .on("click", function (e) {
-        _self.captureClickAnalytics(
-          e,
-          $(e.currentTarget).closest(".faqs-shadow").attr("contentType"),
-          "click",
-          $(e.currentTarget).closest(".faqs-shadow").attr("contentId"),
-          $(e.currentTarget).closest(".faqs-shadow").attr("id"),
-          $(e.currentTarget).attr("title")
-        );
-        if ($(e.currentTarget).hasClass("isClickable")) {
-          if ($(e.target).is("a")) {
-            if ($(e.target).attr("href")) {
-              // window.open($(e.target).attr('href'), '_blank');
-              var link = document.createElement("a");
-              link.href = $(e.target).attr("href");
-              (link.target = "_blank"), link.click();
-              link.remove();
-            }
-          } else {
-            if ($(e.target).closest(".click-to-navigate-url").attr("href")) {
-              // window.open($(e.target).closest('.click-to-navigate-url').attr('href'), '_blank');
-              var link = document.createElement("a");
-              link.href = $(e.target)
-                .closest(".click-to-navigate-url")
-                .attr("href");
-              (link.target = "_blank"), link.click();
-              link.remove();
-            }
-          }
-        }
-      });
-  }, 1000);
+  if (e?.target) {
+    // _self.captureClickAnalytics(
+    //   e,
+    //   $(e.currentTarget).closest(".faqs-shadow").attr("contentType"),
+    //   "click",
+    //   $(e.currentTarget).closest(".faqs-shadow").attr("contentId"),
+    //   $(e.currentTarget).closest(".faqs-shadow").attr("id"),
+    //   $(e.currentTarget).attr("title")
+    // );
+    if ($(e.target).is("a")) {
+      if ($(e.target).attr("href")) {
+        // window.open($(e.target).attr('href'), '_blank');
+        var link = document.createElement("a");
+        link.href = $(e.target).attr("href");
+        (link.target = "_blank"), link.click();
+        link.remove();
+      }
+    } else {
+      if ($(e.target).closest(".click-to-navigate-url").attr("href")) {
+        // window.open($(e.target).closest('.click-to-navigate-url').attr('href'), '_blank');
+        var link = document.createElement("a");
+        link.href = $(e.target)
+          .closest(".click-to-navigate-url")
+          .attr("href");
+        (link.target = "_blank"), link.click();
+        link.remove();
+      }
+    }
+  }
 };
 FindlySDK.prototype.showTypingIndicator = function () {
   var _self = this;

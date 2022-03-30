@@ -26,8 +26,16 @@ class SearchGridViewTemplate {
                 var ele = $(event.target).closest(".search-task");
                 hostWindowInstance.botActionTrigger(event);
             });
+        $(messageHtml).off("click", ".click-to-navigate-url").on("click", ".click-to-navigate-url", function (e: any) {
+            hostWindowInstance?.clickNavigateToUrl(e);
+        });
         $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
-            hostWindowInstance.captureClickAnalytics(e);
+            hostWindowInstance?.captureClickAnalytics(e,
+                $(e.currentTarget).closest(".faqs-shadow").attr("contentType"),
+                "click",
+                $(e.currentTarget).closest(".faqs-shadow").attr("contentId"),
+                $(e.currentTarget).closest(".faqs-shadow").attr("id"),
+                $(e.currentTarget).attr("title"));
         });
     }
     getTemplateString(type: any) {
@@ -39,7 +47,11 @@ class SearchGridViewTemplate {
             {{if gridLayoutType==="img_common"}}\
             <div class="search-list-template-grid-img-title">\
             {{each(key, data) structuredData.slice(0, 5)}}\
-            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}}">\
+            {{if isClickable == true}}\
+            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}}  click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}} click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
                 <div class="content-info-grid">\
                 {{if data.heading.length}}\
                 <div class="heading-title">\
@@ -62,8 +74,11 @@ class SearchGridViewTemplate {
         {{if gridLayoutType==="img_large"}}\
         <div class="search-list-template-grid-img">\
         {{each(key, data) structuredData.slice(0, 5)}}\
-          <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}} click-log-metrics">\
-            <div class="grid-item-col">\
+        {{if isClickable == true}}\
+        <div class="grid-item-col  click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        {{else}}\
+        <div class="grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+        {{/if}}\
                 <div class="content-info-grid">\
                     <div class="img-block-data">\
                     <img src="${data.img}" />\
@@ -76,7 +91,11 @@ class SearchGridViewTemplate {
         {{if gridLayoutType==="img_left"}}\
         <div class="search-list-template-grid-title-img-desc">\
         {{each(key, data) structuredData.slice(0, 5)}}\
-        <div class="grid-item-col">\
+        {{if isClickable == true}}\
+        <div class="grid-item-col  click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        {{else}}\
+        <div class="grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+        {{/if}}\
             <div class="content-info-grid">\
                 <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                 {{each(key, res) [0,1,2]}}\
@@ -91,64 +110,15 @@ class SearchGridViewTemplate {
         </div>\
         {{/each}}\
         </div>\
-     {{/if}}\
-     {{if gridLayoutType==="img_large"}}\
-       <div class="search-list-template-grid-img">\
-       {{each(key, data) structuredData.slice(0, 5)}}\
-          <div class="grid-item-col click-log-metrics">\
-             <div class="content-info-grid">\
-                 <div class="img-block-data">\
-                   <img src="${data.img}" />\
-                 </div>\
-             </div>\
-         </div>\
-         {{/each}}\
-     </div>\
-     {{/if}}\
-     {{if gridLayoutType==="img_left"}}\
-     <div class="search-list-template-grid-title-img-desc">\
-     {{each(key, data) structuredData.slice(0, 5)}}\
-     <div class="grid-item-col click-log-metrics">\
-         <div class="content-info-grid">\
-             <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-             {{each(key, res) [0,1,2]}}\
-             <div class="img-with-desc">\
-                 <div class="img_info">\
-                     <img src="${data.img}" />\
-                 </div>\
-                 <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-             </div>\
-             {{/each}}\
-         </div>\
-     </div>\
-     {{/each}}\
-    </div>\
-     {{/if}}\
-     {{if gridLayoutType==="img_top"}}\
-     <div class="search-list-template-grid-title-img-card">\
-     {{each(key, data) structuredData.slice(0, 5)}}\
-       <div class="grid-item-col click-log-metrics">\
-           <div class="content-info-grid">\
-               <div class="main-img-block">\
-                   <img src="${data.img}" height="10"/>\
-               </div>\
-               {{if data.heading.length}}\
-               <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-               {{/if}}\
-               {{if data.description.length}}\
-               <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-               {{/if}}\
-               <div class="price-tag">$156</div>\
-           </div>\
-       </div>\
-      {{/each}}\
-   </div>\
-     {{/if}}\
         {{/if}}\
         {{if gridLayoutType==="img_top"}}\
         <div class="search-list-template-grid-title-img-card">\
         {{each(key, data) structuredData.slice(0, 5)}}\
-        <div class="grid-item-col">\
+        {{if isClickable == true}}\
+        <div class="grid-item-col  click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        {{else}}\
+        <div class="grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+        {{/if}}\
             <div class="content-info-grid">\
                 <div class="main-img-block">\
                     <img src="${data.img}" height="10"/>\
