@@ -11478,7 +11478,7 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
     .configureSearchInterface(findlyConfig.botOptions)
     .then(function (response) {
       _self.vars.indexPipelineId = response.indexPipelineId;
-      if (response.experienceConfig.searchBarPosition !== "top") {
+      if (response.experienceConfig.searchBarPosition == "top") {
         _self.initializeTopDown(null, null, response);
       } else {
         if (
