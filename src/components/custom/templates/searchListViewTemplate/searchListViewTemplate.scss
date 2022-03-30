@@ -563,6 +563,11 @@
     box-shadow: 0px 0px 11px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 6px 15px;
+    // &:last-child{
+    //     .accordion-content-info{
+    //         border: 0;
+    //     }
+    // }
     &.mb-0{
         margin-bottom: 0px;
     }

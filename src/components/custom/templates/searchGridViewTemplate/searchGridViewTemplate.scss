@@ -239,6 +239,71 @@
     }
 }
 
+// Grid Action Template
+
+.new-grid-search-data{
+    display: flex !important;
+    flex-wrap: wrap;
+    margin: 0 -5px 15px -5px;
+    // width: 100%;
+    &.list-view-data-search{
+        margin: 0 0px 13px;
+        width: 100%;
+        .title-box-data{
+            padding: 5px 0 !important;
+            width: 100% !important;
+        }
+    }
+    .title-box-data{
+        padding: 5px !important;
+        margin: 0 !important;
+        width: 50%;
+        .search-grid-item{
+            min-height: 42px;
+            width: 100%;
+            background: #F3F8FF;
+            border: 1px solid #E7F1FF;
+            border-radius: 4px;
+            padding: 9px;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 19px;
+            letter-spacing: 0.257143px;
+            color: #07377F;
+            transition: 0.2s all ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            &:hover{
+                background: #E7F1FF;
+                border: 1px solid #0D6EFD;
+                color: #07377F;
+                .child-bot{
+                    display: none;
+                }
+            }
+            .credit-card{
+                margin-right: 8px;
+            }
+            .name-title{
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            .child-bot{
+                width: auto;
+                background: #E7F1FF;
+                border-radius: 100px;
+                padding: 4px 8px;
+                font-weight: normal;
+                font-size: 10px;
+                line-height: 12px;
+                color: #0D6EFD;
+            }
+        }
+    }
+}
 
 .title-list-heading{
     font-weight: 600;

@@ -1,8 +1,197 @@
-.searchAssist-kore-chat-window.search-container.conversation #searchChatContainer .final-results-container .messageBubble .messageBubble-content .botMessage .bot_Img img {
-    width: 20px;
-    height: 20px;
+
+
+ @keyframes glowKeyFrame {
+    0% {
+      -webkit-box-shadow: 0px 0px 20px 0px var(--sdk-border-azure-radiane-blue-color);
+    }
+    50% {
+      -webkit-box-shadow: 0px 0px 20px 2px var(--sdk-border-azure-radiane-blue-color);
+    }
+    100% {
+      -webkit-box-shadow: none;
+    }
 }
-.searchAssist-kore-chat-window.search-container.conversation #searchChatContainer .final-results-container .messageBubble .messageBubble-content .botMessage .bot_Img {
-    display: block;
-    left: -32px;
+
+.final-results-container {
+    .messageBubble {
+        .messageBubble-content {
+            .botMessage {
+                .bot_Img{
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .finalResults{
+        .resultsOfSearch {
+            display: flex;
+            flex-direction: column;
+            .asstFaq{
+                position: relative;
+                margin-bottom: 5px;
+            }
+            .asstPage{
+                margin-bottom: 16px;
+            }   
+            .accordion{
+                .card{
+                    border: 0;
+                    border-radius: 0;
+                    background: var(--sdk-white-bg);
+                    .card-header{
+                        border: 0;
+                        border-radius: 0;
+                        background: var(--sdk-white-bg);
+                        padding: 0;
+                        .btn-link {
+                            font-size: 14px;
+                            font-weight: normal;
+                            color: var(--sdk-mirage-color);
+                            display: block;
+                            text-align: left;
+                            text-decoration: none;
+                            padding-left: 0;
+                            .right-arrow{
+                                margin-right: 15px;transform: rotate(90deg);
+                                margin-left: 1px;
+                                opacity: .5;
+                                position: relative;
+                                top: -1px;
+                            }
+                            &.collapsed{
+                                .right-arrow{
+                                    margin-right: 15px;
+                                    transform: rotate(0deg);
+                                }
+                            }
+                        }
+                    }
+                }
+            }   
+            .external-linkDiv{
+                font-size: 14px;
+                font-weight: normal;
+                color: var(--sdk-mirage-color);
+                margin-top: 15px;
+                p{
+                    margin: 0;
+                    position: relative;
+                    padding-left: 22px;
+                    margin-bottom: 13px;
+                }
+                .external-link{
+                    position: absolute;
+                    left: 0px;
+                    top: 3px;
+                }
+            }   
+            .resultsButtons{
+                .faqBtnContainer{
+                    display: block;
+                }
+                .faq{
+                    background: var(--sdk-bg-zumthor-color);
+                    border: 1px solid var(--sdk-border-malibu-color);
+                    border-radius: 4px;
+                    color: var(--sdk-primary-blue-color);
+                    max-width: 180px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    line-height: 28px;
+                    text-align: center;
+                    display: inline-block;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    height: 30px;
+                    padding: 0 15px;
+                    .credit-card{
+                        margin-right: 5px;
+                        position: relative;
+                        top: 3px;
+                        display: none;
+                    }
+                }
+            }
+        }
+        .search-heads {
+            color: var(--sdk-gray-color);
+            font-weight: 600;
+            font-size: 11px;
+            margin-bottom: 6px;
+            display: block;
+            width: 100%;
+            width: 100%; 
+        }
+        .suggestionsResult{
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: solid 1px var(--sdk-primary-border-color);
+            .faq{
+                font-size: 14px;
+                font-weight: normal;
+                color: var(--sdk-mirage-color);
+                position: relative;
+                padding-left: 25px;
+                .searchIcon{
+                    margin-right: 10px;
+                    position: absolute;
+                    top: 5px;
+                    left: 1px;
+                }
+            }
+        }
+        .contactsDetailsfinal{
+            display: flex;
+            .contactDetails{
+                flex: 1;
+                .contacts-ksa{
+                    color: var(--sdk-mirage-color);
+                    font-size: 14px;
+                    font-weight: normal;
+                    line-height: 2;
+                    .right-arrow{
+                        position: relative;
+                        top: 2px;
+                        &.email{
+                            position: relative;
+                            top: 1px;
+                        }
+                    }
+                    .contactTitle{
+                        display: inline-block;
+                        margin-left: 10px;
+                        position: relative;
+                        top: 2px;
+                    }
+                    .contactNum{
+                        margin-left: 25px;
+                        color: var(--sdk-allports-color);
+                    }
+                }
+            }
+        }
+        .highlightedText {
+            background-color: var(--sdk-bg-yellow-color);
+        }
+    }
+}
+
+.searchAssist-kore-chat-window .finalResults .task-wrp.faq-highlight,
+.show-all-results-outer-wrap .finalResults .task-wrp.faq-highlight, 
+.search-body-full .faqs-wrp-content.faq-highlight,
+.live_search_result_box .task-wrp.faq-highlight,
+.all-product-details .task-wrp.faq-highlight{
+    border: 1px solid var(--sdk-border-french-gray-color);
+}
+.searchAssist-kore-chat-window .finalResults .task-wrp.faq-highlight,
+.show-all-results-outer-wrap .task-wrp.faq-highlight,
+.search-body-full .faqs-wrp-content.faq-highlight,
+.live_search_result_box .task-wrp.faq-highlight,
+.all-product-details .task-wrp.faq-highlight{
+    animation-name: glowKeyFrame;
+    animation-duration: 3s;
 }

@@ -256,12 +256,10 @@ class SearchCarouselViewTemplate {
           </div>\
         {{/if}}\
         {{if selectedFacet !== appearanceType && selectedFacet == "all results"}}\
-          <div class="structured-data-header total-structured-data-wrap" appearanceType="task">\
-            ACTIONS\
-            <div class="search-heads show-all sdk-show-classification display-none">\
-              Show all Actions\
+            <div class="heading-and-show-all" appearanceType="task">\
+                <div class="text-heading-main">ACTIONS</div>\
+                <div class="show-all-text display-none">Show all Actions</div>\
             </div>\
-          </div>\
         {{/if}}\
         {{if selectedFacet == appearanceType || selectedFacet == "all results"}}\
           <div class="carousel action-results-container carousel-search-data-items">\
