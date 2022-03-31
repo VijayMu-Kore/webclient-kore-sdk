@@ -872,10 +872,14 @@
                 if (!returnTemplate && msgData.renderType === 'inline') {
                      this.renderMessage(msgData);
                 } else {
+                    var channelParms = "&channel=rtm";
+                    if (msgData.renderType === 'inline') {
+                        channelParms = channelParms + '&showClose=true';
+                    }
                     var popupHtml = $(this.getChatTemplate("iframe")).tmpl({
                         'msgData': msgData,
                         'helpers': me.helpers,
-                        "link_url": msgData.message[0].component.payload.formData.formLink
+                        "link_url": msgData.message[0].component.payload.formData.formLink + channelParms
                     });
                     if (returnTemplate) {
                         return popupHtml;
@@ -921,6 +925,7 @@
                 }, me._pingTime);
             }
             window.onresize = function (event) {
+                var me=chatInitialize;
                 if (event.target === window) {
                      chatInitialize.setCollapsedModeStyles();
                     var _width = $('#chatContainer').width() - 400;
