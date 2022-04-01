@@ -422,6 +422,14 @@ class FullSearchResultsTemplate {
     event.stopImmediatePropagation();
     hostWindowInstance.facetCheckBoxClick(event);
   });
+   // SDK radio
+  $(messageHtml)
+  .off("change",".sdk-filter-radio")
+  .on("change",".sdk-filter-radio", function (event:any) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    hostWindowInstance.facetRadioClick(event);
+  });
   $(messageHtml)
   .off("click",".apply-btn")
   .on("click", ".apply-btn" , function () {

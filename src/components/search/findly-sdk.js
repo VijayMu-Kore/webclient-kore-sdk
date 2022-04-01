@@ -20853,67 +20853,67 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
   //     }
   //   });
 
-  $(".sdk-filter-radio")
-    .off("change")
-    .on("change", function (event) {
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      //$('#loaderDIV').show();
+  // $(".sdk-filter-radio")
+  //   .off("change")
+  //   .on("change", function (event) {
+  //     event.stopPropagation();
+  //     event.stopImmediatePropagation();
+  //     //$('#loaderDIV').show();
 
-      if ($(this).is(":checked")) {
-        // if(_self.vars['selectedFiltersRadio']){
-        //   _self.vars['selectedFiltersRadio'].push($(this).attr("id"));
-        // }
-        // New Logic here
-        var latest = $(this).attr("id");
-        _self.vars["selectedFiltersRadio"].push($(this).attr("id")); //radio-non-multi-
-        var arr = [];
-        if (_self.vars.selectedFiltersRadio) {
-          _self.vars.selectedFiltersRadio.forEach((element, index) => {
-            if (index != _self.vars.selectedFiltersRadio.length - 1) {
-              if (
-                element.split("-")[1].split("")[0] ==
-                latest.split("-")[1].split("")[0]
-              ) {
-                _self.vars.selectedFiltersRadio.splice(index, 1);
-              }
-            }
-          });
-        }
-        _self.vars.selectedFiltersArr.forEach((element, index) => {
-          if (
-            $("#" + element).attr("name") &&
-            $("#" + element)
-              .attr("name")
-              .split("-")[0] == "radio"
-          ) {
-            if (
-              element.split("-")[1].split("")[0] ==
-              latest.split("-")[1].split("")[0]
-            ) {
-              _self.vars.selectedFiltersArr.splice(index, 1);
-            }
-          }
-        });
-        if (_self.vars["selectedFiltersRadio"].length) {
-          _self.vars["selectedFiltersRadio"].forEach((element) => {
-            _self.vars.selectedFiltersArr.push(element);
-          });
-        }
-        // New Logic here
-        //_self.vars.selectedFiltersArr = [];
-        // _self.vars.selectedFiltersArr.push($(this).attr("id"));
+  //     if ($(this).is(":checked")) {
+  //       // if(_self.vars['selectedFiltersRadio']){
+  //       //   _self.vars['selectedFiltersRadio'].push($(this).attr("id"));
+  //       // }
+  //       // New Logic here
+  //       var latest = $(this).attr("id");
+  //       _self.vars["selectedFiltersRadio"].push($(this).attr("id")); //radio-non-multi-
+  //       var arr = [];
+  //       if (_self.vars.selectedFiltersRadio) {
+  //         _self.vars.selectedFiltersRadio.forEach((element, index) => {
+  //           if (index != _self.vars.selectedFiltersRadio.length - 1) {
+  //             if (
+  //               element.split("-")[1].split("")[0] ==
+  //               latest.split("-")[1].split("")[0]
+  //             ) {
+  //               _self.vars.selectedFiltersRadio.splice(index, 1);
+  //             }
+  //           }
+  //         });
+  //       }
+  //       _self.vars.selectedFiltersArr.forEach((element, index) => {
+  //         if (
+  //           $("#" + element).attr("name") &&
+  //           $("#" + element)
+  //             .attr("name")
+  //             .split("-")[0] == "radio"
+  //         ) {
+  //           if (
+  //             element.split("-")[1].split("")[0] ==
+  //             latest.split("-")[1].split("")[0]
+  //           ) {
+  //             _self.vars.selectedFiltersArr.splice(index, 1);
+  //           }
+  //         }
+  //       });
+  //       if (_self.vars["selectedFiltersRadio"].length) {
+  //         _self.vars["selectedFiltersRadio"].forEach((element) => {
+  //           _self.vars.selectedFiltersArr.push(element);
+  //         });
+  //       }
+  //       // New Logic here
+  //       //_self.vars.selectedFiltersArr = [];
+  //       // _self.vars.selectedFiltersArr.push($(this).attr("id"));
 
-        _self.vars.countOfSelectedFilters =
-          _self.vars.selectedFiltersArr.length;
+  //       _self.vars.countOfSelectedFilters =
+  //         _self.vars.selectedFiltersArr.length;
 
-        _self.filterResults(event, false);
-        //_self.pubSub.subscribe('sa-search-full-results');
-        if (_self.vars.filterConfiguration.aligned == "top") {
-          countFunc();
-        }
-      }
-    });
+  //       _self.filterResults(event, false);
+  //       //_self.pubSub.subscribe('sa-search-full-results');
+  //       if (_self.vars.filterConfiguration.aligned == "top") {
+  //         countFunc();
+  //       }
+  //     }
+  //   });
   // SDK checkbox
   //SDK Top Facet
   $(".horizantal-filter-sec")
@@ -25685,5 +25685,51 @@ FindlySDK.prototype.clearAllFilters = function () {
     })
   }
 };
+FindlySDK.prototype.facetRadioClick = function(event){
+  var _self = this;
+    if ($(event.target).is(":checked")) {
+      var latest = $(event.target).attr("id");
+      _self.vars["selectedFiltersRadio"].push($(event.target).attr("id")); //radio-non-multi-
+      if (_self.vars.selectedFiltersRadio) {
+        _self.vars.selectedFiltersRadio.forEach((element, index) => {
+          if (index != _self.vars.selectedFiltersRadio.length - 1) {
+            if (
+              element.split("-")[1].split("")[0] ==
+              latest.split("-")[1].split("")[0]
+            ) {
+              _self.vars.selectedFiltersRadio.splice(index, 1);
+            }
+          }
+        });
+      }
+      _self.vars.selectedFiltersArr.forEach((element, index) => {
+        if (
+          $("#" + element).attr("name") &&
+          $("#" + element)
+            .attr("name")
+            .split("-")[0] == "radio"
+        ) {
+          if (
+            element.split("-")[1].split("")[0] ==
+            latest.split("-")[1].split("")[0]
+          ) {
+            _self.vars.selectedFiltersArr.splice(index, 1);
+          }
+        }
+      });
+      if (_self.vars["selectedFiltersRadio"].length) {
+        _self.vars["selectedFiltersRadio"].forEach((element) => {
+          _self.vars.selectedFiltersArr.push(element);
+        });
+      }
+      _self.vars.countOfSelectedFilters =
+        _self.vars.selectedFiltersArr.length;
+
+      _self.filterResults(event, false);
+      // if (_self.vars.filterConfiguration.aligned == "top") {
+      //   countFunc();
+      // }
+    }
+}
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
