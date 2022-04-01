@@ -121,26 +121,26 @@ class KorePickersPlugin {
     }
     onHostCreate() {
         let me = this;
-        let cwInstance=me.hostInstance;
+        let cwInstance = me.hostInstance;
         cwInstance.on("viewInit", (chatWindowEle) => {
-            debugger;
+            // debugger;
             me.onInit();
         });
-       
+
     }
     onInit() {
         let me = this;
         me.installPickerTemplates();
         me.appendPickersToChatWindow();
     }
-    installPickerTemplates(){
-        let me=this;
+    installPickerTemplates() {
+        let me = this;
         let templateManager = me.hostInstance.customTemplateObj;
         templateManager.installTemplate(new DatePickerTemplate());
-		templateManager.installTemplate(new DateRangePickerTemplate());
-		templateManager.installTemplate(new ClockPickerTemplate());
-		templateManager.installTemplate(new RadioOptionPickerTemplate());
-		templateManager.installTemplate(new TaskPickerTemplate());
+        templateManager.installTemplate(new DateRangePickerTemplate());
+        templateManager.installTemplate(new ClockPickerTemplate());
+        templateManager.installTemplate(new RadioOptionPickerTemplate());
+        templateManager.installTemplate(new TaskPickerTemplate());
     }
     appendPickersToChatWindow() {
         let me = this;
@@ -172,11 +172,11 @@ class KorePickersPlugin {
             me.bindEvents(me.pickerHTML);
         }
     }
-    appendPickerHTMLtoChatWindowFooter(pickerHTML){
+    appendPickerHTMLtoChatWindowFooter(pickerHTML) {
         let me = this;
         let chatWindowInstance = me.hostInstance;
         const _chatContainer = chatWindowInstance.chatEle;
-        _chatContainer.find('.kore-chat-footer .footerContainer').append(pickerHTML);        
+        _chatContainer.find('.kore-chat-footer .footerContainer').append(pickerHTML);
     }
     getClockPickerTemplateString() {
         var clockFooterTemplate = '<div class="sdkFooterIcon clock"> \
@@ -248,9 +248,9 @@ class KorePickersPlugin {
                                 template_type: "dateTemplate",
                                 text: me.config.datePickerConfig.text,
                                 title: me.config.datePickerConfig.title,
-                                format:me.config.datePickerConfig.format,
+                                format: me.config.datePickerConfig.format,
                                 startDate: me.config.datePickerConfig.startDate,
-                                endDate:me.config.datePickerConfig.endDate
+                                endDate: me.config.datePickerConfig.endDate
                             },
                             type: "template"
                         },

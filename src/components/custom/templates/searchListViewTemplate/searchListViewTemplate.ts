@@ -6,11 +6,18 @@ class SearchListViewTemplate {
     let me: any = this;
     let $ = me.hostInstance.$;
     me.helpersObj = helpers;
-    if (msgData?.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.template_type == 'searchListTemplate') {
-      if (!msgData.message[0].component.payload.helpers) {
+    if (msgData?.message[0] && msgData?.message[0].component && msgData?.message[0].component?.payload && msgData?.message[0].component?.payload?.template_type == 'searchListTemplate') {
+      if (!msgData?.message[0].component?.payload?.helpers) {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
-      me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+      const isSearchSDK = document.body.className.match('sdk-body');
+      if(isSearchSDK!==null){
+        msgData.message[0].component.payload.isSearchSDK = true;
+      }
+      else{
+        msgData.message[0].component.payload.isSearchSDK = false;
+      }
+      me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString(msgData?.message[0].component?.payload?.template_type)).tmpl(msgData?.message[0].component?.payload);
       SearchListViewTemplate.prototype.bindEvents(me, me.messageListHtml);
       return me.messageListHtml;
     }
@@ -466,7 +473,7 @@ class SearchListViewTemplate {
     <div class="search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}{{if gridLayoutType==""&&groupResults==true }}-group{{/if}}{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
         {{if isClickable == true}}\
         {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-        <div class="content-info {{if textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class="content-info {{if isSearchSDK&&textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
             {{if data.img.length}}\
             <div class="img_block">\
                 <img src="${data.img}">\
@@ -505,10 +512,12 @@ class SearchListViewTemplate {
         </div>\
         {{/each}}\
         {{/if}}\
+        {{if isSearchSDK}}\
         <div class="show-more-data {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}} show-more-list" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
            <span>Show more</span>\
            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS4zNjQzNyA1LjE0OTQ5QzUuMTc0OTcgNS4zMzgzNyA0Ljg3NDgxIDUuMzQ5NDggNC42NzIzOSA1LjE4MjgyTDQuNjM1NjMgNS4xNDk0OUwwLjE1MDkyNyAwLjg3NzI2NUMtMC4wNTAzMDkxIDAuNjc2NTc5IC0wLjA1MDMwOTEgMC4zNTEyMDIgMC4xNTA5MjcgMC4xNTA1MTVDMC4zNDAzMjYgLTAuMDM4MzY2NCAwLjY0MDQ4IC0wLjA0OTQ3NzMgMC44NDI5MDkgMC4xMTcxODNMMC44Nzk2NjggMC4xNTA1MTVMNSA0LjA1OTI4TDkuMTIwMzMgMC4xNTA1MTVDOS4zMDk3MyAtMC4wMzgzNjY0IDkuNjA5ODggLTAuMDQ5NDc3MyA5LjgxMjMxIDAuMTE3MTgzTDkuODQ5MDcgMC4xNTA1MTVDMTAuMDM4NSAwLjMzOTM5NyAxMC4wNDk2IDAuNjM4NzMxIDkuODgyNSAwLjg0MDYwN0w5Ljg0OTA3IDAuODc3MjY1TDUuMzY0MzcgNS4xNDk0OVoiIGZpbGw9IiM1RjYzNjgiLz4KPC9zdmc+Cg==">\
         </div>\
+        {{/if}}\
     </div>\
     {{/if}}\
     {{/if}}\

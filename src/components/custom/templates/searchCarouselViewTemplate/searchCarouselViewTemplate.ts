@@ -8,17 +8,17 @@ class SearchCarouselViewTemplate {
         let me: any = this;
         let $ = me.hostInstance.$;
         me.helpersObj = helpers;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.template_type == 'searchCarouselTemplate') {
-            if (!msgData.message[0].component.payload.helpers) {
+        if (msgData?.message[0] && msgData?.message[0].component && msgData?.message[0].component?.payload && msgData?.message[0].component?.payload?.template_type == 'searchCarouselTemplate') {
+            if (!msgData?.message[0].component?.payload?.helpers) {
                 msgData.message[0].component.payload['helpers'] = me.helpersObj.helpers;
             }
             msgData.message[0].component.payload['helpers'] = me.helpersObj.helpers;
-            if (msgData?.message[0].component?.payload && msgData?.message[0].component?.payload.gridLayoutType === 'img_common') {
+            if (msgData?.message[0].component?.payload && msgData?.message[0].component?.payload?.gridLayoutType === 'img_common') {
                 const payload = msgData?.message[0].component?.payload?.structuredData;
                 const checkImg = payload.some((res: any) => res !== '');
                 msgData.message[0].component.payload.templateType = checkImg ? 'L4' : '';
             }
-            me.messageCarouselHtml = $(SearchCarouselViewTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+            me.messageCarouselHtml = $(SearchCarouselViewTemplate.prototype.getTemplateString(msgData?.message[0].component?.payload?.template_type)).tmpl(msgData?.message[0].component?.payload);
 
             SearchCarouselViewTemplate.prototype.bindEvents(me, me.messageCarouselHtml);
             return me.messageCarouselHtml;

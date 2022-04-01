@@ -3,7 +3,7 @@ var chatConfig = {};
 
 var botOptions = {};
 botOptions.logLevel = 'debug';
-botOptions.koreAPIUrl = "https://qa1-bots.kore.ai/api/";
+botOptions.koreAPIUrl = "https://bots.kore.ai/api/";
 // botOptions.koreAPIUrl = "https://qa1-bots.kore.ai/api/";
 botOptions.koreSpeechAPIUrl = "";//deprecated
 //botOptions.bearer = "bearer xyz-------------------";
@@ -18,11 +18,11 @@ botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
 
 
 
-botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
+botOptions.JWTUrl = 'https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts';
 botOptions.userIdentity = 'rushivar.takhur@kore.com';// Provide users email id here
-botOptions.botInfo = { name: "SDK2.0", "_id": "st-76c5b67e-e4e3-54fa-9197-57ed4eff1dad" }; // bot name is case sensitive
-botOptions.clientId = "cs-a5ea6d09-fb18-5620-b3aa-dd6fc69612d6";
-botOptions.clientSecret = "HzA3X8BdP7EvkIxxwISCwMBc+FClQJER0UYeqpvYoE4=";
+botOptions.botInfo = { name: "SDK2.0", "_id": "st-80fe78b1-ad41-5726-87fb-ded1a470739b" }; // bot name is case sensitive
+botOptions.clientId = "cs-383769c0-5c36-506d-8955-3da982392e89";
+botOptions.clientSecret = "YDDzgK9kmUfcp82Jko/3kfTWWfc5rYBWw/P8ZRFADlg=";
 // botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 // botOptions.userIdentity = 'rajasekhar.balla@kore.com';// Provide users email id here
 // botOptions.botInfo = { name: "SDKBot", "_id": "st-b9889c46-218c-58f7-838f-73ae9203488c" }; // bot name is case sensitive
@@ -60,11 +60,11 @@ botOptions.clientSecret = "HzA3X8BdP7EvkIxxwISCwMBc+FClQJER0UYeqpvYoE4=";
 
 chatConfig = {
     botOptions: botOptions,
-    API_KEY_CONFIG:{
-        bootstrapURL:'http://localhost:9000/examples/bootstrap.json',
-        KEY:'YOUR_API_KEY'
+    API_KEY_CONFIG: {
+        bootstrapURL: 'http://localhost:9000/examples/bootstrap.json',
+        KEY: 'YOUR_API_KEY'
     },
-    container:'body',
+    container: 'body',
     allowIframe: false, 			// set true, opens authentication links in popup window, default value is "false"
     isSendButton: false, 			// set true, to show send button below the compose bar
     isTTSEnabled: false,			// set true, to hide speaker icon
