@@ -4,9 +4,15 @@ import korejquery from "../../libs/korejquery";
 import customTemplate from '../custom/customTemplate';
 import searchTemplate from './searchTemplate'
 import _ from 'lodash';
-import PubSub from 'pubsub-js'
-
+import PubSub from 'pubsub-js';
+import SearchListViewTemplate from "../custom/templates/searchListViewTemplate/searchListViewTemplate";
+import SearchGridViewTemplate from "../custom/templates/searchGridViewTemplate/searchGridViewTemplate";
+import SearchCarouselViewTemplate from "../custom/templates/searchCarouselViewTemplate/searchCarouselViewTemplate";
+import FinalResultsTemplate from "../custom/templates/finalResultsTemplate/finalResultsTemplate";
+import FullSearchResultsTemplate from "../custom/templates/fullsearchResultsTemplate/fullsearchResultsTemplate";
+import FullSearchResultTopdownTemplate from "../custom/templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate";
 import './css/findly-sdk.scss'
+import './css/common-styles.scss'
 import './css/search-bar-experience.scss'
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -4220,33 +4226,34 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
             _self.fullResultsScrollTop();
             $(".content-data-sec").scrollTop(0);
             $(".data-body-sec").scrollTop(0);
-          } else {
-            var dataObj = {
-              facets: facets || [],
-              searchFacets: searchFacets || [],
-              originalQuery: res.originalQuery || "",
-              customSearchResult: _self.customSearchResult,
-              data: res.results.data,
-              groupName: showMoreData.groupName,
-              doc_count: res.results.doc_count,
-              ShowMoreData: {
-                templateName: showMoreData.templateName,
-              },
-            };
-            var publishSearchData =
-              "sa-" + showMoreData.groupName + "-search-data";
-            _self.pubSub.publish(publishSearchData, {
-              container: ".full-search-data-container",
-              isFullResults: true,
-              selectedFacet: "all results",
-              isLiveSearch: false,
-              isSearch: false,
-              dataObj,
-            });
           }
-          _self.pubSub.publish("facet-selected", {
-            selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
-          });
+          //  else {
+          //   var dataObj = {
+          //     facets: facets || [],
+          //     searchFacets: searchFacets || [],
+          //     originalQuery: res.originalQuery || "",
+          //     customSearchResult: _self.customSearchResult,
+          //     data: res.results.data,
+          //     groupName: showMoreData.groupName,
+          //     doc_count: res.results.doc_count,
+          //     ShowMoreData: {
+          //       templateName: showMoreData.templateName,
+          //     },
+          //   };
+          //   var publishSearchData =
+          //     "sa-" + showMoreData.groupName + "-search-data";
+          //   _self.pubSub.publish(publishSearchData, {
+          //     container: ".full-search-data-container",
+          //     isFullResults: true,
+          //     selectedFacet: "all results",
+          //     isLiveSearch: false,
+          //     isSearch: false,
+          //     dataObj,
+          //   });
+          // }
+          // _self.pubSub.publish("facet-selected", {
+          //   selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
+          // });
         }
       });
   } else {
@@ -6274,6 +6281,7 @@ FindlySDK.prototype.searchByFacetFilters = function (
         files = [],
         facets = {},
         searchFacets = [];
+        var responseData = Object.assign({}, res);
       if (res.template) {
         res = res.template;
         searchFacets = res.facets;
@@ -6338,17 +6346,17 @@ FindlySDK.prototype.searchByFacetFilters = function (
                 $(".empty-full-results-container").addClass("hide");
               }
               var publishSearchData = "sa-" + groupName + "-search-data";
-              _self.pubSub.publish(publishSearchData, {
-                container: ".full-search-data-container",
-                isFullResults: true,
-                selectedFacet: "all results",
-                isLiveSearch: false,
-                isSearch: false,
-                dataObj,
-              });
+              // _self.pubSub.publish(publishSearchData, {
+              //   container: ".full-search-data-container",
+              //   isFullResults: true,
+              //   selectedFacet: "all results",
+              //   isLiveSearch: false,
+              //   isSearch: false,
+              //   dataObj,
+              // });
             });
             _self.vars.totalNumOfResults = totalResultsCount;
-            res.results = results;
+            // res.results = results;
           } else {
             var dataObj = {
               facets: facets || [],
@@ -6376,7 +6384,7 @@ FindlySDK.prototype.searchByFacetFilters = function (
             groupName: "defaultTemplate",
             doc_count: res.results.doc_count,
           };
-          res.results = results;
+          // res.results = results;
           if (totalResultsCount) {
             _self.pubSub.publish("sa-defaultTemplate-search-data", {
               container: ".full-search-data-container",
@@ -6428,6 +6436,8 @@ FindlySDK.prototype.searchByFacetFilters = function (
             isSearch: false,
             facetData: facetdata,
             dataObj,
+            isSearch: false,
+            responseData: responseData
           });
         } else {
           if (_self.isDev) {
@@ -10549,6 +10559,10 @@ FindlySDK.prototype.initializeCustomTemplate = function (findlyConfig) {
   _self.customTemplateObj.helpers = helpers;
   _self.customTemplateObj.config = findlyConfig;
   _self.searchTemplateObj = new searchTemplate(_self);
+  var searchAssistTemplates = [new SearchListViewTemplate(), new SearchGridViewTemplate(), new SearchCarouselViewTemplate(), new FinalResultsTemplate(), new FullSearchResultsTemplate(), new FullSearchResultTopdownTemplate()]
+  searchAssistTemplates.forEach((template)=>{
+    _self.customTemplateObj.installTemplate(template);
+  })
   _self.initializeCustomTemplateEvent();
 };
 
@@ -19978,6 +19992,7 @@ FindlySDK.prototype.showAllResults = function () {
       //   isDev: _self.isDev,
       //   isFilterEnabled: isFilterEnabled,
       // });
+
       _self.getMergedData(_self.vars.resultSettings, data.responseData, 'isFullResults').then((res) => {
         var devMode = _self.isDev ? true : false;
         var viewType = _self.vars.customizeView ? "Customize" : "Preview";
@@ -19995,6 +20010,7 @@ FindlySDK.prototype.showAllResults = function () {
                 devMode: devMode,
                 viewType: viewType,
                 facetPosition: _self.vars.filterConfiguration.aligned,
+                filterFacetData: facetData,
                 groupData: _self.vars.mergedData,
                 searchConfigurationCopy: searchConfigurationCopy
               }
@@ -20010,7 +20026,7 @@ FindlySDK.prototype.showAllResults = function () {
         //   facetObj['show'] = true;
         // }
         _self.vars["facetObjectGlobal"] = facetObj;
-        _self.facetReset(facetObj, facetData);
+        // _self.facetReset(facetObj, facetData);
         _self.bindShowAllResultsTrigger(showAllHTML, facetData, data);
       });
       // _self.vars.seeAllResultsOSObj = new KRPerfectScrollbar(data.container);
@@ -20652,40 +20668,40 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       });
     }
   }, 100);
-  $(".sdk-facet-filter-data")
-    .off("click")
-    .on("click", function (event) {
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-    });
-  $("#facetRightIconId")
-    .off("click")
-    .on("click", function (event) {
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      var facetObj = {};
-      facetObj["position"] = _self.vars.filterConfiguration.aligned;
-      if (facetObj["show"]) {
-        facetObj["show"] = false;
-      } else {
-        facetObj["show"] = true;
-      }
-      if ($(".filter-data").length) {
-        facetObj["show"] = false;
-      } else {
-        facetObj["show"] = true;
-      }
-      if (!facetObj.show && _self.vars.isClearAllClickedInBottomUp) {
-        // $('#loaderDIV').show();
-        _self.searchByFacetFilters(_self.vars.filterObject);
-        return false;
-      } else {
-        _self.vars.isClearAllClickedInBottomUp = false;
-      }
+  // $(".sdk-facet-filter-data")
+  //   .off("click")
+  //   .on("click", function (event) {
+  //     event.stopPropagation();
+  //     event.stopImmediatePropagation();
+  //   });
+  // $("#facetRightIconId")
+  //   .off("click")
+  //   .on("click", function (event) {
+  //     event.stopPropagation();
+  //     event.stopImmediatePropagation();
+  //     var facetObj = {};
+  //     facetObj["position"] = _self.vars.filterConfiguration.aligned;
+  //     if (facetObj["show"]) {
+  //       facetObj["show"] = false;
+  //     } else {
+  //       facetObj["show"] = true;
+  //     }
+  //     if ($(".filter-data").length) {
+  //       facetObj["show"] = false;
+  //     } else {
+  //       facetObj["show"] = true;
+  //     }
+  //     if (!facetObj.show && _self.vars.isClearAllClickedInBottomUp) {
+  //       // $('#loaderDIV').show();
+  //       _self.searchByFacetFilters(_self.vars.filterObject);
+  //       return false;
+  //     } else {
+  //       _self.vars.isClearAllClickedInBottomUp = false;
+  //     }
 
-      _self.facetReset(facetObj, facetData);
-      _self.bindShowAllResultsTrigger(showAllHTML, facetData, null, true);
-    });
+  //     _self.facetReset(facetObj, facetData);
+  //     _self.bindShowAllResultsTrigger(showAllHTML, facetData, null, true);
+  //   });
 
   $(".sdk-clear-all-facet-top")
     .off("click")
@@ -20720,38 +20736,38 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       };
       // setTimeout(hide, 1000);
     });
-  var cancelAllRecord = function () {
-    if (_self.vars.countOfSelectedFilters > 0) {
-      $("#loaderDIV").show();
-    }
-    //$('#loaderDIV').show();
-    if (_self.vars.selectedFiltersArr.length > 0) {
-      _self.vars.selectedFiltersArr.forEach(function (filter) {
-        $("#" + filter).prop("checked", false);
-      });
-      _self.vars.selectedFiltersArr = [];
-      _self.vars.filterObject = [];
-      _self.vars.countOfSelectedFilters = 0;
-      _self.searchByFacetFilters(_self.vars.filterObject);
-    }
-  };
-  $(".clsoe-filter")
-    .off("click")
-    .on("click", function () {
-      $(".filter-updated-count").hide();
-      cancelAllRecord();
-      if (_self.vars.filterConfiguration.aligned == "top") {
-        countFunc();
-      }
-    });
-  $(".apply-btn")
-    .off("click")
-    .on("click", function () {
-      $(".filter-data").hide();
-      // $('#loaderDIV').show();
-      _self.searchByFacetFilters(_self.vars.filterObject);
-      //_self.facetFilter(facetObj);
-    });
+  // var cancelAllRecord = function () {
+  //   if (_self.vars.countOfSelectedFilters > 0) {
+  //     $("#loaderDIV").show();
+  //   }
+  //   //$('#loaderDIV').show();
+  //   if (_self.vars.selectedFiltersArr.length > 0) {
+  //     _self.vars.selectedFiltersArr.forEach(function (filter) {
+  //       $("#" + filter).prop("checked", false);
+  //     });
+  //     _self.vars.selectedFiltersArr = [];
+  //     _self.vars.filterObject = [];
+  //     _self.vars.countOfSelectedFilters = 0;
+  //     _self.searchByFacetFilters(_self.vars.filterObject);
+  //   }
+  // };
+  // $(".clsoe-filter")
+  //   .off("click")
+  //   .on("click", function () {
+  //     $(".filter-updated-count").hide();
+  //     cancelAllRecord();
+  //     if (_self.vars.filterConfiguration.aligned == "top") {
+  //       countFunc();
+  //     }
+  //   });
+  // $(".apply-btn")
+  //   .off("click")
+  //   .on("click", function () {
+  //     $(".filter-data").hide();
+  //     // $('#loaderDIV').show();
+  //     _self.searchByFacetFilters(_self.vars.filterObject);
+  //     //_self.facetFilter(facetObj);
+  //   });
   $(".sdk-facet-count")
     .off("click")
     .on("click", function (event) {
@@ -20807,97 +20823,97 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       _self.vars.selectedFacetFromSearch = "all results";
       //$('#search').focus();
     });
-  // SDK checkbox
-  $(".sdk-filter-checkbox")
-    .off("change")
-    .on("change", function (event) {
-      event.stopPropagation();
-      event.stopImmediatePropagation();
+  // // SDK checkbox
+  // $(".sdk-filter-checkbox")
+  //   .off("change")
+  //   .on("change", function (event) {
+  //     event.stopPropagation();
+  //     event.stopImmediatePropagation();
 
-      if ($(this).is(":checked")) {
-        _self.vars.selectedFiltersArr.push($(this).attr("id"));
+  //     if ($(this).is(":checked")) {
+  //       _self.vars.selectedFiltersArr.push($(this).attr("id"));
 
-        _self.vars.countOfSelectedFilters += 1;
+  //       _self.vars.countOfSelectedFilters += 1;
 
-        _self.filterResults(event, true);
-      } else {
-        var unselectedFilterID = $(this).attr("id");
-        _self.vars.selectedFiltersArr.slice(0).forEach(function (filter) {
-          if (filter == unselectedFilterID) {
-            _self.vars.selectedFiltersArr.splice(
-              _self.vars.selectedFiltersArr.indexOf(filter),
-              1
-            );
-          }
-        });
+  //       _self.filterResults(event, true);
+  //     } else {
+  //       var unselectedFilterID = $(this).attr("id");
+  //       _self.vars.selectedFiltersArr.slice(0).forEach(function (filter) {
+  //         if (filter == unselectedFilterID) {
+  //           _self.vars.selectedFiltersArr.splice(
+  //             _self.vars.selectedFiltersArr.indexOf(filter),
+  //             1
+  //           );
+  //         }
+  //       });
 
-        _self.vars.countOfSelectedFilters -= 1;
+  //       _self.vars.countOfSelectedFilters -= 1;
 
-        _self.filterResults(event, false);
-      }
-    });
+  //       _self.filterResults(event, false);
+  //     }
+  //   });
 
-  $(".sdk-filter-radio")
-    .off("change")
-    .on("change", function (event) {
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      //$('#loaderDIV').show();
+  // $(".sdk-filter-radio")
+  //   .off("change")
+  //   .on("change", function (event) {
+  //     event.stopPropagation();
+  //     event.stopImmediatePropagation();
+  //     //$('#loaderDIV').show();
 
-      if ($(this).is(":checked")) {
-        // if(_self.vars['selectedFiltersRadio']){
-        //   _self.vars['selectedFiltersRadio'].push($(this).attr("id"));
-        // }
-        // New Logic here
-        var latest = $(this).attr("id");
-        _self.vars["selectedFiltersRadio"].push($(this).attr("id")); //radio-non-multi-
-        var arr = [];
-        if (_self.vars.selectedFiltersRadio) {
-          _self.vars.selectedFiltersRadio.forEach((element, index) => {
-            if (index != _self.vars.selectedFiltersRadio.length - 1) {
-              if (
-                element.split("-")[1].split("")[0] ==
-                latest.split("-")[1].split("")[0]
-              ) {
-                _self.vars.selectedFiltersRadio.splice(index, 1);
-              }
-            }
-          });
-        }
-        _self.vars.selectedFiltersArr.forEach((element, index) => {
-          if (
-            $("#" + element).attr("name") &&
-            $("#" + element)
-              .attr("name")
-              .split("-")[0] == "radio"
-          ) {
-            if (
-              element.split("-")[1].split("")[0] ==
-              latest.split("-")[1].split("")[0]
-            ) {
-              _self.vars.selectedFiltersArr.splice(index, 1);
-            }
-          }
-        });
-        if (_self.vars["selectedFiltersRadio"].length) {
-          _self.vars["selectedFiltersRadio"].forEach((element) => {
-            _self.vars.selectedFiltersArr.push(element);
-          });
-        }
-        // New Logic here
-        //_self.vars.selectedFiltersArr = [];
-        // _self.vars.selectedFiltersArr.push($(this).attr("id"));
+  //     if ($(this).is(":checked")) {
+  //       // if(_self.vars['selectedFiltersRadio']){
+  //       //   _self.vars['selectedFiltersRadio'].push($(this).attr("id"));
+  //       // }
+  //       // New Logic here
+  //       var latest = $(this).attr("id");
+  //       _self.vars["selectedFiltersRadio"].push($(this).attr("id")); //radio-non-multi-
+  //       var arr = [];
+  //       if (_self.vars.selectedFiltersRadio) {
+  //         _self.vars.selectedFiltersRadio.forEach((element, index) => {
+  //           if (index != _self.vars.selectedFiltersRadio.length - 1) {
+  //             if (
+  //               element.split("-")[1].split("")[0] ==
+  //               latest.split("-")[1].split("")[0]
+  //             ) {
+  //               _self.vars.selectedFiltersRadio.splice(index, 1);
+  //             }
+  //           }
+  //         });
+  //       }
+  //       _self.vars.selectedFiltersArr.forEach((element, index) => {
+  //         if (
+  //           $("#" + element).attr("name") &&
+  //           $("#" + element)
+  //             .attr("name")
+  //             .split("-")[0] == "radio"
+  //         ) {
+  //           if (
+  //             element.split("-")[1].split("")[0] ==
+  //             latest.split("-")[1].split("")[0]
+  //           ) {
+  //             _self.vars.selectedFiltersArr.splice(index, 1);
+  //           }
+  //         }
+  //       });
+  //       if (_self.vars["selectedFiltersRadio"].length) {
+  //         _self.vars["selectedFiltersRadio"].forEach((element) => {
+  //           _self.vars.selectedFiltersArr.push(element);
+  //         });
+  //       }
+  //       // New Logic here
+  //       //_self.vars.selectedFiltersArr = [];
+  //       // _self.vars.selectedFiltersArr.push($(this).attr("id"));
 
-        _self.vars.countOfSelectedFilters =
-          _self.vars.selectedFiltersArr.length;
+  //       _self.vars.countOfSelectedFilters =
+  //         _self.vars.selectedFiltersArr.length;
 
-        _self.filterResults(event, false);
-        //_self.pubSub.subscribe('sa-search-full-results');
-        if (_self.vars.filterConfiguration.aligned == "top") {
-          countFunc();
-        }
-      }
-    });
+  //       _self.filterResults(event, false);
+  //       //_self.pubSub.subscribe('sa-search-full-results');
+  //       if (_self.vars.filterConfiguration.aligned == "top") {
+  //         countFunc();
+  //       }
+  //     }
+  //   });
   // SDK checkbox
   //SDK Top Facet
   $(".horizantal-filter-sec")
@@ -24963,9 +24979,9 @@ FindlySDK.prototype.countTotalResults = function (res, totalResultsCount) {
           totalResultsCount = totalResultsCount + res.results[group].doc_count;
         }
       });
-      _self.vars.totalNumOfResults =
-        totalResultsCount + (res.tasks || []).length;
     }
+    _self.vars.totalNumOfResults =
+    totalResultsCount + (res.tasks || []).length;
   } else {
     var results = res.results.data;
     if (!(res.tabFacet || {}).buckets) {
@@ -25287,7 +25303,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                   }
                   const final_result = _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
                   console.log("final_result", final_result);
-                  resolve(final_result);
+                  // resolve(final_result);
                 });
 
               }
@@ -25301,7 +25317,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               if (results && results.length) {
                 const final_result = _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
                 console.log("final_result", final_result);
-                resolve(final_result);
+                // resolve(final_result);
               }
             }
           }
@@ -25521,6 +25537,199 @@ FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
         reject(error);
       })
   })
+}
+FindlySDK.prototype.facetCheckBoxClick = function(event){
+  // SDK checkbox
+  var  _self = this;
+      if ($(event.target).is(":checked")) {
+        _self.vars.selectedFiltersArr.push($(event.target).attr("id"));
+
+        _self.vars.countOfSelectedFilters += 1;
+
+        _self.filterResults(event, true);
+      } else {
+        var unselectedFilterID = $(event.target).attr("id");
+        _self.vars.selectedFiltersArr.slice(0).forEach(function (filter) {
+          if (filter == unselectedFilterID) {
+            _self.vars.selectedFiltersArr.splice(
+              _self.vars.selectedFiltersArr.indexOf(filter),
+              1
+            );
+          }
+        });
+
+        _self.vars.countOfSelectedFilters -= 1;
+
+        _self.filterResults(event, false);
+      }
+}
+FindlySDK.prototype.getSearchByFacetFilters = function() {
+var  _self = this;
+var filterObject = _self.vars.filterObject;
+var url = _self.API.searchUrl;
+  var payload = {
+    query: _self.vars.searchObject.searchText,
+    // "maxNumOfResults": 9,
+    maxNumOfResults: 5,
+    lang: "en",
+    // "isDev": true,
+    isDev: _self.isDev,
+    searchRequestId: _self.vars.requestId,
+  };
+
+  if (_self.isDev) {
+    payload["customize"] = _self.vars.customizeView;
+  }
+
+  if (filterObject.length > 0) {
+    payload.filters = JSON.parse(JSON.stringify(filterObject));
+  }
+  var contentTypeFilter = {
+    fieldName: "sys_content_type",
+    name: "facetContentType",
+    subtype: "value",
+    multiselect: false,
+    buckets: [],
+  };
+  if (
+    _self.vars.selectedFacetFromSearch &&
+    _self.vars.selectedFacetFromSearch !== "all results"
+  ) {
+    // selectedTopFacet = {
+    //   fieldName: contentTypeFilter.fieldName,
+    //   subtype: contentTypeFilter.subtype,
+    //   facetValue: [_self.vars.selectedFacetFromSearch],
+    //   name: contentTypeFilter.name,
+    // };
+    var tabConfig = {
+      filter: {
+        fieldName: _self.vars.tabFacetFieldName,
+        facetValue: [_self.vars.selectedFacetFromSearch],
+      },
+    };
+    payload.tabConfig = tabConfig;
+  } else {
+    let filters = payload.filters;
+  }
+return new Promise((resolve, reject) => {
+  _self.getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
+    var totalResultsCount = 0;
+    if (data.template.tabFacet && data.template.tabFacet.buckets && data.template.tabFacet.buckets.length) {
+      data.template.tabFacet.buckets.forEach((tab) => {
+        totalResultsCount = totalResultsCount + tab.doc_count;
+        if (!tab.name) {
+          tab.name = tab.key;
+        }
+      });
+      _self.vars.tabFacetFieldName = data.template.tabFacet.fieldName;
+    }
+    totalResultsCount = totalResultsCount;
+    _self.countTotalResults(data.template, totalResultsCount);
+    let facets = [];
+    facets.push({
+      key: "all results",
+      doc_count: _self.vars.totalNumOfResults,
+      name: "ALL",
+    });
+    facets = facets.concat((data.template.tabFacet || {}).buckets || []);
+    facets = _self.rearrangeTabsList(facets);
+    if ((data.template.tasks || []).length) {
+      facets.push({
+        key: "task",
+        doc_count: (data.template.tasks || []).length,
+        name: "Actions",
+      });
+    }
+    facets.forEach((tab) => {
+      if (tab && tab.key) {
+        tab["className"] = tab.key.replaceAll(" ", "-");
+      }
+    });
+    _self.vars.tabsList = facets; 
+    let filterCount =0;
+    if (
+      _self.vars &&
+      _self.vars.selectedFiltersArr &&
+      _self.vars.selectedFiltersArr.length
+    ) {
+      filterCount = _self.vars.selectedFiltersArr.length;
+    }
+    _self.getMergedData(_self.vars.resultSettings, data, 'isFullResults').then((res) => {
+        resolve({result:res,facets:_self.vars.tabsList,filterCount:filterCount});
+      })
+    })
+    .catch((error) => {
+      reject(error);
+    })
+})
+};
+FindlySDK.prototype.clearAllFilters = function () {
+  var _self = this;
+  if (_self.vars.countOfSelectedFilters > 0) {
+    $("#loaderDIV").show();
+  }
+  if (_self.vars.selectedFiltersArr.length > 0) {
+    _self.vars.selectedFiltersArr.forEach(function (filter) {
+      $("#" + filter).prop("checked", false);
+    });
+    _self.vars.selectedFiltersArr = [];
+    _self.vars.filterObject = [];
+    _self.vars.countOfSelectedFilters = 0;
+    return new Promise((resolve, reject) => {
+    _self.getSearchByFacetFilters().then((res) => {
+      resolve(res);
+    })
+    .catch((error) => {
+      reject(error);
+    })
+    })
+  }
+};
+FindlySDK.prototype.facetRadioClick = function(event){
+  var _self = this;
+    if ($(event.target).is(":checked")) {
+      var latest = $(event.target).attr("id");
+      _self.vars["selectedFiltersRadio"].push($(event.target).attr("id")); //radio-non-multi-
+      if (_self.vars.selectedFiltersRadio) {
+        _self.vars.selectedFiltersRadio.forEach((element, index) => {
+          if (index != _self.vars.selectedFiltersRadio.length - 1) {
+            if (
+              element.split("-")[1].split("")[0] ==
+              latest.split("-")[1].split("")[0]
+            ) {
+              _self.vars.selectedFiltersRadio.splice(index, 1);
+            }
+          }
+        });
+      }
+      _self.vars.selectedFiltersArr.forEach((element, index) => {
+        if (
+          $("#" + element).attr("name") &&
+          $("#" + element)
+            .attr("name")
+            .split("-")[0] == "radio"
+        ) {
+          if (
+            element.split("-")[1].split("")[0] ==
+            latest.split("-")[1].split("")[0]
+          ) {
+            _self.vars.selectedFiltersArr.splice(index, 1);
+          }
+        }
+      });
+      if (_self.vars["selectedFiltersRadio"].length) {
+        _self.vars["selectedFiltersRadio"].forEach((element) => {
+          _self.vars.selectedFiltersArr.push(element);
+        });
+      }
+      _self.vars.countOfSelectedFilters =
+        _self.vars.selectedFiltersArr.length;
+
+      _self.filterResults(event, false);
+      // if (_self.vars.filterConfiguration.aligned == "top") {
+      //   countFunc();
+      // }
+    }
 }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

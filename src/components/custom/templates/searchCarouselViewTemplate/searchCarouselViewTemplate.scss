@@ -1,5 +1,9 @@
 
 // Carousel List
+.carousel{
+    overflow: hidden;
+    position: relative;
+}
 .search-list-template-carousel{
     margin-bottom: 15px;
     .carousel{
@@ -475,38 +479,158 @@
 
 
 //actions carousel styles start//
-.carousel.carousel-search-data-items {
-    width: 100% !important;
-    margin: 10px 0 !important;
+.action-carousel-parent-container{
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 100%;
+}
+.carousel{
+    &.carousel-search-data-items{
+        width: 100% !important;
+        margin: 10px 0 !important;
+        .purejscarousel-dots-container{
+            display: none;
+        }
+        .slide{
+            text-align: left;
+            padding: 0 10px 0 0;
+            border: 0;
+            width: 178px;
+            font-size: 14px; 
+            .slide-last-child{
+                background: #FFFFFF !important;
+                opacity: 0.8;
+                color: #CDD7E5  !important;
+            }
+            .title-box-data{
+                background: #F3F8FF;
+                border: 1px solid #E7F1FF;
+                border-radius: 4px;
+                padding: 8px 9px;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 19px;
+                letter-spacing: 0.257143px;
+                color: #07377F;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                &:hover{
+                    background: #E7F1FF;
+                    border: 1px solid #0D6EFD;
+                    color: #07377F;
+                    .child-bot{
+                        display: none;
+                    }
+                }
+                .search-grid-item{
+                    width: 100%;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+                .child-bot{
+                    width: auto;
+                    background: #E7F1FF;
+                    border-radius: 100px;
+                    padding: 4px 8px;
+                    font-weight: normal;
+                    font-size: 10px;
+                    line-height: 12px;
+                    color: #0D6EFD;
+                }
+            }
+        }
+        .purejscarousel-btn{
+            &.purejscarousel-btn-next{
+                border: 0 !important;
+                background: #3C4043 !important;
+                border-radius: 2px !important;
+                width: 20px !important;
+                height: 20px !important;
+                top: 13px;
+                right: 2px;
+                position: absolute;
+                margin: 0;
+                transform: none !important;
+                &.hideNow{
+                    display: none;
+                }
+                &::before{
+                    content: "";
+                    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAYAAACulacQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABhSURBVHgBvY+9CYBQDIRjRF7rCI7gCG7gCI7iSI6kG2gRiO8nYFIqAQvBgyPFdyE5YOZOPYAjFJG2wnpJpUxeAIioP2PafwjYk/iETQijjkO93UDMedat1ep9BHbYBW+6AAumYMm58wBRAAAAAElFTkSuQmCC');
+                    background-size: 7px;
+                    z-index: 999;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    background-repeat: no-repeat;
+                    text-align: center;
+                    background-position: center center;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+            &.purejscarousel-btn-prev{
+                border: 0 !important;
+                background: #3C4043 !important;
+                border-radius: 2px !important;
+                width: 20px !important;
+                height: 20px !important;
+                top: 13px;
+                left: 5px;
+                position: absolute;
+                margin: 0;
+                transform: none !important;
+                &.hideNow{
+                    display: none;
+                }
+                &::before{
+                    content: "";
+                    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAYAAACulacQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABhSURBVHgBvY+9CYBQDIRjRF7rCI7gCG7gCI7iSI6kG2gRiO8nYFIqAQvBgyPFdyE5YOZOPYAjFJG2wnpJpUxeAIioP2PafwjYk/iETQijjkO93UDMedat1ep9BHbYBW+6AAumYMm58wBRAAAAAElFTkSuQmCC');
+                    background-size: 7px;
+                    z-index: 999;
+                    position: absolute;
+                    top: 0;
+                    left: 0px;
+                    background-repeat: no-repeat;
+                    text-align: center;
+                    background-position: center center;
+                    height: 100%;
+                    width: 100%;
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
 }
 
-.carousel-search-data-items .slide {
-    text-align: left;
-    padding: 0 10px 0 0;
-    border: 0;
-    width: 178px;
-    font-size: 14px;
-    height: auto;
-    color: var(--sdk-chat-widow-default-white);
-}
-.carousel-search-data-items .slide .title-box-data {
-    background: #F3F8FF;
-    border: 1px solid #E7F1FF;
-    border-radius: 4px;
-    padding: 8px 9px;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 19px;
-    letter-spacing: 0.257143px;
-    color: #07377F;
+//actions carousel styles end//
+
+
+// Comon Heading and show all
+
+.heading-and-show-all{
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    cursor: pointer;
+    justify-content: space-between;
+    .text-heading-main{
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+        color: #202124;
+    }
+    .show-all-text{
+        text-align: right;
+        cursor: pointer;
+        color: #5f6368;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 15px;
+        &.show-all-blue{
+            color: #0d6efd;
+        }
+    }
 }
-.carousel-search-data-items .slide .title-box-data .search-grid-item {
-    width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-//actions carousel styles end//

@@ -18,12 +18,12 @@ import ListViewTemplate from './templates/listViewTemplate/listViewTemplate';
 // import LineChartTemplate from './templates/lineChartTemplate/lineChartTemplate';
 // import BarChartTemplate from './templates/barChartTemplate/barChartTemplate';
 // import PieChartTemplate from './templates/pieChartTemplate/pieChartTemplate';
-import SearchListViewTemplate from './templates/searchListViewTemplate/searchListViewTemplate';
-import FullSearchResultsTemplate from './templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
-import FinalResultsTemplate from './templates/finalResultsTemplate/finalResultsTemplate';
-import SearchGridViewTemplate from './templates/searchGridViewTemplate/searchGridViewTemplate';
-import SearchCarouselViewTemplate from './templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
-import FullSearchResultTopdownTemplate from './templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate';
+// import SearchListViewTemplate from './templates/searchListViewTemplate/searchListViewTemplate';
+// import FullSearchResultsTemplate from './templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
+// import FinalResultsTemplate from './templates/finalResultsTemplate/finalResultsTemplate';
+// import SearchGridViewTemplate from './templates/searchGridViewTemplate/searchGridViewTemplate';
+// import SearchCarouselViewTemplate from './templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+// import FullSearchResultTopdownTemplate from './templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate';
 
 
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
@@ -78,12 +78,12 @@ customTemplate.prototype.installDefaultTemplates = function () {
 
 	this.installTemplate(new IframeTemplate());
 	//this.installTemplate(new MessageTemplate());
-	this.installTemplate(new SearchListViewTemplate());
-	this.installTemplate(new SearchGridViewTemplate());
-	this.installTemplate(new SearchCarouselViewTemplate());
-	this.installTemplate(new FullSearchResultsTemplate());
-	this.installTemplate(new FinalResultsTemplate());
-	this.installTemplate(new FullSearchResultTopdownTemplate());
+	// this.installTemplate(new SearchListViewTemplate());
+	// this.installTemplate(new SearchGridViewTemplate());
+	// this.installTemplate(new SearchCarouselViewTemplate());
+	// this.installTemplate(new FullSearchResultsTemplate());
+	// this.installTemplate(new FinalResultsTemplate());
+	// this.installTemplate(new FullSearchResultTopdownTemplate());
 };
 /**
  * purpose: Function to render bot message for a given custom template

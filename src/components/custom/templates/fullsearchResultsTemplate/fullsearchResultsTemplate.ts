@@ -48,7 +48,10 @@ class FullSearchResultsTemplate {
         })
       }
     }, 300);
-    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,msgData.message[0].component.payload.tabsList,'all results');
+    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:msgData.message[0].component.payload.facets});
+    $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,'all results');
+    FullSearchResultsTemplate.prototype.facetReset(me,messageHtml,msgData);
 
   }
   getTemplateString(type: any) {
@@ -72,22 +75,18 @@ class FullSearchResultsTemplate {
                     <!-- Facet left-->\
                     <div id="leftFacetFilterId" class="{{if isFilterEnabled == false}}display-none{{/if}}"> </div>\
                     <!-- Facet left-->\
-                    {{each(key,facet) facets}}\
-                    <div class="tab-name see-all-result-nav  {{= facet.className}}"  title="{{= facet.name}}" id="{{= facet.key}}" classification="{{= facet.key}}">{{= facet.name}} <span class="count sdk-facet-count">({{= facet.doc_count}})</span></div>\
-                    {{/each}}\
+                    <!-- Tab container-->\
+                    <div id="sdk-bottomup-tab-container"></div>\
+                    <!-- Tab container-->\
                     <!-- Facet right-->\
                     <div  id="rightFacetFilterId" class="{{if isFilterEnabled == false}}display-none{{/if}}"> </div>\
                     <!-- Facet right Icon -->\
                     <!-- Facet top-->\
                     <div  id="topFacetIcon" class="{{if isFilterEnabled == false}}display-none{{/if}}"> </div>\
                     <!-- Facet top Icon-->\
-                    {{if count > 0 }}\
-                    <div class="filter-updated-count">\
-                      <span class="length-count">${count}</span>\
-                      <span class="title"> {{if count && (count == 1)}}Filter{{else}}Filters{{/if}} applied</span>\
-                      <span class="clsoe-filter"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBbZHRDcIwDERju+zTSizSCWgl8sFM+Ug26AwsUDIGO9A05AChprV/osjPd2eZLtfbg2gZg3PRKDUMts3SeAaUV5kGa1sVYpkoLaPEeX525+4OGC/+FbSmPgQX6T9dFAETp968jNlC6FNl9YNNLo0NhOIqVFEC9Bk/1Xn5ELwowX6/oGjBtQVpD2mZ4cBZ2GsQCkf4xmj8GzsLeh0gnVcbAAAAAElFTkSuQmCC"></span>\
-                    </div>\
-                    {{/if}}\
+                    <!--Filter count-->\
+                    <div id="filter-count-container"></div>\
+                    <!--Filter Count-->\
           </div>\
           <!-- Facet top-->\
           <div  id="topFacetFilterId"> </div>\
@@ -169,9 +168,18 @@ class FullSearchResultsTemplate {
     }
 
   }
-  bindTabsClickEvent(me:any, messageHtml:any ,facets:any, facetSelected:any){
+  getBottomupTab(){
+    var tabContainer = '<script type="text/x-jqury-tmpl">\
+                      {{each(key,facet) facets}}\
+                      <div class="tab-name see-all-result-nav  {{= facet.className}}"  title="{{= facet.name}}" id="{{= facet.key}}" classification="{{= facet.key}}">{{= facet.name}} <span class="count sdk-facet-count">({{= facet.doc_count}})</span></div>\
+                      {{/each}}\
+                      </script>';
+    return tabContainer;
+  }
+  bindTabsClickEvent(me:any, messageHtml:any , facetSelected:any){
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
+    $(messageHtml).find("[id='" + facetSelected + "']").addClass('active-tab'); 
     $(messageHtml).off("click",".see-all-result-nav").on("click",".see-all-result-nav", function (e:any) {
           var selectedFacet = $(e.target).closest(".see-all-result-nav")
       .attr("classification");
@@ -187,33 +195,319 @@ class FullSearchResultsTemplate {
                             result.splice(index,1)
                         }
               }
-              let formatedTemplatesData: any = result;
-              setTimeout(() => {
-                  $(messageHtml).find('.full-search-data-container').empty();
-                  if (formatedTemplatesData && formatedTemplatesData.length) {
-                      formatedTemplatesData.forEach((d: any) => {
-                          var showAllHTML;
-                          if (d.message[0].component.payload.template_type == 'searchListTemplate') {
-                              showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
-                          } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
-                              showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
-                          } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
-                              showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
-                          }
-                          $(messageHtml).find('.full-search-data-container').append(showAllHTML);
-                      })
-                  }
-
-                  if (!$(".full-search-data-container").children().length) {
-                      $(".empty-full-results-container").removeClass("hide");
-                  } else {
-                      if (!$(".empty-full-results-container").hasClass("hide")) {
-                          $(".empty-full-results-container").addClass("hide");
-                      }
-                  }
-              }, 300);
+              FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,result);
           })
       });
+  }
+  facetReset(me:any, messageHtml:any, msgData:any) {
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    let facetObj:any={};
+    let facetData = msgData.message[0].component.payload.filterFacetData || [];
+    facetObj['position'] = msgData.message[0].component.payload.facetPosition;
+    facetObj['show'] = true;
+    if(facetData.length){
+      var facetTemplate = $(FullSearchResultsTemplate.prototype.facetFilter()).tmpl({
+        position: facetObj.position,
+        show: facetObj.show,
+        searchFacets: facetData,
+      });
+      var facetTemplateTop = $(FullSearchResultsTemplate.prototype.facetFilterTop()).tmpl({
+        position: facetObj.position,
+        show: facetObj.show,
+        searchFacets: facetData,
+      });
+      var facetTemplateTopIcon = $(FullSearchResultsTemplate.prototype.facetTemplateTopIcon()).tmpl({
+        position: facetObj.position,
+        show: facetObj.show,
+        searchFacets: facetData,
+      });
+      if (facetObj.position == "right") {
+        $(messageHtml).find("#rightFacetFilterId").empty().append(facetTemplate);
+      } else if (facetObj.position == "left") {
+        $(messageHtml).find("#leftFacetFilterId").empty().append(facetTemplate);
+      } else {
+        $(messageHtml).find("#topFacetFilterId").empty().append(facetTemplateTop);
+        $(messageHtml).find("#topFacetIcon").empty().append(facetTemplateTopIcon);
+        if (facetObj.show) {
+          if (!$(".iffilteristop").hasClass("isTopAlignFilterAdded")) {
+            $(".iffilteristop").addClass("isTopAlignFilterAdded");
+          }
+        } else {
+          $(".iffilteristop").removeClass("isTopAlignFilterAdded");
+        }
+      }
+      if (!$("body").hasClass("top-down")) {
+        if (facetObj.show) {
+          $(".fliter-right-btn").addClass("active-open");
+        } else {
+          $(".fliter-right-btn").removeClass("active-open");
+        }
+      }
+      $(messageHtml)
+    .off("click","#facetRightIconId")
+    .on("click","#facetRightIconId", function (event:any) {
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      if($(messageHtml).find(".sdk-facet-filter-data").css('display')=='none'){
+        $(messageHtml).find(".sdk-facet-filter-data").css('display','block');
+        $(messageHtml).find("#facetRightIconId").addClass('active-open');
+      }else{
+        $(messageHtml).find(".sdk-facet-filter-data").css('display','none');
+        $(messageHtml).find("#facetRightIconId").removeClass('active-open');
+      }
+      FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml);
+    });
+      hostWindowInstance.markSelectedFilters();
+    }
+    
+  };
+  facetFilter () {
+    var facet =
+      '<script type="text/x-jqury-tmpl">\
+        <div>\
+        {{if searchFacets.length}}\
+        <!--<div id="loaderDIV" class="loader-container">Loading...</div>-->\
+        <div id="facetRightIconId" class="fliter-right-btn {{if position === `left`}} left-filter {{/if}}">\
+          <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAKCAYAAACE2W/HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB1c+hEQAgDATBfyqJwVMKpaYUPCadwCAyGATgcursUiQXYFQ8RU0IE33urFSz3tZFNHpn67Z538YJjc8On2EvoL4AAAAASUVORK5CYII=">\
+          <div class="filter-data sdk-facet-filter-data">\
+          <div class="header-sec">\
+            <div class="f-heading">FILTERS</div>\
+            <div class="clear-all sdk-clear-all-facet" id="clear-all-facet-id">Clear All</div>\
+          </div>\
+              <div class="scroll-data">\
+              {{each(i, searchFacet) searchFacets}}\
+                  <div class="group-checkbox filters-content" data-facetType="${searchFacet.subtype}" data-facetName="${searchFacet.name}" data-fieldName="${searchFacet.fieldName}">\
+                    <div class="heading-title">${searchFacet.name}</div>\
+                    {{each(j, bucket) searchFacet.buckets}}\
+                    {{if searchFacet.multiselect}}\
+                      {{if searchFacet.subtype == "value"}}\
+                        <div class="custom_checkbox kr-sg-checkbox d-block">\
+                            <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox" type="checkbox" name="${bucket.key}" value="true" data-from="${bucket.from}" data-to="${bucket.to}">\
+                            <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                        </div>\
+                      {{/if}}\
+                      {{if searchFacet.subtype == "range"}}\
+                          <div class="kr-sg-checkbox d-block custom_checkbox">\
+                            <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox" type="checkbox" name="${bucket.key}" value="true" data-from="${bucket.from}" data-to="${bucket.to}">\
+                            <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                          </div>\
+                      {{/if}}\
+                    {{/if}}\
+                    {{if !searchFacet.multiselect}}\
+                      {{if searchFacet.subtype == "value"}}\
+                        <div class="custom_checkbox kr-sg-radiobutton d-block">\
+                            <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                            <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                        </div>\
+                      {{/if}}\
+                      {{if searchFacet.subtype == "range"}}\
+                          <div class="custom_checkbox kr-sg-radiobutton d-block">\
+                            <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                            <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label> <span class="associated-filter-count">(${bucket.doc_count})</span>\
+                          </div>\
+                      {{/if}}\
+                    {{/if}}\
+                {{/each}}\
+              </div> \
+            {{/each}}\
+            </div>\
+            <div class="footer-filter">\
+                  <button class="apply-btn">Apply</button>\
+            </div>\
+        </div>\
+      </div>\
+      {{/if}}\
+    </div>\
+  </script>';
+    return facet;
+  };
+  facetFilterTop () {
+    var facet =
+      '<script type="text/x-jqury-tmpl">\
+          <div>\
+          <!-- <div id="facetRightIconId" class="fliter-right-btn left-filter">\
+          <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAKCAYAAACE2W/HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB1c+hEQAgDATBfyqJwVMKpaYUPCadwCAyGATgcursUiQXYFQ8RU0IE33urFSz3tZFNHpn67Z538YJjc8On2EvoL4AAAAASUVORK5CYII=">\
+          </div> -->\
+          {{if searchFacets.length && show}}\
+          <div class="horizantal-filter-sec filter-data">\
+            {{each(i, searchFacet) searchFacets}}\
+                <div class="dropdown_custom_filter">\
+                  <div class="dropbtn  sdk-top-facet-drop">\
+                    ${searchFacet.name}{{if searchFacet.countPerGroup}}\
+                    {{if searchFacet.countPerGroup.length >i && searchFacet.countPerGroup[i].length >0}}\
+                    <span class="count">${searchFacet.countPerGroup[i].length}</span> {{/if}}\
+                    {{/if}}\
+                    <img class="down-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBbY6xDYMwEEX/yQuc5QUOmfRZIRskEyQjZJyU6VJmBGoqREcHJVT2AsiAhQRGvO7+vdM/JVleMevBe9fgBBF7Z21+itmUIPzZ6N47VyeStU+APgj0WK8uV8lsK5K/99Lc5pbdMtNWIQJSBYi+MQjhhTDeuplETOQobhLOn4/wMZ8As5kn7D+3/a0AAAAASUVORK5CYII=">\
+                    <img class="up-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACQSURBVHgBhY7BDYJQDIb/ggM8wgI14llXYBJ1A48e3YAVvHpyBHUC4gCYTmDeAGrpAw48LnxJk+bv16aEEczskKRV6OXdHMazJJJocccfFIqXRd1lAxRJqi+RZt9nqwuINtBvKSKeTGKTbiY9TTrGrxRnkO6gvzJ1WV5D6WrSCRO8/zycyzO7XNnWeosZgtMCupEtrTPwmiYAAAAASUVORK5CYII=">\
+                  </div>\
+                    <div id="myDropdown" class="dropdown-content filters-content sdk-top-facet-option myDropdown-${i}" id="sdk-top-facet-option-${i}" data-facetType="${searchFacet.subtype}" data-facetName="${searchFacet.name}" data-fieldName="${searchFacet.fieldName}">\
+                    <!--<div class="kr-sg-input-search">\
+                    <input type="text" placeholder="Search" class="input-search sdk-bottomup-search-facet" id="sdk-bottomup-search-facet-${i}" data-bucket="${searchFacet[i]}" >\
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAulBMVEUAAAAAAAAAAIAAVVUrK1UkN0kiM0QgMFAtLUskMUkiM00pMUopNEsoM0olNUomNUglNEokM0koMksnNUomNEkmNEglM0skNUkmNkwnM0snNUomNEklM0onNUolNUslNEonNEkmNUomNUsmNEolM0snNUomNEomNEomNEslNUkmNUomNEomNUomNEolNEomNEsmNEomNEomNEomM0omNEomNEomNEomNEomNEomNEomNEomNEomNEr///9hPe5QAAAAPXRSTlMAAQIDBg4PEBEVHh8sLTBDRUZHSElKS01RVVZeaG90dXZ5fqGkpaittbi9xMfL09TW2d7f4uPq7e/x8vf4F8v60AAAAAFiS0dEPdBtUVkAAACASURBVBgZBcGLIoNQAADQ05WWipZ5brGH0JDXZu7w/9/lHAAAgPJ4BICk3fx8/fUVQHL3Vgf5MtaA9vUQXO5y4LMGPC5AsQ+AWQ+qLcDFM8h+M8BtB6znQPpxBZzEU0i7lwA4+76fNjfvQxwDHK2ehofrcB4bAMAkFgCA8gAAgH/ZSQkFmhv26gAAAABJRU5ErkJggg==" class="search-icon">\
+                    </div>-->\
+                    {{each(j, bucket) searchFacet.buckets}}\
+                          {{if searchFacet.multiselect}}\
+                          {{if searchFacet.subtype == "value"}}\
+                            <div class="custom_checkbox kr-sg-checkbox d-block">\
+                                <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox" type="checkbox" name="${bucket.key}" value="true" data-from="${bucket.from}" data-to="${bucket.to}">\
+                                <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                            </div>\
+                          {{/if}}\
+                          {{if searchFacet.subtype == "range"}}\
+                              <div class="kr-sg-checkbox d-block custom_checkbox">\
+                                <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox" type="checkbox" name="${bucket.key}" value="true" data-from="${bucket.from}" data-to="${bucket.to}">\
+                                <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                              </div>\
+                          {{/if}}\
+                        {{/if}}\
+                        {{if !searchFacet.multiselect}}\
+                          {{if searchFacet.subtype == "value"}}\
+                            <div class="custom_checkbox kr-sg-radiobutton d-block">\
+                                <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                                <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                            </div>\
+                          {{/if}}\
+                          {{if searchFacet.subtype == "range"}}\
+                              <div class="custom_checkbox kr-sg-radiobutton d-block">\
+                                <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                                <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                              </div>\
+                          {{/if}}\
+                        {{/if}}\
+                    {{/each}}\
+                    {{if searchFacet.multiselect}}\
+                    <div class="apply-btn">Apply</div>\
+                    {{/if}}\
+                      {{if !searchFacet.multiselect}}\
+                      <div class="clear-all sdk-clear-all-facet-top">Clear</div>\
+                      {{/if}}\
+                    </div>\
+                </div>\
+              {{/each}}\
+            </div>\
+            </div>\
+          {{/if}}\
+          </div>\
+        </script>';
+    return facet;
+  };
+  facetTemplateTopIcon() {
+    var facet =
+      '<script type="text/x-jqury-tmpl">\
+          <div>\
+          {{if searchFacets.length}}\
+          <div id="facetRightIconId" class="fliter-right-btn">\
+          <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAKCAYAAACE2W/HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB1c+hEQAgDATBfyqJwVMKpaYUPCadwCAyGATgcursUiQXYFQ8RU0IE33urFSz3tZFNHpn67Z538YJjc8On2EvoL4AAAAASUVORK5CYII=">\
+          </div>\
+          {{/if}}\
+          </div>\
+        </script>';
+    return facet;
+  };
+  bindFacetTriggerEvents(me:any,messageHtml:any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml)
+    .off("click",".sdk-facet-filter-data")
+    .on("click", ".sdk-facet-filter-data", function (event:any) {
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    });
+      // SDK checkbox
+  $(messageHtml)
+  .off("change",".sdk-filter-checkbox")
+  .on("change",".sdk-filter-checkbox", function (event:any) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    hostWindowInstance.facetCheckBoxClick(event);
+  });
+   // SDK radio
+  $(messageHtml)
+  .off("change",".sdk-filter-radio")
+  .on("change",".sdk-filter-radio", function (event:any) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    hostWindowInstance.facetRadioClick(event);
+  });
+  $(messageHtml)
+  .off("click",".apply-btn")
+  .on("click", ".apply-btn" , function () {
+    $(".filter-data").hide();
+    hostWindowInstance.getSearchByFacetFilters().then((response: any) => {
+      let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+              if(index>-1){
+                response.result.splice(index,1)
+              }
+    }
+    FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
+              $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
+    let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({count:response.filterCount});
+    $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
+    });
+    $(messageHtml).find('#filter-count-container')
+    .off("click",".clsoe-filter")
+    .on("click",".clsoe-filter", function () {
+      $("#filter-count-container").empty();
+      $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
+      hostWindowInstance.clearAllFilters().then((response: any) => {
+        let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+              if(index>-1){
+                response.result.splice(index,1)
+              }
+    }
+    FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
+    $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
+      })
+    });
+  });
+  }
+  fullResultTemplateDataBind(me:any, messageHtml:any,result:any){
+    let formatedTemplatesData: any = result;
+    setTimeout(() => {
+        $(messageHtml).find('.full-search-data-container').empty();
+        if (formatedTemplatesData && formatedTemplatesData.length) {
+            formatedTemplatesData.forEach((d: any) => {
+                var showAllHTML;
+                if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+                    showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+                } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+                    showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+                } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+                    showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+                }
+                $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+            })
+        }
+
+        if (!$(".full-search-data-container").children().length) {
+            $(".empty-full-results-container").removeClass("hide");
+        } else {
+            if (!$(".empty-full-results-container").hasClass("hide")) {
+                $(".empty-full-results-container").addClass("hide");
+            }
+        }
+    }, 300);
+  }
+  getFilterCountTemplate(){
+    var filterCountContainer = '<script type="text/x-jqury-tmpl">\
+    {{if count > 0 }}\
+    <div class="filter-updated-count">\
+      <span class="length-count">${count}</span>\
+      <span class="title"> {{if count && (count == 1)}}Filter{{else}}Filters{{/if}} applied</span>\
+      <span class="clsoe-filter"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBbZHRDcIwDERju+zTSizSCWgl8sFM+Ug26AwsUDIGO9A05AChprV/osjPd2eZLtfbg2gZg3PRKDUMts3SeAaUV5kGa1sVYpkoLaPEeX525+4OGC/+FbSmPgQX6T9dFAETp968jNlC6FNl9YNNLo0NhOIqVFEC9Bk/1Xn5ELwowX6/oGjBtQVpD2mZ4cBZ2GsQCkf4xmj8GzsLeh0gnVcbAAAAAElFTkSuQmCC"></span>\
+    </div>\
+    {{/if}}\
+    </script>';
+    return filterCountContainer;
   }
   $ = $;
 

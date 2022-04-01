@@ -530,15 +530,13 @@ class SearchListViewTemplate {
           </div>\
         {{/if}}\
         {{if selectedFacet !== appearanceType && selectedFacet == "all results"}}\
-          <div class="structured-data-header total-structured-data-wrap list-view-action-header" appearanceType="task">\
-            ACTIONS\
-            <div class="search-heads show-all sdk-show-classification display-none">\
-              Show all Actions\
-            </div>\
+          <div class="heading-and-show-all" appearanceType="task">\
+            <div class="text-heading-main">ACTIONS</div>\
+            <div class="show-al-text show-all-blue display-none">Show all Actions</div>\
           </div>\
         {{/if}}\
         {{if selectedFacet == appearanceType || selectedFacet == "all results"}}\
-          <div class="action-results-container btn_block_actions main-content-title-grid-data new-grid-search-data list-view-data-search">\
+          <div class="new-grid-search-data list-view-data-search">\
             {{each(key, task) structuredData}}\
               <div class="title-box-data">\
                   <div id="${key}" class="search-task search-grid-item text-truncate one-line-height" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">\
