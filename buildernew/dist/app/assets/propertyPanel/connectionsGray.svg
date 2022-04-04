@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>connectionsGray</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="connectionsGray" transform="translate(1.000000, 1.000000)" stroke="#9AA0A6" stroke-width="1.5">
+            <path d="M4.064,1.36 C3.56601868,1.62094705 3.10967918,1.95460739 2.71,2.35 C1.6482539,3.39412194 1.05026707,4.82087428 1.05026707,6.31 C1.05026707,7.79912572 1.6482539,9.22587806 2.71,10.27 C4.923,12.457 8.51,12.457 10.723,10.27 C11.1245249,9.87422115 11.464015,9.42010672 11.73,8.923 L4.064,1.36 Z M2.266,10.445 L0.082,12.603 L2.266,10.445 Z M9.584,0.065 L6.745,2.903 L9.584,0.065 Z M12.923,3.404 L10.084,6.242 L12.923,3.404 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

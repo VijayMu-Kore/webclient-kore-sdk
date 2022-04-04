@@ -1,0 +1,52 @@
+<div class="emptyState" ng-show="!processApps.length" style="margin: 0 auto;
+    width: auto;
+    margin-top: 50px;
+    text-align:center;">
+	<img ng-src="{{emptyProcessLanding}}" class="emptyLanding">
+	<div class="emptyDesc" style="    margin: 0 auto;
+    width: auto;
+    text-align: center;">
+		<h4 style="    color: #000000;
+    font-size: 14px;
+    font-weight: 700;">Give your bot superpowers</h4>
+		<p class="desc" style="    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+    width: 50%;
+    margin: auto;">Adding a prcess app will enable your bot to trigger Process Apps ex. leave request. You can also keep a track of received requests and tasks in a simple conversational experience. <a href="javascript:void(0)">Learn more</a></p>
+	</div>
+	<div class="add-processapp" style="margin-top:10px">
+		<button class="kr-sg-button-primary btn_lg" ng-click="addProcessApp()">Add process app</button>
+	</div>
+	
+</div>
+<bot-modal-slider id="processAssignment">
+   <div class="modalSliderContainer users-list width500">
+      <div class="modalHeader" style="padding: 18px 20px 18px 20px;
+    display: block;
+    background: #ffffff;">
+           <h4 class="slider-title" style="display: inline;
+    color: #26344a;">Add a Process App</h4>
+            <img ng-src="{{closeCross}}" class="closeCross" style="width:auto;float: right;cursor: pointer;" ng-click="closeProcessSlider()">
+      </div>
+
+    <div class="modalBody" perfect-scroll dynamic-height height-property="height" dynaoffset="-70">
+                    <div class="kr-sg-input-text" style="padding: 18px 20px 0 18px;">
+                                <div class="label-text">Process App</div>
+                                <input type="text" placeholder="Select App" class="input-text">
+                     </div>
+            
+      </div>
+      <div class="modalFooter" style="padding: 10px;
+    position: absolute;
+    height: 60px;
+}">
+      	<button class="kr-sg-button-primary" type="button" style="height:34px;    margin-right: 10px;">Add bot</button>
+        <button class="kr-sg-button-secondary" type="button" style="height:34px;    margin-right: 10px;" ng-click="closeProcessSlider()">Cancel</button>
+      </div>
+
+
+   </div>
+
+</bot-modal-slider>

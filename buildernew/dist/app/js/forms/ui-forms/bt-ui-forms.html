@@ -1,0 +1,8 @@
+<div class="summaryLoader animationIfLeave" ng-if="lodingForm">
+    <div class='hide close-modal padding10 uiFormsLodingClose' ng-click='goBack()'><img src="{{closeCross}}"></div>
+   <span class="spinner-text"> 
+       <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+       <span class="spinner-text-content">  {{'fetching_Form'| i18nString}}</span>
+   </span>
+</div>
+<iframe id="uiFormsFrame" class="uiformsContainer positionAbs iframeContainer"  frameBorder="0" src="{{uiFormsUrl}}"></iframe>

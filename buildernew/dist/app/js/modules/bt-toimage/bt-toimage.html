@@ -1,0 +1,55 @@
+<div class="bt-toimage">
+    <div class="modal-header">
+        <span class="pull-left closeBtn" ng-click="closeModal()">
+            <span aria-hidden="true"><i class="btx-carrot-left"></i></span>
+        </span>
+        <bt-modal-title taskname="{{task.name}}" title="Define Request for '{{component.name}}'" bot="stream"></bt-modal-title>
+        <button type="submit" class="btn btn-primary pull-right save-request-btn" 
+                ng-disabled="saveInProgress || invalidPayload"
+                ng-click="saveRequest()">
+            <i ng-show="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)? saving : add}}</button>
+
+    </div>
+    <div class="modal-body"  perfect-scroll dynaoffset="-50" dynamic-height>
+        <div class="col-xs-12 form-block" ng-if="component.serviceNodeType === 'urltoimage'">
+            <div class="nodeHeader required-field">{{'bt_to_img_url_to_Conevrt'| i18nString}}</div>
+            <div class="col-xs-12 noPadding">
+                <input class="urlTOImage form-control" ng-model="props.endPoint.requestUrl" ng-blur="fieldEdit()"/>
+            </div>
+        </div>
+        <div class="col-xs-12 form-block" ng-if="component.serviceNodeType === 'htmltoimage'">
+            <div class="nodeHeader required-field">{{'bt_to_img_html_to_convert'| i18nString}}</div>
+            <div ng-jsoneditor prefer-text=true class="json_editor"
+                 ng-model="props.htmlData" id="serviceNodeHtmlData" name="reqsample"
+                 options="options" callback="sampleResCB" ></div>
+        </div>
+        <div class="renderSizeInfo col-xs-12 form-block" ng-class="{'canDeleteSizes': component.renderSize.length > 1}">
+            <div class="nodeHeader">
+                <span class="renderSizeHeader">{{'bt_to_img_render_sizes'| i18nString}}</span>
+                <span class="renderSizeAdd" ng-click="addRenderSize()">{{'bt_to_img_add'| i18nString}}</span>
+            </div>
+            <div class="renderSizeRow" ng-repeat="renderSize in component.renderSize">
+                <div class="col-xs-3 noPadding">
+                    <input class="form-control" placeholder="{{'bt_to_img_name_placeholder'| i18nString}}" ng-model="renderSize.name" ng-blur="fieldEdit()"/>
+                </div>
+                <div class="col-xs-4">
+                    <span class="col-xs-5 form-label">{{'bt_to_img_width'| i18nString}}</span>
+                    <div class="col-xs-5 noPadding">
+                        <input type="number" class="form-control" placeholder="{{'bt_to_img_width_placeholder'| i18nString}}" ng-model="renderSize.width" ng-keyup="checkPosNumber(renderSize.width, 'width', $index)" ng-blur="fieldEdit()"/>
+                    </div>
+                    <span class="col-xs-2 form-label smallPadding">px</span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="col-xs-5 form-label">{{'bt_to_img_height'| i18nString}}</span>
+                    <div class="col-xs-5 noPadding">
+                        <input type="number" class="form-control" placeholder="{{'bt_to_img_height_placeholder'| i18nString}}" ng-model="renderSize.height" ng-keyup="checkPosNumber(renderSize.height, 'height', $index)" ng-blur="fieldEdit()"/>
+                    </div>
+                    <span class="col-xs-2 form-label smallPadding">{{'bt_to_img_px'| i18nString}}</span>
+                </div>
+                <div class="col-xs-1 form-label" ng-disabled="component.renderSize.length <= 1">
+                    <i class="fa fa-minus-circle deleteSize" ng-click="removeRenderSize($index)"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

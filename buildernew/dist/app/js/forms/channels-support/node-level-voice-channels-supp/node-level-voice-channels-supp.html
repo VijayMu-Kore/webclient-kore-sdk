@@ -1,0 +1,23 @@
+<div class="hintDiv padding0 " id="node-level-voice-channels-list">
+    <span class="description ivrDesc">
+        <p class="m-0">{{'changes_ivr'| i18nString}}&nbsp;
+            <div class="show-button" ng-show="flag.showRest == false;" ng-click="flag.showRest = true">{{'showMore' | i18nString}}</div>
+        </p> 
+        <p ng-show="flag.showRest == true;">
+            {{'select_channel_desc'| i18nString}}
+        </p>
+        <p ng-show="flag.showRest == true;">
+            <span class="text-green" ng-click="cb.openBotLevelIVR()">{{'channel_supp_ivr_label'| i18nString}}</span>
+        </p>
+        <p ng-show="flag.showRest == true;">
+            <span class="text-green" ng-click="cb.openChannelLevelTwilioVoice()">{{'channel_supp_twilio_voice_chann'| i18nString}}</span>
+        </p>
+        <p ng-show="flag.showRest == true;">
+            <span class="text-green" ng-click="cb.openAudioCodesVoiceProp()">{{'channel_supp_audio_codes_label'| i18nString}}</span>
+        </p>
+        <p  ng-show="flag.showRest == true;">{{'channel_supp_desc_some_voice'| i18nString}} 
+            <a href="https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/voice-call-properties/" class="text-green" target="_blank">{{'know_more' | i18nString}}</a>
+        </p>
+        <div class="show-button" ng-show="flag.showRest == true;" ng-click="flag.showRest = false">{{'showless_label' | i18nString}}</div>
+    </span>
+</div>

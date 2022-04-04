@@ -1,0 +1,202 @@
+
+     <!-- Login Container Wrapper -->
+   <div ng-show="loadinglogin" class="loginLoader" id="loginLoaderContainer">
+       <span style="text-align:center;"><i class="fa fa-circle-o-notch fa-spin marginRight5"></i></span>   
+   </div>
+    <div id="myHeader" ng-show="showMarketingBanner && marketingBannerForms[formType]" class="marketHeader">
+        <div class="headerwidth">
+            <div class="leftHeaderSection">
+                <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+              </div>
+               <div class="rightHeaderSection">
+                  <ul class="nav nav-pills">
+                      <li class="active"><a href="https://developer.kore.ai/docs/" target="_blank">{{'document' | i18nString}}</a></li>
+                      <li><a href="https://kore.ai/videos/" target="_blank">{{'Videos' | i18nString}}</a></li>
+                      <li><a href="https://academy.kore.ai/" target="_blank">{{'Academy' | i18nString}}</a></li>
+                      <li><a href="http://community.kore.ai/" target="_blank">{{'community' | i18nString}}</a></li>
+                    </ul>
+              </div>
+        </div>
+    </div>
+    <div id="login" class="login-page koreLoginContainer full-page loginNew {{formType || 'default'}} animationIfEnter" ng-class="{'marketingBanner':showMarketingBanner && marketingBannerForms[formType]}" dynamic-height dynaoffset="(marketingBannerForms[formType])? dynoff : '0'">
+            <!-- Login Container -->
+            <div data-ng-class="{'complete': loginComplete}" class="login-container animated fadeIn" >
+                <!--Logo-->
+                
+                 <!--Logo-->
+                 <!--Login Card-->
+                 <div ng-show="!(showFormType && formType) || checkingId" class="loginCardLoader">
+                    <span style="text-align:center;">
+                        <!-- <i class="fa fa-circle-o-notch fa-spin marginRight5"></i> -->
+                        <span>{{'please_wait' | i18nString}}</span>
+                    </span>
+                </div>
+                <div class="loginCard"  ng-show="(showFormType && formType) && !checkingId">
+                    <div id="carouselkoreLogin" ng-show="showMarketingBanner && marketingBannerForms[formType]" class="carousel slide" data-ride="carousel" ng-init="initCarousal()">
+                     <!--  <ol class="carousel-indicators">
+                        <li data-target="#carouselkoreLogin" data-slide-to="0" class=""></li>
+                        <li data-target="#carouselkoreLogin" data-slide-to="1" class=""></li>
+                        <li data-target="#carouselkoreLogin" data-slide-to="2" class="active"></li>
+                      </ol> -->
+                      <div class="carousel-inner">
+                        <div class="item active">
+                          <div class="bgimg cone">
+                            <img class="img-carosel-full-width" ng-src="{{cOne}}" iframe-onload="imageLoaded()">
+                            <div class="cdetails">
+                                <p class="cTitle">{{'home_content_multi_VA' | i18nString}}</p>
+                                <p class="cDesc">{{'home_content_multi_VA_desc' | i18nString}}</p>
+                                <a class="cbutton" href="https://developer.kore.ai/docs/bots/advanced-topics/multi-lingual/building-multi-language-bots/" target="_blank">{{'learn_more_label' | i18nString}}</a>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="item">
+                           <div class="bgimg ctwo">
+                            <img class="img-carosel-full-width" ng-src="{{cTwo}}">
+                               <div class="cdetails">
+                                    <p class="cTitle"> {{'home_content_CT' | i18nString}}</p>
+                                    <p class="cDesc">{{'home_content_CT_desc' | i18nString}}</p>
+                                    <a class="cbutton" href="https://developer.kore.ai/docs/bots/test-your-bot/conversation-testing/" target="_blank">{{'learn_more_label' | i18nString}}</a>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="item">
+                            <div class="bgimg cthree">
+                                <img class="img-carosel-full-width" ng-src="{{cThree}}">
+                                <div class="cdetails">
+                                    <p class="cTitle">{{'home_content_store' | i18nString}}</p>
+                                    <p class="cDesc">{{'home_content_store_desc' | i18nString}}</p>
+                                    <a class="cbutton" href="https://kore.ai/templates/" target="_blank">{{'learn_more_label' | i18nString}}</a>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <a class="left carousel-control"   ng-non-bindable  href="#carouselkoreLogin" data-slide="prev">
+                        <!-- <span class="glyphicon glyphicon-chevron-left"></span> -->
+                        <i class="btx-carrot-left"></i>
+                      </a>
+                      <a class="right carousel-control" ng-non-bindable  href="#carouselkoreLogin" data-slide="next">
+                        <!-- <span class="glyphicon glyphicon-chevron-right"></span> -->
+                        <i class="btx-carrot-right"></i>
+                      </a>
+                    </div>
+                
+                    <div class="logoLogin">
+                        <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+                        <div class="postloginProfile">
+                            <div class="kr-sg-dropdowns">
+                                <div class="dropdown dropdown-open">
+                                    <a class="dropdown-toggle dropdown-input profileIcon" data-toggle="dropdown"><img class="userImage" ng-src="{{userAvatar}}"  src="{{userAvatar}}" onerror="handleimgLoad(this,true)" alt="profile"></a>                                            
+                                    <ul class="dropdown-menu content-menu">
+                                      <li ng-click="closeFlow()"><a >Logout</a></li>
+                                    </ul>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-ng-switch="formType" class="login">
+                        <!-- <div ng-show="!(showFormType && formType) || checkingId" class="loginCardLoader">
+                            <span style="text-align:center;"><i class="fa fa-circle-o-notch fa-spin marginRight5"></i></span>
+                        </div> -->
+                        <div animate-height="formType" class="login-form-container">
+    
+                            <!-- Default Form -->
+                            <div data-ng-switch-default class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-in-default.html'"></div>
+                            </div>
+    
+                            <!-- Sign in with credentials Form -->
+                            <div data-ng-switch-when="credentials" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-in-creds.html'"></div>
+                            </div>
+    
+                            <!-- Sign in with multiple accounts Form -->
+                            <div data-ng-switch-when="multi" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-in-multi.html'"></div>
+                            </div>
+    
+                            <!-- Forgot password Form -->
+                            <div data-ng-switch-when="forgot" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-in-forgot-pass.html'"></div>
+                            </div>
+    
+                            <!-- Default sign up Form -->
+                            <div data-ng-switch-when="pre-sign-up" class="login-form-content animationIfEnter" >
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/pre-sign-up.html'"></div>
+                            </div>
+                            <div data-ng-switch-when="sign-up" class="login-form-content animationIfEnter" >
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-up.html'"></div>
+                            </div>
+    
+                            <!-- sign up password Form -->
+                            <div data-ng-switch-when="sign-up-password" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-up-password.html'"></div>
+                            </div>
+    
+                            <!-- Verify email Form -->
+                            <div data-ng-switch-when="verify-email" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-up-verify-email.html'"></div>
+                            </div>
+    
+                            <!-- On prem self sign up disable -->
+                            <div data-ng-switch-when="disable-signup" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/onPrem-SelfSignUp.html'"></div>
+                            </div>
+    
+                            <!-- new multi account landing page  -->
+                            <div data-ng-switch-when="landing-page" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/multiAccount-Landing.html'"></div>
+                            </div>
+    
+                            <!-- Verify phone Form -->
+                            <div data-ng-switch-when="verify-phone" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-up-verify-phone.html'"></div>
+                            </div>
+    
+                            <!-- Reset Password -->
+                            <div data-ng-switch-when="reset-pass" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/sign-in-reset.html'"></div>
+                            </div>
+    
+                            <div data-ng-switch-when="link-expired" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/email-verification-expired.html'"></div>
+                            </div>
+
+                            <!-- Reset Password -->
+                            <div data-ng-switch-when="user-inactive-btaccess" class="login-form-content animationIfEnter">
+                                <div data-ng-include="tmpltPrePath+'/js/modules/bt-login/forms/user-inactive-btaccess.html'"></div>
+                            </div>
+                            <div class="termsandcondition" ng-if="showMarketingBanner && marketingBannerForms[formType]">
+                                <!-- By clicking Continue, 'you' agree to our <a>Terms of Services</a> -->
+                                <!-- Terms of Service -->
+                                <span ng-show="!showJapanesePolicy" ng-bind-html="'privacy_policy_dyn'| i18nString:({tslink:$root.helpLinks.KORE_AI_TERMS,pplink:$root.helpLinks.KORE_AI_PRIVACY_POLICY})"></span>
+                                <span  ng-show="showJapanesePolicy" ng-bind-html="'privacy_policy_dyn'| i18nString:({tslink:$root.helpLinks.KORE_AI_TERMS_JAPANESE,pplink:$root.helpLinks.KORE_AI_PRIVACY_POLICY_JAPANESE})"></span>
+                            </div>
+    
+                        </div>
+    
+                    </div>
+                    <div class="rightImg">
+                        <div class="imageContainer"></div>
+                    </div>
+                <div class="botStoreLinkContainer">
+                    <div class="desContainer">
+                        <h6>{{'botstore_container'| i18nString}}</h6>
+                        <p>{{'botstore_containerdesc'| i18nString}}</p>
+                    </div>
+                    <div class="buttonContainer">
+                        <button ng-click="launchBotStore()">{{'visit_store'| i18nString}}</button>
+                    </div>
+                </div>
+                <div class="termsandcondition" ng-if="!(showMarketingBanner && marketingBannerForms[formType])">
+                    <!-- By clicking Continue, 'you' agree to our <a>Terms of Services</a> -->
+                    <!-- Terms of Service -->
+                    <span ng-show="!showJapanesePolicy" ng-bind-html="'privacy_policy_dyn'| i18nString:({tslink:$root.helpLinks.KORE_AI_TERMS,pplink:$root.helpLinks.KORE_AI_PRIVACY_POLICY})"></span>
+                    <span  ng-show="showJapanesePolicy" ng-bind-html="'privacy_policy_dyn'| i18nString:({tslink:$root.helpLinks.KORE_AI_TERMS_JAPANESE,pplink:$root.helpLinks.KORE_AI_PRIVACY_POLICY_JAPANESE})"></span>
+                </div>
+                </div>
+                  <!--Login Card-->
+                  <iframe id="marketingContentFrame" src="{{marketingUrl}}" ng-if="marketingUrl && showMarketingBanner && marketingBannerForms[formType]" iframe-onload="resizeIframe(this)"></iframe>
+            </div>
+            <!--Login Container-->
+    </div>
+    <!--Login Container Wrapper-->

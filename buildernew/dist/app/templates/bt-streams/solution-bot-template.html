@@ -1,0 +1,27 @@
+<div class="solution-bot-row" ng-show="showSolutionBotSetup">
+    <div class="panel panel-default">
+        <div class="sbot-setupBtn" ng-click="setupSolutionBot()">
+            {{'solutionBot_setup'| i18nString:({selectedStreamName:selectedStream.name})}}
+        </div>    
+        <div class="panel-body sbots-help-section">
+            <div class="panel-table-heading bt-align-centre" >
+                <h3 class="panel-title entity_count_label"><a target="_blank" href="{{helpLinks.SMARTBOT}}">{{'learn_more_label'| i18nString}}</a></h3>
+            </div>
+            <div class="col-xs-12" ng-hide="true">
+                <div class="sbots-help-link help-hint-link displayBlock">
+                    <a >{{'what_is_smartBot'| i18nString}}</a>
+                </div>
+                <div class="sbots-help-link help-hint-link displayBlock">
+                    <a>{{'what_benefits_smartBot'| i18nString}}</a>
+                </div>
+                <div class="sbots-help-link help-hint-link displayBlock">
+                    <a>{{'customize_smarBot'| i18nString}}</a>
+                </div>
+                <div class="sbots-help-link help-hint-link displayBlock">
+                    <a>{{'smartBot_upgrade'| i18nString}} </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,564 @@
+<div class="usage-metrics-main-container">
+    <div class="migration-banner-usage-metrics" ng-if="migrationBanner">
+        <div class="tost-text">
+            <span class="btx-info"></span> 
+            <span class="info-toast">{{'usage_metrics_migbanner' | i18nString }} <a href="https://developer.kore.ai/docs/bots/analyzing-your-bot/dashboard/#Usage_Metrics" target="_blank">{{'learn_more_label'| i18nString}}</a></span>
+            <span class="btx-close" ng-click="closeMigrationBanner()"></span>
+        </div>                                   
+    </div>
+    <div class="row btnSearchTitle d-flex align-items-center">
+        <div class="leftTitle">
+            <p class="pageTitle">{{'nav_tab_name_botDashboard' | i18nString}}</p>
+        </div>
+        <div class="kr-sg-dropdowns" style="display: none;">
+            <div class="dropdown dropdown-open">
+                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">Choose an option</button>                                            
+                <ul class="dropdown-menu content-menu">                                             
+                  <li><a>QA</a></li>
+                  <li><a>UAT</a></li>
+                  <li><a>SIT <span>(Deleted)</span></a></li>
+                  <li><a>Production</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid realtimeStatus">
+        <div class="status-refresh-sec">
+            <div class="title">{{'realtime_status' | i18nString}}
+                <span class="tooltip-custom"><i class="btx-help info-icon"></i><span class="tooltiptext" ng-click="$event.stopPropagation()"  ng-bind-html="'realtime_status_protip'| i18nString:({link:'https://developer.kore.ai/docs/bots/analyzing-your-bot/dashboard/#Real-time_Status'})"></span></span>
+            </div>
+            <div class="refresh-sec">
+                <div class="time"><i class="timeIcon btx-time"></i>{{realTime}} {{realTimeZone}}</div>
+                <button ng-click="refreshRealTimeData()" class="refresh-btn">
+                    <i class="refreshIconGreen btx-return"></i>{{'refresh'| i18nString}}
+                </button>
+                <div class="kr-sg-dropdowns">
+                    <div class="dropdown dropdown-open">
+                        <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                            <i class="btx-dropdown-down"></i>
+                        </button>                                            
+                        <ul class="dropdown-menu content-menu"> 
+                            <div class="title-dropdown">{{'auto_refresh'| i18nString}}</div>
+                            <li ng-repeat="time in realTimeDashboardInterval">
+                            <a ng-click="updateTimeInterval(time,$event)" ng-class="{'selected':maintainTimeInterval === time}">{{coversionOfTime(time)}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row real-time-cards-container">
+            <div class="col-md-4 real-time-cards">
+                <div class="d-item info-tile countBlocks active_users_block">
+                    <div class="tile-title">{{'active_users'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="top" tooltip="{{'active_users_protip'| i18nString}}" ></i>
+                        </div>
+                    </div>
+                    <div ng-show="realTimeUsersData" class="tile-value">{{realTimeUsers}}</div>
+                    <div ng-show="!realTimeUsersData" class="tile-value emptyState">-No active users-</div>
+                </div>
+            </div>
+            <div ng-show="realTimeChannelData" class="col-md-4 dropdown realTimeChannelData real-time-cards" ng-click="realTimeDashboardChannelData()">
+                <div class="d-item info-tile countBlocks dropdown">
+                    <div class="tile-title dropdown-toggle" data-toggle="dropdown" type="button">{{'active_channels'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help ac-info-icon" tooltip-placement="top" tooltip="{{'active_channels_protip'| i18nString}}" ></i>
+                        </div>
+                        <i class="btx-dropdown-up caretRight"></i>
+                        <div class="tile-value">
+                            <span class="channelsImage" ng-repeat="channel in realTimeChannels">
+                                <img ng-src="{{_channelConfig.channelsObject[channel].icon}}" class="channelImg">
+                            </span>
+                            <span class="moreChannels" ng-show="realTimeChannels.length > 4">
+                                {{'Channel_length'| i18nString}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <ul class="dropdown-menu">
+                        <li class="channelHeader row">
+                            <div class="col-xs-7 title-channel">{{'channels'| i18nString}}</div>
+                            <div class="col-xs-5 title-channel text-right">{{'users'| i18nString}}</div>
+                        </li>
+                        <li class="channelsList row" ng-repeat="channelData in realTimeChannelsData.results">
+                            <div class="col-xs-9 channelImg">
+                                <img ng-src="{{_channelConfig.channelsObject[channelData.channel].icon}}" class="channelIcon">{{_channelConfig.channelsObject[channelData.channel].name}}
+                            </div>
+                            <div class="col-xs-3 usersCount">{{channelData.nUsers}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div ng-show="!realTimeChannelData" class="col-md-4 real-time-cards" ng-click="realTimeDashboardChannelData()">
+                <div class="d-item info-tile countBlocks">
+                    <div class="tile-title">{{'active_channels'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="top" tooltip="{{'active_channels_protip'| i18nString}}" ></i>
+                        </div>
+                    </div>
+                    <div class="tile-value emptyState">-No active channels-</div>
+                </div>
+            </div>
+            <div class="col-md-4 real-time-cards">
+                <div class="d-item info-tile countBlocks">
+                    <div class="tile-title">{{'active_agent_sessions'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="top" tooltip="{{'active_agent_sessions_protip'| i18nString}}" ></i>
+                        </div>
+                    </div>
+                    <div class="tile-div" ng-show="realTimeSessionData">
+                        <span class="tile-value">{{realTimeAgentSessions}}</span>
+                        <span ng-show="!fakeDataUI" class="title-span">/</span>
+                        <span ng-show="!fakeDataUI" class="title-span">{{'dyn_sessions'| i18nString:({dyn:realTimeSessions})}}</span>
+                    </div>
+                    <div ng-show="!realTimeSessionData" class="tile-value emptyState">-No active agent sessions-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid positionRelative filter-sec-with-charts-bars">
+        <div class="row filter-row">
+            <div class="filter-info col-xs-4">{{'all' | i18nString}} {{'chat_sessions' | i18nString}}</div>
+            <div class="col-xs-8 filters-rigt-sec">
+                <div class="filtersDetails">
+                    <ng-container ng-if="filterTags.length > 0">
+                        <span class="filterListContainer" ng-repeat="tag in filterTags track by $index">
+                            <span class="filterCat" tooltip-placement="bottom" tooltip="{{tag.tooltipValue}}">{{tag.value}} </span>
+                            <span class="filterClose" ng-if="tag.type !== 'date'">({{tag.count || '1'}})</span>
+                            <span class="filterClose" ng-if="tag.type === 'date'">({{tag.count > 1 ? tag.count +' Days': tag.count +' Day'}})</span>
+                            <i class="btx-close" ng-click="removeFilterTag($index, tag)"></i>
+                        </span>
+                    </ng-container>
+                    <span class="clearAllFilters" ng-if="filterTags.length>1" class="filterTag addRedColor" ng-click="clearFilterTags()">
+                        <span class="filterCat">{{'clear_all_label'| i18nString}} </span>
+                        <span class="filterClose"></span>
+                        <i class="btx-close"></i>
+                    </span>
+                </div>
+                <div class="filter">
+                    <div class="filer-btns">
+                        <tabset type="pills" ng-model="selectedRange">
+                            <tab class="left" ng-click="selectRange('24hours')" active="true" heading="{{'24_hours_label'| i18nString}}"></tab>
+                            <tab class="center" ng-click="selectRange('7days')" heading="{{'7_days'| i18nString}}"></tab>
+                            <input class="customdatepicker" type="text" name="daterange" value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" />
+                            <tab class="right" ng-click="selectRange('custom')"heading="{{'custom'| i18nString}}"></tab>
+                        </tabset>
+                    </div>
+                </div>
+                <div class="channel-filter dropdown" dropdown on-toggle="toggled(open)">
+                    <button class="filterBTN" dropdown-toggle>
+                        <i class="btx-filters"></i>
+                    </button>
+                    <bot-modal-slider id="universalBotDashSlider">
+                       <div class="modalSliderContainer width700">
+                          <div class="modalHeader">
+                             <h4 class="modal-title"><i ng-click="closeSliderDashboard()" class="btx-close"></i>{{'filters'| i18nString}}</h4>
+                          </div>
+                          <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+                            <div class="col-xs-12 eachSection">
+                                <div class="title popover-tooltip-show info_tooltip">{{'conversation_session_type'| i18nString}}
+                                    <i class="helpIcon btx-help"></i>
+                                    <span class="tooltiptext">
+                                        <span>{{'help_interactive'| i18nString}}</span>
+                                        <span>{{'help_non_interactive'| i18nString}}</span>
+                                        <a href="https://developer.kore.ai/docs/bots/analyzing-your-bot/dashboard/#Usage_Metrics" target="_blank">{{'know_more'| i18nString}}</a> 
+                                    </span>
+                                </div>                                 
+                                <div class="ele">
+                                    <sumo-select search=false options="sessionTypes" callback="sumocb.sessioncb" placeholder="{{'select_all'| i18nString}}" title-key="type" value-key="type" value="conversationFilter.selectedSession"></sumo-select>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <div class="help_hint_data mb-5 align-items-center">
+                                    <div class="bulb-icon">
+                                        <i class="btx-bulb"></i>
+                                    </div>
+                                    <div class="hint-content">{{'developer_interaction'| i18nString}}</div>
+                                </div>
+                            </div>
+                           
+                            <!-- <div class="kr-sg-multi-line-notification mb-10">
+                                <div class="bulb-icon"><img ng-src={{bulbIcon}}></div>
+                                <div class="tost-text">{{'developer_interaction'| i18nString}}</div>                                   
+                            </div> -->
+
+                            <div class="col-xs-12 eachSection">
+                                <div class="title popover-tooltip-show info_tooltip">{{'channels'| i18nString}}</div>                                 
+                                <div class="ele">
+                                    <sumo-select search=false options="enabledChannelsFilterDetails" callback="sumocb.channelcb" placeholder="{{'select_all'| i18nString}}" title-key="name" value-key="id" value="conversationFilter.selectedChannel" subtype=true ></sumo-select>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xs-12 checkboxStyling">
+                                <span class="filter-fields">{{'channels'| i18nString}}</span>
+                                <div class="col-xs-12 checkbox checkbox-primary checkWithTitle styledCSS">
+                                    <input type="checkbox" id="all-channels" value="All"
+                                    ng-click="selectAllClick($event)" ng-checked="isAllSelected('channels')">
+                                    <label for="all-channels">{{'all'| i18nString}}</label>
+                                </div> 
+                                <div class="col-xs-12 checkbox checkbox-primary checkWithTitle styledCSS" ng-repeat="channel in enabledChannelsFilterDetails">
+                                <input checked type="checkbox" name="channels" id="{{channel.id}}" value="{{channel.id}}">
+                                <label for="{{channel.id}}">{{channel.name}}<span class="toShowWebhook" ng-show="channel.id.startsWith('ivr') && channel.id !== 'ivrVoice'">{{'webhook'| i18nString}}</span></label>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-xs-12 checkboxStyling">
+                                <span class="filter-fields">Languages</span>
+                                <div class="col-xs-12 checkbox checkbox-primary checkWithTitle styledCSS">
+                                    <input type="checkbox" id="all-langauge" value="All"
+                                    ng-click="selectAllClick($event)" ng-checked="isAllSelected('langauge')">
+                                    <label for="all-langauge">All</label>
+                                </div>                                      
+                                <div class="col-xs-12 checkbox checkbox-primary checkWithTitle styledCSS" ng-repeat="lang in enabledLangsFilterDetails">
+                                <input checked type="checkbox" name="langauge" id="{{lang.value}}" value="{{lang.value}}">
+                                <label for="{{lang.value}}">{{lang.name}}</label>
+                                </div>
+                            </div>  -->
+                            <div class="col-xs-12 checkboxStyling" ng-if="false && stream.type === 'universalbot'">
+                                <span class="filter-fields">{{'linked_bots'| i18nString}}</span>
+                                <div class="col-xs-12 checkbox checkbox-primary checkWithTitle styledCSS">
+                                    <input type="checkbox" id="all-linkedBot" value="All"
+                                    ng-click="selectAllClick($event)" ng-checked="isAllSelected('linkedBot')">
+                                    <label for="all-linkedBot">{{'all'| i18nString}}</label>
+                                </div>                                      
+                                <div class="col-xs-12 checkbox checkbox-primary checkWithTitle styledCSS" ng-repeat="linkedBot in linkedBots">
+                                <input type="checkbox" name="linkedBot" id="{{linkedBot._id}}" value="{{linkedBot._id}}">
+                                <label for="{{linkedBot._id}}">{{linkedBot.botName | patternChange}}</label>
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-xs-12 checkboxStyling" ng-if="stream.type === 'default'">
+                                <span class="filter-fields">Universal Bot Interactions</span>
+                                <div class="col-xs-12 checkbox checkbox-primary checkWithTitle styledCSS">
+                                    <input type="checkbox" id="uniBotInteraction" value="All">
+                                    <label for="uniBotInteraction">Include user interactions with Universal Bots to perform tasks of this bot</label>
+                                </div>                                    
+                            </div> -->
+
+                            <div class="col-xs-12 metaTagsDashboard">
+                                <div class="filter-fields">{{'custom_tags'| i18nString}}
+                                    <i class="btx-help helpIcon" tooltip-placement="right" tooltip="{{'customtags_filter'| i18nString}}"></i>
+                                </div>
+                                <div class="customTagsDiv">
+                                    <div class="row displayTable col-xs-12 noPadding" ng-repeat="selectedTag in selectedTagsArray track by $index">
+                                        <div class="andIcon row" ng-show="$index > 0">
+                                            <img ng-src="{{andIcon}}" class="andIconImg " ng-click="addCustomTags()">
+                                        </div>
+                                        <div class="dropdown col-xs-4 leftDropDown" ng-click="updateScrollfunction()">
+                                            <a class="dropdown-toggle" type="button" data-toggle="dropdown">
+                                                <div class="version">
+                                                    <span class="mainText">{{(selectedTag.name?selectedTag.name:select_label)}}</span> 
+                                                    <span class="subText">{{(selectedTag.type?selectedTag.type:'')}}</span>
+                                                </div>
+                                                <i class="btx-carrot-down caretDown"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <div class="customTagsDivScroll">
+                                                    <div class="searchDiv" ng-click="searchClick($event)">
+                                                        <input placeholder="{{'search_key'| i18nString}}" ng-model="search.nameSearchQuery" class="searchInput">
+                                                        <i class="btx-search"></i>
+                                                    </div>
+                                                    <div id="scrollUpdateItems" class="item" perfect-scroll dynamic-height dynaoffset="-470">
+                                                        <li class="select-item" ng-repeat="tag in customTagsArray |filter:{name:search.nameSearchQuery} | filter:filterCustomTags track by $index">
+                                                            <div class="version" ng-click= "updatedropDown(tag,$parent.$index)" title="{{tag.name}} ({{tag.type}})"> <img ng-if="selectedTag.name?(selectedTag.name === tag.name):false" ng-src="{{checkTickIcon}}" class="checkTickIcon">{{tag.name}} <span class="subText">({{tag.type}})</span></div>
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-8 middleTags">
+                                            <tags-input ng-model="selectedTagsArray[$index].values" add-from-autocomplete-only='true' add-on-comma="false" allow-leftover-text='false' replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_select'| i18nString}}" use-strings="true" on-tag-added="saveCustomTag()" on-tag-removed="deleteCustomTag()" ng-model="customTag.value" ng-blur="dynamicHeight($event,selectedTag)" ng-focus="calculateHeight($event)">
+                                                <auto-complete min-length="1" highlight-matched-text="false" source="searchValues($query,selectedTag.selectedValues)"></auto-complete>
+                                            </tags-input>
+                                            <div ng-show="selectedTag.invalidValue " class="invalidValue">
+                                                {{'value_notvalid'| i18nString}}
+                                            </div>
+                                        </div>
+                                        <div class="rightIcons">
+                                            <span ng-if='$index !== selectedTagsArray.length - 1'  class="trashDiv">
+                                                <i class="btx-delete-1" ng-click="removeCustomsTags($index)"></i>
+                                            </span>
+                                            <span ng-if='$index === selectedTagsArray.length - 1' class="addDiv">
+                                                <i class="btx-delete-1"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="modalFooter">
+                              <div class="col-xs-9 p-0">
+                                <button class="kr-sg-button-primary btn_lg mr-10" ng-click="doneChannelFilter()">{{'apply'| i18nString}}</button>
+                                <button class="kr-sg-button-secondary btn_lg" ng-click="closeSliderDashboard()">{{'cancel'| i18nString}}</button>
+                              </div>
+                              <div class="col-xs-3 p-0">
+                                <span class="cursor-pointer pull-right reset-filter-label" ng-click="resetFilter()">{{'reset_filter'| i18nString}}</span>
+                              </div>
+                          </div>
+                       </div>
+                    </bot-modal-slider>
+                </div>
+            </div>
+        </div>
+	    <div class="row positionRelative real-time-sec-status-cards">
+            <div ng-if="fakeDataUI" class="overlay-for-fake" >
+                <div class="no-data-msg">
+                    {{'no_data_msg'| i18nString}}
+                </div>
+            </div>
+		    <div class="col-md-4 card-padding">
+                <div class="d-item info-tile countBlocks">
+                    <div class="tile-title">{{'completed_tasks'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="top" tooltip="{{'completed_tasks_tooltip'| i18nString}}" ></i>
+                        </div>
+                    </div>
+                    <div class="tile-value">{{(tasksStats.tasksPerformedTotal | number:0) || '-'}}
+                        <span class="positive-status">
+                            <i class="btx-dropdown-up"></i>20%
+                        </span>
+                    </div>
+                </div>
+		    </div>
+		    <div class="col-md-4 card-padding">
+                <div class="d-item info-tile countBlocks">
+                    <div class="tile-title">{{'alerts_sent'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="top" tooltip="{{'alert_tooltip'| i18nString}}" ></i>
+                        </div>
+                    </div>
+                    <div class="tile-value">{{(tasksStats.alertsTotal | number:0) || '-'}}
+                        <span class="negtive-status">
+                            <i class="btx-dropdown-down"></i>20%
+                        </span>
+                    </div>
+                </div>
+		    </div>
+		    <div class="col-md-4 card-padding">
+                <div class="d-item info-tile countBlocks">
+                    <div class="tile-title">{{'conversation_sessions'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="left" tooltip="{{'conversation_sessions_tooltip'| i18nString}}"></i>
+                        </div>
+                    </div>
+                    <div class="tile-value">{{(scount | number:0) || '-'}}</div>
+                </div>
+		    </div>
+	    </div>
+        <!-- Y2 Line Grpah -->
+	    <!-- <div class="row">
+		    <div class="col-md-12 noPadding" ng-class={noLineGraphData:!linechartAvailable}>
+                <div class="d-item line-graph">
+                    <div class='title'>
+                        <span class=''>{{'msg'| i18nString}}</span>
+                        <span class=''>&</span>
+                        <span class=''>{{'conversation'| i18nString}}</span>
+                        <div class='legend-label sessions' ng-click="hideSessionsGraph()"  ng-show="linechartAvailable">{{'conversation'| i18nString}}</div>
+                        <div class='legend-label bot-chats' ng-click="hideChartsGraph()"  ng-show="linechartAvailable">{{'msg'| i18nString}}</div>
+                    </div>
+                    <div class="graph-container"> 
+                    </div> 
+                    <div class="noDataLine" ng-show="!linechartAvailable">
+                        <img ng-src="{{chatsConversation}}" class="chatsConversation marginTop50">
+                        <span class="lineGraphNodata">{{'no_data'| i18nString}}</span> 
+                    </div>
+                    <div class="dashboardLoading" ng-show="dashboardLoading">
+                        <i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="dashboardLoadingText">{{'loading_data'| i18nString}}</span>
+                    </div>
+                    <div class='text-center' ng-show='isLinkedBotSelectedClone && linechartAvailable'>{{'no_chat_data'| i18nString}}</div>
+                </div>
+		    </div>
+        </div> -->
+        <!-- GROUP BAR GRAPH -->
+
+        <div class="row message-conv-session">
+		    <div class="col-md-12 card-padding p-0" ng-class={noLineGraphData:!linechartAvailable}>
+                <div class="d-item group-bar-chart height430">
+                    <div class='title marginBottom-20'>
+                        {{'msg'| i18nString}} & {{'conversation'| i18nString}} {{'sessions' | i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="left" tooltip="{{'message_conversation_sessions_tooltip'| i18nString}}" ></i>
+                        </div> 
+                    </div>
+                    <div class="groupbar-chart"> 
+                    </div> 
+                    <div class="noDataLine" ng-show="!linechartAvailable">
+                        <img ng-src="{{tasksPerformance}}" class="chatsConversation marginTop50 max-width-100">
+                        <span class="lineGraphNodata">{{'no_data'| i18nString}}</span> 
+                    </div>
+                    <div class="dashboardLoading" ng-show="groupbarChartLoading">
+                        <i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="dashboardLoadingText">{{'loading_data'| i18nString}}</span>
+                    </div>
+                    <!-- <div class='text-center' ng-show='isLinkedBotSelectedClone && linechartAvailable'>{{'no_chat_data'| i18nString}}</div> -->
+                </div>
+		    </div>
+        </div>
+
+        <!-- Stacked Bar Graph -->
+	    <div class="row stacked-bar-chat-sec">
+		    <div class="col-md-8 card-padding" ng-class={noBarGraphData:!barGraphAvailable}> 
+                <div class="d-item info-tile height430" >
+                    <div class='task-tile-title mb-15'>
+                        {{'task_completions'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="top" tooltip="{{'success_task_tooltip'| i18nString}}"></i>
+                        </div>
+                    </div> 
+                    <div class="bar-graph" ng-show="!barGraphAvailable"></div>
+                    <div class="noDataLine" ng-show="barGraphAvailable">
+                            <img ng-src="{{tasksPerformance}}" class="tasksPerformance marginTop50 max-width-100">
+                        <span class="barGraphNodata">{{'no_tasks_data'| i18nString}}</span> 
+                    </div>  
+                    <div class="dashboardLoading" ng-show="taskCompletionLoading">
+                        <i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="dashboardLoadingText">{{'loading_data'| i18nString}}</span>
+                    </div>   
+                </div>
+            </div>
+            <!-- Pie Graph -->
+           <div class="col-md-4 pieGraphContainer" ng-class={noPieGraphData:!pieGraphAvailable}>
+                <div class="d-item info-tile height430">
+                    <div class='tile-title'>
+                        {{'intent_recognation'| i18nString}}
+                    </div>
+                    <div class="pie-chart" ng-show="pieGraphAvailable">
+                    </div>
+                    <div class="pieTooltip">
+                        <div id="tooltip" class="pieHidden">
+                            <div ng-bind-html="piechartTooltipMsg"></div>
+                            <!-- <p><span id="value">{{d.value}}</span>%</p> -->
+                        </div>
+                    </div>
+                    <div class="noDataLine" ng-show="!pieGraphAvailable">
+                        <img ng-src="{{intentRecognised}}" class="intentRecognised marginTop50 max-width-100">
+                        <span class="pieGraphNodata">{{'no_data'| i18nString}}</span> 
+                    </div>
+                    <div class="dashboardLoading" ng-show="dashboardLoading">
+                        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                        <span class="dashboardLoadingText">{{'loading_data'| i18nString}}</span>
+                    </div>   
+                </div>
+            </div>
+	    </div>
+
+	    <div class="row count-of-task-channls">
+		    <div class="col-md-6 card-padding">
+                <div class="d-item height430">
+                    <h4 class="tasksHeader successtask-header">{{'count_of_tasks_completions'| i18nString}}
+                        <div class="tooltip-top">
+                            <i class="tooltip-hover btx-help" tooltip-placement="top" tooltip="{{'success_tooltip'| i18nString}}" ></i>
+                        </div>
+                    </h4> 
+                    <div class="profile-header" ng-if="topBotsCompleteList.length !== 0">
+                        <div class="leftLabel">
+                            {{'task_name_label2'| i18nString}} 
+                        </div>
+                        <div class="rightLabel">
+                            {{'total_completions'| i18nString}} 
+                        </div>
+                    </div>
+                    <div class="profileWrapper">
+                        <div ng-repeat="bots in topBotsCompleteList | slice:(currentPage-1)*5:currentPage*5" class="taskPagination">
+                            <div ng-if="topBotsCompleteList.result.length !== 0">
+                                <ul class="list-group taskList noMargin">
+                                    <li class="list-group-item">
+                                        <div class ="taskData">
+                                            <div class="taskInfo"><img class="profile" title="{{name}}" ng-src="{{bots.icon}}"/></div>
+                                            <div class="taskName" title="{{bots.name}}">{{bots.name}}</div>
+                                            <div class="taskCount">{{bots.tasksCount.tasksMetricsCount | number:0}}</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div ng-if="topBotsCompleteList.length == 0" class="text-center">
+                                <img ng-src="{{tasks}}" class="tasks marginTop50 max-width-100">
+                            <div class="nodataTask">{{'no_data'| i18nString}}</div>
+                        </div>
+
+                        <div class="export-csv-pagination">
+                            <button class="export-csv-btn kr-sg-button-secondary btn_lg" ng-if="topBotsCompleteList.length !== 0" ng-click="triggerDownloadCSV()">
+                                <i class="btx-export mr-5"></i>{{'export_csv'| i18nString}}
+                            </button>
+                            <button class="downloadCSVHide" ng-csv='downloadCSV()' csv-column-order="['name','task','noOfDialogSuccess1','noOfFaqSuccess','noOfUserActions','total','streamId','streamName','type']" csv-header="['name','task','noOfDialogSuccess1','noOfFaqSuccess','noOfUserActions','total','streamId','streamName','type']" filename="{{botName}}_dashboard_tasks.csv">{{'export_csv'| i18nString}}</button>
+                            <pagination  rotate="false" 
+                                ng-show="topBotsCompleteList.length > 3" 
+                                class="pagination-sm pull-right" 
+                                boundary-links="true" 
+                                direction-links="false"
+                                total-items="topBotsCompleteList.length" 
+                                items-per-page="5" 
+                                ng-model="currentPage"
+                                ng-init="currentPage=1"
+                                max-size="5"
+                                first-text="<<"
+                                last-text=">>"
+                            >
+                            </pagination>
+                        </div>
+                    </div>
+                </div>
+		    </div>
+		    <div class="col-md-6 card-padding">                
+                <div  class="d-item height430">                    
+                    <count-board data="languagesAndChannelsData"></count-board>     
+                </div>
+		    </div>
+	    </div>
+
+	    <div class="row agent-transfer-top-perform-sec">
+		    <div class="col-md-6 card-padding">
+                <div class="d-item height430">
+                    <div class="tooltip-top">
+                        <i class="tooltip-hover btx-help" tooltip-placement="top" tooltip="{{'agent_transfer_tooltip'| i18nString}}" ></i>
+                    </div>
+                    <div class="header-sec mb-20">
+                        <div class="tasksHeader m-0">{{'agent_transfer'| i18nString}}</div>
+                        <div class="tasksHeader m-0">{{'agent_transfer_session_label'| i18nString}} {{agentTransferCount}}</div>
+                    </div>
+                    <div class="profile-header" ng-if="topAgentTransferCompleteList.results.length !== 0">
+                        <div class="leftLabel">
+                            {{'task_Label'| i18nString}}   
+                        </div>
+                        <div class="rightLabel">
+                            {{'total_agent'| i18nString}}
+                        </div>
+                    </div>
+                    <div class="profileWrapper">
+                        <div ng-repeat="agent in topAgentTransferCompleteList.results" class="taskPagination">
+                            <div ng-if="topAgentTransferCompleteList.results.length !== 0">
+                                <ul class="list-group taskList noMargin">
+                                    <li class="list-group-item">
+                                        <div class ="taskData">
+                                            <div class="taskInfo"><img class="profile" title="{{name}}" ng-src="{{agent.icon}}"/></div>
+                                            <div class= "taskName" title="{{agent.name}}">{{agent.name}}</div>
+                                            <div class="taskCount">{{agent.noOfAgentTransfers | number:0}}</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div ng-if="topAgentTransferCompleteList.results.length == 0 || topAgentTransferCompleteList.length == 0" class="text-center">
+                            <img ng-src="{{agentTransfer}}" class="agentTransfer marginTop50 w-100">
+                            <div class="nodataTask">{{'no_data'| i18nString}}</div>
+                        </div>
+                    </div>                                    
+                </div>
+		    </div>
+            <div class="col-md-6 card-padding" ng-if="stream.type === 'universalbot'">
+                <div class="d-item info-tile height430 topPerformingBotsDiv">
+                    <div class='tile-title pull-left'>
+                        {{'top_perform'| i18nString}}
+                    </div>
+                    <div ng-if="topPerformingBots.data.results.length == 0">
+                        <div class="nodataTask">{{'no_top_perform'| i18nString}}</div>
+                    </div>
+                    <div>
+                        <div id="performingPieChart"></div> 
+                    </div>                             
+                </div>
+            </div>    
+        </div>
+    </div>
+
+</div>

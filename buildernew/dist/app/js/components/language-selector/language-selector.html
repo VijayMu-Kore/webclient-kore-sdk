@@ -1,0 +1,68 @@
+<div ng-if="_constants_.config.supportI18N" class="col-xs-12 form-group noPadding">
+  <!-- <div class="col-xs-12 labelling noPadding" ng-if="!hideLable">
+    <label class="required-field"> {{'default_language'| i18nString}}</label>
+  </div> -->
+  <div class="col-xs-12 noPadding">
+    <!-- <div class="field-type-dd">
+      <div class="col-xs-12 uiselect2container langSelectContainer noPadding">
+        <select id="languageSelect2" ui-select2="selectConfig" ng-model="i18n.languageValue"
+          ng-disabled="fromSettings === 'true'" class="form-btnDropdown width100percent" id="language" name="language"
+          required>
+          <option ng-repeat="languagein in supportedLanguages | orderBy: 'name' " value="{{languagein.value}}">
+            {{getLanguageNameByName(languagein.name)}}</option>
+        </select>
+      </div>
+    </div> -->
+    <div class="kr-sg-dropdowns" ng-if="!hideLable" >
+      <div class="label-text">{{'default_language' | i18nString}} <i ng-click="redirectToLinkStreamForm('BOTS_TYPES', $event)" class="cursor-pointer btx-help opacity5"></i> </div>
+      <div class="dropdown dropdown-open">
+        <button class="dropdown-toggle dropdown-input" data-toggle="dropdown" ng-class="{'disable-dropdown':fromSettings === 'true'}">
+          {{getLanguageName(i18n.languageValue)}}
+        </button>
+        <ul class="dropdown-menu content-menu">
+          <li class="search-box">
+            <input type="text" ng-model="searchLang" placeholder="Search" class="seach-input"
+              ng-click="$event.stopPropagation();" autocomplete="off">
+          </li>
+            <div class="position-relative" perfect-scroll dynamic-height dynaoffset="-420">
+              <li ng-repeat="lang in supportedLanguages | orderBy: 'name' | filter:searchLang">
+                <a ng-click="setLanguageCode(lang.value)" title="{{lang.name}}" >
+                  <span class="name-channel" >{{lang.name}}</span>
+                  <span class="check-icon pull-right" ng-if="i18n.languageValue === lang.value">
+                    <i class="btx-check"></i>
+                  </span>
+                  </a>
+              </li>
+            </div>                                              
+          </ul>
+        <!-- <ul class="dropdown-menu content-menu">
+          <li class="search-box">
+            <input type="text" ng-model="searchLang" placeholder="Search" class="seach-input"
+              ng-click="$event.stopPropagation();" autocomplete="off">
+          </li>
+          <div class="scroll-data" style="max-height: 180px;overflow: auto;">
+            <ng-container ng-repeat="languagein in supportedLanguages | orderBy: 'name' | filter:searchLang">
+              <li ng-click="setLanguageCode(languagein.value)" title="{{languagein.name}}">
+                <span class="name-channel" >{{languagein.name}}</span>
+                <span class="check-icon pull-right" ng-if="i18n.languageValue === languagein.value"><i
+                    class="btx-check"></i></span>
+              </li>
+            </ng-container>
+          </div>
+        </ul> -->
+      </div>
+    </div>
+    <div ng-show="alertFieldsForm.language.$dirty">
+      <div error-alert ng-show="alertFieldsForm.language.$error.required" class="text-danger form-error-text">
+        {{'default_lang_req'| i18nString}} </div>
+    </div>
+    <!-- HINT PROTIP STARTS HERE -->
+    <div class="hintDiv" ng-show="fromSettings === 'false'">
+      <span class="icon">
+        <i class="btx-bulb"></i>
+      </span>
+      <span class="description">{{'tream_form_enable_additional_languages'| i18nString}}</span>
+    </div>
+    <!-- HINT PROTIP ENDS HERE -->
+  </div>
+</div>

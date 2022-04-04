@@ -1,0 +1,166 @@
+<div class="form-group" ng-if="false">
+    <div class="authHeader" ng-hide="mode ==='view'">
+        <label> {{'idp_form'| i18nString}} </label>
+        <div type="button" ng-hide="bshowForm || true" class="addAuthBtn pull-right" ng-click="showForm();"><i class="fa  fa-plus"></i>{{'add_idp'| i18nString}}</div>
+    </div>
+</div>
+<div  ng-class="{'well well-sm' : bshowForm }">
+    <div ng-class="{'form-container':bshowForm}">
+        <form ng-class="{'wf-form sub-form':bshowForm}" name="idpFieldsForm" novalidate>
+            <!-- ng-if="bshowForm" -->
+            <fieldset class="" >
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 labelling noPadding">
+                        <label class="required-field">{{'field_title_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <input type="text" class="form-control" ng-model="field.title" id="title" placeholder="{{'field_title'| i18nString}}" name="title" required>
+                        <div ng-show="idpFieldsForm.title.$dirty">
+                            <div error-alert ng-show="idpFieldsForm.title.$error.required" class="text-danger form-error-text">{{'field_title_req'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 labelling noPadding">
+                        <label class="required-field">{{'auth_field_key'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <input type="text" class="form-control col-xs-6" ng-model="field.key" id="key" placeholder="{{'valid_field'| i18nString}}" name="key" required>
+                        <div ng-show="idpFieldsForm.key.$dirty">
+                            <div error-alert ng-show="idpFieldsForm.key.$error.required" class="text-danger form-error-text">{{'auth_field_req'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 labelling noPadding">
+                        <label class="requiredd-field"> {{'help_hint'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <input type="text" class="form-control" ng-model="field.help" id="help" placeholder=" {{'add_help_hint'| i18nString}}" name="help">
+                        <div ng-show="idpFieldsForm.help.$dirty">
+                            <div error-alert ng-show="idpFieldsForm.help.$error.required" class="text-danger form-error-text">  {{'help_hint_req'| i18nString}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <div  class="col-xs-12 borderTopBottom " id="advancedoptdiv">
+                        <span class="col-xs-12 noPadding" ng-click="showAdvancedOptions()">
+                            {{'advanced_settings'| i18nString}} <i ng-class="{'rotate-arrow-icon':showadvancedoptions}" class="btx-carrot-right pull-right fontSize13 iconArrow"></i>
+                            <p>{{'advance_settings'| i18nString}} </p>
+                        </span>
+
+                        <div ng-show="showadvancedoptions" class="showadvancedoptions">                            
+                            <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12 labelling noPadding">
+                                    <label class="required-field"> {{'field_Type'| i18nString}} </label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="field-type-dd">
+                                        <select ng-model="field.fieldType" class="btn-default btnDropdown" id="fieldtype" name="fieldtype" required>
+                                            <option value="">{{'select_field_type'| i18nString}}  </option>
+                                            <option value="password"> {{'password'| i18nString}} </option>
+                                            <option value="textbox"> {{'textbox'| i18nString}} </option>
+                                        </select>
+                                    </div>
+                                    <div ng-show="idpFieldsForm.fieldtype.$dirty">
+                                        <div error-alert ng-show="idpFieldsForm.fieldtype.$error.required" class="text-danger form-error-text"> {{'field_type_req'| i18nString}} </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding mb-5">
+                                <div class="col-xs-12 labelling noPadding">
+                                    <label>{{'mandatory'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-12 radioDiv noPadding">
+                                    <div>
+                                        <label for="field.isRequired.no" ng-init="field.isRequired = field.isRequired || false">
+                                            <input ng-value='false' type="radio"  ng-model="field.isRequired" name="field.isRequired" id="field.isRequired.no" ><span class="opt-title">{{'no_field'| i18nString}}</span> </input>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label for="field.isRequired.yes">
+                                            <input ng-value='true'  type="radio"   ng-model="field.isRequired" name="field.isRequired" id="field.isRequired.yes"><span class="opt-title">{{'yes_field'| i18nString}}</span> </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12 labelling noPadding">
+                                    <label class="requiredd-field">{{'data_type'| i18nString}} </label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <select  class="btn-default btnDropdown" name="type" ng-model="field.type">
+                                        <option>{{'select_data_type'| i18nString}}</option>
+                                        <option value="string">{{'string'| i18nString}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" >
+                                <div class="col-xs-12 labelling noPadding">
+                                    <label class="required-field"> {{'visibility'| i18nString}} </label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="field-type-dd">
+                                        <select ng-model="field.visibility" class="btn-default btnDropdown" id="fieldtype" name="visibility" required>
+                                            <option value=""> {{'select_visibility'| i18nString}} </option>
+                                            <option value="visible">{{'visible'| i18nString}}</option>
+                                            <option value="hidden">{{'hidden'| i18nString}}</option>
+                                            <option value="readonly">{{'read_only'| i18nString}}</option>
+                                        </select>
+                                    </div>
+                                    <div ng-show="idpFieldsForm.visibility.$dirty">
+                                        <div error-alert ng-show="idpFieldsForm.visibility.$error.required" class="text-danger form-error-text"> {{'field_visible_req'| i18nString}} </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="field.visibility==='hidden' || field.visibility === 'readonly'">
+                                <div class="col-xs-12 labelling noPadding">
+                                    <label> {{'constants.propertyPanel_default'| i18nString}} </label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="textbox" class="form-control col-xs-6" ng-model="field.default">
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>     
+                <div class="col-xs-12 form-group">       
+                    <div ng-show="bshowForm && false" class="col-xs-12 noPadding">
+                        <span  class="pull-right">
+                            <button type="button" ng-click="onCancel()" class="btn btn-primary btn-sm btn-outline closeCancel"> {{'cancel'| i18nString}} </button>
+                            <button type="button" class="btn btn-primary btn-sm" ng-click="onSave(idpFieldsForm.$valid, idpFieldsForm, $event)">{{'add'| i18nString}}</button>
+                        </span>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- <div class="form-group" >
+    <div class="">
+        <table class="table table-hover">
+            <thead>
+                <th>Field Title</th>
+                <th>Field Type</th>
+                <th>Field Key</th>
+                <th>Actions</th>
+                <th>Actions</th>
+            </thead>
+            <tr ng-class="{'danger':field.disabled}" ng-repeat="field in fields track by $index">
+                <td>{{field.title}}</td>
+                <td>{{field.type}}</td>
+                <td>{{field.key}}</td>
+                <td ng-hide="mode ==='view'" ng-click="editField($index)">
+                    <a class="hand-pointer">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                </td>
+                <td ng-hide="mode ==='view'" ng-click="deleteField($index)">
+                    <a class="hand-pointer">
+                        {{field.disabled?'Enable':'Disable'}}
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div> -->

@@ -1,0 +1,40 @@
+<form novalidate name="multiLoginForm" class="login-form">
+
+    <!-- Multiple Accounts -->
+    <div class="multiple-accounts">
+        <ul class="list ng-scope">
+            <li data-ng-repeat="item in multiUsers" class="list-item">
+                <div data-ng-click="submitMultiLogin(item.email)" class="item-listing offset">
+                    
+                    <!-- Item -->
+                    <div data-widget-profile-photo
+                         data-profile-id="item.id"
+                         class="item">
+                    </div>
+                    
+                    <!-- Details -->
+                    <div class="details">
+                        
+                        <!-- Thread title -->
+                        <div class="title">{{item.name}}</div>
+                        <div class="sub-title">
+                            <span class="subject">{{item.email}}</span>
+                        </div>
+                    </div>
+
+                    <div class="extras">
+                        <div data-ng-if="item.type === 'facebook'" class="social-icon facebook fa fa-facebook-square"></div>
+                        <div data-ng-if="item.type === 'google'" class="social-icon google fa fa-google-plus-square"></div>
+                        <button data-ng-click="removeSession($index)" type="button" class="btn btn-close fa fa-close"></button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <button data-ng-click="switchForms('default')" type="button" class="btn btn-primary">{{'add_account'| i18nString}}</button>        
+    </div>
+
+</form>

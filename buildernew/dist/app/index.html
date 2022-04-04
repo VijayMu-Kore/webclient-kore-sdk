@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <base href="/">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="Kore.ai bot platform GUI based bot builder enables business users as well as developers to build context-aware, rich messaging, enterprise grade conversational flows without the need of writing code">
+  <meta name="referrer" content="origin-when-cross-origin">
+  <!-- ensure proper rendering and touch zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- disable user zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <!-- cache bust -->
+  <meta http-equiv='cache-control' content='no-cache'>
+  <meta http-equiv='expires' content='0'>
+  <meta http-equiv='pragma' content='no-cache'>
+  <meta name="kore_builder_version" content="v1649079369625">
+
+  <!-- title -->
+  <title ng-bind="_constants_.product"></title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/botbuilder/img/koreLogo.ico"/>
+
+  <script src="/botbuilder/js/config-client-1649079369625.min.js"></script>  
+  <script src="/botbuilder/js/config.js"></script>  
+  <script src="/botbuilder/js/koreBotSdk/libs/ie11CustomProperties-1649079369625.js"></script>
+  <link rel="stylesheet" href="/botbuilder/css/lib/libs-1649079369625.min.css"/>
+  <link rel="stylesheet" href="/botbuilder/css/modules/mod-1649079369625.min.css"/>
+  <link rel="stylesheet" href="/botbuilder/css/forms/forms-1649079369625.min.css"/>
+  <link rel="stylesheet" href="/botbuilder/css/modules/raw-1649079369625.min.css"/>
+  <link rel="stylesheet" href="/botbuilder/css/libs/chatWindow-1649079369625.css"/>
+  <link rel="stylesheet" href="/botbuilder/css/libs/kore-widgets-1649079369625.css"/>
+  <link rel="stylesheet" href="/botbuilder/lib/json-formatter/json-formatter.css"/>
+  
+
+  <!-- Ace library and it's dependencies-->
+  <script src="/botbuilder/lib/jsoneditor.js"></script>
+
+    <!-- Ace library and it's dependencies-->
+  <script src="https://f6c8-49-204-237-254.ngrok.io/botbuilder/lib/ace/ace.js"></script>
+  <!--
+      Ace has an internal dependency of theme-chrome.js and worker-javascript.js. Make sure to add it in ace folder
+  -->
+  <script src="/botbuilder/lib/ace/ext-beautify.js"></script>
+  <script src="/botbuilder/lib/ace/mode-javascript.js"></script>
+  <script src="/botbuilder/lib/ace/ext-chromevox.js"></script>
+<!--  <script src="/botbuilder/lib/ace/mode-json.js"></script>
+  <script src="/botbuilder/lib/ace/worker-json.js"></script> -->
+  <script src="/botbuilder/lib/ace/mode-markdown.js"></script>
+
+  <script src="/botbuilder/lib/ace/theme-jsoneditor.js?v=-1649079369625"></script>
+  <script src="/botbuilder/lib/ace/theme-jsoneditor-white.js"></script>
+
+</head>
+<body class="builderMaincontainer" ng-controller="MainController">
+    <!-- <div class="notificationHeader">
+			<span class="notificationTxt">{{claimDomainMsg}}<a ng-if="claimDomainLink" href="" ng-click="launchAdminConsole()">Click Here</a></span>
+			<span class="fa fa-times closeNotification" ng-click="closeNotificationBar()"></span>
+		</div> -->
+    <div class="notificationHeader">
+        <div class="notificationTxt">{{newChangesUpgradeMsg}}<a href="" ng-click="redirectToLink('WHATSNEW')" class="newUpdateLink"><u>{{whatsNew}}</u></a>
+            <a class="newUpdateLink takeTourbtn" style="margin-left:40px;">{{takeTour}}</a><a class="newUpdateLink" style="margin-left:40px;opacity:0.5;" ng-click="skipUpdateBar()">{{skipTour}}</a>
+        </div>
+    </div>
+
+    <div class="landingPleaseWait" ng-show="$root.showLoginLoader"><span style="text-align:center;"><i class="fa fa-circle-o-notch fa-spin marginRight5"></i></span></div>
+
+      <!--<div id="page-content-wrapper" class="full-height">
+          <ng-view class="full-height"></ng-view>
+      </div>-->
+      <ng-view class="full-height"></ng-view>
+
+      <!-- Upgrade Form -->
+
+      <div class="modal fade" id="upgradeForm" tabindex="-1" role="dialog" aria-labelledby="upgradeModal">
+        <div class=" modal-dialog modal-md" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" id="xUpgradeBtnCancel" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+              <h4 class="modal-title" id="upgradeModal">{{accountUpgrade}}</h4>
+            </div>
+            <div class="modal-body">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <p id="account_upgrade_txt">
+                    <!-- Oops!! You do not have permissions to access the Developer Console. -->
+                    <!-- Only Premium users can access the Developer Console. Click on upgrade to get access. -->
+                    <!-- Dear User you don't have permission to access Developer Console please <a target="_blank" href="/admin/#_accountPayment">Upgrade</a> your Account. -->
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+              <!-- <button type="button" class="btn btn-danger btn-sm" id="upgradeBtnCancel" ng-click="cancel()">Cancel</button> -->
+              <button type="button" class="btn btn-primary" id="upgradeBtn" ng-click="upgrade()">{{upgradeLabel}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- relogin notifier form -->
+
+      <div class="modal fade alert-modal" id="reAuthForm">
+          <div class="modal-dialog modal-md">
+              <div class="modal-content">
+                  <div class="modal-body">
+                      <div class="modal-header-icon fa fa-exclamation-triangle color-error"></div>
+                      <h4 class="modal-title">{{sessionExpired}}</h4>
+                      {{invalidAcessError}}
+                  </div>
+                  <div class="modal-footer" style="text-align: center">
+                      <button id="reAuthBtnOk" class="btn btn-primary">{{reAuthorize}}</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- new version notifier -->
+      <div class="modal fade alert-modal" id="reloadForm">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="modal-header-icon fa fa-info-circle"></div>
+                      <h4 class="modal-title">
+                        {{updateLabel}} 
+                      </h4>
+                </div>
+            <div class="modal-body">
+              {{newVersionMsg}}
+            </div>
+            <div class="modal-footer" style="text-align: center">
+              <button id="reloadBtnOk" class="btn btn-primary">{{reloadLabel}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="/botbuilder/js/tparty-1649079369625.min.js"></script>
+    <script src="/botbuilder/js/koreBotSdk/UI/kore-widgets-1649079369625.js"></script>
+    <script src="/botbuilder/js/helpers-1649079369625.min.js"></script>
+    <script src="/botbuilder/js/app-1649079369625.min.js"></script>
+    <script src="/botbuilder/js/forms-1649079369625.min.js"></script>
+<!--    <script src="/botbuilder/js/templates-1649079369625.min.js"></script>-->
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+faq,primary,What are Bots?,Bots are lightweight programs that communicate with applications or business systems on your behalf to get stuff done.,Definition,Bots,
+faq,primary,What are Kore.ai bots?,Kore.ai Bots are lightweight pieces of powerful software that connect you directly to enterprise and consumer apps.,Definition,Kore.ai Bots:Store,
+faq,primary,What is the Bot Store?,"The Kore.ai Bot Store is where your employees and customers can find our extensive library of built-in Bots for apps and services that you already rely on to get your work done.,Kore.ai offers hundreds of built-in Kore.ai bots for many of the application you already use today at home or at work.",Bot Store,Kore.ai Bots:Store,
+faq,alternate,Where can I find all the Kore.ai bots?,,Bot Store,Kore.ai Bots:Store,
+faq,primary,What channels are available for my bots?,"ased on the type of Kore.ai Bot the available channels may vary because of the context in which these Kore.ai Bots can be used and also how the Bot is defined by Kore.ai or a developer.,When you find a Bot at the Kore.ai Bot Store that you want the next step is to decide how you want to get messages from the Bot.You can select to use a Bot in more than one channel.",Configuration,Channels:channel,Kore.ai Bots:Store
+faq,alternate,How do I setup channels for my bots?,,,,
+faq,primary,How to create a Kore.ai Bot account?,To create a Kore.ai Bot account navigate to the Kore.ai Bot Store and then click Sign In on the top right corner of the page. ,Builder,Account Setup,Kore.ai Bots:Store
+faq,alternate,How do I signup for Kore.ai account?,,,,
+synonyms,Bots,chatbots,bot,,,
+synonyms,Configuration,setup,configure,enable,,
+unmappedpath,Built-in Bots,Bot Types,Kore.ai Bots,,,
+unmappedpath,Custom Bots,Bot Types,Kore.ai Bots,,,
+unmappedpath,Smart Bots,Bot Types,Kore.ai Bots,,,
+unmappedpath,Universal Bots,Bot Types,Kore.ai Bots,,,
+unmappedpath,Sample Bots,Bot Types,Kore.ai Bots,,,
+classes,Store,What are the bots available in the Kore.ai bot store?,,,,
+classes,Channel,How to configure Facebook channel?,,,,

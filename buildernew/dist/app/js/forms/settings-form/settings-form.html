@@ -1,0 +1,991 @@
+
+                
+                    
+                                        <alert-filter-form ng-if="wfType==='alert'" wf-type="{{wfType}}" filter-frm ="filterFrm" view="displayMode==='view'" display-mode="{{editOperation?'edit':'view'}}" mode="create" set-filter-data="editingFilter" on-cancel="onFilterFormCancel({filterForm : false});" on-save="onAlertFilterSave(filterRequestObj,showIt);" modal-slider="modalSlider"></alert-filter-form>
+             
+
+<div class="form-container">
+    <div>
+
+        <form class="wf-form sub-form IEformDropdown" name="settingsForm" ng-submit="setSettings(isValid(settingsForm),settingsForm)" novalidate>
+            <fieldset>
+
+
+                <!-- request accordions -->
+<div class="panel-group requestAccordion" id="scheduleAccordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default" ng-if="wfType === 'alert'">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#responseAccordion" href="#filters" role="tab" id="headingOne">
+         <div><span class="panel-title entity_count_label"> {{'filters'| i18nString}}</span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'settings_form_filters_desc'| i18nString}}</p>
+      </div>
+    </div>
+    <div id="filters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+         <div class="col-xs-12 noPaddingLeft" ng-if="wfType === 'alert' && alertFilter.alrtFilterObjects.rows.length">
+            <sortable-table callback="orderFilters(type,index)"  on-view="filterDataRowView(index,row)" show-actions="{{displayMode!=='view'}}" on-edit="filterDataRowEdit(index,row)" on-delete="filterDataRowDel(index,row)" table-data="alertFilter.alrtFilterObjects"></sortable-table>
+        </div>
+        <div ng-if="!alertFilter.alrtFilterObjects.rows.length">
+            <div class="col-xs-12 noContentDiv">
+                <div class="alert-xs text-center alert-msg-home" role="alert" ng-show="!alrtField.alrtFldObjects.rows.length">
+                    <p class="noContentHeader">{{'settings_form_no_filters_label'| i18nString}}</p>
+                    <p class="noContentDesc">{{'settings_form_add_one_or_more_filters'| i18nString}}</p>
+                    <p class="createLink" ng-if="displayMode!=='view'" type="button" data-toggle="modal" data-target=".addfilter" class="btn btn-primary btn-sm" ng-click="showAlertFilterForm()">{{'add_filter'| i18nString}}</p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="panel-footer" ng-if="displayMode!=='view'">
+        <button ng-if="displayMode!=='view'" type="button" data-toggle="modal" data-target=".addfilter" class="btn btn-primary btn-sm" ng-click="showAlertFilterForm()">{{'add'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+  <div ng-if="entity.type != 'webhook'" class="panel panel-default">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#scheduleAccordion" href="#intervalOptions" role="tab" id="headingOne">
+         <div><span class="panel-title entity_count_label"> {{'schedule'| i18nString}} </span><span ng-if="!validIntervalOptions" class="length"> <i title="Please fill all the required fields" class="fa fa-warning error-color"></i></span><!-- <span class="error-color" ng-if="!validIntervalOptions" ></span> --></span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'settings_form_define_Schedule'| i18nString}}</p>
+      </div>
+ 
+    </div>
+    <div id="intervalOptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body ">
+                      <div ng-if="entity.type != 'webhook'">
+                    <div class="col-xs-12 form-group noPaddingLeft">
+                        <p class="col-xs-12 heaing_label_text noPaddingLeft"> {{'settings_form_choose_one_or_more_form_p1'| i18nString}}{{ (wfType.toLowerCase() == 'alert')? alertTask : actionTask }} {{'settings_form_choose_one_or_more_form_p2'| i18nString}} </p>
+                        <br />
+                        <div class="col-xs-12 labelling noPaddingLeft">
+                            <label class="required-field">{{'settings_form_trigger_interval_options'| i18nString}}</label>
+                        </div>
+
+                            <div class="row">
+                                <div class="col-xs-4  paddingRight10 noPaddingLeft">
+                                    <sumo-select search=false disabled="displayMode==='view'" options="intervalConfig.time" placeholder="{{'select_any_label'| i18nString}}" title-key="value" value="settings.time"></sumo-select>
+                                </div>
+                                <div class="col-xs-4 ">
+                                    <sumo-select search=false disabled="displayMode==='view'" options="intervalConfig.frequency" placeholder="{{'select_any_label'| i18nString}}"  title-key="value" value="settings.frequency"></sumo-select>
+                                </div>
+                                <div class="col-xs-4 paddingLeft10 ">
+                                    <sumo-select search=false disabled="displayMode==='view'" options="intervalConfig.timeOptions[settings.frequency.join('') || 'default']" placeholder="{{'select_any_label'| i18nString}}"  title-key="value" value="settings.timeslots"></sumo-select>
+                                </div>
+                            </div>
+
+                    </div>
+                    <div class="col-xs-12  form-group noPaddingLeft">
+                        <div class="col-xs-12 labelling noPaddingLeft">
+                            <label class="required-field">{{'settings_form_default_trigger_interval'| i18nString}}</label>
+                        </div>
+
+                            <div class="row">
+                                <div class="col-xs-4  paddingRight10 noPaddingLeft">
+                                    <select  ng-disabled="displayMode==='view'"  class="form-control timeInterval" ng-model="pollOptions.day" name="day" required>
+                                        <option value="">{{'smart_alerts_select_scheme'| i18nString}}</option>
+                                        <option ng-repeat="time in getSchemes()" value="{{time.value}}">{{time.value}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 ">
+                                    <select  ng-disabled="displayMode==='view'"  class="form-control timeInterval" ng-model="pollOptions.frequency" name="frequency" required>
+                                        <option value="">{{'smart_alerts_select_frequency'| i18nString}}</option>
+                                        <option ng-repeat="time in getFrequencies()" value="{{time.value}}">{{time.value}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 paddingLeft10 ">
+                                    <select   ng-disabled="displayMode==='view'"  ng-if="pollOptions.frequency === every" class="form-control timeInterval" name="time" ng-model="pollOptions.interval" required>
+                                        <option value="">{{'smart_alerts_select_time'| i18nString}}</option>
+                                        <option  ng-repeat="time in getIntervals()" value="{{time.value}}">{{time.value}}</option>
+                                    </select>
+                                    <select  ng-disabled="displayMode==='view'"  ng-if="pollOptions.frequency !== every" class="form-control timeInterval" name="time" ng-model="pollOptions.interval" required>
+                                        <option value="">{{'smart_alerts_select_time'| i18nString}}</option>
+                                        <option  ng-repeat="time in getTimeslots()"  value="{{time.value}}" >{{time.value}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button type="button"
+                      class="btn btn-sm btn-primary text-info"  ng-click="setSettings(isValid(settingsForm),settingsForm, true)"><i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))? savingLabel : save}} </button>
+                    </div>
+    </div>
+  </div>
+    <div ng-if="entity.type != 'webhook'" class="panel panel-default">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#scheduleAccordion" href="#initialPoll" role="tab" id="headingOne">
+         <div><span class="panel-title entity_count_label">  {{'advanced_settings'| i18nString}} </span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'settings_form_advanced_settings_desc'| i18nString}}</p>
+      </div>
+ 
+    </div>
+    <div id="initialPoll" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        <div class="col-xs-12 form-group noPaddingLeft">
+            <div class="row">
+                <div class="col-xs-12 form-group mb-0 noPaddingLeft">
+                        <div class="col-xs-12 radioDiv noPaddingLeft"  ng-class="{'disabled':displayMode==='view'}" >
+                            <label tooltip-placement="right" ng-if="true" tooltip="{{'settings_form_alert_tooltip'| i18nString}}">{{'settings_form_perform_initial_poll'| i18nString}}</label>
+                    
+                            <div>
+                                <label for="intervalConfig.initPoll.no">
+                                    <input  ng-disabled="displayMode==='view'" ng-value='false' ng-checked="true" type="radio"  ng-model="intervalConfig.initPoll" name="intervalConfig.initPoll" id="intervalConfig.initPoll.no"><span class="opt-title">{{'settings_form_no_alerts_needed'| i18nString}}</span> </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="intervalConfig.initPoll.yes">
+                                    <input  ng-disabled="displayMode==='view'" ng-value='true' type="radio" ng-model="intervalConfig.initPoll" name="intervalConfig.initPoll" id="intervalConfig.initPoll.yes" ><span class="opt-title">{{'settings_form_yes_alerts_needed'| i18nString}}</span> </input>
+                                </label>
+                            </div>
+                        </div>
+                    <div class="row" ng-if="intervalConfig.initPoll">
+                        <div class="col-xs-12 noMargin form-group">
+                            <div class="col-xs-12">
+                                <label>{{'settings_form_posts_initial_poll'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <input class="form-control" type="number" name="initPostCount" only-number ng-model="intervalConfig.initPostCount">
+                                <div ng-if="$parent.settingsForm.initPostCount.$dirty">
+                                    <div ng-if="$parent.settingsForm.initPostCount.$error.min">
+                                        <div error-alert>
+                                            {{'please_enter_valid_value'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 form-group noPaddingLeft">
+            <div class="row">
+                <div class="col-xs-12 form-group mb-0 noPaddingLeft">
+                    <div class="col-xs-12  radioDiv noPaddingLeft"  ng-class="{'disabled':displayMode==='view'}" >
+                        <label ng-if="true" tooltip-placement="right" tooltip="{{'settings_form_remainders_tooltip'| i18nString}}">{{'settings_form_enable_alert_remainder'| i18nString}}</label>
+
+                        <div>
+                            <label for="intervalConfig.reminders.enabled.no">
+                                <input  ng-disabled="displayMode==='view'" ng-value='false' ng-checked="true" type="radio"  ng-model="intervalConfig.reminders.enabled" name="intervalConfig.reminders.enabled" id="intervalConfig.reminders.enabled.no"><span class="opt-title">{{'settings_form_no_remainder_message'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="intervalConfig.reminders.enabled.yes">
+                                <input  ng-disabled="displayMode==='view'" ng-value='true' type="radio" ng-model="intervalConfig.reminders.enabled" name="intervalConfig.reminders.enabled" id="intervalConfig.reminders.enabled.yes" ><span class="opt-title">{{'settings_form_yes_remainder_message'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="alertsRemainder grayBG" ng-if="intervalConfig.reminders.enabled">
+                    <section class="processor_form">
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-12 labelling">
+                                <label class="required-field"tooltip-placement="right" tooltip="{{'settings_form_alertsetting_tooltip'| i18nString}}">{{'settings_form_remainder_frequency'| i18nString}}</label>
+                            </div>
+                                <div class="row col-xs-12 ">
+                                    <select multiple class="full-width" ng-disabled="displayMode==='view'" ui-select2="optionsConfig" ng-model="intervalConfig.reminders.options" name="options" required>
+                                        <option ng-repeat="option in options" value="{{option.value}}">{{option.title}}</option>
+                                    </select>
+                                    <div ng-if="settingsForm.options.$dirty">
+                                        <div ng-if="settingsForm.options.$error.required">
+                                            <div error-alert>
+                                                {{'settings_form_remainder_frequency_req'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-12 labelling">
+                                <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_remainder_message_tooltip'| i18nString}}">{{'settings_form_remainder_message'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="row col-xs-9 noPaddingLeft">
+                                    <custom-editor callback="titlePart" mode="{{displayMode==='view'}}" name="titlePart" data="intervalConfig.reminders.titlePart" ></custom-editor>
+                                    <div ng-if="settingsForm.titlePart.$dirty">
+                                        <div ng-if="settingsForm.titlePart.$error.required">
+                                            <div error-alert>
+                                                {{'settings_form_remainder_message_req'| i18nString}}
+                                            </div>
+                                        </div>
+                                        <div ng-if="settingsForm._placeholderNotThere">
+                                            <div error-alert>
+                                                {{'settings_form_frequency_key'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <select class="form-control" ng-hide="displayMode==='view'" ng-model="key3" ng-change="titlePart.onInsert(key3);key3=''">
+                                        <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                        <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-12 labelling">
+                                <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_provide_keys_comma'| i18nString}}">{{'settings_form_identify_event_modification'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                    <input type="text" class="form-control" ng-disabled="displayMode==='view'" required name="hash"  ng-model="intervalConfig.reminders.hash" />
+                                    <div ng-if="settingsForm.hash.$dirty">
+                                        <div ng-if="settingsForm.hash.$error.required">
+                                            <div error-alert>
+                                                {{'settings_form_keys_comma'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-12 labelling">
+                                <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_calculate_offset'| i18nString}}">{{'settings_form_event_start_time'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="row col-xs-9 noPaddingLeft">
+                                    <custom-editor mode="{{displayMode==='view'}}" callback="startTime" name="startTime" data="intervalConfig.reminders.startTime" ></custom-editor>
+                                    <div ng-if="settingsForm.startTime.$dirty">
+                                        <div ng-if="settingsForm.startTime.$error.required">
+                                            <div error-alert>
+                                                {{'settings_form_event_start_time_req'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <select class="form-control" ng-hide="displayMode==='view'" ng-model="key3" ng-change="startTime.onInsert(key3);key3=''">
+                                        <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                        <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-12 labelling">
+                                <label class="required-field" tooltip-placement="right" tooltip=" {{'settings_form_please_select_recurrence_format'| i18nString}}">{{'settings_form_format_to_identify'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                    <select class="form-control" ng-disabled="displayMode==='view'" name="recurrenceFormat" required ng-model="intervalConfig.reminders.recurrenceFormat">
+                                        <option value="">{{'select_Any'| i18nString}}</option>
+                                        <option value="cron">{{'settings_form_cron'| i18nString}}</option>
+                                        <option value="rrule">{{'settings_form_rrule'| i18nString}}</option>
+                                    </select>
+                                    <div ng-if="settingsForm.recurrenceFormat.$dirty">
+                                        <div ng-if="settingsForm.recurrenceFormat.$error.required">
+                                            <div error-alert>
+                                                {{'settings_form_recurrence_format_is_req'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-12 labelling">
+                                <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_snippet_Code_string'| i18nString}}">{{'settings_form_recurrence_pattern'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="row col-xs-9 noPaddingLeft">
+                                    <custom-editor callback="recurrencePattern" mode="{{displayMode==='view'}}" name="recurrencePattern" data="intervalConfig.reminders.recurrencePattern" ></custom-editor>
+                                    <div ng-if="settingsForm.recurrencePattern.$dirty">
+                                        <div ng-if="settingsForm.recurrencePattern.$error.required">
+                                            <div error-alert>
+                                                {{'settings_form_recurrence_pattern_req'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <select class="form-control" ng-hide="displayMode==='view'" ng-model="key4" ng-change="recurrencePattern.onInsert(key4);key4=''">
+                                        <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                        <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                                                            </div>
+                        <div class="col-xs-12 form-group" ng-if="intervalConfig.reminders.recurrenceFormat === 'cron'">
+                            <div class="col-xs-12 labelling">
+                                <label class="required-field">{{'settings_form_event_end'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="row col-xs-9 ">
+                                    <custom-editor callback="endAfter" mode="{{displayMode==='view'}}" name="endAfter" data="intervalConfig.reminders.endAfter" ></custom-editor>
+                                    <div ng-if="settingsForm.endAfter.$dirty">
+                                        <div ng-if="settingsForm.endAfter.$error.required">
+                                            <div error-alert>
+                                                {{'settings_form_event_end_req'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <select class="form-control" ng-hide="displayMode==='view'" ng-model="key6" ng-change="endAfter.onInsert(key6);key6=''">
+                                        <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                        <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="help-block col-xs-12">
+                                {{'settings_form_snippet_code'| i18nString}}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+
+                <!-- Deduplicatin strategy start here -->
+                <div ng-if="showDedup(wfType)&&wfType!=='action'">
+                <div>
+                    
+                    
+                
+                    <div class="col-xs-12 row noPaddingLeft">
+                        <div class="col-xs-12 noPaddingLeft">
+                            <label tooltip-placement="right" ng-if="true" tooltip="{{'settings_form_define_strategy'| i18nString}}">{{'deduplicate_strategy'| i18nString}}</label>
+                            <div class="checkbox radioDiv">
+                                <label for="noneDuplicate" class="noPadding">
+                                    <input type="radio" ng-disabled="displayMode==='view'" ng-model="settingsObj.ddStrategy" value="None" id="noneDuplicate">
+                                    <span class="opt-title"> {{'None_label'| i18nString}}</span>
+                                </label>
+                            </div>
+                        </div> 
+
+
+                        <div class="col-xs-12 noPaddingLeft">
+                            <div class="col-xs-12 noPaddingLeft">
+                                <div class="checkbox radioDiv noMargin">
+                                    <label for="excludeDuplicate" class="noPadding">
+                                        <input type="radio" ng-disabled="displayMode==='view'" ng-model="settingsObj.ddStrategy" value="ExcludeByCachedIds" id="excludeDuplicate">
+                                        <span class="opt-title"> {{'exclude_by_cache_id'| i18nString}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                 
+                    <div class="col-xs-12 noPaddingLeft"><div class="helphint-border col-xs-12 marginB20T0"><div class="col-xs-1 bulbicon"><span><i class="btx-bulb"></i></span></div><div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb524)"></span></div></div></div>
+                </div>
+            </div>
+            <div class="col-xs-12  form-group" ng-if="settingsObj.ddStrategy === 'SinceId'">
+                <div class="col-xs-12 ">
+                    <label class="required-field"> {{'identifier'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 " ng-if="settingsObj.ddStrategy === 'SinceId'">
+                    <input type="text" class="form-control" ng-model="settingsObj.identifier" ng-disabled="displayMode==='view'" name="identifier" placeholder="{{'enter_identifier_placeholder'| i18nString}}" required>
+                </div>
+                <div class="col-xs-12 " ng-if="settingsform.identifier.$dirty">
+                    <br />
+                    <div error-alert ng-if="settingsform.identifier.$error.required">
+                        {{'provide_Valid_identifiers'| i18nString}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12  form-group" ng-if="settingsObj.ddStrategy === 'ExcludeByCachedIds'">
+                <div class="col-xs-12 ">
+                    <label class="required-field"> {{'identifier'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 " ng-if="settingsObj.ddStrategy === 'ExcludeByCachedIds'">
+                    <input type="text" class="form-control" ng-model="settingsObj.identifier" name="identifier" ng-disabled="displayMode==='view'" placeholder="{{'enter_identifier_with_comma_placeholder'| i18nString}}" required>
+                </div>
+                <div class="col-xs-12 " ng-if="settingsform.identifier.$dirty">
+                    <br />
+                    <div error-alert ng-if="settingsform.identifier.$error.required">
+                        {{'provide_Valid_identifiers'| i18nString}}
+                    </div>
+                </div>
+            </div>
+            </div>
+                <!-- deduplication ends here -->
+
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button type="button"
+                      class="btn btn-sm btn-primary text-info"  ng-click="setSettings(isValid(settingsForm),settingsForm, true)"><i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))? savingLabel : save }} </button>
+                    </div>
+    </div>
+  </div>
+    <div ng-if="false" class="panel panel-default">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#scheduleAccordion" href="#alertReminder" role="tab" id="headingOne">
+         <div><span class="panel-title entity_count_label">  {{'settings_form_enable_alert_remainder'| i18nString}}</span><span ng-if="!validAlertReminder" class="length"> <i title="Please fill all the required fields" class="fa fa-warning error-color"></i></span><!-- <span class="error-color" ng-if="!validAlertReminder" ></span> --><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'settings_set_alert_remainder'| i18nString}}</p>
+      </div>
+ 
+    </div>
+    <div id="alertReminder" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        <div class="col-xs-12 form-group ">
+                    <div class="row">
+                        <div class="col-xs-12 form-group mb-0">
+                            <div class="col-xs-12  radioDiv"  ng-class="{'disabled':displayMode==='view'}" >
+                                <label ng-if="true" tooltip-placement="right" tooltip="{{'settings_form_remainders_tooltip'| i18nString}}">{{'settings_form_enable_alert_remainder'| i18nString}}</label>
+
+                                <div>
+                                    <label for="intervalConfig.reminders.enabled.no">
+                                        <input  ng-disabled="displayMode==='view'" ng-value='false' ng-checked="true" type="radio"  ng-model="intervalConfig.reminders.enabled" name="intervalConfig.reminders.enabled" id="intervalConfig.reminders.enabled.no"><span class="opt-title">{{'settings_form_no_remainder_message'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="intervalConfig.reminders.enabled.yes">
+                                        <input  ng-disabled="displayMode==='view'" ng-value='true' type="radio" ng-model="intervalConfig.reminders.enabled" name="intervalConfig.reminders.enabled" id="intervalConfig.reminders.enabled.yes" ><span class="opt-title">{{'settings_form_yes_remainder_message'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="well well-sm overflow-hidden " ng-if="intervalConfig.reminders.enabled">
+                            <section class="processor_form">
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field"tooltip-placement="right" tooltip="{{'settings_form_alertsetting_tooltip'| i18nString}}">{{'settings_form_remainder_frequency'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <div class="row col-xs-12 ">
+                                            <select multiple class="full-width" ng-disabled="displayMode==='view'" ui-select2="optionsConfig" ng-model="intervalConfig.reminders.options" name="options" required>
+                                                <option ng-repeat="option in options" value="{{option.value}}">{{option.title}}</option>
+                                            </select>
+                                            <div ng-if="settingsForm.options.$dirty">
+                                                <div ng-if="settingsForm.options.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_remainder_frequency_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_remainder_message_tooltip'| i18nString}}">{{'settings_form_remainder_message'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row col-xs-9 ">
+                                            <custom-editor callback="titlePart" mode="{{displayMode==='view'}}" name="titlePart" data="intervalConfig.reminders.titlePart" ></custom-editor>
+                                            <div ng-if="settingsForm.titlePart.$dirty">
+                                                <div ng-if="settingsForm.titlePart.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_remainder_message_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                                <div ng-if="settingsForm._placeholderNotThere">
+                                                    <div error-alert>
+                                                        {{'settings_form_frequency_key'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <select class="form-control" ng-hide="displayMode==='view'" ng-model="key3" ng-change="titlePart.onInsert(key3);key3=''">
+                                                <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_provide_keys_comma'| i18nString}}">{{'settings_form_identify_event_modification'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-9 row ">
+                                            <input type="text" class="form-control" ng-disabled="displayMode==='view'" required name="hash"  ng-model="intervalConfig.reminders.hash" />
+                                            <div ng-if="settingsForm.hash.$dirty">
+                                                <div ng-if="settingsForm.hash.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_keys_comma'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_calculate_offset'| i18nString}}">{{'settings_form_event_start_time'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row col-xs-9 ">
+                                            <custom-editor mode="{{displayMode==='view'}}" callback="startTime" name="startTime" data="intervalConfig.reminders.startTime" ></custom-editor>
+                                            <div ng-if="settingsForm.startTime.$dirty">
+                                                <div ng-if="settingsForm.startTime.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_event_start_time_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <select class="form-control" ng-hide="displayMode==='view'" ng-model="key3" ng-change="startTime.onInsert(key3);key3=''">
+                                                <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip=" {{'settings_form_please_select_recurrence_format'| i18nString}}">{{'settings_form_format_to_identify'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-9 row ">
+                                            <select class="form-control" ng-disabled="displayMode==='view'" name="recurrenceFormat" required ng-model="intervalConfig.reminders.recurrenceFormat">
+                                                <option value="">{{'select_Any'| i18nString}}</option>
+                                                <option value="cron">{{'settings_form_cron'| i18nString}}</option>
+                                                <option value="rrule">{{'settings_form_rrule'| i18nString}}</option>
+                                            </select>
+                                            <div ng-if="settingsForm.recurrenceFormat.$dirty">
+                                                <div ng-if="settingsForm.recurrenceFormat.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_recurrence_format_is_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_snippet_Code_string'| i18nString}}">{{'settings_form_recurrence_pattern'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row col-xs-9 ">
+                                            <custom-editor callback="recurrencePattern" mode="{{displayMode==='view'}}" name="recurrencePattern" data="intervalConfig.reminders.recurrencePattern" ></custom-editor>
+                                            <div ng-if="settingsForm.recurrencePattern.$dirty">
+                                                <div ng-if="settingsForm.recurrencePattern.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_recurrence_pattern_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <select class="form-control" ng-hide="displayMode==='view'" ng-model="key4" ng-change="recurrencePattern.onInsert(key4);key4=''">
+                                                <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                                                  </div>
+                                <div class="col-xs-12 form-group" ng-if="intervalConfig.reminders.recurrenceFormat === 'cron'">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field">{{'settings_form_event_end'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row col-xs-9 ">
+                                            <custom-editor callback="endAfter" mode="{{displayMode==='view'}}" name="endAfter" data="intervalConfig.reminders.endAfter" ></custom-editor>
+                                            <div ng-if="settingsForm.endAfter.$dirty">
+                                                <div ng-if="settingsForm.endAfter.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_event_end_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <select class="form-control" ng-hide="displayMode==='view'" ng-model="key6" ng-change="endAfter.onInsert(key6);key6=''">
+                                                <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="help-block col-xs-12">
+                                        {{'settings_form_snippet_code'| i18nString}}
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button type="button"
+                      class="btn btn-sm btn-primary text-info"  ng-click="setSettings(isValid(settingsForm),settingsForm, true)"><i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))? savingLabel : save }} </button>
+                    </div>
+    </div>
+  </div>
+
+    <div class="panel panel-default" ng-if="showDedup(wfType)&&wfType!=='action' && false">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#responseAccordion" href="#dupStrategy" role="tab" id="headingTwo">
+        <div><span class="panel-title entity_count_label">{{'deduplicate_strategy'| i18nString}}</span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'settings_form_define_strategy'| i18nString}} </p>
+      </div>
+    </div>
+    <div id="dupStrategy" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        <div>
+                        <div class="col-xs-12 row ">
+                <div class="col-xs-12 ">
+                    <div class="checkbox radioDiv">
+                        <label for="noneDuplicate" class="">
+                            <input type="radio" ng-disabled="displayMode==='view'" ng-model="settingsObj.ddStrategy" value="None" id="noneDuplicate">
+                            <span> {{'None_label'| i18nString}}</span>
+                        </label>
+                    </div>
+                    </div>
+
+
+
+                    <div class="col-xs-12 ">
+                    <div class="checkbox radioDiv noMargin">
+                        <label for="excludeDuplicate" class="">
+                            <input type="radio" ng-disabled="displayMode==='view'" ng-model="settingsObj.ddStrategy" value="ExcludeByCachedIds" id="excludeDuplicate">
+                            <span> {{'exclude_by_cache_id'| i18nString}}</span>
+                        </label>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-xs-12  form-group" ng-if="settingsObj.ddStrategy === 'SinceId'">
+                <div class="col-xs-12 ">
+                    <label class="required-field"> {{'identifier'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 " ng-if="settingsObj.ddStrategy === 'SinceId'">
+                    <input type="text" class="form-control" ng-model="settingsObj.identifier" ng-disabled="displayMode==='view'" name="identifier" placeholder="{{'enter_identifier_placeholder'| i18nString}}" required>
+                </div>
+                <div class="col-xs-12 " ng-if="settingsform.identifier.$dirty">
+                    <br />
+                    <div error-alert ng-if="settingsform.identifier.$error.required">
+                        {{'provide_Valid_identifiers'| i18nString}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12  form-group" ng-if="settingsObj.ddStrategy === 'ExcludeByCachedIds'">
+                <div class="col-xs-12 ">
+                    <label class="required-field"> {{'identifiers'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 " ng-if="settingsObj.ddStrategy === 'ExcludeByCachedIds'">
+                    <input type="text" class="form-control" ng-model="settingsObj.identifier" name="identifier" ng-disabled="displayMode==='view'" placeholder="{{'enter_identifier_with_comma_placeholder'| i18nString}}" required>
+                </div>
+                <div class="col-xs-12 " ng-if="settingsform.identifier.$dirty">
+                    <br />
+                    <div error-alert ng-if="settingsform.identifier.$error.required">
+                        {{'provide_Valid_identifiers'| i18nString}}
+                    </div>
+                </div>
+            </div>
+      </div>
+      <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button type="button"
+                      class="btn btn-sm btn-primary text-info"  ng-click="setSettings(isValid(settingsForm),settingsform, true)"><i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))?  savingLabel : save }} </button>
+                    </div>
+    </div>
+  </div>
+</div>
+
+
+                <div ng-if="entity.type != 'webhook' && false">
+                    <div class="col-xs-12 form-group ">
+                        <p class="col-xs-12 heaing_label_text"> {{'settings_form_choose_one_or_more_form_p1'| i18nString}}{{ (wfType.toLowerCase() == 'alert')? alertTask : actionTask }} {{'settings_form_choose_one_or_more_form_p2'| i18nString}} </p>
+                        <br />
+                        <div class="col-xs-12 labelling ">
+                            <label class="required-field">{{'settings_form_default_trigger_interval'| i18nString}}</label>
+                        </div>
+
+                            <div class="row">
+                                <div class="col-xs-4  paddingRight10 noPaddingLeft">
+                                    <sumo-select search=false disabled="displayMode==='view'" options="intervalConfig.time" placeholder="{{'select_any_label'| i18nString}}" title-key="value" value="settings.time"></sumo-select>
+                                </div>
+                                <div class="col-xs-4 ">
+                                    <sumo-select search=false disabled="displayMode==='view'" options="intervalConfig.frequency" placeholder="{{'select_any_label'| i18nString}}"  title-key="value" value="settings.frequency"></sumo-select>
+                                </div>
+                                <div class="col-xs-4 paddingLeft10 ">
+                                    <sumo-select search=false disabled="displayMode==='view'" options="intervalConfig.timeOptions[settings.frequency.join('') || 'default']" placeholder="{{'select_any_label'| i18nString}}"  title-key="value" value="settings.timeslots"></sumo-select>
+                                </div>
+                            </div>
+
+                    </div>
+                    <div class="col-xs-12  form-group">
+                        <div class="col-xs-12 labelling ">
+                            <label class="required-field">{{'settings_form_default_trigger_interval'| i18nString}}</label>
+                        </div>
+
+                            <div class="row">
+                                <div class="col-xs-4  paddingRight10 noPaddingLeft">
+                                    <select  ng-disabled="displayMode==='view'"  class="form-control timeInterval" ng-model="pollOptions.day" name="day" required>
+                                        <option value="">{{'smart_alerts_select_scheme'| i18nString}}</option>
+                                        <option ng-repeat="time in getSchemes()" value="{{time.value}}">{{time.value}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 ">
+                                    <select  ng-disabled="displayMode==='view'"  class="form-control timeInterval" ng-model="pollOptions.frequency" name="frequency" required>
+                                        <option value="">{{'smart_alerts_select_frequency'| i18nString}}</option>
+                                        <option ng-repeat="time in getFrequencies()" value="{{time.value}}">{{time.value}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 paddingLeft10 ">
+                                    <select   ng-disabled="displayMode==='view'"  ng-if="pollOptions.frequency === 'Every'" class="form-control timeInterval" name="time" ng-model="pollOptions.interval" required>
+                                        <option value="">{{'smart_alerts_select_time'| i18nString}}</option>
+                                        <option  ng-repeat="time in getIntervals()" value="{{time.value}}">{{time.value}}</option>
+                                    </select>
+                                    <select  ng-disabled="displayMode==='view'"  ng-if="pollOptions.frequency !== 'Every'" class="form-control timeInterval" name="time" ng-model="pollOptions.interval" required>
+                                        <option value="">{{'smart_alerts_select_time'| i18nString}}</option>
+                                        <option  ng-repeat="time in getTimeslots()"  value="{{time.value}}" >{{time.value}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="false">
+                    <div class="row">
+                        <div class="col-xs-12 form-group mb-0 noPaddingLeft">
+                                <div class="col-xs-12 radioDiv "  ng-class="{'disabled':displayMode==='view'}" >
+                                    <label ng-if="false" tooltip-placement="right" tooltip="{{'settings_form_alert_tooltip'| i18nString}}">{{'settings_form_perform_initial_poll'| i18nString}}</label>
+                           
+                                    <div>
+                                        <label for="intervalConfig.initPoll.no">
+                                            <input  ng-disabled="displayMode==='view'" ng-value='false' ng-checked="true" type="radio"  ng-model="intervalConfig.initPoll" name="intervalConfig.initPoll" id="intervalConfig.initPoll.no"><span class="opt-title">{{'settings_form_no_alerts_needed'| i18nString}}</span> </input>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label for="intervalConfig.initPoll.yes">
+                                            <input  ng-disabled="displayMode==='view'" ng-value='true' type="radio" ng-model="intervalConfig.initPoll" name="intervalConfig.initPoll" id="intervalConfig.initPoll.yes" ><span class="opt-title">{{'settings_form_yes_alerts_needed'| i18nString}}</span> </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            <div class="row" ng-if="intervalConfig.initPoll">
+                                <div class="col-xs-12 noMargin form-group noPaddingLeft">
+                                    <div class="col-xs-12">
+                                        <label>{{'settings_form_posts_initial_poll'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="number" name="initPostCount" only-number ng-model="intervalConfig.initPostCount">
+                                        <div ng-if="$parent.settingsForm.initPostCount.$dirty">
+                                            <div ng-if="$parent.settingsForm.initPostCount.$error.min">
+                                                <div error-alert>
+                                                    {{'please_enter_valid_value'| i18nString}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="false">
+                    <div class="row">
+                        <div class="col-xs-12 form-group mb-0 noPaddingLeft">
+                            <div class="col-xs-12  radioDiv noPaddingLeft"  ng-class="{'disabled':displayMode==='view'}" >
+                                <label tooltip-placement="right" tooltip="{{'settings_form_remainders_tooltip'| i18nString}}">{{'settings_form_enable_alert_remainder'| i18nString}}</label>
+
+                                <div>
+                                    <label for="intervalConfig.reminders.enabled.no">
+                                        <input  ng-disabled="displayMode==='view'" ng-value='false' ng-checked="true" type="radio"  ng-model="intervalConfig.reminders.enabled" name="intervalConfig.reminders.enabled" id="intervalConfig.reminders.enabled.no"><span class="opt-title">{{'no'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="intervalConfig.reminders.enabled.yes">
+                                        <input  ng-disabled="displayMode==='view'" ng-value='true' type="radio" ng-model="intervalConfig.reminders.enabled" name="intervalConfig.reminders.enabled" id="intervalConfig.reminders.enabled.yes" ><span class="opt-title">{{'yes'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="well well-sm overflow-hidden " ng-if="intervalConfig.reminders.enabled">
+                            <section class="processor_form">
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field"tooltip-placement="right" tooltip="{{'settings_form_alertsetting_tooltip'| i18nString}}">{{'settings_form_remainder_frequency'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <div class="row col-xs-12 ">
+                                            <select multiple class="full-width" ng-disabled="displayMode==='view'" ui-select2="optionsConfig" ng-model="intervalConfig.reminders.options" name="options" required>
+                                                <option ng-repeat="option in options" value="{{option.value}}">{{option.title}}</option>
+                                            </select>
+                                            <div ng-if="settingsForm.options.$dirty">
+                                                <div ng-if="settingsForm.options.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_remainder_frequency_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_remainder_message_tooltip'| i18nString}}">{{'settings_form_remainder_message'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row col-xs-9 ">
+                                            <custom-editor callback="titlePart" mode="{{displayMode==='view'}}" name="titlePart" data="intervalConfig.reminders.titlePart" ></custom-editor>
+                                            <div ng-if="settingsForm.titlePart.$dirty">
+                                                <div ng-if="settingsForm.titlePart.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_remainder_message_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                                <div ng-if="settingsForm._placeholderNotThere">
+                                                    <div error-alert>
+                                                        {{'settings_form_frequency_key'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <select class="form-control" ng-hide="displayMode==='view'" ng-model="key3" ng-change="titlePart.onInsert(key3);key3=''">
+                                                <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_provide_keys_comma'| i18nString}}">{{'settings_form_identify_event_modification'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-9 row ">
+                                            <input type="text" class="form-control" ng-disabled="displayMode==='view'" required name="hash"  ng-model="intervalConfig.reminders.hash" />
+                                            <div ng-if="settingsForm.hash.$dirty">
+                                                <div ng-if="settingsForm.hash.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_keys_comma'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_calculate_offset'| i18nString}}">{{'settings_form_event_start_time'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row col-xs-9 ">
+                                            <custom-editor mode="{{displayMode==='view'}}" callback="startTime" name="startTime" data="intervalConfig.reminders.startTime" ></custom-editor>
+                                            <div ng-if="settingsForm.startTime.$dirty">
+                                                <div ng-if="settingsForm.startTime.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_event_start_time_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <select class="form-control" ng-hide="displayMode==='view'" ng-model="key3" ng-change="startTime.onInsert(key3);key3=''">
+                                                <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip=" {{'settings_form_please_select_recurrence_format'| i18nString}}">{{'settings_form_format_to_identify'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-9 row ">
+                                            <select class="form-control" ng-disabled="displayMode==='view'" name="recurrenceFormat" required ng-model="intervalConfig.reminders.recurrenceFormat">
+                                                <option value="">{{'select_Any'| i18nString}}</option>
+                                                <option value="cron">{{'settings_form_cron'| i18nString}}</option>
+                                                <option value="rrule">{{'settings_form_rrule'| i18nString}}</option>
+                                            </select>
+                                            <div ng-if="settingsForm.recurrenceFormat.$dirty">
+                                                <div ng-if="settingsForm.recurrenceFormat.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_recurrence_format_is_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field" tooltip-placement="right" tooltip="{{'settings_form_snippet_Code_string'| i18nString}}">{{'settings_form_recurrence_pattern'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row col-xs-9 ">
+                                            <custom-editor callback="recurrencePattern" mode="{{displayMode==='view'}}" name="recurrencePattern" data="intervalConfig.reminders.recurrencePattern" ></custom-editor>
+                                            <div ng-if="settingsForm.recurrencePattern.$dirty">
+                                                <div ng-if="settingsForm.recurrencePattern.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_recurrence_pattern_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <select class="form-control" ng-hide="displayMode==='view'" ng-model="key4" ng-change="recurrencePattern.onInsert(key4);key4=''">
+                                                <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                                                  </div>
+                                <div class="col-xs-12 form-group" ng-if="intervalConfig.reminders.recurrenceFormat === 'cron'">
+                                    <div class="col-xs-12 labelling">
+                                        <label class="required-field">{{'settings_form_event_end'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row col-xs-9 ">
+                                            <custom-editor callback="endAfter" mode="{{displayMode==='view'}}" name="endAfter" data="intervalConfig.reminders.endAfter" ></custom-editor>
+                                            <div ng-if="settingsForm.endAfter.$dirty">
+                                                <div ng-if="settingsForm.endAfter.$error.required">
+                                                    <div error-alert>
+                                                        {{'settings_form_event_end_req'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <select class="form-control" ng-hide="displayMode==='view'" ng-model="key6" ng-change="endAfter.onInsert(key6);key6=''">
+                                                <option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+                                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="help-block col-xs-12">
+                                        {{'settings_form_snippet_code'| i18nString}}
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="col-xs-12" ng-if="settingsForm._status==='false'">
+                        <div  class="col-xs-12 text-center">
+                            <div  error-alert>
+                                {{'req_fields'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer form-group noMargin hide">
+                <div class="footerSub">
+                 <div class="col-xs-3"><button ng-click="onCancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+                   <div  class="col-xs-6 lineheight"><div class="form-ctrl-div pull-left hide">
+                        <a href="/bt">
+                          <button class="btn btn-default">{{'exit_label'| i18nString}}</button>
+                        </a>
+                    </div>
+                    <!-- <div class="taskNameHeader textEllipsis">{{resource.name}}</div> -->
+                    <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+                    </div>
+                    <div class="col-xs-3"><div class="help-hint-link hide">
+                        <a ng-hide="((wfType == 'alert')||((wfType == 'action')))" href="" >{{'help_withpage_label'| i18nString}}</a>
+                        <a ng-if="(wfType == 'alert')" class="inline-link" target="_blank"  ng-href="{{$root.helpLinks.ALERT_SETTING}}">{{'help_withpage_label'| i18nString}}</a>
+                        <a ng-if="(wfType == 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_TASK_BASIC}}">{{'help_withpage_label'| i18nString}}</a>
+                    </div>
+                    <div class="pull-right form-ctrl-div">
+                        <!-- <button type="reset" ng-if="displayMode==='edit'" ng-click="cancel()" class="btn btn-default"> Cancel </button> -->
+                       <!--  <button type="reset" ng-if="!displayMode" ng-click="clear();" class="btn btn-default"> Clear </button> -->
+                        <button  ng-if="!displayMode" ng-click="$parent.$parent.previousStep()" class="btn btn-default"> {{'previous'| i18nString}} </button>
+                        <button type="button" ng-disabled="saveInProgress" ng-if="!displayMode || displayMode==='edit'" class="btn btn-primary hide" ng-click="setSettings(isValid(settingsForm),settingsForm, true)">
+                        <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i>{{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))? savingLabel : save }}</button>
+                        <!-- <button type="submit" ng-if="!displayMode" ng-disabled="saveInProgress" class="btn btn-primary">
+                            <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> Next
+                        </button> -->
+                        <button type="button" ng-hide="displayMode==='view'" class="btn btn-primary" ng-click="onFinishSetup(wfType)"><i ng-if="$parent.$parent.isFinshSetupLoading" class="fa fa-spinner fa-spin"></i> {{'finish_setup'| i18nString}}</button>
+                        </div>
+                        <span class="dhelpLink">
+                    <a class="" target="_blank" ng-if="(wfType == 'alert')"  ng-href="{{$root.helpLinks.ALERT_SETTING}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                    <a class="" target="_blank" ng-if="(wfType == 'action')"  ng-href="{{$root.helpLinks.ACTIONS_TASK_BASIC}}}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+             </span>
+             </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

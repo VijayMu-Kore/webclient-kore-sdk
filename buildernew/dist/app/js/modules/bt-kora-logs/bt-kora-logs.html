@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <button ng-click="closeModal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+    <h4 class="modal-title">{{modalTitle}}</h4>
+</div>
+<div class="modal-body noPadding modalPerfectScroll" perfect-scroll>
+    <div>
+        <div ng-show="koralogs === 'loading'" class="load-more-div">
+            <span class="spinner-text1">
+                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                <span class="spinner-text-content"> {{'loading'| i18nString}}</span>    
+            </span>
+        </div>
+        <div ng-show="loadingMore" class="load-more-div">
+            <span class="spinner-text1">
+                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                <span class="spinner-text-content"> {{'loading'| i18nString}}</span>    
+            </span>
+        </div>
+        <ul ng-repeat="log in koralogs track by $index" ng-if="koralogs !== 'loading'" class="list">
+            <li class="list-item ng-scope">
+                <div class="bubble-wrapper clearfix bottom-right">
+                    <div class="extra-info">
+                        <span class="time ng-binding">{{log.createdOn |date:'medium'}}</span>
+                    </div>
+                    <div class="bubble-container no-profile">
+
+                        <div class="bubble message ng-binding">
+                            {{log.reqMessage}}
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+
+            <li class="list-item ng-scope">
+                <div class="bubble-wrapper clearfix bottom-left">
+<!--                    <div class="extra-info">
+                        <span class="time ng-binding">Today at 6:52 PM</span>
+                    </div>-->
+                    <div class="bubble-container no-profile">
+
+                        <div ng-bind-html="log.resMessage" class="bubble message ng-binding">
+                            {{log.resMessage|convertmdtohtml}}
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+        
+        
+        
+    </div>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()" type="button" class="btn btn-primary">Close</button>
+</div>

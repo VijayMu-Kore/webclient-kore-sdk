@@ -1,0 +1,369 @@
+<div class="form-container generalForm">
+    <div class="pageFlow">
+        <form name="introForm" class="wf-form" ng-submit="saveIntro(introForm.$valid,introForm)" novalidate>
+            <fieldset>
+
+
+
+        <div class="panel-group requestAccordion" id="taskGenAccordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" role="button" data-parent="#taskGenAccordion" href="#taskGenSettings" role="tab" id="headingOne">
+         <div><span class="panel-title entity_count_label"> {{'generalSettings'| i18nString}}  </span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'name_connection'| i18nString}}</p>
+      </div>
+ 
+    </div>
+    <div id="taskGenSettings" class="panel-collapse collapse in"  role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body noPadding" style="padding: 0 !important;">
+                        <div class="col-xs-12 form-group noPaddingLeft">
+                    <div class="col-xs-12 labelling ">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{'task_name_casesensitive'| i18nString}}"> {{'task_name_label2'| i18nString}} </label>
+                         <div ng-show="introObj.name.length>0" class="pull-right obj-length"> {{60-introObj.name.length+charremaining}} </div>
+                    </div>
+                    <div class="col-xs-12 ">
+                         <input type="text" class="form-control" remove-one-ascii ng-disabled="(displayMode==='edit' && getEntityStatus()) || displayMode==='view'" ng-blur="checkTaskWordCount();focus=false" ng-focus="focus=true" ng-model="introObj.name" name="name" id="name" placeholder="{{typeOftask=='action' ?actionName:typeOftask=='reporttask' ? infoName:alertName}}" ng-minlength="1" maxlength="60" spellcheck="true" required ng-pattern="validateTaskName" autocomplete="off">
+                         
+
+                        <div ng-show="!focus && introForm.name.$dirty" class="col-xs-12 noPadding">
+                            <div error-alert ng-show="introForm.name.$error.required" class="text-danger"> {{typeOftask=='action' ? actionRequired:typeOftask=='reporttask' ? infoRequired:alertRequired}} </div>
+                            <div error-alert ng-show="introForm.name.$error.pattern && !botNameMatched" class="text-danger"> {{typeOftask=='action' ? actionAllows:typeOftask=='reporttask' ? infoAllows:alertAllows}}</div>
+                            <div error-alert ng-show="botNameMatched" class="text-danger"> {{typeOftask=='action' ?actionNObot:typeOftask=='reporttask' ? infoNObot:alertNObot}}</div>
+
+
+
+                        </div>
+                    </div>
+                     <div class="col-xs-1  infodiv errorAlertIcon">
+                        <i ng-show="!focus && introForm.name.$dirty && (introForm.name.$valid && !invalidWordCount) " class="fa fa-check-circle"></i>
+                        <i ng-show="!focus && introForm.name.$dirty && (!introForm.name.$valid || invalidWordCount)" tooltip-placement="left"  tooltip-html-unsafe="{{'name_casesensitive'| i18nString}}<br><br>{{'special_character'| i18nString}}" class="fa fa-exclamation-circle"></i></div>
+                </div>
+                <!-- Display Name Block -->
+                <div class="col-xs-12 form-group noPaddingLeft">
+                    <div class="col-xs-12 labelling ">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{'display_aim'| i18nString}}"> {{'display_Name'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 ">
+                        <textarea rows="1" ng-disabled="displayMode==='view'" ng-model="introObj.shortdescription" placeholder="{{'display_Name'| i18nString}}" class="form-control" name="description" spellcheck="true" required ng-minlength="1" maxlength="100"></textarea>
+                        <div ng-show="introForm.description.$dirty">
+                            <div error-alert ng-show="introForm.description.$error.required" class="text-danger">  {{typeOftask=='action' ? displayactionName:typeOftask=='reporttask' ? displayinfoName:displayalertName}}  </div>
+                            <div ng-show="introObj.shortdescription.length>0" class="pull-right">{{100-introObj.shortdescription.length+charremaining}}</div>
+                        </div>
+                    </div>
+                </div>
+        <div class="col-xs-12 form-group noPaddingLeft" ng-if="wfType !== 'flowTask'">
+                    <div class="col-xs-12 labelling ">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{typeOftask=='action' ? connActionName:typeOftask=='reporttask' ? connInfoName:connAlertName}}.">{{'connection_type'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 ">
+                        <select ng-model="introObj.type" ng-disabled="(displayMode==='edit' || alertid || wfType == 'action') || displayMode==='view'" class="btnDropdown form-control" name="alertType" ng-options="alerttypes.name for alerttypes in alerttypes" ng-change="setAlertspathValue()" required>
+                            <option value=""> {{'select_any'| i18nString}}</option>
+                        </select>
+                        <div  ng-show="introForm.alertType.$dirty">
+                            <div error-alert ng-show="introForm.alertType.$error.required" class="text-danger">
+                                {{'select_conn'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="introObj.type.value === 'webservice'">
+                    <div class="col-xs-12 labelling ">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{typeOftask=='action' ? subtypeActionName:typeOftask=='reporttask' ? subtypeInfoName:subtypeAlertName}}. ">{{'connection_mode'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 ">
+                        <select ng-model="introObj.subtype" ng-disabled="(displayMode==='edit' || alertid) || displayMode==='view'" class="btnDropdown form-control" name="alertSubType" required>
+                            <option value=""> {{'select_any'| i18nString}} </option>
+                            <option ng-repeat="subtype in subtypes" value="{{subtype.value}}">{{subtype.name}}</option>
+                        </select>
+
+                        <div  ng-show="introForm.alertSubType.$dirty">
+                            <div error-alert ng-show="introForm.alertSubType.$error.required" class="text-danger">
+                                {{'conn_subtype'| i18nString}} 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="wfType !== 'flowTask'" ng-class="{'pointer-none':(displayMode==='view' || resource.state=='published' || resource.state=='suspended')}">
+                    <div class="manageContextStatus col-xs-12">
+                            <div class="manageContextConditions">
+                                <label>{{'input_condition'| i18nString}}</label>
+                                <p class="pre-conditionsInfo">
+                                    {{'pre_condition_info'| i18nString}} 
+                                </p>
+                                <tags-input add-on-comma="false" class="tagOrCondition"  tag-class="tagsWithOR" replace-spaces-with-dashes="false" min-length="0"
+                                    max-length="128" use-strings="true" placeholder="{{'type_enter'| i18nString}}" 
+                                    ng-model="manageContext.preConditions"></tags-input>
+                            </div>
+                            <div class="manageContextConditions marginTop20 ">
+                                <label>{{'context_output_name'| i18nString}}</label>
+                                <p class="pre-conditionsInfo">
+                                    {{'def_context'| i18nString}} 
+                                </p>
+                                <tags-input add-on-comma="false" class="" replace-spaces-with-dashes="false" min-length="0"
+                                    max-length="128" use-strings="true" placeholder="{{'type_enter'| i18nString}}" 
+                                     ng-model="manageContext.contextTags"></tags-input>
+                            </div>
+                    </div>
+            </div>
+                <!-- Long Description Block -->
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="wfType !== 'flowTask' && false">
+                    <div class="col-xs-12 labelling ">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{typeOftask=='action' ? actionContext:typeOftask=='reporttask' ? infoContext:alertContext}} ">{{'long_desc'| i18nString}}  </label>
+                    </div>
+                    <div class="col-xs-12 ">
+                        <textarea rows="3" ng-model="introObj.longdescription" ng-disabled="displayMode==='view'" placeholder="{{typeOftask=='action' ? actionDesc:typeOftask=='reporttask' ? infoDesc:alertDesc}}" class="form-control" name="ldescription" required ng-minlength="1" maxlength="2048" spellcheck="true"></textarea>
+                        <div ng-show="introForm.ldescription.$dirty">
+                            <div error-alert ng-show="introForm.ldescription.$error.required" class="text-danger">{{wfType.toLowerCase()=='action'?actionLong:wfType.toLowerCase()==='flowtask'?dialogLong:alertLong}} </div>
+                            <div ng-show="introObj.longdescription.length>0" class="pull-right"> {{2048-introObj.longdescription.length+charremaining}} </div>
+                        </div>
+                    </div>
+                </div>
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button type="button" ng-click="saveIntro(introForm.$valid,introForm)"
+                      class="btn btn-sm btn-primary text-info"> <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{(saveInProgress)?savingLabel :save}} </button>
+                    </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#taskGenAccordion" href="#taskAdvSettings" role="tab" id="headingOne">
+         <div><span class="panel-title entity_count_label">  
+            {{'advanced_settings'| i18nString}} </span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'advanced_tasks'| i18nString}}</p>
+      </div>
+ 
+    </div>
+    <div id="taskAdvSettings" class="panel-collapse collapse"   role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body noPadding" style="padding: 0 !important;">
+        <!-- Advanced Setting Block -->
+                <!-- <div class="col-xs-12 borderTopBottom advancedoptdivMain" id="advancedoptdivMain" ng-if="wfType !== 'flowTask'" ng-click="scrollToDiv('.scroll-div', '.advancedoptdivMain')"><span class="col-xs-12 " ng-click="showAdvancedOptions()">Advanced Settings<i class="fa  fa-chevron-right  pull-right fontSize13 iconArrow"></i>
+                 <p>Additional advanced settings for task.</p></span> -->
+               
+                 <div ng-show="true" ng-click="$event.stopPropagation()" class="showadvancedoptions">
+                <div ng-show="false"class="col-xs-12 form-group noPaddingLeft">
+                    <div class="col-xs-12 labelling ">
+                        <label tooltip-placement="right" tooltip="{{'add_ignore_words'| i18nString}}"> {{'ignore_words_label'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 ">
+                        <add-tags tags="introObj.ignoreWords" disabled="displayMode==='view'"></add-tags>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="(wfType == 'alert')">
+                    <div class="col-xs-12 labelling ">
+                        <label tooltip-placement="right" tooltip="{{'message_posted'| i18nString}}
+                          &quot;{{'monitor'| i18nString:({dyn:introObj.name})}}&quot;"> {{'task_install'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 ">
+                        <textarea rows="3" ng-model="introObj.userAlertMsg" ng-disabled="displayMode==='view'" class="form-control" name="userAlertMsg" ng-minlength="1" maxlength="2048"></textarea>
+
+                        <div ng-show="introForm.userAlertMsg.$dirty">
+                            <div error-alert ng-show="introForm.userAlertMsg.$error.required" class="text-danger">{{'confirmation_welcome'| i18nString}} </div>
+                            <div ng-show="introObj.userAlertMsg.length>0" class="pull-right">{{2048-introObj.userAlertMsg.length+charremaining}}</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+
+                <div class="col-xs-12 form-group noPaddingLeft">
+                    <div class="col-xs-12 labelling ">
+                        <label class="wrap" tooltip-placement="right" tooltip="{{'bot_nlp_meta_user_interacting_withbot_nl_capability_tooltip'| i18nString}}">{{'turn_confirmation'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv " ng-class="{'disabled':displayMode==='view'}" ng-init="introObj.offKoraConfirmation=introObj.offKoraConfirmation||false">
+                        <div>
+                            <label for="intro.offKoraConfirmation.no">
+                                <input ng-disabled="displayMode==='view'" ng-value='false' ng-checked="true" type="radio"  ng-model="introObj.offKoraConfirmation" name="offKoraConfirmation" id="intro.offKoraConfirmation.no" ><span class="opt-title">{{'bot_nlp_meta_no_let_bot_confirm_radio'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="intro.offKoraConfirmation.yes">
+                                <input ng-disabled="displayMode==='view'" ng-value='true'  type="radio"   ng-model="introObj.offKoraConfirmation" name="offKoraConfirmation" id="intro.offKoraConfirmation.yes"><span class="opt-title">{{'bot_nlp_meta_yes_skip_confirm_radio'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="helphint-border col-xs-12 marginB20T0">
+                            <div class="col-xs-1 bulbicon">
+                                <span class="icon"><i class="btx-bulb" ></i></span>
+                            </div>
+                            <div class="col-xs-11 noPadding">
+                                <span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb504)"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="(wfType == 'action')">
+                    <div class="col-xs-12 labelling ">
+                        <label class="wrap" tooltip-placement="right" tooltip="{{ isReportTask ?infoCheck :actioncheck}} ">{{ isReportTask ?mappedInfo :mappedAction}}</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv " ng-class="{'disabled':displayMode==='view'}" ng-init="introObj.mappedOnly=introObj.mappedOnly||false" >
+                        <div>
+                            <label for="intro.mappedOnly.no">
+                                <input  ng-disabled="displayMode==='view'" ng-value='false' ng-checked="true" type="radio"  ng-model="introObj.mappedOnly" name="mappedOnly" id="intro.mappedOnly.no"><span class="opt-title">{{'no_task_performed'| i18nString}}.</span> </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="intro.mappedOnly.yes">
+                                <input ng-disabled="displayMode==='view'" ng-value='true' type="radio" ng-model="introObj.mappedOnly" name="mappedOnly" id="intro.mappedOnly.yes" ><span class="opt-title">{{'another_alert'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="introObj.type.value == 'webhook'">
+                    <div class="col-xs-12 labelling ">
+                        <label class="wrap" tooltip-placement="right" tooltip="{{typeOftask=='action' ? actionHelp:typeOftask=='reporttask' ? infoHelp:alertHelp}} ">{{'help_link'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 " ng-if="displayMode!=='view'">
+                        <input type="text" class="form-control" ng-model="introObj.helpLink" name="helplink" placeholder="https://help.com">
+                        <div ng-show="introForm.helplink.$dirty">
+                            <div error-alert ng-show="introForm.helplink.$error.url" class="text-danger">{{'please_enter_Url'| i18nString}}  </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 " ng-if="displayMode==='view'">
+                        <label>{{introObj.helpLink}}</label>
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 form-group noPaddingLeft">
+                    <div class="col-xs-12 labelling ">
+                        <label class="wrap" tooltip-placement="right" tooltip="  {{typeOftask=='action' ? actionAdd:typeOftask=='reporttask' ? infoAdd:alertAdd}}">{{'search_keywords'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 ">
+                        <input type="text" class="form-control" ng-disabled="displayMode==='view'" input-note note-description="searchKeyWordsDescription" ng-model="introObj.keywords" name="keywords" id="keywords" placeholder="{{'socaial_media'| i18nString}}">
+
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 form-group noPaddingLeft">
+                    <div class="col-xs-12 ">
+                        <label  tooltip-placement="right" tooltip="{{'bot_store_demos'| i18nString}}">{{'task_demo_link'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 " ng-show="displayMode === 'view'">
+                        {{introObj.demoYoutubeLink}}
+                    </div>
+                    <div class="col-xs-12 " ng-show="displayMode !== 'view'">
+                        <input  class="form-control" type="text" name="demoYoutubeLink" input-note note-description="demolinkDescription" ng-model="introObj.demoYoutubeLink" ng-pattern="validateYoutubeURL"  placeholder=" {{'task_demo_videos'| i18nString}}" id ="keywords">
+                        <div ng-show="introForm.demoYoutubeLink.$dirty">
+                            <div error-alert ng-show="introForm.demoYoutubeLink.$error.pattern" class="text-danger form-error-text">{{'please_enter_valid_youtube_url'| i18nString}} </div>
+                        </div>                   
+                    </div>
+                </div>
+
+                <div class="col-xs-12 form-group noPaddingLeft" ng-if="introObj.subtype == 'soap'">
+                    <div class="col-xs-12 labelling ">
+                        <label class="wrap" tooltip-placement="right" tooltip="{{'authorization_req'| i18nString}}">
+                            {{'authorization_req'| i18nString}} 
+                        </label>
+                    </div>
+                    <div class="col-xs-12 radioDiv " ng-init="introObj.isAuthRequiredForWsdl=introObj.isAuthRequiredForWsdl||false" >
+                        <div>
+                            <label for="intro.isAuthRequiredForWsdl.no">
+                                <input ng-value='false' ng-checked="true" type="radio" ng-disabled="displayMode == 'view'"  ng-model="introObj.isAuthRequiredForWsdl" name="isAuthRequiredForWsdl" id="intro.isAuthRequiredForWsdl.no">
+                                    <span class="opt-title">{{'wsdl_file_auth'| i18nString}}</span>
+                                </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="intro.isAuthRequiredForWsdl.yes">
+                                <input ng-value='true' type="radio" ng-disabled="displayMode =='view'" ng-model="introObj.isAuthRequiredForWsdl" name="isAuthRequiredForWsdl" id="intro.isAuthRequiredForWsdl.yes" >
+                                    <span class="opt-title">{{'wsdl_file_auth_yes'| i18nString}}</span>
+                                </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                     
+                <div class="col-xs-12 form-group" ng-if="wfType === 'action'">
+                    <div class="col-xs-12 labelling ">
+                        <label class="wrap" tooltip-placement="right" tooltip="">{{'get_optional'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv " ng-class="{'disabled':displayMode==='view'}" ng-init="introObj.askOneOptionalField =introObj.askOneOptionalField||false">
+                        <div>
+                            <label for="intro.askOneOptionalField.no">
+                                <input ng-disabled="displayMode==='view'" ng-value='false'  type="radio"  ng-model="introObj.askOneOptionalField" name="askOneOptionalField" id="intro.askOneOptionalField.no" ><span class="opt-title">{{'add_delete'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="intro.askOneOptionalField.yes">
+                                <input ng-disabled="displayMode==='view'" ng-value='true'  type="radio"   ng-model="introObj.askOneOptionalField" name="askOneOptionalField" id="intro.askOneOptionalField.yes"><span class="opt-title">{{'optional_params'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+             
+                     <!--<error-form error-for="{{wfType}}" view="displayMode ==='view'" error="introObj.errorCodes" on-save="errorMsgSave(error,cb)" class="introform" ng-if="isThisSectionRequired('errorMsgs')"></error-form>-->
+               
+
+            </div>
+                            
+  
+      </div>
+      <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button  type="button" ng-click="saveIntro(introForm.$valid,introForm)"
+                      class="btn btn-sm btn-primary text-info"> <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{(saveInProgress)?savingLabel:save}} </button>
+                    </div> 
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+                
+               
+
+                <div class="col-xs-12 footer modal-header hide">
+                <div class="footerSub">
+                    <div class="col-xs-3"><button ng-click="onCancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+                    <div  class="col-xs-6 lineheight">
+                    <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+                    </div>
+                    <div class="col-xs-3">
+                    <div class="pull-right form-ctrl-div">
+
+                        
+                                                <button type="button" ng-if="displayMode==='edit' && !getEntityStatus() && !isSuspendedTask()" class="btn btn-primary" ng-click="onFinishSetup(wfType)"><i ng-if="$parent.$parent.isFinshSetupLoading" class="fa fa-spinner fa-spin"></i> {{'finish_setup'| i18nString}}</button>
+                                               
+                    </div>
+                    <span class="dhelpLink">
+                    <a class="" target="_blank"  ng-if="(wfType == 'alert')" ng-href="{{$root.helpLinks.ALERTS_TASK_BASIC}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                    <a class="" target="_blank" ng-if="(wfType == 'action') && !isReportTask" ng-href="{{$root.helpLinks.ACTIONS_TASK_BASIC}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                     <a class="" target="_blank" ng-if="(wfType == 'action') && isReportTask" ng-href="{{$root.helpLinks.INFORMATION_TASK_BASIC}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+             </span>
+             </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

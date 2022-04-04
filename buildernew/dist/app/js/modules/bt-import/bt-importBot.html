@@ -1,0 +1,710 @@
+<div class="btImport" ng-class="{'read-only-wrapper':displayMode === 'VIEW'}">
+    <!-- <div ng-show="importFrom === 'newBotImport'" class="col-xs-12 importIconDiv" ng-class="{'noPadding':(importFrom === 'newBotImport'),'noPadding marginT20':(importFrom === 'newBotImport' && enterPrise),'addMargin':enterPrise}">
+        <label class="importLabel" tooltip-placement="right" tooltip="{{'png_only_recommended'| i18nString}}">{{'bot_icon'| i18nString}}</label>
+        <div class="noPadding">
+            <div class="input-group">
+                <div class="imgUpload"> <img ng-src="{{defaultImg}}"/> <input type="file" file-model="newStreamData.iconFile" id="iconFile" name="iconFile" required ng-disabled="iconUploading || newStreamData.icon.fileId " on-file-change="loadStreamIcon"/></div>
+            </div>
+            <div ng-show="imageExtensionError" class="text-danger form-error-text"> {{'png_file'| i18nString}} </div>
+        </div>
+    </div> -->
+    <div class="col-xs-12 noPadding marginTop10" >
+        <label class="importLabel required-field">{{(importType==='PA')?"Definition file":('Bot_Definition_File'| i18nString)}}</label>
+        <div class="noPadding">
+            <div class="input-group" ng-class="{'screenFreeze':filesObj.loadingBotDefinition}">
+                <input name="importFile" type="text" class="form-control" placeholder="{{(importType==='PA')?'Choose app definition file':('import_file_placeholder_definition'| i18nString)}}" readonly ng-model="importedBotName" required>
+                <div class="input-group-addon btn-file"> {{(filesObj.loadingBotDefinition)?'loading_bot_befinition':'choose_file' | i18nString}} 
+                    <chunk-file-upload chunk-file-model="importBot" element-id="importBotDefinition" allowed-file-types="allowedFileTypes" element-name="'importFile'" required="true" upload-status="uploadBotDefinitionStatus"></chunk-file-upload>
+                    <!-- <input type="file" file-model="importBot" id="importFile" name="importFile" required on-file-change="readBotFile"/> -->
+                </div>
+            </div>
+            <div ng-if="fileExtensionError" ng-show="fileExtensionError" class="text-danger form-error-text"> {{'only_json_file'| i18nString}} </div>
+        </div>
+    </div>
+    <div class="col-xs-12 noPadding importDiv marginTop10" >
+        <label class="importLabel required-field">{{(importType==='PA')?"Config file":('Bot_Config_File'| i18nString)}}</label>
+        <div class="noPadding">
+            <div class="input-group" ng-class="{'screenFreeze':filesObj.loadingBotConfig}">
+                <input name="importFile" type="text" class="form-control" placeholder="{{(importType==='PA')?'Choose app config file':('import_file_placeholder_config'| i18nString)}}" readonly ng-model="importedBotVariableName" required>
+                <div class="input-group-addon btn-file"> {{(filesObj.loadingBotConfig)?'loading_bot_befinition':'choose_file'| i18nString}}
+                    <chunk-file-upload  chunk-file-model="importVariables" element-id="importConfig" allowed-file-types="allowedFileTypes" element-name="'importVariableFile'" required="true" upload-status="uploadVariablesStatus"></chunk-file-upload>
+                    <!-- <input type="file" file-model="importVariables" id="importVariableFile" name="importVariableFile" required on-file-change="readBotVariablesFile"/> -->
+                </div>
+            </div>
+            <div  ng-if="fileExtensionVariablesError" ng-show="fileExtensionVariablesError" class="text-danger form-error-text"> {{'only_json_file'| i18nString}} </div>
+        </div>
+    </div>
+    <div class="col-xs-12 noPadding importDiv marginTop10" ng-hide="importType==='PA'" >
+        <label class="importLabel">{{'Custom_Script_File'| i18nString}}</label>
+        <div class="noPadding">
+            <div class="input-group">
+                <input type="text" id="botFuntionsFileImport" name="botFuctionFile" class="form-control" placeholder="{{'Import_file_placeholder_custom'| i18nString}}" required readonly ng-model="botFunctions.botFuctionFile.fileName">
+                <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}} <i class="fa fa-spinner fa-spin" ng-show="fileuploading"></i> 
+                    <input type="file" file-model="botFunctions.botFuctionFile" id="botFuctionFile" name="botFuctionFile" required ng-click="$event.value === null" ng-modal="fileValue" on-file-change="uploadFile"/>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div ng-show="importFrom && importFrom !== 'newBotImport'" class="helphint-border col-xs-12 marginTop15 full_bot_import_protip width735">
+        <div class="col-xs-1 bulbicon">
+            <span><i class="btx-bulb"></i></span>
+        </div>
+        <div class="col-xs-11 textDiv"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb551)"></span></div>
+    </div>
+    <!-- <div ng-show="importFrom !== 'newBotImport'" class="col-xs-12 panel-footer importBtn hide">
+        <button class="btn btnSolidBlue" ng-disabled="!callback.isFormValid()" ng-click="showBackup()"> {{'import'| i18nString}} </button>
+    </div> -->
+    <div class="col-xs-12 botExportModal noPadding marginTop15" ng-show="(importFrom !== 'newBotImport') && partialImportAllowed">
+    <label class="importLabel marginTop15">{{'Import_Options'| i18nString}}</label>
+    <div class="col-xs-12 noPadding radioDiv marginT12">
+    <div class="radioInnerDiv marginTop10">
+        <label for="fullimport">
+            <input value="fullImport" ng-model="bot.importType" type="radio" name="fullimport" id="fullimport" />
+            <span class="opt-title">{{'fullImport'| i18nString}}
+                                 <div class="description">{{'fullImport_desc'| i18nString}}</div>
+                            </span>
+        </label>
+    </div>
+    <div class="radioInnerDiv">
+        <label for="latest">
+            <input value="incrementalImport" ng-model="bot.importType" type="radio" name="incrementalimport" id="latest" />
+            <span class="opt-title">{{'incrementalImport'| i18nString}}
+            <div class="description">{{'incrementalImport_desc'| i18nString}}</div> 
+            </span>
+        </label>
+        <div class="component-import" ng-show="bot.importType === 'incrementalImport'">
+            <span class="desc-title">{{'bt_import_select_component'| i18nString}}</span>
+            <div class="import-task clear-fix"   ng-init="parentIndex= $index" ng-repeat="category in categories track by $index">
+                <div class="checkbox checkDiv checkbox-primary styledCSS">
+                <input id="component{{parentIndex}}" type="checkbox" ng-model="category.selected" ng-click="clickerTask(category,$event,$index)">
+                <label for="component{{parentIndex}}" class="taskLabel">{{category.value}}</label>
+                </div>
+                <div class="import-task-options col-xs-12" ng-class="{'if-no-data': category.key === 'Custom Dashboards'}">
+                    <div class="import-task-options-inner-data">
+                        <span class="checkbox checkbox-primary styledCSS import-width display-inline-block" ng-repeat = "tasktype in category.list track by $index">
+                            <input type="checkbox" id="sub-component{{parentIndex}}{{$index}}" ng-model="tasktype.selected" name="sub-component" ng-click="clickerSubTask(category,$event,parentIndex)">
+                             <label for="sub-component{{parentIndex}}{{$index}}" class="taskLabel">{{tasktype.task}}</label>
+                             <span class = "tasksSelection" ng-click = "openUtteranceSlider()" ng-if="tasktype.task === 'Utterances'">({{utterances.value}})</span>
+                             <span class = "tasksSelection" ng-click = "openTaskPropertiesSlider()" ng-if="tasktype.value === 'botTask'">({{'task_properties' |  i18nString}})</span>
+                             <span class = "tasksSelection" ng-click = "openPatternSlider()" ng-if="tasktype.task === 'Patterns'">({{patterns.value}})</span>
+                        </span>
+                    </div>                   
+                </div>
+                 
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+    <bot-modal-slider id="openUtteranceSlider">
+        <div class="modalSliderContainer selectAppModal width800">
+            <div class="modalHeader">
+                <span aria-hidden="true"></span>
+                    <h4 class="modal-title"><i ng-click="utteranceSliderClose()" class="btx-close"></i>{{'bot_import'| i18nString}}</h4>
+                </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">                              
+                <div class="group-radiobutton">
+                    <div class="heading-title mb-10">{{'bt_import_utterances_options'| i18nString}}</div>
+                    <div class="kr-sg-radiobutton d-block p-0">
+                        <input value='append' ng-model="utterances.option" name="append" id="append" class="radio-custom" type="radio">
+                        <label for="append" class="radio-custom-label">{{'append'| i18nString}}</label>
+                        <div class="radioDescription">{{'bt_import_utterances_present'| i18nString}}</div>
+                    </div> 
+                    <div class="kr-sg-radiobutton d-block p-0">
+                        <input value='replace' ng-model="utterances.option" name="replace" id="replace" class="radio-custom" type="radio">
+                        <label for="replace" class="radio-custom-label">{{'replace'| i18nString}}</label>
+                        <ul class="radioDescriptionUl p-0">{{'bt_import_utterances_replace'| i18nString}} 
+                            <li class="radioDescriptionLi">{{'bt_import_if_both_task_and_utterances'| i18nString}}</li>
+                            <li class="radioDescriptionLi">{{'bt_import_if_utterance_option_selected'| i18nString}}</li>
+                        </ul>
+                    </div> 
+                </div>
+
+            </div>
+            <div class="modalFooter">
+                <button type="button" class="btn btn-default pull-left" ng-click='saveUtteranceOptions(utterances)'>{{'save'| i18nString}}</button>
+                <button type="button" class="btn closeCancel" ng-click="utteranceSliderClose()">Cancel</button>
+            </div>
+        </div>
+    </bot-modal-slider>
+     <bot-modal-slider id="openPatternSlider">
+        <div class="modalSliderContainer selectAppModal width800">
+            <div class="modalHeader">
+                <span aria-hidden="true"></span>
+                    <h4 class="modal-title"><i ng-click="closeSliderPattern()" class="btx-close"></i>{{'bot_import'| i18nString}}</h4>
+                </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">                              
+                <div class="group-radiobutton">
+                    <div class="heading-title mb-10">{{'bt_import_patterns_options'| i18nString}}</div>
+                    <div class="kr-sg-radiobutton d-block p-0">
+                        <input value='append' ng-model="patterns.option" name="append" id="append-1" class="radio-custom" type="radio">
+                        <label for="append-1" class="radio-custom-label">{{'append'| i18nString}}</label>
+                        <div class="radioDescription">{{'bt_import_patterns_present'| i18nString}}</div>
+                    </div> 
+                    <div class="kr-sg-radiobutton d-block p-0">
+                        <input value='replace' ng-model="patterns.option" name="replace" id="replace-1" class="radio-custom" type="radio">
+                        <label for="replace-1" class="radio-custom-label">{{'replace'| i18nString}}</label>
+                        <ul class="radioDescriptionUl p-0">{{'bt_import_patterns_replace'| i18nString}} 
+                            <li class="radioDescriptionLi">{{'bt_import_if_both_task_and_patterns'| i18nString}}</li>
+                            <li class="radioDescriptionLi">{{'bt_import_if_pattern_option_selected'| i18nString}}</li>
+                        </ul>
+                    </div> 
+                </div>
+
+            </div>
+            <div class="modalFooter">
+                <button type="button" class="btn btn-default pull-left" ng-click='savePatternOptions(Patterns)'>{{'save'| i18nString}}</button>
+                <button type="button" class="btn closeCancel" ng-click="closeSliderPattern()">Cancel</button>
+            </div>
+        </div>
+    </bot-modal-slider>
+     <!-- <div ng-show="importFrom !== 'newBotImport'" class="col-xs-12 noPadding marginTop15 importBtn">
+        <button class="btn btnSolidBlue" ng-disabled="!callback.isFormValid()" ng-click="showBackup()"> {{'import'| i18nString}} </button>
+    </div> -->
+</div>
+<div class="modal fade import-bot-modal-publish import-full-modal-bot" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" ng-show="importing.length">{{'import_bot'| i18nString}}</h4>
+                 <h4 class="modal-title" ng-show="publishStatus.length">{{'publish_status'| i18nString}}</h4>
+            </div>
+            <div class="modal-body psScrollZindex" dynamic-height dynaoffset="-200" height-property="height" perfect-scroll>
+                <ul class="kr-sg-progress-indicator">
+                    <li ng-class="{'in-progress':importing === 'backupNote','active':(importing === 'inprogress' || importing === 'failed' || importing === 'finished' || publishStatus.length)}">
+                        <span class="active-text-img">1</span>
+                        <a href="#"><span class="left-0">{{'start' | i18nString}}</span></a>
+                    </li>
+                    <li ng-class="{'in-progress':(importing === 'inprogress' || importing === 'failed'),'active':(importing === 'finished' || publishStatus.length)}">
+                        <span class="active-text-img">2</span>
+                        <a href="#"><span>{{'import_bot' | i18nString }}</span></a>
+                    </li>
+                    <li ng-class="{'in-progress':publishStatus.length && publishStatus !== 'success','active':publishStatus === 'success'}">
+                        <span class="active-text-img">3</span>
+                        <a href="#"><span>{{'publish_bot' | i18nString}}</span></a>
+                    </li>                                
+                </ul>
+                <div class="decspriton-readmore" ng-show="importing === 'backupNote'">
+                    <div class="desc">{{'import_configuration' | i18nString }}</div>
+                    <div class="readmore-link">{{'backup_desc' | i18nString}} 
+                        <div class="accordion">
+                            <div class="card-header" id="headingOne">
+                                <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" ng-click="readMore($event)">{{'read_more_label' | i18nString}}
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                              <div class="card-body">
+                                <ul>
+                                 <li>{{'bt_import_backupnote_li1'| i18nString}}</li>
+                                <li>{{'bt_import_backupnote_li2'| i18nString}}</li>
+                                <li>{{'bt_import_backupnote_li3'| i18nString}}</li>
+                                <li>{{'bt_import_backupnote_li4'| i18nString}}</li>
+                                <li>{{'bt_import_backupnote_li5'| i18nString}}</li>
+                            </ul>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+                     <a href = "{{hrefURL}}" id ="backupButton" target = "_self" download></a>
+                     <button class="kr-sg-button-secondary btn_md mb-mt-15" ng-click="startExport()">{{'backup_label'| i18nString}}</button>
+                    <div class="auto-publish-sec" >
+                        <div class="label_text">{{'auto_publish_import'| i18nString}}</div>
+                        <div class="desc-info-text">{{'enable_publish' | i18nString}}</div>
+                        <label class="kr-sg-toggle with-label">                                       
+                            <input type="checkbox" ng-model="publish.autoPublish" ng-click="toggleCommentValue(publish)" ng-disabled="disableAutoPublish" checked>
+                            <div class="slider"> <span class="no">{{'no'| i18nString}}</span><span class="yes">{{'yes'| i18nString}}</span></div>
+                        </label>                   
+                    </div>
+                    <div class="kr-sg-multi-line-notification marginTop10" ng-show="!publish.autoPublish && (!enabledChannels.length || publishPermission === 'NO')">
+                       <div class="bulb-icon"><img ng-src="{{bulbNavyBlue}}"></div>
+                        <div class="tost-text" ng-show="!enabledChannels.length && publishPermission === 'YES'">{{'auto_publish_channel' | i18nString}}</div>   
+                         <div class="tost-text" ng-show="publishPermission === 'NO' && enabledChannels.length">{{'auto_publish_info' | i18nString}}</div>
+                         <div class="tost-text" ng-show="publishPermission === 'NO' && !enabledChannels.length">{{'auto_publish_info' | i18nString}}</div>                                  
+                     </div> 
+                    <div class="coments-sec" ng-show="publish.autoPublish && publishPermission !== 'NO'">
+                        <div class="kr-sg-input-text-area">
+                            <div class="label-text">{{'bt_resouce_versions_comments' | i18nString}}</div>
+                            <div class="desc-info-text">{{'add_comments_publish' | i18nString}}</div>
+                            <textarea placeholder="Enter comments" id="pubComments" ng-model="publish.comments" auto-grow-textarea class="input-text"></textarea>                                
+                        </div>
+                    </div> 
+                </div>
+                 <div class="import-bot-status" ng-show="importing === 'inprogress'"> 
+                    <div class="img-block">
+                        <img ng-src="{{importingSvg}}">           
+                    </div> 
+                    <div class="importing-text">{{'importing' | i18nString}}</div>
+                    <div class="import-progress-bar">
+                                <div class="inside-progress-bar" ng-style="{width : (totalProgress + '%') }"></div>
+
+                    </div>
+                     <div class="tabl-status" ng-if="$index < statusLogsLimit" ng-repeat="statuslog in statusLogs track by $index">
+                        <div class="list-status col-xs-12">
+                            <div class="title capitalizeText col-xs-4" title="{{statuslog.taskName}}">{{statuslog.taskName}}</div>
+                            <div class="title col-xs-4" title="{{statuslog.taskType}}">{{statuslog.taskType}}</div>
+                            <div class="title col-xs-4 pr-0" ng-show="statuslog.status === 'success'">
+                                <img ng-src="{{checkDone}}">
+                            </div>
+                            <div class="title col-xs-4 pr-0" tooltip="{{statuslog.errorLog}}" ng-show="statuslog.status !== 'success'">
+                                <img ng-src="{{warning}}">
+                            </div>
+                        </div>
+                    </div>      
+                     
+                 </div> 
+                 <div class="import-bot-status" ng-show="importing === 'failed'">
+                     <div class="img-block">
+                         <img ng-src="{{importErrorSvg}}">
+                     </div>
+                     <div class="importing-text bot-import-failed">{{'bot_import_has_failed' | i18nString}}</div>
+                       <div ng-if="showFailedErrors" class="tabl-status" ng-repeat="error in importErrors">
+                            <div class="list-status col-xs-12">
+                                    <div class="title col-xs-11 pr-0 importErrorMsg">{{error.msg}}</div>
+                                    <div class="col-xs-1 p-0 text-right"><img ng-src="{{warningTriangle}}"></div>
+                                </div>   
+                        </div>
+                     <div class="tabl-status" ng-if="!showFailedErrors" ng-if="$index < statusLogsLimit" ng-repeat="statuslog in statusLogs track by $index">
+                        <div class="list-status col-xs-12">
+                            <div class="title capitalizeText col-xs-4" title="{{statuslog.taskName}}">{{statuslog.taskName}}</div>
+                            <div class="title col-xs-4" title="{{statuslog.taskType}}">{{statuslog.taskType}}</div>
+                           <div class="title col-xs-4 pr-0" ng-show="statuslog.status === 'success'">
+                                <img ng-src="{{checkDone}}">
+                            </div>
+                            <div class="title col-xs-4 pr-0 tooltip-hover" tooltip-placement="top" tooltip="{{statuslog.errorLog}}"  ng-show="statuslog.status !== 'success'">
+                                <img ng-src="{{warning}}">
+                            </div>
+                        </div>
+                    </div>   
+                     <div class="import-log-download font12" ng-if="statusLogs && (statusLogs.length > statusLogsLimit)" ng-click="showMoreStatusResults(statusLogs)">{{'showMore'| i18nString}}</div>
+                     <div class="import-log-download" ng-click="downloadLog()">{{'download_log_import_file'| i18nString}}</div>  
+                 </div>
+                  <div class="import-bot-status" ng-show="importing === 'finished'">
+                     <div class="img-block" ng-show="!_failedStatus.length">
+                        <img ng-src="{{importSuccessGreen}}">
+                    </div>
+                    <div class="img-block" ng-show="_failedStatus.length">
+                        <img ng-src="{{importWarningIcon}}">
+                    </div>
+                     <div class="importing-text" ng-show="_failedStatus.length">{{'completed_warning' | i18nString}}</div> 
+                     <div class="importing-text" ng-show="!_failedStatus.length">{{'completed' | i18nString}}</div> 
+                     <div class="kr-sg-multi-line-notification" ng-show="publish.autoPublish">
+                       <div class="bulb-icon"><img ng-src="{{bulbNavyBlue}}"></div>
+                        <div class="tost-text" ng-show="!_failedStatus.length">{{'bot_import_success_publish' | i18nString}}</div>  
+                        <div class="tost-text" ng-show="_failedStatus.length">{{'publish_not_initiate' | i18nString}}</div>                                   
+                     </div> 
+                      <div class="tabl-status" ng-if="$index < statusLogsLimit" ng-repeat="statuslog in statusLogs track by $index">
+                        <div class="list-status col-xs-12">
+                            <div class="title col-xs-4 capitalizeText" title="{{statuslog.taskName}}">{{statuslog.taskName}}</div>
+                            <div class="title col-xs-4" title="{{statuslog.taskType}}">{{statuslog.taskType}}</div>
+                            <div class="title col-xs-4 pr-0" ng-show="statuslog.status === 'success'">
+                                <img ng-src="{{checkDone}}">
+                            </div>
+                            <div class="title col-xs-4 pr-0 tooltip-hover" tooltip="{{statuslog.errorLog}}" ng-show="statuslog.status !== 'success'">
+                                <img ng-src="{{warning}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="import-log-download font12" ng-if="statusLogs && (statusLogs.length > statusLogsLimit)" ng-click="showMoreStatusResults(statusLogs)">{{'showMore'| i18nString}}</div>
+                     <div class="import-log-download" ng-show="_failedStatus.length" ng-click="downloadLog()">{{'download_log_import_file'| i18nString}}</div>
+                    
+                          
+                 </div>
+                 <div class="import-bot-status" ng-show="!publish.autoPublish && publishStatus === 'initial' && enabledChannels.length && publishPermission !== 'NO'">
+                            <div class="import-bot-success-message-publish">
+                                <div class="main-text">{{'bot_import_success' | i18nString}}</div>
+                                <div class="publishRecommend">
+                                    <div class="label-text">{{'publish_bot' | i18nString }}</div>
+                                    <div class="desc-tect">{{'publish_recommend' | i18nString}} </div>
+                                </div>
+                            </div> 
+                            <div class="kr-sg-input-text-area">
+                                <div class="label-text">{{'bt_resouce_versions_comments' | i18nString}}</div>
+                                <div class="desc-info-text">{{'add_comments_publish' | i18nString}}</div>
+                                <textarea placeholder="Enter comments" ng-model="publish.comments" auto-grow-textarea class="input-text"></textarea> 
+                                <div class="import-log-download paddingTop10" ng-click="downloadLog()">{{'download_log_import_file'| i18nString}}</div>                
+                            </div>
+
+                             
+                 </div>
+                <div class="import-bot-status" ng-show="!publish.autoPublish && publishStatus === 'initial' && (!enabledChannels.length || publishPermission === 'NO')">
+                            <div class="import-bot-success-message">
+                                <div class="main-text">{{'bot_import_success' | i18nString}}</div>                           
+                                                            
+                                 <div class="help_hint_data" ng-show="!enabledChannels.length && publishPermission === 'YES'">
+                                    <div class="bulb-icon">
+                                        <i class="btx-bulb"></i>
+                                    </div>
+                                    <div class="hint-content">{{'import_publish_channel' | i18nString}}</div>
+                                </div>
+
+                                <div class="help_hint_data" ng-show="enabledChannels.length && publishPermission === 'NO'">
+                                    <div class="bulb-icon">
+                                        <i class="btx-bulb"></i>
+                                    </div>
+                                    <div class="hint-content">{{'import_publish_info' | i18nString}}</div>
+                                </div>
+
+                                <div class="help_hint_data" ng-show="!enabledChannels.length && publishPermission === 'NO'">
+                                    <div class="bulb-icon">
+                                        <i class="btx-bulb"></i>
+                                    </div>
+                                    <div class="hint-content">{{'import_publish_info' | i18nString}}</div>
+                                </div>
+                                                                
+                            </div> 
+                             <div class="import-log-download font12" ng-if="statusLogs && (statusLogs.length > statusLogsLimit)" ng-click="showMoreStatusResults(statusLogs)">{{'showMore'| i18nString}}</div>
+                             <div class="import-log-download" ng-click="downloadLog()">{{'download_log_import_file'| i18nString}}</div>
+                 </div>
+                 <div class="import-bot-status" ng-show="publishStatus === 'failed'">
+                            <div class="import-bot-success-message">
+                                <div class="main-text">{{'bot_import_success' | i18nString}}</div>                       
+                                 <div class="help_hint_data" ng-show="publish.autoPublish">
+                                    <div class="bulb-icon">
+                                        <i class="btx-bulb"></i>
+                                    </div>
+                                    <div class="hint-content" ng-show="errorMess">{{errorMess}}</div>
+                                    <div class="hint-content" ng-show="!errorMess">The bot cannot be Published as Something went wrong while publishing.</div>
+                                </div>
+                                    <div ng-if="showFailedErrors" class="tabl-status" ng-repeat="error in importErrors">
+                                        <div class="list-status col-xs-12">
+                                                <div class="title col-xs-11 pr-0 importErrorMsg">{{error.msg}}</div>
+                                                <div class="col-xs-1 p-0 text-right"><img ng-src="{{warningTriangle}}"></div>
+                                            </div>   
+                                    </div>
+                                <div ng-if="!showFailedErrors" class="col-xs-12 marginT5" ng-if="$index < statusLogsLimit" ng-repeat="statuslog in statusLogs track by $index">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-1"></div>
+                                    <div class="importError col-xs-10">
+                                        <span class="col-xs-4 importErrorMsg" title="{{statuslog.taskName}}">{{statuslog.taskName}}</span>
+                                        <span class="col-xs-4 importErrorMsg" title="{{statuslog.taskType}}">{{statuslog.taskType}}</span>
+                                        <span class="col-xs-2"  ng-if = "statuslog.taskName !== 'Channels'">
+                                            <img ng-show="statuslog.status=== 'success'" ng-src="{{checkDone}}">
+                                            <img ng-show="statuslog.status !== 'success'" ng-src="{{warningTriangle}}">
+                                        </span>
+                                        <span class="col-xs-2" ng-if = "statuslog.taskName === 'Channels'" tooltip-placement="left" tooltip="{{'a_few_prompts_are_configured'| i18nString}}">
+                                             <img ng-show="statuslog.status=== 'success'" ng-src="{{checkDone}}">
+                                            <img ng-show="statuslog.status !== 'success'" ng-src="{{warningTriangle}}">
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-1"></div>
+                                </div>
+                            </div>
+                            </div> 
+                            <div class="import-log-download font12" ng-if="statusLogs && (statusLogs.length > statusLogsLimit)" ng-click="showMoreStatusResults(statusLogs)">{{'showMore'| i18nString}}</div>
+                             <div class="import-log-download" ng-click="downloadLog()">{{'download_log_import_file'| i18nString}}</div>
+                            
+                 </div>
+                 <div class="import-bot-status pending-status" ng-show="publishStatus === 'pending'">
+                             <div class="publish-pending">
+                              <div class="importing-text">{{'bot_publish_please_wait' | i18nString}}</div>
+                                <div class="import-progress-bar">
+                                            <div class="inside-progress-bar" ng-style="{width : (totalProgressPublish + '%') }"></div>
+
+                                </div>
+                            </div>
+                            
+                 </div>
+                <div class="import-bot-status" ng-show="publishStatus === 'success'">
+                    <div class="published-component-tasks" ng-show="(messages | filter : { 'type' : 'success' }).length > 0">
+                                <div class="label_text" ng-show="selectedAccount.adminPreferences && !selectedAccount.adminPreferences.autoApproval"> {{'bot_sent_for_admin_approval'| i18nString}} </div>
+                   
+                        <div class="label_text" ng-show="selectedAccount.adminPreferences && selectedAccount.adminPreferences.autoApproval">{{'following_tasks_components_published' | i18nString}}</div>
+                        <div class="row" ng-repeat="message in messages | filter : { 'type' : 'success' }">     
+                              <div class="row form-group" ng-show="message.type == 'success' && message.message != undefined" > 
+                                <span class="success-check-icon"><i class="btx-billing-checked"></i></span> 
+                                <!-- <img ng-src="{{successCheck}}"> -->
+                                <span ng-bind-html="message.message" class="paddingLeft10"> {{message.message}} </span> 
+                             </div>  
+                        </div>
+                    </div> 
+                     <div class="published-component-tasks" ng-show="(messages | filter : { 'type' : 'failed' }).length > 0">
+                         <div class="label_text"> {{'these_were_issues_following'| i18nString}}</div> 
+                     </div>
+                      <div class="row" ng-repeat="message in messages | filter : { 'type' : 'error' }"> 
+                        <div class="row form-group" ng-show="message.type == 'error'" >
+                          <div class="row">
+                            <div class="col-xs-8 noPadding">
+                              <div class="row"> 
+                                <span class="error-check-icon"><i class="btx-billing-cancel"></i></span> 
+                                <!-- <img ng-src="{{failImg}}"> -->
+                                <span ng-bind-html="message.message" class="paddingLeft10"> {{message.message}} </span> 
+                                </div>
+                               <div class="kr-sg-multi-line-notification-link link-error-notification">                    
+                                   <div class="tost-text"> {{message.error}} nodes</div>                                                      
+                                </div>
+
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <button class="btn btn-primary btn-sm noPadding" ng-disabled="!allowRetry" type="button" ng-click="publishBot(publish,true)" ><i ng-class="{'fa fa-spinner fa-spin':!allowRetry}"></i>{{allowRetry? retry_label: retrying_label}}</button>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                      <div ng-if="publishInTrailMsg" class="row text-muted">
+                        {{'this_bot_is_published_under_free'| i18nString}} 
+                    </div>
+                    <div class="import-log-download font12" ng-if="statusLogs && (statusLogs.length > statusLogsLimit)" ng-click="showMoreStatusResults(statusLogs)">{{'showMore'| i18nString}}</div>
+                     <div class="import-log-download" ng-click="downloadLog()">{{'download_log_import_file'| i18nString}}</div>
+                            
+                </div>
+                 
+
+     
+         
+               
+            </div>
+            <div class="modal-footer" ng-hide="(importing === 'finished' && !_failedStatus.length) || importing === 'inprogress' || publishStatus === 'inprogress'">
+                <div ng-show="importing === 'backupNote'">
+                   <button class="kr-sg-button-primary btn_md" ng-click="startImport(publish)">{{'start' | i18nString}}</button>
+                    <button class="kr-sg-button-secondary btn_md" ng-click="onCancel()">{{'account_cancel' | i18nString}}</button> 
+                </div>
+                 
+
+                 <div ng-show="((publishStatus === 'initial' && !enabledChannels.length) || (publishStatus === 'failed') || (importing === 'failed') || (importing === 'finished' && _failedStatus.length) || (publishStatus === 'initial' && publishPermission === 'NO') || (publishStatus === 'success' && (messages | filter : { 'type' : 'success' }).length > 0 ) && !(messages | filter : {'type':'error'}).length)">
+                    <button type="button" class="kr-sg-button-primary btn_md" ng-click="closeImportModal()">{{(importing !== 'failed')?done_label:ok_text_label}}</button>
+                </div>
+                <div ng-show="publishStatus === 'initial' && enabledChannels.length && !publish.autoPublish && publishPermission !== 'NO'">
+                    <button class="kr-sg-button-primary btn_md" ng-click="publishBot(publish)">{{'publish' | i18nString}}</button>
+                    <button class="kr-sg-button-secondary btn_md" ng-click="closeImportModal()">{{'skip_now' | i18nString}}</button> 
+                </div>
+                <div ng-show="publishStatus === 'success' && (messages | filter : { 'type' : 'error' }).length > 0">
+                    <button type="button" class="kr-sg-button-primary btn_md" ng-disabled="!allowRetry" ng-click="publishBot(publish,true)"><i ng-class="{'fa fa-spinner fa-spin':!allowRetry}"></i>{{allowRetry?retry_all :retrying_label}}</button>
+                     <button type="button" class="kr-sg-button-secondary btn_md" ng-click="closeImportModal()">{{'account_cancel'| i18nString}}</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+   
+</div>
+<div class="modal fade import-bot-modal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header exportHeader">
+                <h4 class="modal-title">{{'import_bot'| i18nString}}</h4>
+            </div>
+            <div class="modal-body import-bot-modal-body psScrollZindex" dynamic-height dynaoffset="-320" height-property="height" perfect-scroll>
+                <div>
+                    
+                    <div ng-show="importing === 'backupNote' || importing === 'backupNote1'">
+                        <div class="importantNote">{{'important_note'| i18nString}}</div>
+                        <div ng-show="importing === 'backupNote'" class="noteText col-xs-12">
+                            <span class="noteDesc">{{'bt_import_selected_bot_config'| i18nString}} <span class="readmore" ng-click="readMore()">{{'read_more_label'| i18nString}}</span></span>                            
+                        </div>
+                        <div ng-show="importing === 'backupNote1'" class="noteText2 col-xs-12">
+                            <ul>
+                                <li>{{'bt_import_backupnote_li1'| i18nString}}</li>
+                                <li>{{'bt_import_backupnote_li2'| i18nString}}</li>
+                                <li>{{'bt_import_backupnote_li3'| i18nString}}</li>
+                                <li>{{'bt_import_backupnote_li4'| i18nString}}</li>
+                                <li>{{'bt_import_backupnote_li5'| i18nString}}</li>
+                            </ul>
+                        </div>
+                        <div class="backupBtnDiv">
+                             <a href = "{{hrefURL}}" id ="backupButton" target = "_self" download></a> 
+                            <button type="button" class="btn borderBtn" ng-click="startExport()">{{'backup_label'| i18nString}}<i ng-show="exporting === 'pending' && (exporting !== 'finished')"  class='fa fa-spinner fa-spin importing'></i></button> 
+                        </div>
+
+                    </div>
+                    <div ng-show="importing === 'inprogress'">
+                        <div class="imgCntr"><img class="layer" ng-src="{{importingSvg}}"></img></span></div>
+                        <div class="importingText"><span>{{'importing'| i18nString}}</span></div>
+                        <div class="import-progress-bar"><div class="inside-progress-bar" ng-style="{width : (totalProgress + '%') }"></div></div>
+                        <div class="importingText"><span>{{'import_status_logs'| i18nString}}</span></div>
+                        <div class="col-xs-12 importErrorsDiv">
+                            <div class="col-xs-12 marginT5" ng-if="false">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-1"></div>
+                                    <div class="importError ">
+                                        <span class="col-xs-4 importErrorMsg bold">{{'task_name_label'| i18nString}}</span>
+                                        <span class="col-xs-4 importErrorMsg bold">{{'task_type_label'| i18nString}}</span>
+                                        <span class="col-xs-2 importErrorMsg bold">{{'status'| i18nString}}</span>
+                                    </div>
+                                    <div class="col-xs-1"></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 marginT5" ng-if="$index < statusLogsLimit" ng-repeat="statuslog in statusLogs track by $index">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-1"></div>
+                                    <div class="importError">
+                                        <span class="col-xs-4 importErrorMsg" tooltip-placement="top" tooltip="{{statuslog.taskName}}" title="{{statuslog.taskName}}">{{statuslog.taskName}}</span>
+                                        <span class="col-xs-4 importErrorMsg"  tooltip-placement="top" tooltip="{{statuslog.taskType}}" title="{{statuslog.taskType}}">{{statuslog.taskType}}</span>
+                                        <span class="col-xs-2 tooltip-hover" tooltip="{{statuslog.errorLog}}" tooltip-placement="top"  ng-if = "statuslog.taskName !== 'Channels'">
+                                            <img ng-show="statuslog.status=== 'success'" ng-src="{{checkDone}}">
+                                            <img ng-show="statuslog.status !== 'success'" ng-src="{{warningTriangle}}">
+                                        </span>
+                                        <span class="col-xs-2" ng-if = "statuslog.taskName === 'Channels'" tooltip-placement="left" tooltip="{{'a_few_prompts_are_configured'| i18nString}}">
+                                            <img ng-show="statuslog.status=== 'success'" ng-src="{{checkDone}}">
+                                            <img ng-show="statuslog.status !== 'success'" ng-src="{{warningTriangle}}">
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="importing === 'finished'">
+                        <div class="imgCntr"><img class="layer" ng-src="{{importSucessSvg}}"></img></span></div>
+                        <div class="importingText finished"><span>{{'files_has_been_imported_sucessfully'| i18nString}}</span></div>
+                        <div class="importingText"><span>{{'import_status_logs'| i18nString}}</span></div>
+                        <div class="col-xs-12 importErrorsDiv">
+                            <div class="col-xs-12 marginT5" ng-if="$index < statusLogsLimit" ng-repeat="statuslog in statusLogs track by $index">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-1"></div>
+                                    <div class="importError">
+                                        <span class="col-xs-4 importErrorMsg" tooltip-placement="top" tooltip="{{statuslog.taskName}}" title="{{statuslog.taskName}}">{{statuslog.taskName}}</span>
+                                        <span class="col-xs-4 importErrorMsg" tooltip-placement="top" tooltip="{{statuslog.taskType}}" title="{{statuslog.taskType}}">{{statuslog.taskType}}</span>
+                                        <span class="col-xs-2 tooltip-hover" tooltip-placement="top" tooltip="{{statuslog.errorLog}}"  ng-if = "statuslog.taskName !== 'Channels'">
+                                            <img ng-show="statuslog.status=== 'success'" ng-src="{{checkDone}}">
+                                            <img ng-show="statuslog.status !== 'success'" ng-src="{{warningTriangle}}">
+                                        </span>
+                                        <span class="col-xs-2" ng-if = "statuslog.taskName === 'Channels'" tooltip-placement="left" tooltip="{{'a_few_prompts_are_configured'| i18nString}}">
+                                            <img ng-show="statuslog.status=== 'success'" ng-src="{{checkDone}}">
+                                            <img ng-show="statuslog.status !== 'success'" ng-src="{{warningTriangle}}">
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-1"></div>
+                                </div>
+                            </div>
+                            <div class="downloadLogFile font12" ng-if="statusLogs && (statusLogs.length > statusLogsLimit)" ng-click="showMoreStatusResults(statusLogs)">{{'showMore'| i18nString}}</div>
+                            <div class="col-xs-12 downloadLogFile" ng-click="downloadLog()">{{'download_log_file'| i18nString}}</div>
+                        </div>
+                    </div>
+                    <div ng-show="importing === 'failed'">
+                        <div class="imgCntr"><img class="layer" ng-src="{{importErrorSvg}}"></img></span></div>
+                        <div class="importingText"><span>{{'bot_import_failed'| i18nString}}</span></div>
+                        <div class="col-xs-12 importErrorsDiv">
+                            <div ng-if="showFailedErrors" class="marginT5" ng-repeat="error in importErrors">
+                                <div class="importError errorMSGheight col-xs-12">
+                                    <span class="col-xs-11 pr-0 importErrorMsg under-ul">{{error.msg}}
+                                        <ul class ="componentDisplayNames w-100 " ng-if ="error.errors && error.errors.length">
+                                            <li ng-repeat ="componentError in error.errors">{{componentError}}</li>
+                                        </ul>
+                                    </span>
+                                    <span class="col-xs-1 p-0 text-right warningTriangle"><img ng-src="{{warningTriangle}}"></span>
+                                </div>   
+                            </div>
+                            <div ng-if="!showFailedErrors" class="col-xs-12 marginT5" ng-if="$index < statusLogsLimit" ng-repeat="statuslog in statusLogs track by $index">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-1"></div>
+                                    <div class="importError col-xs-10">
+                                        <span class="col-xs-4 importErrorMsg">{{statuslog.taskName}}</span>
+                                        <span class="col-xs-4 importErrorMsg">{{statuslog.taskType}}</span>
+                                        <span class="col-xs-2 tooltip-hover" tooltip-placement="top" tooltip="{{statuslog.errorLog}}"  ng-if = "statuslog.taskName !== 'Channels'">
+                                           <img ng-show="statuslog.status=== 'success'" ng-src="{{checkDone}}">
+                                            <img ng-show="statuslog.status !== 'success'" ng-src="{{warningTriangle}}">
+                                        </span>
+                                        <span class="col-xs-2" ng-if = "statuslog.taskName === 'Channels'" tooltip-placement="left" tooltip="{{'a_few_prompts_are_configured'| i18nString}}">
+                                            <img ng-show="statuslog.status === 'success'" ng-src="{{checkDone}}">
+                                            <img ng-show="statuslog.status !== 'success'" ng-src="{{warningTriangle}}">
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-1"></div>
+                                </div>
+                            </div>
+                            <div class="downloadLogFile font12" ng-if="statusLogs && (statusLogs.length > statusLogsLimit)" ng-click="showMoreStatusResults(statusLogs)">{{'showMore'| i18nString}}</div>
+                            <div class="col-xs-12 downloadLogFile" ng-show="statusLogs.length>0" ng-click="downloadLog()">{{'download_log_import_file'| i18nString}}</div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+            <div class="modal-footer importFooter">
+                <div ng-show="importing === 'backupNote' || importing === 'backupNote1'">
+                    <button type="button" ng-disabled="disableProceed" class="btn btn-primary" ng-click="startImport()">{{'proceed'| i18nString}}</button>
+                    <button type="button" ng-disabled="disableProceed" class="btn closeCancel" ng-click="onCancel()">{{'cancel'| i18nString}}</button>
+                </div>
+                <div ng-show="importing !== 'backupNote' && importing !== 'backupNote1'">
+                    <button type="button" class="btn btn-primary" ng-disabled="importing === 'inprogress'" ng-click="closeImportModal()">{{(importing !== 'failed')?done_label:ok_text_label}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal fade export-bot-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-center">
+      <div class="modal-content modal-content-center">
+            <div class="modal-body export-utterances-modal-body" perfect-scroll>
+                <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+                <p>Please wait... Fetching Response</p>
+            </div>
+        </div>
+    </div>
+ </div  -->
+ <bot-modal-slider id="openTaskPropertiesSlider">
+    <div class="modalSliderContainer selectAppModal width800">
+        <div class="modalHeader">
+            <span aria-hidden="true"></span>
+            <h4 class="modal-title"><i ng-click="openTaskPropertiesSlider(true,true)" class="btx-close"></i>{{'bot_import'| i18nString}}</h4>
+        </div>
+        <div class="modalBody bot-import-modal-body" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">                     
+            <div class="group-radiobutton">
+                <div class="heading-title mb-10">{{'task_properties'| i18nString}}</div>
+                <div class="kr-sg-radiobutton d-block p-0">
+                    <input ng-value='true' ng-model="dialogProperties.includeComments"  name="dialogProperties" id="dialogPropertiesIncludeComments" class="radio-custom" type="radio">
+                    <label for="dialogPropertiesIncludeComments" class="radio-custom-label">{{'task_properties_import_include_dialog_comments'| i18nString}}</label>
+                    <div class="radioDescription">{{'task_properties_import_include_dialog_comments_desc'| i18nString}}</div>
+                </div> 
+                <div class="kr-sg-radiobutton d-block p-0">
+                    <input ng-value='false' ng-model="dialogProperties.includeComments"  name="dialogProperties" id="dialogPropertiesExcludeComments"" class="radio-custom" type="radio">
+                    <label for="dialogPropertiesExcludeComments" class="radio-custom-label">{{'task_properties_import_exclude_dialog_comments'| i18nString}}</label>
+                    <div class="radioDescription">{{'task_properties_import_exclude_dialog_comments_desc'| i18nString}}</div>
+                </div> 
+            </div>
+        </div>
+        <div class="modalFooter">
+            <button type="button" class="btn btn-default pull-left" ng-click='openTaskPropertiesSlider(true)'>{{'save'| i18nString}}</button>
+            <button type="button" class="btn closeCancel" ng-click="openTaskPropertiesSlider(true,true)">Cancel</button>
+        </div>
+    </div>
+</bot-modal-slider>
+
+<!-- Upgrade/ Downgrade is required modal -->
+<div class="modal fade" id="upDownRequired" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md noHeaderFooter">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title titleRed"> {{'Upgrade is required'}} <i class="btx-close" ng-click="closeCustomModal('upDownRequired')"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll"  perfect-scroll style="min-height: 250px;">
+          <div class="desc" ng-if="license && license.planName">
+            You are using one or more features that are not available in your current <b>{{license.planName || '---'}} Plan</b>. You can either upgrade to a higher plan to publish these features. Alternatively, you may modify the definition to remove the features that are not included in your current plan.
+          </div>
+          <div class="accordiankr" >
+            <div class="accordiankr" ng-if="planValidationDetails && planValidationDetails.exceededData">
+                <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel">
+                      <div class="panel-heading" role="tab" id="upgradeReq">
+                        <h4 class="panel-title">
+                          <a role="button" class="accor-collapse" data-toggle="collapse" data-parent="#accordion" href="#upgradeAccor" aria-expanded="true" aria-controls="collapseOne">
+                              <i class="btx-carrot-down"></i>View  features that are exceeding the limits
+                            </a>
+                        </h4>
+                      </div>
+    
+                      <div id="upgradeAccor" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="upgradeReq">
+                        <div class="panel-body" >
+                            <div ng-repeat="item in planValidationDetails.exceededData[license.planId] track  by $index" class="data-text">
+                                <div class="info-title"> <ng-container ng-if="item.exceeded !== false && item.exceeded !== true">{{item.exceeded}}</ng-container> {{item.componentName || item.key}} exceeded</div>
+                                <div class="exceed-data">Allowed: <ng-container> {{ (item.allowed !== false && item.allowed !== true) ? item.allowed: ''}} {{(item.allowed === false || item.allowed === true) ? 'No': ''}} </ng-container> {{item.componentName || item.key}}</div>
+                            </div>
+                        </div>
+                      </div>
+                    </div> 
+                </div>
+    
+    
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"> 
+            <button type="button"  class="kr-sg-button-primary btn_lg" ng-click="submitToAdminPublish()" ng-if="selectedAccount.adminPreferences.autoApproval && selectedAccount.accountType && selectedAccount.accountType !==1">  {{'Submit to Admin'}} </button>
+            <button type="button"  class="kr-sg-button-primary btn_lg" ng-click="openPlanUsage('plan')" ng-if="selectedAccount.adminPreferences.autoApproval && selectedAccount.accountType && selectedAccount.accountType ===1">  {{'Upgrade Plan'}} </button>
+            <button type="button" ng-click="closeCustomModal('upDownRequired')" class="kr-sg-button-secondary btn_lg">  {{'cancel'| i18nString}} </button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Upgrade/ Downgrade is required modal -->
+<plan-usage cb='planSelectionCb' ng-if="planSelectionCb.plansSlider" class="publishPlanSlider"></plan-usage>

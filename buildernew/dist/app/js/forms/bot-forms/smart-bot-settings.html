@@ -1,0 +1,70 @@
+<div class="showadvancedoptions" ng-class="{'read-only-wrap':displayMode === 'VIEW'}">
+     <form name="smartBotForm" class="wf-form smartBotForm" novalidate>
+        <fieldset class="row">
+            <div class="col-xs-12  form-group margin0">
+            <div class="col-xs-12  noPadding">
+                <label tooltip-placement="right" tooltip="">{{'smart_bot_settings_enable_trymode_label'| i18nString}}</label>
+            </div>
+            </div>
+            <try-mode-form enable-try-mode="enableTryMode"  account="account" callback="trymodecallback" class="col-xs-12"></try-mode-form>
+            <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  class="required-field" tooltip-placement="right" tooltip="">{{'smart_bot_desc_label'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12  noPadding">
+                    <textarea class="form-control" ng-model="smartBotSettings.description" placeholder="{{'enter_desc_for_smartBot_placeholder'| i18nString}}" name="description" required></textarea>
+                    <div ng-show="smartBotForm.description.$dirty ">
+                        <div error-alert ng-show="smartBotForm.description.$error.required">
+                            <span>{{'smart_bot_please_provide_desc'| i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="">{{'configuration_instructions_label'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv radioSection noPadding">
+                    <div class="radioInnerDiv">
+                        <label for="smartBotPlainText">
+                            <input value='plainText' type="radio" ng-model="smartBotSettings.instructionsType"  name="holdCurrTaskNode" id="smartBotPlainText"/><span class="opt-title">{{'plain_text_label'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    	<markdown-editor no-focus="nofocus" mode="editorReadyOnly" callback="markdownCB" name="smartInsstructionPlainText" markdownid="smartInsstructionPlainText" config="{popupModal : true}" ng-model="smartBotSettings.configInst" encode-decode ng-if="smartBotSettings.instructionsType==='plainText'">
+                        </markdown-editor>
+                    <div class="radioInnerDiv">
+                        <label for="smartBotPdf">
+                            <input value='pdfDoc' type="radio"   ng-model="smartBotSettings.instructionsType" name="discardCurrTaskNode" id="smartBotPdf"/><span class="opt-title">{{'upload_a_pdf'| i18nString}}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="noPadding " ng-show="smartBotSettings.instructionsType==='pdfDoc'">
+                    <div class="input-group paddingLeft25">
+                        <input name="importFile" type="text" class="form-control" placeholder="{{'choose_file'| i18nString}} " readonly ng-model="importBotInstructions.name" required>
+                        <div ng-class="{'screenFreeze':fileUploading}" class="input-group-addon btn-file"> {{fileUploading? uploading: chooseFile}} <input type="file" file-model="importBotInstructions" id="importBotInstructions" name="importBotInstructions" required on-file-change="uploadInstructionsDocument"/></div>
+                    </div>
+                    <div ng-if="fileExtensionError" ng-show="fileExtensionError" class="text-danger form-error-text"> {{'pdf_extensions_are_supported'| i18nString}} </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="">{{'configuration_instructions_url'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12  noPadding">
+                    <input  class="form-control" url-validate type="url" name="instructionsURL" ng-model="smartBotSettings.instructionsURL" id="url" placeholder="{{'smart_bot_settings_url_detailed_config_placeholder'| i18nString}}">
+                    <div ng-show="smartBotForm.instructionsURL.$error.url">
+                        <div error-alert>
+                            <span>{{'please_provide_valid_url'| i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </form>
+
+</div>
+<div class="innerRightFooter bottomZero solutionBotFooter">
+     <button ng-disabled="fileUploading || (displayMode === 'VIEW')" class="btn btn-xs btnSolidBlue saveBtn" ng-click="saveSBsettings(smartBotForm)" > <i ng-if="saveInprogress" class="fa fa-spinner fa-spin"></i> {{(saveInprogress) ? savingLabel : save}} </button>
+</div>

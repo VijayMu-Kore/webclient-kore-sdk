@@ -1,0 +1,85 @@
+<div class="sidebar">
+  <div class="my-apps col-xs-12">
+    <div class="row">
+      <div class="items-list">
+          <div class="search" ng-show="streams.length>0">
+              <input focus-it tabindex="1" type="text" ng-keyup="updateScroll()" class="form-control" ng-model="streamSearchQuery" placeholder="{{'search'| i18nString}}">
+          </div>
+        <div class="items-list-header" ng-click="selectView('bots')">
+          <span class="text">
+            {{(streams| filter:{'name':getEncodedSearchName(streamSearchQuery)} | sharedBots: streams  | orderBy: 'name').length ? ('your_bots'| i18nString) : ('constants.mainEntities'| i18nString)}}
+          </span>
+          <span class="newBot" ng-click="openFullPageModal(1,'createBot')">
+            {{'new_bot'| i18nString}}
+          </span>
+        </div>
+        <div class="col-xs-12 items-list-container" ng-show="!loadingStreams && views.bots">
+ 
+          <div class="text-center" ng-show="(streams).length == 0">
+            <div class="col-xs-12 text-center">
+              <div class="alert alert-xs alert-warning">
+                {{'looks_like_no_bots'| i18nString}}
+              </div>
+            </div>
+          </div>
+          <div class="items-list-content sreamlist" adjustbotlist perfect-scroll ng-show="streams.length>0">
+            <ul class="app-list personal">
+              <li id="{{stream._id}}" class="list-item" has-focus tabindex="{{$index+2}}" ng-class="{'active':stream.active}"  ng-click="selectApp(stream)" ng-repeat="stream in (streams | filter:{'name':getEncodedSearchName(streamSearchQuery)}| myBots: streams | orderBy: 'name')">
+                <div class="list-item-details clearfix" >
+                  <img class="pull-left" style="" ng-src="{{stream.icon}}?v={{stIconv}}"/>
+                  <span ng-show="stream.state!=='setup' || (stream.state === 'setup' && !stream.sbStreamId)" ng-class="{'setup-tag-margin': (stream.type === 'universalbot' || (stream.state === 'setup' && !stream.sbStreamId)) }" title="{{getTextIncludingTags(stream.name)}}">{{getTextIncludingTags(stream.name)}}</span>
+                  <span ng-show="stream.state==='setup'" class='setup-tag-margin' title="{{stream.originalName}}">{{stream.originalName}}</span>
+                  <div ng-if="stream.state==='setup'" class="need-setup-tag">{{'needs_setup'| i18nString}}</div>
+                  <div ng-if="!anyTaskAvailable() && stream.active && showContent && stream.type !== 'universalbot' && stream.state!=='setup'" class="need-setup-tag">{{'new'| i18nString}}</div>
+                  <div ng-if="stream.type === 'universalbot'" class="need-setup-tag">{{'universal_bot'| i18nString}}</div>
+                </div>
+              </li>
+            </ul>
+            <div class="streamHeader" ng-show="(streams| filter:{'name':getEncodedSearchName(streamSearchQuery)} | sharedBots: streams  | orderBy: 'name').length">
+              <span class="streamHeaderTitle">{{'shared_bots'| i18nString}}</span>
+            </div>  
+            <ul class="app-list personal">
+                <li id="{{stream._id}}" class="list-item" has-focus tabindex="{{$index+2}}" ng-class="{'active':stream.active}"  ng-click="selectApp(stream)" ng-repeat="stream in (streams| filter:{'name':getEncodedSearchName(streamSearchQuery)} | sharedBots: streams  | orderBy: 'name')">
+                    <div class="list-item-details clearfix" >
+                        <img class="pull-left" style="" ng-src="{{stream.icon}}?v={{stIconv}}"/>
+                        <span ng-show="stream.state!=='setup' || (stream.state === 'setup' && !stream.sbStreamId)" ng-class="{'setup-tag-margin': (stream.type === 'universalbot' || (stream.state === 'setup' && !stream.sbStreamId)) }" title="{{stream.name}}">{{stream.name}}</span>
+                        <span ng-show="stream.state==='setup'" class='setup-tag-margin' title="{{stream.originalName}}">{{stream.originalName}}</span>
+                        <div ng-if="stream.state==='setup'" class="need-setup-tag">{{'needs_setup'| i18nString}}</div>
+                        <div ng-if="!anyTaskAvailable() && stream.active && showContent && stream.type !== 'universalbot'" class="need-setup-tag">{{'new'| i18nString}}</div>
+                        <div ng-if="stream.type === 'universalbot'" class="need-setup-tag">{{'universal_bot'| i18nString}}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="text-center" ng-show="(streamSearchQuery && (streams | filter:{'name':getEncodedSearchName(streamSearchQuery)} ).length == 0)">
+              <div class="col-xs-12 text-center">
+                <div class="alert alert-xs alert-warning">
+                  {{'no_results_forsearch_label'| i18nString}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="view-more" ng-show="streams.length > 0 && streams.length > _count">
+            <a href="" ng-click="count = streams.length" ng-show="count == _count">
+              View more ({{streams.length - count}}) <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+            </a>
+            <a href="" ng-click="count = _count" ng-show="count != _count">
+              View less <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+            </a>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="sdk-apps-list">
+        <div class="sdk-apps-list-header" ng-click="selectView('apps')">
+          <span class="text">
+            Apps
+          </span>
+          <span class="newApp">
+            New App
+          </span>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

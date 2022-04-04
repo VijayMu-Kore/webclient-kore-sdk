@@ -1,0 +1,237 @@
+<div class="modal fade bt_import_modal {{elem}}" id="{{elem}}" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md textareaModal" role="document">
+        <div class="modal-content" ng-if="importStep == 1">
+            <div class="modal-header bulkImport">
+                <button type="button" class="close" ng-click="importQaModal.closeModal()"  aria-label="Close">
+                    <span aria-hidden="true" ><i class="fa fa-close"></i></span>
+                </button>
+                <h4 class="modal-title">{{'constants.menuOptions_import'| i18nString}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+
+                    <div class="col-xs-12 form-group noPadding">
+                       <div class="noteHeader"><span>{{'important_note'| i18nString}}</span></div>
+                       <div class="helpContent">{{'backup_existing'| i18nString}}</div>
+                       <div class="text-center">
+                           <div class="btnBackup">{{'backup_label'| i18nString}}</div>
+                        <p class="sampleFile"><span class="csvspan"><i class="fa fa-download"></i><a ng-click="callback.exportOntology('csv')">{{'csv_label'| i18nString}}</a></span> 
+                            <span class="jsonspan"><i class="fa fa-download"></i><a ng-click="callback.exportOntology('json')">{{'json_label'| i18nString}}</a></span></p>
+                           </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="doneImporting">
+                    <div class="jsEditorPromptHeader">{{'import_results'| i18nString}}</div>
+                    <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="importResults" disabled></textarea>
+                    </textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer form-group">
+                <div ng-show="!doneImporting">
+                    <button type="button" class="btn btn-primary btnSave"  ng-click="moveForward(2)">{{'proceed'| i18nString}}</button>
+                    <button type="button" class="btn closeCancel" ng-click="importQaModal.closeModal()"> {{'cancel'| i18nString}} </button>
+                </div>
+                <div class="pull-right" ng-show="doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="importQaModal.closeModal()"> {{'ok_uppercase'| i18nString}} </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importStep == 2">
+            <div class="modal-header bulkImport">
+                <button type="button" class="close" ng-click="importQaModal.closeModal()"  aria-label="Close">
+                    <span aria-hidden="true" ><i class="fa fa-close"></i></span>
+                </button>
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+
+                    <div class="col-xs-12 form-group noPadding fileDropContainer dragDrop">
+                       <div class="text-center importimage">
+                           <img ng-src="{{contextUrl}}/img/import.png"/>
+                       </div>
+                       <div class="dragdrophelp" ng-hide="fileName">
+                           <div class="dragdroptitle">{{'drag_drop'| i18nString}}</div>
+                           <div class="ortitle">{{'or'| i18nString}}</div>
+                           <div class="browsetitle"><span class="browseBtn cursor-pointer">{{'browse'| i18nString}}</span></div>
+                           <!-- <p class="sampleFile" ng-bind-html="'download_sampe_json_csv'| i18nString:({link:'{{assetsBase}}/files/SampleFAQsNew.csv/',link1:'{{assetsBase}}/files/SampleFAQs.json'})"></p> -->
+                          <p class="sampleFile">
+                            {{'download'| i18nString}}
+                            <a download href='{{assetsBase}}/files/SampleFAQsNew.csv' target='_blank'>sample CSV</a>
+                            {{'or'| i18nString}}
+                            <a download href='{{assetsBase}}/files/SampleFAQs.json' target='_blank'>sample JSON</a>
+                          </p>
+
+                           </div>
+                            <div class="uploadedFile" ng-show="fileName"><span class="filename">{{fileName}}</span><span class="removefile"><i ng-click="removeFile()" class="fa fa-close"></i></span></div>
+                             <div class="importingdiv" ng-show="fileName && qafileuploading && false">
+                           <div class="importingtitle">{{'uploading_label2'| i18nString}}</div>
+                           <div class="progressouter"><div class="progressinner" ng-style="{width : (totalUploadProgress + '%') }"></div></div>
+                           </div>
+                           <!--<p class="importHelpTip" ng-show="fileName && !qafileuploading && fileUploaded.fileId">File uploaded successfully click next to start import.</p>-->
+                    </div>
+                   
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="doneImporting">
+                    <div class="jsEditorPromptHeader">{{'import_results'| i18nString}}</div>
+                    <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="importResults" disabled></textarea>
+                    </textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer form-group">
+                <div ng-show="!doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-disabled="!fileName" ng-click="confirmImport()">{{'next'| i18nString}}</button>
+                    <button type="button" class="btn closeCancel" ng-click="importQaModal.closeModal()"> {{'cancel'| i18nString}} </button>
+                </div>
+                <div class="pull-right" ng-show="doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="importQaModal.closeModal()"> {{'ok_uppercase'| i18nString}} </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importStep == 3">
+            <div class="modal-header bulkImport">
+                <button type="button" class="close" ng-click="importQaModal.closeModal()"  aria-label="Close">
+                    <span aria-hidden="true" ><i class="fa fa-close"></i></span>
+                </button>
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+            </div>
+            <div class="modal-body  overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+
+                    <div class="col-xs-12 form-group noPadding importingContainer">
+                       <div class="text-center importimage">
+                           <img ng-src="{{contextUrl}}/img/importing.png"/>
+                       </div>
+                       <div class="importingdiv">
+                           <div class="importingtitle">{{'importing'| i18nString}}</div>
+                           <div class="progressouter"><div class="progressinner" ng-style="{width : (totalProgress + '%') }"></div></div>
+                           </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="doneImporting">
+                    <div class="jsEditorPromptHeader">{{'import_results'| i18nString}}</div>
+                    <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="importResults" disabled></textarea>
+                    </textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer form-group">
+                <div ng-show="!doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-disabled="true"  ng-click="confirmImport()">{{'done'| i18nString}}</button>
+                </div>
+                <div class="pull-right" ng-show="doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="importQaModal.closeModal()"> {{'ok_uppercase'| i18nString}} </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importStep == 4">
+            <div class="modal-header bulkImport">
+                <button type="button" class="close" ng-click="importQaModal.closeModal()"  aria-label="Close">
+                    <span aria-hidden="true" ><i class="fa fa-close"></i></span>
+                </button>
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+
+                    <div class="col-xs-12 form-group noPadding importsuccess">
+                       <div class="text-center importsuccessimage">
+                           <img ng-src="{{contextUrl}}/img/import-success.png"/>
+                       </div>
+                       <div class="importsuccessdiv">
+                           <div class="title">{{'import_success'| i18nString}}</div>
+                           
+                           </div>
+                           </div>
+                    <div ng-if="showWarning" class="col-xs-12 kgImportWarningDiv">
+                        <div class="fa fa-exclamation-triangle col-xs-1 warnIcon"></div>
+                        <div class=" col-xs-11 warnMessageDiv" >{{'multiple_dialog'| i18nString}}</div>
+                    </div>
+                         </div>
+                <div class="col-xs-12 noPadding" ng-show="doneImporting">
+                    <div class="jsEditorPromptHeader">{{'import_results'| i18nString}}</div>
+                    <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="importResults" disabled></textarea>
+                    </textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer form-group">
+                <div  ng-show="!doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="importQaModal.closeModal(true)">{{'done'| i18nString}}</button>
+                </div>
+                <div class="pull-right" ng-show="doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="importQaModal.closeModal()"> {{'ok_uppercase'| i18nString}} </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importStep == 5">
+            <div class="modal-header bulkImport">
+                <button type="button" class="close" ng-click="importQaModal.closeModal()"  aria-label="Close">
+                    <span aria-hidden="true" ><i class="fa fa-close"></i></span>
+                </button>
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+            </div>
+            <div class="modal-body  overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+
+                    <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                       <div class="text-center importimage">
+                           <img ng-src="{{contextUrl}}/img/import-error.png"/>
+                       </div>
+                       <div class="importerror">
+                           <div class="title">{{'file_import_failed'| i18nString}}</div>
+                           <div class="errors">
+                               <div class="statementdiv col-xs-12">
+                                   <span class="statement textEllipsis col-xs-11">{{errorMsg}}</span>
+                                   <span class="erroricon"><i class="fa fa-warning"></i></span>
+                               </div>
+                           </div>
+                           </div>
+                    </div>
+                   
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="doneImporting">
+                    <div class="jsEditorPromptHeader">{{'import_results'| i18nString}}</div>
+                    <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="importResults" disabled></textarea>
+                    </textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer form-group">
+                <div  ng-show="!doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="goToStep(2)">{{'retry'| i18nString}}</button>
+                    <button type="button" class="btn closeCancel" ng-click="importQaModal.closeModal()"> {{'cancel'| i18nString}} </button>
+                </div>
+                <div class="pull-right" ng-show="doneImporting">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="importQaModal.closeModal()"> {{'ok_uppercase'| i18nString}} </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importStep == 6">
+          <div class="modal-header bulkImport">
+            <h4 class="modal-title">Warning</h4>
+          </div>
+          <div class="modal-body">
+            <p class="warning-message">
+              The format of the CSV file you are trying to import is going to be deprecated in the upcoming releases. We recommend using the latest version of the CSV format for full compatibility with all the features of Knowledge Graph
+            </p>
+            <span class="linkspan">
+              <i class="fa fa-download"></i>
+              <a download target="_blank" href="{{assetsBase}}/files/SampleFAQsNew.csv">Download</a>
+            </span> 
+            <span class="linkspan"><i class="fa fa-book"></i><a href="https://developer.kore.ai/docs/bots/bot-builder-tool/knowledge-task/importing-the-bot-ontology-from-csv-or-json/" target="_blank">Read more</a></span>
+          </div>
+          <div class="modal-footer form-group">
+            <span>
+                <button type="button" class="btn closeCancel" ng-click="importQaModal.closeModal()"> Cancel </button>
+            </span>
+            <span>
+                <button type="button" class="btn btn-primary btnSave" ng-click="importFAQFileBYFileIDForce()">Proceed</button>
+            </span>
+          </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,131 @@
+<form role="search" name="channelForm" method="get" class="modal-row search-form">
+    <button type="button" ng-click="closeModal()"class="close workplaceModalClose" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+    <!-- Add Bot Welcome -->
+        <div class="add-bot"  perfect-scroll dynamic-height dynaoffset="-100">
+        <div ng-if="resend || verificationSuccessfull"><span href="#" class="fa fa-chevron-left btnBack" ng-click="goStepBack()"></span></div>
+        <div class="container">
+            <div class="row botDetails">
+                <div class="col-xs-3 icon">
+                    <img alt="{{stream.name}}" ng-src="{{stream.icon}}">
+                </div>
+                <div class="col-xs-9 title">
+                    <span>
+                        {{stream.name}}
+                    </span>
+                </div>
+            </div>
+            <div ng-if="emailChannel && !resend && !verificationSuccessfull">
+                <div class="row description">
+                    <p class="title">{{'bt_add_to_email_row_description_title'| i18nString}}</p>
+                    <p class="content">{{'bt_add_to_email_row_description_desc'| i18nString}}</p>
+                </div>
+                <div class="row buttonContainer">
+                    <div class="buttonEmailPhone" ng-click="chooseEmailIdentity(identity)" ng-repeat="identity in identities.email">
+                        <div class="channelDetails"> <span class="channelIcon fa fa-envelope"></span> <!--<img class="channel-icon" src="content/images/channels/email.png"/>--> <span class="title ng-binding" title="{{identity.val}}">{{identity.val}}</span> </div>
+                    </div>
+                </div>
+                <div class="row emailInput">
+                    <div class="input-group fullInputWidth">
+                        <input type="email" name="emailOnly" email-only="true" class="form-control fullInputWidth border4px" ng-model="emailId" placeholder="Add your email address" > 
+                        <span class="input-group-btn"> 
+                            <button type="button"  class="search-submit btn btn-primary"  ng-disabled="!channelForm.emailOnly.$valid || emailId.length === 0 || emailId === null" ng-click="addEmailId(emailId)">{{'email_me'| i18nString}}</button> 
+                        </span> 
+                    </div>
+                    <p class="note">{{'bt_add_to_email_row_description_note'| i18nString}}</p>
+                </div>
+            </div>
+            <div ng-if="!emailChannel && !resend && !verificationSuccessfull">
+                <div class="row description">
+                    <p class="title">{{'bt_add_to_email_row_description_phneNumber_title'| i18nString}}</p>
+                    <p class="content">{{'bt_add_to_email_row_description_phneNumber_desc'| i18nString}}</p>
+                </div>
+
+                <div class="row buttonContainer">
+                    <div class="buttonEmailPhone" ng-click="choosePhoneIdentity(identity)" ng-repeat="identity in identities.phone">
+                        <div class="channelDetails"> <span class="channelIcon fa fa-mobile"></span> <!--<img class="channel-icon" src="content/images/channels/email.png"/>--> <span class="title ng-binding" title="{{identity.val}}">{{identity.val}}</span> </div>
+                    </div>
+                </div>
+
+                <div class="row emailInput phoneInput">
+                    <div class="input-group fullInputWidth">
+                        <div auto-close="outsideClick" class="country-codes no-margin dropdown">
+
+                            <button  type="button" data-toggle="dropdown" class="country-codes-toggle dropdown-toggle"
+                                     ng-click="searchCountryCodes = ''; scrollDown();">
+                                <!-- {{countryCodeChoosen.value}} -->
+                                {{phoneNumber.countryCode}}<i class="fa fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-left">
+
+                                <!-- Search -->
+                                <div class="navbar-search-wrapper">
+                                    <div class="navbar-search">
+                                        <div class="search-bar">
+                                            <input type="text" ng-model="searchCountryCodes"
+                                                   class="form-control height32"
+                                                   placeholder="{{'search'| i18nString}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <perfect-scrollbar suppress-scroll-X="true"
+                                                   refresh-on-change="[_constants_.countryCodes,searchCountryCodes]"
+                                                   class="country-codes-content"> -->
+                                <ul style="max-height:300px;overflow:auto;"> 
+                                    <li data-ng-repeat="item in _constants_.countryCodes| filter:{name:searchCountryCodes}">
+                                        <a data-ng-click="selectItem(item, $parent.$index)" data-ng-hide="">
+                                            <span class="name">{{item.name}}</span>
+                                            <span class="value">{{item.value}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="text" 
+                                   name="phoneOnly" 
+                                   class="form-control  phone-field"
+                                   phone-only="true" 
+                                   country-code={{phoneNumber.countryCode}} 
+                                   placeholder="Add your  phone number" ng-model="phoneNumber.number" email-phone basic-validation="true">
+                        </div>
+                        <span class="input-group-btn"> 
+                            <button type="button"  class="search-submit btn btn-primary"  ng-disabled="!channelForm.phoneOnly.$valid || phoneNumber.number.length === 0 || phoneNumber.number === null" ng-click="addPhoneNumber(phoneNumber)">SMS me </button> 
+                        </span> 
+                    </div>
+                    <p class="note marginTop10">{{'bt_add_to_email_row_description_phneNumber_note'| i18nString}}</p>
+                </div>
+            </div>
+            <div ng-if="resend && resendEmail && !verificationSuccessfull">
+                <div class="row description">
+                    <p class="content align-center">{{'formtitles_verify_email'| i18nString}}</p>
+                    <p class="content">{{'bt_add_to_email_email_Verification_p1'| i18nString}}<span class="highlight-text">{{selectedEmail}}</span> . {{'bt_add_to_email_email_Verification_p2'| i18nString}}</p>
+                </div>
+                <span class="input-group-btn"> 
+                    <button type="button"  class="search-submit btn btn-primary" ng-click="resendEmailVerify()">{{resendMailStatusText}}</button> 
+                </span>
+            </div>
+            <div ng-if="resend && resendPhone && !verificationSuccessfull">
+                <div class="row description">
+                    <p class="content align-center">{{'formtitles_verify_phone'| i18nString}}</p>
+                    <p class="content">{{'verification_code_sent'| i18nString}} <span class="highlight-text">{{selectedPhoneNumber}}</span> . {{'receive'| i18nString}}</p>
+                </div>
+                <div class="row emailInput">
+                    <div class="input-group fullInputWidth">
+                        <input type="text" class="form-control fullInputWidth verificationCodeInput" ng-model="phone.phoneOTP" placeholder="Enter verification code" > 
+                    </div>
+                </div>
+                <div class="input-group-btn resendMobileDiv ">
+                    <button type="button"  class="verify-mobile-submit btn btn-primary" ng-click="changeMobileNumber()">{{'change_mobile_number'| i18nString}}</button> 
+                    <button type="button"  class="verify-mobile-submit btn btn-primary" ng-click="resendPhoneCode()">{{codeSent}}</button> 
+                    <button type="button"  class="search-submit btn btn-primary" ng-click="phoneVerify()" ng-disabled="phone.phoneOTP.length === 0">{{resendPhoneVerifyStatusText}}</button> 
+                </div>
+            </div>
+            <div ng-if="verificationSuccessfull">
+                <div class="row description">
+                    <p class="content"><span class="highlight-text">{{stream.name}}</span>{{'bt_add_to_email_has_been_Added_to'| i18nString}}<span class="highlight-text">{{selectedIdentity}}.</span></p>
+                    <p class="content">{{'bt_add_to_email_verify_desc_p1'| i18nString}}{{emailChannel? email : message }}{{'bt_add_to_email_verify_desc_p2'| i18nString:({dyn:source.name})}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,144 @@
+<div class="modalSliderContainer width700">
+   <form name="btchannel.twilioForm" novalidate>
+    <div class="modalHeader channelModalHeader">
+        <h4 class="modal-title" id="gridSystemModalLabel">
+            <i class="btx-close" ng-click="goToHome()"></i>
+            {{'bt_chnl_twilioS_header'| i18nString}}</h4>
+</div>
+    <div class="modalBody slack-channel-page inner-scroll channelInnerContent" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+        <div class="col-xs-12 step-progress-container">
+            <step-progress steps="steps" on-click="stepClick"></step-progress>
+        </div>
+        <div ng-repeat="step in steps" ng-show="step.active" class="slcakChannels widthseventy">
+         <div class="col-xs-12 noPadding" ng-show="steps[0].active">
+             <div class="col-xs-12 channel-content">
+                 <div class="info noMargin"> 
+                     <p>{{'Bt_chnl_twilioS_instruct_desc'| i18nString}}</p>
+                     <div class="info">
+                         <p class="channelstep marginTop15">{{'Bt_chnl_twilioS_instruct_step1_label'| i18nString}} </p>
+                         <p ng-bind-html="'login_twilio'| i18nString:({link:'https://www.twilio.com/'})"></p>
+                         <img ng-src="{{assetsBase}}images/Twilio_SMS_1.png" class="marginBottom10 width100percent" />
+                     </div>
+                 </div> 
+             </div>
+             <div class="col-xs-12 channel-content">
+                 <div class="info noMargin"> 
+                     <div class="info">
+                         <p class="channelstep marginTop15">{{'Bt_chnl_twilioS_instruct_step2_label'| i18nString}}  </p>
+                         <p>{{'Bt_chnl_twilioS_instruct_step2_desc1'| i18nString}} </p>
+                         <img ng-src="{{assetsBase}}images/Twilio_SMS_2.png" class="marginBottom10 width100percent" />
+                         <p>{{'Bt_chnl_twilioS_instruct_step2_desc2'| i18nString}} </p>
+                         <img ng-src="{{assetsBase}}images/Twilio_SMS_3.png" class="marginBottom10 width100percent" />
+                         <p>{{'Bt_chnl_twilioS_instruct_step2_desc3'| i18nString}} </p>
+                         <img ng-src="{{assetsBase}}images/Twilio_SMS_4.png" class="marginBottom10 width100percent"  />
+                         <p>{{'Bt_chnl_twilioS_instruct_step2_desc4'| i18nString}}</p>
+                         <img ng-src="{{assetsBase}}images/Twilio_SMS_5.png" class="marginBottom10 width100percent"  />
+                     </div>
+                 </div> 
+             </div>
+             <div class="col-xs-12 channel-content">
+                 <div class="info noMargin"> 
+                     <div class="info">
+                         <p class="channelstep marginTop15">{{'Bt_chnl_twilioS_instruct_step3_label'| i18nString}}  </p>
+                         <p>{{'Bt_chnl_twilioS_instruct_step3_desc'| i18nString}}</p>
+                         <p class="marginTop15">{{'Bt_chnl_twilioS_instruct_step3_desc_1'| i18nString}}</p>
+                         <img ng-src="{{assetsBase}}images/Twilio_SMS_6.png" class="marginBottom10 width100percent" />
+                         <p>{{'Bt_chnl_twilioS_instruct_step3_note'| i18nString}} </p>
+                     </div>
+                 </div> 
+             </div>
+         </div>
+      <div class="col-xs-12 noPadding" ng-show="steps[1].active">
+          <div class="col-xs-12 channel-content">
+              <div class="col-xs-12 noPadding">
+                <div class="mb-10">{{'Bt_chnl_twilioS_config_desc'| i18nString}}</div>
+                <div class="col-xs-12 form-group noPadding" ng-repeat="cbUrl in callBackUrls">
+                          <div class="col-xs-12 noPadding">
+                              <label>{{cbUrl.label}}</label>
+                          </div>
+                          <div class="col-xs-12 noPadding">
+                              <div class="input-group">
+                                  <input type="text" id="{{cbUrl.id}}{{step.step}}" class="form-control" ng-model="cbUrl.url" ng-readonly="true" name="appName">
+                                  <div class="input-group-addon pointer-hand" data-clipboard-target="#{{cbUrl.id}}{{step.step}}"> {{'copy'| i18nString}} </div>  
+                              </div> 
+                              <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}<span></div>              
+                          </div>
+                </div>
+              </div>
+          </div>
+          <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+            <div class="mb-10">{{'Bt_chnl_twilioS_config_fall_note'| i18nString}}</div>
+            <div class="col-xs-12 row form-group noPadding">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field">{{'Bt_chnl_twilioS_config_accountsid_label'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <input type="text" class="form-control" ng-model="channel.accountSid" name="accountSid" required="">
+                    <div  ng-show="btchannel.twilioForm.accountSid.$dirty || accountSidRequired">
+                        <div error-alert ng-show="btchannel.twilioForm.accountSid.$error.required" class="text-danger">
+                          {{'bt_chnl_twilio_pls_provide_accnt_sid'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+            <div class="col-xs-12 row form-group noPadding">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field">{{'Bt_chnl_twilioS_config_athtoken_label'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <input type="text" class="form-control" ng-model="channel.authToken" name="authToken" required="">
+                    <div ng-show="btchannel.twilioForm.authToken.$dirty || authTokenRequired">
+                        <div error-alert ng-show="btchannel.twilioForm.authToken.$error.required" class="text-danger">
+                          {{'bt_chnl_twilio_pls_provide_auth_token'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+            <div class="col-xs-12 row form-group noPadding">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field">{{'Bt_chnl_twilioS_config_servicesid_label'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <input type="text" class="form-control" ng-model="channel.messagingServiceSid" name="messagingServiceSid" required="">
+                    <div  ng-show="btchannel.twilioForm.messagingServiceSid.$dirty || messagingServiceSidRequired">
+                        <div error-alert ng-show="btchannel.twilioForm.messagingServiceSid.$error.required" class="text-danger">
+                          {{'bt_chnl_twilio_pls_provide_service_sid'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        <div class="col-xs-12 form-group radioDiv options-wrap channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+    
+            <div>
+                <label>{{'enable_chnl'| i18nString}}</label>
+                <p>{{'bt_chnl_twilio_select_y'| i18nString}}</p>
+            </div>
+
+                <div>
+                    <label for="twilio.enable.no">
+                        <input ng-value="false" ng-checked="true" type="radio" ng-model="value.enable" name="twilio.enable" id="twilio.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div>
+                    <label for="twilio.enable.yes">
+                        <input ng-value="true" type="radio" ng-model="value.enable" name="twilio.enable" id="twilio.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                    </label>
+                </div>
+        </div>
+        <div class="col-xs-12"> </div>
+      </div>
+    </div>  
+    </div>
+    <div class="modalFooter">
+        <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+        <button type="button" class="btn" ng-click="save(btchannel.twilioForm)" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+        <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+     </div>
+   </form>
+</div>
+

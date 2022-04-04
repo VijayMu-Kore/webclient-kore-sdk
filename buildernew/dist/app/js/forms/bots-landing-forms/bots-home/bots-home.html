@@ -1,0 +1,811 @@
+<div class="builderloaderLayer animationIfLeave" id="koreLoaderLayer" ng-if="resumingBuilder && !loadingBots">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content"> {{'reloading'| i18nString}}</span>
+    </span>
+</div>
+<div class="builderloaderLayer animationIfLeave" id="koreLoaderLayer" ng-if="installingBot">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content"> Installing Bot</span>
+    </span>
+</div>
+<div id='secssionTimeoutCountDown'>
+    <img ng-src="{{timerBG}}" class="timer">
+    <span id="secssionTimeOutTimer"></span>
+    <span id="countDownTimerCloseBtn" ng-click="closeCountDownTimerCloseBtn()" class="closeHover">{{'close'| i18nString}}</span>
+</div>
+<div class="container border">
+    <div class="content-loading" ng-if="loadingBots">
+    <span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content"> {{'loading_your_bots'| i18nString}}</span>
+    </span>
+    </div>
+    <div id="page-content-wrapper" ng-show="!loadingBots && !$root.showLoginLoader">
+        <div ng-show="showHeader">
+            <nav class="navbar navbar-inverse botBuilderHeader">
+                <div class="container-fluid" ng-if="!directiveLoading">
+                    <div class="navbar-collapse" id="myNavbar">
+                        <!--Left container starts here-->
+                        <ul class="nav navbar-nav leftPanel">
+                            <li ng-show="views.botsForm || views.noBotsForm || views.profileForm"><a href="#" class="homePageLink"><img ng-src="{{koreLogo}}" class="logoIcon" src="/botbuilder/assets/landingImages/kore-logo.svg"></a></li>
+                         </ul>
+                        <ul class="nav navbar-nav middlePanel" ng-if="!(views.noBotsForm || views.botsForm) && views.botDetailsForm">
+                            <li class="tabDiv" >
+                                <div ng-if='!fromWorkbench && !fromSmart && !isFromKora' class="tabClick backToBotList" ng-click="callbacks.showView('botsForm')">
+                                    <!-- <i class="btx-apps"></i> -->
+                                    <img class="koreICon" ng-src="{{koreIcon}}" src="{{brokenImageSmall}}" onerror="handleimgLoad(this)" >
+                                </div>
+                                <div ng-if='fromSmart' class="tabClick" ng-click="redirectSmart()"> 
+                                    <!-- <i class="btx-apps"></i> -->
+                                    <img class="koreICon" ng-src="{{smartKoreIcon}}" src="{{brokenImageSmall}}" onerror="handleimgLoad(this)" >
+                                </div>
+                                <div ng-if='fromWorkbench' class="tabClick" ng-click="redirectWorkbench()"><i class="btx-apps"></i></div>
+                            </li>
+                            <li class="tabDiv" ng-if="builderNavigator.navigationTree.permitedMenuItems.tab.skills" ng-click="callbacks.navigateTo('skills')">
+                                <div class="tabClick" ng-class="{'activeHomeTab':builderNavigator.currentNavigationObj.selectedTab === 'skills'}">{{'nav_tab_name_skills' | i18nString}}</div>
+                            </li>
+                            <li class="tabDiv" ng-if="builderNavigator.navigationTree.permitedMenuItems.tab.deploy" ng-click="callbacks.navigateTo('deploy')">
+                                <div class="tabClick" ng-class="{'activeHomeTab':builderNavigator.currentNavigationObj.selectedTab === 'deploy'}">{{'nav_tab_name_deploy' | i18nString}}</div>
+                            </li>
+                            <li class="tabDiv" ng-if="builderNavigator.navigationTree.permitedMenuItems.tab.analytics">
+                                <div class="dropdown tabClick"  ng-class="{'activeHomeTab':builderNavigator.currentNavigationObj.selectedTab === 'analytics'}">
+                                    <div class="dropdown-toggle" type="button" data-toggle="dropdown">{{'nav_tab_name_analytics' | i18nString}}<i class="btx-carrot-down"></i></div>
+                                    <ul class="dropdown-menu">
+                                        <li ng-if="builderNavigator.navigationTree.permitedMenuItems.menu.conversations"  ng-click="callbacks.navigateTo(null,'conversations')"><a>{{'conversation' | i18nString}} {{'dashboard_name' | i18nString}}</a></li>
+                                        <li ng-if="builderNavigator.navigationTree.permitedMenuItems.menu.performance"  ng-click="callbacks.navigateTo(null,'performance')"><a>{{'performance' | i18nString}} {{'dashboard_name' | i18nString}}</a></li>
+                                        <li ng-if="builderNavigator.navigationTree.permitedMenuItems.menu.customDashboard"  ng-click="callbacks.navigateTo(null,'customDashboard')"><a>{{'custonDashboard' | i18nString}}</a></li>
+                                        <li ng-if="builderNavigator.navigationTree.permitedMenuItems.menu.sessionFlow"  ng-click="callbacks.navigateTo(null,'sessionFlow')"><a>{{'nav_tab_name_sessionFlow' | i18nString}}</a></li>
+                                        <li ng-if="builderNavigator.navigationTree.permitedMenuItems.menu.metrics"  ng-click="callbacks.navigateTo(null,'metrics')"><a>{{'nav_tab_name_metrics' | i18nString}}</a></li>
+                                        <li ng-if="builderNavigator.navigationTree.permitedMenuItems.menu.botDashboard"  ng-click="callbacks.navigateTo(null,'botDashboard')" class="border-t"><a>{{'usage_name' | i18nString}}</a> <i class="btx-info" ng-click="$event.stopPropagation()" tooltip-placement="top-left" tooltip="{{'usagemetrics_deprecated' | i18nString}}"></i></li>
+                                        <li ng-if="builderNavigator.navigationTree.permitedMenuItems.menu.containmentDashboard"  ng-click="callbacks.navigateTo(null,'containmentDashboard')"><a>{{'containmentdashboard_name' | i18nString}}</a> <i class="btx-info" ng-click="$event.stopPropagation()" tooltip-placement="top-left" tooltip="{{'containment_deprecated' | i18nString}}"></i></li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="tabDiv" ng-if="builderNavigator.navigationTree.permitedMenuItems.tab.manage" ng-click="callbacks.navigateTo('manage')">
+                                <div class="tabClick" ng-class="{'activeHomeTab':builderNavigator.currentNavigationObj.selectedTab === 'manage'}">{{'manage' | i18nString}}</div>
+                            </li>
+                        </ul>
+                        <!--left container ends here-->
+                        <ul class="nav navbar-nav middlePanel" ng-if="(views.noBotsForm || views.botsForm)">
+                            <li class="tabDiv">
+                                <div class="pull-right tabClick" id="virtualAsstTab" ng-click="selectHomeTab('bots')" ng-class="{'activeHomeTab': selectedHomeTab=== 'bots'}" style="padding:6px;cursor:pointer;" >{{'virtual_assistants'| i18nString}}</div>
+                            </li>
+                            <li class="tabDiv" ng-if="hasProcessAppTabAccess">
+                                <div class="pull-right tabClick" id="koreProcessAppsTab"  ng-click="selectHomeTab('processApps')"   style="padding:6px;cursor:pointer;"  ng-class="{'activeHomeTab': selectedHomeTab=== 'processApps'}">{{'process_apps'| i18nString}}<span class="tooltip-custom"><img class="beta-icon" ng-src="{{BuilderContextUrl}}/assets/icons/betaIcon.svg"><span class="tooltiptext" ng-click="$event.stopPropagation()"  ng-bind-html="'beta_feature'| i18nString:({link:'https://developer.kore.ai/docs/bots/whats-new/kore-ai-beta-features/'})"></span></span></div>
+                            </li>
+                            <!-- <li class="tabDiv">
+                                <div class="pull-right tabClick" ng-click="selectHomeTab('digitalApps')" style="padding:6px;cursor:pointer;" ng-class="{'activeHomeTab': selectedHomeTab=== 'digitalApps'}">{{'digital_apps'| i18nString}}</div>
+                            </li> -->
+                            <li class="tabDiv" ng-if="hasDataTabAccess">
+                                <div class="pull-right tabClick" ng-click="selectHomeTab('dataForm')" ng-class="{'activeHomeTab': (selectedHomeTab == 'dataForm')}" style="padding:6px;cursor:pointer;" >
+                                    {{'data'| i18nString}}
+                                    <!-- <span class="tooltip-custom">
+                                        <img class="beta-icon" ng-src="{{BuilderContextUrl}}/assets/icons/betaIcon.svg">
+                                        <span class="tooltiptext" ng-click="$event.stopPropagation()"  ng-bind-html="'beta_feature'| i18nString:({link:'https://developer.kore.ai/docs/bots/whats-new/kore-ai-beta-features/'})"></span>
+                                    </span> -->
+                                </div>
+                            </li>
+                        </ul>
+                        <!--Right container starts here-->
+                        <ul class="nav navbar-nav navbar-right rightPanel"> 
+						<!--Switch task state-->
+                        <!-- <li ng-show="builderHeader.menuItems.bots && views.botDetailsForm && !directiveLoading && currSelectedBot.name && callbacks.streamData && callbacks.streamData.visibility.namespace !=='private'" class="seperator">|</li> -->
+                            <li ng-show="builderHeader.menuItems.upgrade"><button class="btn btn-primary upgradeBtn">{{'upgrade'| i18nString}} </button></li>
+
+                            <!--Settings starts here-->
+                            <li ng-show="builderHeader.menuItems.settings" class="settings">
+                                <div class="dropdown">
+                                    <a class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a>{{'team_settings'| i18nString}}</a></li>
+                                        <li><a>{{'price_plan'| i18nString}}</a></li>
+                                        <li><a>{{'billing'| i18nString}}</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+
+                             <!-- <li ng-show="builderHeader.menuItems.settings" class="seperator">|</li> -->
+
+                            <li>
+                                <span class="solutionsetup" ng-show="callbacks.showSolutionBotSetup && selectedStream.sbStreamId" >
+                            <button class="btn btn-primary btn-sm" ng-show="callbacks.showSolutionBotSetup && selectedStream.sbStreamId" ng-click="callbacks.setupTheBot(currSelectedBot)" >{{'setup_bot'| i18nString}}</button>
+                </span>
+                            </li>
+                            <!-- <li ng-show="callbacks.showSolutionBotSetup" class="seperator">|</li> -->
+                            <!-- Bot Dropdown starts here-->
+                            <!-- <li ng-if="builderHeader.menuItems.bots && views.botDetailsForm && currSelectedBot.name && !isFromKora && !fromSmart" class="botDropdown animationIfEnter-2s" ng-class="{ 'pointer-none': fromWorkbench}">
+                                <div class="dropdown">
+                                    <button class="dropdown-toggle newBot" type="button" ng-click="showBotDropdown($event)" data-toggle="dropdown"><img ng-if="currSelectedBot.name && currSelectedBot.icon" class="avatar"  ng-src="{{currSelectedBot.icon}}" onerror='handleimgLoad(this)'/><img ng-if="currSelectedBot.name && !currSelectedBot.icon" class="avatar"  ng-src="{{brokenImageSmall}}"><span class="bot">{{currSelectedBot.name}}</span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><input ng-click="handleBotSearchDropdown($event)" class="botSearchInput" ng-model="botmeta.botSearchInput" type="text" ng-keyup="searchBotsInDropdown($event)" placeholder="{{'search_bot'| i18nString}}" />
+                                        <span class="searchBar fa fa-search"></span>
+                                        </li>
+                                        <div class="botListContainer" perfect-scroll>
+                                        <li ng-repeat="bot in allBots" ng-if="!isBotSearchModeInDropdown()" ng-click="callbacks.selectBot(bot)"><a><img class="avatar"  ng-src="{{bot.icon}}" />{{bot.name}}</a></li>
+                                         <li ng-repeat="bot in botmeta.searchedBotsInDropDown" ng-if="isBotSearchModeInDropdown()" ng-click="callbacks.selectBot(bot)"><a><img class="avatar"  ng-src="{{bot.icon}}" onerror='handleimgLoad(this)'/>{{bot.name}}</a></li>
+                                        </div>
+                                        <li class="newBotCreat" ng-show="obj.canCreateBot" ng-click="callbacks.fullModalCallback.openFullPageModal(1,'createBot')"><a>+{{'new_bot'| i18nString}}</a></li>
+                                    </ul>
+                                </div>
+                            </li> -->
+                            <!-- <li ng-if="builderHeader.menuItems.bots && views.botDetailsForm && currSelectedBot.name && !isFromKora && !fromSmart" class="seperator animationIfEnter-2s">|</li> -->
+                            <!-- Bot Dropdown ends here-->
+                            <!--NUDGES-->
+                            <li ng-if="builderHeader.menuItems.bots && views.botDetailsForm && selectedStream.type === 'default' && selectedAccount.accountType === 1 && (license && license.planName && ((license.totalCredits < 50))) && selectedStream.visibility.namespace !== 'private' && !selectedStream.isDeflect && (selectedAccount && selectedAccount.roles && selectedAccount.roles.length > 0)" class="nudgesDropDown headerActions animationIfEnter-2s" >
+                                <div class="languageSettingsdropdown dropdown pull-right" >
+                                    <button class="btn dropdown-toggle" type="button" id="nudgesDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                      <!-- <img ng-src="{{nudge}}"> -->
+                                      <i class="btx-billing-upgrade"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="nudgesDropDown">
+                                        <!-- NEW PLAN -->
+                                        <ng-container ng-if="true">
+                                            <div class="plan-type-data">
+                                                <span class="title">{{'plan' | i18nString}}</span>
+                                                <span class="plan-type">{{(license.planName | uppercase) || '---'}}</span>
+                                            </div>
+                                            <div class="count-data-sessions" >
+                                                <div class="price-amount" ng-class="{'standard': license.planId === 'medium', 'enterprise': license.planId === 'large', 'free': license.planId === 'free'}">
+                                                    <ng-container ng-if="license.planId === 'medium'">
+                                                        ${{(license.totalCredits | localString)}}
+                                                    </ng-container>
+                                                    <ng-container ng-if="(license.planId === 'large')">
+                                                        {{ license.totalCredits | localString: 'sessions' }}
+                                                    </ng-container>
+                                                    <ng-container ng-if="(license.planId === 'free')">
+                                                        {{((license.totalRequests) | localString: 'sessions')}}
+                                                    </ng-container>
+                                                </div>
+                                                <div class="sessions-remaining" ng-if="license.planId === 'medium'">{{'credits_remaining' | i18nString}}</div>
+                                                <div class="sessions-remaining" ng-if="(license.planId === 'large')">{{'session_remaning' | i18nString}}</div>
+                                                <div class="sessions-remaining" ng-if="(license.planId === 'free')">{{'Requests Remaining'}}</div>
+                                            </div>
+                                            <div class="warning-data" ng-if="(license.planId !== 'free') && (license.totalCredits < 50)" >
+                                                <span class="warning-tooltip-data">
+                                                    <i class="btx-warning"></i>
+                                                </span>
+                                                <span class="warning-info">{{'low_balance_reloadto_avoid_intterruptions' | i18nString}}</span>
+                                            </div>
+                                            <div class="upgrade-reload-btn" ng-if="license.planId === 'free'" ng-click="openPlanUsage('plan')">
+                                                <i class="btx-move-up"></i>
+                                                {{'upgrade_plan' | i18nString}}
+                                            </div>
+                                            <div class="upgrade-reload-btn" ng-if="license.planId === 'medium'" ng-click="openPlanUsage('reload')">
+                                                <i class="btx-currency"></i>
+                                                {{'reload_label' | i18nString}}
+                                            </div>
+                                        </ng-container>
+                                        <!-- NEW PLAN -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <!--NUDGES-->
+                            <!--BOT AND STATUS-->
+                            <li class="botStatus headerActions animationIfEnter-2" ng-if="builderHeader.menuItems.bots && views.botDetailsForm && currSelectedBot.name && !isFromKora && !fromSmart" ng-class="{ 'pointer-none': fromWorkbench}" class="language animationIfEnter-2s">
+                                <div class="languageSettingsdropdown dropdown pull-right" id="koreBotSearchDropdown">
+                                    <button class="btn  dropdown-toggle" type="button" id="botsListingDropDown" ng-click="openCloseBotSelectionDrop()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                      <div class="row botStatusTrack">
+                                            <div class="col-xs-6 statusBotName"  tooltip-placement="bottom" tooltip="{{currSelectedBot.name}}"><img class="botIcon" src="{{brokenImageSmall}}"  ng-src="{{currSelectedBot.icon}}" onerror='handleimgLoad(this)'>{{currSelectedBot.name}}</div>
+                                          <div class="col-xs-6 statusTrack" ng-init="updateFilter()">
+                                            <span class="publishStatus" ng-if="botstate.filterToggle === 'published'"><i class="btx-publish"></i>{{'published'| i18nString}}</span>
+                                            <span class="inProgressStatus" ng-if="(botstate.filterToggle === 'indevelopment') ||  !(botstate.filterToggle)">
+                                                <!-- <span class="dotStatus"></span> -->
+                                                <i class="btx-in-progress"></i>
+                                                {{'indevelopment_capital'| i18nString}}</span>
+                                                <i class="btx-dropdown"></i>
+                                        </div>
+                                      </div>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="botsListingDropDown">
+                                      <li class="botStatusTitle">{{'virtual_assistants'| i18nString}}</li>
+                                      <li class="botStatusSearch" ng-click="$event.stopPropagation();">
+                                          <input ng-click="handleBotSearchDropdown($event)" class="botSearchInput" ng-model="botmeta.botSearchInput" type="text" ng-keyup="searchBotsInDropdown($event)" placeholder="{{'search_bot'| i18nString}}">
+                                          <i ng-if="!botmeta.botSearchInput" class="btx-search"></i>
+                                          <i ng-if="botmeta.botSearchInput" class="btx-close" ng-click="$event.stopPropagation();botmeta.botSearchInput = ''"></i>
+                                      </li>
+                                      <li class="botStatusScroll" perfect-scroll  ng-if="!botmeta.botSearchInput" ng-click="$event.stopPropagation();">
+                                        <div class="botsBOrder">
+                                            <div class="botDetailsStatus" ng-if="!updatingBotsList" ng-repeat="bot in allBots"  ng-class="{'expandedBot':selectedBot._id === bot._id}" >
+                                                <div class="botDetailsTitle" ng-click="updateFilterValue('published',bot)">
+                                                    <span class="botStatusIcon">
+                                                        <!-- <i class="btx-warn"></i> -->
+                                                        <img class="avatar"  ng-src="{{bot.icon}}" onerror='handleimgLoad(this)'/>
+                                                        <!-- <a><img class="avatar"  ng-src="{{bot.icon}}" onerror='handleimgLoad(this)'/>{{bot.name}}</a> -->
+                                                    </span>
+                                                    <span class="botTitle">{{bot.name}}</span>
+                                                    <div class="btx-carrot-border" ng-click="$event.stopPropagation();expandSelectedBot(bot)"><i class="btx-carrot-down"></i></div>
+                                                </div>
+                                                <div class="botDetailsPublish" id="{{bot._id}}_published"  ng-click="$event.stopPropagation();updateFilterValue('indevelopment',bot)" ng-class="{'botDisabled':(bot.visibility.namespace == 'private'), 'active' : (currSelectedBot._id === bot._id) && (botstate.filterToggle === 'published')}">
+                                                    <span class="statusPublish">
+                                                        <span class="publishIcon"><i class="btx-publish"></i></span>
+                                                        <span class="publishText">{{'published'| i18nString}}</span>
+                                                        <i  class="btx-check"></i>
+                                                    </span>
+                                                    <!-- <span class="botVersion">v1.2.0</span> -->
+                                                </div>
+                                                <div class="botDetailsInprogress" id="{{bot._id}}_in_development" ng-class="{'active' : (currSelectedBot._id === bot._id) && (botstate.filterToggle === 'indevelopment')}" ng-click="$event.stopPropagation();updateFilterValue('published',bot)">
+                                                    <span class="statusInProgress">
+                                                        <span class="inprogressIcon"><i class="btx-in-progress"></i></span>
+                                                        <span class="inprogressText">{{'in_development'| i18nString}}</span>
+                                                        <i  class="btx-check"></i>
+                                                    </span>
+                                                </div>
+                                              </div>
+                                        </div>
+                                      </li>
+                                      <li class="botStatusScroll" perfect-scroll  ng-if="botmeta.botSearchInput" ng-click="$event.stopPropagation();">
+                                        <div class="botsBOrder">
+                                            <div class="botDetailsStatus" ng-if="!updatingBotsList" ng-repeat="bot in botmeta.searchedBotsInDropDown" ng-class="{'expandedBot':selectedBot._id === bot._id}">
+                                                <div class="botDetailsTitle"  ng-click="updateFilterValue('published',bot)">
+                                                    <span class="botStatusIcon">
+                                                        <img class="avatar"  ng-src="{{bot.icon}}" onerror='handleimgLoad(this)'/>
+                                                        <!-- <a><img class="avatar"  ng-src="{{bot.icon}}" onerror='handleimgLoad(this)'/>{{bot.name}}</a> -->
+                                                    </span>
+                                                    <span class="botTitle">{{bot.name}}</span>
+                                                    <div class="btx-carrot-border" ng-click="$event.stopPropagation();expandSelectedBot(bot)" ><i class="btx-carrot-down"></i></div>
+                                                </div>
+                                                <div class="botDetailsPublish" id="{{bot._id}}_published"  ng-click="$event.stopPropagation();updateFilterValue('indevelopment',bot)" ng-class="{'botDisabled':(bot.visibility.namespace == 'private'), 'active' : (currSelectedBot._id === bot._id) && (botstate.filterToggle === 'published')}">
+                                                    <span class="statusPublish">
+                                                        <span class="publishIcon"><i class="btx-publish"></i></span>
+                                                        <span class="publishText">{{'published'| i18nString}}</span>
+                                                        <i  class="btx-check"></i>
+                                                    </span>
+                                                    <!-- <span class="botVersion">v1.2.0</span> -->
+                                                </div>
+                                                <div class="botDetailsInprogress" id="{{bot._id}}_in_development" ng-class="{'active' : (currSelectedBot._id === bot._id) && (botstate.filterToggle === 'indevelopment')}" ng-click="$event.stopPropagation();updateFilterValue('published',bot)">
+                                                    <span class="statusInProgress">
+                                                        <span class="inprogressIcon"><i class="btx-in-progress"></i></span>
+                                                        <span class="inprogressText">{{'in_development'| i18nString}}</span>
+                                                        <i  class="btx-check"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                      <!-- <li class="botStatusLink"  ng-click="callbacks.showView('botsForm')">{{'view_all_virtual_assistants'| i18nString}}</li> -->
+                                      <li class="botStatusLink" id="createNewBotSlide"  ng-show="obj.canCreateBot" ng-click="callbacks.fullModalCallback.openFullPageModal(1,'createBot')">{{'create_new'| i18nString}}</li>
+                                        
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- PUBLISH-->
+                            <!-- <li class="headerPublish headerActions animationIfEnter-2" ng-if="views.botDetailsForm && (botstate.filterToggle !== 'published')" class="language animationIfEnter-2s">
+                                <button class="btn btnSolidBlue" ng-click="callbacks.navigateTo('publish')">Publish</button>
+                            <li>   -->
+                            <!-- <li class="seperator">|</li>   -->
+                            <!-- PUBLISH-->
+                            <!-- Workbench Redirect button-->
+                            <li class="botStatus headerActions animationIfEnter-2" ng-if="builderHeader.menuItems.bots && views.botDetailsForm && currSelectedBot.name && !isFromKora && !fromSmart && fromWorkbench" class="language animationIfEnter-2s">
+                                <button class="kr-sg-buttonicon-primary btn_lg ng-binding" ng-click="redirectWorkbench()"><img ng-src="{{arrowLeftWhiteIcon}}">{{'workbench_label'| i18nString}}</button>
+                            </li>
+                            <!-- Workbench Redirect button-->
+                            <!--SEARCH -->
+                            <li ng-show="builderHeader.menuItems.bots && views.botDetailsForm" class="headerSearch headerActions animationIfEnter-2s ">
+                                <div class="languageSettingsdropdown dropdown pull-right" id="koreGlobalSearchDropdown">
+                                    <button class="btn dropdown-toggle" type="button" id="searchForMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tooltip-placement="bottom" tooltip="{{'search'| i18nString}}">
+                                      <i class="btx-search"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="searchForMenu">
+                                        <li class="searchContent">
+                                            <div class="searchComponent" ng-click='$event.stopPropagation();'>
+                                                <i class="btx-search" ng-click="openSubMenu($event)"></i>
+                                                <span class="dropdown dropdown-submenu gSearchDD" ng-click='$event.stopPropagation();'>
+                                                    <i class="cursor-pointer dropdown-toggle btx-carrot-down subMenu"  id="searchForMenuGoto" ng-click="$event.stopPropagation();openSubMenu($event)"></i>
+                                                    <ul class="dropdown-menu gSearchNavi" aria-labelledby="searchForMenuGoto" >
+                                                        <li class='cursor-pointer' ng-repeat='dDVal in gSearchDropDown' ng-show='!isUniversalBot()'>
+                                                            <a ng-click='redirectDD(dDVal.name,dDVal)'>
+                                                                <i class="btx-check pull-left" ng-show="selectedDD == dDVal.name"></i>
+                                                                <span class='dDValue'>{{dDVal.name}}</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class='cursor-pointer' ng-repeat='dDVal in gSearchDDUniversal' ng-show='isUniversalBot()'>
+                                                            <a ng-click='redirectDD(dDVal.name,dDVal)'>
+                                                                <i class="btx-check pull-left" ng-show="selectedDD == dDVal.name"></i>
+                                                                <span class='dDValue'>{{dDVal.name}}</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </span>
+                                                <input type='text' placeholder='{{gSearchPlaceHold}}' ng-model='tSearch.text' class='gSearchInput' maxlength='50' ng-if='selectedDD === go_to' ng-change='showGSearchDD()'  ng-click="$event.stopPropagation();" ng-blur="onSearchFocusOut()">
+                                                <input type='text' placeholder='{{gSearchPlaceHold}}' ng-model='tSearch.text' class='gSearchInput' maxlength='50' ng-if='selectedDD !== go_to' ng-keyup='checkTheKey($event)' ng-click="$event.stopPropagation();" ng-blur="onSearchFocusOut()">
+                                                <i class="btx-close cursor-pointer" ng-if='tSearch.text.length !== 0 && (selectedDD === go_to || selectedDD === Knowledge_collection)' ng-click='tSearch.text = ""'></i>
+                                                <i class="btx-close cursor-pointer" ng-if='tSearch.text.length !== 0 && selectedDD !== go_to && selectedDD !== Knowledge_collection' ng-click='viewCheckHome(true);clearSearch()'></i>
+                                            </div>
+                                            <ul class="bt-pos-relative autoSuggest" perfect-scroll dynamic-height dynaoffset="-215">
+                                                <div class="searchBlock" ng-repeat='searchData in builderNavigator.quickSearchData track by $index' id='searchComponents{{$index}}'
+                                                    ng-show='tSearch.text && (selectedDD === go_to)'>
+                                                    <div class="blockContent" ng-repeat='searchObj in searchData.tabElements | filter:{searchTerm:tSearch.text}'>
+                                                        <span class="elementName searchListHeader" ng-if="!$index">{{searchData.name}}</span>
+                                                        <li class='cursor-pointer searchItm elementName' ng-click="callbacks.searchNavigation(null,searchObj)">
+                                                            <span class='gSearch-head-font'>
+                                                                <span title="{{searhLevel.name}}" ng-repeat="searhLevel in searchObj.elements  track by $index"
+                                                                    ng-click="$event.stopPropagation();callbacks.searchNavigation(searhLevel)"
+                                                                    ng-class="{'autoSearchLast':(searchObj.elements.length==($index+1))}">
+                                                                    <span ng-if='$index'> > </span>
+                                                                    {{searhLevel.name}}
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                              </div>
+                            </li>
+                            <!--SEARCH -->
+                            <!--DOC STATUS -->
+                            <li ng-if="builderHeader.menuItems.bots && views.botDetailsForm" class="docStatus headerActions animationIfEnter-2s">
+                                <progress-dock  bridge="callbacks.progressBridge" ></progress-dock>
+                            </li>
+                            <!--DOC STATUS -->
+                            <!--LANGUAGE -->
+                            <li ng-if="builderHeader.menuItems.bots && views.botDetailsForm" class="text-capitalize language headerActions animationIfEnter-2s" ng-class="{'pointer-none': callbacks.supportedLanguages.length ==1}">
+                                <div class="languageSettingsdropdown dropdown pull-right" >
+                                    <button class="btn dropdown-toggle" type="button" id="LanguageDropDown" data-toggle="{{callbacks.supportedLanguages.length > 1 ? 'dropdown' : ''}}" aria-haspopup="true" aria-expanded="true" tooltip-placement="bottom" tooltip="{{'bot_language'| i18nString}}">
+                                      {{seedLanguages[callbacks.currentLanguage].dvalue}}
+                                        <i class="btx-carrot-down"></i>
+                                    </button>
+                                    <!-- <button class="btn dropdown-toggle" ng-show="callbacks.showGenericProtip  && callbacks.currentLanguage  === 'ge'" type="button" id="LanguageDropDown" data-toggle="{{callbacks.supportedLanguages.length > 1 ? 'dropdown' : ''}}" aria-haspopup="true" aria-expanded="true" tooltip-placement="bottom" tooltip="{{'bot_language'| i18nString}}">
+                                        Ge
+                                          <i class="btx-carrot-down"></i>
+                                      </button> -->
+                                    <ul class="dropdown-menu languageDropContainer" perfect-scroll aria-labelledby="LanguageDropDown">
+                                        <li class="genericLanguageProtip" ng-show="seedLanguages['ge'].dvalue  === 'ge'">
+                                          <a>
+                                            <i class="btx-info"></i><span class="genericProtipText">Generic Language is depricated</span>
+                                          </a>
+                                        </li>
+                                      <!-- <li ng-show="callbacks.showGenericProtip"><a class="text-capitalize" href="" ng-class="{'boldText':callbacks.currentLanguage  === 'ge'}">Generic(Ge)<span class="defaultLanguageSelected">{{callbacks.streamData.defaultLanguage === "ge" ? defaultLabel: ''}}</span></a></li> -->
+                                        <li ng-repeat="language in callbacks.supportedLanguages" ng-click="callbacks.changeBotLanguage(language, true,true)">
+                                            <a class="text-capitalize" href="" ng-class="{'boldText':language.value === callbacks.currentLanguage }">{{language.name}}({{language.value}}) {{language.enabled ? '' : disabledLabel}}
+                                              <span class="defaultLanguageSelected" ng-show="language.value === callbacks.streamData.defaultLanguage">{{language.value === callbacks.streamData.defaultLanguage ? defaultLabel: ''}}</span>
+                                              <span class="default" ng-if="language.nluLanguage">{{language.nluLanguage}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                              </div>
+                            </li>
+                            <!-- <li  ng-if="builderHeader.menuItems.bots && views.botDetailsForm && currSelectedBot.name" class="seperator animationIfEnter-2s">|</li> -->
+                             <!--LANGUAGE -->
+                             <!-- bot store -->
+                             <li class="botStoreHeader" ng-if="((views.botsForm) || allProcessApps.length) && (selectedHomeTab !== 'dataForm')">
+                                 <button class="btn pull-right" ng-click="launchBotStore()" tooltip-placement="bottom" tooltip="{{'explore_store'| i18nString}}">
+                                    <i class="btx-explore-bot"></i> 
+                                    {{'explore_store' | i18nString}}
+                                </button>
+                             </li>
+                             <!-- bot store -->
+              
+                            
+                            <!-- INVITE DEVELOPER-->
+                            <li class="inviteDevDiv headerActions animationIfEnter-2s" ng-if="permissionValue && (views.noBotsForm || views.botsForm)">
+                                <button class="btn pull-right closeCancel" ng-click="inviteDeveloper()" tooltip-placement="bottom" tooltip="{{'invite_team'| i18nString}}"> <i class="btx-Invite-members"></i>
+                                    {{'invite_team'| i18nString}}
+                                </button>
+                            </li>
+                            <!-- <li class="seperator" ng-show="permissionValue && !views.botDetailsForm">|</li> -->
+                            <!-- INVITE DEVELOPER-->
+                            <!-- GLOBAL HELP-->
+                            <li class="gHelp headerActions animationIfEnter-2s">
+                                <button class="gHelpLink btn" ng-click="showInstallationModal();"  tooltip-placement="bottom" tooltip-enable='showQuickStartformType !== "botsForm"' tooltip="{{'helpTooltip'| i18nString}}"><span ng-hide="completedPercentage > 99 || showQuickStartformType === 'botsForm'" class="alertDot"></span><i  class="gHelpIcon btx-help"></i><span class="gHelpText">{{'help_main'| i18nString}}</span></button>
+                            <li> 
+                            
+                                <!-- <li class="gHelp headerActions animationIfEnter-2s">
+                                    <button class="gHelpLink btn" ng-click="showCannySupport();" tooltip-placement="bottom" tooltip-enable='showQuickStartformType !== "botsForm"' tooltip="{{'helpTooltip'| i18nString}}"><span ng-hide="completedPercentage > 99 || showQuickStartformType === 'botsForm'" class="alertDot"></span><i  class="gHelpIcon btx-help"></i><span class="gHelpText">Feature Request</span></button>
+                        
+                                <li>   -->
+                            <!-- <li class="seperator">|</li>   -->
+                            <!-- GLOBAL HELP-->
+                            <!--PROFILE-->
+                            <li ng-show="builderHeader.menuItems.profile && (views.botsForm || views.botDetailsForm || views.noBotsForm)" class="profile headerActions leftBorder">
+                                <div class="dropdown">
+                                    <button class="btn  dropdown-toggle accountsListingDropdown" type="button" data-toggle="dropdown" ng-click="toggleAccountsDropdown()" tooltip-placement="left" tooltip="{{'account_profile'| i18nString}}">
+                                        <span class="avatar initials" ng-if="koreUserInfo.profImage && koreUserInfo.profImage==='no-avatar'" style="background-color:#7027E5">{{getFirstLastName(koreUserInfo)}}</span>
+                                        <!-- <img class="avatar" ng-if="koreUserInfo.profImage && koreUserInfo.profImage==='no-avatar'" ng-src="{{BuilderContextUrl}}/img/user-gray.svg" onerror='handleimgLoad(this)'> -->
+                                        <img  class="avatar" src="{{brokenImageSmall}}"  ng-if="!updatingIcon && koreUserInfo.profImage && koreUserInfo.profImage!=='no-avatar'" ng-src="{{profileImgLinkPrefix}}"  onerror='handleimgLoad(this)'>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                         <!--Accounts starts here-->
+                                         <li class="header">{{'accounts'| i18nString}}</li>
+                                            <div class="item accounts" id="headeraccountsList" ng-click="$event.stopPropagation()">
+                                                    <!-- <div class="item accounts" ng-show="accounts.length>1"> -->
+                                                        <li class="accounts-item activeAccount" title="{{selectedAccount.displayName+ ' by '+ selectedAccount.userFullName}}">
+                                                            <div class="version" ng-click="selectAccount(selectedAccount)"><i ng-src="{{checkTickIcon}}" class="checkTickIcon btx-check"></i>{{selectedAccount.displayName}}</div>
+                                                            <span class="selectedDefault" ng-hide="selectedAccount.accountId!==defaultAccountId" >{{'default'| i18nString}}</span><i class="favorite fa fa-star" ng-class="{'selected': selectedAccount.accountId === defaultAccountId}" ng-click="setFavoriteAccount(selectedAccount)" aria-hidden="true"></i>
+                                                        </li>
+                                                        <li class="acccountsList">
+                                                        <div class="accounts-item" ng-repeat="account in accounts | orderBy: 'accountName'" ng-if="selectedAccount.accountId!==account.accountId" title="{{account.displayName+ ' by '+ account.userFullName}}">
+                                                            <div class="version" ng-if="selectedAccount.accountId!==account.accountId" ng-click="selectAccount(account)">{{account.displayName}}</div>
+                                                            <span class="selectedDefault" ng-hide="account.accountId!==defaultAccountId">{{'default'| i18nString}}</span>
+                                                            <i class="favorite fa fa-star" ng-class="{'selected': account.accountId === defaultAccountId}" ng-if="selectedAccount.accountId!==account.accountId" ng-click="setFavoriteAccount(account)" aria-hidden="true"></i>
+                                                        </div>
+                                                    </li>
+                                                        <li class="newAccount" ng-if="canCreateAccount && false"><!--hiding for now-->
+                                                            <a ng-click="createAccount()">
+                                                                <span class="plus">+</span>{{'free_account'| i18nString}}
+                                                            </a>
+                                                        </li>
+                                            </div>
+                                        <!--Accounts ends here-->
+                                        
+                              
+                                        <li class="item" ng-show="isAdminCheck()"  ng-click="navigateTo('botAdmin')"><a title="{{'goto_admin'| i18nString}}" class="topBorder">{{'goto_admin'| i18nString}}</a></li>                                
+                                        <!-- <li class="item" ng-show="hasProcessAppTabAccess"  ng-click="navigateTo('portal')"><a title="{{'goto_portal'| i18nString}}" class="item">{{'goto_portal'| i18nString}}</a></li>  -->
+                                        <li class="item hide" ng-click="launchBotStore()"><a title="{{'kore_store'| i18nString}}">{{'kore_store'| i18nString}}</a></li>
+                                        <li class="item" ng-click="showProfile()"><a title="{{'profile'| i18nString}}">{{'profile'| i18nString}}</a></li>
+                                        <li class="item" ng-click="showLangModal()"><a title="{{'app_language'| i18nString}}">{{'app_language'| i18nString}}</a></li>
+                                        <li class="item"><a target="_blank" ng-click="linkEvent('document')" href="https://developer.kore.ai/docs/bots/" title="{{'document'| i18nString}}">{{'document'| i18nString}}</a></li>
+                                        <li class="item"><a target="_blank" ng-click="linkEvent('community')" href="https://community.kore.ai" title="{{'developer_community'| i18nString}}">{{'developer_community'| i18nString}}</a></li>
+                                        <li ng-show="currSelectedBot && currSelectedBot._id" class="dropdown-submenu hide item" ng-click="openSubMenu($event)">
+                                            <a class="subMenu" title="{{'labs'| i18nString}}">{{'labs'| i18nString}}</a>
+                                            <ul class="dropdown-menu">
+                                              <li ng-click="navigateTo('storyBoard')"><a>{{'storyboard'| i18nString}}</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="profile-footer">
+                                               <p class="email">{{koreUserInfo.emailId}}</p> 
+                                               <h5  ng-click="logOut()" class="signOffDiv"><i class="poweroffIcon btx-logout"></i>{{'logout'| i18nString}}</h5>
+                                        </li>
+                                        <li class="versionLi hide"><div class='version-info'>Version {{$root.appVersion}}</div></li>
+                                    </ul>
+                                    <!-- {{'version'| i18nString:({$root.appVersion:"$root.appVersion"})}} -->
+                                </div>
+                            </li>
+                             <!--PROFILE-->
+ <!-- <li ng-show="builderHeader.menuItems.profile && (views.botsForm || views.botDetailsForm || views.noBotsForm)" class="seperator">|</li> -->
+                            <!--Notifications starts here-->
+                            <li ng-show="builderHeader.menuItems.notifications" class="notifications">
+                                <div class="dropdown">
+                                    <a class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><img class="avatar"  ng-src="{{assetsBase}}images/left-menu-img/notifications.svg" /></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a>{{'notify_1'| i18nString}}</a></li>
+                                        <li><a>{{'notify_2'| i18nString}}</a></li>
+                                        <li><a>{{'notify_3'| i18nString}}</a></li>
+                                        <li><a>{{'notify_4'| i18nString}}</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!--Notifications ends here-->
+                        </ul>
+                        <!--Right container ends here-->
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- <div ng-show="showHeader" ng-include="'/mainHeader.html'"></div> -->
+        <!-- <div class="trailBotInfo">This bot consumed 80% of free trail limit, please upgrade to paid plan. <img class="closeWhiteIcon" ng-src="{{closeWhiteIcon}}"></div> -->
+      
+        <div class="botsHome" ng-show="(selectedHomeTab == 'bots')">
+            <div data-canny ng-show="loadCanny"></div>
+            <script>!function(w,d,i,s){function l(){if(!d.getElementById(i)){var f=d.getElementsByTagName(s)[0],e=d.createElement(s);e.type="text/javascript",e.async=!0,e.src="https://canny.io/sdk.js",f.parentNode.insertBefore(e,f)}}if("function"!=typeof w.Canny){var c=function(){c.q.push(arguments)};c.q=[],w.Canny=c,"complete"===d.readyState?l():w.attachEvent?w.attachEvent("onload",l):w.addEventListener("load",l,!1)}}(window,document,"canny-jssdk","script");</script>
+            <script>
+              Canny('render', {
+                boardToken: 'a6f06813-83a0-583c-926a-e009c3ef2820',
+                basePath: null, // See step 2
+                ssoToken: null, // See step 3
+              });
+            </script>
+            <div class="animationIfLeave content-loading noPadding" ng-if="directiveLoading" id="directiveLoading">
+                <span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content">
+                    {{'loading'| i18nString}}</span>
+                </span>
+            </div>
+        </div>
+        <div class="full-height full-width" dynamic-height height-property="height" ng-show="(selectedHomeTab == 'dataForm')">
+            <bt-datatable-service ng-if="!loadingBots && !$root.showLoginLoader" ></bt-datatable-service>
+        </div>
+        <div class="full-height full-width" dynamic-height height-property="height" ng-show="(selectedHomeTab == 'processApps')">
+            <bt-process-apps ng-if="!loadingBots && !$root.showLoginLoader"></bt-process-apps>
+        </div>
+    <div class="modal fade" id="inviteDeveloperLanding" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content invite-landing">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{'invite_developer'| i18nString}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xs-12 padding10 invite-email">
+                        <p class="content invite"> {{'enter_email'| i18nString}}</p>
+                        <tag-input taglist='selectedContacts.selectedUsers' callback="callbacks"></tag-input>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                     <button class="btn" ng-disabled="!(callbacks.enable || selectedContacts.selectedUsers.length > 0)" ng-click="inviteShareDeveloper()">{{'invite'| i18nString}}</button>
+                    <button class="btn closeCancel" ng-click="closeInviteModal()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="inviteSent" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content invite-landing">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{'invite_developer'| i18nString}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xs-12 padding10 invite-success text-center">
+                        <img ng-src="{{sucessTickGreen}}">
+                        <p class="invite-sent">{{'invite_success'| i18nString}}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn inviteSent" ng-click="closeInviteSent()">{{'ok'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal fade" id="languageModal" role="dialog">
+        <div class="modal-dialog showLanguageModal">
+          <div class="modal-content">
+            <div class="modal-header languageTitle">                                 
+              <h4 class="modal-title">{{'app_language'| i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+            <label>{{'choose_app'| i18nString}}</label>
+            <div class="kr-sg-dropdowns">                                        
+                <div class="dropdown dropdown-open">
+                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{selectedValue?selectedValue.value:chooseLangOption}}</button>                                            
+                    <ul class="dropdown-menu content-menu">
+                      <li ng-repeat="language in languageArray" ng-if="language.key != selectedValue.key" ng-click="changeLanguageSelected(language)"><a>{{language.value}}</a></li>
+                    </ul>
+                  </div>
+            </div>
+            <p class="languageText">{{'reload_application'| i18nString}}</p>
+            </div>
+            <div class="modal-footer">                               
+              <button class="kr-sg-button-primary btn_md" ng-click="loadLanguage()">{{'save'| i18nString}}</button>
+              <button class="kr-sg-button-secondary btn_md" data-dismiss="modal">{{'cancel'| i18nString}}</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<div ng-include="tmpltPrePath+'templates/helpers/scripts.html'"></div>
+
+
+
+
+<bot-modal-slider id="profileModal" ng-show="loadProfile">
+        <div class="modalSliderContainer width600">
+        
+        <div class="modalHeader">
+        <h4 class="modal-title"><i ng-click="closeProfileModal()" class="btx-close"></i>{{'profile'| i18nString}}</h4>
+        </div>
+        
+        
+        
+        <div class="modalBody add-message" perfect-scroll dynamic-height dynaoffset="-100" height-property="height">
+        <profile class="profile" ng-if="loadProfile" ></profile>
+        </div>
+        </div>
+</bot-modal-slider>
+
+<bot-modal-slider id="helpModal" ng-show="loadInstallation" dynamic-height  height-property="height" ng-class="{'createDialogSlider':helpGuideOptions.showTaskCreation}">
+    <div ng-if="helpGuideOptions.showTemplateInstalation" class="modalSliderContainer sampleBotSetup {{helpGuideOptions.id}}">
+        <sample-bot-configuration on-cancel="onCancelLeftModal" on-back="onCancelLeftModal" options="helpGuideOptions"></sample-bot-configuration>
+    </div>
+    <div class="modalSliderContainer width800 {{helpGuideOptions.id}} create"  ng-if="helpGuideOptions.showTaskCreation">
+        <div class="modalHeader">
+            <h4 class="modal-title tableRow">
+                <i class="btx-close" ng-click="onCancelLeftModal()"></i>
+                <span>{{'create_dialog'| i18nString}}</span>
+            </h4>
+        </div>
+        <bt-create-dialog></bt-create-dialog>
+    </div>
+    <div class="modalSliderContainer quickHelpSupport">
+        <div class="modalLeftSlider">
+            <div class="helpImage lightningBolt" ng-hide="(selectedHomeTab=='bots' && showQuickStartformType == 'botsForm') || ( selectedHomeTab=='processApps' && !selectedProcessApp) || (selectedHomeTab === 'dataForm')" ng-class="{'active':loadQuickStart}" ng-click="showTemplateModal('quickStart')" tooltip-placement="bottom" tooltip="{{'quick_start_guide'| i18nString}}">
+                <span ng-hide="completedPercentage > 99" class="alertDot"></span>
+                <i class="btx-lightningBolt"></i>
+            </div>
+            <div class="helpImage onlineSupport" ng-class="{'active':loadSupport}" ng-click="showTemplateModal('support')" tooltip-placement="bottom" tooltip="{{'support'| i18nString}}">
+               <i class="btx-onlineSupport"></i>
+            </div>
+            <div class="helpImage FAQ" ng-class="{'active':loadHelpContent}" ng-click="showTemplateModal('helpContent',selectedHomeTab)" tooltip-placement="bottom" tooltip="{{'faqs'| i18nString}}">
+                <i class="btx-FAQ"></i>
+            </div>
+        </div>
+
+        <!-- <div class="modalHeader">
+            <h4 class="modal-title" ng-if="loadQuickStart"><i ng-click="closeHelpModal()" class="btx-close"></i>Quick Start</h4>
+            <h4 class="modal-title" ng-if="loadSupport"><i ng-click="closeHelpModal()" class="btx-close"></i>Support</h4>
+            <h4 class="modal-title" ng-if="loadHelpContent"><i ng-click="closeHelpModal()" class="btx-close"></i>{{'page_help'| i18nString}}</h4>
+        </div> -->
+        <div class="modalBody add-message helpContentBody" dynamic-height  height-property="height">
+            <div class="closeIcon">
+                <div ng-show="(loadSupport && (showQuickStartformType === 'botsForm' || selectedProcessApp))" class="animationIfEnter app-version-div">V {{appVersion}}</div>
+                <i class="btx-close" ng-show="(!completedPercentage) && (showQuickStartformType === 'botsForm' || selectedProcessApp)" ng-click="closeHelpModal()"></i>
+                <i class="btx-close" ng-show="(completedPercentage > 99)" ng-click="closeHelpModal()"></i>
+                <i class="btx-compress" ng-show="(completedPercentage <= 99) && (showQuickStartformType !== 'botsForm' || selectedProcessApp)" ng-click="closeHelpModal()"></i>
+                <i class="btx-close" ng-show="(completedPercentage <= 99) &&(completedPercentage > 0) && (showQuickStartformType === 'botsForm' || selectedProcessApp)" ng-click="closeHelpModal()"></i>
+            </div>
+            <!-- <div ng-show="(loadSupport && (showQuickStartformType === 'botsForm' || selectedProcessApp))" class="animationIfEnter app-version-div">V {{appVersion}}</div> -->
+            <!--Quick start guide-->
+            <div ng-hide="!loadQuickStart || (selectedHomeTab=='bots' && showQuickStartformType == 'botsForm') || ( selectedHomeTab=='processApps' && !selectedProcessApp)" class="quickStart">
+               <h4 class="tabTitle">{{'quick_start_guide'| i18nString}}</h4>
+               <div class="listCards" perfect-scroll dynamic-height dynaoffset="-65" height-property="height">
+                    <p class="titleDesc">{{'dialogTasks_delight_desc'| i18nString}} <a ng-show="selectedHomeTab=='processApps'" ng-click="showTemplateModal('support')">{{'help_section'| i18nString}}</a> <a ng-show="selectedHomeTab=='bots'" ng-click="showTemplateModal('support')">{{'help_main'| i18nString}}</a></p>
+                    <div class="progressbar">
+                        <div class="progress">
+                            <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="progressStatus">{{completedPercentage}}% complete</div>
+                    </div>
+                    <div class="guideContainer">
+                        <div class="quickContent" ng-repeat="quickStart in quickStartGuideMainObject">
+                            <div class="quickIconDiv"><img ng-src="{{quickStart.icon}}" class="quickIcon"></div>
+                            <div class="quickText">
+                                <div class="textTitle">{{quickStart.text}}</div>
+                                <div class="options" id="{{value._id}}" ng-repeat= "value in quickStart.values" ng-click="expandSelectedText(value)" ng-class="{'expand':(value.showExpandedContent && (value.description || value.button)),'complete':value.checkedValue,'noConfigureSetup': (value._id === 'configure' && !value.checkedValue)}">
+                            
+                                      <div class="defaultOptionText">
+                                        <img ng-show = "value.icon && value._id !== 'configure' && !value.checkedValue" ng-src="{{value.icon}}" class="quicksmallIcon">
+                                        <img ng-show = "value.icon && value._id !== 'configure' && value.checkedValue" ng-src="{{value.selectedIcon}}" class="quicksmallIcon">
+                                        <img ng-show = "value._id === 'configure' && value.checkedValue" ng-src="{{value.icon1}}" class="quicksmallIcon">
+                                        <img ng-show = "value._id === 'configure' && !value.checkedValue" ng-src="{{value.icon2}}" class="quicksmallIcon">
+                                        <!-- <img ng-src="{{value.icon}}" class="quicksmallIcon"> -->
+                                        <span class="textQuick">{{value.name}}</span>
+                                        <i class="btx-billing-checked" id="helpGuideComponentUnChecked" ng-if="!value.checkedValue"></i>
+                                          <i class="btx-ok" id="helpGuideComponentChecked" ng-if="value.checkedValue"></i> 
+                                      </div>
+                                      <div class="expandContent" ng-show="(showExpandedContent === value._id) && (value.description || value.button)">
+                                        <p class="titleDesc" ng-show="value.description">{{value.description}} <a ng-show="value.linkForHelp" target="_blank" href="{{value.linkForHelp}}"><i class="btx-external-link1"></i></a></p>
+                                        <button id="" class="btnCreate" ng-click="hideOverView()" ng-show="value.hideText && (helpGuideOptions.showTemplateInstalation || changeOverText)">{{value.hideText}}</button>
+                                        <button class="btnCreate" ng-show="value.button" ng-hide="value.hideText && (helpGuideOptions.showTemplateInstalation || changeOverText)" ng-click="reDirectionToTabs(value)">{{value.button}}</button>
+                                        <!-- <button class="btnCreate" ng-show="value.button && ((value._id === 'overview' && !helpGuideOptions.showTemplateInstalation) || (value._id === 'instruction' && !changeOverText))" ng-click="reDirectionToTabs(value)">{{value.button}}</button> -->
+                                        <!-- <button class="btnCreate" ng-show="value.button && value._id !== 'overview' && value._id !== 'instruction'" ng-click="reDirectionToTabs(value)">{{value.button}}</button> -->
+                                        <!-- <div class="moreLinkIcon"><a ng-show="value.linkMainTextForHelp" target="_blank" href="{{value.linkForHelp}}">{{value.linkMainTextForHelp}} <i class="btx-external-link1"></i></a></div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!--Quick start guide-->
+            <!--Support-->
+            <bt-support ng-if="loadSupport" selected-current-tab = "selectedHomeTab"  callback= "callback"></bt-support>
+            <!--Support-->
+            <!--FAQs-->
+            <help-content class="helpContent" help-id="helpId" cb="callback" ng-if="loadHelpContent" >
+               
+            </help-content>
+            <!--FAQs-->
+        </div>
+
+    </div>
+</bot-modal-slider>
+<div class="checkListMin miniMizedCheckList" ng-if="(completedPercentage <= 99) && !helpModalActive && views.botDetailsForm && showSetupMin" ng-click="showInstallationModal()">
+    <img ng-src="{{quickModeOn}}" class="quickModeOn">
+    <div class="minInner">
+        <span class="minText">{{'quick_start' | i18nString}}</span>
+        <span class="minIcon" ng-click="$event.stopPropagation();closeHelpModal(true)" ><i class="btx-close"></i></span>
+    </div>
+</div>
+<bottom-modal-slider id="keyboardShortCuts" ng-show="shortCutFlag && selectedHomeTab === 'bots'">
+        <div class="modalSliderContainer">
+        
+        <div class="modalHeader">
+        <h4 class="modal-title"><i ng-click="closeShortCutModal()" class="btx-close"></i>{{'keyboard_shortcuts'| i18nString}}</h4>
+        </div>
+        
+        
+        
+        <div class="modalBody add-message" perfect-scroll dynamic-height dynaoffset="-110" height-property="height" ng-if="shortCutFlag">
+                   <div class="row">
+                    <div class="col-xs-4">
+                       <div class="heading paddingLeft10">
+                           <div class="description padding5">{{'ddval_goto'| i18nString}}</div>
+                       </div> 
+                       <div ng-repeat="commands in shortcutKeys.goTo">
+                            <div class="commandList">
+                                <div class="col-sm-8 bodyRow">{{commands.name}}</div>
+                                <div class="col-sm-4 bodyRow link">{{commands.key}}</div>
+                            </div>
+                                
+                       </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="heading paddingLeft10">
+                            <div class="description padding5">{{'others'| i18nString}}</div>
+                        </div>
+                        <div ng-repeat="commands in shortcutKeys.Others">
+                            <div class="commandList">
+                                <div class="col-sm-8 bodyRow">{{commands.name}}</div>
+                                <div class="col-sm-4 bodyRow link">{{commands.key}}</div>
+                            </div>
+                                
+                           
+                       </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="heading paddingLeft10">
+                           <div class="description padding5">{{'talk_to_bot'| i18nString}}</div>
+                       </div> 
+                     <div ng-repeat="commands in shortcutKeys.Talktobot">
+                            <div class="commandList">
+                                <div class="col-sm-8 bodyRow">{{commands.name}}</div>
+                                <div class="col-sm-4 bodyRow link">{{commands.key}}</div>
+                            </div>
+                                
+                       </div>
+                    </div>
+             
+                </div>
+        </div>
+        
+        
+        
+        <div class="modalFooter">
+        <div class="col-xs-12"></div>
+        </div>
+        
+        </div>
+</bottom-modal-slider>
+
+<div  id="watchModal" class="taskCreateOrEditModal btFullpageModal modal height-width-100 " data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" data-keyboard="false">
+  <!-- starting of modal dialog -->
+  <div class="modal-dialog modal-lg positionFixed">
+      <div class="topBar manageComponentClose col-xs-12" style="z-index: 2">
+          <div class="col-xs-12 row noPadding">
+              <span class="closeBtn pull-left" ng-click="closeTrainingVideoModal()"><i class="fa fa-chevron-left"></i></span>
+              <span class="headerTitle">{{'videos'| i18nString}}</span>
+          </div>
+      </div>
+    <!-- staring of modal content -->
+    <div class="modal-content height-width-100">
+<!--        <h1>Test Profile</h1>-->
+       <bt-watch-videos ng-if="loadWatchVideos" video-id="videoId" ></bt-watch-videos> 
+    </div>
+    <!-- /.modal-content --> 
+  </div>
+  <!-- /.modal-dialog --> 
+</div>
+
+         <!-- Workbench - redirecting to builder modal pop up starts here  //un-comment when there is a confirmation modal pop-up for redirection to workbench--> 
+         <!-- <div class="modal fade kr-sg-modal" id="switchToWorkbench" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirmation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You will now be navigated to the Workbench</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="kr-sg-button-primary btn_md" ng-click="redirectWorkbench()">Proceed</button>
+                        <button class="kr-sg-button-secondary btn_md" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- Workbench - redirecting to builder modal pop up ends here -->
+
+        <plan-usage cb='planSelectionCb' id="managePlanSelectionSlider" ng-if="planSelectionCb.plansSlider"></plan-usage>
+
+        <!-- <div class="btTermsConditionsContainer">
+            <div class="btTermsConditions">
+                <div class="btTermsConditionsDesc">
+                    <i class="btx-info"></i>
+                </div>
+                <div class="btTermsConditionsActions"></div>
+            </div>
+        </div> -->
+        <div class="btTermsConditions" ng-if="licenseUpdate">
+            <div class="btTermsConditionsDesc">
+                <i class="btx-info"></i>
+                {{'terms_conditions_updated' | i18nString}} 
+            </div>
+            <div class="btTermsConditionsActions">
+                <span class="learnMore" ng-click="acceptUpdatedLicense(true,$event)">{{ 'learn_more_label' | i18nString}}</span>
+                <button class="btn btnSolidBlue" ng-click="acceptUpdatedLicense(false,$event)">{{'close' |  i18nString}}</button>
+            </div>
+        </div>

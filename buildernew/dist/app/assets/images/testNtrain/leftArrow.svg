@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="68px" viewBox="0 0 32 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Path 2 Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="4.1-Test-and-Train" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1012.000000, -181.000000)">
+        <g id="Group-11" transform="translate(1012.000000, 146.000000)">
+            <g id="Path-2-Copy" transform="translate(16.500000, 69.000000) scale(1, -1) translate(-16.500000, -69.000000) translate(1.000000, 35.000000)">
+                <path d="M0.937072191,68 C0.937072191,68 0.937072191,61.9841428 0.937072191,54.5377755 L0.937072191,20.4622245 C0.937072191,13.0272432 6.9604423,7 14.3942958,7 L27.8515195,7" id="Path-2" stroke="#D2D4D6" stroke-width="2"></path>
+                <polygon id="Triangle" fill="#D2D4D6" points="20.8741444 13.3299999 20.8741444 0 30.8716443 6.66499996"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

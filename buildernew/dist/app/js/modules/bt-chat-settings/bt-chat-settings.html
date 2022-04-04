@@ -1,0 +1,148 @@
+<div class="col-xs-12 topmargin-6 chat-settings-page noPadding">
+    <div class="row top-bar selected-stream noMargin" style="background:{{stream.color}}">
+        <div class="main-body row">
+            <div class="stream-icon">
+                <a href="/bt" title="Home">
+                    <img alt="{{stream.name}}" ng-src="{{stream.icon}}">
+                </a>
+            </div>
+            <div class="stream-details">
+              <span class="name">{{stream.name}}</span>
+              <span class="alert-action">{{'bt_chat_settings_natural_language_settings'| i18nString}}</span>
+            </div>
+        </div>
+    </div>
+	<div class="">
+	    <div class="">
+    		<div class="col-xs-12 sidenav-container nlp-verify-page">
+    			<div class="sidebar-nav">
+                	<ul class="workflow-sidebar">
+                        <li ng-if="_constants_.config.UTTERANCES" class="pointer-hand" ng-click="navigate('utterances')">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.utterances,'disabled':!views.utterances}">
+                                        <div class="">{{'utterences_label'| i18nString}}</div>
+                                    </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+           
+                        <li class="pointer-hand" ng-click="navigate('intentEntity')">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.intentEntity,'disabled':!views.intentEntity}">
+                                        <div class="">{{'bt_chat_settings_task_settings'| i18nString}}</div>
+        </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="pointer-hand" style="display: none !important" ng-click="navigate('settings')">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.settings,'disabled':!views.settings}">
+                                        <div class="">{{'settings'| i18nString}}</div>
+                                    </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="pointer-hand" ng-click="navigate('synonyms')">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.synonyms,'disabled':!views.synonyms}">
+                                        <div class="">{{'synonyms_name'| i18nString}}</div>
+                                    </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="pointer-hand" ng-click="navigate('patterns')">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.patterns,'disabled':!views.patterns}">
+                                        <div class="">{{'pattern_name'| i18nString}}</div>
+                                    </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="pointer-hand" ng-click="navigate('chatVerify')" ng-show="botTestInProgress">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.chatVerify,'disabled':!views.chatVerify}">
+                                        <div class="">{{'testBot'| i18nString}}</div>
+                                    </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="pointer-hand" ng-click="navigate('chatResponse')">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.chatResponse,'disabled':!views.chatResponse}">
+                                        <div class="">{{'chat_responses'| i18nString}}</div>
+                                    </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="pointer-hand" ng-click="navigate('chatHistory')">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.chatHistory,'disabled':!views.chatHistory}">
+                                        <div class="">{{'chat_history'| i18nString}}</div>
+                                    </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="pointer-hand" ng-click="navigate('failedScenarios')">
+                            <div >
+                                <div class="wf-sidebar-step">
+                                    <div class="step-title" ng-class="{'active':views.failedScenarios,'disabled':!views.failedScenarios}">
+                                        <div class="">{{'chat_logs'| i18nString}}</div>
+                                    </div>
+                                    <div class="step-desc"></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+            	</div>
+    		</div>
+    		<div class="col-xs-12">
+            <div >
+                
+                <div ng-if="views.utterances" class="row">
+    			<bt-utterances stream-id="{{stream._id}}" nlp="nlp"></bt-utterances>
+    		</div>
+    		<div ng-if="views.chatVerify" class="row">
+    			<bot-test-result api="viewsContext.api" nlp="nlp"></bot-test-result>
+    		</div>
+                <div ng-if="views.intentEntity" class="row entity-intent-page">
+                    <intent-entity stream-id="{{stream._id}}"></intent-entity>
+                </div>
+                <div ng-if="views.chatResponse" class="row bot-channel-response-manage">
+                    <bot-channel-response-manage stream-id="{{stream._id}}"></bot-channel-response-manage>
+                </div>
+                <div ng-if="views.chatHistory" class="row bot-chat-history">
+                     <bot-chat-history stream-id="{{stream._id}}"></bot-chat-history>
+                </div>
+                <div ng-if="views.settings" class="row bot-channel-response-manage">
+                    <bot-nlp-meta stream="stream"></bot-nlp-meta>
+                </div>
+                <div ng-if="views.patterns" class="row bot-channel-response-manage">
+                    <pattern-manage stream="stream"></pattern-manage>
+                </div>
+                <div ng-if="views.synonyms" class="row bot-channel-response-manage">
+                    <synonyms-manage></synonyms-manage>
+                </div>
+                <div ng-if="views.failedScenarios" class="row">
+                    <bot-chat-scenarios stream="stream"></bot-chat-scenarios>
+                </div>
+                </div>
+    		</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="19px" viewBox="0 0 16 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>2 copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="4.3-(Ecom)-Ontology" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1219.000000, -111.000000)">
+        <g id="Group-7" transform="translate(1135.000000, 102.000000)" fill="#C4CACF">
+            <g id="2-copy" transform="translate(84.000000, 9.000000)">
+                <polygon id="Shape" points="0 0 11.536 0 11.536 5.116 0 5.116"></polygon>
+                <polygon id="Shape" points="2 5.116 2 15 2.696 15 2.696 5.116"></polygon>
+                <path d="M2,9.73 L4.947,9.73 L4.947,9 L2,9 L2,9.73 Z M2,15.73 L5.159,15.73 L5.159,15 L2,15 L2,15.73 Z M5.696,11.385 L14.528,11.385 L14.528,7.731 L5.696,7.731 L5.696,11.385 Z M5,7 L15.224,7 L15.224,12.116 L5,12.116 L5,7 Z" id="Shape"></path>
+                <path d="M5.696,13.73 L5.696,17.385 L14.528,17.385 L14.528,13.731 L5.696,13.731 L5.696,13.73 Z M5,13 L15.224,13 L15.224,18.116 L5,18.116 L5,13 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

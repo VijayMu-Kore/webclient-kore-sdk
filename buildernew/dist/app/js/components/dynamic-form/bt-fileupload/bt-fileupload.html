@@ -1,0 +1,24 @@
+<div class="row form-group">
+    <div class="col-xs-12 abelling">
+        <label ng-class="{'required-field': schema.isRequired }">{{schema.title}}</label>
+    </div>
+    <div class="col-xs-12">
+        <div class="input-group">
+            <input name="iconFile" type="text" class="form-control" placeholder="{{schema.placeholder}}" readonly ng-model="control.filesuploaded">
+            <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}} <i class="fa fa-spinner fa-spin" ng-show="fileuploading"></i>
+            <input type="file" /></div>
+        </div>
+        <div ng-if="control.filelist.length > 0">
+            <br />
+            <tags-box tags="control.filelist" on-delete="deleteFile"></tags-box>
+        </div>
+        <div class="help-block">
+            {{schema.help}}
+        </div>
+        <div  ng-show="form[schema.key].$dirty">
+            <div error-alert ng-show="form[schema.key].$error.required" class="text-danger">
+                {{'dyn_value_required'| i18nString:({dyn:schema.title})}}
+            </div>
+        </div>
+    </div>
+</div>

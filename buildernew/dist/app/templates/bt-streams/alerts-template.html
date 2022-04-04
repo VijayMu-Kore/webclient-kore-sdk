@@ -1,0 +1,138 @@
+<!-- <div ng-init="bulderReloaded()" class="text-center marginTop20percent" ng-show='!(alertTasksByState.length > 0) && alertTasks.length>0'>{{'no_tasks'| i18nString}}</div>
+ --><div class="alerts-row alerts-row-data" ng-init="bulderReloaded()">
+  <div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'alert_tasks'| i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent" ng-show="alertTasksByState.length">
+            <input type="text" ng-init="searchQuery = ''" placeholder="{{'search'| i18nString}}" ng-model="searchQuery">
+            <i class="btx-search"></i>
+            <i  ng-class="{displayNone: !searchQuery.length}" ng-click="searchQuery=''" class="btx-close"></i>
+        </div>
+        <div class="creationButton borderBtn" ng-class="{'publishedMode':streamstate.toggleState == 'published'}" ng-show="alertTasksByState.length">
+          <button class="btn btnSolidBlue" ng-show="callbacks.modeOfAccess !== 'VIEW'" ng-click="showForm($event, 'alertTasks')">{{'create_alert_label'| i18nString}} </button>
+     </div>
+    </div>
+</div>
+  <div class="panel-default">
+      <div class="panel-table col-xs-12 tableContainer" ng-show="alertTasksByState.length > 0">
+          <div class="panel-table-header">
+              <div class="row tableHeaderRow">
+                  <div class="col-xs-3 title cursor-pointer" ng-click="sortTaskList('nameSort')">{{'name_label_uppercase'| i18nString}}<i class="fa fa-caret-up marginLeft5"  ng-if="orderType=='name'"></i><i class="fa fa-caret-down marginLeft5" ng-if="orderType=='-name'"></i><i class="fa fa-sort marginLeft5" ng-if="orderType!=='-name' && orderType!=='name'"></i></div>
+                  <div class="col-xs-3 title cursor-pointer" ng-click="sortTaskList('datesSort')">{{'last_updated'| i18nString}}<i class="fa fa-caret-down marginLeft5" ng-if="orderType== 'lMod'"></i><i class="fa fa-caret-up marginLeft5" ng-if="orderType == '-lMod'"></i><i class="fa fa-sort marginLeft5" ng-if="orderType !== '-lMod' && orderType !== 'lMod'"></i></div>
+                  <div class="col-xs-3 title noPaddingLeft" ng-hide="showSolutionBotSetup">{{'bot_status'| i18nString}}</div>
+                  <div class="col-xs-2 title">{{'version_caps'| i18nString}}</div>
+                  <div class="col-xs-1 title">&nbsp;</div>
+              </div>
+          </div>
+        <div class="panel-table-body tableBodyRow">
+           <div class="text-center padding10" ng-show="searchQuery && filtered.length===0">No search results found</div>
+          <div class="row alertTask bodyRow" ng-repeat="alert in alertTasksByState  | orderBy:(orderType || '-lmod') | filter:{name:searchQuery} as filtered">
+            <div class="cursor-pointer contentDetails " ng-click="callbacks.modeOfAccess == 'VIEW'?viewWorkflow(alert,'alert'):editOrViewWorkflow(alert,'alert')" ng-class="{'col-xs-3':!showSolutionBotSetup,'col-xs-3 boldRight':showSolutionBotSetup}" tooltip-append-to-body="true" title="{{alert.name}}" alt="{{alert.name}}">{{alert.name}}
+              <p class="description" title="{{alert.shortDesc}}" alt="{{alert.shortDesc}}">{{alert.shortDesc}}</p></div>
+           <!--  <div class="cursor-pointer" ng-click="editOrViewWorkflow(alert,'alert')" ng-class="{'col-xs-4':!showSolutionBotSetup,'col-xs-7':showSolutionBotSetup}" tooltip-append-to-body="true" title="{{alert.shortDesc}}" alt="{{alert.shortDesc}}">{{alert.shortDesc}}</div> -->
+            <div class="col-xs-3 contentDetails cursor-pointer" ng-click="callbacks.modeOfAccess == 'VIEW'?viewWorkflow(alert,'alert'):editOrViewWorkflow(alert,'alert')">{{alert.modifiedOn | date:'MM-dd-yyyy'}}</div>
+            <div class="col-xs-3 contentDetails deploymentStatus cursor-pointer" ng-click="callbacks.modeOfAccess == 'VIEW'?viewWorkflow(alert,'alert'):editOrViewWorkflow(alert,'alert')" ng-class="{'hide':showSolutionBotSetup}">
+              <span class="positionRelative">
+                <span ng-class="{'published':alert.state === 'published'}" class="status">{{(alert.state === 'published' && alert.parentId)? ('constants.states_awaitingApproval'| i18nString):(_constants_.states[alert.state] || alert.state)}}</span>
+               <bot-tooltip task="alert" ng-if="!isSelectedLanguageApproved(alert) && (stream.supportedLanguages.length>1)"></bot-tooltip>
+               <span class="needSetup" ng-if="alert.state=='inProgress'">{{'need_setup'| i18nString}}</span>
+              </span>
+            </div>
+            
+            
+            <div class="col-xs-2 contentDetails cursor-pointer" ng-click="callbacks.modeOfAccess == 'VIEW'?viewWorkflow(alert,'alert'):editOrViewWorkflow(alert,'alert')">{{alert.version}}</div>
+            <div class="col-xs-3 contentDetails" ng-class="{'hide':!showSolutionBotSetup}">
+                <a class="sol-task-view" ng-click="viewWorkflow(alert,'alert')">{{'view'| i18nString}}</a>
+            </div>
+            <div class="col-xs-1 contentDetails text-center hoverIcons" ng-class="{'hide':showSolutionBotSetup}">
+              <div class="dropdown panel-dropdown editSpan">
+                <i class="btx-left-menu-generalSettings pointer-hand" ng-class="{'lock':!alert.editable}" data-toggle="dropdown"></i>
+                <ul class="dropdown-menu panel-dropdown-menu" role="menu" ng-hide="!alert.editable" ng-class="{'publishedDropdown':alert.state === 'published'}">
+                  <li>
+                    <a ng-show="getAvailability(alert.state,'view')" ng-click="viewWorkflow(alert,'alert')">{{'view'| i18nString}}</a>
+                  </li>
+                  <li>
+                    <a ng-show="callbacks.modeOfAccess !== 'VIEW' && getAvailability(alert.state,'edit')" ng-click="editWorkflow(alert,'alert')"> {{'edit'| i18nString}} </a>
+                  </li>
+                  <li>
+                      <a ng-show="getAvailability(alert.state,'recall')" ng-click="recallWorkflow(alert,'alert')">{{'recall'| i18nString}}</a>
+                  </li>
+                  <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                    <a ng-show="getAvailability(alert.state,'editbasic')" ng-click="editWorkflow(alert,'alert')"> {{'edit_basic'| i18nString}}</a>
+                  </li>
+                  <li ng-show="callbacks.modeOfAccess !== 'VIEW'"><a ng-show="getAvailability(alert.state,'clone')" ng-click="cloneWorkflow(alert,'alert')"> {{'clone'| i18nString}} </a></li>
+                  <li>
+                    <!-- <a ng-show="alert.state == 'configured' && isEligibleForPublishing()" ng-click="publishWorkflow(alert,'alert')"> Publish </a> -->
+                  </li>
+                  <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                    <a ng-show="getAvailability(alert.state,'upgrade') && !alert.child.length == 1 && botDetails.streamState==='indevelopment'" ng-click="upgradeWorkflow(alert,'alert')"> {{'upgrade'| i18nString}} </a>
+                  </li>
+                  <li class="deletLink" ng-show="callbacks.modeOfAccess !== 'VIEW' && getAvailability(alert.state,'delete')">
+                    <a ng-click="deleteWorkflow(alert,'alert',$index)"> {{'delete'| i18nString}} </a>
+                  </li>
+                  <li ng-if="allowNamespace">
+                    <a ng-click="manageVarNamespaceAlertOpen(alert)"> {{'manage_var_namespace'| i18nString}} </a>
+                  </li>
+                  <li>
+                    <a ng-show="getAvailability(alert.state,'logs')" ng-click="viewAlertLogs(alert)">{{'bt_wf_logs_view_logs'| i18nString}}</a>
+                  </li>
+                  <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                    <a ng-show="getAvailability(alert.state,'map')" ng-click="mapWorkflows(alert,'alert')"> {{'map_action'| i18nString}} </a>
+                  </li>
+                  <li>
+                    <a ng-show="getAvailability(alert.state,'versions')"  ng-click="workflowHistory(alert,'alert')">{{'bt_resouce_versions_version_history'| i18nString}} </a>
+                  </li>
+                  <li ng-show="alert.lock.locktime && isEligibleToReleaseLock(alert.lock.userId)">
+                    <a ng-click="releaseLock('alert',alert)">{{'release_locks'| i18nString}}</a>
+                  </li>
+                  <li>
+                      <a ng-show="getAvailability(alert.state,'unpublish') && alert.visibility.namespace==='public' && isWorkFlowAdmin()"   ng-click="unPublishWorkflow(alert,'alert')" >{{'unpublish'| i18nString}}</a>
+                  </li> 
+                </ul>
+                <ul class="dropdown-menu panel-dropdown-menu" role="menu" ng-show="!alert.editable" >
+                    <li>
+                        <a ng-click="viewWorkflow(alert,'alert')" >{{'view'| i18nString}}</a>
+                    </li>
+                    <li>
+                        <a ng-click="unlockTask(alert)">{{'unlock'| i18nString}}</a>
+                    </li>
+                    <li ng-show="getAvailability(alert.state,'clone')">
+                        <a ng-click="cloneWorkflow(alert,'alert')">{{'clone'| i18nString}}</a>
+                    </li>
+                    <li>
+                        <a ng-show="getAvailability(alert.state,'recall')" ng-click="recallWorkflow(alert,'alert')">{{'Recall'| i18nString}}</a>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <!-- <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert" ng-show="(alertTasks.length == 0 && !loadingAlerts) || (alertTasksByState.length == 0)">
+          {{'no_alert'| i18nString}} 
+          <p>{{'alert_desc'| i18nString}}</p>
+          <p><a target="_blank" ng-href="{{$root.helpLinks.NO_ALERTS}}" >{{'learn_more_label'| i18nString}}</a></p>
+        </div> -->
+        <div class="emptyStateContainer" role="alert" ng-show="(alertTasks.length == 0 && !loadingAlerts) || (alertTasksByState.length == 0)">
+          <div class="emptyState">
+              <div class="emptyImage">
+                  <img ng-src="{{emptyStateIcon_aleart}}" class="emptyImg">           
+              </div>  
+              <span class="mainTitle">{{'create_new_aleart_task'| i18nString}} </span>
+              <div class="emptyStateDesc">{{'empty_aleart_desc'| i18nString}} <a target="_blank" ng-href="{{$root.helpLinks.ALERT_TASK_HELP}}">{{'learn_more'| i18nString}}</a></div>
+              <div class="generateBtn" ng-class="{'publishedMode':streamstate.toggleState == 'published'}">
+                  <button class="addBTN" ng-show="callbacks.modeOfAccess !== 'VIEW'" ng-click="showForm($event, 'alertTasks')">{{'create_alert'| i18nString}}</button>                  
+              </div>
+          </div>
+      </div>
+        <div class="alert alert-warning alert-xs text-center" role="alert" ng-show="alertTasks.length == 0 && loadingAlerts">
+          {{'loading_alert'| i18nString}}...
+        </div>
+      </div>
+  </div>
+</div>
+
+<manage-variable-namespace cb='manage_var_alert_cb' class="manage-variable" id="manageVarNamespaceAlert" ng-if="manageVarAlertEnable"></manage-variable-namespace>

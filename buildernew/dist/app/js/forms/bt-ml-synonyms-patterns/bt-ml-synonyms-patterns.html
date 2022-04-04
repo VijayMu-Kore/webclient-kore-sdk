@@ -1,0 +1,219 @@
+<status-loader></status-loader>
+<div ng-show="finishedFetching">
+    <div class="testTrainUteeranceSynonym">
+        <div class="col-xs-12 labelling chooseTask utteranceHeader">
+            <label class="required-field"> {{'ml_utterance'| i18nString}}</label>
+        </div>
+        <div class="col-xs-12">
+            <div class="mlDiv synAndPatternContainer">
+                <div class="row utterances-form-div">    
+                    <form name="utterances-form" class="utterances-form" ng-submit="addUtterance" novalidate>
+                        <div class="form-group">
+                            <div class="">
+                                <div class="col-xs-10 search searchUtterance hide" ng-show="utterences.length > 0">
+                                    <input focus-it="" tabindex="1" type="text" class="form-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="utteranceSearchQuery" placeholder="{{'search_name'| i18nString}}">
+                                </div>
+                                <div class="col-xs-2 trainUtteraceBtn hide"><button type="button" ng-show="utterences.length > 0" class="pull-right btn btn-sm btn-outline" ng-click="trainBot()"> {{'train'| i18nString}}</button></div>
+                            </div>
+                            <div class="col-xs-12 noPadding utterence-textview"  ng-class="{'paddingBottom10':!canshowmlhelp()}">
+                                <input type="text" autocomplete="off" ng-init="ml.utteranceText = nlp.text" id="utterance-text" placeholder = "{{'type_a_typical_utter_placeholder'| i18nString}}" class="form-control"  ng-model="ml.utteranceText" name="utterance-text">
+                            </div>
+                            <div class="savetrainBtn" ng-disable="ml.utteranceText==''" ng-click="addUtterance(null,true)"><i ng-if="training" class="fa fa-spinner fa-spin"></i><span ng-class="{'training':training}">{{training?trainingLabel:save}}</span></div>
+                            <div class="utterence-enter-help enterEscape col-xs-12 pull-right enterEscape" ng-show="canshowmlhelp() && false"> {{'press_enter'| i18nString}} </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row utterances-list-div noPadding">
+                    <div class="col-xs-12 uttrence-view trainbotutteranceview marginBottom10" ng-repeat="utterence in (utterences| filter:{'sentence':utteranceSearchQuery} | orderBy: 'name') track by $index" ng-show="$index < 3 || showMoreUtterances" ng-init="utterence.show = false" ng-mouseenter="utterence.show = true" ng-mouseleave="utterence.show = false">
+                        <div class="utterenceeditsection col-xs-12">
+                            <!--ng-keyup="$event.keyCode == 13 && editUtterence($index)"-->
+                            <div contenteditable="true" id="{{utterence._id}}"
+                                 ml-entity-selection call-backs="entityCallbacks" disable-events="true" from-edit="entityCmpt.fromEdit" utterance-before-edit="utterence.sentence" selected-utterence="utterence" focused-utterance="entityCmpt.focusedUtterance" 
+                                 offset-object="entityCmpt.offsetObject" selected-utterance-index="entityCmpt.selectedUtteranceIndex" 
+                                 utteranceIndex="{{$index}}" start-end-index="entityCmpt.startEndIndex" 
+                                 showentity-dropdown="entityCmpt.showentityDropdown"
+                                  class="col-xs-9 noPadding utterance-item-title" ng-bind-html="trustAsHtml(utterence.sentence)" ng-show="editId !== $index" >
+                            </div>
+                            <div class="pull-right utterance-btn-div" ng-show="utterence.show && editId !== $index" >
+                                <span class="utterance-btn ng-hide" focus-me="true" ng-click="editThis($index)">{{'edit'| i18nString}}</span>
+                                <span class="utterance-btnDelete" ng-click="delete($index)"><i class="fa fa-trash-o"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 entityInfoDiv" ng-show="utterence.entities.length && !constants.config.hideMLEE">
+                            <div class="col-xs-12 entitysection" ng-repeat="entity in utterence.entities">
+                                <span class="col-xs-5 utteranceTitle" ng-bind="entityCmpt.focusedUtterance.substring(entity.startIndex, entity.endIndex)"></span>
+                                <span class="entityTitle col-xs-5" ng-style="{color:getColorByEntity(entity.entityName)}">{{'{' + entity.entityName + '}'}}</span>
+                                <span class="utterance-btnDelete" ng-click="deleteEntityToWordMap(utterence, $parent.$index, $index)"><i class="fa fa-trash-o"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 noPadding utterence-textview" ng-show="editId === $index">
+                            <input type="text"  autocomplete="off" ng-keyup="$event.keyCode == 13 && editUtterence($index)" id="utterance-text" placeholder = "{{'type_a_typical_utter_placeholder'| i18nString}}" class="form-control"  ng-model="utterence.sentence" ng-blur="cancelEditUtterance()" name="utterance-text">
+                            <div class="utterence-enter-help enterEscape col-xs-12 pull-right" ng-show="utterence.sentence.length"> {{'press_save'| i18nString}} </div>
+                        </div>
+                    </div>
+                    <div class="utterancesMore" ng-click="showMoreUtterancesList()" ng-if="utterences.length > 3 && !showMoreUtterances"><span>{{utterences.length - 3}} {{'more_small'| i18nString}} ></span></div>
+                    <entityorfield-dropdown showentity-dropdown="entityCmpt.showentityDropdown" call-backs="entityCallbacks" selected-utterance="utterences[entityCmpt.selectedUtteranceIndex]" context="context" selected-task="taskDetails" entities-list="taskDetails.entitiesArray" offset-object="entityCmpt.offsetObject"></entityorfield-dropdown>
+                    <div class="text-center" ng-show="(utteranceSearchQuery && (utterences | filter:{'sentence':utteranceSearchQuery} ).length == 0)">
+                        <div class="col-xs-12 text-center">
+                            <div class="alert alert-xs alert-warning">
+                                {{'no_results_forsearch_label'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="loc-spinner text-center utterances-empty-view" ng-if="fetching">
+                    <span>
+                        <i class="fa fa-circle-o-notch wf-spinner"></i> {{'fetching_utterences_label'| i18nString}} 
+                    </span>
+                </div>
+
+                <!-- <div class="text-center utterances-empty-view" ng-if="!fetching" ng-hide="utterences.length">
+                    <div class="utterances-empty-view-title">{{'no_utterences_defined_yet_label'| i18nString}}</div>
+                    <div class="utterances-empty-view-description">{{'add_utterences_label'| i18nString}}
+                        </div>
+                    <div class="utterances-empty-view-learn-more"><a target="_blank"  ng-href="{{$root.helpLinks.NOUTTERANCES_HELP}}">{{'learn_more_label'| i18nString}}</a></div>
+                </div> -->
+
+                <div class="emptyStateContainer" ng-if="!fetching" ng-hide="utterences.length">
+                    <div class="emptyState">
+                        <div class="emptyImage">
+                            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                        </div>  
+                        <span class="mainTitle">{{'no_utterences_defined_yet_label'| i18nString}}</span>
+                        <div class="emptyStateDesc">{{'add_utterences_label'| i18nString}}</div>
+                        <div class="generateBtn">
+                            <!-- <button class="addBTN" >Add</button> -->
+                            <button class="learnmoreBTN"><a target="_blank" >{{'learn_more_label'| i18nString}}</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="synonymPatternDiv">
+        <div class="col-xs-12 labelling chooseTask">
+            <label class="required-field">{{'intent_synonyms'| i18nString}}</label>
+        </div>
+        <div class="synAndPatternContainer col-xs-12">
+            <div class="form-group" >
+                <div ng-repeat="synonym in synonyms" ng-hide="synonym.hide" ng-click="openSynonymTags($event)" class="dispalyTable synonymsTagsParentDiv">
+                    <div class="col-xs-12 trainBotSynonymDiv">
+                        <div class="col-xs-12">
+                            <span class="synonymKey">{{synonym.key}}</span>
+                            <span class="tagLabel" ng-repeat="key in synonym.value track by $index">({{key}})</span>
+                        </div>
+                        <div class="col-xs-12 synonymTags">
+                            <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_and__enter_placeholder'| i18nString}}" use-strings="true" on-tag-added="saveSynonyms()" on-tag-removed="saveSynonyms('deleteCall')" ng-model="synonym.value"></tags-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container col-xs-12 noPadding marginTop10 dispalyTable">
+                <form name="AddTaskPatternForm">
+                    <div class="col-xs-12 labelling chooseTask noPadding">
+                        <label class="required-field">{{'ddval_intent'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <fieldset class="" >
+                            <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12 noPadding trainBotPatternInput">
+                                    <input type="text" class="form-control background-field-white patternInput fieldPatternInput intentPatternInput overRideBorder"  ng-keyup="!(AddTaskPatternForm.taskPattern.$error.pattern) && $event.keyCode == 13 && addPattern(newPattern, true)" placeholder="{{'pattern_asterisk'| i18nString}}" ng-model="newPattern.value" required ng-pattern="/^[^*]+$/" name="taskPattern">
+                                    <div error-alert ng-show="AddTaskPatternForm.taskPattern.$error.pattern" class="text-danger">{{'asterisk'| i18nString}}</div> 
+                                    <div ng-show="addPatternSaving" class="patternSave">{{'saving'| i18nString}}</div>
+                                </div>
+                                <span class="pull-right pressEnterToSave enterEscape" ng-show="showHint">{{'press_save'| i18nString}}</span>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+                    <div class="col-xs-12 noPadding">
+                        <div  ng-show="taskDetails.task_patterns.length && ($index < 3 || showMorePatterns)" ng-repeat="pattern in taskDetails.task_patterns| orderBy  : reverse : true track by $index">
+                            <div class="col-xs-12 entityPattern marginBottom10" >
+                            <!-- <div class="col-xs-5 noPadding">
+                                <label class="textEllipsis"><b>{{pattern.original}}</b></label>
+                            </div> -->
+                            <div class="col-xs-12 noPadding intentPatternClass hidingIntentPatterns{{$index}}" ng-mouseenter="pattern.showDelete = true" ng-mouseleave="pattern.showDelete = false" ng-click = "clickIntentPattern($index,pattern,intent)">
+                                <div class="col-xs-9 noPadding">
+                                    <label class="textEllipsis">{{pattern.original}}</label>
+                                   
+                                </div>
+                                <div class="col-xs-2 text-right pull-right" ng-show="pattern.showDelete">
+                                    <i class="fa fa-pencil"></i>
+                                    <i class="codeRed fa fa-trash-o" ng-click="deletePattern($event,taskDetails, pattern)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 noPadding inputIntentClass editingIntentPatterns{{$index}} hide intentPatternEditing" id="tags" >
+                                <input maxlength="2048" type="text" class="form-control background-field-white patternInput fieldPatternInput intentPatternInput{{$index}} overRideBorder" placeholder=" {{'type_and_enter_to_add_pattern'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keyup="!(AddTaskPatternForm.taskPattern.$error.pattern) && $event.keyCode == 13 && addPattern(newPattern, true,$index,pattern)" ng-model="editPattern.editIntentPattern">
+                            </div>
+                            <!-- <div class="col-xs-5">
+                                <div class="textEllipsis">{{pattern.value|formatTaskPattern}}</div>
+                            </div> -->
+                            <!-- <div class="col-xs-2 text-right">
+                                <a class="codeRed" ng-show="pattern.showDelete" ng-click="deletePattern(taskDetails, pattern)"><i class="fa fa-trash-o"></i></a>
+                            </div> -->
+                            <!-- <div class="row col-xs-12 noPadding">
+                                <div class="divider marginTopBottom"></div>
+                            </div> -->
+                            
+                        </div>
+                        <div  class="patternSave intentPatternSaving" ng-show="pattern.saving">{{'saving'| i18nString}}</div>
+                        </div>
+                        
+                        <div class="patternsMore" ng-click="showMorePatternsList()" ng-if="taskDetails.task_patterns.length > 3 && !showMorePatterns"><span>{{taskDetails.task_patterns.length - 3}} {{'more_small'| i18nString}} ></span></div>
+                        <div class="col-xs-12 noPadding" ng-hide="taskDetails.task_patterns.length">
+                            <h5 class="fontSize18">{{'no_patterns'| i18nString}}</h5>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class=" nlpintentTraitRulesSection col-xs-12">
+            <div class="ruleHeader">
+                <span class="labelling">{{'Traits_label'| i18nString}}</span>
+                <i class="intentBotSynonymsTraits" aria-hidden="true"></i>
+            </div>
+            <div class="paddingRightLeft15 traitRule"  >
+                <div class="traitRuleContainer" ng-init="parentIndex=$index" ng-repeat="rules in traitRules.traitMappings track by $index">
+                    <div class="traitRuleContainerInner" >
+                        <tags-input id='addTraitRulesTestNTrain' ng-model="traitRules.traitMappings[parentIndex]" parent-modal='traits' do-not-allow-any-special-characters='true' placeholder="{{'type_enter'| i18nString}}" custom-err-msg= "{{'word_included'| i18nString}}" add-from-autocomplete-only='false' add-on-comma="false" allow-leftover-text = 'false' replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_select'| i18nString}}" use-strings="true" on-tag-added="addTraitAndCondition()" on-tag-removed="addTraitAndCondition()">
+                            <auto-complete source="loadTags($query)" min-length='1' select-first-match='false' id="autocompleteTrait{{$index}}" auto-complete-id="autocompleteTrait{{$index}}"></auto-complete>
+                        </tags-input>
+                        <img ng-src="{{minusCircle}}" class="minusCircle" ng-click="deleteOrRule(parentIndex)">
+                    </div>
+                    <div>
+                        <img ng-src="{{orIcon}}" class="orIcon">
+                    </div>
+                </div>
+                <div ng-repeat="dummyCondition in dummyTraitOrCondition track by $index">
+                    <div class="col-xs-12 traitRuleInput">
+                        <tags-input ng-model="dummyTraitOrCondition[$index]" parent-modal='traits' do-not-allow-any-special-characters='true'
+                            placeholder="{{'type_enter'| i18nString}}" add-from-autocomplete-only='false' add-on-comma="false"
+                            allow-leftover-text='false' replace-spaces-with-dashes="false" min-length="0" max-length="128"
+                            placeholder="{{'type_select'| i18nString}}" use-strings="true" on-tag-added="addTraitDummyAndCondition($index)">
+                            <auto-complete source="loadTags($query)" min-length='1' select-first-match='false'></auto-complete>
+                        </tags-input>
+                    </div>
+                    <div>
+                        <img ng-src="{{orIcon}}" class="orIcon">
+                    </div>
+                </div>
+                <!-- <div class="col-xs-12 traitRuleInput"  ng-repeat="dummyCondition in dummyTraitOrCondition track by $index">
+                    <input ng-focus="bindAuioComplete($index,'OrGroup')" type="text" id="addTraitOrGroup{{$index}}"  ng-model="dummyCondition.traitName" ng-blur="unBindAutoComplete()" class="form-control" ng-model="traitAndRule" placeholder="Type and enter to add" autcomplete="false" ng-keyup="addTraitOrCondition($event,$index,dummyCondition)">
+                    <div>
+                        <img ng-if="dummyTraitOrCondition.length>1 && ($index < dummyTraitOrCondition.length-1)" ng-src="{{orIcon}}" class="orIcon">
+                    </div>
+                </div> -->
+                <div class="col-xs-12 addOR">
+                    <span class="add-pattern" ng-click="addOrDummy()"> {{'add_or'| i18nString}}</span>
+                    
+                </div>
+            </div>
+    </div>
+</div>
+<div class="fetchingClass" ng-show="!finishedFetching">
+    <span class="fa fa-spinner fa-spin"></span>{{'fetching'| i18nString}}
+</div>

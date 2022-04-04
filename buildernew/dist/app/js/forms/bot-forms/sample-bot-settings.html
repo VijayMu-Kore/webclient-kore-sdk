@@ -1,0 +1,51 @@
+<div class="showadvancedoptions">
+     <form name="sampleBotForm" class="wf-form" novalidate>
+        <fieldset class="row">
+             <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="">{{'sample_bot_desc_label'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12  noPadding">
+                    <textarea class="form-control" ng-model="sampleBotSettings.description" placeholder="{{'sample_bot_desc_placeholder'| i18nString}}" name="description" required></textarea>
+<!--                    <div ng-show="sampleBotForm.description.$error">
+                        <div error-alert>
+                            <span>Please provide Description for the bot</span>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+            <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="">{{'configuration_instructions_label'| i18nString}}</label>
+                </div>
+                <div class="noPadding">
+                    <div class="input-group">
+                        <input name="importFile" type="text" class="form-control" placeholder="{{'choose_a_pdf_file'| i18nString}}" readonly ng-model="importBotInstructions.name" required>
+                        <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}} <input type="file" file-model="importBotInstructions" id="importBotInstructions" name="importBotInstructions" required on-file-change="uploadInstructionsDocument"/></div>
+                    </div>
+                    <div ng-if="fileExtensionError" ng-show="fileExtensionError" class="text-danger form-error-text"> {{'pdf_extensions_are_supported'| i18nString}} </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="">{{'configuration_instructions_url'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12  noPadding">
+                    <input  class="form-control" url-validate type="url" name="instructionsURL" ng-model="sampleBotSettings.instructionsURL" id="url" placeholder="{{'configurations_instructions_url_placeholder'| i18nString}}">
+<!--                    <div ng-show="sampleBotForm.instructionsURL.$error.url">
+                        <div error-alert>
+                            <span>Please provide valid url</span>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </fieldset>
+         <div class="innerRightFooter bottomZero">
+             <div class="pull-left btnContainer">
+                 <button class="btn btn-xs saveBtn" ng-click="saveSampleBotsettings(sampleBotForm)" > <i ng-if="saveInprogress" class="fa fa-spinner fa-spin"></i> {{(saveInprogress) ? savingLabel : save}} </button>
+             </div>
+         </div>
+    </form>
+
+</div>

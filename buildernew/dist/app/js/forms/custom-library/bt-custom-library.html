@@ -1,0 +1,132 @@
+<div class="customLibrary">
+    <div class="customLibraryContainer">
+        <ul class="nav nav-tabs" id="customLibraryTabs">
+            <li class="customLibraryTemplateMainLi active" ng-click="updateCurrentTab('customTemplate')"><a data-toggle="tab" href="#customTemplate">{{'custom_template'| i18nString}}</a></li>
+            <li ng-click="updateCurrentTab('botFunction')"><a data-toggle="tab" href="#botFunction">{{'bot_function'| i18nString}}</a></li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        <div id="botFunction" class="tab-pane fade in">
+            <p class="botFunctionText">{{'upload_functions'| i18nString}}</p>
+            
+            <a ng-if="botFunctions.botFuctionFile" class="deleteBotFunctions" ng-click="deleteBotFunctions()">{{'remove'| i18nString}}</a>
+            <div class="input-group">
+                <input type="text" id="botFuntionsFileImport" name="botFuctionFile" class="form-control" placeholder="{{'select_jsfile'| i18nString}}" required readonly
+                       ng-model="botFunctions.botFuctionFile.fileName">
+                <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}}<i class="fa fa-spinner fa-spin" ng-show="fileuploading"></i> 
+                    <input type="file" 
+                           file-model="botFunctions.botFuctionFile"
+                           id="botFuctionFile" 
+                           name="botFuctionFile"
+                           required 
+                           ng-click="$event.value === null"
+                           ng-modal="fileValue"
+                           on-file-change="uploadFile"/>
+                </div>
+              
+            </div>
+            <div class="input-group">
+                
+            </div>
+            
+            
+            
+        </div>
+        <div id="customTemplate" class="tab-pane fade in active">
+            <div class="customTemplateBtn" ng-show="noCustomTemplate()">
+                <button type="button" class="btn btn-primary saveBtn pull-right" ng-click="newCustomTemplate()">{{'new_custom_template'| i18nString}}</button>
+            </div>
+            <div class="noCustomTemplate" ng-show="!noCustomTemplate()">
+                <div class="noCustomTemplateImage"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+                <p class="noCustomTemplateLine">{{'no_custom_template'| i18nString}}</p>
+                <button type="button" class="btn btn-primary saveBtn newCustomTemplateSave" ng-click="newCustomTemplate()">{{'new_custom_template'| i18nString}}</button>
+            </div>
+            <div class="customTemplateList" ng-show="noCustomTemplate()" >
+                <div class="col-xs-12 darkBottomBorder">
+                    <div class="col-xs-5 padding15">
+                        <div class="headerTitle"><span class="name">{{'template_name'| i18nString}}</span></div>
+                    </div>
+                    <div class="col-xs-5 padding15">
+                        <div class="headerTitle"><span class="name">{{'desc_label'| i18nString}}</span></div>
+                    </div>
+                </div>
+                <div class="col-xs-12 manageCutomTemplateList lightBottomBorder getCustomTemplate" ng-repeat="template in getCustomTemplates">
+                    <div class="col-xs-5 padding15" ng-click = "editCustomTemplate(template)">
+                        <div class="headerTitleTemplate"><span class="name">{{template.name}}</span></div>
+                    </div>
+                    <div class="col-xs-5 padding15" ng-click = "editCustomTemplate(template)">
+                        <div class="headerTitleTemplate"><span class="name">{{template.description}}</span></div>
+                    </div>
+                    <div class="col-xs-2 padding15">
+                        <span class="fa fa-trash pull-right error-color deleteTemplate" ng-click="deleteCustomTemplate($index,template)"></span>
+                        <span class="fa fa-pencil pull-right editTemplate" ng-click="editCustomTemplate(template)"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <bot-modal-slider id="customTemplateSlider">
+        <div class="modalSliderContainer width700">
+            <div class="modalHeader">
+                <h4 class="modal-title">{{createMode ? new:edit}}  {{'custom_template'| i18nString}}</h4>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-100" height-property="height">
+                <div class="templateName">
+                    <span class="tName">{{'template_Name'| i18nString}}</span>
+                    <input type="text" class="tInput" ng-model="customTemplate.templateName">
+                </div>
+                <div class="templateDescription">
+                    <span class="tName">{{'tooltip_desc'| i18nString}}</span>
+                    <input type="text" class="tInput" ng-model="customTemplate.descriptionName">
+                </div>
+                <div class="customTemplateEditor">
+                    <ul class="nav nav-tabs" id="customLibraryTemplateTabs">
+                        <li class="customLibraryTemplateLi active" ng-click="updateCurrentTemplateTab('customTemplatejseditor')"><a data-toggle="tab" href="#customTemplatejseditor">{{'configurable_script_name'| i18nString}}</a></li>
+                        <li ng-click="updateCurrentTemplateTab('previewEditor')"><a data-toggle="tab" href="#previewEditor">{{'preview_name'| i18nString}}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="customTemplatejseditor" class="tab-pane fade in active">
+                            <div id="jseditor1" class="jseditor" acify callback='jsEditorCbs' ng-model="customTemplate.customTemplateEditor"></div>
+                        </div>
+                        <div id="previewEditor" class="tab-pane fade">
+                            <div class="content-padding">
+                                <span class="previewDesc">{{'bot_welcomeMessage_preview_desc'| i18nString}}</span>
+                                <span class="previewHeading">{{'bot_welcomeMessage_preview_heading'| i18nString}}</span>
+                                <span class="previewHint"><b>{{'hint_label'| i18nString}} </b>{{'bot_welcomeMessage_previewhint_desc1'| i18nString}} <b>{{'bot_welcomeMessage_previewhint_desc2'| i18nString}}</b>{{'bot_welcomeMessage_previewhint_desc3'| i18nString}}.&lt; {{'bot_welcomeMessage_previewhint_desc4'| i18nString}}&gt;.&lt; {{'bot_welcomeMessage_previewhint_desc4'| i18nString}}&gt;</span>
+                                <div class="col-xs-12 noPadding" ng-class="{'canDelete': contextCondition.length > 1}">
+                                    <div class="contextCond row col-xs-12 noPadding" ng-repeat="cond in contextCondition">
+                                        <span class="col-xs-5 noPaddingLeft"><input class="form-control condKey" placeholder=" {{'key'| i18nString}}" type="text" ng-model="cond.key" ng-focus="addContextCond($index)" context-typeahead/></span>
+                                        <span class="col-xs-5"><input class="form-control condVal" placeholder=" {{'value'| i18nString}}" type="text" ng-model="cond.value" ng-focus="addContextCond($index)"/></span>
+                                        <span class="col-xs-2 removeCond"><i class="fa fa-minus-circle" ng-click="onRemoveCond($index)"></i></span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary pull-right previewBtn" ng-click="getPreviewData(customTemplate._id)" ng-disabled="disablePreviewBtn">{{'preview_name'| i18nString}}</button>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="col-xs-4 line-info"></div>
+                                    <div class="col-xs-4 messagePreviewLabel"><label>{{'bot_welcomeMessage_message_preview_uppercase'| i18nString}}</label></div>
+                                    <div class="col-xs-4 line-info"></div>
+                                </div>
+                                <div class="preview-box clear-fix">
+                                    <div class="preview-message" ng-class="{'previewError': isError}" ng-bind-html="preview"></div>
+                                </div>
+                                <div ng-if="previewIsOn" class="alert-preview">
+                                    <div class="alert alert-success alert-sm text-center" role="alert">
+                                        <i class="fa fa-spinner fa-spin"></i>{{'bot_welcomeMessage_resolving_Value_label'| i18nString}} 
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modalFooter">
+                <button type="button" ng-show="createMode" class="btn saveBtn" ng-disabled = "saveInprogress || !customTemplate.templateName || !customTemplate.customTemplateEditor" ng-click="customTemplateSave()"><i ng-if="saveInprogress" class="fa fa-spinner fa-spin"></i> {{(saveInprogress) ? savingLabel : save}} </button>
+                <button type="button" ng-show="!createMode" class="btn saveBtn" ng-disabled = "updateInprogress || !customTemplate.templateName || !customTemplate.customTemplateEditor"ng-click="updateCustomTemplate(customTemplate._id)"><i ng-if="updateInprogress" class="fa fa-spinner fa-spin"></i> {{(saveInprogress) ? updating : update}} </button>
+                <button type="button" class="btn closeCancel" ng-click="closeCustomTemplate()"> {{'cancel'| i18nString}} </button>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <div class="BotFunctionFooter" ng-hide="currentTab == 'customTemplate'">
+        <button type="button" class="btn saveBtn" ng-disabled="activeCustomTemplateType == 'botFunctionpreviewEditor'" ng-click="botFunctionSave()">{{'save'| i18nString}}</button>
+    </div>
+</div>

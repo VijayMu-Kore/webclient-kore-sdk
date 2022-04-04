@@ -1,0 +1,17 @@
+[{
+    "key": "var1",
+    "value": "val1",
+    "hint": "description about variable",
+    "variableType": "localeVariable"
+}, {
+    "key": "var2",
+    "value": "val2",
+    "hint": "description about variable",
+    "variableType": "localeVariable",
+    "audioTag": "<url of audio file specific to IVR channel>"
+}, {
+    "key": "var3",
+    "value": "val3",
+    "hint": "description about variable",
+    "variableType": "localeVariable"
+}]

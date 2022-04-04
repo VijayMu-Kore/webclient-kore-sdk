@@ -1,0 +1,77 @@
+{
+  "_from": "angular-ui-tree-filter",
+  "_id": "angular-ui-tree-filter@0.1.1",
+  "_inBundle": false,
+  "_integrity": "sha1-tBE0IXZA7qs3Dh53pQqOFfExkaI=",
+  "_location": "/angular-ui-tree-filter",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "angular-ui-tree-filter",
+    "name": "angular-ui-tree-filter",
+    "escapedName": "angular-ui-tree-filter",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-ui-tree-filter/-/angular-ui-tree-filter-0.1.1.tgz",
+  "_shasum": "b41134217640eeab370e1e77a50a8e15f13191a2",
+  "_spec": "angular-ui-tree-filter",
+  "_where": "/home/mahesh/repo/WorkFlows/buildernew",
+  "author": {
+    "name": "Jarek Rencz",
+    "email": "jarek.rencz@laboratorium.ee"
+  },
+  "bugs": {
+    "url": "https://github.com/ee/angular-ui-tree-filter/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "A module providing an AngularJS filter which can be used with angular-ui-tree to match tree nodes",
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-cli": "~0.1.0",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-connect": "~0.8.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "~0.6.0",
+    "grunt-defs": "~0.7.0",
+    "grunt-gh-pages": "~0.9.0",
+    "grunt-jscs": "~0.6.0",
+    "grunt-karma": "~0.8.2",
+    "grunt-merge-conflict": "~0.0.2",
+    "grunt-ng-annotate": "~0.3.0",
+    "jit-grunt": "~0.7.0",
+    "jscs-trailing-comma": "~0.3.0",
+    "karma": "~0.12.0",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-jasmine": "~0.2.0",
+    "karma-phantomjs-launcher": "~0.1.0"
+  },
+  "homepage": "https://github.com/ee/angular-ui-tree-filter",
+  "keywords": [
+    "Angular",
+    "AngularJS",
+    "angular-ui",
+    "angular-ui-tree",
+    "filter"
+  ],
+  "license": "MIT",
+  "name": "angular-ui-tree-filter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ee/angular-ui-tree-filter.git"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "version": "0.1.1"
+}

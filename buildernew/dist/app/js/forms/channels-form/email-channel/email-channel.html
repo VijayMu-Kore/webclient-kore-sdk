@@ -1,0 +1,52 @@
+<div class="modalSliderContainer width700">
+    <div class="modalHeader channelModalHeader">
+        <h4 class="modal-title" id="gridSystemModalLabel">
+          <i class="btx-close"   ng-click="goToHome()"></i>
+          {{'constants.iconsTooltips_email'| i18nString}}
+        </h4>
+    </div>
+    <div class="modalBody inner-scroll topMargin top0Imp" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+        <div class="channel-content widthseventy" ng-class="{'screenFreeze':streamState.state=='published'}">
+    <label class="text-block"> {{'Bt_chnl_email_desc'| i18nString}} </label>
+    <div class="col-xs-10 noPadding">
+      <form class="form-inline">
+        <div class="form-group">
+          <div class="input-group pull-left">
+            <input type="text" class="form-control email emailInput" ng-model="email.name" placeholder="{{'Bt_chnl_email_textbox_placeholder'| i18nString}}">
+            <div class="input-group-addon noHover">{{emailPostFix}}</div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-xs-12 p-0 mt-10">
+      <send-contact callback="sendContactCB"></send-contact>
+    </div>
+    
+    <div class="col-xs-12 noPadding">
+      <div class="form-group ng-scope">
+        <div class="col-xs-12 labelling noPadding">
+          <label>{{'enable_chnl'| i18nString}}</label>
+        </div>
+        <div class="col-xs-12 radioDiv noPadding">
+          <div>
+            <label for="email.enable.no">
+              <input ng-value="false" ng-checked="true" type="radio" ng-model="email.enable" name="email.enable" id="email.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked">
+              <span class="opt-title">{{'no'| i18nString}}</span> </label>
+          </div>
+          <div>
+            <label for="email.enable.yes">
+              <input ng-value="true" type="radio" ng-model="email.enable" name="email.enable" id="email.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true">
+              <span class="opt-title">{{'yes'| i18nString}}</span> </label>
+          </div>
+        </div>
+      </div>
+  </div>
+    </div>
+        
+</div>
+<div class="modalFooter">
+  <button type="button" class="btn " ng-click="saveEmail(true)" ng-if="displayMode!=='view'" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+  <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+</div>
+ </div>
+  

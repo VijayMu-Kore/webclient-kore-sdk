@@ -1,0 +1,997 @@
+    <div class="summaryLoader animationIfLeave" ng-show="cb.loading">
+        <span class="spinner-text"> 
+            <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+            <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+        </span>
+    </div>
+<div class="btTrainNlpAnalysis">
+    <img ng-src="{{closeCross}}" ng-class="panel.type" class="closeCross" ng-click="closePanel()">
+    <!-- <div class="fa fa-close closeBtn" ng-click="closePanel()"></div> -->
+
+    <!-- ML -->
+    <div class="ML" ng-show="panel.type == 'ML'">
+        <div class="noData" ng-show="!dataAvailable">{{'no_data_found'| i18nString}}</div>
+        <div class="title">{{'machine_learning_Model'| i18nString}}</div>
+        <div class="titleMsg">{{titleMessage}}</div>
+        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#mlConfig" ng-href="#mlConfigPanel" ng-click="getThresholdDetailsMl()">
+                    <img ng-src="{{advancedSettingsIcon}}" class="advancedSettingsIcon">
+                    <img ng-src="{{advancedSettingsIconGray}}" class="advancedSettingsIconGray">
+        </a>
+        <div class="panel-group" id="mlConfig" >
+            <div class="panel panel-default"> 
+  
+              <div id="mlConfigPanel" class="panel-collapse collapse">
+                <div class="panel-body" perfect-scroll height-property="height" dynamic-height dynaoffset = "-130">
+                    <div class="col-xs-12 noPadding mlBody" ng-show="checkUndefined(mlDetails.useSynonyms)">
+                         <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'Bot_synonyms_label'| i18nString}}</p>   
+                            <p class="description">{{'use_intentdetection'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                                <button type="button" class="btn btn-md"><span class="btnText">{{mlDetails.useSynonyms?enabled:disabled}}</span></button>
+                        </div>
+                    </div>
+                     <div class="col-xs-12 noPadding mlBody" ng-show="checkUndefined(mlDetails.useStopwords)">
+                         <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'Thresholds_stop_words_label'| i18nString}}</p>   
+                            <p class="description">{{'Thresholds_stop_words_desc'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                                <button type="button" class="btn btn-md"><span class="btnText">{{mlDetails.useStopwords?enabled:disabled}}</span></button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 noPadding mlBody" ng-show="mlDetails.exactMatchThreshold">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'Ml_definitivescore_label'| i18nString}}</p>
+                            <p class="description">{{'threshold'| i18nString}}</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md"><span class="btnText">{{mlDetails.exactMatchThreshold}} %</span></button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 noPadding mlBody" ng-show="mlDetails.ngram.length">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'ngram_sequence'| i18nString}}</p>
+                            <p class="description">{{'max_length_sequence'| i18nString}}</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md"><span class="btnText">{{mlDetails.ngram[0]}} to {{mlDetails.ngram[1]}} %</span></button>
+                        </div>
+                    </div>
+                   <!--  <div class="col-xs-12 noPadding mlBody">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'ml_Threshold_label'| i18nString}}</p>
+                            <p class="description">{{'minimum_ML'| i18nString}}</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md"><span class="btnText">{{mlDetails.maxThreshold}} to {{mlDetails.minThreshold}} %</span></button>
+                        </div>
+                    </div> -->
+                    <div class="col-xs-12 noPadding mlBody" ng-show="mlDetails.type">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'NER_Model_label'| i18nString}}</p>
+                            <p class="description">{{'ner_model'| i18nString}}</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md"><span class="btnText">{{mlDetails.type === 'corenlp'?'CRF':'DNN'}}</span></button>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 noPadding mlBody" ng-show="checkUndefined(mlDetails.usePlaceholders)">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'Entity_place_holder_label'| i18nString}}</p>
+                            <p class="description">{{'replace_entity'| i18nString}}</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md"><span class="btnText">{{mlDetails.usePlaceholders ? enabled:disabled}}</span></button>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="table" ng-if="allTasks.length > 0 || (nlpData.ml && nlpData.ml.eliminated)">
+            <div class="tableHeader">{{'intents_caps'| i18nString}}</div>
+            <div class="tableHeader right">{{'score_caps'| i18nString}}</div>
+        </div>
+        <div perfect-scroll dynamic-height dynaoffset = "-155" height-property="height" class=" positionRelative paddingRight10">
+            <div class="tableDetails" ng-repeat="eachml in allTasks | orderBy: ['-score','task']">
+                <div class="tableHeader">{{nlpData.finalResolver.universalBot?eachml.streamName+" : ":''}}{{eachml.task}}</div>
+                <div class="tableHeader right">{{eachml.score| number:2}}</div>
+            </div>
+            <div class="tableDetails" ng-repeat="eachml in nlpData.ml.eliminated | orderBy: ['-score','task']">
+                <div class="tableHeader">{{eachml.task}} (Eliminated)</div>
+                <div class="tableHeader right">{{eachml.score| number:2}}</div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!--  FM -->
+    <div class="FM" ng-show="panel.type == 'FM'">
+            <div class="title">{{'Fundamental_Meaning_Model_label'| i18nString}}</div>
+            <div class="titleMsg">{{titleMessage}}</div>
+            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#fmConfig" ng-href="#fmConfigPanel" ng-click="getThresholdDetailsFm()">
+                    <img ng-src="{{advancedSettingsIcon}}" class="advancedSettingsIcon">
+                    <img ng-src="{{advancedSettingsIconGray}}" class="advancedSettingsIconGray">
+              </a>
+        <div class="panel-group" id="fmConfig">
+            <div class="panel panel-default"> 
+  
+              <div id="fmConfigPanel" class="panel-collapse collapse">
+                <div class="panel-body" perfect-scroll height-property="height" dynamic-height dynaoffset = "-130">
+                    <div class="noData" ng-show="!csDetails">{{'no_data_found'| i18nString}}</div>
+                    <div class="col-xs-12 noPadding" ng-show="csDetails">
+                        <div class="col-xs-9 noPadding">
+                            <p class="heading">{{'Proximity_of_Probable_Matches_label'| i18nString}}</p>   
+                            <p class="description">{{'Maximumu_difference'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-3">
+                            <button type="button" class="btn btn-md"><span>{{csDetails.taskMatchTolerance}} % </span></button>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+              </div>
+            </div>
+          </div>
+        <div>
+        <div class="labelText" ng-show="nlpData.nlProcessing">{{'user_utterances'| i18nString}}</div>
+        <div class="titleMsg">{{nlpData.nlProcessing.originalInput}}</div>
+        <div class="accordionDiv nlpData" ng-show="nlpData.nlProcessing">
+            <div class="process">
+                <div class="headerTitle">{{'processed'| i18nString}}</div>
+                <div>
+                    <p class="desc">{{nlpData.nlProcessing.canonical}}<span class="pull-right length accordionArrow"><i class="fa fa-caret-right"></i></span></p>
+                </div>
+                
+            </div>
+            <div class="accBody nlBody noPadding" ng-if="nlpData.scoringModel === 'original' || !nlpData.scoringModel">
+                <div class="accTable" perfect-scroll>
+                    <table class="table">
+                            <tr>
+                                <th class="titleHead">{{'original_word'| i18nString}}</th>
+                                <th class="titleHead">{{'role'| i18nString}}</th>
+                                <th class="titleHead">{{'processed_word'| i18nString}}</th>
+                            </tr>
+                        <tbody>
+                            <tr ng-repeat="nlData in nlpData.nlProcessing.wordAnalysis track by $index">
+                                <td class="desc">{{nlData.original}}</td>
+                                <td class="desc pos">{{nlData.pos}}</td>
+                                <td class="desc ignored">{{nlData.ignored?'Ignored':compareNlpWord(nlData,$index)}}</td>
+                            </tr>
+                            
+                        </tbody>
+
+                    </table>
+                </div>
+                
+            </div>
+            <div class="accBody nlBody noPadding" ng-if="nlpData.scoringModel === 'dependency'">
+                <div class="accTable" perfect-scroll>
+                    <table class="table">
+                            <tr>
+                                <th class="titleHead">{{'original_word'| i18nString}}</th>
+                                <th class="titleHead">{{'universal_parts'| i18nString}}</th>
+                                <th class="titleHead">{{'dependency_relation'| i18nString}}</th>
+                                <th class="titleHead">{{'related_word'| i18nString}}</th>
+                            </tr>
+                        <tbody ng-repeat="wordArray in dependency.wordAnalysis" class="tbody">
+                            <tr ng-repeat="word in wordArray">
+     
+                                    <td class="desc">{{word.original}}</td>
+                                    <td class="desc pos">{{word.upos}}</td>
+                                    <td class="desc">{{word.deprel}}</td>
+                                    <td class="desc">{{word.head}}</td>
+                                
+                            </tr>
+                            
+                        </tbody>
+
+                    </table>
+                </div>
+                
+            </div>
+           
+
+
+        </div>
+
+
+        <div class="table" ng-if="allTasks.length > 0 || (nlpData.ml && nlpData.fm.eliminated)">
+            <div class="tableHeader">{{'intents_caps'| i18nString}}</div>
+            <div class="tableHeader right">{{'score_caps'| i18nString}}</div>
+        </div>
+        <div perfect-scroll dynamic-height dynaoffset = "offsetValue" height-property="height" class="paddingRight20 positionRelative scrollFm">
+        <div class="accordionDiv" ng-repeat="eachFM in allTasks | orderBy: ['-score','task'] track by $index">
+            <div class="header" ng-show="nlpData.scoringModel === 'original' || !nlpData.scoringModel"> 
+                <div class="firstRow">
+                    <span class="ele">{{nlpData.finalResolver.universalBot?eachFM.streamName+" : ":''}}{{eachFM.task}}</span>
+                    <span class="ele right">{{eachFM.score| number:0}}</span>
+                </div>
+                <!--<div class="totalScore">Total score - {{eachFM.score}}</div>-->
+            </div>
+            <div class="header" ng-show="nlpData.scoringModel === 'dependency'"> 
+                <div class="firstRow">
+                    <span class="ele">{{nlpData.finalResolver.universalBot?eachFM.streamName+" : ":''}}{{eachFM.task}}</span>
+                    <span class="ele right">{{eachFM.score| number:2}}</span>
+                </div>
+                <!--<div class="totalScore">Total score - {{eachFM.score}}</div>-->
+            </div>
+
+            <div class="accBody">
+                <div ng-show="eachFM.sentence && (nlpData.scoringModel === 'original' || !nlpData.scoringModel)" class="matchedSampleUtteranceTitle">{{'matched_utterances'| i18nString}}</div>
+                <div ng-show="eachFM.sentence && (nlpData.scoringModel === 'original' || !nlpData.scoringModel)" class="matchedSampleUtterance">{{eachFM.sentence}}</div>
+                <div ng-show="nlpData.scoringModel === 'dependency' && eachFM.dependencySenetence" class="matchedSampleUtteranceTitle">{{'matched_utterances'| i18nString}}</div>
+                <div ng-show="nlpData.scoringModel === 'dependency' && eachFM.dependencySenetence" class="matchedSampleUtterance">{{eachFM.dependencySenetence}}</div>
+                <!-- <div class="matchedSampleUtteranceTitle">PROCESSED UTTERANCE</div>
+                <div class="matchedSampleUtterance">{{nlpData.finalResolver.userInput}}</div> -->
+                <div class="matchedSampleUtteranceTitle" ng-show="eachFM.foundVia === 'pattern'">{{'pattern_matched'| i18nString}}</div>
+                <div class="matchedSampleUtterance" ng-show="eachFM.foundVia === 'pattern'">{{eachFM.pattern}}</div>
+                <div ng-show="nlpData.scoringModel === 'original' || !nlpData.scoringModel">
+                <div class="matchedSampleUtteranceTitle">{{'score_caps'| i18nString}}</div>
+                <div class="childTable"><span class="innerHeader">{{'words_matched'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'proportion_label'| i18nString}}"></i></span><span class="inner">{{eachFM.scoreBreakdown.wordMatch| number:0}}</span></div>
+                <div class="childTable"><span class="innerHeader">{{'words_coverage'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_proportion'| i18nString}}"></i></span><span class="inner">{{eachFM.scoreBreakdown.coverage| number:0}}</span></div>
+                <div class="childTable"><span class="innerHeader">{{'exact_words'| i18nString}}</span><span class="inner"> {{eachFM.scoreBreakdown.exactWords}}</span></div>
+                <div class="eachChildAcc">
+                    <div class="childTable head" data-toggle="collapse" data-target="#eachChildAcc1">
+                        <span class="innerHeader bonus">{{'bonus'| i18nString}}</span>
+                        <span class="innerHeader right">{{((eachFM.scoreBreakdown.faqQuestionBonus) + (eachFM.scoreBreakdown.matchBonus) + (eachFM.scoreBreakdown.orderBonus) + (eachFM.scoreBreakdown.positionBonus) + (eachFM.scoreBreakdown.roleBonus) + (eachFM.scoreBreakdown.sentenceBonus) + (eachFM.scoreBreakdown.spreadBonus) + (eachFM.scoreBreakdown.tasktypeBonus)) | number:0}}</span>
+                    </div>
+                    <div class="inner" id="eachChildAcc1">
+                        <div class="childTable"><span class="innerHeader">{{'sentence_structure'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_order'| i18nString}} "></i></span><span class="inner">{{eachFM.scoreBreakdown.sentenceBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'word_position'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_sentence'| i18nString}}"></i></span><span class="inner">{{eachFM.scoreBreakdown.positionBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'faq_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.faqQuestionBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'match_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.matchBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'order_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.orderBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'role_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.roleBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'spread_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.spreadBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'task_type_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.tasktypeBonus| number:0}}</span></div>
+                    </div>
+                </div>
+
+
+                <div class="childTable"><span class="innerHeader">{{'penalty'| i18nString}}</span><span class="inner"> {{eachFM.scoreBreakdown.phraseJoinPenalty| number:0}}</span></div>
+            </div>
+             <div ng-show="nlpData.scoringModel === 'dependency'">
+                    <div ng-if="eachFM.dependency.length > 0">
+                        <div class="matchedSampleUtteranceTitle">{{'score_details'| i18nString}}</div>
+                              <table class="table">
+                                <tr>
+                                    <th class="titleHead">{{'original_word'| i18nString}}</th>
+                                    <th class="titleHead">{{'score'| i18nString}}</th>
+                                    <th class="titleHead">{{'matched_head'| i18nString}}</th>
+                                </tr>
+                            <tbody>
+                                <tr ng-repeat="scoreBreakdown in eachFM.dependency track by $index">
+                                    <td class="desc">{{scoreBreakdown.word}}</td>
+                                    <td class="desc">{{scoreBreakdown.score}}</td>
+                                    <td class="desc matchedHead">{{scoreBreakdown.matchedHead}}</td>
+                                </tr>
+                                
+                            </tbody>
+
+                        </table>
+                    </div>
+             </div>
+            </div>
+        </div>
+        <div class="accordionEliminatedDiv"  ng-class="{'accordionDiv':eachFM.score>0,'marginBottom15':($index==nlpData.fm.eliminated.length-1)}" ng-repeat="eachFM in nlpData.fm.eliminated | orderBy: ['-score','task'] track by $index">
+            <div class="header"> 
+                <div class="firstRow">
+                    <span class="ele">{{nlpData.finalResolver.universalBot?eachFM.streamName+" : ":''}}{{eachFM.task}} (Eliminated) </span>
+                    <span class="ele right">{{eachFM.score| number:0}}</span>
+                </div>
+                <div class="eleReason" ng-if="eachFM.score > 0">{{processData(eachFM.eliminationInfo.reason)}}</div>
+            </div>
+            <div class="accBody" ng-if="eachFM.score>0">
+                <div ng-show="eachFM.sentence" class="matchedSampleUtteranceTitle">{{'matched_utterances'| i18nString}}</div>
+                <div ng-show="eachFM.sentence" class="matchedSampleUtterance">{{eachFM.sentence}}</div>
+               <!--  <div class="matchedSampleUtteranceTitle">PROCESSED UTTERANCE</div>
+                <div class="matchedSampleUtterance">{{nlpData.finalResolver.userInput}}</div> -->
+                <div class="matchedSampleUtteranceTitle">{{'score_caps'| i18nString}}</div>
+                <div class="childTable"><span class="innerHeader">{{'words_matched'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'proportion_label'| i18nString}}"></i></span><span class="inner">{{eachFM.scoreBreakdown.wordMatch| number:0}}</span></div>
+                <div class="childTable"><span class="innerHeader">{{'words_coverage'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_proportion'| i18nString}} "></i></span><span class="inner">{{eachFM.scoreBreakdown.coverage| number:0}}</span></div>
+                <div class="childTable"><span class="innerHeader">{{'exact_words'| i18nString}}</span><span class="inner"> {{eachFM.scoreBreakdown.exactWords}}</span></div>
+                <!-- <div class="eachChildAcc fa fa-caret-right">
+                    <div class="childTable head">
+                        <span class="innerHeader bonus">{{'bonus'| i18nString}}</span>
+                        <span class="innerHeader right">{{((eachFM.scoreBreakdown.faqQuestionBonus) + (eachFM.scoreBreakdown.matchBonus) + (eachFM.scoreBreakdown.orderBonus) + (eachFM.scoreBreakdown.positionBonus) + (eachFM.scoreBreakdown.roleBonus) + (eachFM.scoreBreakdown.sentenceBonus) + (eachFM.scoreBreakdown.spreadBonus) + (eachFM.scoreBreakdown.tasktypeBonus)) | number:0}}</span>
+                    </div>
+                    <div class="inner">
+                        <div classs="childTable"><span class="innerHeader">{{'sentence_structure'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_order'| i18nString}}"></i></span><span class="inner">{{eachFM.scoreBreakdown.sentenceBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'word_position'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_sentence'| i18nString}}"></i></span><span class="inner">{{eachFM.scoreBreakdown.positionBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'faq_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.faqQuestionBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'match_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.matchBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'order_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.orderBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'role_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.roleBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'spread_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.spreadBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'task_type_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.tasktypeBonus| number:0}}</span></div>
+                    </div>
+                </div> -->
+
+                <div class="eachChildAcc">
+                    <div class="childTable head" data-toggle="collapse" data-target="#eachChildAcc2">
+                        <span class="innerHeader bonus">{{'bonus'| i18nString}}</span>
+                        <span class="innerHeader right">{{((eachFM.scoreBreakdown.faqQuestionBonus) + (eachFM.scoreBreakdown.matchBonus) + (eachFM.scoreBreakdown.orderBonus) + (eachFM.scoreBreakdown.positionBonus) + (eachFM.scoreBreakdown.roleBonus) + (eachFM.scoreBreakdown.sentenceBonus) + (eachFM.scoreBreakdown.spreadBonus) + (eachFM.scoreBreakdown.tasktypeBonus)) | number:0}}</span>
+                    </div>
+                    <div class="inner" id="eachChildAcc2">
+                        <div classs="childTable"><span class="innerHeader">{{'sentence_structure'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_order'| i18nString}}"></i></span><span class="inner">{{eachFM.scoreBreakdown.sentenceBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'word_position'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_sentence'| i18nString}}"></i></span><span class="inner">{{eachFM.scoreBreakdown.positionBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'faq_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.faqQuestionBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'match_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.matchBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'order_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.orderBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'role_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.roleBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'spread_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.spreadBonus| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'task_type_bonus'| i18nString}}</span><span class="inner">{{eachFM.scoreBreakdown.tasktypeBonus| number:0}}</span></div>
+                    </div>
+                </div>
+                <div class="childTable"><span class="innerHeader">{{'penalty'| i18nString}}</span><span class="inner"> {{eachFM.scoreBreakdown.phraseJoinPenalty| number:0}}</span></div>
+            </div>
+        </div>
+ 
+        </div>
+    </div>
+    </div>
+    <!-- </div> -->
+
+    <!-- FAQ -->
+    <div class="FAQ" ng-show="panel.type == 'FAQ'">
+        <div class="title">{{'knowledge_graph'| i18nString}}</div>
+        <div class="titleMsg">{{titleMessage}}</div>
+        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faqConfig" ng-href="'#faqConfigPanel" ng-click="getThresholdDetailsFaq()">
+                    <img ng-src="{{advancedSettingsIcon}}" class="advancedSettingsIcon">
+                    <img ng-src="{{advancedSettingsIconGray}}" class="advancedSettingsIconGray">
+        </a>
+         <div class="panel-group" id="faqConfig" >
+            <div class="panel panel-default"> 
+  
+              <div id="faqConfigPanel" class="panel-collapse collapse">
+                <div class="panel-body" perfect-scroll height-property="height" dynamic-height dynaoffset = "-130">
+                    <div class="col-xs-12 thresholdBody" ng-show="checkUndefined(faqDetails.autoSpellCorrectEnabled)">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'auto_correction'| i18nString}}</p>   
+                            <p class="description">{{'Thresholds_autocorrection_desc'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md"><span class="btnText">
+                                {{faqDetails.autoSpellCorrectEnabled ? enabled:disabled}}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 thresholdBody" ng-show="checkUndefined(faqDetails.useBotSynonyms)">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'bot_Synonyms'| i18nString}}</p>   
+                            <p class="description">{{'use_Faqs'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md">
+                                <span class="btnText">{{faqDetails.useBotSynonyms ? enabled:disabled }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 thresholdBody" ng-show="faqDetails.pathCoverage">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'Thresholds_path_coverage_label'| i18nString}}</p>   
+                            <p class="description">{{'minimum_utterance'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md">
+                                <span class="btnText">{{faqDetails.pathCoverage}} %</span>
+                            </button>
+                        </div>
+                    </div>
+                     <div class="col-xs-12 thresholdBody" ng-show="faqDetails.minThreshold">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'minimum_kg'| i18nString}}</p>   
+                            <p class="description">{{'minimum_definitive'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md">
+                                <span class="btnText">{{faqDetails.minThreshold}}% to {{faqDetails.maxThreshold}}%</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 thresholdBody" ng-show="faqDetails.suggestionsCount">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'KG_Suggestions_Count_label'| i18nString}}</p>   
+                            <p class="description">{{'maximum_kg'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md">
+                                <span class="btnText">{{faqDetails.suggestionsCount}} %</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 thresholdBody" ng-show="faqDetails.taskMatchTolerance">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'Proximity_of_Suggest_label'| i18nString}}</p>   
+                            <p class="description">{{'maximum_difference'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md">
+                                <span class="btnText">{{faqDetails.taskMatchTolerance}} %</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 thresholdBody">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'Manage_Long_Respons_label'| i18nString}}</p>   
+                            <p class="description">{{'Manage_Long_Respons_desc'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md">
+                                <span class="btnText">{{faqDetails.longResponses.readMore ? enabled:disabled}}</span>
+                            </button>
+                        </div>
+                    </div>
+                     <div class="col-xs-12 thresholdBody">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'Search_in_Answer_label'| i18nString}}</p>   
+                            <p class="description">{{'Search_in_Answer_desc'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md">
+                                <span class="btnText">{{faqDetails.searchInAnswer.enabled ? enabled:disabled}}</span>
+                            </button>
+                        </div>
+                    </div>
+                      <div class="col-xs-12 thresholdBody">
+                        <div class="col-xs-8 noPadding">
+                            <p class="heading">{{'quality_path'| i18nString}}</p>   
+                            <p class="description">{{'Qualify_Contextual_Paths_desc'| i18nString}}</p> 
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-md">
+                                <span class="btnText">{{faqDetails.qualifyContextualPaths ? enabled:disabled}}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         <div class="noData" ng-show="!dataAvailable">{{'no_data_found'| i18nString}}</div>
+        <div class="table" ng-if="allTasks.length > 0 || (nlpData.faq && nlpData.faq.eliminated)">
+            <div class="tableHeader question">{{'questions'| i18nString}}</div>
+            <div class="tableHeader score">{{'score'| i18nString}}</div>
+        </div>
+        <div perfect-scroll dynamic-height dynaoffset = "-155" height-property="height" class="positionRelative alignLeft">
+            <div class="accordionContainer" ng-repeat="eachFAQ in allTasks | orderBy: ['-faqScore','task']">
+            <div class="accordianHead col-xs-12 noPaddinSides">
+                <span class="ele col-xs-8" ng-show=" eachFAQ.showfaqDialog == 'faq' || (!eachFAQ.linkedDialog && eachFAQ.primaryQuestion)">{{nlpData.finalResolver.universalBot?eachFAQ.streamName+" : ":''}}{{eachFAQ.primaryQuestion}}</span>
+                <span class="ele col-xs-8" ng-show="!eachFAQ.linkedDialog && !eachFAQ.primaryQuestion && eachFAQ.task">{{nlpData.finalResolver.universalBot?eachFAQ.streamName+" : ":''}}{{eachFAQ.task}}</span>
+                 <span class="ele col-xs-8" ng-show="!eachFAQ.linkedDialog && !eachFAQ.primaryQuestion && eachFAQ.matchedQuestion">{{nlpData.finalResolver.universalBot?eachFAQ.streamName+" : ":''}}{{eachFAQ.matchedQuestion}}</span>
+                <span class="ele col-xs-8" ng-show="eachFAQ.linkedDialog">{{eachFAQ.linkedDialog}}<span  ng-show="eachFAQ.linkedDialog" class="innerHeader linkedDialogInfo"> <img ng-src="{{exclamationGray}}" class="infoIcon" tooltip="{{'dialog_intent'| i18nString}}" tooltip-placement="right"></span></span>
+                <span class="ele col-xs-3">{{eachFAQ.faqScore | number:2}}</span>
+                <span class="col-xs-1  toggleIcon"><i class="fa fa-chevron-right"></i></span>
+            </div>
+            <div class="accordionBody">
+                <div class="matchTitle"><div>{{eachFAQ.linkedDialog && eachFAQ.showfaqDialog === 'dialog'?utterance:questions}}</div><div class="matchQues">{{eachFAQ.task}}</div></div>
+                <div class="pathTitle" ng-if="eachFAQ.faqDemystification.path"><span>{{'path'| i18nString}}</span></div>
+                <div class="path">
+                    <div class="eachPath" ng-repeat="data in eachFAQ.faqDemystification.path track by $index">
+                        <span class="pathDiv" ng-class="{'greenBorder': addGreenBorder(data)}">{{processFAQText(data)}}</span>
+                        <span ng-if="$index < eachFAQ.faqDemystification.path.length - 1" class="symbol">></span>
+                    </div>
+                </div>
+                <div class="matchedItems">
+                    <span class="matchTitle italic">{{'matched_items'| i18nString}} - </span><span class="matchTitle">{{getMatchedItems(eachFAQ.faqDemystification.path)}}</span>
+                </div>
+                <div class="synonyms" ng-if="eachFAQ.faqDemystification.path">
+                    <div class="tableHeader">{{'synonyms_name'| i18nString}}</div>
+                    <div class="synonymTitle" ng-if="getQuestionSynonyms(data) !== ''" ng-repeat="data in eachFAQ.faqDemystification.path track by $index">{{getQuestionSynonyms(data)}}</div>
+                </div>
+                <div class="classes" ng-show="eachFAQ.faqDemystification.demystify.PositiveClasses">
+                    <div class="classTitle">{{'class_caps'| i18nString}}</div>
+                    <div class="classContainer" ng-if="hasClass(data) !== ''" ng-repeat="data in eachFAQ.faqDemystification.path track by $index">
+                        <div class="className"> <span class="eachClass italic">{{'class_name'| i18nString}}</span> <span class="eachClass"> - {{hasClass(data)}}</span></div>
+                        <div class="className"> <span class="eachClass italic">{{'term'| i18nString}}</span> <span class="eachClass"> - {{processFAQText(data)}}</span></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="accordionEliminatedContainer" ng-class="{'accordionContainer':eachFAQ.faqScore>0}" ng-repeat="eachFAQ in nlpData.faq.eliminated | orderBy: ['-faqScore','task']">
+            <div class="accordianHead col-xs-12 noPaddinSides">
+                <span class="ele col-xs-10">{{nlpData.finalResolver.universalBot?eachFAQ.streamName+" : ":''}}{{eachFAQ.task}} (Eliminated)</span>
+                <span class="ele right col-xs-2">{{eachFAQ.faqScore | number:2}}</span>
+            </div>
+            <div class="accordionBody" ng-if="eachFAQ.faqScore>0">
+                <div class="pathTitle"><span>{{'path'| i18nString}}</span></div>
+                <div class="path">
+                    <div class="eachPath" ng-repeat="data in eachFAQ.faqDemystification.path track by $index">
+                        <span class="pathDiv" ng-class="{'greenBorder': addGreenBorder(data)}">{{processFAQText(data)}}</span>
+                        <span ng-if="$index < eachFAQ.faqDemystification.path.length - 1" class="symbol">></span>
+                    </div>
+                </div>
+                <div class="matchedItems">
+                    <span class="matchTitle italic">{{'matched_items'| i18nString}} - </span><span class="matchTitle">{{getMatchedItems(eachFAQ.faqDemystification.path)}}</span>
+                </div>
+                <div class="synonyms">
+                    <div class="tableHeader">{{'synonyms_name'| i18nString}}</div>
+                    <div class="synonymTitle" ng-if="getQuestionSynonyms(data) !== ''" ng-repeat="data in eachFAQ.faqDemystification.path track by $index">{{getQuestionSynonyms(data)}}</div>
+                </div>
+                <div class="classes" ng-show="eachFAQ.faqDemystification.demystify.PositiveClasses">
+                    <div class="classTitle">{{'class_caps'| i18nString}}</div>
+                    <div class="classContainer" ng-if="hasClass(data) !== ''" ng-repeat="data in eachFAQ.faqDemystification.path track by $index">
+                        <div class="className"> <span class="eachClass italic">{{'class_name'| i18nString}}</span> <span class="eachClass"> - {{hasClass(data)}}</span></div>
+                        <div class="className"> <span class="eachClass italic">{{'term'| i18nString}}</span> <span class="eachClass"> - {{processFAQText(data)}}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+        
+    </div>
+     
+    <!--  Traits  -->
+    <div class="ML paddingRight15" ng-show="panel.type == 'Traits'">
+        <div class="title">{{'trait_rules_label'| i18nString}}</div>
+        <div class="titleMsg">{{titleMessage}}</div>
+        <div class="tableDetails traitsMatches" ng-repeat="eachml in allTasks track by $index">
+            <div class="traitsRow">
+                        <div class="tableHeaderTitle">{{'matched_intent'| i18nString}}</div>
+                        <p class="traitsList">{{eachml.task}}</p>
+            </div>
+            <div class="traitsRow">
+                        <div class="tableHeaderTitle">{{'rule_matched'| i18nString}}</div>
+                        <p class="traitsList">{{eachml.matchedTraitRule}}</p>
+            </div>
+        </div>
+    </div>
+  
+    <div class="ML" ng-show="panel.type == 'MathedTraits'">
+        <div class="title">{{'matched_traits'| i18nString}}</div>
+        <div class="titleMsg">{{titleMessage}}</div>
+
+        <div class="tableDetails traitsMatches" ng-if="allTasks.length > 0 || (nlpData.traits && nlpData.traits.identified)">
+            <div class="tableHeader left">{{'trait'| i18nString}}</div>
+            <div class="tableHeader right">{{'score_caps'| i18nString}}</div>
+        </div>
+
+        <div class="panel-group matchedTraits" id="matchedTraitAccordion" >
+            <div class="panel panel-default" ng-repeat="eachml in allTasks | orderBy: ['-score','task'] track by $index">
+              <div class="panel-heading collapsed" data-toggle="collapse" id="matchedTraitAccordion{{$index}}" data-parent="#matchedTraitAccordion" href="#collapse{{$index}}">
+                    <div class="tableHeader left">{{eachml.groupName+ " - "}}<span class="subLabel">{{eachml.label}}</span></div>
+                    <div class="tableHeader right">{{eachml.score| number:2}}</div>
+              </div>
+              <div id="collapse{{$index}}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="traitsRow" ng-if="eachml.pattern">
+                        <div class="tableHeaderTitle">{{'matched_pattern'| i18nString}}</div>
+                        <p class="traitsList">{{eachml.pattern}}</p>
+                    </div>
+                    <div class="traitsRow">
+                        <div class="tableHeaderTitle">{{'training_type_label'| i18nString}}</div>
+                        <p class="traitsList" ng-if="eachml.type  == 'probability'">{{'machine_learning'| i18nString}}</p>
+                        <p class="traitsList" ng-if="eachml.type  == 'pattern'">{{'pattern_based_label'| i18nString}}</p>
+                    </div>
+
+                    <div class="traitsRow" ng-if=" nlpData.traits.conflicts.length">
+                        <div class="tableHeaderTitle">{{'eliminated_traits'| i18nString}}</div>
+                        <div class="traitsListCount" ng-repeat="eliminatedTraits in nlpData.traits.conflicts track by $index">
+                            <div class="tableHeader left">{{eliminatedTraits.groupName+ " - "}}<span class="subLabel">{{eliminatedTraits.label}}</span></div>
+                            <div class="tableHeader right">{{eliminatedTraits.score| number:2}}</div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    <!-- Ranking and Resolver --->
+    <div class="RAR paddingRight20 positionRelative" dynaoffset="-97" perfect-scroll dynamic-height height-property="height" ng-show="panel.type == 'RAR' && !nlpData.showIntentRankResolve">
+            <div class="title">{{'ranking_resolver'| i18nString}}</div>
+            <!-- <div class="titleMsg" ng-show="nlpData.intentRescoring && nlpData.isPreferDefinitiveMatch">{{titleMessage}}</div> -->
+            <div class="infoMessage" ng-show="(nlpData.intentRescoringDisabled || nlpData.isPreferDefinitiveMatchDisabled) || (nlpData.isPreferDefinitiveMatch && nlpData.multipleSentenceInput)">
+                <div class="multi-line-notification marginTop10">
+                    <div class="bulb-icon noMargin"><img ng-src="{{bulbBlue}}"></div>
+                    <ul class="tost-text">
+                            <li ng-show="nlpData.isPreferDefinitiveMatchDisabled && !nlpData.multipleSentenceInput">{{'definitive_disabled' | i18nString }}</li>
+                            <li ng-show="nlpData.isPreferDefinitiveMatch && nlpData.multipleSentenceInput">
+                            {{'definitive_sentence' | i18nString}}
+                            </li>
+                            <li ng-show="nlpData.isPreferDefinitiveMatchDisabled && nlpData.multipleSentenceInput">
+                                {{'definitive_disabled_sentence' | i18nString}}
+                            </li>
+                            <li ng-show="nlpData.intentRescoringDisabled">{{'rescoring_disabled' | i18nString }}</li>
+                            
+                        </ul>                             
+                </div>
+            </div>
+            <div class="overallMsg">{{overallStr}}</div>    
+        
+            <div class="table" ng-if="allTasks.length > 0">
+                <div class="tableHeader">{{'ranking'| i18nString}}</div>
+                <div class="tableHeader right">{{'score_caps'| i18nString}}</div>
+            </div>
+            <div class="accordionContainer">
+                <div class="accordionDiv"  ng-repeat="eachTask in nlpData.finalResolver.ranking  | orderBy: ['-totalScore','-faqScore'] track by $index">
+                    <div class="header" ng-click="activateTask(eachTask)" ng-show="nlpData.scoringModel === 'original' || !nlpData.scoringModel"> 
+                        <div class="firstRow col-xs-12 noPadding">
+                            <span class="ele col-xs-8 noPadding negativeWarning" ng-if="eachTask.activityType !== 'smalltalk'">
+                                {{eachTask.linkedDialog && eachTask.showfaqDialog === 'dialog'?eachTask.linkedDialog:eachTask.primaryQuestion?eachTask.primaryQuestion:eachTask.intent}} {{stream.type === 'universalbot'?' ('+eachTask.streamName+' )':''}}
+                                <span class="innerHeader linkedDialogInfo" ng-show="eachTask.linkedDialog"> <img ng-src="{{exclamationGray}}" class="infoIcon" tooltip="{{'dialog_intent'| i18nString}}" tooltip-placement="right"></span>
+                                <span ng-show="eachTask.eliminationInfo.reason === 'negativePattern'">
+                                <img ng-src="{{exclamationGray}}" class="infoIcon" tooltip="{{'Intent eliminated due to Negative Pattern '  + eachTask.eliminationInfo.matchedPattern + ' match'}}" tooltip-placement="right">
+                                </span>
+                                <div ng-show="eachTask.eliminationInfo.reason">
+                                    <p class="eleInfo">{{'eliminated'| i18nString}} - <span>{{eliminationReasons[eachTask.eliminationInfo.reason]}}</span></p>
+                                </div>
+                            </span>
+                            <span class="ele alignRight col-xs-3 noPadding" ng-if="eachTask.activityType !== 'smalltalk'">{{(eachTask.totalScore || eachTask.faqScore) | number:2}}</span>
+                            <span ng-if="eachTask.scoring.scoreBreakdown || (eachTask.linkedDialog && eachTask.showfaqDialog === 'dialog')" class="ele alignCenter col-xs-1 noPadding"><i ng-class="{'fa fa-chevron-down icon':eachTask.active,'fa fa-chevron-right icon':!eachTask.active}"></i></span>
+                        </div>
+                        <div class="ele col-xs-9 smallTalkInfo" ng-if="eachTask.activityType === 'smalltalk'">
+                            <span>
+                                <img ng-src="{{smallTalkIcon}}" title="{{'small_talk'| i18nString}}"><span class="capitalizeText">{{eachTask.matchedPattern}}</span>
+                            </span>
+                        </div>
+                        <span class="ele alignRight noPadding floatRight" ng-if="eachTask.activityType === 'smalltalk'">
+                            <span class="ele alignCenter smallTalkEle"><i ng-class="{'fa fa-chevron-down icon':eachTask.active,'fa fa-chevron-right icon':!eachTask.active}"></i></span>
+                        </span>
+                        
+                    </div>
+                    <div class="header" ng-click="activateTask(eachTask)" ng-show="nlpData.scoringModel === 'dependency'"> 
+                        <div class="firstRow col-xs-12 noPadding">
+                            <span class="ele col-xs-9 noPadding negativeWarning" ng-if="eachTask.activityType !== 'smalltalk'">
+                                {{eachTask.linkedDialog && eachTask.showfaqDialog === 'dialog'?eachTask.linkedDialog:eachTask.primaryQuestion?eachTask.primaryQuestion:eachTask.intent}} {{stream.type === 'universalbot'?'('+eachTask.streamName+')':''}}
+                                <span class="innerHeader linkedDialogInfo" ng-show="eachTask.linkedDialog"> <img ng-src="{{exclamationGray}}" class="infoIcon" tooltip="{{'dialog_intent'| i18nString}}" tooltip-placement="right"></span>
+                                <span ng-show="eachTask.eliminationInfo.reason === 'negativePattern'">
+                                <img ng-src="{{exclamationGray}}" class="infoIcon" tooltip="{{'Intent eliminated due to Negative Pattern '  + eachTask.eliminationInfo.matchedPattern + ' match'}}" tooltip-placement="right">
+                                </span>
+                                <div ng-show="eachTask.eliminationInfo.reason">
+                                    <p class="eleInfo">{{'eliminated'| i18nString}} - <span>{{eliminationReasons[eachTask.eliminationInfo.reason]}}</span></p>
+                                </div>
+                            </span>
+                            <span class="ele alignRight col-xs-2 noPadding" ng-if="eachTask.activityType !== 'smalltalk'">{{(eachTask.totalScore || eachTask.faqScore) | number:2}}</span>
+                            <span ng-if="eachTask.scoring.scoreBreakdown || (eachTask.linkedDialog && eachTask.showfaqDialog === 'dialog')" class="ele alignCenter col-xs-1 noPadding"><i ng-class="{'fa fa-chevron-down icon':eachTask.active,'fa fa-chevron-right icon':!eachTask.active}"></i></span>
+                        </div>
+                        <div class="ele col-xs-9 smallTalkInfo" ng-if="eachTask.activityType === 'smalltalk'">
+                            <span>
+                                <img ng-src="{{smallTalkIcon}}" title="{{'small_talk'| i18nString}}"><span class="capitalizeText">{{eachTask.matchedPattern}}</span>
+                            </span>
+                        </div>
+                        <span class="ele alignRight noPadding floatRight" ng-if="eachTask.activityType === 'smalltalk'">
+                            <span class="ele alignCenter smallTalkEle"><i ng-class="{'fa fa-chevron-down icon':eachTask.active,'fa fa-chevron-right icon':!eachTask.active}"></i></span>
+                        </span>
+                        
+                    </div>
+                    <div class="accBody" ng-show="eachTask.activityType === 'smalltalk'">
+                        <script type="text/ng-template" id="tree_view">
+                            {{node.title}}
+                            <ul ng-if="node.tree">
+                                <li ng-repeat="node in node.tree" ng-include="'tree_view'">
+                                </li>
+                            </ul>
+                        </script>
+                        <div class="smallTalkPath">
+                            <ul class="tree">
+                                <li class="noBorder" ng-repeat="node in tree" ng-include="'tree_view'"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accBody" ng-show="eachTask.scoring.scoreBreakdown || (eachTask.linkedDialog && eachTask.showfaqDialog === 'dialog') " ng-init="initiatePopover(eachTask,$index)">
+                        <div class="matchedSampleUtteranceTitle" ng-show="eachTask.matchedInvocationName">{{ 'matched_invocation' | i18nString }}</div>
+                        <div class="matchedSampleUtterance" ng-show="eachTask.matchedInvocationName">{{eachTask.matchedInvocationName}}</div>
+                        <div class="matchedSampleUtteranceTitle" ng-show="eachTask.scoring.sentence">{{'matched_sample'| i18nString}}</div>
+                        <div ng-show="eachTask.scoring.sentence" class="matchedSampleUtterance">{{eachTask.scoring.sentence}}<span class="know-more-popover-content" ng-show="processedUtterancesData"><a data-toggle="popover" data-placement="bottom" class="knowMore{{$index}} showmore" id="knowmore">{{'know_more'| i18nString}}</a></span></div>
+                        <div class="matchedSampleUtteranceTitle">{{'processed'| i18nString}}</div>
+                        <div class="matchedSampleUtterance">{{nlpData.finalResolver.userInput}}</div>
+                        <div class="matchedSampleUtteranceTitle" ng-show="eachTask.linkedDialog">{{'matched_utterance'| i18nString}}</div>
+                        <div class="matchedSampleUtterance" ng-show="eachTask.linkedDialog">{{eachTask.intent}}</div>
+                        <div ng-show="eachTask.scoring.scoreBreakdown && (nlpData.scoringModel === 'original' || !nlpData.scoringModel)">
+                        <div class="matchedSampleUtteranceTitle">{{'score_caps'| i18nString}}</div>
+                        <div class="childTable"><span class="innerHeader">{{'words_matched'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'proportion_label'| i18nString}}"></i></span><span class="inner">{{eachTask.scoring.scoreBreakdown.wordMatch| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'words_coverage'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_proportion'| i18nString}} "></i></span><span class="inner">{{eachTask.scoring.scoreBreakdown.coverage| number:0}}</span></div>
+                        <div class="childTable"><span class="innerHeader">{{'exact_words'| i18nString}}</span><span class="inner"> {{eachTask.scoring.scoreBreakdown.exactWords| number:0}}</span></div>
+                        <!-- <div class="eachChildAcc fa fa-caret-right">
+                            <div class="childTable head">
+                                <span class="innerHeader bonus">{{'bonus'| i18nString}}</span>
+                                <span class="innerHeader right">{{((eachTask.scoring.scoreBreakdown.faqQuestionBonus) + (eachTask.scoring.scoreBreakdown.matchBonus) + (eachTask.scoring.scoreBreakdown.orderBonus) + (eachTask.scoring.scoreBreakdown.positionBonus) + (eachTask.scoring.scoreBreakdown.roleBonus) + (eachTask.scoring.scoreBreakdown.sentenceBonus) + (eachTask.scoring.scoreBreakdown.spreadBonus) + (eachTask.scoring.scoreBreakdown.tasktypeBonus)) | number:0}}</span>
+                            </div>
+                            <div class="inner">
+                                <div class="childTable"><span class="innerHeader">{{'sentence_structure'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_order'| i18nString}} "></i></span><span class="inner">{{eachTask.scoring.scoreBreakdown.sentenceBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'word_position'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_sentence'| i18nString}}"></i></span><span class="inner">{{eachTask.scoring.scoreBreakdown.positionBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'faq_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.faqQuestionBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'match_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.matchBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'order_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.orderBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'role_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.roleBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'spread_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.spreadBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'task_type_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.tasktypeBonus| number:0}}</span></div>
+                            </div>
+                        </div> -->
+
+                        <div class="eachChildAcc">
+                            <div class="childTable head" data-toggle="collapse" data-target="#eachChildAcc3">
+                                <span class="innerHeader bonus">{{'bonus'| i18nString}}</span>
+                                <span class="innerHeader right">{{((eachTask.scoring.scoreBreakdown.faqQuestionBonus) + (eachTask.scoring.scoreBreakdown.matchBonus) + (eachTask.scoring.scoreBreakdown.orderBonus) + (eachTask.scoring.scoreBreakdown.positionBonus) + (eachTask.scoring.scoreBreakdown.roleBonus) + (eachTask.scoring.scoreBreakdown.sentenceBonus) + (eachTask.scoring.scoreBreakdown.spreadBonus) + (eachTask.scoring.scoreBreakdown.tasktypeBonus)) | number:0}}</span>
+                            </div>
+                            <div class="inner" id="eachChildAcc3">
+                                <div class="childTable"><span class="innerHeader">{{'sentence_structure'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_order'| i18nString}} "></i></span><span class="inner">{{eachTask.scoring.scoreBreakdown.sentenceBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'word_position'| i18nString}}<i class="fa fa-question-circle marginLeft5" data-toggle="tooltip" data-placement="top" tooltip="{{'score_sentence'| i18nString}}"></i></span><span class="inner">{{eachTask.scoring.scoreBreakdown.positionBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'faq_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.faqQuestionBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'match_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.matchBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'order_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.orderBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'role_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.roleBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'spread_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.spreadBonus| number:0}}</span></div>
+                                <div class="childTable"><span class="innerHeader">{{'task_type_bonus'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.tasktypeBonus| number:0}}</span></div>
+                            </div>
+                        </div>
+                        <div class="childTable"><span class="innerHeader">{{'penalty'| i18nString}}</span><span class="inner">{{eachTask.scoring.scoreBreakdown.phraseJoinPenalty| number:0}}</span></div>
+                    </div>
+                    <div ng-show="dependency.rarBreakDown && nlpData.scoringModel === 'dependency'">
+                        <div ng-if="dependency.rarBreakDown.length > 0">
+                            <div class="matchedSampleUtteranceTitle">{{'score_details'| i18nString}}</div>
+                            <table class="table">
+                                <tr>
+                                    <th class="titleHead">{{'original_word'| i18nString}}</th>
+                                    <th class="titleHead">{{'score'| i18nString}}</th>
+                                    <th class="titleHead">{{'matched_head'| i18nString}}</th>
+                                </tr>
+                            <tbody>
+                                <tr ng-show="scoreBreakdown.intent === eachTask.intent" ng-repeat="scoreBreakdown in dependency.rarBreakDown track by $index">
+                                    <td class="desc">{{scoreBreakdown.word}}</td>
+                                    <td class="desc">{{scoreBreakdown.score}}</td>
+                                    <td class="desc matchedHead">{{scoreBreakdown.matchedHead}}</td>
+                                </tr>
+                                
+                            </tbody>
+
+                        </table>
+                        </div>
+                        </div>
+                    </div>
+                
+                
+
+                </div>
+            </div>
+
+            <div class="resultLabel" ng-if="nlpData.finalResolver.winningIntent">{{'result'| i18nString}}</div>
+            <div ng-if="nlpData.finalResolver.winningIntent.length === 1">
+                <div class="winnerLabel">{{'winner'| i18nString}}</div>
+                <div class="winnerIntent" ng-repeat="winner in nlpData.finalResolver.winningIntent">
+                <!--  <span ng-if="!winner.linkedDialog"> {{winner.intent}} </span>
+                <span ng-if="winner.linkedDialog"> {{winner.linkedDialog}} </span> -->
+                <span>{{winner.linkedDialog && winner.showfaqDialog === 'dialog'?winner.linkedDialog:winner.primaryQuestion?winner.primaryQuestion:winner.matchedQuestion?winner.matchedQuestion:winner.intent}}</span>
+                </div>
+            </div>
+            <div ng-if="nlpData.finalResolver.winningIntent.length > 1">
+                <div class="winnerLabel">{{'suggested'| i18nString}}<span class="suggestedInfo" tooltip-placement="top" tooltip="{{'multiple_intents'| i18nString}}"><img ng-src="{{infoIcon}}"></span></div>
+                <div class="winnerIntent" ng-repeat="suggested in nlpData.finalResolver.winningIntent">
+                <!--   <span ng-if="!suggested.linkedDialog"> {{suggested.intent}} </span>
+                <span ng-if="suggested.linkedDialog"> {{suggested.linkedDialog}} </span> -->
+                <span>{{suggested.linkedDialog && suggested.showfaqDialog === 'dialog'?suggested.linkedDialog:suggested.primaryQuestion?suggested.primaryQuestion:suggested.intent}}</span>
+                </div>
+            </div>
+            <div class="winnerLabel" ng-if="eliminatedIntents.length > 0">{{'eliminated'| i18nString}}</div>
+            <div class="winnerIntent loserIntent" ng-repeat="eliminated in eliminatedIntents | orderBy: 'intent'">
+                {{eliminated.intent}}
+            </div>
+    </div>
+    <div class="RAR intentRescore paddingRight20 positionRelative" dynaoffset="-97" perfect-scroll dynamic-height height-property="height" ng-show="panel.type == 'RAR' && nlpData.showIntentRankResolve">
+        <div class="title">{{'ranking_resolver'| i18nString}}</div>
+        <div class="infoMessage">
+            <div class="kr-sg-multi-line-notification marginTop10">
+                <div class="bulb-icon"><img ng-src="{{bulbBlue}}"></div>
+                <div class="tost-text">{{'rank_resolve_rescore' | i18nString}}</div>                                 
+                </div>
+        </div>
+        <div class="definitiveMatch marginTop10" ng-show="linkedBotsDefinitive.length">
+            <div class="title">{{'definitive_match' | i18nString}}</div>
+                <div class="boat-cards"  ng-repeat="definitiveBot in linkedBotsDefinitive track by $index">
+                        <div class="img-block col-xs-12 row">
+                            <div class="title">
+                                <img class="botIcon" ng-src="{{definitiveBot.botIconUrl}}" onerror="handleimgLoad(this)">
+                                <span class="botName">{{definitiveBot.streamName}}</span>
+                            </div>
+                            <div class="heading">
+                                <div class="title-sub col-xs-9">{{'matched_intent' | i18nString}}</div>
+                                <div class="title-sub col-xs-3">{{'score' | i18nString}}</div>
+                            </div>
+                            <div class="intentInfo" >
+                                <div class="sub-param col-xs-9">{{definitiveBot.intent}}</div>
+                                <div class="sub-param col-xs-3">{{definitiveBot.totalScore}}</div>
+                            </div>
+                        </div>
+                
+                </div>
+
+        </div>
+        <div class="probableMatch marginTop10" ng-show="linkedBotsPossible.length">
+            <div class="title">{{'probable_match' | i18nString }}</div>
+                <div class="boat-cards"  ng-repeat="probableBot in linkedBotsPossible track by $index">
+                        <div class="img-block col-xs-12 row">
+                            <div class="title">
+                                <img class="botIcon" ng-src="{{probableBot.botIconUrl}}" onerror="handleimgLoad(this)">
+                                <span class="botName">{{probableBot.streamName}}</span>
+                            </div>
+                            <div class="heading">
+                                <div class="title-sub col-xs-9">{{'matched_intent' | i18nString}}</div>
+                                <div class="title-sub col-xs-3">{{'score' | i18nString}}</div>
+                            </div>
+                            <div class="intentInfo" >
+                                <div class="sub-param col-xs-9">{{probableBot.intent}}</div>
+                                <div class="sub-param col-xs-3">{{probableBot.totalScore}}</div>
+                            </div>
+                        </div>
+                
+                </div>
+        </div>
+        <div ng-show="!linkedBotsPossible.length && !linkedBotsDefinitive.length">
+            <div class="noData positionRelative">{{'no_data_found'| i18nString}}</div>
+        </div>
+    </div>
+    <div class="winningIntent paddingRight20 positionRelative" ng-show="panel.type == 'winningIntent'" perfect-scroll height-property="height" dynaoffset = "-97">
+            <div class="title">{{nlpData.task}}</div>
+            <div class="titleMsg">{{'entities_identified'| i18nString}}</div>
+            <div ng-if="nlpData.finalResolver.entities.length === 0">
+            <div class="noData positionRelative">{{'no_data_found'| i18nString}}</div>
+            </div>
+            <div ng-if="nlpData.finalResolver.entities.length > 0">
+                <div class="table">
+                    <div class="tableHeader">{{'entity_caps'| i18nString}}</div>
+                    <div class="tableHeader right">{{'identified_by'| i18nString}}</div>
+                </div>
+                <div class="tableDetails" ng-repeat="eachEntity in nlpData.finalResolver.entities">
+                        <div class="tableValue">
+                            <p>{{eachEntity.field}}</p>
+                            <p class="highlight">{{cb.getEntityValue(eachEntity)}}</p>
+                        </div>
+                        <div class="tableValue right" ng-show="eachEntity.entityMatchInfo">
+                            <div>
+                            <p>{{eachEntity.entityMatchInfo[0].entityIdentifiedBy}}</p>
+                            <p class="highlight">{{eachEntity.entityMatchInfo[0].entityIdentifiedUsing}}</p>  
+                            </div>
+                            
+                        </div>
+                </div>
+            </div>
+    </div>  
+    <div class="botScope paddingRight20 positionRelative" ng-show="panel.type == 'botScope'" perfect-scroll height-property="height" dynamic-height dynaoffset = "-97">
+        <div class="headerContainer">
+            <div class="title-sec">
+                <div class="title">{{'scope_bots_title' | i18nString}}</div>
+            </div>
+            <div class="titleMsg">{{nlpData.scopedBots.qualifiedBots.length ? nlpData.scopedBots.qualifiedBots.length > 1 ? nlpData.scopedBots.qualifiedBots.length + ' bots scoped ' : nlpData.scopedBots.qualifiedBots.length + ' bot scoped ' : 'No bots scoped' }}</div>
+            <!-- <div class="titleMsg" ng-show="!nlpData.scopedBots.qualifiedBots.length">{{'no_bots_scoped' | i18nString}}</div>
+            <div class="titleMsg" ng-show="nlpData.scopedBots.qualifiedBots.length && (nlpData.scopedBots.progress.eligible || nlpData.scopedBots.progress.matched)">{{nlpData.scopedBots.qualifiedBots.length ? nlpData.scopedBots.qualifiedBots.length > 1 ? nlpData.scopedBots.qualifiedBots.length + ' bots scoped ' : nlpData.scopedBots.qualifiedBots.length + ' bot scoped ' : 'No bots scoped'}}</div>
+            <div class="titleMsg" ng-show="nlpData.scopedBots.progress.fallback && nlpData.scopedBots.qualifiedBots.length">
+            {{'no_bots_qualified' | i18nString}}
+            </div> -->
+        </div>
+        <div class="bot-scope-container">
+            <div class="tabs-sec-container">
+                <div class="topics" ng-class="{'active':nlpData.scopedBots.progress.eligible || nlpData.scopedBots.progress.matched || nlpData.scopedBots.progress.fallback || nlpData.scopedBots.progress.inclusive}">
+                    <div class="title font12">{{'check_assignments' | i18nString}}</div>
+                    <div class="subtitle" ng-show="!nlpData.scopedBots.progress.eligible">{{'no_eligible' | i18nString}}</div>
+                    <div class="subtitle" ng-show="nlpData.scopedBots.progress.eligible">{{nlpData.scopedBots.progress.eligible > 1? nlpData.scopedBots.progress.eligible + ' bots matched' : nlpData.scopedBots.progress.eligible + ' bot matched'}}</div>
+                </div>
+                <div class="topics" ng-class="{'active':nlpData.scopedBots.progress.matched || nlpData.scopedBots.progress.fallback || nlpData.scopedBots.progress.inclusive}">
+                    <div class="title font12">{{'evaluate_training' | i18nString}}</div>
+                    <div class="subtitle" ng-show="!nlpData.scopedBots.progress.matched">{{'no_bots_qualified' | i18nString}}</div>
+                    <div class="subtitle" ng-show="nlpData.scopedBots.progress.matched">{{nlpData.scopedBots.progress.matched > 1 ? nlpData.scopedBots.progress.matched + ' bots qualified ': nlpData.scopedBots.progress.matched + ' bot qualified '}}<span ng-show="nlpData.scopedBots.progress.inclusive">+{{nlpData.scopedBots.progress.inclusive > 1 ? nlpData.scopedBots.progress.inclusive + ' inclusive bots':nlpData.scopedBots.progress.inclusive + 'inclusive bot'}}</span></div>
+                </div>
+                <div class="topics" ng-class="{'active':nlpData.scopedBots.progress.fallback || (!nlpData.scopedBots.progress.matched && nlpData.scopedBots.progress.inclusive)}">
+                    <div class="title font12">{{'fallback_title' | i18nString}}</div>
+                    <div class="subtitle" ng-show="!nlpData.scopedBots.progress.fallback && !nlpData.scopedBots.progress.inclusive">{{'no_fallback_bots' | i18nString}}</div>
+                    <div class="subtitle" ng-show="nlpData.scopedBots.progress.fallback || nlpData.scopedBots.progress.inclusive">
+                            {{'check_fallback_inclusive_bots' | i18nString}}
+                    </div>
+                </div>
+            </div>
+            <div class="boat-details-sec" ng-show="nlpData.scopedBots.progress.eligible || nlpData.scopedBots.progress.matched">
+                <div class="heading-title">{{'qualified_bots' | i18nString}}</div>
+                <div class="boat-cards" ng-repeat="bot in nlpData.scopedBots.qualifiedBots">
+                    <!-- <div class="name">{{bot.streamName}}</div> -->
+                    <div class="img-block"><img ng-src={{bot.botIconUrl}} class="logo"><span class="title">{{bot.streamName}}</span></div>
+                    <div class="col-xs-12 noPadding scopedContainer">               
+                            <div ng-show="bot.matchedVia === 'invocationPhrases'" class="invocation" ng-init="initiateInvocationPopver()">
+                                <div class="heading">{{'bot_matched_invocation' | i18nString}}<span class="invocationPhraseInfo" id="phraseInfo"><span class="fa fa-info-circle infoIcon" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="{{invocationInfo}}"></span></div>
+                                <div class="sub-header-title paddingTop10">{{'original_utterance' | i18nString}}</div>
+                                <div class="sub-header-para paddingTop5">{{nlpData.input[0]}}</div>
+                                <div class="sub-header-title paddingTop10">Utterance used for intent detection</div>
+                                <div class="sub-header-para paddingTop5">{{bot.matchedUtterance}}</div>
+                            </div>
+                            
+                            <div ng-show="bot.matchedVia === 'trainingUtterances'" class="utterance">
+                                <div class="heading">{{'bot_matched_training' | i18nString }}</div>
+                                <div class="col-xs-9 noPadding" ng-if="bot.matchedUtterance">
+                                    <div class="sub-header-title paddingTop10">{{'matched_utter' | i18nString}}</div>
+                                    <div class="sub-header-para paddingTop5">{{bot.matchedUtterance}}</div>
+                                </div>
+                                    <div class="col-xs-3 noPadding" ng-if="bot.score">
+                                        <div class="sub-header-title paddingTop10">{{'score' | i18nString}}</div>
+                                        <div class="sub-header-para paddingTop5">{{bot.score}}</div>
+                                    </div>
+                            </div>
+
+                            <div ng-show="bot.matchedVia === 'triggerPhrases'" class="utterance">
+                                <div class="heading">{{'bot_matched_trigger' | i18nString}}</div>
+                                <div class="col-xs-12 noPadding" ng-if="bot.matchedUtterance">
+                                    <div class="sub-header-title paddingTop10">{{'matched_utter' | i18nString}}</div>
+                                    <div class="sub-header-para paddingTop5">{{bot.matchedUtterance}}</div>
+                                </div>
+                            </div>
+                            <div ng-show="bot.botType === 'inclusive'" class="utterance">
+                                <div class="heading">{{'bot_qualified_bots' | i18nString}}</div>
+                            </div>
+                            <div ng-show="bot.botQualificationThreshold" class="utterance">
+                                <div class="col-xs-9 noPadding">
+                                    <div class="sub-header-title paddingTop10">{{'bot_qualification_threshold' | i18nString}}</div>
+                                    <div class="sub-header-para paddingTop5">{{'bot_qualification_threshold_desc' | i18nString}}</div>
+                                </div>
+                                <div class="col-xs-3 pl-10 pr-0">
+                                    <div class="sub-header-para paddingTop10">{{bot.botQualificationThreshold}}</div>
+                                    
+                                </div>
+                            </div>
+                
+                            
+                    
+                    </div>
+                    
+                    
+                </div>
+        
+            </div>
+            <div class="bot-details-sec" ng-show="nlpData.scopedBots.progress.fallback || (!nlpData.scopedBots.progress.matched && !nlpData.scopedBots.progress.eligible && nlpData.scopedBots.progress.inclusive)">
+            <div class="bot-cards accordionContainer">
+
+                    <div class ="accordionDiv" ng-show="inclusiveBots.length">
+                        <div class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#inclusiveBots" ng-href="'#inclusiveBotsList">   
+                            <span class="title">{{'inclusive_bots_upper' | i18nString}}<span class="count" ng-show="inclusiveBots.length">( {{inclusiveBots.length}} )</span><img ng-src="{{chevronRightIcon}}" class="fa-chevron-right"></span>
+                        </div>
+                    <div class="panel-group" id="inclusiveBots" >
+                            <div class="panel panel-default"> 
+                                <div id="inclusiveBotsList" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                    <div class="bot-card" ng-repeat="inclusiveBot in inclusiveBots track by $index">
+                                            <div class="img-block"><img ng-src={{inclusiveBot.botIconUrl}} class="logo">
+                                                <span class="title">{{inclusiveBot.streamName}}</span>
+                                            </div>
+                                        </div>  
+                                    </div>
+                    
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+                    <div class ="accordionDiv" ng-show="fallBackBots.length">
+                        <div class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#fallbackBots" ng-href="'#fallbackBotsList">   
+                        <span class="title">{{'fallback_bots_upper' | i18nString }}<span class="count" ng-show="fallBackBots.length">( {{fallBackBots.length}} )</span> <img ng-src="{{chevronRightIcon}}" class="fa-chevron-right"></span>
+                    </div>
+                    <div class="panel-group" id="fallbackBots" >
+                            <div class="panel panel-default"> 
+                                <div id="fallbackBotsList" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                    <div class="bot-card" ng-repeat="bot in fallBackBots track by $index">
+                                            <div class="img-block"><img ng-src={{bot.botIconUrl}} class="logo">
+                                                <span class="title">{{bot.streamName}}</span>
+                                            </div>
+                                        </div>  
+                                    </div>
+                    
+                                </div>
+                            </div>
+                    </div>
+                </div>
+        
+        </div>
+        
+            
+
+
+            
+            </div> 
+        </div> 
+    </div>
+</div>                       

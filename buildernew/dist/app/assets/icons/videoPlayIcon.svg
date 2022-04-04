@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="51px" viewBox="0 0 51 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="demoVideos" transform="translate(-184.000000, -108.000000)">
+            <g id="Group" transform="translate(184.000000, 108.000000)">
+                <circle id="Oval" fill="#FFFFFF" cx="25.5" cy="25.5" r="25.5"></circle>
+                <path d="M31.466022,24.6133434 C31.7267706,24.874092 31.857143,25.1828687 31.857143,25.5396827 C31.857143,25.8964966 31.7267706,26.2052733 31.466022,26.466022 L22.2437996,35.6882443 C21.983051,35.948993 21.6742743,36.0793653 21.3174603,36.0793653 C20.9606464,36.0793653 20.6518697,35.948993 20.391121,35.6882443 C20.1303724,35.4274956 20,35.118719 20,34.761905 L20,16.3174603 C20,15.9606464 20.1303724,15.6518697 20.391121,15.391121 C20.6518697,15.1303724 20.9606464,15 21.3174603,15 C21.6742743,15 21.983051,15.1303724 22.2437996,15.391121 L31.466022,24.6133434 Z" id="caretGray" fill="#26354A"></path>
+            </g>
+        </g>
+    </g>
+</svg>

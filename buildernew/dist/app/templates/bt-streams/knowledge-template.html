@@ -1,0 +1,404 @@
+<div ng-init="bulderReloaded()" class="knowledgeTask-row"   ng-class="{'read-only-wrap':knowledgeDisplayMode() === 'VIEW'}"  ng-show="selectedStream.type != 'universalbot'">
+    <!-------------------------------- KG Block ------------------------->
+    <div class="panel-default" >
+         <!-------------------------------- KG List Block ------------------------->
+        <div class="" ng-if="(rightPanel.innerRightPanel.view !== 'storyboard')"> 
+            <div class="row btnSearchTitle">
+                <div class="col-xs-6 leftTitle">
+                    <p class="pageTitle">{{'knowledge_graph'| i18nString}}</p>
+                </div>
+                <div class="col-xs-6 rightBTNSearch displayNone">
+                    <div class="searchComponent displayNone">
+                        <input  placeholder="{{'search'| i18nString}}">
+                        <i class="btx-search"></i>
+                        <i class="btx-close "></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kcMainContainer" ng-hide="knowledgeTasksByState.length == 0 && !loadingKnowledge">
+                <div class="kcContainer"  ng-repeat="knowledgeTask in knowledgeTasksByState">
+                    <div class="leftContainer"  ng-click="botDetails.streamState === 'published' || knowledgeDisplayMode() === 'VIEW'?viewWorkflow(knowledgeTask,'knowledgeTask'):editOrViewWorkflow(knowledgeTask, 'knowledgeTask')">
+                        <p class="kcTitle"><span>{{'knowledge_graph'| i18nString}} - {{knowledgeTask.name}}</span>
+                            <span ng-if="botDetails.streamState !== 'published' && knowledgeTask.state === 'published' && knowledgeTask.parentId" class="viewKgTask" ng-click="editWorkflow(knowledgeTask, 'knowledgeTask')"> {{'constants.states_awaitingApproval'| i18nString}}</span>
+                            <span ng-if="botDetails.streamState !== 'published' && knowledgeTask.state === 'awaitingApproval'" class="viewKgTask" ng-click="editWorkflow(knowledgeTask, 'knowledgeTask')"> {{'constants.states_awaitingApproval'| i18nString}} </span>
+                             <span ng-if="botDetails.streamState == 'published' && knowledgeTask.state === 'suspended'" class="viewKgTask red" ng-click="viewWorkflow(knowledgeTask, 'knowledgeTask')"> {{'constants.states_suspended'| i18nString}} </span>
+                             <span ng-if="botDetails.streamState !== 'published' && knowledgeTask.state === 'rejected'" class="viewKgTask red" ng-click="editWorkflow(knowledgeTask, 'knowledgeTask')">{{'constants.states_rejected'| i18nString}} </span>
+                         </p>
+                        <div class="kcCountDiv">
+                            <p class="countDiv">{{ knowledgeQuestions || '0'}} <span class="kcText">{{'questions'| i18nString}}</span></p> 
+                            <p class="countDiv">{{ knowledgeTerms || '0'}} <span class="kcText">{{'terms_label'| i18nString}}</span></p> 
+                            <p class="countDiv">{{ knowledgeClasses || '0'}} <span class="kcText">{{'traits'| i18nString}}</span></p> 
+                        </div>
+                    </div>
+                    <div class="rightContainer">
+                        <div class="rightInnercontainer">
+                            <div ng-click='importOnto($event)' ng-if="knowledgeDisplayMode() !== 'VIEW' && botDetails.streamState !== 'published'" class="kgImportLink"><i ng-src="{{import}}" class="extractionLink btx-impExp importExport"></i>{{'import'| i18nString}}</div>
+                            <div ng-click='botDetailsCb.exportOntology("csv")' ng-class='{"disabled-state" : !knowledgeQuestions}'  class="kgDownloadCSV"><i ng-src="{{export}}" class="extractionLink btx-imp-export"></i>{{'export_csv'| i18nString}}</div>
+                            <div ng-click='botDetailsCb.exportOntology("json")' ng-class='{"disabled-state": !knowledgeQuestions}'  class="kgDownloadJSON"><i ng-src="{{export}}" class="extractionLink btx-imp-export"></i>{{'export_json'| i18nString}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+         <!-------------------------------- KG List Block ------------------------->
+
+         <!-------------------------------- No KG  Block ------------------------->
+        <div class="col-xs-12 noPadding" ng-class="{'read-only-wrap':botDetails.streamState == 'published'}">
+            <div class="alert alert-warning alert-xs text-center" role="alert" ng-show="(knowledgeTasks.length == 0 && loadingKnowledge)">
+                {{'loading_graph'| i18nString}} ...
+            </div>
+            <div ng-show="(knowledgeTasks.length == 0 && !loadingKnowledge) || (knowledgeTasksByState.length === 0)" class="kcMainContainer emptyState">
+                <div class="kcContainer">
+                    <div class='leftDiv'>
+                        <p class="botName">{{currSelectedBot.name}}</p>
+                        <p class="botDesc" ng-bind-html='("build_your_bot"| i18nString)'></p>
+                    </div>
+                    <div class='rightDiv'>
+                        <div class="rightInnercontainer">
+                            <p class="exptyDesc" ng-bind-html='("looks_like_no_ques"| i18nString)'></p>
+                            <button class="kr-sg-button-primary btn_lg" ng-class="{'screenFreeze':botDetails.streamState == 'published'}" ng-click="showForm($event, 'knowledgeCollection')">{{'create_label'| i18nString}} </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-------------------------------- No KG  Block ------------------------->
+
+        <!-------------------------------- KG Extracts Block ------------------------->
+        <div class='col-xs-12 extractUI' ng-if="(rightPanel.innerRightPanel.view !== 'storyboard')">
+            <div class='row headingDiv'>
+                <span class='col-xs-4 titleHeading'>{{'extracts'| i18nString}}</span> 
+                <div class="col-xs-8 actionBtnsDiv" ng-if='!extracting.urlFile || knowledgeExtractList.length != 0'>
+                    <span class='extractBTNLink' ng-class= "{'inactive': showFile.url !== 'file'}" ng-click='switchTabs("file")'><i class="extractionLink btx-note"></i>{{'extract_file'| i18nString}}</span>
+                    <span class='extractBTNLink' ng-class= "{'inactive': showFile.url !== 'url'}" ng-click='switchTabs("url")'><i class="extractionLink btx-link"></i>{{'extract_url'| i18nString}}</span>
+                    <span class="viewIconsDiv">
+                        <i ng-click="switchView('list')" ng-class="{'active':(kgView.type=='list')}"  class="listViewIcon btx-list-view" tooltip-placement="top" tooltip="{{'list_tooltip'| i18nString}}"></i>
+                        <i ng-click="switchView('tile')" ng-class="{'active':(kgView.type=='tile')}"  class="tileViewIcon btx-api-extensions" tooltip-placement="top" tooltip="{{'tile_tooltip'| i18nString}}"></i>
+                    </span>
+                </div>
+
+            </div>
+
+            <form name ='extractUploadForm'>
+            <div ng-show='showFile.url === "file"' class="stepsContainer">
+                <i class="closeImport btx-close" ng-click='showFile.url = ""; extracting.urlFile = true;'></i>
+                <div ng-show="importStep == 1" class="stepsDiv">
+                    <div class="modal-body import-utterances-modal-body">
+                        <div class="col-xs-12">
+                            <div class="col-xs-12 form-group noPadding fileDropContainer fileDropContainerKG">
+                                <div class="imgCntr" ng-hide="fileName">
+                                <img class="" ng-src="{{dragDropIcon}}"></img>
+                                </div>
+                                <div class="dragdrophelp" ng-hide="fileName">
+                                <div class="dragdroptitle">{{'drag_drop_pdf'| i18nString}}, <br>{{'csv_File'| i18nString}}</div>
+                                <div class="ortitle">{{'or'| i18nString}}</div>
+                                <div class="browsetitle">
+                                    <span ng-click='browseHandle()' id='kGTemplateExtractBrowse' class="browseBtn cursor-pointer">{{'browse'| i18nString}}</span>
+                                </div>
+                                </div>
+
+                                <div class='form-group inputDetails' ng-show="fileName">
+                                <div class="label">{{'File name'}}</div>
+                                <input type='text' ng-model='extract.name' maxlength='50' class="inputImpTitle">
+                                <div  class="label">{{'File type'}}</div>
+                                <input type='text' ng-model='fileName' class="inputImpTitle">
+                                <div class="footer-grp" ng-hide='isSelectedProceed'>
+                                    <button type='button' class='kr-sg-button-primary btn_md marginRightTen tooltip-custom left-tp' ng-click='startImport()' ng-disabled="extract.name.length === 0 || isSelectedProceed" >{{'extract'| i18nString}}
+                                        <span class="tooltiptext" ng-click="$event.stopPropagation()">{{'Questions and answers will be automatically extracted from the documents in the supported formats.'}} <a href="https://developer.kore.ai/docs/bots/whats-new/kore-ai-beta-features/" target="_blank">{{'know_more'| i18nString}}</a>
+                                        </span>
+                                    </button>
+                                    <button type='button' class='kr-sg-button-secondary btn_md marginRightTen tooltip-custom right-tp' ng-if='(fileName | extensionFilter) === "pdf"' ng-click='pdfAnnoIframe()' ng-disabled="extract.name.length === 0 || isSelectedProceed">{{'Annotate & Extract'}}
+                                        <span class="tooltiptext" ng-click="$event.stopPropagation()">{{'Train the system on how to extract the questions and answers by annotating the key sections of the document.'}} <a href="https://developer.kore.ai/docs/bots/whats-new/kore-ai-beta-features/" target="_blank">{{'know_more'| i18nString}}</a>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="footer-grp" ng-show="isSelectedProceed">
+                                    <button type='button' class='kr-sg-button-primary btn_lg'>{{'pleasewait'| i18nString}} <i class='fa fa-spin fa-spinner'></i></button>
+                                    <!-- <button type='button' class='btn closeCancel' ng-click="showFile.url = ''">{{'cancel'| i18nString}}</button> -->
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div  ng-show="importStep == 2" class="stepsDiv errorDiv">
+                    <div class="imgCntr">
+                        <img class="importFailed" ng-src="{{importFailed}}"></img>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                    <div class="importerror">
+                        <div class="title">{{'something_wrong'| i18nString}}</div>
+                        <span class="import-error-mess col-xs-12">{{error.mess}}</span>
+                        <div class="errors" ng-repeat="error in errorMsg">
+                            <div class="statementutterdiv col-xs-12">
+                                <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                                <span class="erroricon"><i class="fa fa-warning"></i></span>
+                            </div>
+                        </div>
+                        <div class="btnDiv">
+                        <button type='button' class='btn btnSolidBlue' ng-click='goToStep(1)' >{{'retry'| i18nString}}</button>
+                        <button type='button' class='btn closeCancel' ng-click="showFile.url = ''">{{'close'| i18nString}}</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div ng-show="importStep == 3" class="stepsDiv impProgressDiv">
+                    <div class="imgCntr">
+                        <img class="" ng-src="{{dragDropIcon}}"></img>
+                    </div>
+                    <div class="impProgress">
+                        <div class="col-xs-12">
+                            <!-- <div class="imgCntr"><img class="layer" ng-src="{{importingIcon}}"></img>
+                            </span>
+                            </div> -->
+                            <div class="importingText"><span class="processing">{{'extracting'| i18nString}}...</span></div>
+                            <!-- <div class="processAnimationDiv animationwidth col-xs-offset-1"></div> -->
+                            <div class="import-progress-bar"><div class="inside-progress-bar" ng-style="{width : (totalProgress + '%') }"></div></div>
+                <!--            <div class="w3-border">
+                            <div class="w3-grey" style="width:20%"></div>
+                        </div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="importStep == 4" class="stepsDiv importSuccessDiv">
+                    <!-- <div class="modal-header bulkImport">
+                        <h4 class="modal-title">Import</h4>
+                    </div> -->
+                    <div class="imgCntr">
+                        <img ng-src="{{importDoneIcon}}" />
+                        </div>
+                    <div class="sucessDiv">
+                        <div class="col-xs-12 importsuccess">
+                            <div class="title">{{extractQnaCount}} {{'question_extracted'| i18nString}}</div>
+                        </div>
+
+                        <div class="btnDiv">
+                        <button type='button' class='kr-sg-button-primary btn_lg mr-10' ng-click='kgExtractRev()'>{{'review'| i18nString}}</button>
+                        <button type='button' class='kr-sg-button-secondary btn_lg' ng-click='closeExtracts()'>{{'close'| i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div ng-show='showFile.url === "url"' class="stepsContainer uploadUrl">
+                    <div class="stepsDiv" ng-show='importStep == 1'>
+                        <i class="closeImport btx-close" ng-click='showFile.url = ""; extracting.urlFile = true;'></i>
+                        <div class='form-group inputDetails' >
+                                <div class="label">{{'name'| i18nString}}</div>
+                                <input  class="inputImpTitle" type='text' maxlength='50' ng-model='extract.name' name='extUrl' placeholder="{{'type_name'| i18nString}}">
+                                <div class="label">{{'URL'| i18nString}}</div>
+                                <input  class="inputImpTitle" type='text' name='extUrl' ng-model='urlOb.extract' id='urlName' placeholder="{{'valid_url_name'| i18nString}}" ng-pattern='validateURL'>
+                                <!-- <p class='validName'>Please enter a http(s):// URL</p> -->
+                                <div  ng-show="extractUploadForm.extUrl.$dirty">
+                                    <div error-alert ng-show="extractUploadForm.extUrl.$error.required || extractUploadForm.extUrl.$error.pattern" class="text-danger">
+                                        {{'provide_valid'| i18nString}} ...
+                                    </div>
+                                </div>
+                                <button type='button' class='btn btnSolidBlue' ng-click='startImport()' ng-disabled="extract.name.length === 0 || isSelectedProceed" ng-show='!isSelectedProceed || extractUploadForm.extUrl.$error.required || extractUploadForm.extUrl.$error.pattern || urlOb.extract.length === 0'>{{'proceed'| i18nString}}</button>
+                                <button type='button' class='btn btnSolidBlue' ng-show="isSelectedProceed && !extractUploadForm.extUrl.$error.required && !extractUploadForm.extUrl.$error.pattern && urlOb.extract.length !== 0">{{'pleasewait'| i18nString}} <i class='fa fa-spin fa-spinner'></i></button>
+                                <button type='button' class='btn closeCancel' ng-click='showFile.url = ""; extracting.urlFile = true;'>{{'cancel'| i18nString}}</button>
+                                </div>
+                    </div>
+                    <div  ng-show="importStep == 2" class="stepsDiv errorDiv">
+                        <i class="closeImport btx-close" ng-click='showFile.url = ""'></i>
+                        <div class="imgCntr" >
+                            <img class="importFailed" ng-src="{{importFailed}}"></img>
+                        </div>
+                        <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                        <div class="importerror">
+                            <div class="title">{{'something_wrong'| i18nString}}</div>
+                            <span class="import-error-mess col-xs-12">{{error.mess}}</span>
+                            <div class="errors" ng-repeat="error in errorMsg">
+                                <div class="statementutterdiv col-xs-12">
+                                    <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                                    <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                </div>
+                            </div>
+                            <div class="btnDiv">
+                            <button type='button' class='kr-sg-button-primary btn_lg mr-10' ng-click='kgExtractUrlReview()' >{{'retry'| i18nString}}</button>
+                            <button type='button' class='kr-sg-button-secondary btn_lg' ng-click="showFile.url = ''">{{'close'| i18nString}}</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                <div ng-show="importStep == 3" class="stepsDiv impProgressDiv">
+<!--                         <div class="imgCntr">
+                        <img class="" ng-src="{{dragDropIcon}}"></img>
+                    </div> -->
+                    <div class="impProgress url-extracting">
+                        <div class="col-xs-12">
+                            <!-- <div class="imgCntr"><img class="layer" ng-src="{{importingIcon}}"></img>
+                            </span>
+                            </div> -->
+                            <div class="importingText"><span class="processing">{{'extracting'| i18nString}}...</span></div>
+                            <!-- <div class="processAnimationDiv animationwidth col-xs-offset-1"></div> -->
+                            <div class="import-progress-bar"><div class="inside-progress-bar" ng-style="{width : (totalProgress + '%') }"></div></div>
+                <!--            <div class="w3-border">
+                            <div class="w3-grey" style="width:20%"></div>
+                        </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="importStep == 4" class="stepsDiv importSuccessDiv">
+                    <!-- <div class="modal-header bulkImport">
+                        <h4 class="modal-title">Import</h4>
+                    </div> -->
+                    <div class="imgCntr">
+                        <img ng-src="{{importDoneIcon}}" />
+                        </div>
+                    <div class="sucessDiv">
+                        <div class="col-xs-12 importsuccess">
+                            <div class="title">{{extractQnaCount}} {{'question_extracted'| i18nString}}</div>
+                        </div>
+
+                        <div class="btnDiv">
+                        <button type='button' class='kr-sg-button-primary btn_lg mr-10' ng-click='kgExtractRev()'>{{'review'| i18nString}}</button>
+                        <button type='button' class='kr-sg-button-secondary btn_lg' ng-click='closeExtracts()'>{{'close'| i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- <div ng-show='showFile.url === "pdfAnno"' class="stepsContainer">
+                <img ng-src="{{closeCross}}" class="closeImport" ng-click='showFile.url = "";extracting.urlFile = true;'>
+                <div class="stepsDiv">
+                    <div class="modal-body import-utterances-modal-body">
+                        <div class="col-xs-12">
+                            <div class="col-xs-12 form-group noPadding fileDropContainer fileDropContainerKG">
+                                <div class="imgCntr" ng-hide="fileName">
+                                <img ng-src="{{iconContextPath}}/emptyImgNew.svg"  class="emptyImg"/>
+                                </div>
+                                <div class="create-anno marginTopTen">
+                                    <div class="pdf-info">
+                                        Get started to Annotate PDF here!
+                                    </div>
+                                <button type='button' class='btn btn-primary' ng-click='pdfAnnoIframe()'>{{'PDF Annotation Tool'}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class='row'>
+                <div ng-repeat='kgListVal in knowledgeExtractList track by $index' class='col-xs-3 kgExtractTilesContainer' ng-class="{'spinLoader':kgListVal.status==='inProgress'}" ng-show="kgView.type=='tile'">
+                    <!-- 'newKgAdded': kgListVal.fileId === newFileId   -->
+                    <div class="kgExtractTiles" ng-init="attachPopover()" data-toggle="popover" data-html="true" data-content="{{kgListVal.statusMessage | tooltipFilter:this: (kgListVal.fileName | extensionFilter) }}" ng-click='openKgExtractTwo(kgListVal)' ng-class='{"not-visited": kgListVal.isVisited == false && kgListVal.status !== "failed", "failed-block": kgListVal.status == "failed"}'>
+                        <div ng-if='kgListVal.fileName' class="sourceType {{kgListVal.fileName | extensionFilter}}">{{kgListVal.fileName | extensionFilter}}</div>
+                        <div ng-if='kgListVal.fileUrl' class="sourceType {{kgListVal.fileUrl | extensionFilter}}" >{{kgListVal.fileUrl | extensionFilter}}</div>
+                        <img ng-src="{{trashIcon}}" class="trashIcon" ng-click='delExtraction(kgListVal, $event)'>
+                        <!-- <div class="sourceName">{{kgListVal.fileName || kgListVal.fileUrl}} </div> -->
+                        <div class="sourceName" title="{{kgListVal.name}}">{{kgListVal.name || "-NA-"}} </div>
+
+                        <div ng-show='kgListVal.status === "failed"' class="failedDiv failedWarning">
+                            <img ng-src='{{iconContextPath}}/exclamationCircleRed.png' class="failedIcon">
+                            <p class="failedLabel">{{'failed_label'| i18nString}}</p>
+                        </div>
+                        <button type='button' class='kr-sg-button-secondary' ng-show='kgListVal.status === "failed" && (kgListVal.fileName | extensionFilter) === "pdf"' class="rev-add annotate" ng-click='failedAnnotion(kgListVal)'>{{'Annotate'}}
+                        </button>
+                        <div class="quetionsCount"  ng-if='kgListVal.status==="success"'>
+                            <span class="count">{{kgListVal.qnaCount}}</span> {{'questions'| i18nString}}
+                        </div>
+                        <div class="review blue"  ng-if='kgListVal.status==="success" && kgListVal.qnaAddedCount !== 0'>
+                            {{kgListVal.qnaAddedCount || "-"}} / {{kgListVal.qnaCount}} {{'added_kg'| i18nString}}
+                        </div>
+                        <!-- <div class='rev-add' ng-if='kgListVal.status==="success" && kgListVal.qnaAddedCount === 0'>
+                            {{'review_add'| i18nString}} 
+                        </div> -->
+                        <button type='button' class='kr-sg-button-secondary rev-add' ng-if='kgListVal.status==="success" && kgListVal.qnaAddedCount === 0'> {{'review_add'| i18nString}} 
+                        </button>
+                        <div class="koreSpin" ng-if='kgListVal.status==="inProgress"'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    </div>
+                </div>
+
+                <div ng-repeat='empty in emptyBlock' class='emptyBlock' ng-show="kgView.type=='tile'">
+
+                </div>
+
+                <div class="panel-table col-xs-12 tableContainer knowledgeExtractTableContainer" ng-show="kgView.type=='list'">
+                    <div class="panel-table-header" ng-show='knowledgeExtractList.length != 0'>
+                    <div class="row tableHeaderRow noBorderBTM">
+                        <div class="col-xs-3 title">{{'name_label_uppercase'| i18nString}}</div>
+                        <div class="col-xs-1 title">{{'bot_type'| i18nString}}</div>
+                        <div class="col-xs-3 title">{{'source_caps'| i18nString}}</div>
+                        <div class="col-xs-2 title">{{'date_time_caps'| i18nString}}</div>
+                        <div class="col-xs-3 title">{{'bot_status'| i18nString}}</div>                          
+                    </div>
+                    </div>
+                    <!-- <div class="panel-table-body tableBodyRow scroll-y-axis" perfect-scroll dynamic-height dynaoffset="-120" height-property="height"> -->
+                    <div class="panel-table-body tableBodyRow">
+                        <div class="row flowTask bodyRow cursor-pointer kgListContainer" ng-repeat="kgListVal in knowledgeExtractList track by $index" ng-click='openKgExtractTwo(kgListVal)'>
+                        <div class="col-xs-3 name-kg-title" title='{{kgListVal.name}}' ng-class="{'spinLoader':kgListVal.status==='inProgress'}">
+                            {{kgListVal.name | formatNameFilter}}        
+                        </div>
+                        <div class="col-xs-1 contentDetails sourceType" ng-if='kgListVal.fileName' ng-class="{'spinLoader':kgListVal.status==='inProgress'}">
+                            <span class="{{kgListVal.fileName | extensionFilter}}">{{kgListVal.fileName | extensionFilter}}</span>
+                        </div>
+                        <div class="col-xs-1 contentDetails sourceType" ng-if='kgListVal.fileUrl' ng-class="{'spinLoader':kgListVal.status==='inProgress'}">
+                            <span class="{{kgListVal.fileUrl | extensionFilter}}">{{kgListVal.fileUrl | extensionFilter}}</span>
+                        </div>
+                        <div class="col-xs-3 deploymentStatus contentDetails" ng-class="{'spinLoader':kgListVal.status==='inProgress'}" title='{{kgListVal.fileName}}'>                                
+                        {{kgListVal.fileName}} <a href="{{kgListVal.fileUrl}}" title='{{kgListVal.fileUrl}}' ng-click='$event.stopPropagation()' target='_blank' class="urlLink"> {{kgListVal.fileUrl}}</a>
+                        </div>
+                        <div class="col-xs-2 contentDetails dateTime" ng-class="{'spinLoader':kgListVal.status==='inProgress'}">
+                            <div class="date-title">
+                                {{kgListVal.status === 'inProgress'? '-- -- -- ': kgListVal.createdOn  |  date:'MM-dd-yy' }}
+                            </div>
+                            <div class='kg-extract-time'>{{kgListVal.status === 'inProgress'? '': kgListVal.createdOn  |  date:'h:mm a' }}</div>
+                        </div>
+                        <div class='col-xs-3 contentDetails popover-container warning-icon'>
+                            <span class="failedWarning kgExtractTiles failed-block" ng-init="attachPopover()"  ng-class='{"not-visited": kgListVal.isVisited == false && kgListVal.status !== "failed", "failed-block": kgListVal.status == "failed"}' ng-show='kgListVal.status === "failed"' data-toggle="popover" type="button" data-html="true" data-content="{{kgListVal.statusMessage | tooltipFilter:this: (kgListVal.fileName | extensionFilter) }}">{{'failed'| i18nString}}</span>
+                            <span ng-if='kgListVal.status === "success" && kgListVal.qnaAddedCount !== 0'>{{kgListVal.qnaAddedCount || "-"}} / {{kgListVal.qnaCount}} {{'added_kg'| i18nString}}</span>
+                            <span class='rev-add' ng-if='kgListVal.status==="success" && kgListVal.qnaAddedCount === 0'>
+                                {{'review_add'| i18nString}} 
+                            </span>
+
+<!--                                 <img ng-src="{{failedWarning}}" class="failedWarning" ng-show='kgListVal.status === "failed"' data-toggle="popover" type="button" data-html="true" data-content="{{kgListVal.statusMessage | tooltipFilter }}"> -->
+                            <i class='fa fa-spin fa-spinner spin-progress' ng-show='kgListVal.status === "inProgress"'></i>
+                        </div>
+                        <div class='delete-kg' ng-click='delExtraction(kgListVal, $event)'>
+                            <!-- <img ng-src="{{trashIcon}}" class="trashIcon" ng-click='delExtraction(kgListVal, $event)'> -->
+                            <i class="btx-delete-1"></i>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-------------------------------- KG Block ------------------------->
+
+    <!-------------------------------- No Extracts Block ------------------------->
+    <div ng-show='extracting.urlFile && knowledgeExtractList.length == 0' class='col-xs-12 extractUI emptyState' ng-if="(rightPanel.innerRightPanel.view !== 'storyboard')">
+        <div class='col-xs-6 leftDiv'>
+            <img ng-src="{{emptyStateIcon_kg}}"  class="emptyImg"/>
+        </div>
+        <div class='col-xs-6 rightDiv'>
+            <div class="rightInnerDiv">
+                    <p class="mainTitle">{{'no_extracts'| i18nString}}</p>
+                    <p class="emptyDisc">{{'extract_ques'| i18nString}}</p>
+                    <div class="btnContainer">
+                        <button class='btn emptyBtn' ng-class= "{'inactive': showFile.url !== 'file'}" ng-click='switchTabs("file")'>{{'extract_file'| i18nString}}</button>
+                        <button class='btn emptyBtn marginLeftTen' ng-class= "{'inactive': showFile.url !== 'url'}" ng-click='switchTabs("url")'>{{'extract_url'| i18nString}}</button>
+                        <!-- <button class='btn emptyBtn marginTopTen' ng-class= "{'inactive': showFile.url !== 'pdfAnno'}" ng-click='switchTabs("pdfAnno")'>{{'PDF Annotation Tool'}}</button> -->
+                    </div>
+            </div>
+        </div>
+    </div>
+     <!-------------------------------- No KG Block ------------------------->
+</div>
+<ng-container ng-if="(rightPanel.innerRightPanel.view !== 'storyboard')">
+    <bot-modal-slider id='knowledge-extract-slider'>
+        <kg-extraction-upload ng-if="openType==='file'" callback='knowledgeExtractCallback'></kg-extraction-upload>
+    </bot-modal-slider>
+    <bot-ontology-qa-import elem="ontology_qa_import1" import-qa-modal="importModal" knowledge-task="sortedKGData.indevelopment[0]" callback='botDetailsCb'></bot-ontology-qa-import>
+</ng-container>
+
+

@@ -1,0 +1,10 @@
+~emohello|	Hi! |Hello |Hi there! |Hey :)|	greetings
+!n ~no|	OK. |Alright.|	greetings
+What ~your name|what ~you called|	I'm <display-bot-name>.|	greetings
+~emohowzit|	I'm good. Thank you.|	greetings
+~positiveackwords|	Glad I could help. |Always great to be able to help. |Glad I could be of assistance. |Glad I could be of some help.|	greetings
+thanks|thank ~you|	You're welcome.|	greetings
+~ibedone|	Alright. |Right, then.|	greetings
+~emogoodbye|	OK, bye for now! |Have a good one!|	greetings
+~emohappy|	Glad I could help. |Glad you are happy.|	greetings
+!y ~yes|get_it|i_understand|	OK, great! |Alright. |Right, then.|	greetings

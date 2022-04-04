@@ -1,0 +1,93 @@
+<bot-modal-slider>
+    <div class="modalSliderContainer width800">
+        <div class="modalHeader">
+            <h4 class="modal-title tableRow">
+            <i class="btx-close" ng-click="cb.close()"></i>
+                {{'manage_var_namespace_table'| i18nString}}
+            </h4>
+        </div>
+        <div class="modalBody importModal" ng-if="!isLoading" perfect-scroll dynamic-height dynaoffset="-50" height-property="height">
+            <p>{{'namespace_choose_modify'| i18nString}}</p>
+            <div class="kr-sg-data-table">
+                <section class="table-content" ng-class="{'disabled': selectedState == 'published'}">
+                    <header class="table-header">
+                        <div class="col" ng-repeat="colum in table.columns" title="{{colum}}">{{colum}}</div>
+                    </header>
+                    <div class="content-body" ng-repeat="cell in namespaceList track by $index" ng-class="{'disable-namespace-row': cell.type == 'system'}">
+                        <div class="col" ng-show="!cell.isEdit" ng-class="{'cursor-pointer': (cell.type != 'system' && selectedState != 'published') }" title="{{cell.name}}" ng-click="(cell.type == 'system' || selectedState == 'published')?false:editCell(cell)">
+                            <span class="cell-elem">{{cell.name}}</span>
+                            <span id="load-name{{$index}}" class="load-name" style="display: none;">
+                                <i class="fa fa-spinner"></i>
+                            </span>
+                            <span id="load-done{{$index}}" class="load-done" style="display: none;">
+                                <!-- <img ng-src="{{checkGreen}}" alt=""> -->
+                                <i class="btx-check"></i>
+                            </span>
+                            <span ng-show="cell.type == 'system'">
+                                <span data-toggle="popover" class="tooltip-hover" data-html="true" data-content="Default Namespace is the system built-in Namespace and it cannot be modified">
+                                    <!-- <img ng-src="{{help}}"> -->
+                                    <i class="btx-help"></i>
+                                </span>
+                            </span>
+                            <span class="pencil" id="pencil{{$index}}" ng-if="cell.type != 'system' && selectedState != 'published'">
+                                <!-- <img ng-src="{{pencil}}"> -->
+                                <i class="btx-pencil"></i>
+                            </span>
+                        </div>
+                        <div class="kr-sg-input-text" ng-if="cell.isEdit">
+                            <input type="text" id="namespaceInp" placeholder="Enter namespace" ng-init="setVal(cell)" ng-model="inp.namespace" ng-keyup="checkKey($event, cell, $index)" maxlength="25" class="input-text">
+                        </div>
+                        <div class="col">  {{cell.gVariables}}</div>
+                        <div class="col">{{cell.cVariables}}</div>
+                        <div class="col trash cursor-pointer" data-toggle="modal" ng-class="{'disable-trash': (cell.type == 'system' || selectedState == 'published')}">
+                            <i class="btx-delete-1" ng-click="updateDel(cell)"></i>
+                        </div>
+                    </div>
+                </section>                               
+            </div>   
+        </div>
+        <div class="modalBody loading-wrap" ng-if="isLoading">
+            <i class="fa fa-spinner"></i> Loading...
+        </div>
+        <div class="modalFooter ng-hide">
+            <button class="kr-sg-button-primary btn_md" ng-class="{'disabled': (isLoading || selectedState == 'published')}">Save</button>
+            <button class="kr-sg-button-secondary btn_md" ng-click="cb.close()">Cancel</button>
+        </div>
+    </div>
+</bot-modal-slider>
+
+<div id="namespaceDelete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                {{'confirm_to_proceed_label'| i18nString}}
+            </div>
+            <div class="modal-body">
+                <p>{{'sure_delete'| i18nString}} '{{selectedCell.name}}' {{'namespace_sure_delete'| i18nString}}  '{{selectedCell.name}}' {{'ques_namespace' | i18nString}}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" ng-click="deleteNS()">{{'proceed'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" data-dismiss="modal">{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="namespaceCannotDelete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                {{'names_cann_del' | i18nString}}
+            </div>
+            <div class="modal-body">
+                <p>{{'sure_delete' | i18nString}} '{{selectedCell.name}}' {{'down_log_details' | i18nString}}</p>
+                <a download="{{downloadFile}}"  class="download-log-namespace" ng-href="{{downloadHref}}">{{'down_log' | i18nString}}</a>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" ng-click="closeNsCannotDel()">{{'ok_label'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+

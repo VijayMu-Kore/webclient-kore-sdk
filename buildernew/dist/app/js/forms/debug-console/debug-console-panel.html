@@ -1,0 +1,292 @@
+<div class="debug-console-panel-cntnr" ng-class="{'sessionBrightMode':isBirightModeActive,'sessionDarkMode':!isBirightModeActive}">
+    <tabset  ng-if="!fromDialog"  class="tabHeadingUL">
+        <li class="headerIconsDiv">
+                <img ng-if="isBirightModeActive" title="{{'dark_mode'| i18nString}}" ng-src="{{assetsBase+'debugConsoleIcons/darkMode.svg'}}" class="brightMode " ng-click="bightMode()">
+                <img ng-if="!isBirightModeActive" title="{{'light_mode'| i18nString}}" ng-src="{{assetsBase+'debugConsoleIcons/brightMode.svg'}}" class="darkMode " ng-click="bightMode()">
+                <img ng-if="isMinimized" class="expand" ng-src="{{assetsBase+'debugConsoleIcons/expand.svg'}}" ng-click="toggleSize($event)">
+                <img ng-if="!isMinimized" class="compress " ng-src="{{assetsBase+'debugConsoleIcons/compress.svg'}}" ng-click="toggleSize($event)">
+                <img ng-if="consoleMaximized" class="minMax" ng-src="{{assetsBase+'debugConsoleIcons/minimize.svg'}}" ng-click="toggleMinMax($event)">
+                <img ng-if="!consoleMaximized" class="minMax" ng-src="{{assetsBase+'debugConsoleIcons/maximize.svg'}}" ng-click="toggleMinMax($event)">
+                <img class="closeDebug" ng-src="{{assetsBase+'debugConsoleIcons/close.svg'}}" ng-click="closeDebugger()">
+                <!-- <i class="fa fa-compress toggleDebugConsolePanelSize pull-right" ng-click="toggleSize($event)"></i>
+                <i class="fa fa-window-minimize toggleMinMax pull-right" ng-click="toggleMinMax($event)"></i>
+                <i class="fa fa-close closeDebugConsolePanel pull-right" ng-click="closeDebugger()"></i> -->
+                </li>
+
+        <tab>
+            <tab-heading>
+                {{'Debug_Log'| i18nString}}
+            </tab-heading>
+            <div id="logicProcess" class="debug-console-body debug-log-body">
+                <div class="panel-body log-console-body" dynamic-height dynaoffset = "-119" height-property="height">
+                    <!-- <div ng-jsoneditor class="json_editor" ng-model="debugInfo" ng-model-data="debugInfo" id="reqObjSampleRes" name="debugInfo" options="options" callback="sampleResCB"></div> -->
+
+                    <div class="debug-log-level-filter">
+                        
+                        <div class="bulb-checkbox info" title="Info">
+                            <input type="checkbox" 
+                                   ng-click="toggleDebugLevelFilter($event)"
+                                   value="Info" 
+                                   id="info"
+                                   name="debugLogFilter"/>
+                            <label for="info" ></label>
+                        </div>
+                        <div class="bulb-checkbox warning" title="Warning">
+                            <input type="checkbox" 
+                                   ng-click="toggleDebugLevelFilter($event)"
+                                   value="Warning" 
+                                   id="warning"
+                                   name="debugLogFilter"/>
+                            <label for="warning" ></label>
+                        </div>
+                        <div class="bulb-checkbox error" title="Error">
+                            <input type="checkbox" 
+                                   ng-click="toggleDebugLevelFilter($event)"
+                                   value="Error" 
+                                   id="error"
+                                   name="debugLogFilter"/>
+                            <label for="error" ></label>
+                        </div>
+                    </div>
+
+
+
+                    <accordion>
+                        <accordion-group is-open="status.open" acc-open='{{(status && status.open)?"true":"false"}}' ng-class="{'pointer-events-disble': !debug.debugDetail}" class="debugData {{debug.debugLevel}}" ng-repeat="debug in debugInfo| filter :debugLevelFilter track by $index">
+                            <accordion-heading>
+                                <span class="show-more-toggle "  ng-if="isBirightModeActive && debug.debugDetail" >
+                                      <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-gray.svg'}}" class="closed-arrow-gray" ng-if="!(status && status.open)">
+                                      <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-blue.svg'}}" class="closed-arrow-blue" ng-if="(status && status.open)">
+                                    </span>
+                                    <span class="show-more-toggle " ng-if="!isBirightModeActive && debug.debugDetail" >
+                                    <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-white.svg'}}" class="closed-arrow-white" ng-if="!(status && status.open)">
+                                                <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-green.svg'}}" class="closed-arrow-green" ng-if="(status && status.open)">
+                                  </span>
+                                <span class="timestamp">{{debug.timestampFormated}}</span>  
+                                <span class='debug-level {{debug.debugLevel}}'>{{debug.debugLevel}}</span>
+                                <span class='debug-title'>{{debug.debugTitle}}</span>
+
+                                <div class="debug-message-wrp">
+                                    <span class='debug-message'>{{debug.debugMessage}}</span>
+                                </div>
+                            </accordion-heading>
+                            <span class="debug-details" ng-bind-html="debug.debugDetail">   
+                            </span>
+
+
+                        </accordion-group>
+
+                    </accordion>
+
+
+
+                    <!--                      
+                                          <div class="debugData {{debug.debugLevel}}" ng-repeat="debug in debugInfo track by $index">
+                    
+                                              <span class="timestamp">{{debug.timestampFormated}}</span>
+                                              <span class='debug-level {{debug.debugLevel}}'>{{debug.debugLevel}}</span>
+                                              <span class='debug-title'>{{debug.debugTitle}}</span>
+                    
+                                              <div class="debug-message-wrp">
+                                                  <span class='debug-message'>{{debug.debugMessage}}</span>
+                                              </div>
+                    
+                                              <div ng-if='debug.debugDetail' class='debug-details'>
+                                                  {{debug.debugDetail}}
+                                              </div>
+                    
+                                          </div>-->
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </tab>
+        <tab>
+            <!-- <tab-heading>
+                NL Analysis
+            </tab-heading>
+            <div id="jsonResposnse" class="debug-console-body">
+                <div class="panel-body padding0 log-console-body" dynamic-height dynaoffset = "-91" height-property="height">
+                    <div class="debugData" ng-repeat="debug in nlTrace track by $index">
+                        {{debug}}
+                    </div>
+                    <div class="debugData" ng-repeat="debug in nlTraceData track by $index">
+                        <div style="font-weight: 600;" class="marginTop10" ng-if="debug.type === 'Object'">{{debug.title}}</div>
+                        <div style="font-weight: 600;" ng-if="debug.type === 'Array'">{{debug.title}}</div>
+                        <div ng-if="debug.type === 'String'" ng-class="{'marginTop10':debug.noChild}"  title="{{debug.title}} : {{debug.value}}">{{debug.title}} : {{debug.value}}</div></div>
+            </div>
+            </div>-->
+            <img class="copyDebugObjGray" ng-show="hasNLAnalysisObj && isBirightModeActive" ng-mouseup="copyDebugToClipboard($event,'NLanalysis')" ng-src="{{assetsBase+'debugConsoleIcons/copyJson-gray.svg'}}" ng-mousedown="prepareCopyClipboard($event,'NLanalysis')" title="{{'copy_to_clipboard'| i18nString}}">
+            <img class="copyDebugObjWhite" ng-show="hasNLAnalysisObj && !isBirightModeActive" ng-mouseup="copyDebugToClipboard($event,'NLanalysis')" ng-src="{{assetsBase+'debugConsoleIcons/copyJson-white.svg'}}" ng-mousedown="prepareCopyClipboard($event,'NLanalysis')" title="{{'copy_to_clipboard'| i18nString}}">
+            <tab-heading> {{'nl_analysis'| i18nString}} </tab-heading>
+            <div id="jsonNLRequest" class="bot-session-body">
+                <div class="panel-body" dynamic-height dynaoffset = "-45" height-property="height">
+                    <div ng-if="nlTraceData"
+                         ng-jsoneditor 
+                         ng-model="nlTraceData" 
+                         class="json_editor" 
+                         id="nlanalysisDialog"
+                         name="nlanalysisDialog" 
+                         options="options">
+                    </div>
+                </div>
+            </div>
+        </tab>
+
+        <tab>
+<!--            <span class="fa fa-copy copyDebugObj" ng-show="hasDebugObj"
+                  ng-mouseup="copyDebugToClipboard($event,'sessionContext')"
+                  ng-mousedown="prepareCopyClipboard($event,'sessionContext')"
+                  title="Copy to clipboard"
+                  >
+                <span class="copyDebugTooltip"></span>
+            </span>-->
+            <tab-heading>
+                {{'context_variables'| i18nString}} 
+            </tab-heading>
+            <div id="jsonRequest" class="bot-session-body">
+                <div class="panel-body"  dynamic-height dynaoffset = "-90" height-property="height">
+                    <bt-sessioncontext-variables name="debugContextDialog" ng-if="debugContext" session-info="debugContext" options="options" is-biright-mode-active="isBirightModeActive"></bt-sessioncontext-variables>
+<!--                    <div 
+                         ng-jsoneditor 
+                         ng-model="debugContext" 
+                         class="json_editor" 
+                         id="debugContextDialog"
+                          
+                         options="options">
+                    </div>-->
+                    <!--                      <div class="contextInfo" ng-repeat="comp in debugContext track by $index">
+                                        <div style="font-weight: 600;" ng-if="comp.type === 'Object'">{{comp.title}}</div>
+                                        <div style="font-weight: 600;" ng-if="comp.type === 'Array'">{{comp.title}}</div>
+                                        <div ng-if="comp.type === 'String'" title="{{comp.title}} : {{comp.value}}">{{comp.title}} : {{comp.value}}</div>
+                                    </div>-->
+                </div>
+
+            </div>
+        </tab>
+    </tabset>
+
+
+
+
+
+    <tabset class="from-dialog tabHeadingUL"  ng-if="fromDialog"  >
+        <li class="headerIconsDiv right10">
+            <img ng-if="isBirightModeActive" title="Switch to Dark mode" ng-src="{{assetsBase+'debugConsoleIcons/darkMode.svg'}}" class="brightMode " ng-click="bightMode()">
+            <img ng-if="!isBirightModeActive" title="Switch to Light mode" ng-src="{{assetsBase+'debugConsoleIcons/brightMode.svg'}}" class="darkMode " ng-click="bightMode()">
+            <img ng-if="isMinimized" class="expand" ng-src="{{assetsBase+'debugConsoleIcons/expand.svg'}}" ng-click="toggleSize($event)">
+            <img ng-if="!isMinimized" class="compress " ng-src="{{assetsBase+'debugConsoleIcons/compress.svg'}}" ng-click="toggleSize($event)">
+            <img ng-if="consoleMaximized" class="minMax" ng-src="{{assetsBase+'debugConsoleIcons/minimize.svg'}}" ng-click="toggleMinMax($event)">
+            <img ng-if="!consoleMaximized" class="minMax" ng-src="{{assetsBase+'debugConsoleIcons/maximize.svg'}}" ng-click="toggleMinMax($event)">
+            </li>
+        <tab class="">
+            <tab-heading>
+                {{'Debug_Log'| i18nString}}
+            </tab-heading>
+            <div class="debug-console-body">
+                    <div class="log-console-body  debug-log-body" dynamic-height height-property="height" dynaoffset = "-117" ng-class="{true:'log - console - body variables - open',false:'log - console - body'}[isAccordionOpen]">
+                            <div class="debug-log-level-filter">
+                                <div class="bulb-checkbox info" title="Info">
+                                    <input type="checkbox" 
+                                           ng-click="toggleDebugLevelFilter($event)"
+                                           value="Info" 
+                                           id="info"
+                                           name="debugLogFilter"/>
+                                    <label for="info" ></label>
+                                </div>
+                                <div class="bulb-checkbox warning" title="Warning">
+                                    <input type="checkbox" 
+                                           ng-click="toggleDebugLevelFilter($event)"
+                                           value="Warning" 
+                                           id="warning"
+                                           name="debugLogFilter"/>
+                                    <label for="warning" ></label>
+                                </div>
+                                <div class="bulb-checkbox error" title="Error">
+                                    <input type="checkbox" 
+                                           ng-click="toggleDebugLevelFilter($event)"
+                                           value="Error" 
+                                           id="error"
+                                           name="debugLogFilter"/>
+                                    <label for="error" ></label>
+                                </div>
+                            </div>
+                            <accordion>
+                                <accordion-group is-open="status.open" acc-open='{{(status && status.open)?"true":"false"}}' ng-class="{'pointer-events-disble': !debug.debugDetail}" class="debugData {{debug.debugLevel}}" ng-repeat="debug in debugInfo| filter :debugLevelFilter track by $index">
+                                    <accordion-heading>
+                                            <span class="show-more-toggle "  ng-if="isBirightModeActive && debug.debugDetail" >
+                                                    <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-gray.svg'}}" class="closed-arrow-gray" ng-if="!(status && status.open)">
+                                                    <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-blue.svg'}}" class="closed-arrow-blue" ng-if="(status && status.open)">
+                                                  </span>
+                                                  <span class="show-more-toggle " ng-if="!isBirightModeActive && debug.debugDetail" >
+                                                  <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-white.svg'}}" class="closed-arrow-white" ng-if="!(status && status.open)">
+                                                              <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-green.svg'}}" class="closed-arrow-green" ng-if="(status && status.open)">
+                                                </span>
+                                        <span class="timestamp">{{debug.timestampFormated}}</span>
+                                        <span class='debug-level {{debug.debugLevel}}'>{{debug.debugLevel}}</span>
+                                        <span class='debug-title'>{{debug.debugTitle}}</span>
+            
+                                        <div class="debug-message-wrp">
+                                            <span class='debug-message'>{{debug.debugMessage}}</span>
+                                        </div>
+                                    </accordion-heading>
+                                    <span class="debug-details" ng-bind-html="debug.debugDetail">   
+                                    </span>
+                                </accordion-group>
+            
+                            </accordion>
+                        </div>
+            </div>
+
+
+        </tab>
+        <tab>
+            <img class="copyDebugObjGray" ng-show="hasNLAnalysisObj && isBirightModeActive" ng-mouseup="copyDebugToClipboard($event,'NLanalysis')" ng-src="{{assetsBase+'debugConsoleIcons/copyJson-gray.svg'}}" ng-mousedown="prepareCopyClipboard($event,'NLanalysis')" title="{{'copy_to_clipboard'| i18nString}}">
+            <img class="copyDebugObjWhite" ng-show="hasNLAnalysisObj && !isBirightModeActive" ng-mouseup="copyDebugToClipboard($event,'NLanalysis')" ng-src="{{assetsBase+'debugConsoleIcons/copyJson-white.svg'}}" ng-mousedown="prepareCopyClipboard($event,'NLanalysis')" title="{{'copy_to_clipboard'| i18nString}}">
+            <tab-heading> {{'nl_analysis'| i18nString}} </tab-heading>
+            <div id="jsonNLRequest" class="bot-session-body">
+                <div class="panel-body" dynamic-height dynaoffset = "-45" height-property="height">
+                    <div ng-if="nlTraceData"
+                         ng-jsoneditor 
+                         ng-model="nlTraceData" 
+                         class="json_editor" 
+                         id="nlanalysisDialog"
+                         name="nlanalysisDialog" 
+                         options="options">
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <tab>
+<!--            <span class="fa fa-copy copyDebugObj" ng-show="hasDebugObj"
+                  ng-mouseup="copyDebugToClipboard($event)"
+                  ng-mousedown="prepareCopyClipboard($event)"
+                  title="Copy to clipboard"
+                  >
+                <span class="copyDebugTooltip"></span>
+            </span>-->
+            <tab-heading>
+                {{'context_variables'| i18nString}}
+            </tab-heading>
+
+            <div id="jsonRequest" class="bot-session-body">
+                <div class="panel-body"  ng-click="somethingClicked($event)" dynamic-height dynaoffset = "-85" height-property="height">
+                        <bt-sessioncontext-variables name="debugContextDialog" ng-if="debugContext" session-info="debugContext" options="options" id="debugContextDialog" is-biright-mode-active="isBirightModeActive"></bt-sessioncontext-variables>
+                    <!-- <div ng-if="debugContext"
+                         ng-jsoneditor 
+                         ng-model="debugContext" 
+                         class="json_editor" 
+                         id="debugContextDialog"
+                         name="debugContextDialog" 
+                         options="options">
+                    </div> -->
+                </div>
+            </div>
+        </tab>
+    </tabset>   
+</div>             

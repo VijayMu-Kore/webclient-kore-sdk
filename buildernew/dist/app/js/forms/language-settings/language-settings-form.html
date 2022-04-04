@@ -1,0 +1,758 @@
+<bot-modal-slider id="editLanguageTranslationEngine" ng-if="rightClass">
+    <div class="modalSliderContainer width550">
+        <div class="modalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">{{'translation_configurations' | i18nString}}<i class="btx-close" ng-click="closeLanguageTranslationEngine()"></i>
+            </h4>
+        </div>
+        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-65" height-property="height">
+            <div class="text">{{'translation_engine_config_desc' | i18nString}} <br><a ng-click="redirectToLink('MULTI_LINGUAL_BOTS', $event)">{{'learn_more_label' | i18nString}}</a></div>
+            <div class="kr-sg-dropdowns">
+                <div class="label-text">{{'translation_engine' | i18nString}}</div>
+                <div class="dropdown dropdown-open">
+                    <button class="dropdown-toggle dropdown-input"  data-toggle="dropdown">{{getTransilationEngineName(selectedTransitionEngine.translationEngine)}}</button>                                            
+                    <ul class="dropdown-menu content-menu">
+                        <li ng-repeat="engine in translationEngines" ng-if="selectedTransitionEngine.translationEngine !== engine.type" ng-click="selectedTransitionEngine.translationEngine = engine.type"><a>{{engine.displayName}}</a></li>
+                    </ul>
+                  </div>
+            </div>
+            <div class="kr-sg-input-text">
+                <div class="label-text">{{'access_key' | i18nString}}</div>
+                <input type="text" placeholder="{{'enter_access_key' | i18nString}}" class="input-text" ng-model="selectedTransitionEngine.translationAPIKey">
+            </div>
+        </div>
+        <div class="modalFooter">
+                <button class="btn btn-sm btn-primary text-info" ng-disabled="!selectedTransitionEngine.translationEngine || !selectedTransitionEngine.translationAPIKey" ng-click="configureTransitionEngine()">Save</button>
+                <button class="btn btn-sm closeCancel" ng-click="closeLanguageTranslationEngine()">Cancel</button>
+        </div>
+    </div>
+</bot-modal-slider>
+<bot-modal-slider id="configureGenericLanguageTranslation" ng-if="rightClass">
+    <div class="modalSliderContainer width550">
+        <div class="modalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">{{'generic_language' |  i18nString}}<i class="btx-close" ng-click="closeConfigureGenericLanguageTranslation()"></i>
+            </h4>
+        </div>
+        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-65" height-property="height">
+            <p class="modalDesc">{{'generic_slider_desc' |  i18nString}} <a ng-click="redirectToLink('MULTI_LINGUAL_BOTS', $event)">{{'learn_more_label' | i18nString}}</a></p>
+            <div class="text">
+                <div class="heading font14">{{'copy_form_standard_response' | i18nString}}</div>
+                <div class="desc">{{'copy_form_standard_response_desc' | i18nString}}</div>
+            </div>
+            <div class="kr-sg-dropdowns">
+                <div class="dropdown dropdown-open">
+                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"> {{getlanguageName(genericLanguage.value) || 'Choose language'}}</button>                                            
+                    <ul class="dropdown-menu content-menu">
+                        <li class="dropdown-item" ng-if="!language.configure && (language.value !== 'ge')" ng-click="genericLanguage.value = language.value"  ng-repeat="language in languages">{{language.name}}</li>
+                    </ul>
+                  </div>
+            </div>
+            <div class="hintDiv col-xs-12 align-items-center"> 
+                <div class="icon">
+                    <i class="bulbIconLayer btx-bulb"></i>
+                </div> 
+                <div class="description">
+                    {{'copy_form_standard_response_protip' |  i18nString}}
+                </div> 
+            </div>
+        </div>
+        <div class="modalFooter">
+                <button class="btn btn-sm btn-primary text-info" ng-disabled="!genericLanguage.value" ng-click="configureGenericLanguage()">Enable</button>
+                <button class="btn btn-sm closeCancel" ng-click="closeConfigureGenericLanguageTranslation()">Cancel</button>
+        </div>
+    </div>
+</bot-modal-slider>
+
+<!-- <bot-modal-slider id="OverrideByUserSlider" ng-if="rightClass">
+    <div class="modalSliderContainer width560">
+        <div class="modalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">{{'override_by_user' |  i18nString}}<i class="btx-close" ng-click="closeOverrideByUserSlider()"></i>
+            </h4>
+        </div>
+        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-65" height-property="height">
+            <p class="modalDesc">{{'override_slider_desc' |  i18nString}}</p>
+            <div class="text">
+                <div class="heading font14">{{'add_options' | i18nString}}</div>
+            </div>
+            <div id="overrideLanguage-options">
+                <input type="text" class="overrideLanguage-options" size="50" placeholder= "E.g. Cheat language to [language_name]">
+            </div>
+            <div class="kr-sg-dropdowns">
+                <div class="dropdown dropdown-open">
+                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"> {{getlanguageName(genericLanguage.value) || 'Choose language'}}</button>                                            
+                    <ul class="dropdown-menu content-menu">
+                        <li class="dropdown-item" ng-if="!language.configure && (language.value !== 'ge')" ng-click="genericLanguage.value = language.value"  ng-repeat="language in languages">{{language.name}}</li>
+                    </ul>
+                  </div>
+            </div>
+            <div class="hintDiv col-xs-12 align-items-center"> 
+                <div class="icon">
+                    <i class="bulbIconLayer btx-bulb"></i>
+                </div> 
+                <div class="description">
+                    {{'copy_form_standard_response_protip' |  i18nString}}
+                </div> 
+            </div>
+        </div>
+        <div class="modalFooter">
+                <button class="btn btn-sm btn-primary text-info" ng-click="OverrideByUserSlider()">Save</button>
+                <button class="btn btn-sm closeCancel" ng-click="closeOverrideByUserSlider()">Cancel</button>
+        </div>
+    </div>
+</bot-modal-slider> -->
+<div class="languageManageContainer" ng-show="!loadingLanguage">
+    <div class="col-xs-12 logs-view noPadding languageSetting displayNone" ng-class="{'read-only-wrap':displayMode==='VIEW'}">
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'language_Management'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn ">
+                    <button class="titleBTN" ng-click="addLanguageSlider()">{{'add_language'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="configuredLange">
+            {{'configuredLanguages'| i18nString}}   
+        </div>
+        <div class="headings borderBTM">
+            <div class="col-xs-8 heading">
+                <div class="title paddingLeft15">{{'Language'| i18nString}}</div>
+            </div>
+            <div class="col-xs-4 heading">
+                <div class="title">{{'actions_uppercase'| i18nString}}</div>
+            </div>
+        </div>
+        <div ng-repeat="language in languages | filter:{name : languageSearchQuery}" class="languages" ng-click="manageLanguage($event,language)">
+            <div class="language row" ng-if="!language.configure  && (language.value !== 'ge')">
+                <div class="col-xs-8 languageValue" >
+                    <div class="col-xs-2 btnDiv">
+                        <button class="btn camelCase">{{language.value | uppercase}}</button>
+                    </div>
+                    <div class="col-xs-10">
+                        <span>{{language.name}}</span>
+                        <span class="defaultLanguage" ng-show="language.value === defaultLanguage">{{language.value ===
+                            defaultLanguage ? default_language_label : ''}}</span>
+                    </div>
+
+                </div>
+                <div class="col-xs-4 languageStatus">
+
+                    <span ng-hide="language.enabled && selectedStream.type === 'universalbot'" class="status" ng-class="{'enabled':language.enabled}"></span>
+                    <div class="toggle-language pull-left" ng-show="!language.configure && (language.value !== 'ge')">
+                        <div class='toggle-switch' click-once
+                        ng-class="{'defaultEnabled':language.value === defaultLanguage}">
+                        <span ng-show="!language.enabled">
+                            <img ng-src="{{assetsBase}}images/left-menu-img/unselectedCheck.svg" class="">
+                        </span>
+                        <span ng-show="language.enabled">
+                            <img ng-src="{{assetsBase}}images/toggle-1.png" class="">
+                        </span>
+                        </div>
+                        <!-- <toggle-switch ng-model="language.enabled" no-opt="true" class="pull-left" ng-class="{'pointerEventsNone': language.value === defaultLanguage}" ng-style="{'opacity':language.value === defaultLanguage?'0.5':'1'}">
+                        </toggle-switch> -->
+                        <span class="toggle-yes" ng-class="{'enabled':language.enabled,'disabled':!language.enabled}">{{language.enabled ?
+                            enabled : disabled}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-xs-12 noPadding displayNone" ng-if="false">
+        <label class="mainHeading removeCapitalize marginTop10"> {{'Language_selection_logic_header'|
+            i18nString}}</label>
+
+        <p class="autoDetectHeader"> {{'autoDetectHeader'| i18nString}}</p>
+        <div class="col-xs-12 radioDiv helphint-border marginBtm10 languageSelectionRadioDiv">
+            <div>
+                <label class="removeCapitalize required-field"> {{'Language_selection_timeframe'| i18nString}}</label>
+                <div>
+                    <div>
+                        <label for="lifeTime" class="marginTop10">
+                            <input type="radio" ng-model="languageSetting.selectionLogic" value="lifeTime"
+                                name="languageSelection" id="lifeTime" />
+                            <span class="opt-title"> {{'Lifetime'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="perSession">
+                            <input type="radio" ng-model="languageSetting.selectionLogic" value="perSession"
+                                name="languageSelection" id="perSession" />
+                            <span class="opt-title"> {{'perSession'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="perVolley">
+                            <input type="radio" ng-model="languageSetting.selectionLogic" value="perVolley"
+                                name="languageSelection" id="perVolley" />
+                            <span class="opt-title flex-label"> {{'perVolley'| i18nString}}</span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="hintDiv col-xs-12 marginTop15 languageSettingsCode width735">
+                    <span class="icon"><i class="btx-bulb"></i></span>
+                    <span class="description ng-binding">{{'language_protip'| i18nString}} <a target="_blank"
+                            ng-href="http://developer.kore.ai/docs/bots/advanced-topics/multi-lingual/building-multi-language-bots/#Language_Detection_and_Selection">
+                            {{'knowMore'| i18nString}}</a></span>
+                </div>
+            </div>
+            <div class="col-xs-12 protipNoPadding" ng-if="languageSetting.selectionLogic === 'perVolley'">
+                <div class="hintDiv col-xs-12 marginTop15 languageSettingsCode width735">
+                    <span class="icon"><i class="btx-bulb"></i></span>
+                    <span class="description ng-binding"
+                        ng-bind-html="$root.getSanitizedText($root.lableData.bb550)"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- List configured languages -->
+    <bot-modal-slider id="listLanguageManagement">
+        <div class="modalSliderContainer width700">
+            <div class="modalHeader">
+                <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="closeLanguageSlider('')"></i>{{'Add Language'}}
+                </h4>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-65" height-property="height">
+                <div class="headings">
+                        <div class="searchComponent">
+                            <input type="text" placeholder="{{'search'| i18nString}}" focus-it tabindex="1" class="input-search" ng-model="languageSearchQuery" ng-keyup="trackSearch($event)" ng-change="searchRecords('key')"
+                            placeholder="{{'search_by_language'| i18nString}}">
+                            <i class="btx-search"></i>
+                            <i class="btx-close" ng-click="languageSearchQuery = ''" ng-class="{displayNone: !languageSearchQuery.length}"></i>
+                        </div>
+                        <!-- <div class="title paddingLeft15" ng-show="!showLanguageSearch">{{'Language'| i18nString}}<i
+                                class="btx-search " ng-click="openSearch()"></i></div>
+                        <div ng-show="showLanguageSearch" class="searchVariable">
+                            <input focus-it tabindex="1" type="text" class="form-control focusNameSearch"
+                                ng-model="languageSearchQuery" ng-keyup="trackSearch($event)" ng-change="searchRecords('key')"
+                                placeholder="{{'search_by_language'| i18nString}}">
+                            <i class="btx-times" ng-click="closeLanguageValue()"></i>
+                        </div> -->
+                </div>
+                <div ng-repeat="language in languages | filter:{name : languageSearchQuery}" class="languages" ng-show="(language.value !== 'ge')">
+                    <div class="language languageConfigur" ng-if="language.configure">
+                        <div class="col-xs-8 languageValue" ng-click="manageLanguage($event,language)">
+                            <div class="col-xs-3 btnDiv">
+                                <button class="btn  ">{{language.value | uppercase}}</button>
+                            </div>
+                            <div class="col-xs-9 languageName">
+                                <span>{{language.name}}</span>
+                                <span class="defaultLanguage" ng-show="language.value === defaultLanguage">{{language.value ===
+                                    defaultLanguage ? default_language_label : ''}}</span>
+                            </div>
+        
+                        </div>
+                        <div class="col-xs-4 languageStatus">
+                            <span ng-hide="language.enabled && selectedStream.type === 'universalbot'" class="status"
+                                ng-click="manageLanguage($event,language)" ng-class="{'enabled':language.enabled}"></span>
+                                <div class="toggle-language pull-left" ng-show="!language.configure && (language.value !== 'ge')">
+                                    <toggle-switch ng-model="language.enabled" no-opt="true" class="pull-left" ng-class="{'pointerEventsNone': language.value === defaultLanguage}" ng-style="{'opacity':language.value === defaultLanguage?'0.5':'1'}">
+                                    </toggle-switch>
+                                    <span class="toggle-yes" ng-class="{'enabled':language.enabled,'disabled':!language.enabled}">{{language.enabled ?
+                                        enabled : disabled}}</span>
+                                </div>
+                            <span class="configure-language" ng-show="language.configure">
+                                <a class="link" href="javascript:void(0)"
+                                    ng-click="manageLanguage($event,language)">{{'configure'| i18nString}}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </bot-modal-slider>
+    <bot-language-manage selected-language="selectedLanguage" selected-stream= "selectedStream"></bot-language-manage>
+    <div id="langEnableModalUniversalBot" class="modal fade " data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{'confirm_proceed'| i18nString}} </h4>
+                </div>
+                <div class="modal-body" perfect-scroll>
+                    <div>
+
+                        <ul>
+                            <li> {{'universalBot_enabling_lang_desc1'|
+                                i18nString:({languageName:currTryingaLanguage.name})}} </li>
+                            <li> {{'universalBot_enabling_lang_desc2'|
+                                i18nString:({languageName:currTryingaLanguage.name})}}</li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button data-dismiss="modal" class="btn btn-default "
+                            ng-click="addLangForUniversalBot()">{{'confirm'| i18nString}}</button>
+                        <button data-dismiss="modal" class="btn closeCancel ">{{'cancel'| i18nString}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="enableConfirmation" class="modal fade" data-backgrop="static" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{'are_you_sure'| i18nString}}</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="desc">
+                        {{'bot_no_longer_identify_msg'| i18nString:({selectedLangname : selectedLan.name})}}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="kr-sg-button-primary btn_lg" ng-click="confirmDisable()">{{'confirm'| i18nString}}</button>
+                    <button class="kr-sg-button-secondary btn_lg ml-5" ng-click="closeModal()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--NEW UI-->
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">{{'language_Management'| i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch ">
+            <div class="searchComponent displayNone">
+                <input placeholder="Search">
+                <i class="btx-search"></i>
+                <i class="btx-close displayNone"></i>
+            </div>
+            <div class="creationButton borderBtn displayNone">
+                <button class="titleBTN" ng-click="addLanguageSlider()">{{'add_language'| i18nString}}</button>
+            </div>
+            <div class="titleDropdown displayNone">
+                <div class="dropdown">
+                    <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Dropdown name
+                        <i class="btx-carrot-up"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item">Option Two</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="titleOverflow displayNone">
+                <div class="dropdown">
+                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item">Option Two</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-group kr-sg-accordion languageSettingsAccordions" id="accordion" role="tablist" aria-multiselectable="false">
+        <!--Standard Languages-->
+        <div class="panel">
+          <div class="panel-heading" role="tab" id="headingOneL">
+            <h4 class="panel-title">
+              <a role="button" class="accor-collapse" data-toggle="collapse" ng-click="updateHeight()" href="#lanCollapseOne" aria-expanded="true" aria-controls="lanCollapseOne">
+                <div class="titleDescIcon">
+                    <div class="arrowdiv"><i class="btx-carrot-right"></i></div>
+                    <div class="langIconDiv">
+                        <img ng-src="{{standardLanguages}}"> 
+                    </div>
+                    <div class="ttdc">
+                        <div class="langTitle">{{'standard_language' | i18nString}}</div>
+                        <div class="langDec">{{'standard_language_desc' | i18nString}} <span class="lM"  ng-click="redirectToLink('MULTI_LINGUAL_BOTS', $event)">Learn more</span></div>
+                    </div>
+                 </div>
+                 <div class="languagesType">{{enabledLanguages()>1? (enabledLanguages() + ' Languages'):(enabledLanguages() +' Language')}} <span class="enabledLanguage">Enabled</span></div>
+              </a>
+            </h4>
+          </div>
+          <div id="lanCollapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneL">
+            <div class="panel-body">
+                <div class="col-xs-12 logs-view noPadding languageSetting" ng-class="{'read-only-wrap':displayMode==='VIEW'}">
+                    <div class="headings borderBTM">
+                        <div class="col-xs-5 heading">
+                            <div class="title ">{{'Language'| i18nString}}</div>
+                        </div>
+                        <div class="col-xs-4 heading">
+                            <div class="title">{{'actions_uppercase'| i18nString}}</div>
+                        </div>
+                        <div class="col-xs-3 heading creationButton">
+                            <button class="btn btnSolidBlue" ng-click="addLanguageSlider()"><i class="btx-add"></i>{{'add_language'| i18nString}}</button>
+                        </div>
+                    </div>
+                    <div ng-repeat="language in languages | filter:{name : languageSearchQuery}" class="languages">
+                        <div class="language row" ng-if="!language.configure && (language.value !== 'ge')" ng-click="manageLanguage($event,language)">
+                            <div class="col-xs-5 languageValue" >
+                                    <span class="btnWidthDiv"><button class="btn camelCase">{{language.value | uppercase}}</button></span>
+                                    <span>{{language.name}}</span>
+                                    <span class="defaultLanguage" ng-show="language.value === defaultLanguage">{{language.value ===
+                                        defaultLanguage ? default_language_label : ''}}</span>
+            
+                            </div>
+                            <div class="col-xs-4 languageStatus">
+            
+                                <span ng-hide="language.enabled && selectedStream.type === 'universalbot'" class="status" ng-class="{'enabled':language.enabled}"></span>
+                                <div class="toggle-language pull-left" ng-show="!language.configure" >
+                                    <div class='toggle-switch' click-once ng-click="$event.stopPropagation()"
+                                    ng-class="{'defaultEnabled':language.value === defaultLanguage}">
+                                    <span ng-show="!language.enabled">
+                                        <img ng-src="{{assetsBase}}images/left-menu-img/unselectedCheck.svg" class="">
+                                    </span>
+                                    <span ng-show="language.enabled">
+                                        <img ng-src="{{assetsBase}}images/toggle-1.png" class="">
+                                    </span>
+                                    </div>
+                                    <!-- <toggle-switch ng-model="language.enabled" no-opt="true" class="pull-left" ng-class="{'pointerEventsNone': language.value === defaultLanguage}" ng-style="{'opacity':language.value === defaultLanguage?'0.5':'1'}">
+                                    </toggle-switch> -->
+                                    <span class="toggle-yes" ng-class="{'enabled':language.enabled,'disabled':!language.enabled}">{{language.enabled ?
+                                        enabled : disabled}}</span>
+                                </div>
+                            </div>
+                            <div class="col-xs-3"></div>
+                        </div>
+                    </div>
+            
+            
+                </div>
+            </div>
+          </div>
+        </div> 
+        <!--Standard Languages-->
+        <hr class="accordionSeperator">
+        <!--Advanced Language Settings-->
+        <div class="panel" style="display:none" >
+            <div class="panel-heading" role="tab" id="headingOne2">
+              <h4 class="panel-title">
+                <a role="button" class="accor-collapse collapsed" data-toggle="collapse" ng-click="updateHeight()"  href="#collapseTwo" aria-expanded="false" aria-controls="collapseOne">
+                    <div class="titleDescIcon">
+                        <div class="arrowdiv"><i class="btx-carrot-right"></i></div>
+                        <div class="langIconDiv">
+                            <img ng-src="{{advancedLanguageSettings}}"> 
+                        </div>
+                        <div class="ttdc">
+                            <div class="langTitle">{{'advanced_language_setting' | i18nString}}</div>
+                            <div class="langDec">{{'advanced_language_setting_desc' |  i18nString}} </div>
+                        </div>
+                     </div>
+                     <div class="languagesType" ng-class='{"notConfigured":!selectedStream.enableInputTranslation && !genericLanguage.enabled}'><span class="genericIcon"></span>{{getLanguageConfiguration()}}</div>
+                </a>
+              </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne2">
+              <div class="panel-body">
+                  <div class="languageSetting advanced" ng-class="{'screenFreeze':displayMode==='VIEW'}">
+                        <div class="text">
+                            <div class="heading">{{'generic_language' | i18nString}} 
+                                <!-- <i class="btx-beta"></i> -->
+                                <img ng-src="{{betaIcon}}" class="betaIcon">
+                            </div>
+                            <div class="desc">{{'generic_language_desc' | i18nString}} <a ng-click="redirectToLink('MULTI_LINGUAL_BOTS', $event)">{{'learn_more_label' |  i18nString}}</a></div>
+                        </div>
+        
+                        <!-- Configure button if the generic language is never configured with language -->
+                        <button ng-if="!selectedStream.defaultLanguageForGe" ng-disabled="selectedStream.enableInputTranslation" ng-click="openConfigureGenericLanguageTranslation()" class="btn configure"><i class="btx-quick-reply"></i>Configure</button>
+                        <!-- Configure ends -->
+                        
+                        <!-- Enable of disable generic language -->
+                        <label class="kr-sg-toggle large" ng-if="selectedStream.defaultLanguageForGe"  ng-class="{'screenFreeze':selectedStream.enableInputTranslation || (selectedStream.defaultLanguage === 'ge')}">                                      
+                            <input type="checkbox" ng-model="genericLanguage.enabled" ng-change="updateGenericLanguage()"  ng-class="{'screenFreeze':selectedStream.enableInputTranslation}">
+                            <div class="slider"><span class="enabled">Enabled</span><span class="disabled" >Disabled </span></div>
+                        </label>
+                        <i ng-if="selectedStream.defaultLanguage === 'ge'" class="btx-warning tooltip-hover w-auto-tooltip text_left" tooltip-placement="bottom" tooltip="{{'generic_lang_specific_tip'| i18nString}}"></i>
+                        <i ng-if="selectedStream.enableInputTranslation" class="btx-warning tooltip-hover w-auto-tooltip text_left" tooltip-placement="bottom" tooltip="{{'generic_language_tooltip'| i18nString}}" ng-class="{'configureInfo':!selectedStream.defaultLanguageForGe}"></i>
+                        <div class="col-xs-12 p-0">
+                            <div class="hintDiv col-xs-12 width735" ng-if="genericLanguage.enabled && !selectedStream.translationEngine && !selectedStream.translationAPIKey"> 
+                                <div class="icon">
+                                    <i class="bulbIconLayer btx-bulb"></i>
+                                </div> 
+                                <div class="description">
+                                    {{'generic_language_protip' |  i18nString}}
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="text" ng-class="{'paddingTop30':!(!selectedStream.translationEngine && !selectedStream.translationAPIKey)}">
+                            <div class="heading">{{'language_management_translation' | i18nString}}</div>
+                            <div class="desc">{{'language_management_translation_desc' | i18nString}} <a ng-click="redirectToLink('MULTI_LINGUAL_BOTS', $event)">{{'learn_more_label' |  i18nString}}</a></div>
+                        </div>
+                            <label class="kr-sg-toggle large"  ng-class="{'screenFreeze':genericLanguage.enabled}">                                       
+                                <input type="checkbox" ng-model="enableInputTranslation" ng-change="updateInputLanguageLanguage()" ng-class="{'screenFreeze':genericLanguage.enabled}">
+                                <div class="slider"><span class="enabled">Enabled</span><span class="disabled">Disabled </span></div>
+                            </label>
+                            <i ng-if="genericLanguage.enabled" class="btx-warning tooltip-hover w-auto-tooltip text_left" tooltip-placement="bottom" tooltip="{{'input_translate_language_tooltip'| i18nString}}"></i>
+                           
+                            <div class="text conversationLanguage" ng-if="enableInputTranslation">
+                                <div class="heading">Conversation Language</div>
+                                <div class="desc">Choose the language to be used for executing the conversation.</a></div>
+                            </div>
+                            <div class="kr-sg-dropdowns width400" ng-if="enableInputTranslation">
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"> {{getlanguageName(selectedStream.languageForInputTranslation) || 'Choose language'}}</button>                                            
+                                    <ul class="dropdown-menu content-menu" perfect-scroll>
+                                        <li class="dropdown-item"  ng-click="updateInputAutoTranslateLanguage(language.value)"  ng-repeat="language in languages">{{language.name}}</li>
+                                    </ul>
+                                  </div>
+                            </div>
+                            <div class="col-xs-12 p-0">
+                                <div class="hintDiv col-xs-12 width735" ng-if="enableInputTranslation && !selectedStream.translationEngine && !selectedStream.translationAPIKey" > 
+                                    <div class="icon">
+                                        <i class="bulbIconLayer btx-bulb"></i>
+                                    </div> 
+                                    <div class="description">
+                                        {{'auto_language_protip' |  i18nString}}
+                                    </div> 
+                                </div>
+                            </div>
+                  </div>
+              </div>
+            </div>
+        </div> 
+         <!--Advanced Language Settings-->
+        <!-- <hr class="accordionSeperator"> -->
+        <!--Translation Configurations-->
+        <div class="panel">
+            <div class="panel-heading" role="tab" id="headingOne3">
+              <h4 class="panel-title">
+                <a role="button" class="accor-collapse collapsed" data-toggle="collapse" id="headingOne3Content" ng-click="updateHeight()"  href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <div class="titleDescIcon">
+                        <div class="arrowdiv"><i class="btx-carrot-right"></i></div>
+                        <div class="langIconDiv">
+                            <img ng-src="{{translationConfigurations}}"> 
+                        </div>
+                        <div class="ttdc">
+                            <div class="langTitle">{{'translation_configurations' |  i18nString}}</div>
+                            <div class="langDec">{{'translation_configurations_desc' | i18nString}} <span class="lM"  ng-click="redirectToLink('MULTI_LINGUAL_BOTS', $event)">Learn more</span></div>
+                        </div>
+                     </div>
+                     <div class="languagesType text-truncate" ng-class='{"notConfigured":!selectedStream.translationEngine && !selectedStream.translationEngine.name}'>
+                        <span ng-if="!selectedStream.translationEngine && !selectedStream.translationEngine.name" class="genericIcon"></span>
+                        <img ng-if="selectedStream.translationEngineId && selectedStream.translationEngine && selectedStream.name && (selectedStream.translationEngine.type === 'standard')" ng-src="{{translationIcons[selectedStream.translationEngine.subType]}}" class="googleIcon">
+                        <span class="name-of-custom-trans-title text-truncate" title="{{(selectedStream.translationEngineId && selectedStream.translationEngine && selectedStream.translationEngine.name)?selectedStream.translationEngine.name:'Not Configured'}}">{{(selectedStream.translationEngineId && selectedStream.translationEngine && selectedStream.translationEngine.name)?selectedStream.translationEngine.name:'Not Configured'}}</span>
+                    </div>
+                </a>
+              </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne3">
+              <div class="panel-body">
+                <div class="languageSetting translation" ng-class="{'screenFreeze':displayMode==='VIEW'}">
+                    <!-- <button class="btn configure" ng-click="openLanguageTranslationEngine()" ng-if="!selectedStream.translationEngine && !selectedStream.translationAPIKey"><i class="btx-quick-reply"></i>Configure</button>
+                    <div class="heading" ng-if="selectedStream.translationEngine && selectedStream.translationAPIKey">{{'translation_engine' |  i18nString}}</div>
+                    <div class="selectedEngine" ng-if="selectedStream.translationEngine && selectedStream.translationAPIKey">
+                        <div class="transName">{{getTransilationEngineName(selectedStream.translationEngine)}}</div>
+                        <button class="btn" ng-click="openLanguageTranslationEngine()"><i class="btx-edit"></i>{{'edit'| i18nString}}</button>
+                    </div> -->
+                    <div class="group-radiobutton">
+                        <div class="heading-title">{{'select_translation_engine' |  i18nString}}</div>
+                        <div class="border-bottom-radio">
+                            <div class="kr-sg-radiobutton d-block">
+                                <input id="translation_engine_type_noTranslation" name="translation_engine_type" class="radio-custom" type="radio" value="notranslation" ng-model="translationEngine.type">
+                                <label for="translation_engine_type_noTranslation" class="radio-custom-label">{{ 'no_translation_engine' | i18nString}}</label>
+                            </div> 
+                        </div>
+                        <div class="border-bottom-radio" ng-repeat="defaultEngine in translationEngines">
+                            <div class="kr-sg-radiobutton d-block">
+                                <input id="translation_engine_type_{{defaultEngine.type}}" name="translation_engine_type" class="radio-custom" type="radio" value="{{defaultEngine.type}}" ng-model="translationEngine.type" ng-change="onengineChange(defaultEngine)">
+                                <label for="translation_engine_type_{{defaultEngine.type}}" class="radio-custom-label">{{defaultEngine.displayName}}</label>
+                            </div> 
+                            <div class="adjust-padd-based-radio input-block-trans" ng-if="translationEngine.type === defaultEngine.type">
+                                <div class="label-text">{{'access_key' | i18nString}}</div>
+                                <div class="translation-input-delete-block">
+                                    <div class="kr-sg-input-text">
+                                        <input type="{{(translationEngine.defaultEngines[defaultEngine.type].showKey)?'text':'password'}}" placeholder="Placeholder text" class="input-text" ng-model="translationEngine.defaultEngines[defaultEngine.type].apiKey">
+                                        <i ng-click="translationEngine.defaultEngines[defaultEngine.type].showKey = false" ng-show="translationEngine.defaultEngines[defaultEngine.type].showKey" class="icon-show-trans btx-password-hidden"></i>
+                                        <i ng-click="translationEngine.defaultEngines[defaultEngine.type].showKey = true" ng-show="!translationEngine.defaultEngines[defaultEngine.type].showKey"class="icon-show-trans btx-password"></i>
+                                    </div>
+                                    <!-- <div class="delete-translation" ng-click="translationEngine.defaultEngines[defaultEngine.type].apiKey = ''">
+                                        <i class="btx-delete-1"></i>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-bottom-radio">
+                            <div class="engines-count">{{translationEngine.customTranslators.length?translationEngine.customTranslators.length:'No'}} {{ 'custom_engine_added' | i18nString}}</div>
+                            <div class="kr-sg-radiobutton d-block">
+                                <input id="translation_engine_type_Custom" name="translation_engine_type" class="radio-custom" type="radio" value="custom" ng-model="translationEngine.type" ng-change="onengineChange()">
+                                <label for="translation_engine_type_Custom" class="radio-custom-label">{{'custom' | i18nString}}</label>
+                            </div> 
+                            <div class="adjust-padd-based-radio custom-trans-sec" ng-if="translationEngine.type === 'custom'">
+                                <div class="kr-sg-dropdowns">                                        
+                                    <div class="dropdown dropdown-open">
+                                        <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                                            <span ng-if="!translationEngine.selectedEngine._id">{{'select_custom_engine' | i18nString}}</span>
+                                            <span ng-if="translationEngine.selectedEngine._id" title="{{translationEngine.selectedEngine.name}}">{{translationEngine.selectedEngine.name}}</span>
+                                        </button>                                            
+                                        <ul class="dropdown-menu content-menu">
+                                          <li ng-click="addEditCustomTranslatorModal('show')" class="add-translartion"><a>{{'add_custom_engine' | i18nString}}</a></li>
+                                          <div class="scroll-data-perfect" perfect-scroll dynamic-height dynaoffset="-417">
+                                            <li ng-repeat="customTranslator in translationEngine.customTranslators" ng-click="onengineChange(customTranslator)"><a title="{{customTranslator.name}}"> {{customTranslator.name}}</a></li>
+                                          </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="edit-custom-trans" ng-class="{screenFreeze:(translationEngine.type === 'custom') && !translationEngine.selectedEngine._id}" ng-click="addEditCustomTranslatorModal('show',translationEngine.selectedEngine)">
+                                    <i class="btx-amend-edit"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-actions-save-cancel">
+                        <button class="kr-sg-button-primary btn_lg" ng-disabled="((translationEngine.type === 'custom') && !translationEngine.selectedEngine._id)" ng-click="saveTranslationToStream()">Save</button>
+                        <button class="kr-sg-button-secondary btn_lg" ng-click="$event.stopPropagation();toggleTarget('#headingOne3Content')">Cancel</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div> 
+         <!--Translation Configurations-->
+        <hr class="accordionSeperator">
+         <!--Language Selection Logic-->
+        <div class="panel">
+            <div class="panel-heading" role="tab" id="headingOne4">
+              <h4 class="panel-title">
+                <a role="button" class="accor-collapse collapsed" data-toggle="collapse" ng-click="updateHeight()"  href="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                    <div class="titleDescIcon">
+                        <div class="arrowdiv"><i class="btx-carrot-right"></i></div>
+                        <div class="langIconDiv">
+                            <img ng-src="{{languageSelectionLogic}}"> 
+                        </div>
+                        <div class="ttdc">
+                            <div class="langTitle">{{'Language_selection_logic_header'| i18nString}}</div>
+                            <div class="langDec">{{'autoDetectHeader'| i18nString}}</div>
+                        </div>
+                     </div>
+                     <div class="languagesType">{{languageLogicLabels[languageSetting.selectionLogic]}}</div>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne4">
+                <div class="panel-body">
+                    <div class="col-xs-12 noPadding languageSetting logic" ng-class="{'screenFreeze':displayMode==='VIEW'}">
+                        <div class="settingsTitle">
+                            <div class="heading">{{'language_detection_frame' | i18nString}}</div>
+                            <div class="col-xs-12 radioDiv marginBtm10 languageSelectionRadioDiv">
+                                <div> 
+                                    <label for="lifeTime" class="marginTop10" ng-click="updateLanguageSettings()">
+                                        <input type="radio" ng-model="languageSetting.selectionLogic" value="lifeTime" 
+                                            name="languageSelection" id="lifeTime" />
+                                        <span class="opt-title"> {{'Lifetime'| i18nString}}</span>
+                                    </label>
+                                    <div class="rectangle-container languageManagementSlider" ng-if="showLifetimeSlider || languageSetting.selectionLogic === 'lifeTime'" ng-hide ="languageSetting.selectionLogic === 'perVolley'">
+                                        <div class="text settingsTitle">
+                                            <div class="heading" >{{'input_language_execution_count' | i18nString}}</div>
+                                            <div class="desc" >{{'input_language_execution_count_desc' | i18nString}}</div>
+                                            <div class="slidecontainer">
+                                                <div class="sliderContent">
+                                                    <div class="thresholdDir" ng-init = "intializeSlider()">
+                                                        <div class="col-xs-12 single-slider noPadding" id="languageCount-slider">
+                                                            <div class="countThreshold"><span class="pull-left">1</span><span class="pull-right">5</span></div>
+                                                            <span id="execution-slider" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='Slider-ex1' type="text" data-slider-min="1" data-slider-tooltip="hide" data-slider-max="5" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p class="countText">Execution Count set to:<span>{{execCount}}</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="perSession" ng-click="updateLanguageSettings()">
+                                        <input type="radio" ng-model="languageSetting.selectionLogic" value="perSession"
+                                            name="languageSelection" id="perSession" />
+                                        <span class="opt-title"> {{'perSession'| i18nString}}</span>
+                                    </label>
+                                    <div class="rectangle-container languageManagementSlider" ng-if="showSlider || languageSetting.selectionLogic === 'perSession'" ng-hide ="languageSetting.selectionLogic === 'perVolley'">
+                                        <div class="text settingsTitle">
+                                            <div class="heading">{{'input_language_execution_count' | i18nString}}</div>
+                                            <div class="desc">{{'input_language_execution_count_desc' | i18nString}}</div>
+                                            <div class="slidecontainer">
+                                                <div class="sliderContent">
+                                                    <div class="thresholdDir" ng-init = "intializeSlider()">
+                                                        <div class="col-xs-12 single-slider noPadding" id="languageCount-slider">
+                                                            <div class="countThreshold"><span class="pull-left">1</span><span class="pull-right">5</span></div>
+                                                            <span id="execution-slider" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='Slider-ex1' type="text" data-slider-min="1" data-slider-tooltip="hide" data-slider-max="5" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p class="countText">Execution Count set to:<span>{{execCount}}</span></p>
+                                            </div> 
+                                    </div>
+                                    </div>
+                                    <div ng-click="updateLanguageSettings()">
+                                        <label for="perVolley">
+                                            <input type="radio" ng-model="languageSetting.selectionLogic" value="perVolley"  name="languageSelection" id="perVolley"/>
+                                                <span class="opt-title flex-label"> {{'perVolley'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- <div class="ttdc">
+                                        <div class="langTitle">{{'language_overrides_by_user'| i18nString}}</div>
+                                        <div class="langDec">{{'language_overrides_by_user_desc'| i18nString}}</div>
+                                        <label class="kr-sg-toggle large" >                                       
+                                            <input type="checkbox" >
+                                            <div class="slider"><span class="enabled">Enabled</span><span class="disabled" ng-click="openOverrideByUserSlider()">Disabled </span></div>
+                                            <h6 class="AddViewText">Add/View Utterances</h6>
+                                        </label>
+                                    </div> -->
+                                    <div class="hintDiv col-xs-12 marginTop15 languageSettingsCode width735">
+                                        <span class="icon"><i class="btx-bulb"></i></span>
+                                        <span class="description ng-binding">{{'language_protip'| i18nString}} <a target="_blank"
+                                                ng-href="http://developer.kore.ai/docs/bots/advanced-topics/multi-lingual/building-multi-language-bots/#Language_Detection_and_Selection">
+                                                {{'knowMore'| i18nString}}</a></span>
+                                    </div>
+                                    <div class="col-xs-12 protipNoPadding" ng-if="languageSetting.selectionLogic === 'perVolley'">
+                                        <div class="hintDiv col-xs-12 marginTop15 languageSettingsCode width735">
+                                            <span class="icon"><i class="btx-bulb"></i></span>
+                                            <span class="description ng-binding"
+                                                ng-bind-html="$root.getSanitizedText($root.lableData.bb550)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+        <!--Language Selection Logic-->
+        <!-- <hr class="accordionSeperator">                                                                 -->
+            </div>
+    <!--NEW UI-->
+
+</div>
+<div class="modal fade kr-sg-modal languageSettingsLogic" id="languageSettingsLogic" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Choose an Option <i class="btx-close closeEnableUserMsg" ng-click="closeEnableUserMsgPopup()"></i></h4>
+            </div>
+            <div class="modal-body">
+                <p>We recommend you to set the Langauge Selection Timeframe value to Per Session option.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" ng-click="updateSelectionToPerSession()">Change to Per Session</button>
+                <button class="kr-sg-button-secondary btn_md" data-dismiss="modal">Continue Using Per Message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade prompts-modal modal-iframe-language-translation" id="customTranslatorEngineConfigModal" data-keyboard="false" data-backdrop="static">
+    <div class="iframeContainer-parent" ng-if="translationengineUrl">
+        <iframe id="customTranslatorEngineConfig" class="uiformsContainer iframeContainer" frameBorder="0" ng-src="{{translationengineUrl}}"></iframe>
+    </div>
+    <div>
+        <bot-authorization class="languageAuthForm" wf-type="{{wftype}}" btcallback="authorizationCallback" callback="authorizationCallback" is-finish-setup-loading="isFinshSetupLoading" configure="finishSetup(type)" on-complete="onAuthFormResponse()">   </bot-authorization>  
+     </div>
+</div>                    
+                                   

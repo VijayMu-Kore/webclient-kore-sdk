@@ -1,0 +1,1711 @@
+<!-- Plan Usage -->
+<div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'plan_usage' | i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent displayNone">
+            <input placeholder="Search">
+            <i class="btx-search"></i>
+            <i class="btx-close displayNone"></i>
+        </div>
+    </div>
+</div>
+    
+<!-- Emtpy state -->
+<div class="alert alert-warning alert-xs text-center" role="alert" ng-if="isLoading">
+    <i class="fa-spin fa fa-circle-o-notch"></i>
+    {{'loading'| i18nString}}
+</div>
+<!-- <div class="emptyStateContainer" ng-if="selectedStream.visibility.namespace === 'private' && selectedAccount.accountType === 1">
+    <div class="emptyState">
+        <div class="emptyImage">
+            <img class="info-icon" ng-src="{{assetsPath}}/empty-state-images/k-folder.png">
+            <span class="mainTitle">{{'bot_is_not_published' | i18nString}}</span>
+            <div class="emptyStateDesc">
+                {{'bot_is_not_published_desc' | i18nString}}
+            </div>
+            <div class="btn btnSolidBlue"">
+                <button class="kr-sg-button-primary" ng-click="selectComponent('publish')">{{'publish_bot' | i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="emptyStateContainer" ng-if="selectedStream.visibility.namespace === 'private' && selectedAccount.accountType === 1 && !isLoading">
+    <div class="emptyState">
+        <div class="emptyImage">
+            <img ng-src="{{assetsPath}}/empty-state-images/k-folder.png" class="emptyImg">           
+        </div>  
+        <span class="mainTitle">{{'bot_is_not_published' | i18nString}}</span>
+        <div class="emptyStateDesc">{{'bot_is_not_published_desc' | i18nString}}</div>
+        <div class="generateBtn">
+            <button class="btn btnSolidBlue"  ng-click="selectComponent('publish')">{{'publish_bot' | i18nString}}</button>
+            <!-- <button class="btn" target="_blank" >learn more</button> -->
+        </div>
+    </div>
+</div>
+<!-- STANDARD ACCOUNT -->
+<div class="plan-usage row" ng-if="selectedAccount.accountType === 1 && selectedStream.visibility.namespace !== 'private' && !isLoading">
+    <div class="usagePlan col-xs-6 noPadding" ng-class="{'readyOnly': viewMode === true}">
+        <div class="title">{{'usage_plan' | i18nString}}</div>
+        <div class="card" ng-if="cb.license && cb.license.planName && !selectedStream.isDeflect">
+            <div class="lineRow noBorder" ng-if="cb.license.totalCredits <= 50 && cb.license.billingType === 'paid'">
+                <div class="kr-sg-notification warning">
+                    <div class="right-icon"><i class="btx-warning"></i></div>
+                    <div class="tost-text">{{'low_balance_desc' | i18nString}}</div>
+                </div>
+            </div>
+            <div class="lineRow noPadding">
+                <div class="leftColumn width30">
+                    <div class="name">
+                        {{'plan_name' | i18nString}}
+                    </div>
+                    <div class="value">
+                        {{cb.license.planName || '---'}}
+                    </div>
+                </div>
+                <div class="rightColumn width70" >
+                    <a class="changePlan" ng-if="cb.license.billingType === 'paid'" ng-click="openPlanSlider()">{{'change_plan' | i18nString}}</a>
+                    <button type="button" ng-if="cb.license.billingType === 'free'" ng-click="openPlanSlider()" class="kr-sg-button-primary btn_md">{{'upgrade_plan' | i18nString}}</button>
+                </div>
+            </div>
+            <div class="lineRow noBorder"  ng-if="cb.license.billingType === 'paid'">
+                <div class="leftColumn width30">
+                    <div class="name">
+                        {{'current_credits' | i18nString}}
+                    </div>
+                    <div class="value font26">
+                        ${{ (cb.license.totalCredits | localString) || 0}}
+                    </div>
+                </div>
+                <div class="rightColumn width70" >
+                    <div class="kr-sg-notification auto" ng-if="cb.license && cb.license.freemiumSetting"
+                        ng-click="autoReload()">
+                        <div class="right-icon"><img ng-src="{{autoRefresh}}"></div>
+                        <div class="tost-text">{{'auto_reload_activated' | i18nString}}</div>
+                        <span class="tooltip_custom_top">
+                            <div class="close-icon"><i class="btx-info"></i></div>
+                            <span class="tooltiptext">
+                                <div class="desc">
+                                    <div class="path">{{'min_credits_maintain' | i18nString}}</div>
+                                    <div class="count">${{cb.license.freemiumSetting.autoRechargeThreshold | localString}}</div>
+                                </div>
+                                <div class="desc">
+                                    <div class="path">{{'amt_be_added' | i18nString}}</div>
+                                    <div class="count">${{cb.license.freemiumSetting.autoRechargeAmount | localString}}</div>
+                                </div>
+                            </span>
+                        </span>
+                    </div>
+                    <button class="kr-sg-button-primary width100" ng-click="reload()">{{'reload_label' | i18nString}}</button>
+                </div>
+            </div>
+            <div class="lineRow" ng-if="cb.license.billingType === 'paid'">
+                <div class="leftColumn w-100">
+                    <div class="name">
+                        {{'Allowed Requests'}}
+                    </div>
+                    <div class="value">
+                        {{ (cb.license.totalRequests | localString: 'sessions') || 0}}
+                    </div>
+                </div>
+            </div>
+            <div class="lineRow" ng-if="cb.license.billingType === 'free'">
+                <div class="leftColumn w-100">
+                    <div class="name">
+                        {{'Available Free Requests' }}
+                    </div>
+                    <div class="value">
+                        {{((cb.license.totalRequests) | localString: 'sessions')}} of {{(cb.license.baseAllowedRequests | localString: 'sessions')}}
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="lineRow" ng-if="cb.license.billingType === 'paid'">
+                <div class="leftColumn w-100">
+                    <div class="name">
+                        {{'alllowed_sessions'| i18nString}}
+                    </div>
+                    <div class="value">
+                        {{ (cb.license.totalSessions | localString: 'sessions') || 0}}
+                    </div>
+                </div>
+            </div>
+            <div class="lineRow" ng-if="cb.license.billingType === 'free'">
+                <div class="leftColumn w-100">
+                    <div class="name">
+                        {{'available_free_sessions' | i18nString}}
+                    </div>
+                    <div class="value">
+                        {{(((cb.license.baseAllowedSessions + cb.license.extraSessions) - cb.license.sessionsUsed) | localString: 'sessions')}} of {{((cb.license.baseAllowedSessions + cb.license.extraSessions) | localString: 'sessions')}}
+                    </div>
+                </div>
+            </div> -->
+            <div class="lineRow noBorder">
+                <div class="leftColumn w-100">
+                    <div class="name">
+                        {{'usage_trend' | i18nString}}
+                    </div>
+                    <div class="value">
+                        {{filterDate.value === 'date_month'?('Avg. Monthly Requests'): ('Avg. Daily Requests')}} -
+                        {{(averageSessions | localString) || 0}}
+                    </div>
+                </div>
+            </div>
+            <div class="lineRow noBorder d-flex align-items-center justify-content-between">
+                <div class="leftColumn d-flex">
+                    <div class="kr-sg-dropdowns mr-10 width110">
+                        <div class="label-text name">{{'filter_by' | i18nString}}</div>
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{filterDate.name || ("select" | i18nString)}}</button>
+                            <ul class="dropdown-menu content-menu">
+                                <li ng-repeat="item in filterList track by $index"><a
+                                        ng-click="selectedDate(item)">{{item.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kr-sg-dropdowns mr-10" ng-if="subFilterList.length">
+                        <div class="label-text">&nbsp;</div>                        
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{subDate.name ||
+                                ("select" | i18nString)}}</button>
+                            <ul class="dropdown-menu content-menu">
+                                <li ng-repeat="item in subFilterList track by $index"><a
+                                        ng-click="selectSubDate(item)">{{item.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kr-sg-dropdowns mr-10 pos-rel" id="planUsagePicker" ng-if="filterDate.value === 'date_custom'">
+                        <div class="label-text">&nbsp;</div>
+                        <input class="planUsagePicker" type="text" name="daterange" id="planUsageDaterange"
+                            value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" readonly/>
+                    </div>
+                </div>
+                <div class="rightColumn">
+                    <button class="kr-sg-buttonicon-secondary mt-20" ng-click="exportBillingSession()"><i class="btx-export"></i>{{'export' | i18nString}}</button>
+                </div>
+            </div>
+            <div class="barGraph height350" style="height: 350px;">
+                <div class="divContainer">
+                    <div class="alert alert-warning alert-xs text-center" role="alert" ng-if="chartLoader">
+                        <i class="fa-spin fa fa-circle-o-notch"></i>
+                        {{'loading'| i18nString}}
+                    </div>
+                    <div id="barGraph"></div>
+                    <div class="noTasksDiv hide">
+                        <div class="emptyStateContainer">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{tasksPerformance}}" class="chatsConversation marginTop50 w-100">
+                                    <span class="mainTitle">{{selectedAccount.accountType === 1 ? ('No Billing Requests Found'):('no_billing_session_found' | i18nString)}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" ng-if="selectedStream.isDeflect">
+            <div class="kr-sg-notification">
+                <div class="right-icon"><i class="btx-info"></i></div>
+                <div class="tost-text">{{'plans_smart_assist_desc' | i18nString}}</div>
+            </div>
+        </div>
+        <div class="card" ng-if="(cb.license && !cb.license.planName) || (!cb.license) && !selectedStream.isDeflect">
+            <div class="emptyStateContainer" style="width: auto;">
+                <div class="emptyState">
+                    <div class="emptyImage">
+                        <img class="info-icon" ng-src="{{assetsPath}}/empty-state-images/k-folder.png">
+                        <span class="mainTitle">{{'no_data_found' | i18nString}}</span>
+                    </div>
+                    <div class="generateBtn">
+                        <button class="kr-sg-button-primary" ng-click="openPlanSlider()">{{'Explore Usage Plans'}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-data-usage-details">The usage details of the ongoing interactions are updated every 30 minutes. <a href="https://developer.kore.ai/docs/bots/bot-settings/plan-usage/usage-plans/" target="_blank">{{'learn_more_label'| i18nString}}</a></div>
+    </div>
+    <div class="usagePlan col-xs-6 noPadding" ng-if="selectedAccount.accountType === 1 && selectedStream.visibility.namespace !== 'private'">
+        <div class="title marginLeft15">{{'support_plan' | i18nString}}</div>
+        <div class="card marginLeft13" ng-if="supportplan && supportplan.planName" ng-class="{'readyOnly': viewMode === true}">
+            <div class="lineRow noBorder" ng-if="selectedStream.isDeflect">
+                <div class="kr-sg-notification">
+                    <div class="right-icon"><i class="btx-info"></i></div>
+                    <div class="tost-text">{{'support_plans_smart_assist_desc'| i18nString}}</div>
+                </div>
+            </div>
+            <div class="lineRow noBorder" ng-if="supportplan.planId === 'small'">
+                <div class="kr-sg-notification">
+                    <div class="right-icon"><i class="btx-info"></i></div>
+                    <div class="tost-text">{{'upgrade_plan_assistance_desc' | i18nString}}</div>
+                    <div class="close-icon" ng-click="openSupportSlider()"><a>{{'upgrade' | i18nString}}</a></div>
+                </div>
+            </div>
+            <div class="lineRow noBorder" ng-if="supportplan.changesScheduledFor === 'downgrade'">
+                <div class="kr-sg-notification">
+                    <div class="right-icon"><i class="btx-info"></i></div>
+                    <div class="tost-text">{{'Your plan will be switched to '+ (supportplan.planName || '---') +' on ' + (supportplan.endDate | date: 'd MMMM, y')}}</div>
+                    <div class="close-icon" ng-click="revokeDownUpProceed()"><a>{{'revoke' | i18nString}}</a></div>
+                </div>
+            </div>
+            <div class="lineRow noBorder" ng-if="supportplan.changesScheduledFor === 'cancel'">
+                <div class="kr-sg-notification success">
+                    <div class="right-icon"><i class="btx-info"></i></div>
+                    <div class="tost-text">{{'revoke_cancel_desc' | i18nString:( {endDate: (supportplan.endDate | date: 'd MMMM, y') } )  }}</div>
+                    <div class="close-icon" ng-click="revokeProceed()"><a>{{'revoke' | i18nString}}</a></div>
+                </div>
+            </div>
+            <div class="lineRow">
+                <div class="leftColumn width40">
+                    <div class="name">
+                        {{'plan_type' | i18nString}} 
+                    </div>
+                    <div class="value">
+                        {{supportplan.planName || '---'}} Support
+                    </div>
+                    <div class="subscription" ng-if="supportplan.planId !== 'small' && supportplan.planId !== 'free'">
+                        {{supportplan.billingPeriodUnit === 'year'? 'Yearly': 'Monthly'}} Subscription
+                    </div>
+                </div>
+                <div class="rightColumn width60" ng-if="false && supportplan.planId !== 'free'">
+                    <a class="changePlan" ng-click="openSupportSlider()">{{'change_plan' | i18nString}}</a>
+                    <!-- <div class="titleOverflow marginLeft10" ng-if="supportplan.planId !== 'small' && supportplan.planId !== 'free' && supportplan.changesScheduledFor !== 'cancel'">
+                        <div class="dropdown">
+                            <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                <i class="btx-overflow"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item delete" ng-click="openCancelSubsModal()">{{'cancel' | i18nString}}
+                                    {{'subscription' | i18nString}}</li>
+                            </ul>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="lineRow" ng-if="supportplan.planId !== 'small' && supportplan.planId !== 'free'">
+                <div class="leftColumn w-100">
+                    <div class="name">
+                        {{'subscription_fee' | i18nString}}
+                    </div>
+                    <div class="value">
+                        ${{(supportplan.planAmount | localString: 'sessions') || 0}}
+                    </div>
+                </div>
+            </div>
+            <div class="lineRow" ng-if="supportplan && supportplan.endDate">
+                <div class="leftColumn width50">
+                    <div class="name">
+                        {{'renewal_due_on' | i18nString}}
+                    </div>
+                    <div class="value" ng-if="supportplan.endDate">
+                        {{supportplan.endDate | date: 'd MMMM, y'}}
+                    </div>
+                </div>
+                <div class="rightColumn width50" ng-if="supportplan.remainingDays > 0">
+                    <div class="reminder">{{supportplan.remainingDays}} {{supportplan.remainingDays > 1 ?'days': 'day'}} more</div>
+                </div>
+            </div>
+            <div class="lineRow noBorder">
+                <div class="leftColumn w-100" ng-if="(cb.license.planId === 'medium') && (supportplan.planId !== 'medium-yearly' && supportplan.planId !== 'medium-monthly')">
+                    <button class="kr-sg-button-primary" ng-click="openSupportSlider()">{{'upgrade' | i18nString}}</button>
+                    <button class="kr-sg-button-secondary" onclick="window.open('https://community.kore.ai/')">{{'Community' }}</button>
+                </div>
+                <div class="leftColumn w-100" ng-if="(cb.license.planId !== 'medium') || (supportplan.planId === 'medium-yearly' || supportplan.planId === 'medium-monthly')">
+                    <button class="kr-sg-button-primary" ng-if="(cb.license.planId === 'free')" ng-click="contactUs()" >{{'contact_us' | i18nString}}<i class="btx-icon-link btx-external-link"></i></button>
+                    <button class="kr-sg-button-primary" ng-if="(cb.license.planId !== 'free')" onclick="window.open('https://support.kore.ai/')">{{'Manage Tickets'}}<i class="btx-icon-link btx-external-link"></i></button>
+                    <button class="kr-sg-button-secondary" onclick="window.open('https://community.kore.ai/')">{{'Community' }}<i class="btx-icon-link btx-external-link"></i></button>
+                </div>
+            </div>
+
+        </div>
+        <div class="card emtptySupportPlan" ng-if="(supportplan && !supportplan.planName) && !selectedStream.isDeflect">
+            <div class="img-block">
+                <i class="btx-billing-people"></i>
+            </div>
+            <div class="comm-title">{{'seeking_help_community_desc' | i18nString}} </div>
+            <div class="comm-desc">{{'seeking_help_community_desc2' | i18nString}}</div>
+            <div class="btn_sec">
+                <button type="button" class="kr-sg-button-secondary btn_md" ng-click="openSupportSlider()">{{'view_support_plans' | i18nString}}</button>
+                <!-- <button type="button" class="kr-sg-button-secondary btn_md">{{'view_open_tickets' | i18nString}}</button> -->
+            </div>
+        </div>
+    </div>
+    <div class="usagePlan col-xs-6 noPadding" ng-if="false && selectedAccount.accountType === 1 && selectedStream.visibility.namespace !== 'private'">
+        <div class="title marginLeft15">{{'support_plan' | i18nString}}</div>
+        <div class="card marginLeft13" ng-if="cb.license && cb.license.planName" ng-class="{'readyOnly': viewMode === true}">
+            <div class="d-flex justify-content-between">
+                <div class="leftContent">
+                    <div class="planName noBorder" ng-if="cb.license.planId === 'free'">
+                        {{'community_support' | i18nString}}
+                    </div>
+                    <div class="planName noBorder" ng-if="cb.license.planId === 'medium'">
+                       {{'standard_support' | i18nString}}
+                    </div>
+                    <div class="planName noBorder" ng-if="cb.license.planId === 'large'">
+                       {{'enterprise_support' | i18nString}}
+                    </div>
+                    <div class="planDesc" ng-if="cb.license.planId === 'free'">
+                        {{'community_support_desc' | i18nString}}
+                    </div>
+                    <div class="planDesc" ng-if="cb.license.planId === 'medium'">
+                        {{'standard_support_desc' | i18nString}}
+                    </div>
+                    <div class="planDesc" ng-if="cb.license.planId === 'large'">
+                        {{'enterprise_support_desc' | i18nString}}
+                    </div>
+                </div>
+                <div class="rightContent">
+                    <img ng-src="{{assetsPath}}billing/supportplan-empty.svg" class="placeholder w-100">
+                </div>
+            </div>
+            <div class="lineRow noBorder">
+                <div class="leftColumn support-plan-btn-block w-100">
+                    <button class="kr-sg-button-primary mr-15" onclick="window.open('https://support.kore.ai/')">{{'contact_support' | i18nString}}<i class="btx-icon-link btx-external-link"></i></button>
+                    <button class="kr-sg-button-secondary" onclick="window.open('https://community.kore.ai/')">{{'visit_community' | i18nString }}<i class="btx-icon-link btx-external-link"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="card emtptySupportPlan" ng-if="(cb.license && !cb.license.planName) || (!cb.license) && !selectedStream.isDeflect">
+            <div class="img-block">
+                <i class="btx-billing-people"></i>
+            </div>
+            <div class="comm-title">{{'seeking_help_community_desc' | i18nString}} </div>
+            <div class="comm-desc">{{'seeking_help_community_desc2' | i18nString}}</div>
+        </div>
+    </div>
+</div>
+<!-- STANDARD ACCOUNT -->
+<!-- ENTERPRISE ACCOUNT -->
+<div class="plan-usage row" ng-if="selectedAccount.accountType !== 1">
+    <div class="usagePlan col-xs-6 noPadding">
+        <div class="card">
+            <div class="lineRow noPadding">
+                <div class="leftColumn w-100">
+                    <div class="name">
+                        {{'plan_name' | i18nString}}
+                    </div>
+                    <div class="value">
+                        {{'enterprise_account_label' | i18nString}}
+                    </div>
+                </div>
+            </div>
+            <div class="lineRow noBorder">
+                <div class="leftColumn w-100">
+                    <div class="name">
+                        {{'usage_trend' | i18nString}}
+                    </div>
+                    <div class="value">
+                        {{filterDate.value === 'date_month'?('avg_monthly_sessions' | i18nString): ('avg_daily_sessions' | i18nString)}} -
+                        {{(averageSessions | localString) || 0}}
+                    </div>
+                </div>
+            </div>
+            <div class="lineRow noBorder">
+                <div class="leftColumn width50 d-flex">
+                    <div class="kr-sg-dropdowns width110">
+                        <div class="label-text name">{{'filter_by' | i18nString}}</div>
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input width100" data-toggle="dropdown">{{filterDate.name || ("select" | i18nString)}}</button>
+                            <ul class="dropdown-menu content-menu">
+                                <li ng-repeat="item in filterList track by $index"><a
+                                        ng-click="selectedDate(item)">{{item.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kr-sg-dropdowns width110" ng-if="subFilterList.length">
+                        <div class="label-text">&nbsp;</div>
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{subDate.name ||
+                                ("select" | i18nString)}}</button>
+                            <ul class="dropdown-menu content-menu">
+                                <li ng-repeat="item in subFilterList track by $index"><a
+                                        ng-click="selectSubDate(item)">{{item.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kr-sg-dropdowns width110 pos-rel" id="planUsagePicker" ng-if="filterDate.value === 'date_custom'">
+                        <div class="label-text">&nbsp;</div>
+                        <input class="planUsagePicker" type="text" name="daterange" id="planUsageDaterange"
+                            value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" readonly/>
+                    </div>
+                </div>
+                <div class="rightColumn width50">
+                    <button class="kr-sg-buttonicon-secondary mt-20" ng-click="exportBillingSession()"><i
+                            class="btx-export"></i>{{'export' | i18nString}}</button>
+                </div>
+            </div>
+            <div class="barGraph height350" style="height: 350px;">
+                <div class="divContainer">
+                    <div class="alert alert-warning alert-xs text-center" role="alert" ng-if="chartLoader">
+                        <i class="fa-spin fa fa-circle-o-notch"></i>
+                        {{'loading'| i18nString}}
+                    </div>
+                    <div id="barGraph"></div>
+                    <div class="noTasksDiv hide">
+                        <div class="emptyStateContainer">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{tasksPerformance}}" class="chatsConversation marginTop50 w-100">
+                                    <span class="mainTitle">{{'no_billing_session_found' | i18nString}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ENTERPRISE ACCOUNT -->
+<!-- Plan Usage -->
+
+<!-- Plan Subscription -->
+<bot-modal-slider class="plan-subscription" ng-show="planSelection" id="managePlanSelectionSlider">
+    <!-- Select Subscription Plan -->
+    <div class="modalSliderContainer width1100">
+        <div class="header-sec col-xs-12 modalHeader">
+            <h4 class="modal-title ">
+                <i class="btx-close" ng-click="closeSlider()"></i>
+                <div class="miHeadBar">
+                    <div class="main-title" ng-if="!paymentDetails">{{'select_suscription_plan' | i18nString}}</div>
+                    <div class="main-title" ng-if="paymentDetails"><i class="btx-arrow-back"
+                            ng-click="navToSupportPlans()"></i>
+                        {{botName || '---'}}
+                    </div>
+                </div>
+            </h4>
+        </div>
+        <div class="m-body-sec modalBody noPadding" perfect-scroll dynamic-height dynaoffset="-80"
+        height-property="height">
+        <div class="botPlansBody" ng-if="!paymentDetails">
+            <div class="alert alert-warning alert-xs text-center" role="alert" ng-if="isLoading">
+                <i class="fa-spin fa fa-circle-o-notch"></i>
+                {{'loading'| i18nString}}
+            </div>
+            <!-- new pricing plan ui start from here -->
+            <div class="p-pricing-tab-list">
+                <div class="p-pricing-list-tile-updated">
+                        <div class="p-pricing-list-tile-plan" ng-repeat="plan in cb.plans track by $index"
+                        ng-class="{'p-pricing-border-right': plan._id === 'free'}">
+                            <ng-container ng-if="plan._id === 'free' || plan._id === 'medium'">
+                                <div class="p-pricing-list-tile-plan-header" ng-if="plan._id === 'free'">
+                                    <div class="p-pricing-list-plan-img"><img src="{{assetsPath}}pricingTable/k-free-for-ever.svg" /></div>
+                                    <div class="p-pricing-list-plan-header-details">
+                                        <div class="p-pricing-list-plan-header-type">{{plan.name}}</div>
+                                        <div class="p-pricing-list-plan-header-cost">${{plan.costPerRequest | localString}}</div>
+                                        <div class="p-pricing-list-plan-header-request">{{'per_user_request' | i18nString }}
+                                            <span class="info">
+                                                <span class="tooltip-custom">
+                                                    <i class="btx-info"></i>
+                                                    <span class="tooltiptext" >
+                                                        <div class="descText">{{'free_plan_tooltip1'| i18nString}}</div>
+                                                        <div class="desc" > 
+                                                            {{'free_plan_tooltip2'| i18nString }}
+                                                        </div>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-pricing-plan-offers" ng-if="plan._id === 'free'">
+                                    <div class="p-pricing-plan-offer-type p-0">{{plan.billingRequests | localString: 'sessions'}} <span class="p-pricing-plan-offer-type-span">{{'requests_month' | i18nString}} </span></div>
+                                    <div class="p-pricing-plan-offer-type p-0"><span class="p-pricing-plan-offer-type-span">{{'rate_limit' | i18nString}}:</span> {{plan.messagesPerMinute | localString: 'sessions'}}  {{'requests_minute' | i18nString}}
+                                        <span class="tooltip-custom">
+                                            <i class="btx-info"></i>
+                                            <span class="tooltiptext" >
+                                                <div class="descText">{{'free_plan_tooltip3' | i18nString}}</div>
+                                                <div class="desc" > 
+                                                    {{'free_plan_tooltip4'| i18nString:({reqs:plan.messagesPerMinute})}}
+                                                </div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="p-pricing-plan-offer-type pb-0">{{'premium_features' | i18nString}}</div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'free_premium_desc1' | i18nString}} </span></div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'free_premium_desc2' | i18nString }}</span></div>
+                                    <div class="p-pricing-plan-offer-type pb-0">{{'basic_support' | i18nString}}</div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'kore_community_label' |i18nString }}, {{'kore_academy_label' | i18nString}}</span></div>
+                                </div>
+                                <div class="p-pricing-list-tile-plan-header" ng-if="plan._id === 'medium'">
+                                    <div class="p-pricing-list-plan-img"><img src="{{assetsPath}}pricingTable/k-standard.svg" /></div>
+                                    <div class="p-pricing-list-plan-header-details">
+                                        <div class="p-pricing-list-plan-header-type">{{plan.name}}</div>
+                                        <div class="p-pricing-list-plan-header-cost">${{plan.costPerRequest | localString}}</div>
+                                        <div class="p-pricing-list-plan-header-request">{{'per_user_request' | i18nString }}
+                                            <span class="info">
+                                                <span class="tooltip-custom">
+                                                    <i class="btx-info"></i>
+                                                    <span class="tooltiptext alignLeft align-left-tooltip" >
+                                                        <div class="descText">{{'free_plan_tooltip1' | i18nString}}</div>
+                                                        <div class="desc" > 
+                                                            {{'free_plan_tooltip2'| i18nString}}
+                                                        </div>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-pricing-plan-offers" ng-if="plan._id === 'medium'">
+                                    <div class="p-pricing-plan-offer-type p-0">{{'pay_as_you_go' |i18nString }}</div>
+                                    <div class="p-pricing-plan-offer-type p-0"><span class="p-pricing-plan-offer-type-span">{{'rate_limit' | i18nString}}:</span> {{plan.messagesPerMinute | localString: 'sessions'}}  {{'requests_minute' | i18nString}}
+                                        <span class="tooltip-custom">
+                                            <i class="btx-info"></i>
+                                            <span class="tooltiptext" >
+                                                <div class="descText">{{'free_plan_tooltip3' | i18nString}}</div>
+                                                <div class="desc" > 
+                                                    {{'free_plan_tooltip4'| i18nString:({reqs:plan.messagesPerMinute})}}
+                                                </div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="p-pricing-plan-offer-type pb-0">{{'premium_features' | i18nString}}</div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'free_premium_desc1' | i18nString}} </span></div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'free_premium_desc2' | i18nString }}</span></div>
+                                    <div class="p-pricing-plan-offer-type pb-0">{{'basic_support' | i18nString}}</div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">Option to upgrade to <b>Standard Support</b> (Email  tickets on weekdays). Starts at $1,000/month</span></div>
+                                </div>
+                                <div class="p-pricing-no-credit" ng-if="plan._id === 'free'">{{'no_credit_reqd' | i18nString}}</div>
+                                <div class="p-pricing-price-btn-block" ng-class="{'p-pricing-btn-free': plan._id === 'free'}">
+                                    <button class="p-pricing-price-btn" ng-click="choosePlan(plan._id)" ng-disabled="(currPlanId === plan._id)">
+                                        {{(currPlanId === plan._id) ? ('active_plan'| i18nString): (cb.confirmPublish ? ((plan._id === 'free') ? 'Get Started for FREE':('get_started' | i18nString )): ('choosePlan' | i18nString ))}}
+                                    </button>
+                                    <div class="plan-not-applicable" ng-if="plan.planvalidation && plan.planvalidation.length">
+                                        <div class="info">
+                                            <span class="tooltip-custom">
+                                                <div class="help_hint_data2" >
+                                                    <button class="kr-sg-button-secondary btn_lg w-100" ng-disabled="true">{{'plan_not_applicable' | i18nString}}</button>
+                                                </div>
+                                                <span class="tooltiptext alignLeft" ng-class="{'align-left-tooltip': plan._id === 'large'}">
+                                                    <div class="descText">{{'plan_not_applicable_desc' | i18nString}}</div>
+                                                    <div class="desc" ng-repeat="vald in plan.planvalidation">
+                                                        <div class="path"> <ng-container ng-if="vald.exceeded !== false && vald.exceeded !== true">{{vald.exceeded}}</ng-container> {{vald.componentName || vald.key}} exceeded </div>
+                                                        <div class="count">Allowed: <ng-container> {{ (vald.allowed !== false && vald.allowed !== true) ? vald.allowed: ''}} {{(vald.allowed === false || vald.allowed === true) ? 'No': ''}} </ng-container> {{vald.componentName || vald.key}}</div>
+                                                    </div>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container ng-if="plan._id === 'large'">
+                                <div class="p-pricing-list-tile-plan-header">
+                                    <div class="p-pricing-list-plan-img"><img src="{{assetsPath}}pricingTable/k-enterprise.svg" /></div>
+                                    <div class="p-pricing-list-plan-header-details">
+                                        <div class="p-pricing-list-plan-header-type">{{plan.name}}</div>
+                                        <div class="p-pricing-list-plan-header-cost custom-plan">{{'custom_plans' | i18nString}}</div>
+                                        <div class="p-pricing-list-plan-header-request line-height-16">{{'large_feature_desc' | i18nString}}</div>
+                                    </div>
+                                </div>
+                                <div class="p-pricing-plan-offers">
+                                    <div class="p-pricing-plan-offer-type p-0">{{'session_based_pricing'| i18nString }}
+                                        <span class="tooltip-custom">
+                                            <i class="btx-info"></i>
+                                            <span class="tooltiptext" >
+                                                <div class="descText">{{'session' | i18nString}}</div>
+                                                <div class="desc" > 
+                                                    {{'large_feature_desc5' | i18nString}}
+                                                </div>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'large_feature_desc6'| i18nString }}</span></div>  
+                                    <div class="p-pricing-plan-offer-type pb-0">{{'execlusiv_features'|i18nString }}</div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'large_feature_desc2'|i18nString }} </span></div>
+                                    <div class="p-pricing-plan-offer-type pb-0">{{'enterprise_support'|i18nString }}</div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'large_feature_desc3'|i18nString }}</span></div>
+                                    <div class="p-pricing-plan-desc"><span class="p-pricing-plan-offer-type-span">{{'large_feature_desc4'|i18nString }}</span></div>                             
+                                </div>
+                                <div class="p-pricing-price-btn-block">
+                                    <button class="p-pricing-price-btn" ng-click="contactUs()">{{'contact_us'|i18nString }}</button>
+                                </div>
+                            </ng-container>
+                        </div>
+                </div>
+            </div>
+            <!-- new pricing plan ui ends here -->
+
+
+                        
+            <!-- ACCORDION START HERE --> 
+            <div class="p-pricing-feature-plans-block">
+                <div class="p-pricing-feature-plans-hding" id="comparePlans" ng-click="getDetails('plan')">
+                    <span>{{'see_features_and_compare' | i18nString}}</span><span ng-class="{'angleDownIconFlip': compareDetails}" class="angle-down-icon">
+                        <img src="{{assetsPath}}pricingTable/k-angle-down.svg" />
+                    </span>
+                </div>
+
+                <div class="p-pricing-feature-plans-tabs-section" ng-if="compareDetails">
+                      <!-- Nav pills -->
+                        <ul class="nav nav-pills headerSticky hide" role="tablist" >
+                            <li class="nav-item"></li>
+                            <li class="nav-item" ng-repeat="plan in cb.plans track by $index">
+                            <a class="nav-link" data-toggle="pill" href="#usagePlanCord" ng-class="{'active': currPlanId === plan._id, 'hide': plan._id === 'small'}">
+                                <div>
+                                    <div>
+                                        {{plan.name}}
+                                    </div>
+                                     <!-- <div class="p-pricing-recommended"  ng-if="plan._id === 'medium'">({{'recommended' | i18nString}})</div> -->
+                                </div>
+                            </a>
+                            </li>
+                        </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div id="usagePlanCord" class="tab-pane active">
+                            <div class="p-pricing-accordian-block">
+                                <div class="p-pricing-accordian-tile">
+                                    <div class="p-pricing-accordian" ng-repeat="plan in cb.planDetails track by $index">
+                                        <div class="p-pricing-accordian-header">
+                                            <a href="#pricingAccordian{{$index}}" class="p-pricing-accordian-a collapsed"  data-toggle="collapse">
+                                                <div class="d-flex justify-content-between align-items-center p-pricing-accordian-header-block">
+                                                    <div class="p-pricing-accordian-hding">{{plan.name}}</div>
+                                                    <div class="btn p-pricing-accordian-btn"><img class="k-angle-up-down-img" src="{{assetsPath}}pricingTable/k-angle-down-acc.svg" /></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div id="pricingAccordian{{$index}}" class="collapse">
+                                            <div class="p-pricing-accordian-details" ng-repeat="task in plan.tasks track by $index">
+                                                <div class="p-pricing-accordian-25">            
+                                                    <div class="p-inner-ac-hding" ng-click="redirectToUrl(task.url)"><span ng-class="{'p-hover-hding': task.url}">{{task.name}}</span> <span class="external-icon" ng-if="task.url"><i class="btx-external-link"></i></span></div>
+                                                    <div class="p-inner-ac-sub">{{task.desc}}</div>
+                                                </div>
+                                                <div class="p-pricing-accordian-25" ng-repeat="path in task.tasks track by $index">
+                                                    <div class="p-inner-ac-para text-center" ng-if="(path.validationType === 'boolean' && !path.default)"><img src="{{assetsPath}}pricingTable/k-close-o.svg" /></div>
+                                                    <div class="p-inner-ac-para text-center" ng-if="(path.validationType === 'boolean' && path.default)"><img src="{{assetsPath}}pricingTable/k-check-o.svg" /></div>
+                                                    <div class="p-inner-ac-para text-center" ng-if="(path.validationType !== 'boolean')">
+                                                        <ng-container ng-if="(path.validationType === 'string') || (path.validationType === 'range') || (path.validationType === 'frequency')">
+                                                            <span class="propercase" ng-if="!(path.displayValue)">
+                                                                {{(path.default | localString: 'sessions')}} 
+                                                            </span>
+                                                            <span class="propercase" ng-if="(path.displayValue)">
+                                                                {{path.displayValue}}
+                                                            </span>
+                                                        </ng-container>
+                                                        <ng-container ng-if="(path.validationType === 'check')">
+                                                            <img src="{{assetsPath}}pricingTable/k-close-o.svg" ng-if="!path.value" /> <img src="{{assetsPath}}pricingTable/k-check-o.svg" ng-if="path.value" />
+                                                        </ng-container>
+                                                        <ng-container ng-if="(path.validationType === 'number' || path.validationType === 'minute')">
+                                                            {{(path.default | localString: 'sessions')}}
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-pricing-plan-btn-block footerSticky hide">
+                        <div class="p-pricing-plan-btn">
+                            <ng-container ng-repeat="plan in cb.plans track by $index">
+                                <button class="btn p-pricing-btn" ng-disabled="(currPlanId === plan._id) || (plan.planvalidation && plan.planvalidation.length)" ng-if="plan._id === 'free'" ng-click="choosePlan('free')">
+                                    {{(currPlanId === plan._id) ? ('active_plan'| i18nString): (cb.confirmPublish ? ((plan.planvalidation && plan.planvalidation.length)?('plan_not_applicable' | i18nString): ('Get Started for FREE')): ((plan.planvalidation && plan.planvalidation.length)?('plan_not_applicable' | i18nString):('choosePlan' | i18nString )))}}</button>
+                                <button class="btn p-pricing-btn" ng-disabled="(currPlanId === plan._id) || (plan.planvalidation && plan.planvalidation.length)" ng-if="plan._id === 'medium'" ng-click="choosePlan('medium')">
+                                    {{(currPlanId === plan._id) ? ('active_plan'| i18nString): (cb.confirmPublish ? (((plan.planvalidation && plan.planvalidation.length)?('plan_not_applicable' | i18nString):('get_started' | i18nString ))): ((plan.planvalidation && plan.planvalidation.length)?('plan_not_applicable' | i18nString):('choosePlan' | i18nString )))}}
+                                </button>
+                                <button class="btn p-pricing-btn" ng-disabled="(currPlanId === plan._id) || (plan.planvalidation && plan.planvalidation.length)" ng-if="plan._id === 'large'" ng-click="contactUs()">
+                                    {{'contact_us' | i18nString}}
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ACCORDION ENDS HERE -->
+            <!-- Administrator choose the plan start from here -->
+            <div class="p-pricing-billing-block" ng-if="cb.confirmPublish">
+                <div class="billingBanner">
+                    <img class="placeholder" src="{{assetsPath}}pricingTable/k-choose-plan-faq.svg">
+                    <div class="description">
+                        <p class="question">{{'submit_to_admin_desc1' | i18nString}}</p>
+                        <p class="answer">{{'submit_to_admin_desc2' | i18nString}}</p>
+                    </div>
+                    <button class="kr-sg-button-secondary btn_lg" ng-if="viewMode === false" ng-click="submitToAdmin()">{{'submit_to_admin' | i18nString}}</button>
+                    <button class="kr-sg-button-secondary btn_lg" ng-if="viewMode === true" ng-click="submitToAdmin()">{{'Send for Review' }}</button>
+                </div>
+            </div>
+            <!-- Administrator choose the plan start from here -->
+            <!-- pricing journy faq block start from here -->
+            <div class="p-pricing-faq-block">
+                <div class="p-pricing-faq-header">
+                    {{'frequently_asked_questions'|i18nString }}
+                </div>
+                <div class="p-pricing-faq-tile" ng-repeat="faq in faqsList.usagePlans track by $index">
+                    <div class="p-pricing-accordian-faq">
+                        <a href="#pricingFaq{{$index}}" data-toggle="collapse" class="p-pricing-accordian-faq-header">
+                            <div class="d-flex justify-content-between align-items-center p-pricing-accordian-faq-py" ng-click="redirectToUrl(faq.url)">
+                                <div>{{faq.name}}</div>
+                                <!-- <div class="btn p-pricing-faq-btn"><img src="{{assetsPath}}pricingTable/k-angle-up.svg" /></div> -->
+                            </div>
+                        </a>
+                    </div>
+                    <!-- <div id="pricingFaq{{$index}}" class="p-pricing-faq-ans collapse">
+                        {{faq.name}}
+                    </div>   -->
+                </div>
+            </div>
+            <!-- pricing journy faq block start from here -->
+        </div>
+        <!-- Payment details page -->
+        <div class="payment-details" ng-if="paymentDetails">
+            <div class="header">
+                <div class="headerTitle">
+                    {{'plan_details' | i18nString}}
+                </div>
+                <div class="action">
+                    <button class="kr-sg-button-secondary btn_lg" ng-click="navToSupportPlans()"><i class="btx-arrow-back"></i>{{'change_plan' | i18nString}}</button>
+                </div>
+            </div>
+            <div class="content-box">
+                <div class="detail-row plan-type-details">
+                    <div class="label">
+                        {{'plan_type' | i18nString}}
+                    </div>
+                    <div class="value">
+                        {{changePlanConfirm.name}}
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="kr-sg-input-text custom-input">
+                        <div class="label-text">{{'amt_credit' | i18nString}}</div>
+                        <input type="text" ng-model="quantity" ng-change="changeQuantity(quantity)" only-digits placeholder="Amount in USD" class="input-text" required>
+                        <span class="dollar-icon">$</span>
+                    </div>
+                </div>
+                <div class="detail-row line">                        
+                    <div class="no-border-protip">
+                        <div class="bulb-icon"><i class="btx-info"></i> </div>
+                        <div class="tost-message">{{'min_amt_credit' | i18nString:({amount:changePlanConfirm.planAmount})}}</div>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="reload-content-box">
+                        <div class="reload-info autoReloadActivated" ng-if="cb.license && cb.license.freemiumSetting"
+                            ng-click="autoReload()">
+                            <span class="icon">
+                                <img ng-src="{{autoRefresh}}">
+                                <span class="text">{{'auto_reload_activated' | i18nString}}</span>
+                            </span>
+                            <span class="tooltip_custom_top">
+                                <div class="close-icon"><i class="btx-info"></i></div>
+                                <span class="tooltiptext">
+                                    <div class="desc">
+                                        <div class="path">{{'min_credits_maintain' | i18nString}}</div>
+                                        <div class="count">${{cb.license.freemiumSetting.autoRechargeThreshold | localString}}</div>
+                                    </div>
+                                    <div class="desc">
+                                        <div class="path">{{'amt_be_added' | i18nString}}</div>
+                                        <div class="count">${{cb.license.freemiumSetting.autoRechargeAmount | localString}}</div>
+                                    </div>
+                                </span>
+                            </span>
+                        </div>
+
+                        <div class="nwe-reload-info setupAutoReload" ng-click="autoReload()" ng-if="cb.license && !cb.license.freemiumSetting">
+                            <div class="left-sec">
+                                <img class="info-icon" ng-src="{{assetsPath}}icons/refresh.svg" alt="icon">                                    
+                            </div>
+                            <div class="right-sec">
+                                <div class="text">{{'automate_your_bal_topups' | i18nString}}</div>
+                                <div class="setupAutoReloadBtn">{{'bal_auto_topped_when_min_amt' | i18nString}}</div>
+                            </div>                         
+                        </div>
+                    </div>
+                </div>
+                <div class="help_hint_data">
+                    <div class="bulb-icon">
+                        <i class="btx-warning"></i>
+                    </div>
+                    <div class="hint-content">{{'redirect_to_paypro_desc' | i18nString}}</div>
+                </div>
+                
+                <div class="action-footer">
+                    <button class="kr-sg-button-primary btn_lg" ng-click="checkQuantityPrice()">{{'authrize_payment' | i18nString}}<span
+                            class="wait waitLoad hide"></span></button>
+                </div>
+            </div>
+        </div>
+        <!-- Payment details page -->
+        <!-- Payment success page -->
+        <div class="payment-success hide" ng-if="paymentDetails">
+            <div class="d-flex">
+                <div class="check-icon">
+                    <i class="btx-billing-check"></i>
+                </div>
+                <div class="details">
+                    <div class="title">Your Payment of ${{planConfirmDetails.amount_paid | localString}} is successful</div>
+                    <div class="desc">Transaction #{{planConfirmDetails.orderId}}</div>
+                </div>
+            </div>
+            <div class="action">
+                <button class="kr-sg-button-primary btn_lg" ng-click="gotoDetails()">{{ 'go_to_plan_details' | i18nString }}</button>
+            </div>
+        </div>
+        <!-- Payment success page -->
+    </div>
+    </div>
+    <!-- Select Subscription Plan -->
+</bot-modal-slider>
+<!-- Plan Subscription -->
+
+<!-- Support Plans -->
+<bot-modal-slider class="plan-subscription" ng-if="supportPlanSelection" id="manageSupportPlanSlider">
+    <div class="modalSliderContainer width1100">
+        <div class="header-sec col-xs-12 modalHeader">
+            <h4 class="modal-title " ng-if="!paymentDetails">
+                <i class=" btx-close" ng-click="closeSupportSlider()"></i>
+                {{'select' | i18nString}} {{'support_plan' | i18nString}}
+            </h4>
+            <h4 class="modal-title " ng-if="paymentDetails">
+                <i class="btx-close" ng-click="closeSupportSlider()"></i>
+                <div class="miHeadBar">
+                    <div class="main-title"><i class="btx-arrow-back" ng-click="navToSupportPlans()"></i>
+                        {{botName || '---'}}
+                    </div>
+                </div>
+            </h4>
+        </div>
+        <div class="m-body-sec modalBody noPadding" perfect-scroll dynamic-height dynaoffset="-80"
+            height-property="height">
+            <div class="alert alert-warning alert-xs text-center" role="alert" ng-if="isLoading">
+                <i class="fa-spin fa fa-circle-o-notch"></i>
+                {{'loading'| i18nString}}
+            </div>
+            <!-- Support List -->            
+            <div class="botPlansBody" ng-if="!paymentDetails">
+                <div class="alert alert-warning alert-xs text-center" role="alert" ng-if="isLoading">
+                    <i class="fa-spin fa fa-circle-o-notch"></i>
+                    {{'loading'| i18nString}}
+                </div>
+                <!-- PLAN DETAILS START-->
+                <div class="toggleDiv" >
+                    <div class="toggleInfoDiv">
+                     <label class="kr-sg-toggle with-label large">
+                         <input type="checkbox" id="supportPlanSwitch" name="supportPlanSwitch" ng-model="supportPlanSwitch" ng-change="toggleMonthYear($event)">
+                         <div class="slider">
+                             <span class="no">{{'bill_monthly' | i18nString}}</span>
+                             <span class="yes" title="Save upto 15% yearly">{{'Bill Yearly'}}</span>
+                         </div>
+                     </label>
+                    </div>
+                    <div class="offer">{{'Save 15%'}}</div>
+                     <!-- <div class="info" ng-if="false">
+                         <span class="tooltip-custom">
+                             <i class="btx-info"></i>
+                             <span class="tooltiptext">
+                                 <p class="switchStatus">{{'switching_plan_disabled' | i18nString}}</p>
+                                 <div class="desc" >
+                                     <p class="path">{{'switching_plan_disabled_desc' | i18nString}}</p>
+                                     <a class="contactUs" href="https://kore.ai/contact-us/" target="_blank" rel="noopener noreferrer">{{'contact_us' | i18nString}}</a>
+                                 </div>
+                             </span>
+                         </span>
+                     </div> -->
+                 </div>
+                <!-- new pricing plan ui start from here -->
+                <div class="p-pricing-tab-list" ng-if="cb.supportPlans.length">
+                    <div class="p-pricing-list-tile-updated support-plans">
+                            <div class="p-pricing-list-tile-plan" ng-repeat="plan in cb.supportPlans track by $index"
+                            ng-class="{'p-pricing-border-right': plan._id === 'free'}">
+                                <ng-container ng-if="(plan._id === 'free' || (plan._id === 'medium-monthly' || plan._id === 'medium-yearly'))">
+                                    <div class="p-pricing-list-tile-plan-header" ng-if="(plan._id === 'free')">
+                                        <div class="p-pricing-list-plan-img"><img src="{{assetsPath}}pricingTable/k-free-for-ever.svg" /></div>
+                                        <div class="p-pricing-list-plan-header-details">
+                                            <div class="p-pricing-list-plan-header-type">{{plan.name}}</div>
+                                            <div class="p-pricing-list-plan-header-cost">${{(plan.planAmount | localString: 'sessions') || 0}}</div>
+                                            <div class="p-pricing-list-plan-header-request">{{supportPlanSwitch ? ('per year'): ('per_month' | i18nString) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-pricing-plan-offers" ng-if="(plan._id === 'free')">
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'documentation' | i18nString}}</span></div>
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'kore_community_label' | i18nString }}</span></div>
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'kore_academy_label' | i18nString }}</span></div>
+                                    </div>
+                                    <div class="p-pricing-list-tile-plan-header" ng-if="(plan._id === 'medium-monthly' || plan._id === 'medium-yearly')">
+                                        <div class="p-pricing-list-plan-img"><img src="{{assetsPath}}pricingTable/k-standard.svg" /></div>
+                                        <div class="p-pricing-list-plan-header-details">
+                                            <div class="p-pricing-list-plan-header-type">{{plan.name}}</div>
+                                            <div class="p-pricing-list-plan-header-cost">${{(plan.planAmount | localString: 'sessions') || 0}}</div>
+                                            <div class="p-pricing-list-plan-header-request">{{supportPlanSwitch ? ('per year'): ('per_month' | i18nString) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-pricing-plan-offers" ng-if="(plan._id === 'medium-monthly' || plan._id === 'medium-yearly')">
+                                        <div class="p-pricing-plan-offer-type">{{'everything_free_plus' | i18nString }}</div>
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'8X5_availablity_desc' | i18nString }}</span></div>
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'email_support' | i18nString }}</span></div>
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'incident_tickets'| i18nString }}</span></div>
+                                    </div>
+                                    <div class="p-pricing-price-btn-block">
+                                        <button class="p-pricing-price-btn" ng-click="choosePlan(plan._id, 'support')" ng-disabled="(supportplan.planId === plan._id)">{{(supportplan.planId === plan._id) ? ('active_plan'| i18nString): (cb.confirmPublish ? (('get_started' | i18nString )): ('choosePlan' | i18nString ))}}</button>
+                                    </div>
+                                </ng-container>
+                                <ng-container ng-if="(plan._id === 'large-monthly' || plan._id === 'large-yearly')">
+                                    <div class="p-pricing-list-tile-plan-header">
+                                        <div class="p-pricing-list-plan-img"><img src="{{assetsPath}}pricingTable/k-enterprise.svg" /></div>
+                                        <div class="p-pricing-list-plan-header-details">
+                                            <div class="p-pricing-list-plan-header-type">{{plan.name}}</div>
+                                            <div class="p-pricing-list-plan-header-cost custom-plan">{{'custom'|i18nString }}</div>
+                                            <div class="p-pricing-list-plan-header-request">{{'session_based_pricing'|i18nString }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-pricing-plan-offers">
+                                        <div class="p-pricing-plan-offer-type">{{"everything_standard_plus" | i18nString }} </span></div>
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'24X7_availabilty_desc'|i18nString }}</span></div>
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'guided_success_desc'|i18nString }}</span></div>
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'phone_support'|i18nString }}</span></div>                                
+                                        <div class="p-pricing-plan-offer-type"><span class="p-pricing-plan-offer-type-span">{{'video_conferencing'|i18nString }}</span></div>                                
+                                    </div>
+                                    <div class="p-pricing-price-btn-block">
+                                        <button class="p-pricing-price-btn" ng-click="contactUs()">{{'contact_us' | i18nString}}</button>
+                                    </div>
+                                </ng-container>
+                            </div>
+                    </div>
+                </div>
+                <!-- new pricing plan ui ends here -->
+                <!-- PLAN DETAILS END -->
+                            
+                <!-- ACCORDION START HERE --> 
+                <div class="p-pricing-feature-plans-block">
+                    <div class="p-pricing-feature-plans-hding" id="comparePlans" ng-click="getDetails('support')">
+                        <span>{{'see_features_and_compare' | i18nString}}</span><span ng-class="{'angleDownIconFlip': compareDetails}" class="angle-down-icon">
+                            <img src="{{assetsPath}}pricingTable/k-angle-down.svg" />
+                        </span>
+                    </div>
+    
+                    <div class="p-pricing-feature-plans-tabs-section" ng-if="compareDetails">
+                          <!-- Nav pills -->
+                            <ul class="nav nav-pills headerSticky hide" role="tablist" >
+                                <li class="nav-item" ng-repeat="plan in cb.supportPlans track by $index">
+                                <a class="nav-link" data-toggle="pill" href="#supportCord" ng-class="{'active': (supportplan.planId === plan._id), 'hide': plan._id === 'small'}">
+                                    <div>
+                                        <div>
+                                            {{plan.name}}
+                                        </div>
+                                    </div>
+                                </a>
+                                </li>
+                            </ul>
+    
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div id="supportCord" class="tab-pane active">
+                                <div class="p-pricing-accordian-block">
+                                    <div class="p-pricing-accordian-tile">
+                                        <div class="p-pricing-accordian" ng-repeat="plan in cb.planDetails track by $index">
+                                            <div class="p-pricing-accordian-header">
+                                                <a href="#pricingAccordianSupport{{$index}}" class="p-pricing-accordian-a" data-toggle="collapse" >
+                                                    <div class="d-flex justify-content-between align-items-center p-pricing-accordian-header-block">
+                                                        <div class="p-pricing-accordian-hding">{{plan.name}}</div>
+                                                        <div class="btn p-pricing-accordian-btn"><img src="{{assetsPath}}pricingTable/k-angle-up.svg" /></div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div id="pricingAccordianSupport{{$index}}" class="collapse">
+                                                <div class="p-pricing-accordian-details" ng-repeat="task in plan.tasks track by $index">
+                                                    <div class="p-pricing-accordian-25">            
+                                                        <div class="p-inner-ac-hding">{{task.name}}</div>
+                                                        <div class="p-inner-ac-sub">{{task.desc}}</div>
+                                                    </div>
+                                                    <div class="p-pricing-accordian-25" ng-repeat="path in task.tasks track by $index">
+                                                        <div class="p-inner-ac-para text-center" ng-if="(path.validationType === 'boolean' && !path.default)"><img src="{{assetsPath}}pricingTable/k-close-o.svg" /></div>
+                                                        <div class="p-inner-ac-para text-center" ng-if="(path.validationType === 'boolean' && path.default)"><img src="{{assetsPath}}pricingTable/k-check-o.svg" /></div>
+                                                        <div class="p-inner-ac-para text-center" ng-if="(path.validationType !== 'boolean')">
+                                                            <ng-container ng-if="(path.validationType === 'string') || (path.validationType === 'range') || (path.validationType === 'frequency')">
+                                                                <span class="propercase" ng-if="!(path.displayValue)">
+                                                                    {{(path.default | localString: 'sessions')}} 
+                                                                </span>
+                                                                <span class="propercase" ng-if="(path.displayValue)">
+                                                                    {{path.displayValue}}
+                                                                </span>
+                                                            </ng-container>
+                                                            <ng-container ng-if="(path.validationType === 'check')">
+                                                                <img src="{{assetsPath}}pricingTable/k-close-o.svg" ng-if="!path.value" /> <img src="{{assetsPath}}pricingTable/k-check-o.svg" ng-if="path.value" />
+                                                            </ng-container>
+                                                            <ng-container ng-if="(path.validationType === 'number' || path.validationType === 'minute')">
+                                                                {{(path.default | localString: 'sessions')}}
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>                              
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-pricing-plan-btn-block footerSticky hide">
+                            <div class="p-pricing-plan-btn">
+                                <ng-container ng-repeat="plan in cb.supportPlans track by $index">
+                                    <button class="btn p-pricing-btn" ng-disabled="(supportplan.planId === plan._id)" ng-if="plan._id === 'free'" ng-click="choosePlan(plan._id, 'support')">{{ (supportplan.planId === plan._id) ? ('active_plan'| i18nString): (cb.confirmPublish ? (('get_started' | i18nString )): ('choosePlan' | i18nString ))}}</button>
+                                    <button class="btn p-pricing-btn" ng-disabled="(supportplan.planId === plan._id)" ng-if="(plan._id === 'medium-monthly' || plan._id === 'medium-yearly')" ng-click="choosePlan(plan._id, 'support')">{{ (supportplan.planId === plan._id) ? ('active_plan'| i18nString): (cb.confirmPublish ? (('get_started' | i18nString )): ('choosePlan' | i18nString ))}}</button>
+                                    <button class="btn p-pricing-btn" ng-disabled="(supportplan.planId === plan._id)" ng-if="(plan._id === 'large-monthly' || plan._id === 'large-yearly')" ng-click="contactUs()">{{'contact_us' | i18nString}}</button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ACCORDION ENDS HERE -->
+
+                <!-- pricing journy faq block start from here -->
+                <!-- <div class="p-pricing-faq-block hide">
+                    <div class="p-pricing-faq-header">
+                        {{'frequently_asked_questions' | i18nString }}
+                    </div>
+                    <div class="p-pricing-faq-tile" ng-repeat="faq in faqsList.supportPlans track by $index">
+                        <div class="p-pricing-accordian-faq">
+                            <a href="#pricingFaq{{$index}}" data-toggle="collapse" class="p-pricing-accordian-faq-header">
+                                <div class="d-flex justify-content-between align-items-center p-pricing-accordian-faq-py" ng-click="redirectToUrl(faq.url)">
+                                    <div>{{faq.name}}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- pricing journy faq block start from here -->
+            </div>
+            <!-- Support List -->
+
+            <!-- Payment details page -->
+            <div class="payment-details" ng-if="paymentDetails">
+                <div class="header">
+                    <div class="headerTitle">
+                        {{'support_plan' | i18nString}} {{'details' | i18nString}}
+                    </div>
+                    <div class="action">
+                        <button class="kr-sg-button-secondary btn_lg" ng-click="navToSupportPlans()"><i
+                                class="btx-arrow-back"></i>
+                                {{'change_plan' | i18nString}}</button>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="detail-row" ng-if="supportplan.planName">
+                        <div class="label">
+                            {{'current_plan_label' | i18nString}}
+                        </div>
+                        <div class="value">
+                            {{supportplan.planName || '---'}} Support
+                        </div>
+                    </div>
+                    <div class="detail-row" ng-if="changePlanConfirm.newPlan">
+                        <div class="label" >
+                            {{'new_plan' | i18nString}}
+                        </div>
+                        <div class="value" style="color: #28A745;">
+                            {{changePlanConfirm.newPlan || '---'}} Support
+                        </div>
+                    </div>
+                    <div class="detail-row line">
+                        <div class="label">
+                            {{'subscription_type' | i18nString}}
+                        </div>
+                        <div class="value">
+                            {{supportPlanSwitch?'Annualy': 'Monthly'}}
+                        </div>
+                    </div>
+                    <div class="detail-row" ng-if="changePlanConfirm.planAmount">
+                        <div class="label">
+                            {{'plan_cost' | i18nString}}
+                        </div>
+                        <div class="value">
+                            ${{(changePlanConfirm.planAmount | localString) || 0}}
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="label">
+                            {{'discount' | i18nString}}
+                        </div>
+                        <div class="value">
+                            ${{(changePlanConfirm.discount | localString) || 0}}
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="label">
+                            {{'total_cost' | i18nString}}
+                        </div>
+                        <div class="value">
+                            ${{(changePlanConfirm.totalCost | localString) || 0}}
+                        </div>
+                    </div>
+                    <div class="proptips">
+                        <div class="kr-sg-multi-line-notification marginBottom" ng-if="changePlanConfirm.discount">
+                            <div class="bulb-icon"><i class="btx-info"></i> </div>
+                            <div class="tost-text">{{'suppport_discount_desc1' | i18nString:({plan:changePlanConfirm.newPlan, planAmount: (changePlanConfirm.discount || 0), days: (supportplan.remainingDays | date: 'd')})}}</div>
+                        </div>
+                        <div class="help_hint_data marginBottom" >
+                            <div class="bulb-icon">
+                                <i class="btx-warning"></i>
+                            </div>
+                            <div class="hint-content">{{'suppport_payment_desc' | i18nString}}</div>
+                        </div>
+                        <!-- <div class="kr-sg-multi-line-notification warning-notification marginBottom">
+                            <div class="bulb-icon"><i class="btx-info"></i> </div>
+                            <div class="tost-text">{{'suppport_payment_desc' | i18nString}} </div>
+                        </div> -->
+                    </div>
+                    <div class="action-footer">
+                        <button class="kr-sg-button-primary btn_lg" ng-click="proceedSupportPayment()">Make Payment<span
+                                class="wait waitLoad hide"></span></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Payment details page -->
+            <!-- Payment success page -->
+            <div class="payment-success hide" ng-if="paymentDetails">
+                <div class="d-flex">
+                    <div class="check-icon">
+                        <i class="btx-billing-check"></i>
+                    </div>
+                    <div class="details">
+                        <div class="title">Your Payment of ${{planConfirmDetails.amount_paid}} is successful</div>
+                        <div class="desc">Transaction #{{planConfirmDetails.orderId}}</div>
+                    </div>
+                </div>
+                <div class="action">
+                    <button class="kr-sg-button-primary btn_lg" ng-click="gotoDetails()">{{ 'go_to_plan_details' | i18nString }}</button>
+                </div>
+            </div>
+            <!-- Payment success page -->
+        </div>
+
+    </div>
+</bot-modal-slider>
+<!-- Support Plans -->
+
+
+
+<div class="modal" id="planPaymentConfirm" data-backdrop="static">
+    <div class="modal-dialog statusTrack">
+        <div class="modal-content iframeContent">
+            <div class="modal-header modalHeader">
+                <div class="col-xs-3">
+                    <div class="logo"><img style="width: 90px;" ng-src="{{assetsPath}}/landingImages/kore-logo.svg" />
+                    </div>
+                </div>
+                <div class="col-xs-9 tracker">
+                    <div class="progresss-bar">
+                        <div class="progress-indicator">
+                            <i class="btx-billing-check"></i>
+                            <span class="title">{{ 'orderDetails' | i18nString}}</span>
+                        </div>
+                        <div class="progress-indicator">
+                            <span class="in-active-state">2</span>
+                            <span class="title">{{ 'payment'| i18nString}}</span>
+                        </div>
+                        <div class="progress-indicator">
+                            <span class="in-active-state">3</span>
+                            <span class="title">{{ 'confirm'| i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+                <i class="top25 btx-close" ng-click="closePaymentModal()"></i>
+            </div>
+            <div class="modal-body noPadding" perfect-scroll>
+                <div class="alert alert-warning alert-xs text-center" role="alert" ng-if="isIframeLoading">
+                    <i class="fa-spin fa fa-circle-o-notch"></i>
+                    {{'loading'| i18nString}}
+                </div>
+                <iframe id="payProIframe" perfect-scroll height-property="height" dynamic-height dynaoffset="-160" class="iframeContainer"  frameBorder="0" ng-src="{{iframeUrl}}"></iframe>
+            </div>
+        </div>
+
+        <div class="modal-content confirmPay hide">
+            <div class="modal-header modalHeader">
+                <div class="col-xs-3">
+                    <div class="logo"><img style="width: 90px;" ng-src="{{assetsPath}}/landingImages/kore-logo.svg" />
+                    </div>
+                </div>
+                <div class="col-xs-9 tracker">
+                    <div class="progresss-bar">
+                        <div class="progress-indicator">
+                            <i class="btx-billing-check"></i>
+                            <span class="title">{{ 'orderDetails' | i18nString}}</span>
+                        </div>
+                        <div class="progress-indicator">
+                            <i class="btx-billing-check"></i>
+                            <span class="title">{{ 'payment'| i18nString}}</span>
+                        </div>
+                        <div class="progress-indicator">
+                            <span class="in-active-state">3</span>
+                            <span class="title">{{ 'confirm'| i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+                <i class="top25 btx-close" ng-click="closePaymentModal()"></i>
+            </div>
+            <div class="modal-body noPadding" perfect-scroll>
+                <div class="confirmNew" ng-if="planConfirmDetails">
+                    <div class="payment-success">
+                        <div class="d-flex">
+                            <div class="check-icon">
+                                <i class="btx-billing-check"></i>
+                            </div>
+                            <div class="details">
+                                <div class="title">Your Payment of ${{planConfirmDetails.amount_paid}} is successful</div>
+                                <div class="desc">Transaction #{{planConfirmDetails.orderId}}</div>
+                            </div>
+                        </div>
+                        <!-- <div class="action">
+                            <button class="kr-sg-button-primary btn_lg" ng-click="gotoDetails()">{{ 'Go to Plan Details' }}</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg closeCorrectPay" ng-click="paymentDone()">{{'done' | i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="validateChangePlanUpdate" data-backdrop="static">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title">Upgrade to {{changePlanConfirm.newPlan}} Plan
+                    <i class="btx-close" data-dismiss="modal"></i>
+                </h4>
+            </div>
+            <div class="modal-body modalBody confirmmsg">
+                <div class="bodyText">
+                    Your plan will be upgraded from <span class="code">{{changePlanConfirm.currentPlan}}</span> Plan to
+                    <span class="code">{{changePlanConfirm.newPlan}}</span> Plan. The plan will be upgraded with
+                    immediate effect. Post upgrade, all the requests
+                    will be charged <span class="code">${{ changePlanConfirm.costPerRequest}}</span> per request.
+                </div>
+            </div>
+            <div class="modal-body modalBody successmsg hide">
+                <div class="successCheck"><span><i class="bxpw-icon-check-circle"></i></span></div>
+                <div class="bodyText">{{ 'planUpgraded'}} <span class="change newUpgradePlan"></span></div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg proceedUpdate" ng-click="proceedUpdate()">{{ 'confirm'| i18nString}}<span
+                        class="wait waitLoad hide">
+                        <i class="fa-spin fa fa-circle-o-notch"></i></span></button>
+                <button class="kr-sg-button-secondary btn_lg cancelUpdate" data-dismiss="modal">{{ 'cancel'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_lg closeConfirm" data-dismiss="modal">{{ 'done'| i18nString}}</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="validateChangePlanDowngrade" data-backdrop="static">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title modalTitle">Switch to {{changePlanConfirm.newPlan}} Plan
+                    <i class="btx-close" data-dismiss="modal"></i>
+                </h4>
+            </div>
+            <div class="modal-body modalBody confirmmsg">
+                <div class="bodyText">
+                    Your plan will be downgraded from <span class="code">{{changePlanConfirm.currentPlan}}</span> Plan
+                    to <span class="code">{{changePlanConfirm.newPlan}}</span> Plan.
+                    The plan will be updated with immediate effect. Post plan migration,
+                    all the requests will be charged <span class="code">${{changePlanConfirm.costPerRequest}}</span> per
+                    request.
+                </div>
+                <div class="bodyText hide">{{ 'requestedDowngrade'}} </br><span
+                        class="change">{{changePlanConfirm.currentPlan}}</span> to <span
+                        class="change">{{changePlanConfirm.newPlan}}</span>.</div>
+                <div class="bodyText hide">{{ 'newPlanEffectiveBilling'}} </br>{{ 'starting'}} <span
+                        class="change">{{changePlanConfirm.newCycle}}</span>.</div>
+            </div>
+            <div class="modal-body modalBody successmsg hide">
+                <div class="successCheck"><span><i class="bxpw-icon-check-circle"></i></span></div>
+                <div class="bodyText">{{ 'requestPlanDowngrade'}}</div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg proceedUpdate" ng-click="proceedUpdate()">{{ 'confirm' | i18nString}}<span
+                        class="wait waitLoad hide"><i class="fa-spin fa fa-circle-o-notch"></i></span></button>
+                <button class="kr-sg-button-secondary btn_lg cancelUpdate" data-dismiss="modal">{{ 'cancel'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_lg closeConfirm" data-dismiss="modal">{{ 'close'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="upgradeToEnterprise" data-backdrop="static">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title modalTitle">Upgrade to Enterprise Plan
+                    <i class="btx-close" data-dismiss="modal"></i>
+                </h4>
+            </div>
+            <div class="modal-body modalBody confirmmsg">
+                <div class="bodyText">
+                    <p>Your plan will be upgraded from <span class="code">{{changePlanConfirm.currentPlan}}</span> Plan to <span class="code">{{changePlanConfirm.newPlan}}</span> Plan. Post upgrade, all the sessions will be charged  <span class="code">${{changePlanConfirm.newPrice}}</span> per session. </p>
+                    <p>Enterprise Plan requires a minimum reload of $ 1,000. You will be redirected to the payment page to make the reload.</p>
+
+                </div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg proceedUpdate" ng-click="proceedEnterprise()">{{ 'proceed' | i18nString}}<span
+                        class="wait waitLoad hide"><i class="fa-spin fa fa-circle-o-notch"></i></span></button>
+                <button class="kr-sg-button-secondary btn_lg cancelUpdate" data-dismiss="modal">{{ 'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="planSwitchSucess" data-backdrop="static">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title modalTitle">
+                    <span class="success titleGreen">You are now part of {{changePlanConfirm.newPlan}} Plan </span>
+                </h4>
+            </div>
+            <div class="modal-body modalBody">
+                <div class="bodyText">
+                    Your Virtual Assistant is successfully {{(planupdateType === 'upgrade' || cb.license.planId === 'free') ?'upgraded': 'downgraded'}} to the {{changePlanConfirm.newPlan}} Plan. All new requests will be charged ${{changePlanConfirm.costPerRequest}} per request. 
+                </div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-secondary btn_lg" ng-click="closeUpDownGrade()">{{ 'close' | i18nString}}</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal" data-backdrop="static" id="expiredPlanUpdate">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title modalTitle">{{ 'confirmNewPlan'}}</h4>
+            </div>
+            <div class="modal-body modalBody">
+                <div class="bodyText">{{ 'youRequestedPlan'}} <span class="change">{{changePlanConfirm.newPlan}}</span>.
+                </div>
+                <div class="bodyText">{{ 'redirectedThirdParty'}} <span class="change">$ {{ changePlanConfirm.newPrice
+                        }}</span> + <span class="bodymsgText">{{ 'taxesApplicable'}}.</span></br>{{ 'doNotClose'}}</div>
+                <div class="bodyText bodymsgText">{{ 'newPlanForUse'}}</div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg proceedUpdatePay" ng-click="proceedUpdatePay()">{{
+                    'confirm'}}<span class="wait waitLoad hide"><i
+                            class="fa-spin fa fa-circle-o-notch"></i></span></button>
+                <button class="kr-sg-button-secondary btn_lg cancelUpdatePay" data-dismiss="modal">{{
+                    'cancel'}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal reload-step-1modal" id="reloadPlanModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title modalTitle">{{'reload_label' | i18nString}}
+                    <i class="btx-close" ng-click="closeReloadModal()"></i>
+                </h4>
+            </div>
+            <div class="modal-body modalBody" perfect-scroll >
+                <div class="container-box reload-content-box noPadding">
+                    <div class="inputBox">
+                        <div class="label_text">Reload Amount</div>
+                        <div class="input-price custom-input">
+                            <input type="text" ng-model="quantity" ng-change="changeQuantity(quantity)" class="userProfileInput form-control"
+                                placeholder="Amount in USD" only-digits required>
+                            <span class="dollar-icon">$</span>
+                        </div>
+                    </div>
+                    <div class="price-tags">
+                        <div class="amt-tags">
+                            <span class="selectedAmt" ng-repeat="amt in planAmounts track by $index" id="{{amt}}"
+                                ng-click="selectAmount(amt)">${{amt}}</span>
+                        </div>
+                    </div>
+                    <div class="hint_Div">
+                        <div class="selectPlan">
+                            <span class="img-block">
+                                <img class="info-icon" ng-src="{{assetsPath}}icons/info.svg" alt="icon">
+                            </span>
+                            <span class="descText">{{'min_reload_amount_desc' | i18nString}}</span>
+                        </div>
+                    </div>
+                    <div class="reload-content-box">
+                        <div class="reload-info autoReloadActivated" ng-if="cb.license && cb.license.freemiumSetting"
+                            ng-click="autoReload()">
+                            <span class="icon">
+                                <img ng-src="{{autoRefresh}}">
+                                <span class="text">{{'auto_reload_activated' | i18nString}}</span>
+                            </span>
+                            <span class="tooltip_custom_top">
+                                <div class="close-icon"><i class="btx-info"></i></div>
+                                <span class="tooltiptext">
+                                    <div class="desc">
+                                        <div class="path">{{'min_credits_maintain' | i18nString}}</div>
+                                        <div class="count">${{cb.license.freemiumSetting.autoRechargeThreshold}}</div>
+                                    </div>
+                                    <div class="desc">
+                                        <div class="path">{{'amt_be_added' | i18nString}}</div>
+                                        <div class="count">${{cb.license.freemiumSetting.autoRechargeAmount}}</div>
+                                    </div>
+                                </span>
+                            </span>
+                        </div>
+
+                        <div class="nwe-reload-info setupAutoReload" ng-click="autoReload()" ng-if="cb.license && !cb.license.freemiumSetting">
+                            <div class="left-sec">
+                                <img class="info-icon" ng-src="{{assetsPath}}icons/refresh.svg" alt="icon">                                
+                            </div>
+                            <div class="right-sec">
+                                <div class="text">{{'automate_your_bal_topups' | i18nString}}</div>
+                                <div class="setupAutoReloadBtn">{{'bal_auto_topped_when_min_amt' | i18nString}}</div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg" ng-click="proceedToPay()">{{'make_payment' | i18nString}}<span
+                        class="wait waitLoad hide"></span></button>
+                <button class="kr-sg-button-secondary btn_lg cancelUpdate" ng-click="closeReloadModal()">{{'cancel' | i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal auto-reload-step-2" data-backdrop="static" id="autoReload">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title modalTitle setupName" ng-if="!cb.license.freemiumSetting">
+                    <i class="btx-arrow-back" ng-click="reload()"></i>Setup Auto-Reload
+                    <i class="btx-close" ng-click="closeautoReloadModal()"></i>
+
+                </h4>
+                <h4 class="modal-title modalTitle setupName" ng-if="cb.license.freemiumSetting">
+                    <i class="btx-arrow-back" ng-click="reload()"></i>Auto Reload
+                    <i class="btx-close" ng-click="closeautoReloadModal()"></i>
+                </h4>
+            </div>
+            <div class="modal-body modalBody">
+                <div class="container-box setup-reload">
+                    <div class="inputBox">
+                        <div class="label_text">Auto Reload for</div>
+                        <div class="input-price custom-input">
+                            <input type="text" name="reload-amt-input" ng-model="mantReloadAmtinput"
+                                placeholder="Amount in USD" only-digits class="userProfileInput form-control">
+                            <span class="dollar-icon">$</span>
+                        </div>
+                    </div>
+                    <div class="inputBox">
+                        <div class="label_text">When Balance Drops Below</div>
+                        <div class="input-price custom-input">
+                            <input type="text" name="reload-amt-input" ng-model="minReloadAmtinput"
+                                placeholder="Amount in USD" only-digits class="userProfileInput form-control">
+                            <span class="dollar-icon">$</span>
+                        </div>
+                    </div>
+                    <div class="kr-sg-notification" ng-if="!cb.license.freemiumSetting">
+                        <div class="right-icon"><i class="btx-info"></i></div>
+                        <div class="tost-text">You can specify mimimum credits to be maintained in your account.
+                            Once the credit falls below the mimimum, the amount will be debited automatically from
+                            your card on the file and your account will be credited.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg" ng-click="setupAutoReload()"
+                    ng-if="!cb.license.freemiumSetting">Setup <span class="wait waitLoad hide"></span></button>
+                <button class="kr-sg-button-primary btn_lg" ng-click="setupAutoReload()"
+                    ng-if="cb.license.freemiumSetting">Edit<span class="wait waitLoad hide"></span></button>
+                <button class="kr-sg-button-secondary btn_lg " ng-click="closeautoReloadModal()">Cancel</button>
+                <button class="kr-sg-button-danger btn_lg pull-right" ng-click="setupAutoReload(true)"
+                    ng-if="cb.license.freemiumSetting">Delete<span class="wait waitLoad hide"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel subscription SM modal -->
+<div class="modal fade" id="cancelSubscription" data-backdrop="static" role="dialog" aria-labelledby="plan"
+    aria-hidden="true">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'Cancel Subscription?'}} <i ng-click="closeCustomModal('cancelSubscription')"
+                        class="btx-close"></i>
+                </h4>
+            </div>
+            <div class="modal-body ">
+                <div class="desc">
+                    You can place the request to cancel your current {{supportplan.planName}} Support Plan. However, the subscription will be canceled only at the end of the current billing cycle.    
+                </div>
+                <div class="hint_Div" >
+                    <div class="selectPlan">
+                        <span class="img-block">
+                            <img class="info-icon" ng-src="{{assetsPath}}icons/info.svg" alt="icon">
+                        </span>
+                        <span class="descText">Your plan will be cancelled on {{supportplan.endDate | date: 'd MMMM, y'}}. </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="cancelSubscription()"
+                    class="kr-sg-button-danger btn_lg"> {{'Confirm'}} </button>
+                <button type="button" ng-click="closeCustomModal('cancelSubscription')"
+                    class="kr-sg-button-secondary btn_lg"> {{'cancel'| i18nString}} </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cancel subscription SM modal -->
+<!-- Cancel subscription SM modal -->
+<div class="modal fade" id="requestCancelled" data-backdrop="static" role="dialog" aria-labelledby="plan"
+    aria-hidden="true">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'request_cancelled' | i18nString}} <i ng-click="reloadBots()" class="btx-close"></i>
+                </h4>
+            </div>
+            <div class="modal-body ">
+                <div class="desc">
+                    {{'request_cancelled_desc' | i18nString:({planName:supportplan.planName}) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="reloadBots()"
+                    class="kr-sg-button-primary btn_lg">{{'close'| i18nString}} </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cancel subscription SM modal -->
+<!-- Up/Downgrade plan swith cancel modal -->
+<div class="modal fade" id="requestDownUpCancelled" data-backdrop="static" role="dialog" aria-labelledby="plan"
+    aria-hidden="true">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'request_cancelled' | i18nString}} <i ng-click="reloadBots()" class="btx-close"></i>
+                </h4>
+            </div>
+            <div class="modal-body ">
+                <div class="desc">
+                    {{'revoke_downupgrade_desc' | i18nString:({newPlan:supportplan.newPlan, currentPlan: supportplan.planName}) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="reloadBots()"
+                    class="kr-sg-button-primary btn_lg">{{'close'| i18nString}} </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Up/Downgrade plan swith cancel modal -->
+<!-- Confirm Cancel subscription SM modal -->
+<div class="modal fade" id="confirmCancelSubscription" data-backdrop="static" role="dialog" aria-labelledby="plan"
+    aria-hidden="true">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'confirm_cancel_subscription_desc' | i18nString}}</h4>
+            </div>
+            <div class="modal-body modalBody confirmmsg">
+                <div class="desc">
+                    {{'confirm_cancel_subscription_desc2' | i18nString}} i.e., {{(changePlanConfirm.endDate | date: 'd MMMM, y') || '---'}}. 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="reloadBots()"
+                class="kr-sg-button-primary btn_lg"> {{'okay_dismiss_label' | i18nString}} </button>
+                <!-- <button class="kr-sg-button-ghost btn_lg"
+                    ng-click="reloadBots()"><span>Changed your
+                        mind?</span></button>
+                <button class="kr-sg-button-ghost btn_lg"
+                    ng-click="reloadBots()"><span>Cancel Request</span></button> -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Confirm Cancel subscription SM modal -->
+<!-- Support plan upgrade success modal -->
+<div class="modal fade" id="upgradeSupportPlanSuccess" data-backdrop="static" role="dialog" aria-labelledby="plan"
+    aria-hidden="true">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'plan_upgrade_successful_support' | i18nString}}</h4>
+            </div>
+            <div class="modal-body modalBody confirmmsg">
+                <div class="desc">
+                    {{'plan_upgrade_successful_support_desc' | i18nString:({newPlan:changePlanConfirm.newPlan, currentPlan: changePlanConfirm.currentPlan}) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="reloadBots()"
+                class="kr-sg-button-primary btn_lg"> {{'okay_dismiss_label' | i18nString}} </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Support plan upgrade success modal -->
+<!-- EXPORT DOWNLOAD LINK -->
+<a id="exportBillingLink" ng-click="$event.stopPropagation();" style="display: none;" target="_blank"></a>
+<!-- EXPORT DOWNLOAD LINK -->
+
+<!-- SUPPORT UPGRADE MODAL -->
+<div class="modal" id="supportUpgrade" data-backdrop="static">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title modalTitle">Upgrade to {{changePlanConfirm.newPlan}} Plan
+                    <i class="btx-close" data-dismiss="modal"></i>
+                </h4>
+            </div>
+            <div class="modal-body modalBody confirmmsg">
+                <div class="bodyText">
+                    You can upgrade from <span class="code">{{changePlanConfirm.currentPlan}}</span> Plan to <span class="code">{{changePlanConfirm.newPlan}}</span> Plan immediately. You will get a pro-rated discount for the {{changePlanConfirm.endDate | date: 'd'}} days left in the current billing cycle of the <span class="code">{{changePlanConfirm.currentPlan}}</span> Plan. This discount will be applied in the first billing cycle of your new plan subscription. 
+                </div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg" ng-click="proceedToSupportPay()">{{ 'confirm' | i18nString}}<span
+                        class="wait waitLoad hide"><i class="fa-spin fa fa-circle-o-notch"></i></span></button>
+                <button class="kr-sg-button-secondary btn_lg " data-dismiss="modal">{{ 'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SUPPORT UPGRADE MODAL -->
+<!-- SUPPORT DOWNGRADE MODAL -->
+<div class="modal" id="supportDowngrade" data-backdrop="static">
+    <div class="modal-dialog noHeaderFooter">
+        <div class="modal-content">
+            <div class="modal-header modalHeader">
+                <h4 class="modal-title modalTitle">Switch to {{changePlanConfirm.newPlan}} Plan?
+                    <i class="btx-close" data-dismiss="modal"></i>
+                </h4>
+            </div>
+            <div class="modal-body modalBody confirmmsg">
+                <div class="bodyText">
+                    You can place the request to switch to the <span class="code">{{changePlanConfirm.currentPlan}}</span> Plan from your current <span class="code">{{changePlanConfirm.newPlan}}</span> Support Plan. However, the plan migration would be initiated only at the end of the current billing cycle.
+                </div>
+                <div class="hint_Div" ng-if="changePlanConfirm.endDate">
+                    <div class="selectPlan">
+                        <span class="img-block">
+                            <img class="info-icon" ng-src="{{assetsPath}}icons/info.svg" alt="icon">
+                        </span>
+                        <span class="descText">Your plan will be switched on {{changePlanConfirm.endDate | date: 'd MMMM, y'}} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modalFooter">
+                <button class="kr-sg-button-primary btn_lg proceedUpdate" ng-click="supportPlanConfirm()" >{{ 'confirm' | i18nString}}<span
+                        class="wait waitLoad hide"><i class="fa-spin fa fa-circle-o-notch"></i></span></button>
+                <button class="kr-sg-button-secondary btn_lg cancelUpdate" data-dismiss="modal">{{ 'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SUPPORT DOWNGRADE MODAL -->

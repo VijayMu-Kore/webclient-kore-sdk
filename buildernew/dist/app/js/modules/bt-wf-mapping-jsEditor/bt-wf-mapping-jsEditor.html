@@ -1,0 +1,31 @@
+<div class="bt-response-modal">
+    <div class="modal-header">
+        <button type="button" ng-click="closeModal()"class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{mappingScriptObj.title}}</h4>
+    </div>
+    <div class="modal-body">
+        <form name='bt-wf-mapping-jsEditorForm'> 
+            <div class="head">
+
+                <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                        <div class=" mapping-jsEditor container">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                     <h3 class="panel-title">{{'javascript_editor'| i18nString}}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="jseditor" class="json_editor response_json_editor" acify callback='jsEditorCbs' ng-model="mappingScriptObj.msgText"></div>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="closeModal()">{{'cancel'| i18nString}}</button>
+        <button type="submit" class="btn btn-primary" ng-click="saveScript()">{{'done'| i18nString}}</button>
+    </div>
+</div>

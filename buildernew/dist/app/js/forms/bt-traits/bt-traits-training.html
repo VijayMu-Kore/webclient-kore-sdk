@@ -1,0 +1,552 @@
+<div class="summaryLoader animationIfLeave" ng-if="loadingTraits">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content"> {{'fetching_traits'| i18nString}}</span>
+    </span>
+</div>
+<!-- <div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'Traits_label'| i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent " ng-show= "traits.traitGroups.length">
+            <input   maxlength="128" ng-model="traits.search" class="traitsSearch" placeholder="{{'search_for_traits'| i18nString}}" maxlength="128">
+            <i class="btx-search"></i>
+            <i class="btx-close" ng-click="clearSearch();" ng-class="{displayNone: !traits.search.length}"></i>
+        </div>
+    </div>
+</div> -->
+
+<div class='traits' ng-class="{'read-only':(viewState.toggleState=='published' || viewState.permission==='VIEW')}" ng-if="!loadingTraits" >
+   <!--  <div ng-show="showTrainBtn && traits.traitGroups.length " class="MLtrainDiv">
+                <div class="helphint col-xs-12">
+                    <div class="col-xs-1 bulbicon">
+                        <span><img class="layer" ng-src='{{bulbIcon}}'></span>
+                    </div>
+                    <div class="col-xs-10 textDiv"><span class="" >{{isTrainInprogress()? training_in_progress_desc1 : training_in_progress_desc2}}</span>
+                    </div>
+                    <div class="trainUtteraceBtn">
+                        <button type="button" class="pull-right btn btn-sm btn-outline trainBtn" ng-disabled="isTrainInprogress()" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}" ng-click="trainBot();">{{isTrainInprogress()? training_label: train_label}}</button>
+                    </div>
+                </div>
+            </div>
+ -->    <div class="noTraits displayNone">
+        <img ng-src="{{emptyTraits}}">
+        <div class='noTraitsInfo'><span class='infoHeader'> {{'noTraitsInfo'| i18nString}}</span>
+            <p class='infoP'> {{'noTraits_desc'| i18nString}}
+                <!-- <br>
+                {{'create_and_manage_traits'| i18nString}} -->
+            </p>
+                <button class='btnSolidBlue btn' ng-click='createNewTraits()'>{{'add_traits'| i18nString}}</button>
+        </div>
+        <div class="emptyNote " >
+            <p class="emptyTitle"> {{'What_are_Traits_q'| i18nString}}</p>
+            <p class="emptyDesc"> {{'What_are_Traits_a'| i18nString}}</p>
+            <p class="emptyTitle">{{'how_to_create_traits_q'| i18nString}}</p>
+            <p class="emptyDesc marginBottom10"> {{'Create_traits_q'| i18nString}}</p>
+            <ul class="emptyListDesc">
+                <li>{{'Traits_identi_label'| i18nString}}
+                    <ul class="emptyListDesc">
+                            <li> {{'Traits_identi_one'| i18nString}}</li>
+                            <li> {{'Traits_identi_two'| i18nString}}</li>
+                        </ul>
+                </li>
+                <li> {{'Traits_infer_label'| i18nString}} 
+                        <ul class="emptyListDesc">
+                                <li> {{'Traits_infer_desc'| i18nString}}</li>
+                            </ul>
+                </li>
+                       
+            </ul>
+            <p class="emptyTitle"> {{'Where_to_ue_traits_q'| i18nString}}</p>
+            <p class="emptyDesc"> {{'Where_to_ue_traits_a'| i18nString}}</p>
+        </div>
+    </div>
+    <div class="emptyStateContainer" ng-if="!traits.traitGroups.length" perfect-scroll dynamic-height dynaoffset="-60" height-property="height"  >
+        <div class="emptyState">
+            <div class="emptyImage">
+                <img ng-src="{{emptyTraits}}" class="emptyImg">           
+            </div>  
+            <span class="mainTitle">{{'noTraitsInfo'| i18nString}}</span>
+            <div class="emptyStateDesc">{{'noTraits_desc'| i18nString}}</div>
+            <div class="generateBtn">
+                <button class="kr-sg-button-primary btn_lg" ng-click="createNewTraits()">{{'add_traits'| i18nString}}</button>
+                <!-- <button class="btn" target="_blank" >learn more</button> -->
+            </div>
+        </div>
+    </div>
+    <div class="summaryLoader animationIfLeave loadingUtterances" ng-show="traitsLoading">
+            <span class="spinner-text"> 
+                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                <span class="spinner-text-content">{{'loading_lable' | i18nString}}
+            </span>
+        </div>
+    <div ng-if="traits.traitGroups.length && !traitsLoading" class='traitsListing'>
+            <div class="col-xs-12 defineTraitsContainer" ng-if="callBack.type!=='KG'">
+                <div class="leftDiv">
+                    <div class="number">1</div>
+                    <div class="content-data">
+                        <p class="defineTitle"> {{'define_traits_label'| i18nString}}</p>
+                        <p class="defineDesc">{{'define_traits_desc'| i18nString}}</p>
+                        <a class="defineLink" ng-click='createNewTraits()' ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}"> {{'add_new_trait'| i18nString}}</a>
+                    </div>                    
+                </div>
+                <div class="backArrowDiv">
+                    <i class="btx-arrow-next"></i>
+                </div>
+                <div class="rightDiv">
+                    <div class="number">2</div>
+                    <div class="content-data">
+                        <p class="defineTitle">{{'train_intents_with_traits'| i18nString}}</p>
+                        <p class="defineDesc">{{'configure_intent_identification'| i18nString}}</p>
+                        <a class="defineLink" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}" ng-click="openManageIntentTraitRules()"> {{'add_new_rule'| i18nString}}</a>
+                    </div>
+                </div>
+            </div>
+        <!-- <div class='col-xs-12 traitsAddSearchDiv' ng-if="callBack.type!=='KG'">
+            <div class="col-xs-10 search-box">
+                <input  maxlength="128" ng-model="traits.search" class="traitsSearch" placeholder="Search for traits" maxlength="128">
+                <img ng-src="{{searchIconGray}}" class="searchIconGray">
+            </div>
+            <div>
+                    <button class='col-xs-2 newTraitsBtn btn' ng-click='createNewTraits()' ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                            New Trait
+                        </button>
+            </div>
+          
+        </div> -->
+        <div class='traitsBlock'>
+            <div class='traitsListHeader col-xs-12'>
+                <div class='col-xs-3 key noPadding'>{{'Trait_Type_label'| i18nString}}</div>
+                <div class='col-xs-7 values'> {{'Traits_label'| i18nString}}</div>               
+            </div>
+
+            <div class='traitsListBody' ng-if="traits.traitGroups.length > 0">
+                <div class="ml-utterence-notasks positionRelative" ng-show="(filtered.length === 0 && gSearch.search.length > 0)">
+                        <div class="ml-utterence-notasks positionRelative">
+                            <div class="text-center padding10 col-xs-12">No search results found</div>
+                        </div>      
+                    </div>
+                <div  ng-repeat='traitGroup in traits.traitGroups | filter:gSearch.search as filtered track by traitGroup._id' class='listing row'>
+                    <div class='col-xs-3 nameDiv' title="{{traitGroup.groupName}}">{{traitGroup.groupName}}</div>
+                    <div class='col-xs-9 valueDiv'>
+                        <div class='traitUtt' trait-count>
+                            <!-- <div ng-click="openEditTraits(trait,traitGroup,parentIndex)" ng-repeat='trait in traitGroup.traitKeys track by $index' class='utteranceTag'>
+                                {{trait}}
+                            </div> -->
+                            <div  ng-click="openEditTraits(trait,traitGroup,trait.traitId)" ng-repeat='trait in traitGroup.traits track by $index' class='utteranceTag' >
+                                <span class="traitTagText" title="{{trait.traitName}}">{{trait.traitName}}</span>
+                                <img ng-src="{{errorWarning}}" class="errorWarning" ng-if="isTraitKeyDuplicate(trait.traitName)" tooltip-placement="bottom" tooltip="{{'bt_traits_tooltip_trait_with_same_name'| i18nString}}">
+                            </div>
+                        </div>
+                        <div class="traitCount" ng-click="expandTags($event)">
+                             <span class="count"></span>
+                        </div>
+                        <div class="hoverIcons">
+                            <i class="btx-pencil " ng-hide="(viewState.permission ==='VIEW')" ng-click="editTraitFroup(traitGroup)"></i>
+                            <i class="btx-delete-1" ng-click="deleteTraitsGroup(traitGroup)"></i>
+                        </div>
+                    </div>                   
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+<bot-modal-slider id="createEditTraitsSlider" ng-show="(sliderMode == 'createGroup') || (sliderMode == 'editGroup') || (sliderMode == 'editTrait')" class="utterance-model">
+    <div class="modalSliderContainer width900 createTraitsSlider " ng-if="(sliderMode == 'createGroup') || (sliderMode == 'editGroup')">
+        <div class="modalHeader">
+            <h4 class="modal-title">
+                <i class="btx-close"  ng-click="closeCreate()"></i>
+                <span ng-if="(sliderMode == 'createGroup')">
+                    {{'new_trait' | i18nString}}
+                </span>
+                <span ng-if="(sliderMode == 'editGroup')" class="editTraitGrpName">
+                    {{'edit_trait' | i18nString}}
+                </span>
+      
+            </h4>
+        </div>
+        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-110" height-property="height" >
+            <span class="pull-right marginBottom" >
+                
+            </span>           
+            <form class="info traitsForm pos-relative" name="traitsForm" >
+                <div class="top-search-manage-block searchBarPosition">
+                    <div class="searchComponent " ng-if="traits.addEditTraits._id">
+                        <input  maxlength="128" tabindex="1" class="traitSearchInput" type="text" ng-model="search.traitSearch" ng-init="search.traitSearch = ''" placeholder="{{'search'| i18nString}}">
+                        <i class="btx-search"></i>
+                        <i class="btx-close" ng-show="search.traitSearch.length" ng-click="clearTraitSearch()"></i>
+                    </div>
+                    <div class="dropdown">
+                        <i class="dropdown-toggle manageDataToggle" data-toggle="dropdown" aria-hidden="true" ng-click='openManage()'>{{'manage'| i18nString}}</i>
+                        <div class="dropdown-menu manageGroup baladevendar" ng-click='$event.stopImmediatePropagation()' ng-class="{'prattensModal':groupConfigs.matchStrategy==='pattern' , 'skipGram':groupConfigs.algo === 'skip_gram', 'nGram' : groupConfigs.algo !== 'skip_gram'}">
+                            <div class="adjust-padding-height" perfect-scroll dynamic-height dynaoffset="-250">                            
+                                <div class="col-xs-12 form-group noPadding mb-0" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                                    <div class="col-xs-12 noPadding">
+                                        <label class="labelTrait">{{'training_type_label'| i18nString}}</label>
+                                        <p class="desc">{{'train_trait_q'| i18nString}}</p>
+                                    </div>
+                                    <div class="col-xs-12 noPadding">
+                                        <select ng-model='groupConfigs.matchStrategy'>
+                                            <option value='probability'>{{'machine_learning'| i18nString}}</option>
+                                            <option value='pattern'>{{'pattern_based_label'| i18nString}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="threshhold-content" ng-show="groupConfigs.matchStrategy==='probability'" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                                    <div class="col-xs-12 noPadding form-group mb-0">
+                                        <div class="col-xs-12 noPadding">
+                                            <label class="labelTrait"> {{'ml_Threshold_label'| i18nString}}</label>
+                                            <p class="desc"> {{'ml_Threshold_des'| i18nString}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="thresholdDir">
+                                        <!-- <div class="col-xs-12 single-slider noPadding" id="mlTraitGroupThreshold-slider" ng-mouseover="showReset('.mlTraitGroupThresholdReset','#mlTraitGroupThreshold')" ng-mouseleave="hideReset('.mlTraitGroupThresholdReset')"> -->
+                                            <div class="col-xs-12 single-slider noPadding" id="mlTraitGroupThreshold-slider">
+                                            <!-- <a class="resetButton mlTraitGroupThresholdReset pull-right hide" ng-click="resetDefaultVal()">Reset</a> -->
+                                            <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">1</span></div>
+                                            <span id="mlTraitGroupThreshold" class="width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="true" data-slider-max="1" data-slider-step="0.1"  ticks-tooltip="true" data-slider-value="{{groupConfigs.scoreThreshold}}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="feature-extraction-content mb-5" ng-show="groupConfigs.matchStrategy==='probability'" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                                    <div class="col-xs-12 noPadding mb-4">
+                                        <div class="col-xs-12 noPadding mb-5">
+                                            <label class="labelTrait">{{'ml_feature_extraction_lable'| i18nString}}<a class="link-threshhold-dev btx-help" href="https://developer.kore.ai/docs/bots/nlp/traits/#train-ML" target="_blank"></a></label>
+                                        </div>
+                                    </div>
+                                    <div class="radioDiv">
+                                        <span class="radioInnerDiv" style="display: inline-block; margin-right: 10px;">
+                                            <label for="traitsSkipGram">
+                                                <input value='skip_gram' type="radio" ng-click="selectFraction('skip_gram')" ng-model="groupConfigs.algo" name="traitsSkipGram" id="traitsSkipGram"><span>{{'ml_extraction_skipgram_lable'| i18nString}}</span>
+                                        </label>
+                                        </span>
+                                        <span class="radioInnerDiv" style="display: inline-block; margin-right: 10px;">
+                                            <label for="traitsNGram">
+                                                <input value='n_gram' type="radio"  ng-click="selectFraction('n_gram')" ng-model="groupConfigs.algo" name="traitsNGram" id="traitsNGram"><span>{{'ml_extraction_ngram_lable'| i18nString}}</span>
+                                        </label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="sequence-length-content mb-0" ng-show="groupConfigs.matchStrategy==='probability'  && (groupConfigs.algo === 'n_gram')" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                                    <div class="col-xs-12 noPadding form-group noMargin">
+                                        <div class="col-xs-12 noPadding">
+                                            <label class="labelTrait">{{'ml_traits_sequence_length_lable'| i18nString}}</label>
+                                            <p class="desc">{{'ml_traits_sequence_length_n_disc'| i18nString}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="thresholdDir">
+                                        <div class="col-xs-12 single-slider noPadding marginB20T0" id="mlTraitnGramSequenceLength-slider">
+                                            <div class="countThreshold"><span class="pull-left">1</span><span class="pull-right">5</span></div>
+                                            <span id="mlTraitnGramSequenceLength" class="width-250 " data-handle="round" data-slider-id='ex4Slider'
+                                                type="text" data-slider-min="1" data-slider-tooltip="true" data-slider-max="5" data-slider-step="1"
+                                                ticks-tooltip="true" data-slider-value="{{groupConfigs.configuration.n_gram.maxVal}}"></span>
+                                        </div>
+                                    </div>                            
+                                </div>
+                                <div class="sequence-length-content mb-0" ng-show="groupConfigs.matchStrategy==='probability'  && (groupConfigs.algo === 'skip_gram')" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                                    <div class="col-xs-12 noPadding form-group noMargin">
+                                        <div class="col-xs-12 noPadding">
+                                            <label class="labelTrait">{{'ml_traits_sequence_length_lable'| i18nString}}</label>
+                                            <p class="desc">{{'ml_traits_sequence_length_skip_disc'| i18nString}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="thresholdDir">
+                                        <div class="col-xs-12 single-slider noPadding marginB20T0" id="mlTraitSequenceLength-slider">
+                                            <div class="countThreshold"><span class="pull-left">2</span><span class="pull-right">4</span></div>
+                                            <span id="mlTraitSequenceLength" class="width-250 " data-handle="round" data-slider-id='ex2Slider'
+                                                type="text" data-slider-min="2" data-slider-tooltip="true" data-slider-max="4" data-slider-step="1"
+                                                ticks-tooltip="true" data-slider-value="{{groupConfigs.configuration.skip_gram.seqLength}}"></span>
+                                        </div>
+                                    </div>                            
+                                </div>
+                                <div class="maximum-skipdistance-content mb-0" ng-show="(groupConfigs.matchStrategy==='probability')  && (groupConfigs.algo === 'skip_gram')" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                                    <div class="col-xs-12 noPadding form-group noMargin">
+                                        <div class="col-xs-12 noPadding">
+                                            <label class="labelTrait">{{'ml_traits_skip_distance_lable'| i18nString}}</label>
+                                            <p class="desc">{{'ml_traits_skip_distance_disc' | i18nString}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="thresholdDir">
+                                        <div class="col-xs-12 single-slider noPadding" id="mlTraitSkipDistance-slider">
+                                            <div class="countThreshold"><span class="pull-left">1</span><span class="pull-right">3</span></div>
+                                            <span id="mlTraitSkipDistance" class="width-250" data-handle="round" data-slider-id='ex3Slider' type="text"
+                                                data-slider-min="1" data-slider-tooltip="true" data-slider-max="3" data-slider-step="1"
+                                                ticks-tooltip="true" data-slider-value="{{groupConfigs.configuration.skip_gram.maxSkipDistance}}"></span>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>                                 
+                            <div class="buttonContainer">
+                                <button ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}" class="kr-sg-button-primary btn_lg" type="button" ng-click="$event.stopPropogation();saveGroupConfigs()">{{'done'| i18nString}}</button>
+                                <button class="kr-sg-button-secondary btn_lg" type="button" ng-click="$event.stopPropogation();cancleGroupConfigs()"> {{'cancel'| i18nString}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 noPadding">
+                        <label class="labelTrait"> {{'Trait_Type_label'| i18nString}}
+                        </label>                      
+                        <p class="desc">{{'name_for_group_traits_desc'| i18nString}}<br> {{'name_for_group_traits_desc_example'| i18nString}}</p>
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                        <input  maxlength="128" type="text" placeholder=" {{'Trait_Type_desc_placehold'| i18nString}}" class="form-control"
+                            ng-model='traits.addEditTraits.groupName' name='traitType' required>
+                        <div ng-show="traitsForm.traitType.$dirty">
+                            <div error-alert ng-show="traitsForm.traitType.$error.required" class="text-danger">
+                                {{'trait_type_required_err'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 noPadding">
+                        <label class="labelTrait">{{'traits'| i18nString}}</label>
+                        <p class="desc">{{'Createnew_trait_desc'| i18nString}}</p>
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                        <input  maxlength="128" type="text" placeholder="{{'Createnew_trait_placehold'| i18nString}}" class="form-control"
+                            ng-keydown='addTraits(add.traitName,$event)' ng-model='add.traitName' name='traitName'>
+                    </div>
+                    <div class="accordion col-xs-12 noPadding traitsAccordion" id="accordionExample"  ui-sortable="traitSortableOptions" ng-model="traits.addEditTraits.traitsArray">
+                            <div class="card addTraitBlock" ng-init='groupIndex = $index;status.contentEditable = false'  ng-click="status.showAll=false; status.open=(status.open?fales:true)" acc-open='{{(status && status.open)?"true":"false"}}'  ng-repeat='value in  traits.addEditTraits.traitsArray | filter:search.traitSearch track by $index '>
+                              <div class="card-header headerAccordion" data-toggle="collapse"  data-target="#body{{groupIndex}}" id="{{$index}}traitsAccordian" ng-class="{'closedAccordian':!status.open}">
+                                    <!-- <img ng-src="{{grouping}}" class="grouping traitSortHandle" ng-show="groupConfigs.matchStrategy=='pattern'" ng-click='$event.stopPropagation()'> -->
+                                    <span class="iconSpan"><i class="grouping traitSortHandle btx-move" ng-show="groupConfigs.matchStrategy=='pattern'" ng-click='$event.stopPropagation()'></i></span>
+                                    <span class="iconSpan icon-down-up" ng-show="!(status && status.open)"><i class="arrowAngle btx-carrot-down"></i></span>
+                                    <span class="iconSpan icon-down-up" ng-show="(status && status.open)"><i class="arrowAngleDown btx-carrot-up1"></i></span>
+                                    <span ng-show="!status.contentEditable" class="traitAccordiondiv" ng-class="{'openExpand': (status && status.open)}">{{value.key}}</span>
+                                    <span class="traitAccordiondiv">  
+                                        <!-- <input  maxlength="128" ng-show="status.contentEditable" id="traitEditableSpan{{groupIndex}}" ng-blur="status.contentEditable = false" ng-click='$event.stopPropagation()'  ng-keyup="updateTraitName($event,value.key,groupIndex,status);" class="traitAccordiondiv editableSpan" ng-class="{'openExpand': (status && status.open)}"> -->
+                                        <input  maxlength="128" ng-show="status.contentEditable" id="traitEditableSpan{{groupIndex}}" ng-blur="status.contentEditable = false" ng-click='$event.stopPropagation()'  ng-keyup="updateTraitName($event,value.key,groupIndex,status);" class="traitAccordiondiv editableSpan" ng-class="{'openExpand': (status && status.open)}">
+                                    </span>
+                                  <span ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}" class="nameEdit"><i class="pencilIconGreen btx-pencil" ng-click="$event.stopPropagation();enableTraitNameEdit(status,groupIndex,value.displayName,value.key)"></i></span>
+                                    <div class="rightDiv" ng-click='$event.stopPropagation()' ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                                        <img ng-src="{{errorWarning}}" class="" ng-if="isTraitKeyDuplicate(value.key) || (value.newKey && isTraitKeyDuplicate(value.key,'newKey'))" tooltip-placement="top" tooltip="{{'bt_traits_tooltip_trait_with_same_name'| i18nString}}">
+                                        <span class="utteranceCount notTrained" ng-if='!value.data.length'> {{'not_trained_label'| i18nString}}</span>
+                                        <span class="utteranceCount" ng-if='value.data.length && groupConfigs.matchStrategy=="probability"' >{{traits.addEditTraits.traits[value.key].data.length + ((traits.addEditTraits.traits[value.key].data.length>1) ? utterancesLabel: utteranceLabel)}} </span>
+                                        <span class="utteranceCount" ng-if='value.data.length && groupConfigs.matchStrategy=="pattern"' >{{traits.addEditTraits.traits[value.key].data.length + ((traits.addEditTraits.traits[value.key].data.length>1) ?patterns_label:pattern_label)}} </span>
+                                        <i ng-click='deleteTraitInGroup(value.key,traits.addEditTraits,$event,groupIndex)' class="trashIconRed trashIcon btx-delete-1"></i>
+                                        <i class="trashIconGray trashIcon btx-delete-1"></i>
+                                    </div>
+                              </div>
+                              <div id="body{{groupIndex}}" class="collapse bodyAccordion noPadding" ng-click='$event.stopPropagation()'>
+                                  <div ng-click="closeThisAccordian($event,groupIndex)" class="padding10">
+                                <div class="card-body traitsAccordianBody">
+                                    <p class="utTitle">{{groupConfigs.matchStrategy=='pattern'?patterns_label:addutterences_or_phrases_label}}
+                                            <span class="pull-right" ng-if="value.data.length>10 && status.open">
+                                                <span class="utteranceSearch">
+                                                    <input  maxlength="128" tabindex="1" placeholder="{{'search_utterences'| i18nString}}" class="utteranceSearchInput" type="text" ng-model="search.utteranceSearch" ng-init="search.utteranceSearch = ''"><span ng-init="bindSearchEvents($index+1)" id="traitsSearch{{groupIndex}}" ng-click="$event.stopImmediatePropagation()" class="utteranceSearchBar fa fa-search searchJQSelector"></span>
+                                                </span> 
+                                            </span>
+                                        </p>
+                                        <div ng-click='$event.stopPropagation()' ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                                            <input  maxlength="2048" type="text" autocomplete="off" placeholder="{{'Createnew_trait_placehold'| i18nString}}" class="form-control"
+                                                ng-keydown='addUtterance(value.utterance,value.key,$event,traits.addEditTraits,groupIndex)' ng-model='value.utterance'
+                                                name='traitName'>
+                                        </div>
+                                        <div ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}"  ng-init="utterIndex=$index" ng-show='($index < 10  || status.showAll)' ng-repeat='utterance in value.data | filter:search.utteranceSearch track by $index' class='addUtteranceDiv'>
+                                                <div ng-click='$event.stopPropagation()' class="addUtterInput addUtteranceInput{{groupIndex}}{{$index}}">{{utterance}}</div>
+                                                <div class="hoverIcons">
+                                                    <i class="pencilIconGreen btx-pencil editIconPrimary" ng-click='$event.stopPropagation();editUtterenceAccordionInTrait($index,utterance,groupIndex)'></i>
+                                                    <i class="trashIconGray trashIcon btx-delete-1 trashIconRed" ng-click="$event.stopImmediatePropagation();deleteUtteranceIntrait(utterance,value.key,traits.addEditTraits)" ng-src="{{trashIcon}}"></i>
+                                                </div>
+                                                <div class="col-xs-12 noPadding  editInputUtte editingUtterance{{groupIndex}}{{$index}} hide" id="tags" ng-click='$event.stopPropagation()'>
+                                                    <input maxlength="2048" type="text" class="form-control background-field-white editUtterenceInput{{groupIndex}}{{$index}} overRideBorder" onkeypress="return this.value.length < 2048" ng-keyup="$event.keyCode == 13 && editUtterenceAccordion($event,$index,value,groupIndex)" ng-blur="editUtterenceAccordion($event,$index,value,groupIndex)" ng-model="editTrait.editUtterence">
+                                                </div>
+                                               
+                                        </div>
+                                        <div class="utteranceShowall" ng-if="value.data.length>10 && !search.utteranceSearch" ng-click='$event.stopPropagation();status.showAll=(status.showAll?false:true)'>
+                                            <span class="showallLink">{{status.showAll? showless_label: showall_label}}</span>
+                                        </div>
+                            </div>
+                        </div>
+                              </div>
+                            </div>
+                          </div>
+                </div>
+            </form>
+        </div>
+        <div class="modalFooter saveTraitGroupBtn" >
+            <button type="button" class="btn btnSolidBlue" ng-disabled="(viewState.toggleState=='published' || viewState.permission==='VIEW')" ng-click="saveTraits(traits.addEditTraits,traitsForm,'','addRule')">{{'save_add_rule'| i18nString}}</button>
+            <button class="btn closeCancel" ng-click="saveTraits(traits.addEditTraits,traitsForm)">{{'save_exit'| i18nString}}</button>
+            <button class="btn closeCancel" ng-click="closeCreate()">{{'cancel'| i18nString}}</button>
+        </div>
+    </div>
+    <div class="modalSliderContainer width900 editTraitsSlider" ng-if="(sliderMode =='editTrait')">
+        <div class="modalHeader">
+            <h4 class="modal-title tableRow">
+                <i class="btx-close" ng-click="closeCreate()"></i>
+                <span class="" >
+                    {{traits.selectedTraitObj.displayName || traits.selectedtrait}}
+                </span>
+             
+            </h4>
+        </div>
+        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+            <form class="info traitsForm" name="traitsForm" >
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 noPadding">
+                        <label class="labelTrait"> {{'name_label'| i18nString}}</label>
+                        <!-- <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> -->
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                        <input  ng-class="{'orangeBorder': ((raits.selectedTraitObj.displayName !==traits.selectedtraitDisplayName) || (sDuplicate(traits.selectedtraitDisplayName))) }" maxlength="128" type="text" autocomplete="off" placeholder="{{'Trait_Type_desc_placehold'| i18nString}}" class="form-control"
+                            ng-model='traits.selectedtraitDisplayName' name='traits.selectedtrait' required>
+                        <div ng-show="traitsForm.selectedTrait.$dirty">
+                            <div error-alert ng-show="traitsForm.selectedTrait.$error.required" class="text-danger">
+                                {{'trait_name_required_err'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="traits.selectedTraitObj.traitName !==traits.selectedtraitDisplayName" class="hintMessage"> <img ng-src="{{errorWarning}}" class="errorWarning" ><span class="hintMsg"> {{'trait_hintmsg1'| i18nString}}</span></div>
+                    <div ng-if="isDuplicate(traits.selectedtraitDisplayName)" class="hintMessage"><img ng-src="{{errorWarning}}" class="errorWarning" ><span class="hintMsg"> {{'trait_hintmsg2'| i18nString}}</span></div>
+                </div>
+                <div class="col-xs-12 form-group noPadding" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                    <div class="col-xs-12 noPadding">
+                        <label class="labelTrait"> {{'Trait_Type_label'| i18nString}}</label>
+                        <p class="desc"> {{'change_the_trait_type_desc'| i18nString}}</p>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <select ng-model='traits.selectedTraitGroupId'>
+                            <option value="{{traitGroup._id}}" ng-repeat="traitGroup in  traits.traitGroups track by $index">{{traitGroup.groupName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPadding" >
+                    <div class="col-xs-12 noPadding">
+                        <label ng-if="traits.addEditTraits.matchStrategy=='pattern'" class="labelTrait"> {{'pattern_name'| i18nString}}</label>
+                        <label ng-if="traits.addEditTraits.matchStrategy=='probability'" class="labelTrait"> {{'add_utterences_phrases'| i18nString}}</label>
+                        <span class="pull-right" >
+                            <span class="utteranceSearch">
+                                <input  maxlength="128" tabindex="1" class="utteranceSearchInput" type="text" ng-model="search.utteranceSearch" ng-init="search.utteranceSearch = ''"><span id="utteranceSearchId" class="utteranceSearchBar fa fa-search searchJQSelector" ng-init="bindSearchEvents()"></span>
+                            </span> 
+                        </span>
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                        <input  maxlength="2048" type="text" autocomplete="off" placeholder="{{'Createnew_trait_placehold'| i18nString}}" class="form-control"
+                            ng-keyup='addUtterance(traits.addEditTraits.traits[traits.selectedtrait].utterance,traits.selectedtrait,$event,traits.addEditTraits)' ng-model='traits.addEditTraits.traits[traits.selectedtrait].utterance'
+                            name='traitName'>
+                    </div>
+                    <div ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}" ng-init='utterIndex=$index'  ng-repeat='utterance in traits.addEditTraits.traits[traits.selectedtrait].data | filter:search.utteranceSearch track by $index' class='addUtteranceDiv' >
+                        <div ng-click='$event.stopPropagation()' class="addUtterInput addUtteranceInput{{$index}}">{{utterance}}</div>
+                        <div class="hoverIcons">
+                            <i class="pencilIconGreen btx-pencil editIconPrimary" ng-click="$event.stopPropagation();editUtterenceIntrait($index,utterance)"></i>
+                            <i class="trashIconGray trashIcon btx-delete-1 trashIconRed" ng-click="$event.stopImmediatePropagation();deleteUtteranceIntrait(utterance,traits.selectedtrait,traits.addEditTraits)" ng-src="{{trashIcon}}"></i>
+                        </div>
+                        <div class="col-xs-12 noPadding  editInputUtte editingUtterance{{$index}} hide" id="tags" ng-click='$event.stopPropagation()'>
+                                                    <input maxlength="2048" type="text" class="form-control background-field-white editUtterenceInput{{$index}} overRideBorder" onkeypress="return this.value.length < 2048" ng-keydown="$event.keyCode == 13 && editUtterence($event,$index,traits.addEditTraits.traits[traits.selectedtrait])" ng-blur="editUtterence($event,$index,traits.addEditTraits.traits[traits.selectedtrait])" ng-model="editTrait.editUtterence">
+                                                </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 noPadding" >
+                        <label class="labelTrait"> {{'mapped_intents_terms'| i18nString}}</label>
+                        <p class="desc">{{'trait_rules_defined_using_desc'| i18nString}}</p>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <div ng-if='mapping.length' class="" ng-repeat="(key,mapping) in traits.selectedTraitObj.traitRules.intentTraitRules track by $index">
+                            <div class="mappedIntents col-xs-12 " ng-repeat="traitMapings in mapping track by $index">
+                                        <div class="intentName col-xs-2 " >{{key}}</div>
+                                        <div class="intentDesc col-xs-10 " >
+                                            <span class="issuesDiv" ng-repeat="traits in traitMapings track by $index"> {{traits}}
+                                                <span ng-if="$index < traitMapings.length-1" class="andOr"> {{'and'| i18nString}}</span>
+                                            </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div ng-if='mapping.length' class="" ng-repeat="(key,mapping) in traits.selectedTraitObj.traitRules.ktTraitRules track by $index">
+                            <div class="mappedIntents col-xs-12 " ng-repeat="traitMapings in mapping track by $index">
+                                        <div class="intentName col-xs-2 " >{{key}}</div>
+                                        <div class="intentDesc col-xs-10 " >
+                                            <span class="issuesDiv" ng-repeat="traits in traitMapings track by $index"> {{traits}}
+                                                <span ng-if="$index < traitMapings.length-1" class="andOr"> {{'and'| i18nString}}</span>
+                                            </span>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                 </div>
+            </form>
+            </div>
+            <div class="modalFooter saveTraitGroupBtn">
+                <button type="button" class="btn btnSolidBlue" ng-disabled="(viewState.toggleState=='published' || viewState.permission==='VIEW')" ng-click="saveTraits(traits.addEditTraits,traitsForm,'bytraitId')"> Save</button>
+                <!-- <button class="btn closeCancel" ng-click="closeCreate()">Save & Exit</button> -->
+                <button class="btn closeCancel" ng-click="closeCreate()">{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+</bot-modal-slider>
+<bot-modal-slider id="mapTraitsToIntents" class="utterance-model" ng-show="showMaptraitsSlider">
+    <div class="modalSliderContainer width900 mapTraitsIntent">
+        <div class="modalHeader ">
+            <h4 class="modal-title tableRow">
+                <i class="btx-close" ng-click="closeManageIntentTraitRules()"></i>
+                <span class="" >
+                    {{'add_rule'| i18nString}}
+                </span>
+             
+            </h4>
+        </div>
+        <div class="modalBody " perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+            <form class="info traitsForm" name="traitsForm" >
+                <div class="col-xs-12 form-group noPadding" ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}">
+                    <div class="col-xs-12 noPadding">
+                        <label class="labelTrait">{{'select_an_intent_to_define_rules_label'| i18nString}} <span class="getHelpInfo" tooltip="{{'rule_label_desc'| i18nString}}" tooltip-placement="right">
+                            <i class="btx-help"></i>
+                        </span>
+                    </label>
+                        <!-- <p class="desc mb-0"></p> -->
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <select ng-model='traitMappings.selectedIntent' ng-change="selectIntent(traitMappings.selectedIntent)">
+                            <option value="" disabled> {{'select_intent_label'| i18nString}}</option>
+                            <option value="{{intent._id}}" ng-repeat="intent in  _botComponents | orderBy:'name' track by $index">{{intent.intent || intent.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPadding"  ng-class="{'pointer-none':(viewState.toggleState=='published' || viewState.permission==='VIEW')}" ng-show="traitMappings.selectedIntent">
+                    <div class="col-xs-12 noPadding">
+                        <label class="labelTrait trait-rule-font-size-14">{{'trait_rules_label'| i18nString}}</label>
+                        <p class="desc trait-rule-desc">{{'define_intent_identification_desc'| i18nString}}</p>
+                    </div>
+                    <div class="paddingRightLeft15 traitRule clear-fix"  >
+                        <div class="traitRuleContainer clear-fix" ng-init="parentIndex=$index" ng-repeat="rules in traitMappings.traitRules track by $index">
+                            <div class="traitRuleContainerInner" >
+                                <tags-input id=addTraitRules{{parentIndex}} ng-model="traitMappings.traitRules[$index]" parent-modal='traits' do-not-allow-any-special-characters='true' placeholder=" {{'type_and_enter_placeholder'| i18nString}}" custom-err-msg= "'<word>' is already included in this rule." add-from-autocomplete-only='false' add-on-comma="false" allow-leftover-text = 'false' tag-title="true" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_select'| i18nString}}" use-strings="true">
+                                    <auto-complete source="loadTags($query)" highlight-matched-text='false' min-length='1' select-first-match='false' id="autocompleteTrait{{$index}}" auto-complete-id="autocompleteTrait{{$index}}"></auto-complete>
+                                </tags-input>
+                                <img ng-src="{{minusCircle}}" class="minusCircle" ng-click="deleteOrRule(parentIndex)">
+                            </div>
+                            <div class="col-xs-12 addOR">
+                                <span class="add-pattern">Or</span>
+                            </div>
+                        </div>
+                        <div ng-repeat="dummyCondition in dummyTraitOrCondition track by $index" >
+                                <div  ng-if="dummyTraitOrCondition.length" class="col-xs-12 traitRuleInput" ng-init="getFocus($event)">
+                                        <tags-input ng-model="dummyTraitOrCondition[$index]" parent-modal='traits' do-not-allow-any-special-characters='true' placeholder=" {{'type_and_enter_placeholder'| i18nString}}" add-from-autocomplete-only='false' add-on-comma="false" tag-title="true" allow-leftover-text = 'false' replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder=" {{'type_select'| i18nString}}" use-strings="true" on-tag-added="addTraitDummyAndCondition($index)">
+                                                <auto-complete source="loadTags($query)" highlight-matched-text='false' min-length='1' select-first-match='false'></auto-complete>
+                                            </tags-input>
+                                </div>
+                                    <!-- <div ng-if="dummyTraitOrCondition.length-1 !== $index">
+                                            <img ng-src="{{orIcon}}" class="orIcon">
+                                </div> -->
+                                <div class="col-xs-12 addOR" ng-if="dummyTraitOrCondition.length-1 !== $index">
+                                    <span class="add-pattern">Or</span>
+                                </div>
+                        </div>
+                       
+                        <div class="col-xs-12 addOR">
+                            <span class="add-pattern" ng-click="addOrDummy()"> {{'add_or'| i18nString}}</span>
+                        </div>
+                    </div>
+            </div>
+                </form>
+        </div>
+        <div class="modalFooter saveTraitGroupBtn" ng-show="traitMappings.selectedIntent">
+            <button type="button" ng-disabled="savingInProgress || ((viewState.toggleState=='published' || viewState.permission==='VIEW'))" class="btn btnSolidBlue" ng-click="mapTraitsForComponent()">{{savingInProgress? saving_label :save_label_rule}}</button>
+            <button class="btn closeCancel" ng-click="closeManageIntentTraitRules()">Cancel</button>
+        </div>
+    </div>
+</bot-modal-slider>

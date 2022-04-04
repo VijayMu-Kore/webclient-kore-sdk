@@ -1,0 +1,89 @@
+<form name="streamForm" class="wf-form" novalidate>
+    <fieldset>
+        <div class="panel panel-default">
+            <div class="panel-body">
+            <div class="nlp-heading">
+            <div class="col-xs-12">
+            <div class="nlp-heading">
+			<h3 tooltip-placement="right" tooltip="{{'bot_nlp_meta_manage_all_intents_tooltip'| i18nString}}">{{'settings'| i18nString}}</h3>
+            </div>
+            </div>
+                <div class="col-xs-12 noPadding form-group">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{'bot_nlp_meta_user_interaction_before_interacting_with_bot_tooltip'| i18nString}}"> {{'bot_nlp_meta_require_active_koreai'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 radioDiv">
+                        <div>
+                            <label class="radio-inline" for="nplProfilYes">
+                                <input type="radio" ng-model="settings.profileRequired" value="true" name="profilerequired" id="nplProfilYes" required/> <span class="opt-title">{{'bot_nlp_meta_like_to_take_advantage_yes_radio'| i18nString}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="radio-inline" for="nplProfilNo">
+                                <input type="radio" ng-model="settings.profileRequired" value="false" name="profilerequired" id="nplProfilNo" required/> <span class="opt-title">{{'bot_nlp_meta_bot_request_needed_info_no_radio'| i18nString}}</span>
+                            </label>
+                        </div>
+                        <div ng-show="streamForm.profilerequired.$dirty">
+                            <div error-alert ng-show="streamForm.profilerequired.$error.required" class="text-danger form-error-text"> {{'bot_nlp_meta_profile_required_value'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding form-group" ng-if="settings.profileRequired == 'true'">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{'bot_contact_details'| i18nString}}"> {{'send_contact_card_vcf_label'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 radioDiv">
+                        <div>
+                            <label class="radio-inline" for="botContactYes">
+                                <input type="radio" ng-model="settings.sendVcf" value="true"  name="sendVcf" id="botContactYes" required/> <span class="opt-title">{{'bot_nlp_meta_sendvcf_yes_desc'| i18nString}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="radio-inline" for="botContactNo">
+                                <input type="radio" ng-model="settings.sendVcf" value="false" name="sendVcf" id="botContactNo" required/> <span class="opt-title">{{'bot_nlp_meta_sendvcf_no_desc'| i18nString}}</span>
+                            </label>
+                        </div>
+
+                        <div ng-show="streamForm.sendVcf.$dirty">
+                            <div error-alert ng-show="streamForm.sendVcf.$error.required" class="text-danger form-error-text"> {{'send_vcf_req'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding form-group">
+                    <div class="col-xs-12 labelling">
+                        <label tooltip-placement="right" tooltip="{{'bot_nlp_meta_user_interacting_withbot_nl_capability_tooltip'| i18nString}}">{{'bot_nlp_meta_switch_off_confirming'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv">
+                        <div>
+                            <label for="settings.offKoraConfirmation.no">
+                                <input ng-value='false' ng-checked="true" type="radio"  ng-model="settings.offKoraConfirmation" name="settings.offKoraConfirmation" id="settings.offKoraConfirmation.no" ><span class="opt-title">{{'bot_nlp_meta_no_let_bot_confirm_radio'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="settings.offKoraConfirmation.yes">
+                                <input ng-value='true'  type="radio"   ng-model="settings.offKoraConfirmation" name="settings.offKoraConfirmation" id="settings.offKoraConfirmation.yes"><span class="opt-title">{{'bot_nlp_meta_yes_skip_confirm_radio'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="footer form-group noMargin">
+                    <div class="footerSub">
+                         <div class="form-ctrl-div pull-left">
+                        <button class="btn btn-default" ng-click="$parent.exit()">{{'exit_label'| i18nString}}</button>
+                    </div>
+                    <div class="help-hint-link">
+                        <a target="_blank"  ng-href="{{$root.helpLinks.NLP_SETTINGS}}" >{{'help_withpage_label'| i18nString}}</a>
+                    </div>
+                    <div class="pull-right form-ctrl-div">
+                        <button type="button" ng-click="$parent.exit()" class="btn btn-default"> {{'cancel'| i18nString}} </button>
+                        <button type="button" ng-click="save()"  class="btn btn-primary" ng-disabled="saveInProgress">
+                            <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)? savingLabel : save }}
+                        </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>

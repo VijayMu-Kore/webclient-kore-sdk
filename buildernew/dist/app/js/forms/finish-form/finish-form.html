@@ -1,0 +1,177 @@
+<div class="overflow-hidden">
+    <form class="wf-form">
+        <div class="col-xs-10 form-group">
+        	<div class="resource-view-container">
+        		<div class="resource-details ">
+        			<div ng-switch on="resourceType">
+        				<div ng-switch-when="alert">
+        					<div class="form-container">
+        	    				<div class="pageFlow col-xs-12">
+        							<fieldset>
+        								<div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label> {{'name_label'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.name || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label>{{'connection_type'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.type || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label>{{'state'| i18nString}}  </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.state || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label>{{'short_desc'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.shortDesc || '---'}} </div>
+        				                </div>
+        								<div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label>{{'content_Type_label'| i18nString}}  </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.dataType || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label> {{'bt_resource_View_auth_mech'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.sso_type || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label> {{'identity_provide'| i18nString}}</label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.idp || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group" ng-if="rqInfo.data.length">
+        				                    <div class="col-xs-4 textRight"><label>{{'bt_resource_request_chain'| i18nString}} </label></div>
+        				                    <div class="col-xs-8">
+        				                    	<sortable-table table-data="rqInfo"></sortable-table>
+        				                    </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group" ng-if="alertFieldsInfo.data.length">
+        				                    <div class="col-xs-4 textRight"><label>{{'alert_task_fields'| i18nString}} </label></div>
+        				                    <div class="col-xs-8">
+        				                    	<sortable-table table-data="alertFieldsInfo"></sortable-table>
+        				                    </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group" ng-if="resourceDetails.filterInfo.data.length">
+        				                    <div class="col-xs-4 textRight"><label> {{'alert_task_filters'| i18nString}}</label></div>
+        				                    <div class="col-xs-8">
+                                                <sortable-table table-data="resourceDetails.filterInfo"></sortable-table>
+                                            </div>
+        				                </div>
+                                        <div class="col-xs-12 fieldRow form-group">
+                                            <div class="col-xs-4 textRight"><label> {{'bt_resource_post_title'| i18nString}} </label></div>
+                                            <div class="col-xs-8"> {{resourceDetails.koreUxMap.title | plaintext}} </div>
+                                        </div>
+                                        <div class="col-xs-12 fieldRow form-group">
+                                            <div class="col-xs-4 textRight"><label> {{'post_desc'| i18nString}} </label></div>
+                                            <div class="col-xs-8"> {{resourceDetails.koreUxMap.body | plaintext}} </div>
+                                        </div>
+                                        <div class="col-xs-12 fieldRow form-group">
+                                            <div class="col-xs-4 textRight"><label>{{'search_keywords'| i18nString}} </label></div>
+                                            <div class="col-xs-8"> {{resourceDetails.keywords.join(',') || '---'}} </div>
+                                        </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label> {{'trigger_interval'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.repeatInterval || '---'}} </div>
+        				                </div>
+        				                <div class="footer form-group noMargin">
+        					                <div class="footerSub"><div class="form-ctrl-div pull-left">
+                        <button class="btn btn-default" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+                    </div>
+                    <div class="help-hint-link">
+                        <a ng-hide="((wfType == 'alert')||((wfType == 'action')))" href="" >{{'help_withpage_label'| i18nString}}</a>
+                        <a ng-if="(wfType == 'alert')" class="inline-link" target="_blank"  ng-href="{{$root.helpLinks.ALERT_REVIEW}}">{{'help_withpage_label'| i18nString}}</a>
+                        <a ng-if="(wfType == 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_REVIEW}}">{{'help_withpage_label'| i18nString}}</a>   
+                    </div>
+                    <div class="pull-right form-ctrl-div" ng-if="displayMode!=='view'">
+        					                    <button type="button" class="btn btn-primary" ng-click="onFinishSetup('alert')"><i ng-if="$parent.$parent.isFinshSetupLoading" class="fa fa-spinner fa-spin"></i>{{'finish_setup'| i18nString}} </button>
+                                                </div>
+        					                </div>
+        					            </div>
+        				            </fieldset>
+        	    				</div>
+        	    			</div>
+        				</div>
+
+        				<div ng-switch-when="action">
+        					<div class="form-container">
+        	    				<div class="pageFlow col-xs-12">
+        							<fieldset>
+        								<div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label> {{'name'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.name || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label>{{'connection_type'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.type || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label> {{'state'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.state || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label>{{'short_desc'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.shortDesc || '---'}} </div>
+        				                </div>
+                                        <div class="col-xs-12 fieldRow form-group">
+                                            <div class="col-xs-4 textRight"><label> {{'content_Type_label'| i18nString}} </label></div>
+                                            <div class="col-xs-8"> {{resourceDetails.dataType || '---'}} </div>
+                                        </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label> {{'bt_resource_View_auth_mech'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.sso_type || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label> {{'identity_provide'| i18nString}}</label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.idp || '---'}} </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group" ng-if="resourceDetails.requestChain.length">
+        				                    <div class="col-xs-4 textRight"><label> {{'bt_resource_request_chain'| i18nString}} </label></div>
+        				                    <div class="col-xs-8">
+        				                    	<sortable-table table-data="rqInfo"></sortable-table>
+        				                    </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group" ng-if="resourceDetails.payloadField.length">
+        				                    <div class="col-xs-4 textRight"><label> {{'payloadfieldform_btnLabel'| i18nString}} </label></div>
+        				                    <div class="col-xs-8">
+        				                    	<sortable-table table-data="payloadInfo"></sortable-table>
+        				                    </div>
+        				                </div>
+        				                <div class="col-xs-12 fieldRow form-group" ng-if="resourceDetails.queryField.length">
+        				                    <div class="col-xs-4 textRight"><label>{{'bt_resouce_query_fields'| i18nString}}  </label></div>
+        				                    <div class="col-xs-8">
+        				                    	<sortable-table table-data="queryFieldInfo"></sortable-table>
+        				                    </div>
+        				                </div>
+                                        <div class="col-xs-12 fieldRow form-group">
+                                            <div class="col-xs-4 textRight"><label> {{'bt_resource_post_title'| i18nString}} </label></div>
+                                            <div class="col-xs-8"> {{resourceDetails.koreUxMap.title | plaintext}} </div>
+                                        </div>
+                                        <div class="col-xs-12 fieldRow form-group">
+                                            <div class="col-xs-4 textRight"><label>{{'post_desc'| i18nString}}  </label></div>
+                                            <div class="col-xs-8"> {{resourceDetails.koreUxMap.body | plaintext}} </div>
+                                        </div>
+        				                <div class="col-xs-12 fieldRow form-group">
+        				                    <div class="col-xs-4 textRight"><label>{{'search_keywords'| i18nString}} </label></div>
+        				                    <div class="col-xs-8"> {{resourceDetails.keywords.join(',') || '---'}} </div>
+        				                </div>
+        				                <div class="footer form-group noMargin" >
+        					                <div class="footerSub">  <div class="form-ctrl-div pull-left">
+                        <button class="btn btn-default" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+                    </div>
+                    <div class="help-hint-link">
+                        <a ng-hide="((wfType == 'alert')||((wfType == 'action')))" href="" >{{'help_withpage_label'| i18nString}}</a>
+                        <a ng-if="(wfType == 'alert')" class="inline-link" target="_blank"  ng-href="{{$root.helpLinks.ALERT_REVIEW}}">{{'help_withpage_label'| i18nString}}</a>
+                        <a ng-if="(wfType == 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_REVIEW}}">{{'help_withpage_label'| i18nString}}</a>   
+                    </div>
+                    <div class="pull-right form-ctrl-div" ng-if="displayMode!=='view'">
+        					                    <button type="submit" class="btn btn-primary" ng-click="onFinishSetup('alert')">{{'finish_setup'| i18nString}} </button>
+                                                </div>
+        					                </div>
+        					            </div>
+        				            </fieldset>
+        	    				</div>
+        	    			</div>
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+    </form>
+</div>

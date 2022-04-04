@@ -1,0 +1,10 @@
+input,intent,botName,parentIntent,entityName,entityValue,entityOrder
+Send 200 dollars to Leonardo,Transfer Funds,Banking Bot,,TransferAmount,200 USD
+,,,,PayeeName,Leonardo,TransferAmount>PayeeName
+What is the balance in my checking account,Show Balance,Banking Bot,Transfer Funds,,
+Repeat this transfer every month,Setup Auto Pay,Banking Bot,Transfer Funds,,
+Show my past 20 transactions,Show Account Statement,Banking Bot,,HistorySize,20
+Pay my credit card dues,Pay Bill,Banking Bot,,,
+looks like something is wrong in my statement,trait: Account Statement||Issue||
+Account Type,Banking Bot,,,
+

@@ -1,0 +1,43 @@
+
+<div class="modal-header modal-header-padding">
+  <div class="col-xs-1">
+    <button ng-click="callback.closeTaskCreateModal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button>
+  </div>
+  <div class="col-xs-10">
+    <h4 class="modal-title" id="gridSystemModalLabel">{{'slect_a_task_type'| i18nString}}</h4>
+  </div>
+  <div class="col-xs-1 hide">
+    <button type="button" class="pull-right nextBtn btn btn-xs btn-primary" ng-click="gotoTaskCreation()">{{'next'| i18nString}}</button>
+  </div>
+</div>
+<div class="modal-body wf-form">
+  <div class="taskTypeRadios">
+    <div class="taskTypeDiv" ng-if="isEligibleToShow(taskType.id)" ng-click="selectTask(taskType.id)" ng-class="{'selected':taskObject.selectedTask === taskType.id}" ng-repeat="taskType in taskTypes"> <span class="task-icon"><i class="{{taskType.iconClass}}"></i></span>
+      <div class="radio" for="{{taskType.id}}">
+        <input type="radio" name="rGroup" ng-model="taskObject.selectedTask" value="{{taskType.id}}" id="{{taskType.id}}"/>
+        <div>
+          <p class="name">{{taskType.name}}</p>
+        </div>
+        <div>
+          <p class="description">{{taskType.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer-info>
+  <div ng-bind-html="$root.getSanitizedText($root.lableData.bb044)"></div>
+    <!--<p class="description">Choosing the right target audience is an important step in the bot creation flow as this setting cannot be changes once the bot is created. </p>
+    <span class="stepsTitle">Choose the ‘General Public’ option if</span>
+    <ul class="steps">
+      <li>Nulla eros mauris, malesuada non euismod non, tempor in diam. Duis et vehicula enim. Integer bibendum pulvinar felis, pretium commodo diam vulputate non</li>
+      <li>Curabitur fringilla lobortis ligula quis tristique. Praesent tristique tincidunt ante, malesuada dignissim dolor rutrum id.</li>
+      <li>Morbi consequat pellentesque leo vitae accumsan. Donec dignissim nec metus rutrum malesuada. Maecenas vitae metus libero.</li>
+    </ul>
+    <span class="stepsTitle">Choose the ‘Enterprise’ option if…</span>
+    <ul class="steps">
+      <li>Nulla eros mauris, malesuada non euismod non, tempor in diam. Duis et vehicula enim. Integer bibendum pulvinar felis, pretium commodo diam vulputate non</li>
+      <li>Curabitur fringilla lobortis ligula quis tristique. Praesent tristique tincidunt ante, malesuada dignissim dolor rutrum id.</li>
+      <li>Morbi consequat pellentesque leo vitae accumsan. Donec dignissim nec metus rutrum malesuada. Maecenas vitae metus libero.</li>
+    </ul>-->
+  </footer-info>
+</div>

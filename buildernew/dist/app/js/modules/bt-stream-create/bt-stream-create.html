@@ -1,0 +1,28 @@
+<div class="bt-create-container col-xs-12 topmargin-6 scroll-container">
+	<div class="row top-bar selected-stream">
+	    <div class="main-body row">
+	        <div class="stream-icon">
+	        	<a href="/bt" title="">
+	            	<img ng-src="{{contextPath}}/img/newBot.gif" class="newBotIcon">
+	        	</a>
+	        </div>
+	        <div class="stream-details">
+	          <div class="name">{{'bot'| i18nString}}</div>
+	           <div class="taskContainer">
+	          <div class="categories newBotCreation">{{'new_bot'| i18nString}}</div>
+                </div>
+	        </div>
+	    </div>
+	</div>
+	<div class="scroll-div" perfect-scroll>
+	<section class="widget botStreamCreate">
+		<header class="header"> </header>
+		
+		<div class="widget-body">
+		  <div class="col-xs-12 noPadding">
+	    	<stream-form stream-id="{{streamId}}" display-mode="{{displayMode}}" edit-mode="new" on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></stream-form>
+            </div></div>
+       
+	</section>
+    </div>
+</div>

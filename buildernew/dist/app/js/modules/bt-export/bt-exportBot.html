@@ -1,0 +1,319 @@
+<div class='botExportModal'>
+    <div class="container-fluid noPadding marginBottom10 exportBot export-bot-data-content" ng-class="{'export-blur':callback.exporting=== 'pending'}">
+        <div class="col-xs-12 radioDiv marginT12 noPadding" ng-init="getExportBotStatus();">
+            <div class="radioInnerDiv">
+                <label for="publishedExport">
+                    <input value="published" type="radio" ng-model="bot.exportType" name="published" id="publishedExport" />
+                    <span class="opt-title">{{'published'| i18nString}}
+                        <div ng-if = "botType !== 'universalbot'" class="description">{{'botType_not_universal_desc_publish'| i18nString}}</div>
+                        <div ng-if = "botType === 'universalbot'" class="description">{{'botType_universal_desc_publish'| i18nString}}</div>
+                    </span>
+                </label>
+                <div class="component-import" ng-show="(bot.exportType === 'published') && partialImportAllowed">
+                    <span class="desc-title">{{'select_components'| i18nString}}</span>
+                    <div class="import-task clear-fix" ng-init="parentIndex= $index" ng-repeat="category in categories track by $index">
+                        <div class="checkbox checkDiv checkbox-primary styledCSS">
+                            <input id="componentExport{{parentIndex}}" type="checkbox" ng-model="category.selected" ng-click="clickerTask(category,$event,$index)">
+                            <label for="componentExport{{parentIndex}}" class="taskLabel" title="{{category.name}}">{{category.name}}</label>
+                        </div>
+                        <div class="import-task-options col-xs-12" ng-class="{'if-no-data': category.key === 'Custom Dashboards'}">
+                            <div class="import-task-options-inner-data">
+                                <span class="checkbox checkbox-primary styledCSS import-width display-inline-block" ng-repeat = "tasktype in category.list track by $index">
+                                    <input type="checkbox" id="sub-componentExport{{parentIndex}}{{$index}}" ng-model="tasktype.selected" name="sub-componentExport" ng-click="clickerSubTask(category,$event,parentIndex)">
+                                    <label for="sub-componentExport{{parentIndex}}{{$index}}" class="taskLabel"  title="{{tasktype.task}}">{{tasktype.name}}</label>
+                                    <span class = "tasksSelection" ng-click = "openTasksSlider('published',tasktype.value)" ng-class="{'pointerEventsNone':!tasktype.selected}"  ng-if="(tasktype.task === 'Tasks')  || (tasktype.value === 'forms')">({{(tasktype.value === 'forms')?formsSelectionLengthPublished:tasksSelectionLengthPublished}})</span>
+                                    <span class = "tasksSelection botVariable" ng-click = "openCollectionSlider('published',tasktype.name)" ng-class="{'pointerEventsNone':!tasktype.selected}" ng-if="(tasktype.value === 'botVariables') && btCollectionVariables.selectedCollection && btCollectionVariables.useCollections" >                                    
+                                        <span title="{{btCollectionVariables.selectedCollection.name}}" class="collection-name">(<span class="name-collection" title="{{btCollectionVariables.selectedCollection.name || '---'}}">{{btCollectionVariables.selectedCollection.name || '---'}}</span>)</span>
+                                        <span class="tooltip-hover" tooltip-placement="top" tooltip="{{'export_collection_tooltip_text' | i18nString}}"> <img ng-src="{{help}}" alt="help"></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    
+            <div class="radioInnerDiv">
+                <label for="latestExport">
+                    <input value="latest" type="radio"  ng-model="bot.exportType" name="latest" id="latestExport" />
+                    <span class="opt-title">{{'latest_ver'| i18nString}}
+                        <div ng-if = "botType !== 'universalbot'" class="description">{{'botType_not_universal_desc_latest'| i18nString}}</div>
+                        <div ng-if = "botType === 'universalbot'" class="description">{{'botType_universal_desc_latest'| i18nString}}</div>
+                    </span> 
+                </label>
+                <div class="component-import" ng-show="(bot.exportType === 'latest') &&  partialImportAllowed">
+                    <span class="desc-title">{{'select_components'| i18nString}}</span>
+                    <div class="import-task clear-fix"   ng-init="parentIndex= $index" ng-repeat="latestcategory in latestcategories track by $index">
+                        <div class="checkbox checkDiv checkbox-primary styledCSS">
+                            <input id="componentlatest{{parentIndex}}" type="checkbox" ng-model="latestcategory.selected" ng-click="clickerLatestTask(latestcategory,$event,$index)">
+                            <label for="componentlatest{{parentIndex}}" class="taskLabel" title="{{latestcategory.name}}">{{latestcategory.name}}</label>
+                        </div>
+                        <div class="import-task-options col-xs-12" ng-class="{'if-no-data': latestcategory.key === 'Custom Dashboards'}">
+                            <div class="import-task-options-inner-data">
+                                <span class="checkbox checkbox-primary styledCSS import-width display-inline-block" ng-repeat = "subtasktype in latestcategory.list track by $index">
+                                    <input type="checkbox" id="latestsub-component{{parentIndex}}{{$index}}" ng-model="subtasktype.selected" name="sub-component" ng-click="clickerLatestSubTask(latestcategory,$event,parentIndex)">
+                                        <label for="latestsub-component{{parentIndex}}{{$index}}" class="taskLabel" title="{{subtasktype.task}}">{{subtasktype.name}}</label>
+                                        <span class = "tasksSelection" ng-click = "openTasksSlider('indevelopment',subtasktype.value)"  ng-class="{'pointerEventsNone':!subtasktype.selected}" ng-if="(subtasktype.task === 'Tasks')  || (subtasktype.value === 'forms')">({{(subtasktype.value === 'forms')?formsSelectionLengthIndevelopment:tasksSelectionLengthIndevelopment}})</span>                                    
+                                        <span class = "tasksSelection botVariable" ng-click = "openCollectionSlider('published',tasktype.name)" ng-class="{'pointerEventsNone':!subtasktype.selected}" ng-if="(subtasktype.value === 'botVariables') && btCollectionVariables.selectedCollection && btCollectionVariables.useCollections" > 
+                                            <span title="{{btCollectionVariables.selectedCollection.name}}" class="collection-name">(<span class="name-collection" title="{{btCollectionVariables.selectedCollection.name || '---'}}">{{btCollectionVariables.selectedCollection.name || '---'}}</span>)</span>
+                                            <span class="tooltip-hover" tooltip-placement="top" tooltip="{{'export_collection_tooltip_text' | i18nString}}"> <img ng-src="{{help}}" alt="help"></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <!-- <div class="buttonContainer" ng-if="(callback.exporting === 'initial') || (callback.downloadFlag === true && callback.exporting === 'finished')">
+        <button type="button" class="btn btnSolidBlue exportBtn" ng-click='exportBot()'> <span>{{'export'| i18nString}}</span></button>
+    </div>
+    <div class="buttonContainer" ng-if="callback.downloadFlag == true  && callback.exporting === 'finished'">
+        <div class="Line"></div>
+        <span class="btn btn-primary downloadBtn" ng-click = "downloadFile($event)">{{'download'| i18nString}}</span>
+        <a href = "{{downloadUrl}}" id ="downloadFile" target = "_self" download></a>
+        <p class="download-text">{{'version_exported'| i18nString:({dyn:exporttype})}} {{getTime()}} {{getDate()}}</p>
+
+    </div>
+    <div class="buttonContainer" ng-if="callback.exporting === 'pending'">
+        <button type="button" class="btn btnSolidBlue buttonExporting"><span class="spinner-text">{{'exporting_label'| i18nString}}<i class="fa fa-spinner fa-spin callback.exporting"></i></span></button>
+        <p>{{'bot_export_in_progress'| i18nString}}</p>
+    </div>
+    <div class="errorContainer" ng-if="callback.exporting === 'failed'">
+        <button type="button" class="btn btn-primary retry-btn" ng-click="exportBot()">{{'retry'| i18nString}}<span class="reload"><img ng-src="{{reloadpng}}"></span></button>
+        <button type="button" class="btn btn-default closeCancel" ng-click="callback.setToInitial()">{{'cancel'| i18nString}}</button>
+        <p>{{'bot_export_could_not_be_completed'| i18nString}}</p>
+    </div>
+    <div class="buttonContainer" ng-if="callback.exporting === 'finished' && callback.downloadFlag == false">
+        <span class="btn btn-primary downloadBtn" ng-click = "downloadFile($event)">{{'download'| i18nString}}</span>
+        <a href = "{{downloadUrl}}" id ="downloadFile" target = "_self" download></a>
+        <button type="button" class="btn btnSolidBlue buttonExporting" ng-click="exportBot()"><span>{{'new_export'| i18nString}}</span>
+        </button>
+        <p>{{'version_exported'| i18nString:({dyn:exporttype})}} {{getTime()}} {{getDate()}}</p>
+    </div> -->
+    <bot-modal-slider id="taskSelectionSlider">
+        <div class="modalSliderContainer selectAppModal width700">
+            <div class="modalHeader">
+                <h4 class="modal-title">
+                    <i class="top25 btx-close" ng-click="taskSelectionSliderClose()" ></i>
+                    <div class="miHeadBar">
+                        <div class="desc">{{'select_tasks'| i18nString}}</div>
+                        <div class="heading">{{'choose_tasks_to_include'| i18nString}}</div>
+                    </div>                     
+                </h4>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-135" height-property="height">
+             <div class="loadingTasks" ng-if="loadingTasksList || !tasksLoaded">Loading</div>  
+             <div ng-if="!loadingTasksList">
+                <div class="hintContainer" ng-if="selectedState === 'published' && suspendedCheck.length">
+                    <div class="inputNote" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                        <div class="col-xs-1 bulbicon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></div>
+                        <div class="col-xs-11">
+                            <span class="name">
+                                {{'tasks_in_the_suspended_state'| i18nString}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hintContainer" ng-if="selectedState === 'indevelopment' && rejectedCheck.length">
+                        <div class="inputNote" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                            <div class="col-xs-1 bulbicon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></div>
+                            <div class="col-xs-11">
+                                <span class="name">
+                                    {{'tasks_in_the_rejected_progress'| i18nString}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="searchComponent">
+                        <input focus-it tabindex="1" type="text" class="form-control focusNameSearch" ng-model="search.nameSearchQuery" placeholder="{{'search_by_tasks'| i18nString}}">
+                        <i class="btx-search"></i>
+                        <i class="btx-close displayNone"></i>
+                    </div>
+                <div class="darkBottomBorder text-right displayNone">
+                    <div ng-show="!showNameSearch" class="headerTitle">
+                        <span class="fa-search btx-search" ng-click="activateNameSearch(true)"></span>
+                        <span class="name pl-5">{{'name_label_uppercase'| i18nString}}</span>                          
+                    </div>
+                    <!-- <div ng-show="showNameSearch" class="searchVariable">
+                        
+                        <span class="fa fa-times pull-right inputBoxClose" ng-click="activateNameSearch(false)"></span>
+                    </div> -->
+                    <div class="searchComponent" ng-show="showNameSearch" >
+                        <input focus-it tabindex="1" type="text" class="form-control focusNameSearch" ng-model="search.nameSearchQuery" placeholder="{{'search_by_tasks'| i18nString}}">
+                        <i class="btx-search"></i>
+                        <i class="btx-close displayNone"></i>
+                    </div>
+                </div>
+                <div class="import-task clear-fix">
+                    <div class="panel-table-body panelTableBody taskCheckList">
+                        <div class="panel-table col-xs-12 tableContainer">
+                            <div class="panel-table-header noPaddingBottom noPaddingLeft">
+                                <div class="row tableHeaderRow">
+                                    <div class="col-xs-1 title checkBoxCenter">
+                                        <span class="checkbox checkDiv checkbox-primary styledCSS noMargin">
+                                            <input id="selectAll" ng-if="selectedState === 'published'" ng-model="allTasksSelectedPublished" type="checkbox" class="checkAll" ng-click="clickerTaskSelection(selectedState,$event,'#taskSelectionSlider')">
+                                            <input id="selectAll" ng-if="selectedState === 'indevelopment'" ng-model="allTasksSelectedIndevelopment" type="checkbox" class="checkAll" ng-click="clickerTaskSelection(selectedState,$event,'#taskSelectionSlider')">
+                                            <label for="selectAll" class="taskLabel"></label>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-6 title cursor-pointer" ng-click="sortTaskList('nameSort')">{{'name_label_uppercase'| i18nString}}<i class="fa fa-caret-up marginLeft5"  ng-if="orderType=='name'"></i><i class="fa fa-caret-down marginLeft5" ng-if="orderType=='-name'"></i><i class="fa fa-sort marginLeft5" ng-if="orderType!=='-name' && orderType!=='name'"></i></div>
+                                    <div class="col-xs-5 title cursor-pointer">{{'last_updated'| i18nString}}</div>
+                                </div>
+                                <div class="panel-table-body tableBodyRow clearfix"  ng-repeat = "tasks in allTasksDataPublishedCopy | orderBy:(orderType || '-lMod') | filter:{name:search.nameSearchQuery}" ng-if="(selectedState === 'published') && ($index < taskToLoad)">
+                                    <div class="col-xs-1 noBorder">
+                                        <span class="checkbox checkDiv checkbox-primary styledCSS noMargin">
+                                            <input id="{{tasks._id}}" ng-model="tasks.selected"type="checkbox" ng-click = "clickerSubTaskSelection($event,selectedState,'#taskSelectionSlider')" class="check">
+                                            <label for="{{tasks._id}}" class="taskLabel"></label>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-6 noBorder ellipsis taskFields">{{tasks.name}}</div>
+                                    <div class="col-xs-5 noBorder taskFields">{{tasks.lMod || tasks.modifiedOn | date:'MM-dd-yyyy'}}</div>
+                                </div>
+                                <div class="panel-table-body tableBodyRow clearfix" ng-repeat = "tasks in allTasksDataIndevelopmentCopy | orderBy:(orderType || '-lMod') | filter:{name:search.nameSearchQuery}" ng-if="(selectedState === 'indevelopment') && ($index < taskToLoad)">
+                                    <div class="col-xs-1 noBorder">
+                                        <span class="checkbox checkDiv checkbox-primary styledCSS noMargin">
+                                            <input id="{{tasks._id}}" type="checkbox" ng-model="tasks.selected" ng-click = "clickerSubTaskSelection($event,selectedState,'#taskSelectionSlider')" class="check">
+                                            <label for="{{tasks._id}}" class="taskLabel"></label>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-6 noBorder ellipsis taskFields">{{tasks.name}}</div>
+                                    <div class="col-xs-5 noBorder taskFields">{{tasks.lMod || tasks.modifiedOn | date:'MM-dd-yyyy'}}</div>
+                                </div>
+                            </div>
+                            <div class="loadMore" ng-if="(selectedState === 'published') && (allTasksDataPublishedCopy.length > 300) && (taskToLoad === 300) && !search.nameSearchQuery" ng-click="loadMore('published')">Load More</div>
+                            <div class="loadMore" ng-if="(selectedState === 'indevelopment') && (allTasksDataIndevelopmentCopy.length > 300) && (taskToLoad === 300)  && !search.nameSearchQuery" ng-click="loadMore('indevelopment')">Load More</div>
+                        </div>
+                        <div class="panel-table col-xs-12 tableContainer" >
+     
+                        </div>
+                        <div class="panel-table col-xs-12 tableContainer" >
+                   
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="modalFooter">
+                <button type="button" class="btn btn-default pull-left" ng-click='saveTasksID(selectedState)'>{{'done'| i18nString}}</button>
+                <div class="independentTasksDiv">
+                    <span class="checkbox checkDiv checkbox-primary styledCSS noMargin">
+                        <input id="independentTasks" type="checkbox" ng-model="bot.independentTasks" class="check">
+                        <label for="independentTasks" class="taskLabel" title="{{'include_dependent_tasks'| i18nString}}">{{'include_dependent_tasks'| i18nString}}</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <bot-modal-slider id="formSelectionSlider">
+        <div class="modalSliderContainer selectAppModal width700">
+            <div class="modalHeader">
+                <h4 class="modal-title">
+                    <i class="top25 btx-close" ng-click="formSelectionSliderClose()" ></i>
+                    <div class="miHeadBar">
+                        <div class="desc">{{'select_forms'| i18nString}}</div>
+                        <div class="heading">{{'choose_forms_to_include'| i18nString}}</div>
+                    </div>                     
+                </h4>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+                <div class="hintContainer" ng-if="selectedState === 'published' && suspendedFormsCheck.length">
+                    <div class="inputNote" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                        <div class="col-xs-1 bulbicon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></div>
+                        <div class="col-xs-11">
+                            <span class="name">
+                                {{'forms_in_the_suspended_state'| i18nString}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hintContainer" ng-if="selectedState === 'indevelopment' && rejectedFormsCheck.length">
+                        <div class="inputNote" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                            <div class="col-xs-1 bulbicon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></div>
+                            <div class="col-xs-11">
+                                <span class="name">
+                                    {{'froms_in_the_rejected_progress'| i18nString}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="searchComponent" ng-show="showNameSearch" >
+                        <input focus-it tabindex="1" type="text" class="form-control focusNameSearch" ng-model="search.nameSearchQuery" placeholder="{{'search_by_tasks'| i18nString}}">
+                        <i class="btx-search"></i>
+                        <i class="btx-close displayNone"></i>
+                    </div>
+                <div class="darkBottomBorder text-right displayNone">
+                    <div ng-show="!showNameSearch" class="headerTitle">                         
+                        <span class="fa-search btx-search" ng-click="activateNameSearch(true)"></span>
+                        <span class="name pl-5">{{'name_label_uppercase'| i18nString}}</span>
+                    </div>
+                    <!-- <div ng-show="showNameSearch" class="searchVariable">
+                        <input focus-it tabindex="1" type="text" class="form-control focusNameSearch" ng-model="search.nameSearchQuery" placeholder="{{'search_by_tasks'| i18nString}}">
+                        <span class="fa fa-times pull-right inputBoxClose" ng-click="activateNameSearch(false)"></span>
+                    </div> -->
+                    <div class="searchComponent" ng-show="showNameSearch" >
+                        <input focus-it tabindex="1" type="text" class="form-control focusNameSearch" ng-model="search.nameSearchQuery" placeholder="{{'search_by_tasks'| i18nString}}">
+                        <i class="btx-search"></i>
+                        <i class="btx-close displayNone"></i>
+                    </div>
+                </div>
+                <div class="import-task clear-fix">
+                    <div class="panel-table-body panelTableBody taskCheckList">
+                        <div class="panel-table col-xs-12 tableContainer">
+                            <div class="panel-table-header noPaddingBottom noPaddingLeft">
+                                <div class="row tableHeaderRow">
+                                    <div class="col-xs-1 title checkBoxCenter">
+                                        <span class="checkbox checkDiv checkbox-primary styledCSS noMargin">
+                                            <input id="selectAllForms" ng-if="selectedState === 'published'" ng-model="allFormsSelectedPublished" type="checkbox" class="checkAll" ng-click="clickerTaskSelection(selectedState,$event,'#formSelectionSlider')">
+                                            <input id="selectAllForms" ng-if="selectedState === 'indevelopment'" ng-model="allFormsSelectedIndevelopment" type="checkbox" class="checkAll" ng-click="clickerTaskSelection(selectedState,$event,'#formSelectionSlider')">
+                                            <label for="selectAllForms" class="taskLabel"></label>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-6 title cursor-pointer" ng-click="sortTaskList('nameSort')">{{'name_label_uppercase'| i18nString}}<i class="fa fa-caret-up marginLeft5"  ng-if="orderType=='name'"></i><i class="fa fa-caret-down marginLeft5" ng-if="orderType=='-name'"></i><i class="fa fa-sort marginLeft5" ng-if="orderType!=='-name' && orderType!=='name'"></i></div>
+                                    <div class="col-xs-5 title cursor-pointer">{{'last_updated'| i18nString}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-table col-xs-12 tableContainer" ng-repeat = "tasks in allFormsDataPublishedCopy | orderBy:(orderType || '-lMod') | filter:{name:search.nameSearchQuery}" ng-if="selectedState === 'published'">
+                            <div class="panel-table-body tableBodyRow clearfix" >
+                                <div class="col-xs-1 noBorder">
+                                    <span class="checkbox checkDiv checkbox-primary styledCSS noMargin">
+                                        <input id="{{tasks._id}}" ng-model="tasks.selected"type="checkbox" ng-click = "clickerSubTaskSelection($event,selectedState,'#formSelectionSlider')" class="check">
+                                        <label for="{{tasks._id}}" class="taskLabel"></label>
+                                    </span>
+                                </div>
+                                <div class="col-xs-6 noBorder ellipsis taskFields">{{tasks.name}}</div>
+                                <div class="col-xs-5 noBorder taskFields">{{tasks.lMod || tasks.modifiedOn | date:'MM-dd-yyyy'}}</div>
+                            </div>
+                        </div>
+                        <div class="panel-table col-xs-12 tableContainer" ng-repeat = "tasks in allFormsDataIndevelopmentCopy | orderBy:(orderType || '-lMod') | filter:{name:search.nameSearchQuery}" ng-if="selectedState === 'indevelopment'">
+                            <div class="panel-table-body tableBodyRow clearfix" >
+                                <div class="col-xs-1 noBorder">
+                                    <span class="checkbox checkDiv checkbox-primary styledCSS noMargin">
+                                        <input id="{{tasks._id}}" type="checkbox" ng-model="tasks.selected" ng-click = "clickerSubTaskSelection($event,selectedState,'#formSelectionSlider')" class="check">
+                                        <label for="{{tasks._id}}" class="taskLabel"></label>
+                                    </span>
+                                </div>
+                                <div class="col-xs-6 noBorder ellipsis taskFields">{{tasks.name}}</div>
+                                <div class="col-xs-5 noBorder taskFields">{{tasks.lMod || tasks.modifiedOn | date:'MM-dd-yyyy'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modalFooter">
+                <button type="button" class="btn btn-default pull-left" ng-click='saveFormsID(selectedState)'>{{'done'| i18nString}}</button>
+                <div class="independentTasksDiv">
+                    <span class="checkbox checkDiv checkbox-primary styledCSS noMargin">
+                        <input id="independentForms" type="checkbox" ng-model="bot.independentForms" class="check">
+                        <label for="independentForms" class="taskLabel">{{'include_dependent_froms'| i18nString}}</label>
+                        <span class="tooltip-custom export-dialog"><img src="{{assetsBase}}icons/helpIcon.svg"class=""/><span class="tooltiptext">{{'export_dialog_tooltip_text'| i18nString}}</span></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <!-- Collections -->
+    <manage-collections cb='btCollectionVariables' id="manageCollectionsSlider" ng-if="manageCollectionVarEnable"></manage-collections>         
+</div>

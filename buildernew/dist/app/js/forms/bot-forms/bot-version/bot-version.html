@@ -1,0 +1,339 @@
+<div class="col-xs-12 botVersionContainer">
+ <!-- <div class="emptyState" ng-show="!botVersionsList.length && emptyState.showEmpty && !dateRange.length">
+	<div class="emptyImage">
+		<img ng-src="{{emptyStateIcon}}" class="emptyImg">	         
+	</div>  
+	<div class="mainTitle">{{'introducing_botversion' | i18nString }}</div>
+	<div class="emptyStateDesc">{{'version_desc' | i18nString }}<a href="javascript:void(0)" target="_blank" ng-click="redirectToLink('BOT_VERSION_HELP')"><b>{{'learn_more_label' | i18nString}}</b></a></div>
+	<button class="kr-sg-button-primary btn_md" ng-disabled="versionStatus === 'inprogress'" ng-click="openVersion()">{{'createVersion' | i18nString }}<i class="fa fa-spinner fa-spin" ng-show="versionStatus === 'inprogress'"></i></button>
+</div> -->
+
+<div class="row btnSearchTitle">
+	<div class="col-xs-6 leftTitle">
+		<p class="pageTitle">{{'bot_versioning'| i18nString}}</p>
+	</div>
+	<div class="col-xs-6 rightBTNSearch" ng-show="!emptyState.showEmpty">
+		<div class="searchComponent " ng-show="botVersionsList.length">
+			<input tabindex="1" type="text" placeholder="{{'search'| i18nString}}"  ng-model="search"
+			placeholder="{{'search_bot'| i18nString}}" ng-init="search = ''">
+			<i class="btx-search" ng-show="search === '' "></i>
+			<i class="btx-close" ng-click="search = ''" ng-class="{displayNone: !search.length}"></i>
+		</div>
+		<div class="creationButton borderBtn ">
+			<div class="btn selectedInput" name="daterange" id="daterange">{{'filter_by_date'| i18nString}} <i class="btx-carrot-down"></i></div>
+	   </div>
+		<!-- <div class="titleDropdown ">
+			<div name="daterange" class="selectedInput" id="daterange"><i class="btx-carrot-down"></i></div>
+		</div> -->
+		<div class="creationButton borderBtn ">
+			 <button class="btn btnSolidBlue" ng-disabled="createAccessRight === 'VIEW' || versionStatus === 'inprogress' " ng-click="openVersion()">{{'newVersion' | i18nString }} <i class="fa fa-spinner fa-spin" ng-show="versionStatus === 'inprogress'"></i></button>
+		</div>
+
+		<div class="titleOverflow displayNone">
+			<div class="dropdown">
+				<a href="#" class="ellipsisGray" data-toggle="dropdown">
+					<i class="btx-overflow"></i>
+					</a>
+				<ul class="dropdown-menu">
+					<li class="dropdown-item">Option One</li>
+					<li class="dropdown-item" >Option Two</li>                       
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="emptyStateContainer"  ng-show="!botVersionsList.length && emptyState.showEmpty && !dateRange.length">
+	<div class="emptyState">
+		<div class="emptyImage">
+			<img ng-src="{{emptyStateIcon_bot_versions}}" class="emptyImg">	 
+			<!-- <img ng-src="{{emptyStateIcon}}" class="emptyImg">	         -->
+		</div>  
+		<span class="mainTitle">{{'empty_botversion_title' | i18nString }}</span>
+		<div class="emptyStateDesc">{{'empty_botversion_desc' | i18nString }} <a target="_blank" ng-click="redirectToLink('BOT_VERSION_HELP')">{{'learn_more' | i18nString}}</a></div>
+		<div class="generateBtn">
+			<button class="addBTN m-0" ng-disabled="versionStatus === 'inprogress'" ng-click="openVersion()">{{'create_new_version' | i18nString }}<i class="fa fa-spinner fa-spin" ng-show="versionStatus === 'inprogress'"></i></button>
+			<!-- <button class="learnmoreBTN"><i class="fa fa-spinner fa-spin" ng-show="versionStatus === 'inprogress'"></i></button> -->
+		</div>
+	</div>
+</div>
+
+ <div class="mainBotVersionContainer col-xs-12 noPadding" ng-show="hasProp(emptyState, 'showEmpty') && !emptyState.showEmpty">
+	<div class="tableContainer">
+		<div class="tableHeader">
+			<div class="headerTitle name">{{'bot_name' | i18nString}}</div>
+			<div class="headerTitle description">{{'desc_label' | i18nString}}</div>
+			<div class="headerTitle platForm">{{'platform_version' | i18nString}}</div>
+			<div class="headerTitle type">{{'task_type' | i18nString}}</div>
+			<div class="headerTitle createdOn"><a class="dropdown-toggle" type="button" data-toggle="dropdown" title=""> {{'created_on' | i18nString}} <i class="fa fa-sort-desc"></i></a>
+				<ul class="dropdown-menu create-menu">
+					<li class="dropdownOptions" ng-click="sortByDate('new')">{{'newest_to_oldest' | i18nString}}</li>
+					<li class="dropdownOptions paddingTop10" ng-click="sortByDate('old')">{{'oldest_to_newest' | i18nString}}</li>
+				</ul>
+			</div>
+			<div class="headerTitle createdBy">{{ 'created_by' | i18nString}}</div>
+		</div>
+		<div ng-show="((filtered.length === 0 && search.length) || (botVersionsList.length === 0 && dateRange.length))" class="noDataFound">
+			<span>{{'no_Data_found' | i18nString}}</span>
+		</div>
+		<div ng-show="botVersionsList.length > 0">
+		<div class="tableDescription" bs-popover ng-repeat="version in botVersionsList | filter:search as filtered track by $index">
+			<div class="name title">{{version.name}}</div>
+			<div class="description title">{{version.description}}</div>
+			<div class="platForm title">{{version.platformVersion}}</div>
+			<div class="type title">{{version.type === 'user'?'User Created':'Auto Created'}}</div>
+			<div class="createdOn title">{{version.createdOn | customDateTime}}</div>
+			<div class="createdBy title">{{version.userDetails.firstName}} {{version.userDetails.lastName}}</div>
+			<div class="link">
+				<button class="kr-sg-button-secondary btn_lg" ng-hide="restoreAccessRight === 'VIEW'" ng-click="manageVersionSlider(version)">{{'compare'| i18nString}}</button>				
+				<i class="btx-warning warning" ng-hide="version.isVersionCompatible" data-placement="top" data-trigger="hover" data-toggle="popover" data-content="This version is no longer supported and it cannot be used to restore the bot definition"></i>				
+				<div class="dropdown" ng-class="{'pad-drp-elipse':version.isVersionCompatible}">
+					<img ng-src="{{ellipsisDark}}" class="ellipsisDark" data-toggle="dropdown" ng-hide="createAccessRight === 'VIEW'">
+					<ul class="dropdown-menu" role="menu" id="dropdownMenu">
+						<li class="export linkBtn" ng-click="showRestorModal(version)"><i class="btx-return"></i>{{ 'restore' | i18nString }}</li>
+						<li class="export linkBtn" ng-click="exportVersion(version)"><i class="btx-export"></i>{{ 'export' | i18nString }}<i class="fa fa-spinner fa-spin" ng-show="exportStatus === 'pending'"></i></li>
+						<li class="delete linkBtn delete" ng-hide="createAccessRight === 'VIEW' || version.type === 'auto'" ng-click="deleteVersion(version)"><i class="btx-delete-1"></i>{{'delete' | i18nString }}</li>
+					</ul>
+				</div>
+			</div>
+    	</div>
+    	</div>
+		<!-- <pagination rotate="false" total-items="totalVersionCount" ng-show="(filtered.length
+		 > itemsPerPage && (search.length)) || (!search.length && totalVersionCount > itemsPerPage)"
+			ng-model="currentPage" ng-change="pageChanged(currentPage)" max-size="maxSize"
+			class="marginRight30 pagination-sm" items-per-page="limit"></pagination> -->
+
+	</div>
+	<div id="inheritanceModal" class="modal fade" role="dialog">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	             <div class="modal-header">
+	                <h4 class="modal-title">{{'bot_version' | i18nString}}</h4>
+	              </div>
+	            <div class="modal-body">
+	               <p class="desc">{{'bot_version_inheritance_desc' | i18nString}} </p> 
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" ng-click='closeInheritanceModal()'>{{'ok'| i18nString}}</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<div id="restoreModal" class="modal fade restore-modal-bot-version" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+		<div class="modal-content-sec">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><i class="btx-close" ng-click='closeRestoreModal()'></i> {{'confirm_proceed'| i18nString}}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="desc">The bot definition will be fully restored using {{currentRestore.name}}. Any
+						additional tasks or components present in the current bot definition will be deleted from the
+						'In-development' copy of the bot. <a target="_blank" ng-click="redirectToLink('RESTORE_VERSION')" class="link">{{'knowMore' | i18nString}}</a>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="kr-sg-button-primary btn_md" ng-click='proceedRestore()'>{{'confirm'| i18nString}}</button>
+					<button type="button" class="kr-sg-button-secondary btn_md" ng-click='closeRestoreModal()'>{{'cancel'| i18nString}}</button>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div id="restoreModalProgress" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content-sec">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title"><i class="btx-close" ng-click='closeRestoreProgress()'></i>{{ 'restoreBot' | i18nString }}</h4>
+					</div>
+					<div class="modal-body" perfect-scroll dynamic-height height-property="height" dynaoffset="-320">
+						<div class="restoreInprogress restoreContainer" ng-show="restoreVersionStatus === 'inprogress' || restoreVersionStatus === 'failure'">
+							<div class="importingImage">
+								<img class="importing" ng-src="{{importingIcon}}">
+								<img class="reloadImg" ng-src="{{reloadIcon}}">
+							</div>
+							<div class="restore-text">{{ 'restoring' | i18nString }}</div>
+							<div class="import-progress-bar">
+								<div class="inside-progress-bar" ng-style="{width : (totalProgress + '%') }"></div>
+							</div>
+							<div class="statusLogsContainer">
+								<div class="logHeader" ng-show="statusLogs.length">{{ 'restoreStatusLogs' | i18nString }}</div>
+								<div class="col-xs-12 paddingTop20" ng-repeat="statuslog in statusLogs">									
+									<div class="importError col-xs-12 noPadding" ng-show="statuslog.status === 'success'">
+										<span class="col-xs-5 importErrorMsg" tooltip-placement="top" tooltip="{{statuslog.taskName}}">{{statuslog.taskName}}</span>
+										<span class="col-xs-5 importErrorMsg" tooltip-placement="top" tooltip="{{statuslog.taskType}}">{{statuslog.taskType}}</span>
+										<span class="col-xs-2 btx-check"></span>
+									</div>
+									<div class="importError col-xs-12 noPadding" ng-show="statuslog.status === 'failure'">
+										<span class="col-xs-10 importErrorMsg" tooltip-placement="top" tooltip="{{statuslog.errorLog}}">{{statuslog.errorLog}}</span>
+										<span class="col-xs-2 error btx-warning"></span>
+									</div>								
+								</div>
+							</div>
+						</div>
+						<div class="restoreSuccess restoreContainer" ng-show="restoreVersionStatus === 'success'">
+							<div class="importingImage">
+								<img class="importing" ng-src="{{importSuccessIcon}}">
+								<img class="reloadImg" ng-src="{{reloadIcon}}">
+							</div>
+							<div class="restore-text">{{'bot_restored_version' | i18nString:({dyn:currentRestore.name})}}</div>
+							<div class="import-progress-bar">
+								<div class="inside-progress-bar" ng-style="{width : (totalProgress + '%') }"></div>
+							</div>
+							<div class="statusLogsContainer">
+								<div class="logHeader" ng-show="statusLogs.length">{{ 'restoreStatusLogs' | i18nString }}</div>
+								<div class="col-xs-12 paddingTop20" ng-repeat="statuslog in statusLogs">									
+									<span class="col-xs-5 importErrorMsg" tooltip-placement="top"
+											tooltip="{{statuslog.taskName}}">{{statuslog.taskName}}</span>
+										<span class="col-xs-5 importErrorMsg" tooltip-placement="top"
+											tooltip="{statuslog.taskType}}">{{statuslog.taskType}}</span>
+										<span class="col-xs-2 fa"
+											ng-class="statuslog.status==='success'?' btx-check':' btx-warning'"></span>								
+								</div>
+							</div>
+						</div>
+	
+					</div>
+					<div class="modal-footer">
+						<button type="button" ng-disabled="restoreVersionStatus === 'inprogress'" class="kr-sg-button-primary btn_lg" ng-click='closeRestoreProgress()'>{{ 'done' | i18nString }}</button>
+					</div>
+				</div>
+			</div>			
+		</div>
+	</div>
+</div>
+<bot-modal-slider id="newVersion">
+		<div class="modalSliderContainer width700">
+			<div class="modalHeader">
+				<h4 class="modal-title" id="gridSystemModalLabel">
+                    <i class="btx-close" ng-click="closeNewVersion(versionForm,version)"></i>
+                    {{'newVersion'| i18nString}}
+                </h4>
+			</div>
+			<div class="modalBody">
+				<form name="versionForm" novalidate>
+					<div class="kr-sg-input-text mb-15">
+						<div class="label-text">{{'versionName' | i18nString }}</div>
+						<input type="text" type="text" name="versionname" ng-maxlength="128" placeholder="{{'enterVersionName' | i18nString }}" class="input-text" ng-model="version.versionName" required>
+						<div error-alert ng-show="(versionForm.versionname.$error.required && versionForm.versionname.$dirty)" class="text-danger">{{'please_add_version'| i18nString}}</div>
+						<div error-alert ng-show="(versionForm.versionname.$error.maxlength && versionForm.versionname.$dirty)" class="text-danger">{{'version_name_limit'| i18nString}}</div>
+					</div>
+					<div class="kr-sg-input-text-area mb-15">
+						<div class="label-text">{{'versionDesc' | i18nString }}</div>
+						<textarea placeholder="{{'enterDescBot' | i18nString }}" ng-maxlength="250" name="description" class="input-text" required ng-model="version.versionDesc"></textarea>                                
+						<div error-alert ng-show="(versionForm.description.$error.required && versionForm.description.$dirty)" class="text-danger">{{'please_add_description'| i18nString}}</div>
+						<div error-alert ng-show="(versionForm.description.$error.maxlength && versionForm.description.$dirty)"class="text-danger">{{'version_description_limit'| i18nString}}</div>
+					</div>
+				</form>
+			</div>
+			<div class="modalFooter">
+				<button class="kr-sg-button-primary btn_md" ng-disabled="versionStatus === 'inprogress'" ng-click="createVersion(versionForm,version)">{{'createVersion' | i18nString }}<i class="fa fa-spinner fa-spin" ng-show="versionStatus === 'inprogress'"></i></button>
+				<button class="kr-sg-button-secondary btn_md" ng-click="closeNewVersion(versionForm,version)">{{'cancel' | i18nString }}</button>
+			</div>
+		</div>
+	</bot-modal-slider>
+
+<!-- MANAGE VERSIONS SLIDER -->
+<bot-modal-slider id="manageVersion">
+	<div class="modalSliderContainer width1000">
+		<div class="modalHeader">
+			<h4 class="modal-title" >
+				<i class="btx-close" ng-click="closeManageVersionSlider()"></i>
+				{{'select_another_version' | i18nString}}
+			</h4>
+		</div>
+		<div class="modalBody" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+			<div class="selectVersion">
+				<div class="selectVersionTitle">{{'source_version' | i18nString}}</div>
+				<div class="selectVersionBG">
+					<div class="name-field details-">
+						<div class="status" title="{{selectedBaseVersion.name}}">
+							{{selectedBaseVersion.name}} <span ng-if="selectedBaseVersion.type === 'user'">:</span>
+						</div>
+						<div class="details" ng-if="selectedBaseVersion.type === 'user'" title="{{selectedBaseVersion.createdOn | customDate}}">
+							{{selectedBaseVersion.createdOn | customDate}}
+						</div>
+					</div>
+					<div class="description details-">
+						<div class="details" title="{{selectedBaseVersion.description}}">
+							{{selectedBaseVersion.description || '---'}}
+						</div>
+					</div>
+					<div class="plat-form-version details-">
+						<div class="details" title="{{selectedBaseVersion.platformVersion}}">
+							{{selectedBaseVersion.platformVersion || '---'}}
+						</div>
+					</div>
+					<div class="type details-">
+						<div class="details" title="{{selectedBaseVersion.type === 'user'?'User Created':'Auto Created'}}">
+							{{selectedBaseVersion.type === 'user'?'User Created':'Auto Created'}}
+						</div>
+					</div>					
+					<div class="created-on details-">
+						<div class="details" title="{{selectedBaseVersion.createdOn | customDate}}">
+							{{selectedBaseVersion.createdOn | customDate}}
+						</div>
+					</div>
+					<div class="created_by details-">
+						<div class="details" title="{{selectedBaseVersion.userDetails.firstName}} {{selectedBaseVersion.userDetails.lastName}}">
+							{{selectedBaseVersion.userDetails.firstName}} {{selectedBaseVersion.userDetails.lastName}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="selectAnotherVer">
+				<div class="selectAnotherVerTitle">
+					{{'select_target_version' | i18nString}}
+				</div>
+				<div class="mainBotVersionContainer" >
+					<div class="table-data" ng-if="!isLoading" ng-class="{'readOnly':botState === 'published'}">
+						<div class="t-header">
+							<div class="name-field title" title="{{'bot_name' | i18nString}}">{{'bot_name' | i18nString}}</div>
+							<div class="description title" title="{{'desc_label' | i18nString}}">{{'desc_label'| i18nString }}</div>
+							<div class="plat-form-version title" title="{{'platform_version'| i18nString}}">{{'platform_version'| i18nString }}</div>
+							<div class="type title" title="{{'bot_type'| i18nString}}">{{'bot_type' | i18nString}}</div>                    
+							<div class="created-on title" title="{{'created_On'| i18nString}}">{{'created_On' | i18nString}}</div>                    
+							<div class="created-by title" title="{{'created_By'| i18nString}}">{{'created_By' | i18nString}}</div>                
+						</div>
+						<div class="t-body" ng-repeat="version in anotherBotVersionsList track by $index" ng-class="(selectedVersionInd === $index) ? 'selected-bot-version': ''">                    
+							<div class="name-field details" ng-click="changeSecondaryVersion(version, $index)">
+								<div class="kr-sg-radiobutton p-0 m-0" >
+									<input id="radio-{{$index}}" name="radio" class="radio-custom" type="radio" ng-model="selectedSecondaryVersion" ng-value="version" ng-click="changeSecondaryVersion(version, $index)">
+									<label for="radio-{{$index}}" class="radio-custom-label"></label>
+								</div>
+								<div class="titles-sec">
+                                    <div class="status" title="{{version.name}}">{{version.name}} <span ng-if="version.type === 'user'">:</span></div>
+                                    <div class="version-title" ng-if="version.type === 'user'" title="{{version.createdOn | customDate}}">{{(version.createdOn | customDate) || '---'}}</div>
+                                </div>
+							</div>    																					
+							<div class="description details text-truncate" for="radio-{{$index}}" title="{{version.description}}">{{version.description || '---'}}</div>                                     
+                            <div class="plat-form-version details text-truncate" for="radio-{{$index}}" title="{{version.platformVersion}}">{{version.platformVersion || '---'}}</div>   
+                            <div class="type details text-truncate" for="radio-{{$index}}" title="{{version.type === 'user'?'User Created':'Auto Created'}}">{{version.type === 'user'?'User Created':'Auto Created'}}</div>   
+                            <div class="created-on details text-truncate" for="radio-{{$index}}" title="{{version.createdOn | customDate}}">{{version.createdOn | customDate}}</div>   
+                            <div class="created-by details text-truncate" for="radio-{{$index}}" title="{{version.userDetails.firstName}} {{version.userDetails.lastName}}">{{version.userDetails.firstName}} {{version.userDetails.lastName}}</div>   
+
+						</div>
+						<ng-container ng-if="!anotherBotVersionsList.length">
+							<div class="emptyStateContainer">
+								<div class="emptyState">
+									<div class="emptyImage">
+										<img class="info-icon" ng-src="{{emptyStateIcon}}" alt="empty-img">
+										<span class="mainTitle">{{'no_versions_avilable' | i18nString}}</span>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+					</div>     
+				</div>
+				
+			</div>
+		</div>
+		<div class="modalFooter">
+			<button class="btn" ng-disabled="versionStatus === 'inprogress'" ng-click="proceedVersionComparision()">{{'proceed' | i18nString }}<i class="fa fa-spinner fa-spin" ng-show="versionStatus === 'inprogress'"></i></button>
+			<button class="btn closeCancel" ng-click="closeManageVersionSlider()">{{'cancel' | i18nString }}</button>
+		</div>
+	</div>
+</bot-modal-slider>
+</div>

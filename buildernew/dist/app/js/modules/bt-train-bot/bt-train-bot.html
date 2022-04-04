@@ -1,0 +1,575 @@
+<!-- Commented this code to hide right click option for user typed utterance
+<synonyms-manage hide-ui="{{true}}"  context="context.api"></synonyms-manage>
+<pattern-manage  hide-ui="{{true}}"   stream="stream" context="context.api"></pattern-manage>-->
+<div class="modal fade add-meta" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" ng-click="cancelEntity()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel"> {{'add_entity_type_label'| i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                        <label> {{'task_field_label'| i18nString}}</label>
+                        <input type="text" class="form-control" placeholder= "{{'task_field_label'| i18nString}}" ng-model="addmeta.field">
+                    </div>
+                    <div class="form-group row">
+                        <label> {{'meta_data_label'| i18nString}}</label>
+                        <select class="form-control" ng-model="addmeta.metadata">
+                            <option value=""> {{'select_meta_data_type'| i18nString}}</option>
+                            <option ng-repeat="const in constants.nlp" value="{{const.value}}">{{const.title}}</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button  class="btn  btn-default" ng-click="cancelEntity()"> {{'cancel'| i18nString}}</button>
+                <button  class="btn  btn-primary" ng-click="saveEntity()"> {{'save'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="modal-header bt-modal-header">
+    <div class="headerdiv">
+        <span ng-click="closeTrainBotModal()" type="button" class="closeBtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-chevron-left"></i></span></span>
+    </div>
+    <div class="col-xs-8">
+        <bt-modal-title title="Test & Train Bot" bot="stream"></bt-modal-title>
+    </div>
+    <div class="col-xs-2">
+    </div>
+</div> -->
+<div class="testbotscroll container modal-body bt-train-bot-modal" ng-class="{'read-only-wrap':displayMode === 'VIEW'}">
+    <div class="col-xs-12 paddingleft384">
+        <div class="scroll-div col-xs-12 bttrainscroll" perfect-scroll dynamic-height dynaoffset="offsetHeightDefault" height-property="height">
+            <div>
+                <div class="col-xs-12 innerPaddingContainer" >
+                    <div class="row btnSearchTitle">
+                        <div class="col-xs-6 leftTitle">
+                            <p class="pageTitle">{{'utterance_testing'| i18nString}}</p>
+                        </div>
+                        <div class="col-xs-6 rightBTNSearch">
+                            <div class="searchComponent displayNone">
+                                <input  placeholder="Search">
+                                <i class="btx-search"></i>
+                                <i class="btx-close displayNone"></i>
+                            </div>
+                            <div class="creationButton borderBtn displayNone">
+                                    <button class="btn btn-xs"> BTN Name</button>
+                            </div>
+                            <div class="titleDropdown displayNone">
+                                <div class="dropdown">
+                                    <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Dropdown name
+                                        <i class="btx-carrot-up"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                                        </ul>
+                                </div>
+                            </div>
+                            <div class="titleOverflow displayNone">
+                                <div class="dropdown">
+                                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                        <i class="btx-overflow"></i>
+                                        </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="titleHeader" ng-show="callFrom=='analyzeTrain'"> {{'test_and_train_label'| i18nString}}</div> -->
+                    <form name="form">
+                        <div class="dialogIntents" ng-if="multipleIntentModels">
+                            <div class="kr-sg-dropdowns">
+                                <div class="label-text">{{'intent_model_label' | i18nString}}
+                                    <span class="tooltip-custom"><img class="beta-icon" ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"><span class="tooltiptext rightAlign" ng-click="$event.stopPropagation()"  ng-bind-html="'intent_model_tooltip_text'| i18nString:({link:'https://developer.kore.ai/docs/bots/test-your-bot/testing-your-bot-with-nlp/'})"></span></span>
+                                </div>
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input pr-30" data-toggle="dropdown">{{parentIntent.name ? parentIntent.name:('bot_level_intent_model_label' | i18nString)}}</button>
+                                    <ul class="dropdown-menu content-menu h-auto" perfect-scroll dynamic-height dynaoffset="-400" height-property="height">
+                                        <li ng-if="dialogIntents.length"><a ng-click="parentIntent.name = ('bot_level_intent_model_label' | i18nString)">{{'bot_level_intent_model_label' | i18nString}}</a></li>
+                                        <li ng-repeat="item in dialogIntents"><a ng-click="parentIntent.name = item.name">{{item.name}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="intent-text row">
+                            <div class=" noPadding">
+                                <div class="nlp-text-ctrl">
+                                    <rich-editor context="context.api" start-end-index="entityCmpt.startEndIndex" selected-utterance="utterence" task-details="identifiedTask" intent-verified="intentVerified" entity-list = "identifiedTask.entitiesArray" api="eventHandlers" ng-model="nlp.text" tokens="intent.response.finalResolver.entities" testing="testing" intent-not-found="intentNotFound" placeholder="{{$root.lableData.bb084}}"></rich-editor>
+                                    <div class="nlphelpandstatusdiv">
+                                        <div class="pull-right" ng-if="nlp.text && nlp.text.trim()"><span class="processing enterEscape" ng-if="testing"> {{'processing_label'| i18nString}}</span><span ng-if="!testing && nlp.text && nlp.text.trim() && richEditorInitialStage === 'enter'" class="enterEscape"> {{'press_enter_to_run_label'| i18nString}}</span> <span ng-if="!testing && richEditorInitialStage === 'esc'" class="enterEscape"> {{'press_esc_to_clear_label'| i18nString}}</span></div></div>
+                                    <div class="col-xs-12 marginTop10 noPadding" ng-hide="((!intent.response.finalResolver.winningIntent[0].intent || intent.response.finalResolver.winningIntent.length > 1) && nlp.text && nlp.text.trim() && intentVerified) || constants.config.hideMLEE"><button ng-if="identifiedTask && (identifiedTask.state != 'published') && (identifiedTask.taskType!=='knowledge')" ng-click="saveOrUpdateUtterance()" type="button" class="pull-right nextBtn btn btn-xs btn-primary saveRunBtn"><i ng-if="uSaveInProgress" class="fa fa-spinner fa-spin marginRight5"></i>{{uSaveInProgress? running_label: save_And_run_label}}</button></div>
+                                    <div error-alert ng-if="showUserSaysError" class="text-danger form-error-text"> {{'utternece_should_not_be_empty'| i18nString}}</div>
+                                      <div class="progressAnimation" ng-if="testing"><span class="animationSpan">&nbsp;</span><span class="animationSpan">&nbsp;</span><span class="animationSpan">&nbsp;</span></div>
+                                    <div class="marginTop50" ng-show="showNote">
+                                        <div class="">{{$root.lableData.bb086}}</div>
+                                        <div class="hintDiv col-xs-12 align-items-center"> 
+                                            <div class="icon">
+                                                <i class="bulbIconLayer btx-bulb"></i>
+                                            </div> 
+                                            <div class="description">
+                                                {{$root.lableData.bb085}}
+                                            </div> 
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                   
+
+
+
+
+
+                    <div class="intent-identified" ng-if="intent.response.finalResolver.winningIntent.length == 1 && !testing">
+                        <div ng-show="intent.response.finalResolver.winningIntent[0].intent && intent.response.finalResolver.winningIntent[0].activityType !== 'smalltalk'" class="nlp-user-says">
+                            {{'matched_label'| i18nString}} {{intent.response.finalResolver.winningIntent[0].type == 'FAQ' ? faq : intent_label}}
+                            <span class="pull-right incorrectMatch" ng-click="removeTrainBotIntentLogs()" ng-show="intent.response.finalResolver.winningIntent[0].intent" > {{'mark_as_correct_match_label'| i18nString}}
+                            </span>
+                        </div>
+                        <div ng-show="intent.response.finalResolver.winningIntent && intent.response.finalResolver.winningIntent[0]['activityType'] === 'smalltalk'" class="nlp-user-says">
+                            {{'selected_intent_label'| i18nString}}
+                                <span class="pull-right incorrectMatch" ng-click="removeTrainBotIntentLogs()"> {{'mark_as_correct_match_label'| i18nString}}
+                                </span>
+                        </div>
+                        <div ng-show="intent.response.finalResolver.winningIntent[0].intent && intent.response.finalResolver.winningIntent[0].activityType !== 'smalltalk'" class="panel-group accordion-train intentAccordion" id="intentAccordion" role="tablist" aria-multiselectable="true"> 
+                            <div class="panel panel-default intentPanel">
+                                <div class="panel-heading collapsed intentPanelHeading trainBotPanelHeading" role="button" data-toggle="{{intent.response.finalResolver.winningIntent[0].activityType === 'FAQ' && (!intent.response.finalResolver.winningIntent[0].linkedDialog || !intent.response.finalResolver.entities.length) ? '' : 'collapse'}}" id="headIntent" ng-click="isCollapsed('#headIntent') && getUtterances()" data-parent="#intentAccordion"  href="#intentPanel" >
+                                    <div class="row">
+                                        <div class="col-xs-11" ng-if="intent.response.finalResolver.winningIntent[0].intent">{{intent.response.finalResolver.winningIntent[0].linkedDialog && intent.response.finalResolver.winningIntent[0].showfaqDialog === 'dialog'?intent.response.finalResolver.winningIntent[0].linkedDialog:intent.response.finalResolver.winningIntent[0].primaryQuestion?intent.response.finalResolver.winningIntent[0].primaryQuestion:intent.response.finalResolver.winningIntent[0].intent}}</div>
+                                        <!--   <div class="col-xs-11" ng-if="intent.response.finalResolver.winningIntent[0].linkedDialog">{{intent.response.finalResolver.winningIntent[0].linkedDialog}}</div> -->
+                                        <div class="col-xs-1" ng-hide="intent.response.finalResolver.winningIntent[0].activityType === 'FAQ' && (!intent.response.finalResolver.winningIntent[0].linkedDialog || !intent.response.finalResolver.entities.length)"> <span class="pull-right length"> <i class="btx-carrot-down"></i></span></div>
+                                    </div>
+                                </div>
+                                <div id="intentPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headIntent">
+                                    <div class="panel-body" ng-if="identifiedTask">
+                                        <bt-ml-synonyms-patterns  train-utterance="utterence" all-traits="allTraits" task-details="identifiedTask" nlp-text="nlp.text" synonyms="synonyms" train-bot="trainBot()" get-alltasks="getAlltasks()" universal-bot="universalbot" wining-intent="intent.response.finalResolver.winningIntent[0]"></bt-ml-synonyms-patterns>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                <div ng-show="intent.response.finalResolver.winningIntent[0].activityType === 'smalltalk' && intent.response.finalResolver.winningIntent[0].matchedPattern" class="panel-group accordion-train intentAccordion" id="intentAccordion" role="tablist" aria-multiselectable="true"> 
+                            <div class="panel panel-default intentPanel">
+                                <div class="panel-heading collapsed intentPanelHeading trainBotPanelHeading" role="button" data-toggle="collapse" ng-click="getTreeData()" data-parent="#intentAccordion"  href="#smallTalkPanel" >
+                                    <div class="row">
+                                        <div class="col-xs-11">
+                                            <img ng-src="{{smallTalkIcon}}" title="Small Talk"><span class="capitalizeText">
+                                        {{intent.response.finalResolver.winningIntent[0].matchedPattern}}</span></div>
+                                        <div class="col-xs-1"> <span class="pull-right length"> <i class="btx-carrot-down"></i></span></div>
+                                    </div>
+                                </div>
+                                <div id="smallTalkPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headIntent">
+                                    <div class="panel-body">
+                                            <script type="text/ng-template" id="tree_view">
+                                            {{node.title}}
+                                            <ul ng-if="node.tree">
+                                                <li ng-repeat="node in node.tree" ng-include="'tree_view'">
+                                                </li>
+                                            </ul>
+                                        </script>
+                                    <div class="smallTalkPath">
+                                        <ul class="tree">
+                                            <li class="noBorder" ng-repeat="node in tree" ng-include="'tree_view'"></li>
+                                        </ul>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="intentNotFound" ng-show="!intent.response.finalResolver.winningIntent[0].intent && intent.response.finalResolver.winningIntent.length < 2"> -->
+                            <!--<div>
+                                <span><i class="fa fa-warning"></i></span>
+                                <span>The intent was not successfully identified for the above utterance. Select an intent below to begin training the bot to understand this utterance </span>
+                            </div>
+
+                            <div class="paddingTop10">
+                                <span class="countBlock">1</span>
+                                <span>To correct this unknown identification of the user’s intent, first select the correct intent for this utterance below. </span>
+                            </div>-->
+                            <!--  <div>
+                                <div><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+                                <div>
+                                    <p>Intent identification failed</p>
+                                    <p>Please choose intent and add more <br> synonyms, patterns and utterances</p>
+                                </div>        
+                            </div> -->
+                        <!--  </div> -->
+
+
+                    </div>
+
+
+
+                    <div class="intentNotFound" ng-if="intentNotFound">
+                        <!--<div>
+                            <span><i class="fa fa-warning"></i></span>
+                            <span>The intent was not successfully identified for the above utterance. Select an intent below to begin training the bot to understand this utterance </span>
+                        </div>
+
+                        <div  class="paddingTop10">
+                            <span class="countBlock">1</span>
+                            <span>To correct this unknown identification of the user’s intent, first select the correct intent for this utterance below. </span>
+                        </div>-->
+                        <!--<div class="noIntentParentDiv">
+                            <div class="image"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+                            <div class="noIntentDesc">
+                                <p class="textfont24">Intent identification failed</p>
+                                <p class="textfont14">Please choose intent and add more <br> synonyms, patterns and utterances</p>
+                            </div>        
+                        </div>-->
+                        <div>
+                            <div class="helphint-border marginB20T0 marginTop10 col-xs-12"><div class="col-xs-1 bulbicon"><span><i class="layer btx-bulb" ></i></span></div><div class="col-xs-11 noPadding"><span class="name">{{$root.lableData.bb555}}</span></div></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="intentNotFound" ng-if="intent.response.finalResolver.winningIntent.length > 1 && !testing">
+                        <!--<div class="nlp-user-says">
+                            <label>MATCHED INTENTS</label>
+                        </div>-->
+                        <!--<div class="row">
+                            <div class="col-xs-12">
+                                <div class="identified-intent" ng-repeat="intent in intent.response.finalResolver.winningIntent">
+                                    {{intent.name}}
+                                </div>
+                                <br>
+                            </div>
+                            </div>-->
+                        <!--<div>
+                            <span><i class="fa fa-warning"></i></span>
+                            <span>
+                                Oops Multiple intents are identified for the above utterance. Select an intent below to begin training the bot to understand this utterance.
+                            </span>
+                        </div>-->
+                            <div class="intentTitle"><span> {{'matched_intent_label'| i18nString}}</span></div>
+                            
+                            <div class="col-xs-12 noPadding multipleIntentMatch">
+                                <div class="ele">
+                                    <div class="col-xs-12 radioDiv noPadding">
+                                        <div ng-if="!universalbot" class="radioInnerDiv" ng-repeat="task in intent.response.finalResolver.winningIntent track by $index">
+                                            <label for="{{task.faqId?task.faqId:task.taskId}}{{$index}}">
+                                                <input type="radio"  name="{{task.faqId?task.faqId:task.taskId}}{{$index}}" ng-model="multipleIntent.selectedTask" value="{{task.faqId?task.faqId:task.taskId}}" id="{{task.faqId?task.faqId:task.taskId}}{{$index}}" ng-change="selectIntentFromMultiple(task.taskId)"><span class="opt-title" ng-if="task.primaryQuestion">{{task.primaryQuestion}}<img tooltip-placement="top" tooltip=" {{'dialog_is_marked_tootltip'| i18nString}}" ng-src="{{imageContext}}/exclamationCircle-Red.svg" ng-if="task.isHidden" class="exclimation"/></span>
+                                                <span class="opt-title" ng-if="!task.primaryQuestion && task.matchedQuestion">{{task.matchedQuestion}}<img tooltip-placement="top" tooltip=" {{'dialog_is_marked_tootltip'| i18nString}}" ng-src="{{imageContext}}/exclamationCircle-Red.svg" ng-if="task.isHidden" class="exclimation"/></span>
+                                                <span class="opt-title" ng-if="!task.primaryQuestion && !task.matchedQuestion && task.intent">{{task.intent}}<img tooltip-placement="top" tooltip=" {{'dialog_is_marked_tootltip'| i18nString}}" ng-src="{{imageContext}}/exclamationCircle-Red.svg" ng-if="task.isHidden" class="exclimation"/></span>
+                                                 </input>
+                                            </label>
+                                        </div>
+                                        <div ng-if="universalbot" class="radioInnerDiv" ng-repeat="task in intent.response.finalResolver.winningIntent track by $index">
+                                            <label for="{{task.faqId?task.faqId:task.taskId}}{{$index}}">
+                                                <input type="radio" name="{{task.faqId?task.faqId:task.taskId}}{{$index}}" ng-model="multipleIntent.selectedTask" value="{{task.faqId?task.faqId:task.taskId}}" id="{{task.faqId?task.faqId:task.taskId}}{{$index}}" ng-change="selectUniversalBot(task.activityType==='FAQ'?task.faqId:task.taskId,task.streamId)"><span class="opt-title">{{universalbot?task.streamName+" : ":''}}{{task.intent}}<img tooltip-placement="top" tooltip=" {{'dialog_is_marked_tootltip'| i18nString}}" ng-src="{{imageContext}}/exclamationCircle-Red.svg" ng-if="task.isHidden" class="exclimation"/></span>
+                                            </label>
+                                        </div>
+                                        <div class="radioInnerDiv">
+                                            <label for="none">
+                                                <input value="none" type="radio" ng-model="multipleIntent.selectedTask" name="none" id="none" ng-change="selectIntentFromMultiple('none')"><span class="opt-title"> {{'None_label'| i18nString}}</span> </input>
+                                            </label>
+                                        </div> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                   </form>  
+
+                <div ng-show="verifying && intent.response.finalResolver.entities.length > 0 && (intent.response.finalResolver.winningIntent[0].intent || intent.response.finalResolver.winningIntent[0].linkedDialog)" ng-if="multipleIntent.selectedTask !== 'none'" class="col-xs-12 noPadding">
+                    <div class="nlp-user-says">
+                        {{'fields_entities_label'| i18nString}}
+                    </div>
+                    <div class="alerts-row">
+                        <div class="panel-table">
+                            <div class="panel-table-header">
+                                <div class="entityHeading">
+                                    <div class="entityName"> {{'entity_name_label' | i18nString}} </div>
+                                    <div class="entityType"> {{'entity_type'| i18nString}}</div>
+                                    <div class="entityValue"> {{'entity_value_label'| i18nString}} </div>
+                                    <div class="entityIden"> {{'entity_identified' | i18nString}} </div>
+                                    <div class="entityScore confidence-score">{{'confidence_score'|i18nString }} <span class="info" id="confidenceScore" ng-init="initializePopover('confidenceScore')" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Displays the confidence score based on the NER training."><i class="btx-info screenFreeze"></i></span></div>
+                                    <div class="emptyDiv"></div>
+                                </div>
+                            </div>
+                            <!--accordion-streams-->
+                            <div class="panel-table-body radioDiv">
+                                <div class="panel-group accordion-train" id="settingsAccordion" role="tablist" aria-multiselectable="true"> 
+
+                                    <div class="panel panel-default entityPanel trainbotEntityPanel"  ng-repeat="entity in intent.response.finalResolver.entities">
+                                        <div class="panel-heading collapsed entityPanelHeading" role="button" id="entitySP{{$index}}" data-toggle="collapse" ng-click="isCollapsed('#entitySP') && showAddFieldPattern({title:entity.name})" data-parent="#settingsAccordion"  href="#entity{{$index}}" >
+                                            <div class="row collapsedData" ng-show="isEntity(entity)">
+                                                <div class="name">
+                                                    <span color-circle circle-class="entity.class" color="{{entity.color}}"></span>
+                                                    <span title="{{entity.name}}" color="{{entity.color}}" ng-style="{color:getTextColor(entity.value)}" style="font-weight:bold" class="textTransform marginLeft10 entityTitle">{{entity.name}}</span>
+                                                </div>
+                                                <div class="type" title="{{entity.type}}">
+                                                    <span  class="entityData">
+                                                        {{entity.type}}
+                                                    </span>
+                                                </div>
+                                                <div class="value" title="{{trainBotCB.getEntityValue(entity)}}">
+                                                    <span ng-style="{color:getTextColor(entity.value)}" class="{{getClassName(entity.value)}}">
+                                                        {{trainBotCB.getEntityValue(entity)}}
+                                                    </span>
+                                                </div>
+                                                <div class="identified" ng-show="entity.matchInfo.identifiedEngine">
+                                                        <span  class="entityData">
+                                                        {{entity.matchInfo.identifiedEngine}} <span class="matchType" ng-show="entity.matchInfo.identifiedLabel"> : {{entity.matchInfo.identifiedLabel}} <span class="info" id="identifiedEngine{{$index}}" ng-init="initializePopover('identifiedEngine',$index)" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="{{entity.matchInfo.identifiedUsing}}"><i  class="btx-info screenFreeze"></i></span>
+                                                    </span></span>
+                                                </div>
+                                                <div class="confScore" ng-show="entity.matchInfo.nerScore">
+                                                    <span  class="entityData">{{entity.matchInfo.nerScore | number:3}}</span>
+                                                </div>
+                                                <div class="col-xs-1" ng-hide="entity.taskType === 'dialog' || true">
+                                                    <div class="dropdown panel-dropdown">
+                                                        <span data-toggle="dropdown">
+                                                            <i class="fa fa-ellipsis-h pointer-hand" ></i>
+                                                        </span>
+                                                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                                            <li>
+                                                                <a ng-click="editEntityType(intent.response.finalResolver.winningIntent[0].intent, entity.name)"> {{'edit_entity_type'| i18nString}}</a>
+                                                                <a ng-click="context.api.addFieldSynonym(intent.response.finalResolver.winningIntent[0].intent, entity.name)"> {{'add_synonym_label'| i18nString}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-1 pull-right"> <span class="pull-right length"> <i class="btx-carrot-down"></i></span></div>
+                                            </div>
+                                    
+                                        </div>
+                                        <div id="entity{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="entitySP{{$index}}">
+                                            <div class="panel-body">
+                                                <bt-synonyms-patterns></bt-synonyms-patterns>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="text-center" ng-show="intent.response.entities.length == 0">
+                            <div class="alert alert-sm alert-warning">
+                                {{'no_intents_matched_label'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="verifying && intent.response.finalResolver.winningIntent[0].intent && intent.response.traits && intent.response.traits.identified"  class="col-xs-12 noPadding matchedTraitsTrainBot">
+                    <div class="nlp-user-says">
+                        {{'matched_traits_label'| i18nString}}
+                    </div>
+                    <div class="tableDetails traitsMatches" ng-if="(intent.response.traits && intent.response.traits.identified.length)">
+                        <div class="tableHeader col-xs-6"> {{'trait_label'| i18nString}}</div>
+                        <div class="tableHeader right col-xs-6"> {{'score_label'| i18nString}}</div>
+                    </div>
+                    <div class="alerts-row">
+                        <div class="panel-table">
+                            <!--accordion-streams-->
+                            <div class="panel-table-body radioDiv">
+                                <div class="panel-group accordion-train matchedTraits" id="matchedTraitAccordionTrainPage" role="tablist" aria-multiselectable="true"> 
+                                    <div class="panel panel-default entityPanel trainbotEntityPanel"  ng-repeat="eachml in intent.response.traits.identified | orderBy: ['-score','task'] track by $index">
+                                        <div class="panel-heading collapsed entityPanelHeading" role="button" id="mathedTraitsAcclabel{{$index}}" data-toggle="collapse"  data-parent="#matchedTraitAccordionTrainPage"  href="#mathedTraitsAcc{{$index}}" >
+                                            <div class="row collapsedData">
+                                                <div class="col-xs-6">
+                                                    {{eachml.groupName+ " - "}}<span class="subLabel">{{eachml.label}}</span>
+                                                </div>
+                                                <div class="col-xs-5">
+                                                    <span>{{eachml.score| number:2}}</span>
+                                                </div>
+                                                <div class="col-xs-1 pull-right"> <span class="pull-right length"> <i class="btx-carrot-down"></i></span></div>
+                                            </div>
+                                        </div>
+                                        <div id="mathedTraitsAcc{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mathedTraitsAcclabel{{$index}}">
+                                            <div class="panel-body">
+                                                <div class="traitsRow c" ng-if="eachml.pattern">
+                                                    <div class="tableHeaderTitle"> {{'matched_pattern_label'| i18nString}}</div>
+                                                    <p class="traitsList">{{eachml.pattern}}</p>
+                                                </div>
+                                                <div class="traitsRow">
+                                                    <div class="tableHeaderTitle"> {{'training_type_label'| i18nString}}</div>
+                                                    <p class="traitsList" ng-if="eachml.type  == 'probability'"> {{'machine_learning'| i18nString}}</p>
+                                                    <p class="traitsList" ng-if="eachml.type  == 'pattern'"> {{'pattern_based_label'| i18nString}}</p>
+                                                </div>
+                            
+                                                <div class="traitsRow" ng-if=" nlpData.traits.conflicts.length">
+                                                    <div class="tableHeaderTitle"> {{'eliminated_traits'| i18nString}}</div>
+                                                    <div class="traitsListCount" ng-repeat="eliminatedTraits in nlpData.traits.conflicts track by $index">
+                                                        <div class="tableHeader left">{{eliminatedTraits.groupName+ " - "}}<span class="subLabel">{{eliminatedTraits.label}}</span></div>
+                                                        <div class="tableHeader right">{{eliminatedTraits.score| number:2}}</div>
+                                                    </div>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="text-center" ng-show="intent.response.traits.identified.length == 0">
+                            <div class="alert alert-sm alert-warning">
+                                {{'no_traits_matched'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="tableDetails traitsMatches" ng-if="(intent.response.traits && intent.response.traits.identified)">
+                        <div class="tableHeader left">TRAIT</div>
+                        <div class="tableHeader right">SCORE</div>
+                    </div>
+                    <div class="panel-group matchedTraits" id="matchedTraitAccordionTrainPage" >
+                        <div class="panel panel-default" ng-repeat="eachml in intent.response.traits.identified | orderBy: ['-score','task'] track by $index">
+                            <div class="panel-heading collapsed" data-toggle="collapse" data-parent="#matchedTraitAccordionTrainPage" href="#collapse{{$index}}">
+                                <div class="tableHeader left">{{eachml.groupName+ " - "}}<span class="subLabel">{{eachml.label}}</span></div>
+                                <div class="tableHeader right">{{eachml.score| number:2}}</div>
+                            </div>
+                            <div id="collapse{{$index}}" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="traitsRow c" ng-if="eachml.pattern">
+                                    <div class="tableHeaderTitle">Matched Pattern</div>
+                                    <p class="traitsList">{{eachml.matchedPattern}}</p>
+                                </div>
+                                <div class="traitsRow">
+                                    <div class="tableHeaderTitle">Trait Type</div>
+                                    <p class="traitsList" ng-if="eachml.type  == 'probability'">Machine Learning</p>
+                                    <p class="traitsList" ng-if="eachml.type  == 'pattern'">Pattern Based</p>
+                                </div>
+            
+                                <div class="traitsRow" ng-if=" nlpData.traits.conflicts.length">
+                                    <div class="tableHeaderTitle">Eliminated Traits</div>
+                                    <div class="traitsListCount" ng-repeat="eliminatedTraits in nlpData.traits.conflicts track by $index">
+                                        <div class="tableHeader left">{{eliminatedTraits.groupName+ " - "}}<span class="subLabel">{{eliminatedTraits.label}}</span></div>
+                                        <div class="tableHeader right">{{eliminatedTraits.score| number:2}}</div>
+                                    </div>
+                                </div>
+            
+                            </div>
+                            </div>
+                        </div>
+                        </div> -->
+                </div>
+            </div>
+
+            <div  ng-show="verifying && (!intent.response.finalResolver.winningIntent[0].intent) || {{true}}" class="innerPaddingContainer">
+
+
+
+                <div class="form-group">
+                    <div ng-if="universalbot" ng-show="intentVerified && !intent.response.finalResolver.winningIntent[0].intent" class="universalTrain">
+                        <div class="col-xs-12 labelling titleLabel noPadding">
+                            <label class="required-field" tooltip-placement="right" tooltip=" {{'choose_a_bot'| i18nString}}"> {{'choose_a_bot'| i18nString}}</label>
+                        </div>
+                        <div class="col-xs-12 uiselect2container noPadding">
+                            <select id="select2" ui-select2="selectConfig"  data-placeholder=" {{'select_a_bot_placeholder'| i18nString}}" ng-model="selectedBot"  ng-change="selectBot(selectedBot)">
+                                <option value=""></option>
+                                <!-- <optgroup label="{{taskItem.type}}"  ng-repeat="bot in botsByType"> -->
+                                <option ng-repeat="bot in universalStreams"  value="{{bot}}" >{{bot.name}}</option>
+                                <!-- </optgroup> -->
+                            </select>
+                            <p class="hintText"> {{'select_a_bot_relates_to_this_utterance'| i18nString}}</p>
+                        </div>
+                    </div>
+                    <div ng-show="(!intent.response.finalResolver.winningIntent[0].intent || intent.response.finalResolver.winningIntent.length > 1) && nlp.text && nlp.text.trim() && intentVerified && (multipleIntent.selectedTask == '')">
+                        <div class="col-xs-12 labelling chooseTask noPadding">
+                            <label class="required-field" tooltip-placement="top" tooltip=" {{'select_corresponding_user_utterance'| i18nString}}">{{intentNotFound?selected_label:matched_label}}  {{'intent_label'| i18nString}}</label>
+                        </div>
+                        <div class="col-xs-12 uiselect2container testTrainBot noPadding" ng-class="{'shortWidth1':chooseTask == '','addMarginTop':chooseTask !== ''}">              
+                            <select id="select2" ui-select2="selectConfig"  data-placeholder=" {{'select_intent_label'| i18nString}}" ng-model="chooseTask"  ng-change="selecTask(chooseTask)">
+                                <option value=""></option>
+                                <optgroup label="{{taskItem.type}}"  ng-repeat="taskItem in tasksByType">
+                                    <option ng-repeat="task in taskItem.tasks" value="{{task}}" >{{task.name| taskNameFormat : task}}</option>
+                                </optgroup>
+                            </select>
+
+
+                        </div>
+                    </div>
+
+                    <div ng-if="knowledgeData.questions.length > 0 && selectedTask.taskType === 'knowledge'">
+                        <div class="col-xs-12 labelling marginTop10 noPadding">
+                            <span class="countBlock">2</span>
+                            </span>{{'fix_the_issue_desc'| i18nString}} </span>
+                        </div>
+
+                        <div class="col-xs-12 labelling marginTop10 noPadding">
+                            <label class="required-field" tooltip-placement="right" tooltip=" {{'pick_a_question_relates_utterance'| i18nString}}"> {{'pick_a_question_label'| i18nString}}</label>
+                        </div>
+                        <div class="col-xs-12 uiselect2container noPadding">                 
+                            <select id="select3" ui-select2="selectConfig1"  data-placeholder=" {{'select_a_question_placeholder'| i18nString}}" ng-model="pickQuestion"  ng-change="selectQuestion(pickQuestion)">
+                                <option value=""></option>
+                                <option ng-repeat="question in knowledgeData.questions"  value="{{$index}}" >{{question.subQuestionsToView.join('&nbsp&nbsp&nbsp&nbsp')}}</option>
+                            </select>
+
+                            <p class="bthelptextcolor"> {{'pick_a_question_relates_utterance'| i18nString}}</p>
+                            <button ng-if="pickQuestion.length > 0" ng-click="addUtteranceAndTrainBot()" type="button" class="pull-right nextBtn btn btn-xs btn-primary"><i ng-if="learnInProgress" class="fa fa-spinner fa-spin"></i> {{'save'| i18nString}}</button>
+                        </div>
+                        <div ng-if="pickQuestion.length > 0">
+                            <div class="col-xs-12 labelling marginTop10 noPadding">
+                                <label class="" tooltip-placement="right" tooltip=" {{'pick_a_question_relates_utterance'| i18nString}}"> {{'existing_faq_response'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12 btnormalcolor">
+                                "{{selectedQuestion.subAnswersToView.join('"&nbsp&nbsp&nbsp&nbsp"').replace('""', '')}}"
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-click="openOntology()" class="col-xs-12 nofaqdiv pointer-hand" ng-if="knowledgeData.questions.length === 0 && selectedTask.taskType === 'knowledge'">
+                        {{'to_train_your_knowledge_desc'| i18nString}}
+                    </div>
+                </div>
+
+                <div ng-if="chooseTask && selectedTask && selectedTask.taskType !== 'knowledge'" class="newTrainBot">
+                    <bt-ml-synonyms-patterns train-utterance="utterence" task-details="selectedTask" synonyms="synonyms" all-traits="allTraits" nlp-text="nlp.text" form-no-intent="true" train-bot="startTrain()" get-alltasks="getAlltasks()" universal-Bot="universalbot"></bt-ml-synonyms-patterns>
+                </div>
+
+                <!--<div class="intentNotFound clear-fix" ng-show="chooseTask && selectedTask && intent.response.finalResolver.winningIntent.length == 1 && !testing && !intent.response.finalResolver.winningIntent[0].intent && intent.response.finalResolver.winningIntent.length < 2">
+                    <div class="padding10">
+                        <span class="countBlock">3</span>
+                        <span>When ready, re-run the utterance to make sure that the fix solved the problem and the correct intent is now being selected for this utterance. </span>
+                    </div>
+
+                    <div class="col-xs-12 text-center marginTop10">
+                        <span align="center" class="reruntest" ng-click="verify()"><i ng-if="runInProgress" class="fa fa-spinner fa-spin"></i>Re-Run Utterance</span>
+                    </div>
+
+                </div>-->
+
+                <div class="intentNotFound clear-fix col-xs-12" ng-if="chooseTask && selectedTask && !(intent.response.finalResolver && intent.response.finalResolver.winningIntent) && !testing">
+                    <div class="padding10">
+                        <span> {{'when_ready_rerun_desc'| i18nString}}</span>
+                    </div>
+
+                    <div class="col-xs-12 text-center marginTop10">
+                        <span align="center" class="reruntest" ng-class="{'disabled':trainFrom === 'intentNotMatch'}" ng-click="verify()"><i ng-if="runInProgress" class="fa fa-spinner fa-spin"></i>Re-Run Utterance</span>
+                    </div>
+
+                </div>
+            </div>
+           </div> 
+        </div>
+        <!-- debugger related view -->
+        <!--<div class="col-xs-4 debugConsole noPadding" dynamic-height dynaoffset = "-50" height-property="height">
+        
+            <bt-debug-console-panel debug-info="debugInfo" debug-raw="debugRaw" debugger-console="debuggerConsole" debug-context="debugContext" is-resized="isDebugResized" class="flowTaskDebugConsolePanelDiv"></bt-debug-console-panel>
+        </div>-->
+        <!-- end of debugger related code -->
+        <!-- NLP analysis -->
+        <!-- dynaoffset = "rightPanelHeightDefault" -->
+        <div class="col-xs-4 nlpAnalysis" perfect-scroll dynamic-height dynaoffset="-65" height-property="height" onload="contentLoaded()">
+            <bt-train-nlpanalysis class="nlpAnalysisDiv" cb="trainBotCB" nlp-data="nlpData"></bt-train-nlpanalysis>
+        </div>
+    </div>
+    <div ng-if="showNlpEditPanel" dynaoffset="-65" dynamic-height class="editNlpAnalysis">
+        <bt-train-nlpanalysis-edit cb="trainBotCB"></bt-train-nlpanalysis-edit>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+{
+  "testCases": [
+    {
+      "input": "Send 200 dollars to Leonardo",
+      "intent": "Transfer Funds",
+      "botName": "Banking Bot",
+      "entities": [
+        {
+          "entityValue": "200 USD",
+          "entityName": "TransferAmount"
+        },
+        {
+          "entityValue": "Leonardo",
+          "entityName": "PayeeName"
+        }
+      ],
+      "entityOrder":["TransferAmount", "PayeeName"]
+    },
+    {
+      "input": "What is the balance in my checking account",
+      "botName": "Banking Bot",
+      "intent": "Show Balance", 
+      "parentIntent": "Transfer Funds"
+    },
+    {
+      "input": "Repeat this transfer every month",
+      "intent": "Setup Auto Pay",
+      "botName": "Banking Bot",
+      "parentIntent": "Transfer Funds"
+    },
+    {
+      "input": "Show my past 20 transactions",
+      "botName": "Payments Bot",
+      "intent": "Show Account Statement",
+      "entities": [
+        {
+          "entityValue": "20",
+          "entityName": "HistorySize"
+        }
+      ]
+    },
+    {
+      "input": "Pay my credit card dues",
+      "intent": "Pay Bill",
+      "botName": "Payments Bot"
+    },
+    {
+      "input": "looks like something is wrong in my statement",
+      "intent":"trait: Account Statement||Issue||Account Type",
+      "botName": "Payments Bot"
+    }
+
+  ]
+}

@@ -1,0 +1,14 @@
+<button type="button" ng-click="closeModal()" class="close workplaceModalClose" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+<!-- Add Bot Welcome -->
+<div class="add-bot whatsapp">
+    <div class="image-header" perfect-scroll dynamic-height dynaoffset="-200">
+        <img class='whatsapp-img' ng-src="{{assetsBase}}images/whatsapp-business.svg"/>
+        <div class="description">
+			<p ng-bind-html="'click_here_link'| i18nString:({link:'https://wa.me/{{phoneNum}}'})"></p>
+			<p>{{'bt_add_to_whatsapp_desc2'| i18nString}}</p>
+            <input type="text" id="whatsAppForm_link" class="form-control" ng-model="whatsapp.link" ng-readonly="true" name="appName">
+            <div class="input-group-addon pointer-hand" data-clipboard-target="#whatsAppForm_link"> {{'copy'| i18nString}} </div>  
+            <div ng-show="isSafariwh"><span class="pull-right">{{'press_c'| i18nString}}</span></div>               
+        </div>
+    </div>
+</div>

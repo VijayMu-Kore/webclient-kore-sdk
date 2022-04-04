@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>columns-green</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="columns-green" transform="translate(-2.000000, -2.000000)" fill-rule="nonzero">
+            <polygon id="Path" fill-opacity="0" fill="#D8D8D8" points="0 0 16 0 16 16 0 16"></polygon>
+            <path d="M3.385,2 C2.624,2 2,2.624 2,3.385 L2,12.615 C2,13.376 2.624,14 3.385,14 L12.615,14 C13.376,14 14,13.376 14,12.615 L14,3.385 C14,2.624 13.376,2 12.615,2 L3.385,2 Z M3.385,2.923 L7.538,2.923 L7.538,13.077 L3.385,13.077 C3.125,13.077 2.923,12.875 2.923,12.615 L2.923,3.385 C2.923,3.125 3.125,2.923 3.385,2.923 Z M8.462,2.923 L12.615,2.923 C12.875,2.923 13.077,3.125 13.077,3.385 L13.077,12.615 C13.077,12.875 12.875,13.077 12.615,13.077 L8.462,13.077 L8.462,2.923 Z" id="Shape" fill="#009DAB"></path>
+        </g>
+    </g>
+</svg>

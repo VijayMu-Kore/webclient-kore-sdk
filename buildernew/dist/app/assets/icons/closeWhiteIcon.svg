@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>closeWhiteIcon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M7.94915254,7.00430108 C8.78531492,7.98495114 9.62711441,8.98565798 10.4745763,10.0064516 C11.3220381,11.0272452 12.1638376,12.0250847 13,13 L11.0903955,13 L7.01129944,8.11397849 L2.89830508,13 L1,13 L6.05084746,6.97849462 L1.03389831,1 L2.89830508,1 L6.98870056,5.8688172 L11.0903955,1 L13,1 L7.94915254,7.00430108 Z" id="path-1"></path>
+    </defs>
+    <g id="closeWhiteIcon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="X">
+            <use fill="#DAA521" xlink:href="#path-1"></use>
+            <use fill="#FFFFFF" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

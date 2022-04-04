@@ -1,0 +1,500 @@
+<div class="modal-header bt-modal-header modal-header-padding">
+     <div class="col-xs-1">
+    <button ng-click="cancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button>
+  </div>
+  <div class="col-xs-9">
+    <bt-modal-title title="{{publishPageTitle()}}" bot="stream"></bt-modal-title>
+  </div>
+<div class="col-xs-2">
+    <button type="button" ng-show="currentStep != steps.length-1" class="btn btn-default pull-right exitBtn"  style="position: relative;" ng-click="next()"> {{'next'| i18nString}} </button>
+    <button type="button" ng-show="currentStep == steps.length-1" class="btn btn-default pull-right exitBtn" style="position: relative;"  ng-click="confirm()" ng-disabled="publishInProgress"> 
+        <i ng-if="publishInProgress" class="fa fa-spinner fa-spin ng-scope"></i> 
+        <span ng-if="!publishInProgress" >{{'confirm'| i18nString}}</span>
+        <span ng-if="publishInProgress" >{{'publishing_label'| i18nString}}</span>
+    </button>
+</div>
+   </div> 
+ <div class="modal-body utterances-modal-body height-width-100 noPadding" >
+<bt-test-form api="btTestFormApi" status="btTestStatus" ></bt-test-form>
+<div class="modal fade" id="errorMsgStatus" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
+        <h4 class="modal-title">{{'deployment_status'| i18nString}}</h4>
+      </div>
+      <div class="modal-body modalPerfectScroll" perfect-scroll>
+        <div class="row"> 
+
+          <div class="row" ng-show="!stream.showInMp && (messages | filter : { 'type' : 'success' }).length > 0">
+            <h4>{{'followingTasks_sent_for_approval'| i18nString}}</h4>
+          </div>
+          
+          <div class="row" ng-repeat="message in messages | filter : { 'type' : 'success' }">     
+            <div class="col-xs-12">
+              <div class="row form-group" ng-show="message.type == 'success'" > <span> <i class="fa fa-check-circle-o success-color" aria-hidden="true"></i> &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span> </div>
+            </div>
+          </div>
+
+          <div class="row" ng-show="!stream.showInMp && (messages | filter : { 'type' : 'success' }).length > 0">
+            <h4>{{'once_bot_approved'| i18nString}}</h4>
+          </div>
+
+          <div class="row" ng-repeat="message in messages | filter : { 'type' : 'error' }"> 
+            <div class="row form-group" ng-show="message.type == 'error'" >
+              <div class="row">
+                <div class="col-xs-8">
+                  <div class="row"> <span> <i class="fa fa-times-circle-o fail-color" aria-hidden="true"></i> &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span> </div>
+                  <div class="row">
+                  	<div class="alert alert-danger alert-sm">
+                  		{{message.error}}
+                  	</div>
+                  </div>
+                </div>
+                <div class="col-xs-4 text-center">
+                  <button class="btn btn-primary btn-sm noPadding" type="button" ng-click="retry(message)">{{'retry'| i18nString}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="closeModal()">{{'close'| i18nString}}</button>
+        <button type="button" class="btn btn-primary" ng-show="(messages | filter : { 'type' : 'error' }).length > 0" ng-click="retryAll()">{{'retry_all'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row publishHead">
+	<div class="row top-bar selected-stream noMargin" style="background:{{selectedStream.color}}">
+        <div class="main-body row">
+            <div class="stream-icon">
+                    <img alt="{{selectedStream.name}}" ng-src="{{selectedStream.icon}}">  
+            </div>
+            <div class="stream-details">
+              <div class="name">{{selectedStream.name}}</div>
+              <div class="taskContainer">
+              <div class="categories textEllipsis positionAbsolute">{{resource.name}}</div>
+              <div class="alert-action">
+                  <span>{{'publishBot'| i18nString}}</span>
+              </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+  <div class="col-xs-12 step-progress-container">
+  <step-progress steps="steps" on-click="stepClick"></step-progress>
+</div>
+
+<div class="col-xs-12 bot-publish wf-form" perfect-scroll dynamic-height dynaoffset="-150"> 
+
+  <!-- task deployment html -->
+  <div class="content-loading ng-scope" 
+      ng-show="steps[currentStep].id==1 && alertLoading === true && actionLoading === true && dialogLoading === true && loadingFlows === true">
+      <span class="spinner-text"> 
+          <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+          <span class="spinner-text-content ng-binding"> {{'loading_tasks_label'| i18nString}}</span> 
+      </span> 
+  </div>
+  <div class="col-xs-12 noPadding divCenter" ng-if="steps[currentStep].id==1 && !(alertLoading === true && actionLoading === true && dialogLoading === true && loadingFlows === true)">
+    <div class="row form-group">
+      <h3>{{'Tasks_and_languages_shortdesc'| i18nString}}</h3>
+      <h5  class="fontSize13">{{alertTasks | uppercase }}</h5>
+    </div>
+    <div class="row">
+      <div class="row publishAlertTask" ng-repeat="alert in alerts">
+        <div class="row">
+          <div class="col-xs-3">
+            <div class="checkbox checkbox-primary styledCSS noMargin">
+              <input class="styled" checked type="checkbox" id="{{alert._id}}" ng-change="editTask($event, alert)" ng-model="alert._selected">
+              <label for="{{alert._id}}" >{{alert.name}}</label>
+            </div>
+         
+          </div>
+          <div class="col-xs-3 textEllipsis"> {{alert.shortDesc}} </div>
+          <div class="col-xs-2 textCapitalize"> {{alert.state}} </div>
+          <div class="col-xs-2"> {{alert.version}} </div>
+        </div>
+            <div class="supportedLanguagesContainer" ng-show="alert.supportedLanguages.length > 0">
+                <span>{{'languages'| i18nString}} </span>
+                <span class="checkbox checkbox-primary styledCSS noMargin" ng-repeat="lang in alert.supportedLanguages">
+              <input class="styled" checked type="checkbox" id="{{alert._id}}{{lang.value}}" ng-change="addLanguage($event, lang, alert)" ng-disabled="lang.disable" ng-model="lang.selected">
+              <label for="{{alert._id}}{{lang.value}}" ng-class="{'disabled':lang.disable}" >{{lang.value}}</label>
+            </span>
+            </div>
+       
+      </div>
+      <div class="row">
+        <div ng-show="alerts.length == 0 && !alertLoading">
+          <div class='bt-text-muted'> {{'none_found'| i18nString}} </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row"></div>
+    <div class="row form-group">
+      <h5  class="fontSize13">{{actionTasks | uppercase }}</h5>
+    </div>
+    <div class="row">
+      <div class="row publishActionTask" ng-repeat="action in actions">
+        <div class="row">
+          <div class="col-xs-3">
+            <div class="checkbox checkbox-primary styledCSS noMargin">
+              <input class="styled" checked type="checkbox" id="{{action._id}}" ng-change="editTask($event, action)" ng-model="action._selected">
+              <label for="{{action._id}}" >{{action.name}}</label>
+            </div>
+            
+          </div>
+          <div class="col-xs-3 textEllipsis"> {{action.shortDesc}} </div>
+          <div class="col-xs-2 textCapitalize"> {{action.state}} </div>
+          <div class="col-xs-2"> {{action.version}} </div>
+        </div>
+         <div class="supportedLanguagesContainer" ng-show="action.supportedLanguages.length > 0">
+           <span>{{'languages'| i18nString}} </span>
+                <span class="checkbox checkbox-primary styledCSS noMargin" ng-repeat="lang in action.supportedLanguages">
+              <input class="styled" checked type="checkbox" id="{{action._id}}{{lang.value}}" ng-change="addLanguage($event, lang, action)" ng-disabled="lang.disable" ng-model="lang.selected">
+              <label for="{{action._id}}{{lang.value}}" ng-class="{'disabled':lang.disable}" >{{lang.value}}</label>
+            </span>
+            </div>
+       
+      </div>
+      <div class="row" >
+        <div ng-show="actions.length == 0 && !actionLoading">
+          <div class='bt-text-muted'> {{'none_found'| i18nString}} </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row"></div>
+    <div class="row form-group">
+      <h5  class="fontSize13">{{dialogTasks | uppercase }}</h5>
+    </div>
+    <div class="row">
+      <div class="row " ng-repeat="dialog in dialogs">
+        <div class="row">
+          <div class="col-xs-3">
+            <div class="checkbox checkbox-primary styledCSS noMargin">
+              <input class="styled" checked type="checkbox" id="{{dialog._id}}" ng-change="editTask($event, dialog)" ng-model="dialog._selected">
+              <label class="textEllipsis" for="{{dialog._id}}" >{{dialog.name}}</label>
+            </div>
+            
+          </div>
+          <div class="col-xs-3 textEllipsis"> {{dialog.shortDesc}} </div>
+          <div class="col-xs-2 textCapitalize"> {{dialog.state}} </div>
+          <div class="col-xs-2"> {{dialog.version}} </div>
+        </div>
+        <div class="supportedLanguagesContainer" ng-show="dialog.supportedLanguages.length > 0">
+          <span>Languages: </span>
+                <span class="checkbox checkbox-primary styledCSS noMargin" ng-repeat="lang in dialog.supportedLanguages">
+              <input class="styled" checked type="checkbox" id="{{dialog._id}}{{lang.value}}"  ng-change="addLanguage($event, lang, dialog)" ng-disabled="lang.disable" ng-model="lang.selected">
+              <label for="{{dialog._id}}{{lang.value}}" ng-class="{'disabled':lang.disable}" >{{lang.value}}</label>
+            </span>
+            </div>
+      
+      </div>
+      <div class="row" >
+        <div ng-show="dialogs.length == 0 && !dialogLoading">
+          <div class='bt-text-muted'> {{'none_found'| i18nString}} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- variable setup html -->
+  <div class="col-xs-12" ng-if="steps[currentStep].id==2"> </div>
+  <div  ng-if="steps[currentStep].id==3" class="marginTop20"> 
+<try-mode-form enable-try-mode="enableTryMode" trymodeid="intab" account="account" callback="trymodecallback"></try-mode-form>
+
+  </div>
+  
+  <!-- review confirm html -->
+  <div class="col-xs-12 noPadding " ng-if="steps[currentStep].id==4">
+    <div class="row form-group">
+      <h3>{{'reviewDeployment_confirm'| i18nString}}</h3>
+      <h5 class="fontSize13">{{taskFlows | uppercase }}</h5>
+    </div>
+    <div class="row deploymentconfirmsection">
+      <div class="row form-group" ng-repeat="task in tasks">
+        <div class="row pointer-hand form-group" ng-click="task.subView = !task.subView">
+            <div class="col-xs-5 chevronLeftAlign"> <span> <i  ng-show="task.parentId" ng-class="{'fa fa-chevron-down': task.subView , 'fa fa-chevron-right pull-left': !task.subView}"></i> </span> <span>  <span class="taskType">{{task.name}}</span> <span>&nbsp;</span> <span>{{getType(task._id)}}</span> </span> </div>
+          <div class="col-xs-2 textEllipsis"> {{task.parentId ? upgradeLabel : new_deployment_label}} </div>
+          <div class="dropdown col-xs-3 textEllipsis textTransformCapitalize customdropdown">
+            <bot-tooltip task="task" from="publish" container="bot-publish" hover-text="{{task.approvedLangString}}"></bot-tooltip>
+</div>
+          <div class="col-xs-2">
+            <div class="pull-right"> {{task.upgradeInfo.version || task.version}} </div>
+          </div>
+        </div>
+        <div class="row" ng-show="task.subView && task.parentId">
+    			<div class="row"></div>
+    			<div class="row">
+    				<div class="noBoxShadowGrayBG">
+    					<div class="row" ng-if="task.upgradeInfo">
+    						<div class="col-xs-5 negative-margin ">
+    							<h3>{{'version_type_label'| i18nString}}</h3>
+    						</div>
+    						<div class="negative-margin col-xs-7 radioDiv">
+    							<div class="col-xs-6 negative-margin ">
+    								<label class="checkbox-inline label-mapping">
+    									<input type="radio" ng-disabled="task.upgradeInfo.versionChange==='major'" value="minor" ng-model="task.versionType">
+    								 	<span>{{'minor_update_label'| i18nString}}</span>
+    								 </label>
+    							</div>
+    							<div class="col-xs-6 negative-margin ">
+    								<label class="checkbox-inline label-mapping">
+    									<input type="radio" ng-disabled="task.upgradeInfo.versionChange==='major'" value="major" ng-model="task.versionType">
+    								 	<span>{{'major_update_label'| i18nString}}</span>
+    								</label>
+    							</div>
+    						</div>
+    					</div>
+    					<div class="row" ng-if="task.upgradeInfo">
+    						<div class="help-block">
+    							{{'this_version_of_the_task_desc'| i18nString}}
+    						</div>
+    					</div>
+    					<div class="row" ng-if="task.upgradeInfo && (task.upgradeInfo.upgrade !== 'automatic')">
+    						<div class="col-xs-5 negative-margin ">
+    							<h3>{{'upgrade'| i18nString}}</h3>
+    						</div>
+    						<div class="negative-margin col-xs-7 radioDiv">
+    							<div class="col-xs-6 negative-margin ">
+    								<label class="checkbox-inline label-mapping">
+    									<input type="radio" value="mandatory" ng-model="task.upgradeType">
+    								 	<span>{{'mandatory'| i18nString}}</span>
+    								 </label>
+    							</div>
+    							<div class="col-xs-6 negative-margin ">
+    								<label class="checkbox-inline label-mapping">
+    									<input type="radio" value="optional" ng-model="task.upgradeType">
+    								 	<span>{{'optional'| i18nString}}</span>
+    								</label>
+    							</div>
+    						</div>
+    					</div>
+    					<div class="row" ng-if="task.upgradeInfo && (task.upgradeInfo.upgrade !== 'automatic')">
+    						<div class="help-block">
+    							{{'mandatoryAlertTask'| i18nString}}
+    						</div>
+    					</div>
+    					<div class="row form-group" ng-show="task.parentId && task._id[0] === 'l'">
+    						<div class="row">
+    						  <label class="required-field">{{'short_message'| i18nString}}</label>
+    						</div>
+    						<div class="row">
+    						  <input type="text" class="form-control" ng-model="task.upgradeShortMessage" minlength="1" maxlength="256" placeholder="{{'this_update_label'| i18nString}}"/>
+    						  <div class="help-block"> {{'this_msg_is_shown_to_user_as_botmsg'| i18nString}} </div>
+    						</div>
+    					</div>
+    					<div class="row form-group" ng-show="task.parentId && task._id[0] === 'l' && task.upgradeInfo.upgrade==='manual'">
+    						<div class="row">
+    						  <label class="required-field">{{'long_message'| i18nString}}</label>
+    						</div>
+    						<div class="row">
+    						  <input type="text" class="form-control" ng-model="task.upgradeLongMessage" placeholder="{{'this_update_contains'| i18nString}}"/>
+    						  <div class="help-block"> {{'this_msg_is_shown_to_user_when_clicks_update'| i18nString}} </div>
+    						</div>
+    					</div>
+    					<div class="row form-group" ng-show="task.parentId">
+    						<div class="row">
+    						  <label class="required-field">{{'upgrade_comments'| i18nString}}</label>
+    						</div>
+    						<div class="row">
+    						  <input type="text" class="form-control" ng-model="task.upgradeVersionComment" placeholder="{{'add_comments'| i18nString}}" />
+    						</div>
+    					</div>
+    					<div class="row form-group"></div>
+    					<div class="row" ng-repeat="flow in task.flows" ng-show="task.flows.length>0">
+    						<div class="row publish-section-expander">
+    						  <expander item="flow" on-delete="deleteMapping(flow,$index,task)" on-change="updateMapping(flow,index)" index="$index">
+    						    <workflows-mapping map-id="flow.mapId" status="flow.state" component="true" resource-type="resourceType" resource="flow"> 
+                  </workflows-mapping>
+    						  </expander>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+        </div>
+      </div>
+      <div ng-show="partialLanguageTasks.length > 0" class="deploymentHintBox row form-group">
+        <div class="noPadding text-center"><i class="fa fa-info-circle"></i></div>
+        <div class="noPadding col-xs-11">
+        <div class="title">{{'following_tasks_are_not_included'| i18nString}}</div>
+      <div class="taskListDiv" ng-repeat="partialTask in  partialLanguageTasks track by $index">
+        <div class="taskrow"><span class="taskIndex">{{$index+1}}. </span><span class="taskName">{{partialTask.name}}</span></div>
+        </div>
+        </div>
+        </div>
+   
+      
+      <div class="form-group ng-scope" ng-hide="true" ng-if='showVisibilty()'>
+          <div class="col-xs-12 labelling noPadding">
+              <label>{{'visibility'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 radioDiv noPadding">
+              <div>
+                  <label for="stream.showInMp.no">
+                      <input ng-change="changeVisibility()" ng-value="false"  type="radio" ng-model="stream.showInMp" name="stream.showInMp" id="stream.showInMp.no" class="ng-pristine ng-untouched ng-valid" value="false" >
+                      <span class="opt-title">{{'kore_ai_enterprise_bot'| i18nString}}</span> </label>
+              </div>
+              <div>
+                  <label for="stream.showInMp.yes">
+                      <input ng-change="changeVisibility()" ng-value="true" type="radio" ng-model="stream.showInMp" name="stream.showInMp" id="stream.showInMp.yes"  class="ng-pristine ng-untouched ng-valid" value="true" checked="checked">
+                      <span class="opt-title">{{'kore_ai_public_bot'| i18nString}}</span></label>
+              </div>
+          </div>
+      </div>
+      
+       <div class="form-group ng-scope" ng-hide="true" ng-if='showVisibiltyForSmartBot()'>
+          <div class="col-xs-12 labelling noPadding">
+              <label>Visibility</label>
+          </div>
+          <div class="col-xs-12 radioDiv noPadding">
+              <div>
+                  <label for="upgrade.botType.workplacefb">
+                      <input value="workplacefb"  type="radio" ng-model="upgrade.botType" name="upgrade.botType" id="upgrade.botType.workplacefb" class="ng-pristine ng-untouched ng-valid">
+                      <span class="opt-title">{{'workplace_botstore'| i18nString}}</span> </label>
+              </div>
+              <div class="col-xs-12 checkboxStyling clear-fix" ng-if="upgrade.botType==='workplacefb'">
+
+                  <div class="col-xs-12 checkbox checkbox-primary marginBottom10-imp">
+                      <input  class="styled" checked type="checkbox" ng-model="upgrade.isMention" name="channel.isMention" id="channel.isMention.yes">
+                      <label for="channel.isMention.yes" >{{'Bt_chnl_workplace_config_comm_mode_opt1'| i18nString}}</label>
+                  </div>
+                  <div class="col-xs-12 checkbox checkbox-primary marginBottom10-imp">
+                      <input  class="styled" checked type="checkbox" ng-model="upgrade.isChat" name="channel.isChat" id="channel.isChat.yes">
+                      <label for="channel.isChat.yes" >{{'Bt_chnl_workplace_config_comm_mode_opt2'| i18nString}}</label>
+                  </div>
+              </div>
+              <div>
+                  <label for="upgrade.botType.default">
+                      <input value="solution" type="radio" ng-model="upgrade.botType" name="upgrade.botType" id="upgrade.botType.default"  class="ng-pristine ng-untouched ng-valid">
+                      <span class="opt-title">{{'kore_ai_public_bot'| i18nString}}</span></label>
+              </div>
+          </div>
+      </div>
+      
+      
+
+      <div class="BtNoteDiv" ng-if="streamPublishInfo.namespaceTo === 'public' && $root.wfAdmin && selectedStream.publishType!=='smartbot' && selectedStream.publishType !== 'samplebot'">
+                        <div class="reportInner">
+                           <span class="task-icon ">
+                      <img class="layer" ng-src="{{bulbSvg}}"/></span>
+                      <p class="name">{{'note'| i18nString}}</p>
+                <p class="description">{{'check_all_settings_under_bot'| i18nString}} <a ng-click="openBotStoreSettingsModal()">{{'edit_bot_store_settings'| i18nString}}</a></p>
+                          
+                </div> 
+               
+          </div>
+          <div ng-if="streamPublishInfo.namespaceTo === 'public' && $root.wfAdmin && selectedStream.publishType!=='smartbot' && selectedStream.publishType !== 'samplebot'" class="checkbox checkbox-primary styledCSS marginTop15">
+              <input class="styled" checked type="checkbox" id="bsscheck" ng-model="streamPublishInfo.botStoreSettingsCheck">
+              <label for="bsscheck" class="text-transform-init font-weight-init fontSize16">{{'yes_i_verified'| i18nString}}</label>
+            </div>
+      <div class="row form-group" ng-if="stream.publishType == 'smartbot' || stream.publishType == 'samplebot'">
+        <div class="row form-group">
+          <div class="row">
+            <label class="required-field">{{ stream.publishType == 'smartbot' ? smart_bot_desc_label : sample_bot_desc_label | uppercase }}</label>
+          </div>
+          <div class="row">
+            <input type="text" class="form-control" placeholder="{{selectedStream.publish.Type =='smartbot'? smartBotDesc : sampleBotDesc}}" ng-model="upgrade.description" />
+          </div>
+        </div>
+        <div class="row form-group" ng-hide="stream.publishType == 'samplebot'">
+          <div class="row">
+            <label>{{ configuration_instructions_label | uppercase }}</label>
+          </div>
+          <div class="row">
+            <input type="text" class="form-control" placeholder="{{'enter_configuration'| i18nString}}" ng-model="upgrade.instructions" />
+          </div>
+        </div>
+        <div class="row form-group" ng-show="stream.publishType == 'samplebot'">
+            <div class="row">
+            <label>{{ configuration_instructions_label | uppercase }}</label>
+          </div>
+            <div class="input-group">
+                <input name="importInstructionsFile" type="text" class="form-control" placeholder="{{'upload_pdf_doc'| i18nString}}" ng-model="upgrade.instructionsFileName">
+                <div class="input-group-addon btn-file"><input type="file" file-model="upgrade.instructionsFile" id="importInstructions" name="importInstructions" on-file-change="uploadInstructionsDocument"/>choose file</div>
+            </div>
+            <div ng-show="fileExtensionError" class="text-danger form-error-text"> {{'pdf_extensions_are_supported'| i18nString}} </div>
+        </div>
+        <div class="row form-group" ng-hide="stream.publishType == 'samplebot'">
+          <div class="row">
+            <label>{{ configuration_instructions_url | uppercase }}</label>
+          </div>
+          <div class="row form-group">
+            <input type="url" class="form-control" placeholder="{{'smart_bot_settings_url_detailed_config_placeholder'| i18nString}}" ng-model="upgrade.instructionsURL" />
+          </div>
+        </div>
+          
+          <div class="row form-group" ng-hide="stream.publishType == 'samplebot'">
+
+                  <!-- try mode with solution bot -->
+
+                  <div class="panel-group responseAccordion" id="tryrcAccordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                      <div class="panel-heading collapsed" ng-click="isCollapsed('#rctry') && trymodecallback.loadAuthInfo()" role="button" data-toggle="{{(selectedStream.canTryOut && trymodecallback.idpConfigs.length) ? 'collapse' : ''}}" data-parent="#tryrcAccordion" href="#tryrcpanel" role="tab" id="rctry">
+                       <div><span class="panel-title entity_count_label ng-binding">{{'trymode'| i18nString}}</span>
+     
+        <span class="pull-right length ng-binding"> {{selectedStream.canTryOut ? enabled : disabled}} <i ng-show="selectedStream.canTryOut && trymodecallback.idpConfigs.length" class="fa fa-chevron-right"></i></span>
+      <p>{{'try_mode_desc'| i18nString}}</p>
+      </div>
+             
+                      </div>
+                      <div id="tryrcpanel" class="panel-collapse collapse trymodepanel" role="tabpanel" aria-labelledby="rctry">
+                         <div class="panel-body">
+                    <div class="col-xs-12">
+                        
+
+
+                      <try-mode-form callback="trymodecallback" enable-try-mode="enableTryMode" account="account"  trymodeid="reviewconfirm"></try-mode-form>
+
+
+                    </div>
+
+
+                </div>
+                
+                    </div>
+                  </div>   
+                </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal related to bot store settings -->
+
+              <div class="botStoreSettingsModal modal fade" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" ng-click="closeBotStoreSettingsModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                      <h4 class="modal-title" id="gridSystemModalLabel">{{'bot_store_settings'| i18nString}}</h4>
+                    </div>
+                    <div class="modal-body wf-form modalPerfectScroll" perfect-scroll >
+                      <div>
+                         <bot-store-settings ng-if="showBTStoreSettingsModal" callback="bssCallback" stream-id="{{selectedStream._id}}" display-mode="displayMode" edit-mode="edit" on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></bot-store-settings>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer"> 
+
+                      <div class="pull-right">
+                        <button type="reset"  ng-click="closeBotStoreSettingsModal()" class="btn btn-default"> {{'cancel'| i18nString}} </button>
+                         <button type="button" ng-click="bssCallback.createStream($event)"
+          class="btn btn-sm btn-primary text-info"> <i ng-if="bssCallback.saveInprogress" class="fa fa-spinner fa-spin"></i> {{(bsssaveinprogress) ? saving : save}} </button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+    </div>

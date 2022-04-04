@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>storyboard-menu-icon-inactive</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="storyboard-menu-icon-inactive" transform="translate(1.000000, 1.000000)" stroke="#8A959F" stroke-width="2">
+            <path d="M10.61,12.99 C9.52034093,13.6462221 8.27199854,13.9920234 7,13.99 C3.134,13.99 0,10.859 0,6.995 C0.00165652907,3.13050183 3.13550163,-0.00110481303 7,-8.77076189e-15 C9.55540598,-0.000440714176 11.907875,1.3920466 13.1368144,3.63253935 C14.3657538,5.87303211 14.2757407,8.60525261 12.902,10.76 M11,12.999 L14,13.998 L13,11 M5,5 L9,5 M5,8.5 L7,8.5" id="Shape"></path>
+        </g>
+    </g>
+</svg>

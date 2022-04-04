@@ -1,0 +1,116 @@
+<div class="form-group">
+	<div class="modal fade helper_form_modal" role="dialog">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" ng-click="cancelLink()" class="close" aria-label="Close" ><span aria-hidden="true">
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</span></button>
+					<h4 class="modal-title">{{linkInfo.type == "image" ? imageSource : hyperLink}}</h4>
+				</div>
+				<div class="modal-body  modalPerfectScroll" perfect-scroll>
+					<form name="linkForm" novalidate>
+						<div class="row negative-margin" ng-if="linkInfo.modalShow" ng-include="'helper_form_markdown'"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div ng-include="'helper_form_buttons'"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row markdown-editor">
+            <div class="btn-group toolbar" role="group" aria-label="...">
+                <span ng-hide="control === 'preview' && !channelsHavingPreview[activeChannel]"
+                    title= "{{(markdown.controls[control].channelDisable)?'Not available for this channel':((control === 'preview' &&!callback.channelsHavingPreview[activeChannel]) ? 'This feature is disabled for '+activeChannel+' channel' : markdown.controls[control].tooltip)}}"
+                    ng-repeat = "(control,value) in markdown.controls track by $index" >    
+                    <button  ng-disabled="markdown.controls[control].channelDisable || (((control === 'preview') && (callback.spinner.show || !callback.hasKoreUx() || callback.displayMode == 'view')) || (control === 'variableKeys' && (!activeChannel || callback.displayMode === 'view')))" 
+                            ng-hide = "(control === 'preview' || control === 'variableKeys') && !callback.isFromKoreUxEditor"
+                            ng-click  = "onSelected(markdown.controls[control],control,$event);$event.stopPropagation();" 
+                            type      = "button" 
+                            class     = "noMargin  controls {{markdown.controls[control].btnClass}}"
+                            alt       = "{{((control === 'preview' && !callback.channelsHavingPreview[activeChannel]) ? 'This feature is disabled for '+activeChannel+' channel' : markdown.controls[control].tooltip)}}"
+                            >
+                        {{markdown.controls[control].name}}<span ng-class="markdown.controls[control].class"></span>
+                    </button>
+                </span>
+            </div>
+	    <div class="opt-div-style dropdown">
+	        <button class="btn btn-primary dropdown-toggle" id="style-options-toggle" type="button" style="display: none" data-toggle="dropdown"></button>
+	        <ul class="ul-style-opt dropdown-menu">
+	            <li ng-repeat="heading in headingsList" id="{{heading.id}}" ng-click="optionSelected(heading.id)" ng-bind-html="heading.tag"></li>  
+	        </ul>
+	    </div>
+	    <div class="dropdown pull-right" ng-show="callback.channelsHavingPreview[activeChannel]">
+        <button type="button" class="btn btn-primary btn-sm dropdown-toggle markdown-preview-option-toggle hide" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{callback.spinner.show ? previewing : preview}} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" >
+          <li ng-disabled="!activeChannel || callback.spinner.preview"><a href="#" ng-click="callback.openPreview()" >{{'test_preview'| i18nString}}</a></li>
+          <li ng-disabled="!activeChannel || callback.spinner.previewResponse"><a href="#" ng-click="callback.openPreviewWithSample()">{{'preview_res'| i18nString}}</a></li>
+        </ul>
+      </div>
+		<div id="{{markdownid}}"></div>
+		<div ng-if="linkInfo.inlineShow">
+			<div class="inline_markdown_helper_form">
+				<form name="linkForm" novalidate>
+					<div ng-include="'helper_form_markdown'"></div>
+				</form>
+		  		<div class="form-group" ng-include="'helper_form_buttons'"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/ng-template" id="helper_form_markdown">
+		<div class="row wf-form mt-15">
+		  <div class="form-group row">
+		  	<div class="col-xs-12 padding0">
+		    	<label class="require-field required-field">{{linkInfo.type == "image" ? imageUrl : hyperLinkCaps}}</label>
+		  	</div>
+		  	<div class="col-xs-12 padding0">
+		    	<input  ng-pattern="validateURL" class="form-control" required name="link" placeholder="http://something.com" ng-model="linkInfo.link" context-typeahead>
+		  	</div>
+		  	<div class="col-xs-12 padding0">
+			    <div  ng-show="linkForm.link.$dirty">
+			        <div error-alert ng-show="linkForm.link.$error.required || linkForm.link.$error.pattern" class="text-danger">
+			            Please provide {{linkInfo.type == "image" ? imageUrl : hyperLinkCaps}}
+			        </div>
+			    </div>
+		  	</div>
+		  </div>
+		<div class="form-group row">
+		  	<div class="col-xs-12 padding0">
+		    	<label class="require-field" ng-class='{"required-field":linkInfo.type === "image"}'>{{linkInfo.type == "image" ? imageALt : hyperText}}</label>
+		  	</div>
+		  	<div class="col-xs-12 padding0">
+		    	<input type="text" ng-required="linkInfo.type === 'image'" class="form-control" name="linkText" placeholder="" ng-model="linkInfo.linkText" context-typeahead>
+		  	</div>
+		  	<div class="col-xs-12 padding0">
+			    <div  ng-show="linkForm.linkText.$dirty">
+			        <div error-alert ng-show="linkForm.linkText.$error.required" class="text-danger">
+			            Please provide {{linkInfo.type == "image" ? imageALt : hyperText}}
+			        </div>
+			    </div>
+		  	</div>
+		</div>
+		  <!-- <div class="form-group row">
+		  	<div class="col-xs-12">
+		    	<label class="require-field">{{linkInfo.type == "image" ? 'Image Hover Text' : "Hyper Link Hover Text"}}</label>
+		  	</div>
+		  	<div class="col-xs-12">
+		    	<input type="text" class="form-control" required name="hoverText"  placeholder="" ng-model="linkInfo.hoverText">
+		  	</div>
+		  	<div class="col-xs-12">
+			    <div  ng-show="linkForm.hoverText.$dirty">
+			        <div error-alert ng-show="linkForm.hoverText.$error.required" class="text-danger">
+			            Please provide {{linkInfo.type == "image" ? 'Image Hover Text' : "Hyper Link Hover Text"}}
+			        </div>
+			    </div>
+		  	</div>
+		  </div> -->
+		</div>
+	</script>
+	<script type="text/ng-template" id="helper_form_buttons">
+		<button type="button" class="btn btn-primary" ng-click="saveLink(linkForm)">{{'ok'| i18nString}}</button>
+		<button type="button" class="btn closeCancel" ng-click="cancelLink()">{{'cancel'| i18nString}}</button>
+	</script>
+</div>

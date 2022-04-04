@@ -1,0 +1,185 @@
+<div class="modal modal-kr fade terms-conditions" id="termsConditions" tabindex="-1" role="dialog" aria-labelledby="termsCoditionsModel">
+        <div class="line-circle animated zoomIn"></div>
+        <div class="dotted-circle animated zoomIn"></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close hide" data-dismiss="modal" ui-sref="home" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h4 class="modal-title auto-margin">{{'terms_use'| i18nString}}</h4>
+            </div>
+            <div id="inner-content-div" class="modal-body bg-white">
+                <div ng-if="isUpdate" class="alert alert-warning" role="alert" >
+                    {{'we_have_updated'| i18nString}} 
+                </div>
+                <p class="SubAggrementTitle">{{'bot_developer'| i18nString}}</p>
+                
+                <p>{{'bot_developer_services'| i18nString}} </p>
+
+                <p>{{'agreement'| i18nString}} </p>
+                <p class="textTransform">{{'read_this_agreement'| i18nString}}</p>
+                <div  class="TermsAndConditionsList">
+                    <ol>
+                        <!-- DEFINITIONS -->
+                        <li><strong class="textTransform">{{'definitions'| i18nString}}</strong>
+                            <ol>
+                                <li ng-bind-html="'additonal_services'| i18nString:({link:'https://developer.kore.ai'})"></li>
+                                <li ng-bind-html="('programming_interface'| i18nString)"></li>
+                                <li ng-bind-html="'bot_store'| i18nString:({link:MP_URL,dyn:MP_URL})"></li>
+                                <li ng-bind-html="('confidential_info'| i18nString)"></li>
+                                <li ng-bind-html="('customer_desc'| i18nString)"></li>
+                                <li ng-bind-html="('developer_bot'| i18nString)"></li>
+                                <li ng-bind-html="('developer_data'| i18nString)"></li>
+                                <li ng-bind-html="('end_user'| i18nString)"></li>
+                                <li ng-bind-html="('harmful_code'| i18nString)"></li>
+                                <li ng-bind-html="'kore_content'| i18nString:({link:'https://developer.kore.ai',link1:MP_URL,dyn:MP_URL})"></li>
+                                <li ng-bind-html="('order'| i18nString)"></li>
+                                <li ng-bind-html="('publish_means'| i18nString)"></li>
+                                <li ng-bind-html="('service_data'| i18nString)"></li>
+                                <li ng-bind-html="('services_desc'| i18nString)"></li>
+                                <li ng-bind-html="'standard_services'| i18nString:({link:'https://developer.kore.ai',link1:MP_URL,dyn:MP_URL})"></li>
+                                <li ng-bind-html="('tp_application'| i18nString)"></li>
+                                <li ng-bind-html="('you_strong'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- DEFINITIONS -->
+                        <!-- PROVISION AND USE OF SERVICES -->
+                        <li><strong class="textTransform">{{'provision'| i18nString}}</strong>
+                            <ol>
+                                <li  ng-bind-html="('provision_services'| i18nString)"></li>
+                                <li  ng-bind-html="('use_of_kore_content'| i18nString)"></li>
+                                <li ng-bind-html="'service_data_desc'| i18nString:({link:'https://kore.ai/privacy-policy/'})"></li>
+                                <li ng-bind-html="('your_responsibilites'| i18nString)"></li>
+                                <li ng-bind-html="('necessary_hardware'| i18nString)"></li>
+                                <li ng-bind-html="('restrictions'| i18nString)"></li>
+                                <li ng-bind-html="('usage_limitation'| i18nString)"></li>
+                                <li ng-bind-html="'change_acknowledge'| i18nString:({link:'https://developer.kore.ai'})"></li>
+                            </ol>
+                        </li>
+                        <!-- PROVISION AND USE OF SERVICES -->
+                        <!-- DEVELOPER BOTS -->
+                        <li><strong class="textTransform">{{'developer_bots'| i18nString}}</strong>
+                            <ol>
+                                <li ng-bind-html="('right_grant'| i18nString)"></li>
+                                <li ng-bind-html="('conditions_publication'| i18nString)">
+                                    <ol>
+                                        <li>{{'customer_must'| i18nString}}</li>
+                                        <li>{{'solely_responsible'| i18nString}}</li>
+                                        <li>{{'solely_responsible_warrant'| i18nString}}</li>
+                                        <li>{{'developer_tos'| i18nString}}</li>
+                                        <li>{{'customer_must_acknowledge'| i18nString}}</li>
+                                        <li>{{'customer_must_represent'| i18nString}}</li>
+                                        <li>{{'customer_agree'| i18nString}}</li>
+                                    </ol>
+                                </li>
+                                <li ng-bind-html="('responsibilty_bots'| i18nString)"></li>
+                                <li ng-bind-html="('developer_bot_warranty'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- DEVELOPER BOTS -->
+                        <!-- THIRD-PARTY PROVIDERS -->
+                        <li><strong class="textTransform">{{'third_party_providers'| i18nString}}</strong>
+                            <ol>
+                                <li ng-bind-html="('your_acquistion'| i18nString)"></li>
+                                <li ng-bind-html="('tp_application_developer'| i18nString)"></li>
+                                <li ng-bind-html="('service_features'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- THIRD-PARTY PROVIDERS -->
+                        <!-- CONFIDENTIALITY -->
+                        <li><strong class="textTransform">{{'confidentiality'| i18nString}}</strong>
+                            <ol>
+                                <li ng-bind-html="('protection_confidential'| i18nString)"></li>
+                                <li ng-bind-html="('compelled'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- CONFIDENTIALITY -->
+                        <!-- PROPRIETARY RIGHTS -->
+                        <li><strong  class="TermsAndConditionsList">{{'proprietary'| i18nString}}</strong>
+                            <ol>
+                                <li ng-bind-html="('reservation_rights'| i18nString)"></li>
+                                <li ng-bind-html="('restrictions_desc'| i18nString)"></li>
+                                <li ng-bind-html="('developer_bots_desc'| i18nString)"></li>
+                                <li ng-bind-html="('developer_data_desc'| i18nString)"></li>
+                                <li ng-bind-html="('feedback_desc'| i18nString)"></li>
+                                <li ng-bind-html="('competitive_applications'| i18nString)"></li>
+                                <li ng-bind-html="('federal_gov'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- PROPRIETARY RIGHTS -->
+                        <!-- TERM AND TERMINATION -->
+                        <li><strong  class="TermsAndConditionsList">{{'term_termination'| i18nString}}</strong>
+                            <ol>
+                                <li ng-bind-html="('terms_agreement'| i18nString)"></li>
+                                <li ng-bind-html="('termination'| i18nString)"></li>
+                                <li ng-bind-html="('loss_application'| i18nString)"></li>
+                                <li ng-bind-html="('surviving_provisions'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- TERM AND TERMINATION -->
+                        <!-- LIMITED WARRANTIES AND DISCLAIMERS -->
+                        <li><strong  class="TermsAndConditionsList">{{'limited_warranties'| i18nString}}</strong>
+                            <ol>
+                                <li ng-bind-html="('limited_warranties_desc'| i18nString)"></li>
+                                <li ng-bind-html="('disclaimer'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- LIMITED WARRANTIES AND DISCLAIMERS -->
+                        <!-- INDEMNIFICATION -->
+                        <li><strong  class="TermsAndConditionsList">{{'indemnification'| i18nString}}</strong>
+                            <ol>
+                                <li> {{'shall_indemnify'| i18nString}}</li>
+                            </ol>
+                        </li>
+                        <!-- INDEMNIFICATION -->
+                        <!-- LIMITATION OF LIABILITY -->
+                        <li><strong  class="TermsAndConditionsList">{{'limitation_liability'| i18nString}}</strong>
+                            <ol class="leftMargin">
+                                <li ng-bind-html="('limitation_liability_desc'| i18nString)"></li>
+                                <li ng-bind-html="('exclusion'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- LIMITATION OF LIABILITY -->
+                        <!-- PRICING; FEES. -->
+                        <li><strong  class="TermsAndConditionsList">{{'pricing'| i18nString}}</strong>
+                            <ol class="leftMargin">
+                                <li ng-bind-html="('pricing_desc'| i18nString)"></li>
+                                <li ng-bind-html="('fees_published'| i18nString)"></li>
+                                <li ng-bind-html="('fees_bot'| i18nString)"></li>
+                                <li ng-bind-html="('customer_refund'| i18nString)"></li>
+                                <li ng-bind-html="('services_fees'| i18nString)"></li>
+                                <li ng-bind-html="('changes_desc'| i18nString)"></li>
+                                <li ng-bind-html="('invoicing_payment'| i18nString)"></li>
+                                <li ng-bind-html="('overdue_payments'| i18nString)"></li>
+                                <li ng-bind-html="('taxes'| i18nString)"></li>
+                                <li ng-bind-html="('billing_audit'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- PRICING; FEES. -->
+                        <!-- GENERAL PROVISIONS -->
+                        <li><strong  class="TermsAndConditionsList">{{'general_provisions'| i18nString}}</strong>
+                            <ol class="leftMargin">
+                                <li ng-bind-html="('notice'| i18nString)"></li>
+                                <li ng-bind-html="('governing'| i18nString)"></li>
+                                <li ng-bind-html="('dispute_resolution'| i18nString)"></li>
+                                <li ng-bind-html="('limited_time'| i18nString)"></li>
+                                <li ng-bind-html="('attorney_fees'| i18nString)"></li>
+                                <li ng-bind-html="('export_compliances'| i18nString)"></li>
+                                <li ng-bind-html="('relationship'| i18nString)"></li>
+                                <li ng-bind-html="('no_third_party'| i18nString)"></li>
+                                <li ng-bind-html="('waiver_cumulative'| i18nString)"></li>
+                                <li ng-bind-html="('severability'| i18nString)"></li>
+                                <li ng-bind-html="('assignment'| i18nString)"></li>
+                                <li ng-bind-html="('entire_agreement'| i18nString)"></li>
+                            </ol>
+                        </li>
+                        <!-- GENERAL PROVISIONS -->
+                    </ol>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-disabled="apiCallInProgress" class="btn" id="termsBtnAccept"  ng-click="accept()">{{'agree'| i18nString}}  <i ng-if='apiCallInProgress' class="fa fa-spinner fa-spin"></i></button>
+                <button type="button" ng-disabled="apiCallInProgress" class="btn closeCancel"  id="termsBtnDecline" ng-click="decline()">{{'cancel_label'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>

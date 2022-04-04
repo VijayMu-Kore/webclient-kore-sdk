@@ -1,0 +1,69 @@
+<div class="app-info clearfix" ng-show="showContent && streams.length >0">
+  <div class="selected-stream-block"  style="background-color:{{selectedStream.color}};" >
+   
+    <div class="stream-bg">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="selected-stream">
+            <div class="main-body row">
+                <div class="languageSettingsdropdown dropdown pull-right" ng-hide="showSolutionBotSetup">
+                <button class="btn btn-default dropdown-toggle" type="button" id="LanguageDropDown" data-toggle="{{supportedLanguages.length > 1 ? 'dropdown' : ''}}" aria-haspopup="true" aria-expanded="true">
+                  {{currentLanguage}}
+                  <span class="fa fa-chevron-down" ng-show="supportedLanguages.length > 1"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="LanguageDropDown">
+                  <li ng-repeat="language in supportedLanguages" ng-click="changeBotLanguage(language.value, true)"><a href="">{{language.name}} {{language.value === selectedStream.defaultLanguage ? ('default_lan'| i18nString) : ''}}</a></li>
+                </ul>
+              </div>
+              <div class="stream-icon">
+                <img alt="{{selectedStream.name}}" ng-src="{{selectedStream.icon}}">
+              </div>
+              <div class="stream-details">
+                <span class="name" >{{selectedStream.name}}</span>
+              </div>
+
+                  <div class="more-btn">
+                <span class="talkToBot" ng-hide="showSolutionBotSetup">
+
+                  <!-- <div class="runbottitle" ng-if="!isChatWindowOpen()">Talk to bot<i class="fa  fa-caret-down downArrow"></i></div> -->
+                 <button class="btn btn-primary runBotBtn" ng-click="initiateChatBot()" tooltip-placement="top" tooltip="Talk to bot"><i class="fa fa-comments" style="color:{{selectedStream.color}}"></i></button>
+
+                </span>
+                <span class="solutionsetup" ng-show="showSolutionBotSetup">
+                    <button class="btn btn-primary btn-sm" ng-show="showSolutionBotSetup" ng-click="selectedStream.sbStreamId ? setupSolutionBot() : setupSampleBot()">{{'setup_bot'| i18nString}}</button>
+                </span>  
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </div>
+
+     <div id="myTabs" class="tabContainer">
+  <ul class="nav nav-tabs tablist" role="tablist" >
+      <li role="presentation"  class="tasks-pane"><a ng-click="setCurrentTab('.tasks-pane')" aria-controls="home" role="tab" data-toggle="tab">{{selectedStream.type=='universalbot'? ('linked_bots'| i18nString) : ('task_name'| i18nString)}} </a></li>
+    <li role="presentation" ng-class="{'disabled':showSolutionBotSetup && selectedStream.sbStreamId}"   class="nl-pane"><a ng-click="setCurrentTab('.nl-pane')" aria-controls="NL" role="tab" ng-attr-data-toggle="{{!showSolutionBotSetup  ? 'tab' : '' }}">{{'natural_langname'| i18nString}}</a></li>
+    <li role="presentation" ng-class="{'disabled':showSolutionBotSetup && selectedStream.sbStreamId}"   class="channels-pane"><a ng-click="setCurrentTab('.channels-pane')" aria-controls="Channels" role="tab" ng-attr-data-toggle="{{!showSolutionBotSetup ? 'tab' : '' }}">{{'channels'| i18nString}}</a></li>
+    <li role="presentation" ng-if="_constants_.config.showAppsAgentsTab" ng-class="{'disabled':showSolutionBotSetup && selectedStream.sbStreamId}"   class="apps-pane"><a ng-click="setCurrentTab('.apps-pane')" aria-controls="Apps" role="tab" ng-attr-data-toggle="{{!showSolutionBotSetup ? 'tab' : '' }}">{{'apps_and_agents'| i18nString}}</a></li>
+<!--    <li role="presentation"    class="training-pane"><a href="#training" ng-click="setCurrentTab('.training-pane')" aria-controls="training" role="tab" data-toggle="tab">Training</a></li>-->
+    <li role="presentation"  ng-class="{'disabled':showSolutionBotSetup && selectedStream.sbStreamId}"  class="settings-pane"><a ng-click="setCurrentTab('.settings-pane')" aria-controls="Settings" role="tab" ng-attr-data-toggle="{{!showSolutionBotSetup ? 'tab' : '' }}">{{'settings'| i18nString}}</a></li>
+    <li role="presentation" ng-show="isEligibleForPublishing()"  ng-class="{'disabled':showSolutionBotSetup && selectedStream.sbStreamId}"  class="publish-pane" ><a  ng-click="setCurrentTab('.publish-pane')" aria-controls="Publish" role="tab" ng-attr-data-toggle="{{!showSolutionBotSetup ? 'tab' : '' }}">{{'publish'| i18nString}}</a></li>
+    <li role="presentation"  ng-class="{'disabled':showSolutionBotSetup && selectedStream.sbStreamId}"  class="analyze-pane" ><a ng-click="setCurrentTab('.analyze-pane')" aria-controls="analyze" role="tab" ng-attr-data-toggle="{{!showSolutionBotSetup ? 'tab' : '' }}">{{'analyze'| i18nString}}</a></li>
+    <li role="presentation" ng-class="{'disabled':showSolutionBotSetup && selectedStream.sbStreamId}"   class="dashboard-pane"><a ng-click="setCurrentTab('.dashboard-pane')" aria-controls="dashboard" role="tab" ng-attr-data-toggle="{{!showSolutionBotSetup ? 'tab' : '' }}">{{'dashboard_name'| i18nString}}</a></li>
+  </ul>
+</div>
+  </div>
+   
+</div>
+<div class="flowTaskForm" ng-class="{'isDebugConsolePanelOpen ':isDebugConsolePanelOpened}" id="debugConsoleRT">
+  <div class="flowTaskDebugConsolePanel maximized" dynamic-height dynaoffset = "-58px" height-property="height">
+                        <!-- <i class="fa fa-close closeDebugConsolePanel" ng-click="closeDebugConsolePanel()"></i> -->
+                        <!-- debug console component component -->
+                        <debug-console-panel nl-trace="nlTrace" ng-if="isDebugConsolePanelOpened" nl-trace-data="nlTraceData" debug-info="debugInfo" debug-raw="debugRaw" debug-context="debugContext" is-resized="true" class="flowTaskDebugConsolePanelDiv" close-debugger="closeDebugConsolePanel()"></debug-console-panel>
+                        <!-- <bt-debug-console-panel debug-info="debugInfo" debug-raw="debugRaw" debugger-console="debuggerConsole" debug-context="debugContext" is-resized="isDebugResized" class="flowTaskDebugConsolePanelDiv"></bt-debug-console-panel> -->
+                    </div>
+  </div>
+

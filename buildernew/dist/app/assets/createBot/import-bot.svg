@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="51" viewBox="0 0 40 51">
+    <defs>
+        <path id="a" d="M8.009 31H0V0h40v31h-8.225"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <use fill="#FFF" xlink:href="#a"/>
+        <path stroke="#009DAB" d="M39.5 30.5V.5H.5v30h39z"/>
+        <path fill="#DAF9FB" d="M1 1h38v6H1z"/>
+        <path stroke="#009CAB" stroke-linecap="square" d="M.65 7h38.853"/>
+        <circle cx="5" cy="4" r="1" stroke="#009CAB"/>
+        <circle cx="9" cy="4" r="1" stroke="#009CAB"/>
+        <circle cx="13" cy="4" r="1" stroke="#009CAB"/>
+        <g transform="translate(9 13)">
+            <rect width="19.412" height="19" x="1.588" y="18" fill="#DAF9FB" stroke="#009DAB" stroke-dasharray="2" rx="9.5"/>
+            <rect width="9.059" height="8.867" x="6.765" y="23.067" fill="#009DAB" rx="4.433"/>
+            <g stroke="#009DAB">
+                <path stroke-linecap="square" d="M11.475 14.747V1.269"/>
+                <path d="M7.917 4.375L11.35.942l3.33 3.331"/>
+            </g>
+            <g stroke="#009DAB">
+                <path stroke-linecap="square" d="M18.438 15.114v-6.74"/>
+                <path d="M15.82 9.918l2.41-2.41 2.672 2.673"/>
+            </g>
+            <g stroke="#009DAB">
+                <path stroke-linecap="square" d="M2.908 15.114v-6.74"/>
+                <path d="M.29 9.918l2.41-2.41 2.673 2.673"/>
+            </g>
+        </g>
+    </g>
+</svg>

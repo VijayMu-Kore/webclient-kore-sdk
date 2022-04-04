@@ -1,0 +1,10 @@
+<div class="form-container marginTop10" ng-show="tags.length>0">
+	<div class="well well-sm whiteBG">
+		<div class="" >
+			<span class="tag_box_item tagsBG" ng-repeat="tag in tags track by $index">
+				<span>{{key ? tag[key] : tag}}</span>
+				<span ng-click="deletetag($index)"><i class="fa fa-times tag_box_cancel_icon"></i></span>
+			</span>
+		</div>
+	</div>
+</div>

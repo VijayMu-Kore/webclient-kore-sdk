@@ -1,0 +1,27 @@
+<div class="geolocator">
+	<div class="loc-spinner text-center" ng-if="locating && showSuggestions">
+		<span>
+			<i class="fa fa-circle-o-notch wf-spinner"></i> {{'loacting_you'| i18nString}}
+		</span>
+	</div>
+	<div>
+		<label class="control-label font-b" ng-class="{'field-required': field.required}" for="{{field.key}}"> {{field.title}} </label>
+		<div class="input row wrapper"> 
+			<input type="text" class="form-control pull-left" name="{{field.key}}" id="{{field.key}}" ng-required="{{field.required}}" placeholder="{{'pick_a_loaction_placeholder'| i18nString}}" ng-model="field.location" ng-init="getCurrentLocation()" ng-focus="toggleSuggestions()" ng-change="toggleSuggestions()"/>
+			<button class="pull-right" ng-click="searchLocation()" ng-if="!searching">{{'locate'| i18nString}}  </button>
+			<div class="searching text-center" ng-if="searching"> <i class="fa fa-circle-o-notch wf-spinner"></i> </div>
+		</div>
+		<div ng-show="showSuggestions" ng-if="!locating">
+			<div class="no-results" ng-if="!locations.length && !locationSelected">{{'no_locations_found'| i18nString}}  </div>
+			<div class="locations" ng-if="locations.length">
+				{{'choose_nearby_locations'| i18nString}}
+				<div class="locs">
+					<div class="loc" ng-repeat="location in locations track by $index" ng-click="pickLocation($index)" ng-if="!searching"> {{location.address}} </div>
+				</div>
+			</div>
+		</div>
+		<div class="help-inline json-form-field-desc" ng-hide="(fieldsForm.$submitted || fieldsForm[field.key].$dirty) && (fieldsForm[field.key].$error.required || fieldsForm[field.key].$error.number)"> {{field.help}} </div>
+		<span class="help-block jsonform-errortext" ng-show="(fieldsForm.$submitted || fieldsForm[field.key].$dirty) && fieldsForm[field.key].$error.required"> {{'property_req'| i18nString}} </span>
+		<span class="help-block jsonform-errortext" ng-show="(fieldsForm.$submitted && fieldsForm[field.key].$dirty) && fieldsForm[field.key].$error.number"> {{'please_enter'| i18nString}} </span>
+	</div>
+</div>

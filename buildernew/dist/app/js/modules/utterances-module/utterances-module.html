@@ -1,0 +1,1749 @@
+<!-- <div class="bt-utterances" ng-class="{'read-only-div':Mode==display='VIEW'}">
+    <div ng-if="loadingUtterances" class="center-info-please-wait">
+        <div class="alert alert-warning alert-xs text-center">
+            <i class="fa-spin fa fa-circle-o-notch"></i>{{'please_wait'| i18nString}} 
+        </div>
+    </div>
+    <div ng-if="!loadingUtterances" class="ml_Utterance">
+        <div class="main_title">Training</div>
+            <div class="row" style="display: none;">
+                <div ng-show="showTrainBtn" class="MLtrainDiv" style="display: none;">
+                    <div class="helphint col-xs-12">
+                        <div class="col-xs-1 bulbicon">
+                            <span><i class="btx-bulb"></i></span>
+                        </div>
+                        <div class="col-xs-10 textDiv"><span class="name ng-binding" ng-bind-html="isTrainInprogress()?$root.getSanitizedText($root.lableData.bb534) : $root.getSanitizedText($root.lableData.bb533)"></span>
+                        </div>
+                        <div class="trainUtteraceBtn">
+                            <button type="button" class="pull-right btn btn-sm btn-outline trainBtn" ng-disabled="isTrainInprogress()" ng-click="trainBot();">{{'train'| i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="showTrainSavingDiv" class="col-xs-12 MLSavingProgressDiv">
+                    <div class="row saveRow">
+                        <div class="col-xs-3 intentTraining"><span class="tip">{{'intent_training_label'| i18nString}} </span><span class="trainIcon fa" ng-class="{'fa-check-circle':trainStatus.success,'fa-exclamation-circle':trainStatus.failed,'fa-spinner fa-spin':trainStatus.saving}" title="{{trainTitle}}"></span>
+                        </div>
+                        <div class="col-xs-3 intentTraining"><span class="tip">{{'entity_training_label'| i18nString}} </span><span class="trainIcon fa" ng-class="{'fa-check-circle':trainStatus.success,'fa-exclamation-circle':trainStatus.failed,'fa-spinner fa-spin':trainStatus.saving}" title="{{trainTitle}}"></span>
+                        </div>
+                        <div class="col-xs-6"><span ng-click="closeTrainSaveDiv()" class="fa fa-times"></span>
+                        </div>
+                    </div>
+                </div>       
+            </div>            
+            <div class="row btnSearchTitle">
+                <div class="col-xs-6 leftTitle">
+                    <p class="pageTitle">{{'ml_utterance_name'| i18nString}}</p>
+                </div>
+                <div class="col-xs-6 rightBTNSearch noPaddingLeft" >
+                    <div class="searchComponent">
+                        <input type="text" ng-blur="inSearchBox = false" tabindex="1" ng-keyup="searchTasks($event,search.searchTask)" ng-model="search.searchTask" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                        <i class="btx-search"></i>
+                        <i class="btx-close" ng-click="clearSearch();" ng-class="{displayNone: !search.searchTask.length}"></i>
+                        <div class="enterSearch" ng-show="inSearchBox && search.searchTask!=''">{{'press_enterto_search_label'| i18nString}} </div> 
+                    </div>
+                    <div class="titleDropdown ">
+                        <div class="dropdown">
+                            <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{select.name?select.name:"Choose an option"}}
+                                <i class="btx-carrot-up"></i>
+                            </a>
+                            <ul class="dropdown-menu content-menu">
+                                <li ng-click="selectIntentType(intent)" ng-repeat="intent in supportedIntents"><a>{{intent.name}}</a></li>  
+                                <li class="toggle">
+                                      <a href="javascript:void(0)">Exclude Hidden Tasks</a>
+                                      <label class="kr-sg-toggle" ng-click="toggleHiddenTasks($event,intent)">
+                                          <input type="checkbox"  ng-model="config.excludeIsHidden">
+                                          <div class="slider"></div>
+                                      </label>
+                                  </li>         
+                           </ul> 
+                        </div>
+                    </div>
+                    <div class="titleDropdown ">
+                        <div class="dropdown">
+                            <a class="btn btnSolidBlue dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i ng-if='LoadingKfold' class="fa fa-spinner fa-spin"></i>{{'validate_model' | i18nString}} 
+                                <i class="btx-carrot-up"></i>
+                            </a>
+                            <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton">
+                                <li ng-click="viewMlScore()"><a>{{'view_ML_model' | i18nString}}</a></li>
+                                <li ng-click="viewKfold()"><a>{{'K_fold_Cross_Validation' | i18nString}}</a></li>
+                            </ul> 
+                        </div>
+                    </div>
+                    <div class="creationButton borderBtn displayNone">
+                         <button class="btn btn-xs"> BTN Name</button>
+                    </div>
+                    <div class="filtersDetails displayNone">
+                        <span class="filterListContainer">
+                            <span class="filterCat">Languages </span>
+                            <span class="filterClose">(1)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <span class="filterListContainer">
+                            <span class="filterCat">User ID </span>
+                            <span class="filterClose">(3)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <span class="filterListContainer">
+                            <span class="filterCat">Date Period </span>
+                            <span class="filterClose">(5 days)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <div class="dropdown moreDD">
+                            <a href="#" class="moreFilters" data-toggle="dropdown">
+                                +2 more
+                                </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">
+                                    <span class="filterCat">Channels </span>
+                                    <span class="filterClose">(4)</span>
+                                    <i class="btx-close"></i>
+                                </li>
+                                <li class="dropdown-item" >
+                                    <span class="filterCat">Tasks </span>
+                                    <span class="filterClose">(3)</span>
+                                    <i class="btx-close"></i>
+                                </li>                       
+                            </ul>
+                        </div>
+                        <span class="clearAllFilters">
+                            <span class="filterCat">User ID </span>
+                            <span class="filterClose">(3)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                    </div>
+            
+                    <div class="btnActions displayNone">
+                        <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                    </div>
+            
+
+                    <div class="titleOverflow ">
+                        <div class="dropdown">
+                            <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                <i class="btx-overflow"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="menuOption hasPadding import-utterance" ng-click="importUtterancesModal()">{{'Import_utterances'| i18nString}} </li>
+                                    <li class="menuOption hasPadding" ng-click="onmMenuOptionClicked($event)">
+                                    <div class="dropdown">
+                                        <div class="dropdown-toggle"  data-toggle="dropdown">
+                                            <span class="menuName">{{'Export_utterances'| i18nString}} </span>
+                                            <img class="fa fa-caret-right moreOptions" ng-src="{{caretRight}}">
+                                        </div>
+                                        <ul class="dropdown-menu pull-right subMenu">
+                                            <li class="subMenuOptions" ng-click="exportUtterancesModal('json')">{{'json_label'| i18nString}} </li>
+                                            <li class="subMenuOptions" ng-click="showCSVModal()">{{'csv_label'| i18nString}}</li>
+                                        </ul>
+                                    </div>
+                                    </li>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="taskSelectContainer row" style="display: none;">   
+
+                <div class="col-xs-3 noPadding text-right">
+                    <div class="searchUtterance">                   
+                        <span class="synSearch callclear" search-expand>
+                                <input type="text" ng-blur="inSearchBox = false" tabindex="1" ng-keyup="searchTasks($event,search.searchTask)" ng-model="search.searchTask" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                                <span class="searchBar uttSearch fa-search">
+                                    <img ng-src="{{searchIcon}}" class="searchIconGray">
+                                    <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearch();">
+                                </span>
+                        </span>
+                        <span class="enterSearch" ng-show="inSearchBox && search.searchTask!=''">{{'press_enterto_search_label'| i18nString}} </span>               
+                    </div>
+                </div>
+                <div class="col-xs-3">              
+                    <div class="kr-sg-dropdowns">
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{select.name?select.name:"Choose an option"}}</button>   
+                             <ul class="dropdown-menu content-menu">
+                                  <li ng-click="selectIntentType(intent)" ng-repeat="intent in supportedIntents"><a>{{intent.name}}</a></li>  
+                                  <li class="toggle">
+                                        <a href="javascript:void(0)">Exclude Hidden Tasks</a>
+                                        <label class="kr-sg-toggle" ng-click="toggleHiddenTasks($event,intent)">
+                                            <input type="checkbox"  ng-model="config.excludeIsHidden">
+                                            <div class="slider"></div>
+                                        </label>
+                                    </li>         
+                             </ul>                         
+                        </div>                    
+                    </div>
+                </div>
+                <div class="validate-modal-dropdown" style="display: none;">
+                    <div class="kr-sg-dropdowns">
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input kr-sg-button-primary" data-toggle="dropdown">{{'validate_model' | i18nString}} </button>   
+                            <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton">
+                                <li ng-click="viewMlScore()"><a>{{'view_ML_model' | i18nString}}</a></li>
+                                <li ng-click="viewKfold()"><a>{{'K_fold_Cross_Validation' | i18nString}}</a></li>
+                            </ul>                                                
+                        </div>                    
+                    </div>
+                    <div class="kr-sg-dropdowns">
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input kr-sg-button-primary" data-toggle="dropdown">{{'validate_model' | i18nString}} </button>   
+                            <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton">
+                                <li ng-click="viewMlScore()"><a>{{'view_ML_model' | i18nString}}</a></li>
+                                <li ng-click="viewKfold()"><a>{{'K_fold_Cross_Validation' | i18nString}}</a></li>
+                            </ul>   
+                            <ul class="dropdown-menu content-menu">
+                                <li class="menuOption hasPadding import-utterance" ng-click="importUtterancesModal()">{{'Import_utterances'| i18nString}} </li>
+                                <li class="menuOption hasPadding" ng-click="onmMenuOptionClicked($event)">
+                                <div class="kr-sg-dropdowns">
+                                    <button class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{'Export_utterances'| i18nString}} </span>
+                                        <img class="fa fa-caret-right moreOptions" ng-src="{{caretRight}}">
+                                    </button>
+                                    <ul class="dropdown-menu pull-right subMenu">
+                                        <li class="subMenuOptions" ng-click="exportUtterancesModal('json')">{{'json_label'| i18nString}} </li>
+                                        <li class="subMenuOptions" ng-click="showCSVModal()">{{'csv_label'| i18nString}}</li>
+                                    </ul>
+                                </div>
+                                </li>
+                            </ul>                                             
+                        </div>                    
+                    </div>
+                </div>
+                <div class="moreOptVieMoreDiv">
+                    <div class="buttonDiv">
+                        <div class="dropdown">
+                            <a class="viewModalBtn dropdown-toggle" type="button" ng-class="{'disabled':LoadingKfold}" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i ng-if='LoadingKfold' class="fa fa-spinner fa-spin"></i>{{'validate_model' | i18nString}} 
+                                <img class="fa fa-caret-right moreOptions" ng-src="{{caretDown}}">
+                            </a>
+                            <ul class="dropdown-menu viewML" aria-labelledby="dropdownMenuButton">
+                              <li class="dropdown-item modalsRun ml" ng-click="viewMlScore()">{{'view_ML_model' | i18nString}}</li>
+                              <li class="dropdown-item modalsRun kFold"  ng-click="viewKfold()">{{'K_fold_Cross_Validation' | i18nString}}</li>
+                            </uil>
+                        </div>
+                            <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <img ng-src="{{ellipsisGray}}" class="ellipsisGrayImg">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="menuOption hasPadding import-utterance" ng-click="importUtterancesModal()">{{'Import_utterances'| i18nString}} </li>
+                                <li class="menuOption hasPadding" ng-click="onmMenuOptionClicked($event)">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{'Export_utterances'| i18nString}} </span>
+                                        <img class="fa fa-caret-right moreOptions" ng-src="{{caretRight}}">
+                                    </div>
+                                    <ul class="dropdown-menu pull-right subMenu">
+                                        <li class="subMenuOptions" ng-click="exportUtterancesModal('json')">{{'json_label'| i18nString}} </li>
+                                        <li class="subMenuOptions" ng-click="showCSVModal()">{{'csv_label'| i18nString}}</li>
+                                    </ul>
+                                </div>
+                                </li>
+                            </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="ml-utterence" perfect-scroll height-property="height" dynamic-height dynaoffset="showTrainBtn?-248:-215" scroll-paginate ng-show="uiCopyTasks.length">
+                <div class="ml-block col-xs-12" ng-click="onClickIntent($event,task,$index)" ng-repeat="task in uiCopyTasks | filter:{name : search.searchTask } track by $index" ng-click="openFullModalMLSlider()">
+                    <div class="col-xs-9 title-ml">{{task.intent?task.intent:task.name}}<span class="sub-intent">{{task.intentTypeName}}</span></div>
+                    <div class="col-xs-3 ut-count" ng-show="task.utteranceCount">{{task.utteranceCount}} {{task.utteranceCount > 1 ? 'Utterances' : 'Utterance'}}</div>
+                    <div class="col-xs-3 ut-count add-utt" ng-show="!task.utteranceCount">{{'add_utterances_label' | i18nString}}</div>
+                </div>      
+            </div>
+            <div class="ml-utterence-notasks positionRelative" ng-show="!uiCopyTasks.length">
+                <div class="emptyStateContainer">
+                        <div class="emptyState">
+                            <div class="emptyImage">
+                              <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                            </div>  
+                            <span class="mainTitle" ng-if="!kfoldObjErrorMsg">{{'no_data_available_label'| i18nString}}</span>
+                        </div>
+                </div>
+            </div>
+            <div class="modal fade mlScore-modal utterances-form utteranceModal taskCreateOrEditModal fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+                <div class="modal-dialog height-width-100 modal-lg">
+                    <div class="modal-content utterances-modal-content height-width-100">
+                            <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-if="mlInfo.directiveLoading">
+                                    <span class="spinner-text"> 
+                                        <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                        <span class="spinner-text-content">{{'loading_graph_label'| i18nString}}</span>
+                                    </span>
+                            </div>
+                        <ml-uttetnace-score ng-if="mlInfo.openMLScore" prepare-ml="prepareMl()" ml-obj="mlInfo"></ml-uttetnace-score>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade utterance-model fullwidth-dialog height-width-100 taskCreateOrEditModal"  role="dialog">
+                <div class="modal-dialog height-width-100 modal-lg">
+                    <div class="modal-content utterances-modal-content height-width-100">
+                        <div class="summaryLoader animationIfLeave" ng-show="callback.loadingMLUtterances">
+                            <span class="spinner-text"> 
+                                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                <span class="spinner-text-content">Loading Utterances</span>
+                            </span>
+                        </div>
+                       <ml-utterance-module ng-show="!callback.loadingMLUtterances" intent-data="selectedIntent" cb="callback" upgrade-task="upgrade" view-mode="displayMode"></ml-utterance-module>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade kfold-modal utterances-form utteranceModal taskCreateOrEditModal fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+            <div class="modal-dialog height-width-100 modal-lg">
+                <div class="modal-content  utterances-modal-content height-width-100">
+                    <div class="summaryLoader animationIfLeave mlScoreMainLoader kmodal" ng-if="LoadingKfold">
+                            <span class="spinner-text"> 
+                                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+                            </span>
+                    </div>
+                    <div class="form-container mlform" ng-if="!LoadingKfold">
+                        <div class="pageFlow mlScoreForm expandedView">
+                            <div class="mLmodal-header  bt-modal-header modal-header-padding">
+                                <div class="col-xs-12">
+                                    <div class="pull-left mlBack" ng-click="closeKFoldModal()">
+                                        <i href="#" class="noTextDecor btx-carrot-left  btnBack"></i>
+                                    </div>
+                                        <div class="mLtitleHeader">
+                                            <bt-modal-title taskname="K-fold Cross Validation" fontclass="" bot="stream"></bt-modal-title>
+                                        </div>
+                                   
+                                        <div class="col-xs-6 pull-right buttonSection"  ng-show="kfoldtrainStatus.kFold || (kfoldErrCode !== 'NoPriorResults')">
+                                            <div class="exportIcon" ng-if="kfoldObj && kfoldObj.split_scores && kfoldObj.split_scores.length"><i class="btx-export" ng-click="exportKfoldData()"></i></div>
+                                            <button type="button" class="btn btn-primary marginTop10 generateButton" ng-disabled="kfoldtrainStatus.training" ng-click="trainKfold()"><i ng-if="!kfoldtrainStatus.training" class="genIcon btx-return"></i><img ng-if="kfoldtrainStatus.training" ng-src="{{spinnerIcon}}" class="genIcon fa-spin">{{(kfoldtrainStatus.training?'Re-generating':'Re-generate') | i18nString}}</button>
+                                            <span ng-if="kfoldTriggeredOn" class="pull-right generatedON">{{'kfold_lastGeneratedOn' | i18nString}}: {{kfoldTriggeredOn}}</span>
+                                            <a id="kfold_report" class="hide" target="_blank"  download></a>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                                <div class="emptyStateContainer"  ng-if="errorKfold && !showKfoldModal">
+                                    <div class="emptyState">
+                                        <div class="emptyImage">
+                                        <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                        </div>  
+                                        <span class="mainTitle" ng-if="!kfoldObjErrorMsg">{{'no_data_available_label'| i18nString}}</span>
+                                        <span class="mainTitle" ng-if="kfoldObjErrorMsg" ng-bind-html="trustAsHtml(kfoldObjErrorMsg)"></span>
+                                      
+                                        <div class="generateBtn" ng-if="errorKfold && (kfoldErrCode === 'NoPriorResults')">
+                                            <button  type="button" class="kr-sg-button-primary btn_md" ng-disabled="kfoldtrainStatus.training" ng-click="trainKfold()">{{(kfoldtrainStatus.training?'Generating':'Generate') | i18nString}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="modal-body col-xs-12 noPadding" ng-if="showKfoldModal">
+                             <div class="bodyContent col-xs-12 noPadding">
+                              <div class="leftKfoldContnet col-xs-7 paddingRight10 paddingLeft10">
+                            <!-- DATA TABLE START HERE -->
+                <!--              <div class="kr-sg-data-table">
+                                <section class="table-content">
+                                    <header class="table-header">
+                                        <div class="col"></div>
+                                        <div class="col">PRECISION</div>
+                                        <div class="col">RECALL</div>
+                                        <div class="col">F1 Score</div>
+                                    </header>
+                                    <div class="contentScrollBody" perfect-scroll dynamic-height dynaoffset="-120" height-property="height">
+                                        <div class="content-body" ng-repeat="fold in kfoldObj.split_scores track by $index">
+                                            <div class="col">{{'Fold ' + ($index +1)}}</div>
+                                            <div class="col">{{fold.precision}}</div>
+                                            <div class="col">{{fold.recall}}</div>
+                                            <div class="col">{{fold.f1[0] || fold.f1}}</div>
+                                        </div>
+                                        <div class="content-body ">
+                                            <div class="col fontBold">{{'Mean' | i18nString}}</div>
+                                            <div class="col fontBold">{{kfoldObj.mean_scores.precision || '--'}}</div>
+                                            <div class="col fontBold">{{kfoldObj.mean_scores.recall || '--'}}</div>
+                                            <div class="col fontBold">{{kfoldObj.mean_scores.f1 || '--'}}</div>
+                                        </div>
+                                    </div>
+                                </section>                               
+                            </div>   --> 
+                            <!-- DATA TABLE ENDS HERE -->
+                             <!--  </div>
+                              <div class="rightKfoldContent col-xs-5 paddingRight10 paddingLeft10">
+                                <div class="kr-sg-data-table">
+                                    <section class="table-content">
+                                        <div class="content-body" >
+                                            <div class="col">{{'utterances_total' | i18nString}}</div>
+                                            <div class="col text-right">{{kfoldObj.metaInfo.utterances || '--'}}</div>
+                                        </div>
+                                        <div class="content-body" >
+                                            <div class="col">{{'intents' | i18nString}}</div>
+                                            <div class="col text-right">{{kfoldObj.metaInfo.intents || '--'}}</div>
+                                        </div>
+                                        <div class="content-body" >
+                                            <div class="col">{{'no_of_folds' | i18nString}}</div>
+                                            <div class="col text-right">{{kfoldObj.metaInfo.no_of_folds || '--'}}</div>
+                                        </div>
+                                        <div class="content-body" >
+                                            <div class="col">{{'testdata_per_fold' | i18nString}}</div>
+                                            <div class="col text-right">{{kfoldObj.metaInfo.testdata_per_fold || '--'}}</div>
+                                        </div>
+                                        <div class="content-body" >
+                                            <div class="col">{{'traindata_per_fold' | i18nString}}</div>
+                                            <div class="col text-right">{{kfoldObj.metaInfo.traindata_per_fold || '--'}}</div>
+                                        </div>
+                                    </section>                               
+                                </div> 
+                              </div>
+                             </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </div> -->
+   <!--  <a id='downloadButton' target="_blank" href="{{data.downloadURL}}" download>{{'please_wait'| i18nString}} </a> -->
+   <!--  <div class="modal fade export-utterance-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+       <div class="modal-dialog modal-center">
+          <div class="modal-content modal-content-center">
+                <div class="modal-body export-utterances-modal-body" perfect-scroll>
+                    <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+                    <p>{{'pleasewait_fetching_label'| i18nString}} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade import-utterance-modal import-bot-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content" ng-show="importing === 'backup'">
+                        <div class="modal-header bulkImport">
+                            <h4 class="modal-title">{{'confirm_proceed'| i18nString}} </h4>
+                        </div>
+                        <div class="modal-body import-bot-modal-body" perfect-scroll>
+                            <div class="importantNote">{{'important_note'| i18nString}} </div>
+                            <div class="col-xs-12 noteText">
+                                 <span class="noteDesc">{{'importing_utterences_label1'| i18nString:({dyn:filetype})}}</span>
+                            </div>
+                            <div class="col-xs-12 noteText">
+                                 <span class="noteDesc backup">{{'backup'| i18nString}}</span>
+                                 <div class="col-xs-12 paddingTop10">
+                                     <i class="fa fa-download download" aria-hidden="true"><span class="desc" ng-click="exportUtterancesModal('csv')">{{'csv_label'| i18nString}} </span></i>
+                                    <i class="fa fa-download download" aria-hidden="true"><span class="desc" ng-click="exportUtterancesModal('json')">{{'json_label'| i18nString}} </span></i>      
+                                 </div>
+                               
+                               
+                            </div>
+                            <a id='backupUtterBtn' target="_blank" href="{{downloadUrl}}" download>{{'click_here_label'| i18nString}} </a>
+                        </div>
+                        <div class="modal-footer importFooter">
+                            <button type="button" class="btn btn-primary" ng-disabled="exportingUtter === 'pending'" ng-click="startImport()">{{'confirm'| i18nString}} </button>
+                            <button type="button" class="btn closeCancel" ng-disabled="exportingUtter === 'pending'" ng-click="onCancel()">{{'cancel'| i18nString}} </button>
+                        </div>
+                    </div>
+                    <div class="modal-content" ng-show="importing === 'initial'">
+                            <div class="modal-header bulkImport">
+                                <h4 class="modal-title">{{'import'| i18nString}} </h4>
+                            </div>
+                            <div class="modal-body import-utterances-modal-body" perfect-scroll>
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12 form-group noPadding fileDropContainer">
+                                        <div class="imgCntr"><img class="" ng-src="{{dragDropIcon}}">
+                                        </div>
+                                        <div class="dragdrophelp" ng-hide="fileName">
+                                            <div class="dragdroptitle">{{'drag_drop'| i18nString}} </div>
+                                            <div class="ortitle">{{'or'| i18nString}} </div>
+                                            <div class="browsetitle"><span class="browseBtn cursor-pointer">{{'browse'| i18nString}} </span></div>
+                                        </div>
+                                        <div class="uploadedUtteranceFile" ng-show="fileName"><span class="filename">{{fileName}}</span><span class="removefile"><i ng-click="removeFile()" class="fa fa-close"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer importFooter">
+                                <button type="button" ng-disabled="!fileName" class="btn btn-primary" ng-click="backup()">{{'next'| i18nString}} </button>
+                                <button type="button" class="btn closeCancel" ng-click="onCancel()">{{'cancel'| i18nString}} </button>
+                            </div>
+                    </div>
+                    <div class="modal-content" ng-if="importing === 'failed'">
+                        <div class="modal-header bulkImport">
+                            <h4 class="modal-title">{{'import'| i18nString}} </h4>
+                        </div>
+                        <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                            <div class="col-xs-12" ng-if="showFailedErrors">
+                                <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                                    <div class="text-center importimage">
+                                        <img class="" ng-src="{{wentWrongIcon}}">
+                                    </div>
+                                    <div class="importerror">
+                                        <div class="title">{{'some_thing_wrong_label'| i18nString}} </div>
+                                        <div class="errors" ng-if="showFailedErrors" ng-repeat="error in errorMsg">
+                                            <div class="statementutterdiv col-xs-12">
+                                                <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                                                <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding importsuccess" ng-if="!showFailedErrors">
+                                <div class="text-center importsuccessimage">
+                                    <img ng-src="{{importDoneIcon}}" />
+                                </div>
+                                <div class="importsuccessdiv">
+                                    <div class="title">{{'file_import_sucess_msg'| i18nString}} </div>
+                                </div>
+                                <div class="statementutterdiv col-xs-12">
+                                    <span class="statement col-xs-11">{{importmessage}}</span>
+                                    <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer importFooter" ng-if="showFailedErrors">
+                            <button type="button" class="btn btn-primary btnSave" ng-click="goToStep('initial')">{{'retry'| i18nString}}</button>
+                            <button type="button" class="btn btn-default" ng-click="onCancel()">{{'close'| i18nString}}   </button>
+                        </div>
+                        <div class="modal-footer importFooter" ng-if="!showFailedErrors">
+                                <button type="button" class="btn btn-primary btnSave" ng-click="downloadLog()">{{'download'| i18nString}} </button>
+                                 <button type="button" class="btn btn-default" ng-click="onCancel()"> {{'close'| i18nString}}  </button>
+                        </div>
+                    </div>
+                    <div class="modal-content" ng-show="importing === 'pending'">
+                        <div class="modal-header bulkImport">
+                            <h4 class="modal-title">{{'import'| i18nString}} </h4>
+                        </div>
+                        <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                            <div class="col-xs-12">
+                                <div class="imgCntr"><img class="layer" ng-src="{{importingIcon}}">
+                                </div>
+                                <div class="importingText"><span class="processing">{{'importing'| i18nString}} </span></div>
+                                <div class="processAnimationDiv col-xs-12"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer importFooter">
+                                <button type="button" class="btn btn-primary" ng-disabled="importing === 'pending'" ng-click="onCancel()">{{(importing !== 'failed')? doneButton :okButton}}</button>
+                        </div>
+                    </div>
+                    <div class="modal-content" ng-show="importing === 'finished'">
+                            <div class="modal-header bulkImport">
+                                <h4 class="modal-title">{{'import'| i18nString}} </h4>
+                            </div>
+                            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                                <div class="col-xs-12 form-group noPadding importsuccess">
+                                    <div class="text-center importsuccessimage">
+                                        <img ng-src="{{importDoneIcon}}" />
+                                    </div>
+                                    <div class="importsuccessdiv">
+                                        <div class="title">{{'import_success'| i18nString}} </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer importFooter">
+                                    <button type="button" class="btn btn-primary btnSave" ng-disabled="importing === 'pending'" ng-click="onDone()">{{'done'| i18nString}} </button>
+                            </div>
+                    </div>
+                </div>
+    </div>
+    <div class="modal fade export-csv-modal import-bot-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header exportHeader">
+                            <h4 class="modal-title">{{'confirm_to_proceed_label'| i18nString}} </h4>
+                        </div>
+                        <div class="modal-body export-csv-modal-body">
+                       
+                                    <div class="noteText col-xs-12">
+                                        <span class="noteDesc">{{'exporting_utterencs_desc'| i18nString}} </span>
+                                    </div>
+                        </div>
+                        <div class="modal-footer importFooter">
+                                <button type="button" class="btn btn-primary dialogBtn" ng-click="exportUtterancesModal('csv')" data-dismiss="modal">{{'export'| i18nString}} </button>
+                                <button type="button" class="btn closeCancel dialogBtn" ng-click="canelExportCsv()">{{'cancel'| i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+        
+    </div> -->
+<!-- </div>  -->
+
+
+
+<!--- Utterance new implementation based on PDM-3215 -->
+
+
+<div class="bt-utterances" ng-class="{'pt-0': showTrainBtn || showTrainSavingDiv}" height-property="height" dynamic-height>
+     <!-- <status-loader></status-loader> -->
+    <div class="summaryLoader animationIfLeave loadingUtterances" ng-show="loadingUtterances">
+            <span class="spinner-text"> 
+                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+            </span>
+    </div>
+    <div ng-if="!loadingUtterances" class="ml_Utterance">
+            <!-- <div class="row">
+                <div ng-show="showTrainBtn" class="MLtrainDiv">
+                    <div class="helphint col-xs-12">
+                        <div class="col-xs-1 bulbicon">
+                            <span><i class="btx-bulb"></i></span>
+                        </div>
+                        <div class="col-xs-10 textDiv"><span class="name ng-binding" ng-bind-html="isTrainInprogress()?$root.getSanitizedText($root.lableData.bb534) : $root.getSanitizedText($root.lableData.bb533)"></span>
+                        </div>
+                        <div class="trainUtteraceBtn">
+                            <button type="button" class="pull-right btn btn-sm btn-outline trainBtn" ng-disabled="isTrainInprogress()" ng-click="trainBot();">{{'train'| i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="showTrainSavingDiv" class="col-xs-12 MLSavingProgressDiv">
+                    <div class="row saveRow">
+                        <div class="col-xs-3 intentTraining"><span class="tip">{{'intent_training_label'| i18nString}} </span><span class="trainIcon fa" ng-class="{'fa-check-circle':trainStatus.success,'fa-exclamation-circle':trainStatus.failed,'fa-spinner fa-spin':trainStatus.saving}" title="{{trainTitle}}"></span>
+                        </div>
+                        <div class="col-xs-3 intentTraining"><span class="tip">{{'entity_training_label'| i18nString}} </span><span class="trainIcon fa" ng-class="{'fa-check-circle':trainStatus.success,'fa-exclamation-circle':trainStatus.failed,'fa-spinner fa-spin':trainStatus.saving}" title="{{trainTitle}}"></span>
+                        </div>
+                        <div class="col-xs-6"><span ng-click="closeTrainSaveDiv()" class="fa fa-times"></span>
+                        </div>
+                    </div>
+                </div>       
+            </div>              -->   
+            <div class="hintDiv col-xs-12 align-items-center info-bar clear-fix" ng-if="notificationEnabled"> 
+                <div class="icon">
+                    <i class="btx-info vertical-align-middle"></i>
+                </div> 
+                <div class="info-description">
+                    <p class="info-para">{{selectedDefaultLanguage.name}} language is enabled using {{selectedNluLanguage.name}} NLU model. Please train the bot in {{selectedNluLanguage.name}}.</p>
+                </div> 
+                <div class="close-information-bar">
+                    <i class="btx-close bluebar" ng-click="deleteEnabledNotification()"></i>
+                </div>
+            </div>
+
+            <!-- <div class="hintDiv col-xs-12 align-items-center warning-bar" ng-if="notificationInputEnabled && !multiLinguale.inputTranslation && multiLinguale.language !== 'ge'"> 
+                <div class="icon">
+                    <i class="btx-warning"></i>
+                </div> 
+                <div class="warning-description">
+                    <p class="warning-para">Input translation is not enabled. To achieve better accuracy enable input translation as the enabled language is different than the NLU Language model.</p>
+                </div> 
+                <a class="configure-btn" ng-click="configureInputTranslation()">configure</a>
+                <div class="delete-warn-bar">
+                    <i class="btx-close" ng-click="closeWarningNotification()"></i>
+                </div>
+            </div> -->
+            
+            <div class="show-train-info" ng-show="showTrainBtn">
+                <i class="btx-info"></i>
+                <div class="title">{{trainLabel}}</div>
+                <button type="button" class="train-btn" ng-disabled="isTrainInprogress()" ng-click="trainBot();">{{'train'| i18nString}}</button>
+            </div>
+            <div ng-show="showTrainSavingDiv">
+                <div class="inprogress-training" ng-if="trainStatus.saving">
+                    <div class="loader-inprogress"></div>
+                    <div class="title">{{'training_progress'| i18nString}}</div>
+                    <div class="title-secondary">{{trainProgressLabel}}</div>
+                </div>
+                <div ng-if="trainStatus.success" class="success-complete-training">
+                    <img ng-src="{{roundCheck}}">
+                    <span>{{'training_complete'| i18nString}}</span>
+                </div>               
+            </div>
+            
+
+            <div class="row btnSearchTitle">
+                <div class="col-xs-6 leftTitle">
+                    <div class="pageTitle"><span>{{'nl_training'| i18nString}}</span>
+                        <span class="span-warning-info" ng-show="notificationInputEnabled && !multiLinguale.inputTranslation && multiLinguale.language !== 'ge'" ><i class="icon-warning btx-warning"></i>
+                            <div class="warning-alert-box">
+                                <div class="warning-alert-header">Input translation is not enabled</div>
+                                <div class="warning-alert-desc">To achieve better accuracy enable input translation as the enabled language is different than the NLU Language model.</div>
+                                <div class="warning-alert-btn">
+                                    <button class="btn btnSolidBlue" ng-click="configureInputTranslation()">Configure</button>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    
+                </div>
+                <div class="col-xs-6 rightBTNSearch">
+                    <div class="searchComponent displayNone">
+                        <input  placeholder="Search">
+                        <i class="btx-search"></i>
+                        <i class="btx-close displayNone"></i>
+                    </div>
+                    <div class="creationButton borderBtn displayNone">
+                         <button class="btn btn-xs"> BTN Name</button>
+                    </div>
+                    <div class="filtersDetails displayNone">
+                        <span class="filterListContainer">
+                            <span class="filterCat">Languages </span>
+                            <span class="filterClose">(1)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <span class="filterListContainer">
+                            <span class="filterCat">User ID </span>
+                            <span class="filterClose">(3)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <span class="filterListContainer">
+                            <span class="filterCat">Date Period </span>
+                            <span class="filterClose">(5 days)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <div class="dropdown moreDD">
+                            <a href="#" class="moreFilters" data-toggle="dropdown">
+                                +2 more
+                                </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">
+                                    <span class="filterCat">Channels </span>
+                                    <span class="filterClose">(4)</span>
+                                    <i class="btx-close"></i>
+                                </li>
+                                <li class="dropdown-item" >
+                                    <span class="filterCat">Tasks </span>
+                                    <span class="filterClose">(3)</span>
+                                    <i class="btx-close"></i>
+                                </li>                       
+                            </ul>
+                        </div>
+                        <span class="clearAllFilters">
+                            <span class="filterCat">User ID </span>
+                            <span class="filterClose">(3)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                    </div>
+              
+                    <div class="btnActions displayNone">
+                        <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                    </div>
+                    <div class="titleDropdown displayNone">
+                        <div class="dropdown">
+                            <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               Dropdown name
+                                <i class="btx-carrot-up"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+                             </ul>
+                        </div>
+                    </div>
+                    <div class="titleOverflow displayNone">
+                        <div class="dropdown">
+                            <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                <i class="btx-overflow"></i>
+                                </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              
+
+            <div class="taskSelectContainer row">   
+                <div class="modal-tab-header"> 
+                    <div class="modal-tabs" ng-click="showActiveType('intents')"  ng-class="{'modal-syntabs-active':views.intents}"><a>{{'intents_label' | i18nString}}</a></div>
+                     <div class="modal-tabs" ng-click="showActiveType('entity')"  ng-class="{'modal-syntabs-active':views.entity}"><a>{{'Entities_label' | i18nString}}</a></div>
+                     <div class="modal-tabs" ng-show="_taskFields.length" ng-click="showActiveType('fields')"  ng-class="{'modal-syntabs-active':views.fields}"><a>{{'fields_label' | i18nString}}</a></div>
+                    <div class="modal-tabs" ng-click="showActiveType('botsynonyms')" ng-class="{'modal-syntabs-active':views.botsynonyms}" ><a>{{'Bot_synonyms_label'| i18nString}}</a></div>
+                    <div class="modal-tabs" ng-click="showActiveType('concepts')"  ng-class="{'modal-syntabs-active':views.concepts}"><a>{{'concepts' | i18nString}}</a></div>
+                    <div class="modal-tabs" ng-click="showActiveType('traits')"  ng-class="{'modal-syntabs-active':views.traits}"><a>{{'Traits_label' | i18nString}}</a></div>
+                </div>
+                <div class="rightNav" ng-show="views.intents && (uiCopyTasks.length || search.searchTask.length)">
+                    <div class="noPadding text-right col-xs-3">
+                        <div class="searchUtterance">                   
+                            <span class="synSearch callclear" search-expand>
+                                    <input type="text" ng-blur="inSearchBox = false" tabindex="1" ng-keyup="searchTasks($event,searchTask)" ng-model="searchTask" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                                    <span class="searchBar uttSearch fa-search">
+                                        <img ng-src="{{searchIcon}}" class="searchIconGray">
+                                        <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearchUtter();">
+                                    </span>
+                            </span>
+                            <span class="enterSearch" ng-show="inSearchBox && search.searchTask!=''">{{'press_enterto_search_label'| i18nString}} </span>               
+                        </div>
+                    </div>
+                    <div class="dropdown-toggle-container">              
+                        <div class="kr-sg-dropdowns">
+                            <div class="dropdown dropdown-open">
+                                <a class="dropdown-toggle" data-toggle="dropdown"><img ng-src="{{dropdownToggle}}"></a>   
+                                 <ul class="dropdown-menu content-menu" ng-click="$event.stopPropagation()" ng-blur=closeUtteranceDropdown()>
+                                      <li ng-repeat="intent in supportedIntents">
+                                      
+                                        <span class="kr-sg-checkbox">
+                                            <input id="{{intent}}" ng-click="selectIntentType($event,intent)"   ng-model="intent.selected" class="checkbox-custom" type="checkbox">
+                                            <label for="{{intent}}" class="checkbox-custom-label">{{intent.name}}</label>
+                                        </span> 
+                                      
+                                       
+                                    </li>  
+                                      <li class="toggle">
+                                            <a href="javascript:void(0)">{{'include_hidden_tasks' | i18nString}}</a>
+                                            <label class="kr-sg-toggle" ng-click="toggleHiddenTasks($event,intent)">
+                                                <input type="checkbox"  ng-model="config.includeIsHidden">
+                                                <div class="slider"></div>
+                                            </label>
+                                        </li>         
+                                 </ul>                         
+                            </div>                    
+                        </div>
+                    </div>
+                    <div class="moreOptVieMoreDiv">
+                        <div class="kr-sg-dropdowns theme-color-dropdown" ng-class="{'disabled':LoadingKfold}" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">    
+                            <div class="dropdown dropdown-open">
+                                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                                    <i ng-if='LoadingKfold' class="fa fa-spinner fa-spin"></i>{{'validate_model' | i18nString}} 
+                                    <i class="btx-carrot-down"></i>
+                                </button>                                            
+                                <ul class="dropdown-menu content-menu">                                              
+                                  <li><a ng-click="viewMlScore()">{{'view_ML_model' | i18nString}}</a></li>
+                                  <li><a ng-click="viewKfold()">{{'K_fold_Cross_Validation' | i18nString}}</a></li>                                      
+                                </ul>
+                            </div>
+                        </div>                          
+                        <div class="kr-sg-dropdowns elipse-dropdwn">                               
+                            <div class="dropdown dropdown-open">
+                                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"><i class="btx-overflow"></i></button>                                            
+                                <ul class="dropdown-menu content-menu">                                                                                
+                                  <li ng-class="{'publishedMode':streamstate.toggleState == 'published'}" ng-click="importUtterancesModal()"><a href="#">{{'Import_utterances'| i18nString}}</a></li>
+                                  <li class="menuOption hasPadding" ng-click="onmMenuOptionClicked($event)">
+                                    <div class="dropdown">
+                                        <div class="dropdown-toggle"  data-toggle="dropdown">
+                                            <span class="menuName">{{'Export_utterances'| i18nString}} </span>
+                                            <img class="fa fa-caret-right moreOptions" ng-src="{{caretRight}}">
+                                        </div>
+                                        <ul class="dropdown-menu pull-right subMenu">
+                                            <li class="subMenuOptions" ng-click="exportUtterancesModal('json')">{{'json_label'| i18nString}} </li>
+                                            <li class="subMenuOptions" ng-click="showCSVModal()">{{'csv_label'| i18nString}}</li>
+                                        </ul>
+                                    </div>
+                                    </li>                                                                           
+                                </ul>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rightNav" id="entityTab" ng-if="views.entity && (_nodes.length || gSearchCb.search.length)">
+                    <div class="noPadding text-right col-xs-3">
+                        <div class="searchUtterance">                   
+                            <span class="synSearch callclear" search-expand>
+                                    <input type="text" ng-blur="inSearchBox = false" tabindex="1"  ng-model=" gSearchCb.search" ng-init="gSearchCb.search = ''" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                                    <span class="searchBar uttSearch fa-search">
+                                        <img ng-src="{{searchIcon}}" class="searchIconGray">
+                                        <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearch();">
+                                    </span>
+                            </span>
+                            <span class="enterSearch" ng-show="inSearchBox && gSearchCb.search!=''">{{'press_enterto_search_label'| i18nString}} </span>               
+                        </div>
+                    </div>
+                 </div>
+                 <div class="rightNav" ng-if="views.fields && _taskFields.length">
+                    <div class="noPadding text-right col-xs-3">
+                        <div class="searchUtterance">                   
+                            <span class="synSearch callclear" search-expand>
+                                    <input type="text" ng-blur="inSearchBox = false" tabindex="1"  ng-model=" gSearchCb.search" ng-init="gSearchCb.search = ''" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                                    <span class="searchBar uttSearch fa-search">
+                                        <img ng-src="{{searchIcon}}" class="searchIconGray">
+                                        <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearch();">
+                                    </span>
+                            </span>
+                            <span class="enterSearch" ng-show="inSearchBox && gSearchCb.search!=''">{{'press_enterto_search_label'| i18nString}} </span>               
+                        </div>
+                    </div>
+                </div>
+                <div class="rightNav" id="botSynonym" ng-if="views.botsynonyms">
+                    <div class="noPadding text-right col-xs-3"  ng-show="(botSynonymObject | objLength) > 0">
+                       <div class="searchUtterance">                   
+                            <span class="synSearch callclear" search-expand>
+                                    <input type="text" ng-blur="inSearchBox = false" tabindex="1"  ng-model="gSearchCb.search" ng-init="gSearchCb.search = ''" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                                    <span class="searchBar uttSearch fa-search">
+                                        <img ng-src="{{searchIcon}}" class="searchIconGray">
+                                        <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearch();">
+                                    </span>
+                            </span>
+                            <span class="enterSearch" ng-show="inSearchBox && search.searchTask!=''">{{'press_enterto_search_label'| i18nString}} </span>               
+                        </div>
+                        
+                    </div>
+                    <div class="creationButton" ng-hide="streamstate.toggleState == 'published' || displayMode == 'VIEW'">
+                            <button class="btn btnSolidBlue" ng-click="createSynonym()">{{'new_synonym' | i18nString}}</button>
+                        </div>
+                </div>
+                <div class="rightNav" id="concepts" ng-if="views.concepts">
+                      <div class="noPadding text-right col-xs-3" ng-show="botSynonymObject['concepts'].length">   
+                        <div class="searchUtterance">                   
+                            <span class="synSearch callclear" search-expand>
+                                    <input type="text" ng-blur="inSearchBox = false" tabindex="1"  ng-model=" gSearchCb.search" ng-init="gSearchCb.search = ''" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                                    <span class="searchBar uttSearch fa-search">
+                                        <img ng-src="{{searchIcon}}" class="searchIconGray">
+                                        <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearch();">
+                                    </span>
+                            </span>
+                            <span class="enterSearch" ng-show="inSearchBox && search.searchTask!=''">{{'press_enterto_search_label'| i18nString}} </span>               
+                        </div>
+                      </div>
+
+                       <div class="creationButton" ng-hide="streamstate.toggleState == 'published' || displayMode == 'VIEW'">
+                            <button class="btn btnSolidBlue" ng-click="createSynonym()"  ng-class="{'publishedMode':streamstate.toggleState == 'published'}">{{'new_concept' | i18nString}}</button>
+                        </div>
+                        <!-- <div class="dropdown dropdown-block">
+                           <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                    <img ng-src="{{ellipsisGray}}" class="ellipsisGrayImg" />
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <li class="menuOption" ng-click="showEmojiModal()">{{'importEmojisConcepts'| i18nString}}</li>
+                                 
+                            </ui>
+                        </div> -->
+                        <div class="kr-sg-dropdowns elipse-dropdwn" ng-hide="streamstate.toggleState == 'published' || displayMode == 'VIEW'">                               
+                            <div class="dropdown dropdown-open">
+                                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"><i class="btx-overflow"></i></button>                                            
+                                <ul class="dropdown-menu content-menu">                                                                                
+                                  <li ng-click="showEmojiModal()"><a href="#" title="{{'importEmojisConcepts'| i18nString}}">{{'importEmojisConcepts'| i18nString}}</a></li>                                                                                                           
+                                </ul>
+                              </div>
+                        </div>
+
+                </div>
+                <div class="rightNav" ng-if="views.traits && traitsCb.traitGroups.length">
+                    <div class="noPadding text-right col-xs-3">   
+                        <div class="searchUtterance">                   
+                            <span class="synSearch callclear" search-expand>
+                                    <input type="text" ng-blur="inSearchBox = false" tabindex="1"  ng-model="gSearchCb.search" ng-init="gSearchCb.search = ''" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                                    <span class="searchBar uttSearch fa-search">
+                                        <img ng-src="{{searchIcon}}" class="searchIconGray">
+                                        <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearch();">
+                                    </span>
+                            </span>
+                            <span class="enterSearch" ng-show="inSearchBox && search.searchTask!=''">{{'press_enterto_search_label'| i18nString}} </span>               
+                        </div>
+                      </div>
+                    <div class="creationButton" ng-hide="streamstate.toggleState == 'published' || displayMode == 'VIEW'" ng-show="traitsCb.traitGroups.length">
+                            <button class="btn btnSolidBlue" ng-click="createNewTraits()"  ng-class="{'publishedMode':streamstate.toggleState == 'published'}">{{'new_trait' | i18nString}}</button>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="intentsSection" ng-show="views.intents">
+                <div class="filtersDetails" ng-show="_selectedFilters.length">
+                    <div class="row">
+                        <div class="col-xs-12 filterContainer">
+                            <label for="filters" class="labelFilters">Showing filtered results</label>
+                            <div class="h-auto tag-container">
+                                <div class="kr-sg-tags" ng-repeat="filter in _selectedFilters track by $index;">
+                                    <span class="tag-name">{{filter.name}}</span>
+                                    <span class="close-icon" ng-click="removeFilterTag($index,filter)">
+                                        <i class="btx-close"></i>
+                                    </span>
+                                </div>
+                                
+                            </div>
+                            <div class="clearAllFilters"  ng-click="clearFilters()">Clear Filter</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ml-utterence nlu-popover-block"  ng-show="uiCopyTasks.length">
+                    <div class="ml-block col-xs-12 header">
+                        <div class="col-xs-4 headerTitle">{{'intent_name'| i18nString}}</div>
+                        <div class="col-xs-2 headerTitle">{{'intent_type'| i18nString}}</div>
+                        <div class="col-xs-6headerTitle ut-count"></div>                       
+                    </div> 
+                    <div class="utteranceScrollContainer clear-fix positionRelative" perfect-scroll height-property="height" dynamic-height dynaoffset="showTrainBtn?-270:-217" scroll-paginate>
+                        <div class="ml-block col-xs-12 " ng-click="onClickIntent($event,task)" ng-repeat="task in uiCopyTasks track by $index">
+                            <div class="col-xs-4 title-ml nlu-popover-flex">{{task.intent?task.intent:task.name}} <nlu-warning ng-if="!fetchingTrainingData && !loadingWarnings" icon-type="'image'"  nlu-rules="task['nluRules'] || task['localeData.en.nluRules']" id="task._id" type="'intent'" container="'.bt-utterances'" cb="onClickIntent($event,task)" parent-class="'nluRules'"></nlu-warning></div>
+                            <div class="col-xs-2 intent-type">{{task.intentTypeName}}</div>
+                            <div class="col-xs-6 ut-count">
+                                <div class="ut-un-count-title" ng-show="task.utteranceCount" ng-click="onClickIntent($event,task,$index,'utterances')"><span class="ut-numb">{{task.utteranceCount}} </span> <span class="ut-title">{{task.utteranceCount > 1 ? 'Utterances' : 'Utterance '}} </span></div>
+                                <div class="add-utt" ng-show="!task.utteranceCount" ng-click="onClickIntent($event,task,$index,'utterances')"><i class="btx-add"></i><span class="ut-title">{{'utterance_label' | i18nString}}</span></div>
+    
+                                <div class="ut-un-count-title ut-patterns" ng-show="task.patterns && task.patterns.length" ng-click="onClickIntent($event,task,$index,'patterns')"><span class="ut-numb">{{task.patterns.length}} </span><span class="ut-title ut-patterns">{{task.patterns.length > 1 ? 'Patterns' : 'Pattern'}}</span></div>
+    
+                                 <div class="add-utt ut-patterns" ng-click="onClickIntent($event,task,$index,'patterns')" ng-show="!task.patterns || !task.patterns.length"><i class="btx-add"></i><span class="ut-title ut-patterns">{{'pattern_label' | i18nString}}</span> </div>
+                                 
+    
+                                <div class="ut-un-count-title ut-rules" ng-class="{'hiddenVisbility':task.taskType === 'alert'}" ng-click="onClickIntent($event,task,$index,'rules')" ng-show="(task.traitRules && task.traitRules.length)"><span class="ut-numb"> {{task.traitRules.length}}</span> <span class="ut-title">{{task.traitRules.length > 1 ? 'Rules' : 'Rule'}}</span></div>
+                              
+                               
+                                <div class="add-utt ut-rules" ng-class="{'hiddenVisbility':task.taskType === 'alert'}"  ng-click="onClickIntent($event,task,$index,'rules')" ng-show="(!task.traitRules || !task.traitRules.length)"><i class="btx-add"></i><span class="ut-title">{{'rule_label' | i18nString}}</span> </div>
+                            </div>                       
+                        </div> 
+                    </div>
+                         
+                </div>                
+                <div class="ml-utterence-notasks positionRelative" ng-show="!uiCopyTasks.length && !search.searchTask.length && !_selectedFilters.length">
+                    <div class="emptyStateContainer">
+                        <div class="emptyState">
+                            <div class="emptyImage">
+                                <img ng-src="{{emptyStateIcon_training}}" class="emptyImg">           
+                            </div>  
+                            <div class="mainTitle" ng-if="!kfoldObjErrorMsg">{{'nothing_to_train'| i18nString}}</div>
+                            <div class="emptyStateDesc">{{'empty_train_desc' | i18nString }} <a target="_blank" ng-href="{{$root.helpLinks.RAND_354}}">{{'learn_more' | i18nString}}</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-utterence-notasks positionRelative" ng-show="!uiCopyTasks.length && search.searchTask.length">
+                    <div class="text-center padding10 col-xs-12">{{'no_results' | i18nString}}</div>
+                </div>
+                 <div class="ml-utterence-notasks positionRelative" ng-show="(_selectedFilters.length && !uiCopyTasks.length)">
+                            <div class="ml-utterence-notasks positionRelative">
+                                <div class="text-center padding10 col-xs-12">No filtered results found</div>
+                            </div>      
+                </div>
+                <div class="modal fade mlScore-modal utterances-form utteranceModal taskCreateOrEditModal fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+                    <div class="modal-dialog height-width-100 modal-lg">
+                        <div class="modal-content utterances-modal-content height-width-100">
+                                <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-if="mlInfo.directiveLoading">
+                                        <span class="spinner-text"> 
+                                            <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                            <span class="spinner-text-content">{{'loading_graph_label'| i18nString}}</span>
+                                        </span>
+                                </div>
+                            <ml-uttetnace-score ng-if="mlInfo.openMLScore" prepare-ml="prepareMl()" ml-obj="mlInfo"></ml-uttetnace-score>
+                        </div>
+                    </div>
+                </div>
+               <!--  <div class="modal fade utterance-model  taskCreateOrEditModal" id="trainingFullModal"  role="dialog">
+                    
+                </div> -->
+               
+                <div class="modal fade kfold-modal utterances-form utteranceModal taskCreateOrEditModal fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+                <div class="modal-dialog height-width-100 modal-lg">
+                    <div class="modal-content  utterances-modal-content height-width-100">
+                        <div class="summaryLoader animationIfLeave mlScoreMainLoader kmodal" ng-if="LoadingKfold">
+                                <span class="spinner-text"> 
+                                    <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                    <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+                                </span>
+                        </div>
+                        <div class="form-container mlform" ng-if="!LoadingKfold">
+                            <div class="pageFlow mlScoreForm expandedView">
+                                <div class="mLmodal-header  bt-modal-header modal-header-padding">
+                                    <div class="col-xs-12">
+                                        <div class="pull-left mlBack" ng-click="closeKFoldModal()">
+                                            <i href="#" class="noTextDecor btx-carrot-left  btnBack"></i>
+                                        </div>
+                                            <div class="mLtitleHeader">
+                                                <bt-modal-title taskname="K-fold Cross Validation" fontclass="" bot="stream"></bt-modal-title>
+                                            </div>
+                                       
+                                            <div class="col-xs-6 pull-right buttonSection"  ng-show="kfoldtrainStatus.kFold || (kfoldErrCode !== 'NoPriorResults')">
+                                                <div class="exportIcon" ng-if="kfoldObj && kfoldObj.split_scores && kfoldObj.split_scores.length"><i class="btx-export" ng-click="exportKfoldData()"></i></div>
+                                                <button type="button" class="btn btn-primary marginTop10 generateButton" ng-disabled="kfoldtrainStatus.training" ng-click="trainKfold()"><i ng-if="!kfoldtrainStatus.training" class="genIcon btx-return"></i><img ng-if="kfoldtrainStatus.training" ng-src="{{spinnerIcon}}" class="genIcon fa-spin">{{(kfoldtrainStatus.training?'Re-generating':'Re-generate') | i18nString}}</button>
+                                                <span ng-if="kfoldTriggeredOn" class="pull-right generatedON">{{'kfold_lastGeneratedOn' | i18nString}}: {{kfoldTriggeredOn}}</span>
+                                                <a id="kfold_report" class="hide" target="_blank"  download></a>
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+                                    <div class="emptyStateContainer"  ng-if="errorKfold && !showKfoldModal">
+                                        <div class="emptyState">
+                                            <div class="emptyImage">
+                                            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                            </div>  
+                                            <span class="mainTitle" ng-if="!kfoldObjErrorMsg">{{'no_data_available_label'| i18nString}}</span>
+                                            <span class="mainTitle" ng-if="kfoldObjErrorMsg" ng-bind-html="trustAsHtml(kfoldObjErrorMsg)"></span>
+                                            <!-- <div class="emptyStateDesc">{{'nlpconfig_desc' | i18nString}}</div> -->
+                                            <div class="generateBtn" ng-if="errorKfold && (kfoldErrCode === 'NoPriorResults')">
+                                                <button  type="button" class="kr-sg-button-primary btn_md" ng-disabled="kfoldtrainStatus.training" ng-click="trainKfold()">{{(kfoldtrainStatus.training?'Generating':'Generate') | i18nString}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="modal-body col-xs-12 noPadding" ng-if="showKfoldModal">
+                                 <div class="bodyContent col-xs-12 noPadding">
+                                  <div class="leftKfoldContnet col-xs-7 paddingRight10 paddingLeft10">
+                                                               <!-- DATA TABLE START HERE -->
+                                 <div class="kr-sg-data-table">
+                                    <section class="table-content">
+                                        <header class="table-header">
+                                            <div class="col"></div>
+                                            <div class="col">PRECISION</div>
+                                            <div class="col">RECALL</div>
+                                            <div class="col">F1 Score</div>
+                                        </header>
+                                        <div class="contentScrollBody" perfect-scroll dynamic-height dynaoffset="-120" height-property="height">
+                                            <div class="content-body" ng-repeat="fold in kfoldObj.split_scores track by $index">
+                                                <div class="col">{{'Fold ' + ($index +1)}}</div>
+                                                <div class="col">{{fold.precision}}</div>
+                                                <div class="col">{{fold.recall}}</div>
+                                                <div class="col">{{fold.f1[0] || fold.f1}}</div>
+                                            </div>
+                                            <div class="content-body ">
+                                                <div class="col fontBold">{{'Mean' | i18nString}}</div>
+                                                <div class="col fontBold">{{kfoldObj.mean_scores.precision || '--'}}</div>
+                                                <div class="col fontBold">{{kfoldObj.mean_scores.recall || '--'}}</div>
+                                                <div class="col fontBold">{{kfoldObj.mean_scores.f1 || '--'}}</div>
+                                            </div>
+                                        </div>
+                                    </section>                               
+                                </div>   
+                                <!-- DATA TABLE ENDS HERE -->
+                                  </div>
+                                  <div class="rightKfoldContent col-xs-5 paddingRight10 paddingLeft10">
+                                    <div class="kr-sg-data-table">
+                                        <section class="table-content">
+                                            <div class="content-body" >
+                                                <div class="col">{{'utterances_total' | i18nString}}</div>
+                                                <div class="col text-right">{{kfoldObj.metaInfo.utterances || '--'}}</div>
+                                            </div>
+                                            <div class="content-body" >
+                                                <div class="col">{{'intents' | i18nString}}</div>
+                                                <div class="col text-right">{{kfoldObj.metaInfo.intents || '--'}}</div>
+                                            </div>
+                                            <div class="content-body" >
+                                                <div class="col">{{'no_of_folds' | i18nString}}</div>
+                                                <div class="col text-right">{{kfoldObj.metaInfo.no_of_folds || '--'}}</div>
+                                            </div>
+                                            <div class="content-body" >
+                                                <div class="col">{{'testdata_per_fold' | i18nString}}</div>
+                                                <div class="col text-right">{{kfoldObj.metaInfo.testdata_per_fold || '--'}}</div>
+                                            </div>
+                                            <div class="content-body" >
+                                                <div class="col">{{'traindata_per_fold' | i18nString}}</div>
+                                                <div class="col text-right">{{kfoldObj.metaInfo.traindata_per_fold || '--'}}</div>
+                                            </div>
+                                        </section>                               
+                                    </div> 
+                                  </div>
+                                 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="entitySection"  ng-if="views.entity">
+                <div class="summaryLoader animationIfLeave loadingUtterances" ng-show="entityLoading">
+                                    <span class="spinner-text"> 
+                                        <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                        <span class="spinner-text-content">Loading Entities</span>
+                                    </span>
+                </div>
+                 <div class="ml-utterence-notasks positionRelative" ng-show="!_nodes.length && !gSearchCb.search.length">
+                        <div class="emptyStateContainer">
+                                <div class="emptyState">
+                                    <div class="emptyImage">
+                                      <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                    </div>  
+                                    <span class="mainTitle" ng-if="!kfoldObjErrorMsg">{{'no_data_available_label'| i18nString}}</span>
+                                </div>
+                        </div>
+                </div>
+                
+
+                <div class="ml-entity entity-block col-xs-12 noPadding" ng-if="!entityLoading && _nodes.length">
+                    <div class="entity-header col-xs-12">
+                        <div class="col-xs-2 entity-label">{{'entity_name_label' | i18nString}}</div>
+                        <div class="col-xs-3 entity-label">{{'associated_tasks' | i18nString}}</div>
+                        <div class="col-xs-3 entity-label">{{'synonyms_name' | i18nString}}</div>
+                        <div class="col-xs-3 entity-label">{{'pattern_name' | i18nString}}</div>
+                        <div class="col-xs-1"></div>
+                    </div>
+                 
+
+                    <div class="entity-body col-xs-12 noPadding" perfect-scroll height-property="height" dynamic-height dynaoffset="showTrainBtn?-270:-255" ng-if="_nodes.length">
+
+                        <div class="ml-utterence-notasks positionRelative" ng-show="(filtered.length === 0 && gSearchCb.search.length > 0)">
+                                <div class="ml-utterence-notasks positionRelative">
+                                    <div class="text-center padding10 col-xs-12">{{'no_results' | i18nString}}</div>
+                                </div>      
+                        </div>
+
+                        <div class="entity-body-block col-xs-12"  ng-repeat="node in filtered = (_nodes | filter: gSearchCb.search) track by node._id">
+                            <div class="col-xs-2 entity-field">
+                                <div class="name">{{node.name}}</div>
+                                <p class="desc m-0">({{node.entityType}})</p></div>
+                            <div class="col-xs-3 entity-field associated">                         
+                                 <div class="d-flex flex-wrap">
+                                    <div ng-init="currentIndex = $index;totalCount=node.flowtasksInvolved.length" ng-repeat="nodeName in node.flowtasksInvolved track by $index">   
+                                        <span ng-if="totalCount == 1">{{nodeName}}</span>
+                                        <span ng-if="totalCount >= 2" ng-hide="currentIndex + 1 > 2">{{nodeName}}{{currentIndex + 1 === 2?'' : ',  '}}</span>
+                                     </div>                                
+                                    
+                                     <div class="kr-sg-dropdowns dropdown-associates" ng-if="node.flowtasksInvolved.length > 2">
+                                        <div class="dropdown dropdown-open">
+                                            <button class="dropdown-toggle tag" data-toggle="dropdown">+{{node.flowtasksInvolved.length - 2}}</button>                                            
+                                            <ul class="dropdown-menu content-menu" dynamic-height dynaoffset="-400" ng-show="node.flowtasksInvolved.length > 2">
+                                                <div class="scroll-data-associates" perfect-scroll dynamic-height dynaoffset="-415">
+                                                    <li ng-repeat="value in (nodeCopy = node.flowtasksInvolved.slice(2,node.flowtasksInvolved.length))">
+                                                        <a>{{value}}</a>
+                                                    </li> 
+                                                </div>                                     
+                                            </ul>
+                                        </div>
+                                     </div>  
+                                 </div>                             
+                            </div>
+
+                            <div class="col-xs-3 entity-field">
+                                <span class="patterns" ng-repeat="synonym in node.synonyms track by $index">{{synonym}}</span>
+                                <dropdown-directive></dropdown-directive>
+                                
+                            </div>
+
+                            <div class="col-xs-3 entity-field">
+                                <span class="patterns unTagBG" ng-repeat="pattern in node.patterns track by $index">{{constants.replaceSpecialChar(pattern.original)}}</span>
+                                 <dropdown-directive></dropdown-directive>
+                            </div>
+                            <div class="col-xs-1 edit-block">
+                                <span class="editSpan" ng-click="openEditSlider(node,'entity')">
+                                    <i class="btx-pencil"></i>
+                                </span>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="fieldSection" ng-if="views.fields">
+                <div class="summaryLoader animationIfLeave" ng-show="fieldsLoading">
+                            <span class="spinner-text"> 
+                                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                <span class="spinner-text-content">{{'loading_fields' | i18nString}}</span>
+                            </span>
+                </div>
+                <div class="ml-utterence-notasks positionRelative" ng-show="!_taskFields.length">
+                        <div class="emptyStateContainer">
+                                <div class="emptyState">
+                                    <div class="emptyImage">
+                                      <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                    </div>  
+                                    <span class="mainTitle" ng-if="!kfoldObjErrorMsg">{{'no_data_available_label'| i18nString}}</span>
+                                </div>
+                        </div>
+                </div>
+                <div class="ml-entity entity-block col-xs-12 noPadding" ng-if="!fieldsLoading && _taskFields.length">
+                    <div class="entity-header col-xs-12">
+                        <div class="col-xs-2 entity-label">{{'field_Name' | i18nString}}</div>
+                        <div class="col-xs-3 entity-label">{{'associated_tasks' | i18nString}}</div>
+                        <div class="col-xs-3 entity-label">{{'synonyms_name' | i18nString}}</div>
+                        <div class="col-xs-3 entity-label">{{'pattern_name' | i18nString}}</div>
+                        <div class="col-xs-1"></div>
+                    </div>
+                    
+                    <div class="entity-body col-xs-12 noPadding" perfect-scroll height-property="height" dynamic-height dynaoffset="showTrainBtn?-270:-255" ng-show="_taskFields.length">
+                        <div class="ml-utterence-notasks positionRelative" ng-show="(filtered.length === 0 && gSearchCb.search.length > 0)">
+                            <div class="ml-utterence-notasks positionRelative">
+                                <div class="text-center padding10 col-xs-12">{{'no_results' | i18nString}}</div>
+                            </div>      
+                        </div>
+                        <div class="entity-body-block col-xs-12"  ng-repeat="fieldObject in filtered = (_taskFields | filter: gSearchCb.search) track by fieldObject._id ">
+                            <div class="col-xs-2 entity-field">
+                                <div class="name">{{fieldObject.title}}</div>
+                            </div>
+                            <div class="col-xs-3 entity-field associated">
+                                <span class="taskPatternName">{{fieldObject.task.name}}</span>
+                            </div>
+                             <div class="col-xs-3 entity-field">
+                                <span class="patterns" ng-repeat="synonym in fieldObject.task.fieldSynonyms[fieldObject.title.toLowerCase()]">{{synonym}}</span>
+                                 <dropdown-directive></dropdown-directive>
+                            </div>
+                            <div class="col-xs-3 entity-field">
+
+                                <span class="patterns unTagBG" ng-repeat="pattern in fieldObject.task.fieldPatterns[fieldObject.title]">
+                                    {{constants.replaceSpecialChar(pattern.original)}}
+                                </span>
+                                 <dropdown-directive></dropdown-directive>
+                            </div>
+                             <div class="col-xs-1 edit-block">
+                                <span class="editSpan" ng-click="openEditSlider(fieldObject,'fields')">
+                                    <i class="btx-pencil"></i>
+                                </span>
+                            </div>
+                    
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="synonymSection" ng-if="views.botsynonyms">
+                <div class="summaryLoader animationIfLeave loadingUtterances" ng-show="synonymsLoading">
+                            <span class="spinner-text"> 
+                                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                <span class="spinner-text-content">{{'loading_synonyms'| i18nString}}</span>
+                            </span>
+                </div>
+                <div class="ml-utterence-notasks positionRelative" ng-show="(botSynonymObject | objLength) === 0">
+                        <div class="emptyStateContainer">
+                                <div class="emptyState">
+                                    <div class="emptyImage">
+                                      <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                    </div>  
+                                    <span class="mainTitle" ng-if="!kfoldObjErrorMsg">{{'no_data_available_label'| i18nString}}</span>
+                                </div>
+                        </div>
+                </div>
+                <div class="entity-block ml-entity col-xs-12" ng-if="!synonymsLoading && (botSynonymObject | objLength) > 0">
+                    <div class="entity-header col-xs-12">
+                        <div class="col-xs-3 entity-label">{{'name'| i18nString}}</div>
+                        <div class="col-xs-8 entity-label">{{'synonyms_name'| i18nString}}</div>
+                        <div class="col-xs-1"></div>
+                    </div>
+                     <div class="entity-body col-xs-12 noPadding" perfect-scroll height-property="height" dynamic-height dynaoffset="showTrainBtn?-270:-255">
+                             <div class="ml-utterence-notasks positionRelative" ng-if="(synonyms | filter:gSearchCb.search).length === 0">
+                                <div class="ml-utterence-notasks positionRelative">
+                                    <div class="text-center padding10 col-xs-12">{{'no_results'| i18nString}}</div>
+                                </div>      
+                            </div>
+                            <div ng-hide="key === 'concepts'"  ng-repeat="(key,value) in botSynonymObject">
+                                <div class="entity-body-block col-xs-12" ng-repeat="synonym in  filteredResults = (value | filter:gSearchCb.search) track by $index">
+                                     <div class="col-xs-3 entity-field">{{synonym.key}}</div>
+                                    <div class="col-xs-8 entity-field">
+                                        <span class="patterns" ng-repeat="alias in synonym.value track by $index"><span >{{alias}}</span></span>
+                                        
+                                    </div>
+                                    <div class="col-xs-1 edit-block">
+                                        <span class="editSpan" ng-click="openEditSynonymSlider(synonym)">
+                                            <i class="btx-pencil"></i>
+                                        </span>
+                                        <span class="deleteSpan marginLeft10" ng-click="deleteSynonym(synonym,'synonym',$event)" ng-hide="(streamstate.toggleState == 'published') || (displayMode === 'VIEW')">
+                                            <i class="btx-delete-1"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="synonymSection" ng-if="views.concepts">
+                 <div class="summaryLoader animationIfLeave loadingUtterances" ng-show="synonymsLoading">
+                            <span class="spinner-text"> 
+                                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                <span class="spinner-text-content">{{'loading_concepts'| i18nString}}</span>
+                            </span>
+                </div>
+                 <div class="ml-utterence-notasks positionRelative" ng-show="!botSynonymObject['concepts'].length">
+                        <div class="emptyStateContainer">
+                                <div class="emptyState">
+                                    <div class="emptyImage">
+                                      <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                    </div>  
+                                    <span class="mainTitle" ng-if="!kfoldObjErrorMsg">{{'no_data_available_label'| i18nString}}</span>
+                                </div>
+                        </div>
+                </div>
+                <div class="entity-block ml-entity col-xs-12" ng-if="!synonymsLoading && botSynonymObject['concepts'].length">
+                    <div class="entity-header col-xs-12">
+                        <div class="col-xs-3 entity-label">{{'name'| i18nString}}</div>
+                        <div class="col-xs-8 entity-label">{{'synonyms_name'| i18nString}}</div>
+                        <div class="col-xs-1"></div>
+                    </div>
+                     <div class="entity-body col-xs-12 noPadding" perfect-scroll height-property="height" dynamic-height dynaoffset="showTrainBtn?-270:-255">
+                            <div class="ml-utterence-notasks positionRelative" ng-show="(ob.filtered.length === 0 && gSearchCb.search.length > 0)">
+                                <div class="ml-utterence-notasks positionRelative">
+                                    <div class="text-center padding10 col-xs-12">{{'no_results'| i18nString}}</div>
+                                </div>      
+                            </div>
+                            <div ng-if="key === 'concepts'" ng-repeat="(key,value) in botSynonymObject">
+                                <div class="entity-body-block col-xs-12" ng-repeat="synonym in ob.filtered = ( value | filter:gSearchCb.search ) track by $index">
+                                     <div class="col-xs-3 entity-field">{{synonym.key}}</div>
+                                    <div class="col-xs-8 entity-field">
+                                        <span class="patterns" ng-repeat="alias in synonym.value track by $index"><span >{{alias}}</span></span>
+                                        
+                                    </div>
+                                    <div class="col-xs-1 edit-block">
+                                        <span class="editSpan" ng-click="openEditSynonymSlider(synonym)">
+                                            <i class="btx-pencil"></i>
+                                        </span>
+                                         <span class="deleteSpan marginLeft10" ng-hide="(streamstate.toggleState == 'published') || (displayMode === 'VIEW')" ng-click="deleteSynonym(synonym,'concept',$event)">
+                                            <i class="btx-delete-1"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                    </div>
+                </div>
+            </div>
+            <div class="traitSection" ng-if="views.traits">
+                 <div class="entity-body col-xs-12 noPadding" perfect-scroll height-property="height" dynamic-height dynaoffset="showTrainBtn?-248:-207">
+                    <bt-traits class="animationIfEnter btTraits" cb="traitsCb" g-search="gSearchCb"></bt-traits>
+                </div>
+            </div>
+            <div class="modal fade" id="emojiModal" role="dialog">
+                <div class="modal-dialog showemojiModal">
+                  <div class="modal-content">
+                    <div class="modal-header languageTitle">                                 
+                      <h4 class="modal-title">{{'confirm_proceed'| i18nString}}</h4>
+                    </div>
+                    <div class="modal-body">
+                    <p class="emojiText" ng-bind-html="'emojiDescription'| i18nString:({link:' https://developer.kore.ai/docs/bots/nlp/fundamental-meaning/#Emoji_Support'})"></p>
+                    </div>
+                    <div class="modal-footer">                               
+                      <button class="kr-sg-button-primary btn_md" ng-click="loadEmojis()">{{'proceed'| i18nString}}</button>
+                      <button class="kr-sg-button-secondary btn_md" data-dismiss="modal">{{'cancel'| i18nString}}</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <a id='downloadButton' target="_blank" href="{{data.downloadURL}}" download>{{'please_wait'| i18nString}} </a>
+            <div class="modal fade export-utterance-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+               <div class="modal-dialog modal-center">
+                  <div class="modal-content modal-content-center">
+                        <div class="modal-body export-utterances-modal-body" perfect-scroll>
+                            <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+                            <p>{{'pleasewait_fetching_label'| i18nString}} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade import-utterance-modal import-bot-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content" ng-show="importing === 'backup'">
+                                <div class="modal-header bulkImport">
+                                    <h4 class="modal-title">{{'confirm_proceed'| i18nString}} </h4>
+                                </div>
+                                <div class="modal-body import-bot-modal-body" perfect-scroll>
+                                    <div class="importantNote">{{'important_note'| i18nString}} </div>
+                                    <div class="col-xs-12 noteText">
+                                         <span class="noteDesc">{{'importing_utterences_label1'| i18nString:({dyn:filetype})}}</span>
+                                    </div>
+                                    <div class="col-xs-12 noteText">
+                                         <span class="noteDesc backup">{{'backup'| i18nString}}</span>
+                                         <div class="col-xs-12 paddingTop10">
+                                             <i class="fa fa-download download" aria-hidden="true"><span class="desc" ng-click="exportUtterancesModal('csv')">{{'csv_label'| i18nString}} </span></i>
+                                            <i class="fa fa-download download" aria-hidden="true"><span class="desc" ng-click="exportUtterancesModal('json')">{{'json_label'| i18nString}} </span></i>      
+                                         </div>
+                                       
+                                       
+                                    </div>
+                                    <a id='backupUtterBtn' target="_blank" href="{{downloadUrl}}" download>{{'click_here_label'| i18nString}} </a>
+                                </div>
+                                <div class="modal-footer importFooter">
+                                    <button type="button" class="btn btn-primary" ng-disabled="exportingUtter === 'pending'" ng-click="startImport()">{{'confirm'| i18nString}} </button>
+                                    <button type="button" class="btn closeCancel" ng-disabled="exportingUtter === 'pending'" ng-click="onCancel()">{{'cancel'| i18nString}} </button>
+                                </div>
+                            </div>
+                            <div class="modal-content" ng-show="importing === 'initial'">
+                                    <div class="modal-header bulkImport">
+                                        <h4 class="modal-title">{{'import'| i18nString}} </h4>
+                                    </div>
+                                    <div class="modal-body import-utterances-modal-body" perfect-scroll>
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-12 form-group noPadding fileDropContainer">
+                                                <div class="imgCntr"><img class="" ng-src="{{dragDropIcon}}">
+                                                </div>
+                                                <div class="dragdrophelp" ng-hide="fileName">
+                                                    <div class="dragdroptitle">{{'drag_drop'| i18nString}} </div>
+                                                    <div class="ortitle">{{'or'| i18nString}} </div>
+                                                    <div class="browsetitle"><span class="browseBtn cursor-pointer">{{'browse'| i18nString}} </span></div>
+                                                </div>
+                                                <div class="uploadedUtteranceFile" ng-show="fileName"><span class="filename">{{fileName}}</span><span class="removefile"><i ng-click="removeFile()" class="fa fa-close"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer importFooter">
+                                        <button type="button" ng-disabled="!fileName" class="btn btn-primary" ng-click="backup()">{{'next'| i18nString}} </button>
+                                        <button type="button" class="btn closeCancel" ng-click="onCancel()">{{'cancel'| i18nString}} </button>
+                                    </div>
+                            </div>
+                            <div class="modal-content" ng-if="importing === 'failed'">
+                                <div class="modal-header bulkImport">
+                                    <h4 class="modal-title">{{'import'| i18nString}} </h4>
+                                </div>
+                                <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                                    <div class="col-xs-12" ng-if="showFailedErrors">
+                                        <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                                            <div class="text-center importimage">
+                                                <img class="" ng-src="{{wentWrongIcon}}">
+                                            </div>
+                                            <div class="importerror">
+                                                <div class="title">{{'some_thing_wrong_label'| i18nString}} </div>
+                                                <div class="errors" ng-if="showFailedErrors" ng-repeat="error in errorMsg">
+                                                    <div class="statementutterdiv col-xs-12">
+                                                        <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                                                        <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 form-group noPadding importsuccess" ng-if="!showFailedErrors">
+                                        <div class="text-center importsuccessimage">
+                                            <img ng-src="{{importDoneIcon}}" />
+                                        </div>
+                                        <div class="importsuccessdiv">
+                                            <div class="title">{{'file_import_sucess_msg'| i18nString}} </div>
+                                        </div>
+                                        <div class="statementutterdiv col-xs-12">
+                                            <span class="statement col-xs-11">{{importmessage}}</span>
+                                            <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer importFooter" ng-if="showFailedErrors">
+                                    <button type="button" class="btn btn-primary btnSave" ng-click="goToStep('initial')">{{'retry'| i18nString}}</button>
+                                    <button type="button" class="btn btn-default" ng-click="onCancel()">{{'close'| i18nString}}   </button>
+                                </div>
+                                <div class="modal-footer importFooter" ng-if="!showFailedErrors">
+                                        <button type="button" class="btn btn-primary btnSave" ng-click="downloadLog()">{{'download'| i18nString}} </button>
+                                         <button type="button" class="btn btn-default" ng-click="onCancel()"> {{'close'| i18nString}}  </button>
+                                </div>
+                            </div>
+                            <div class="modal-content" ng-show="importing === 'pending'">
+                                <div class="modal-header bulkImport">
+                                    <h4 class="modal-title">{{'import'| i18nString}} </h4>
+                                </div>
+                                <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                                    <div class="col-xs-12">
+                                        <div class="imgCntr"><img class="layer" ng-src="{{importingIcon}}">
+                                        </div>
+                                        <div class="importingText"><span class="processing">{{'importing'| i18nString}} </span></div>
+                                        <div class="processAnimationDiv col-xs-12"></div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer importFooter">
+                                        <button type="button" class="btn btn-primary" ng-disabled="importing === 'pending'" ng-click="onCancel()">{{(importing !== 'failed')? doneButton :okButton}}</button>
+                                </div>
+                            </div>
+                            <div class="modal-content" ng-show="importing === 'finished'">
+                                    <div class="modal-header bulkImport">
+                                        <h4 class="modal-title">{{'import'| i18nString}} </h4>
+                                    </div>
+                                    <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                                        <div class="col-xs-12 form-group noPadding importsuccess">
+                                            <div class="text-center importsuccessimage">
+                                                <img ng-src="{{importDoneIcon}}" />
+                                            </div>
+                                            <div class="importsuccessdiv">
+                                                <div class="title">{{'import_success'| i18nString}} </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer importFooter">
+                                            <button type="button" class="btn btn-primary btnSave" ng-disabled="importing === 'pending'" ng-click="onDone()">{{'done'| i18nString}} </button>
+                                    </div>
+                            </div>
+                        </div>
+            </div>
+            <div class="modal fade export-csv-modal import-bot-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header exportHeader">
+                                    <h4 class="modal-title">{{'confirm_to_proceed_label'| i18nString}} </h4>
+                                </div>
+                                <div class="modal-body export-csv-modal-body">
+                               
+                                            <div class="noteText col-xs-12">
+                                                <span class="noteDesc">{{'exporting_utterencs_desc'| i18nString}} </span>
+                                            </div>
+                                </div>
+                                <div class="modal-footer importFooter">
+                                        <button type="button" class="btn btn-primary dialogBtn" ng-click="exportUtterancesModal('csv')" data-dismiss="modal">{{'export'| i18nString}} </button>
+                                        <button type="button" class="btn closeCancel dialogBtn" ng-click="canelExportCsv()">{{'cancel'| i18nString}}</button>
+                                </div>
+                            </div>
+                        </div>
+                
+            </div>
+    </div>
+</div>
+ <bot-modal-slider class="trainingFullModal taskCreateOrEditModal botModalFade utterance-model right" id="trainingFullModal">
+    <div class="modalSliderContainer width900 full-height trainingFullModalContainer">
+        <div class="modalContent utterances-modal-content">
+    <!--         <div class="summaryLoader animationIfLeave mlUttLoader" ng-show="callback.loadingMLUtterances">
+                <span class="spinner-text"> 
+                    <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                    <span class="spinner-text-content">{{'loading_lable' | i18nString}}
+                </span>
+            </div> -->
+            <ml-utterance-module ng-show="!callback.loadingMLUtterances"  intent-data="selectedIntent" cb="callback" train-sync-data="trainSyncData" upgrade-task="upgrade" view-mode="displayMode"></ml-utterance-module>
+        </div>
+    </div>
+</bot-modal-slider>
+<bot-modal-slider class="taskCreateOrEditModal botModalFade editSlider utterance-model" id="editSlider">
+    <div class="modalSliderContainer width700 height-width-100">
+        <div class="modalContent utterances-modal-content">
+            <div class="modalHeader">
+                <h4 class="modal-title" ng-show="views.entity">
+                    <i class="btx-close" ng-click="closeEditTraining()"></i>
+                    {{'entity_training_label' | i18nString}} 
+                </h4>
+                <h4 class="modal-title" ng-show="views.fields">
+                    <i class="btx-close" ng-click="closeEditTrainingFields()"></i>
+                    {{'field_training' | i18nString}} 
+                </h4>
+            </div>
+            <div class="modalBody edit-modal hide-horizantal-scroll-in-modal" perfect-scroll height-property="height" dynamic-height dynaoffset="-120">
+                <div class="kr-sg-input-text mb-15" ng-show="views.entity">
+                        <div class="label-text">{{'entity_name_label' | i18nString}}</div>
+                        <div class="label-value">{{currentEditTask.name}}</div>
+                        
+                </div>
+                <div class="kr-sg-input-text mb-15" ng-show="views.fields">
+                        <div class="label-text">{{'field_Name' | i18nString}}</div>
+                        <div class="label-value">{{currentEditTask.title}}</div>
+                        
+                </div>
+                <div class="kr-sg-input-text mb-15" ng-show="views.entity">
+                        <div class="label-text">{{'entity_type' | i18nString}}</div>
+                        <div class="label-value">{{currentEditTask.entityType}}</div>
+                        
+                </div>
+                <div class="kr-sg-input-text mb-15" ng-show="views.fields">
+                    <div class="label-text">{{'associated_task' | i18nString}}</div>
+                     <div class="label-value">{{currentEditTask.task.name}}</div>
+                </div>
+                <div class="modal-tab-header"> 
+                    <div class="modal-tabs" ng-class="{'modal-syntabs-active':editViews.synonyms}" ng-click="setEditActive('synonyms')"><a>{{'synonyms_name' | i18nString}}</a></div>
+                    <div class="modal-tabs" ng-class="{'modal-syntabs-active':editViews.patterns}" ng-click="setEditActive('patterns')"><a>{{'pattern_name' | i18nString}}</a></div>
+                    
+                </div>
+                <div class="synonyms-block" ng-if="editViews.synonyms && views.entity" ng-class="{'publishedMode':streamstate.toggleState == 'published' || displayMode === 'VIEW'}">
+                     <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-show="synonymsCB.loadingSynonyms">
+                                    <span class="spinner-text"> 
+                                        <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                        <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+                                    </span>
+                    </div>
+                    <div class="col-xs-12 divTags noPadding marginTop10" ng-show="!synonymsCB.loadingSynonyms">
+                            <synonyms-manage template-url="synonymsTemplateUrl" g-search-cb='gSearch'  cb="synonymsCB" save-status-synonym="saveStatus" view-mode="displayMode" current-edit-task="currentEditTask"></synonyms-manage>
+                                               
+                    </div>
+                </div>
+                <div class="synonyms-block" ng-show="editViews.synonyms && views.fields" ng-class="{'publishedMode':streamstate.toggleState == 'published' || displayMode === 'VIEW'}">
+                    <div class="col-xs-12 divTags noPadding marginTop10">
+                       <synonyms-manage template-url="synonymsTemplateUrl" g-search-cb='gSearch' cb="synonymsCB"  current-edit-task="currentEditTask" view-mode="displayMode" upgrade-view-mode="upgradeViewMode"  save-status-synonym="saveStatus"></synonyms-manage>
+                    </div>
+                </div>
+                <div class="patterns-block marginTop10" ng-show="editViews.patterns" ng-class="{'publishedMode':streamstate.toggleState == 'published'}">  
+                    <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-if="patternsCB.loadingPatterns">
+                                    <span class="spinner-text"> 
+                                        <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                        <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+                                    </span>
+                            </div>
+                     <bt-pattern ng-show="!patternsCB.loadingPatterns" selected-task="selectedTask" tasks="tasks" save-status-pattern="saveStatus" cb="patternsCB" upgrade-view-mode="upgradeViewMode" view-mode="displayMode"></bt-pattern>
+                </div>
+            </div>
+            <div class="modalFooter saveChangeContainer">
+                    <div class="changesSaved">
+                        <p class="changeDesc"  ng-show="saveStatus.initial">{{'changes_saved' | i18nString }}</p>
+                        <p class="changeDesc" ng-show="saveStatus.pending">
+                            <img src="{{brokenImageSmall}}"  ng-src="{{saving}}" src="" class="savingGif">
+                           {{'saving_changes' | i18nString}}
+                        </p>
+                        <p class="changeDesc"  ng-show="saveStatus.completed"><i class="btx-check"></i> {{'saved_changes' | i18nString}}</p>
+                        <p class="changeDesc"  ng-show="saveStatus.failed">{{'failed_saving' | i18nString}}</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+</bot-modal-slider>
+<bot-modal-slider class="taskCreateOrEditModal botModalFade editSlider utterance-model" id="editSynonymSlider">
+    <div class="modalSliderContainer width700 height-width-100">
+         <div class="modalContent utterances-modal-content">
+            <div class="modalHeader">
+                <h4 class="modal-title" ng-if="views.botsynonyms">
+                    <i class="btx-close" ng-click="closeEditSynonym()"></i>
+                    {{'edit_synonym' | i18nString}}
+                </h4>  
+                 <h4 class="modal-title" ng-if="views.concepts">
+                    <i class="btx-close" ng-click="closeEditSynonym()"></i>
+                    {{'edit_concept' | i18nString}}
+                </h4>  
+            </div>
+            <div class="modalBody" perfect-scroll height-property="height" dynamic-height dynaoffset="-60">
+
+                    <div class="kr-sg-input-text mb-15" ng-show="views.concepts">
+                        <div class="label-text">  {{'concept_name' | i18nString}}</div>
+                        <input type="text" class="input-text" tabindex="-1" insert-tilde ng-disabled="(displayMode==='VIEW')"  ng-keydown="restrictDeletingTilde($event,currentEditSynonym.key,'concepts')" ng-model="currentEditSynonym.key">
+                    </div>
+
+                    <div class="kr-sg-input-text mb-15" ng-show="views.botsynonyms">
+                        <div class="label-text">  {{'synonym_name' | i18nString}}</div>
+                        <input type="text" class="input-text" tabindex="-1" ng-model="currentEditSynonym.key" ng-disabled="(displayMode==='VIEW')"  ng-keydown="restrictDeletingTilde($event,currentEditSynonym.key,'synonyms')">
+                        
+                    </div>
+                    <div class="kr-sg-input-text mb-15 clearfix">
+                        <div class="label-text m-0">  {{'synonyms_name' | i18nString}}</div>
+                        <div class="synonyms-block">
+                             <div class="col-xs-12 divTags noPadding">
+                                <tags-input ng-disabled="(displayMode==='VIEW') || ((views.botsynonyms || views.concepts) && currentEditSynonym.key.startsWith('~') && currentEditSynonym.key.length === 1 ? true :
+                                (views.botsynonyms && !currentEditSynonym.key.startsWith('~') && !currentEditSynonym.key) ? true : false)" add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" use-strings="true" placeholder="{{'type_and__enter_placeholder'| i18nString}}" on-tag-added="saveEditBotSynonym()" on-tag-removed="saveEditBotSynonym('deleteCall')" ng-model="currentEditSynonym.value" on-invalid-tag="onInvalidTag()"></tags-input>
+                            </div>
+                        </div>
+                        
+                        
+                          
+                        
+                    </div>
+            </div>
+            <div class="modalFooter saveChangeContainer">
+                    <div class="changesSaved">
+                        <p class="changeDesc"  ng-show="saveStatus.initial">{{'changes_saved' | i18nString}}</p>
+                        <p class="changeDesc" ng-show="saveStatus.pending">
+                            <img src="{{brokenImageSmall}}"  ng-src="{{saving}}" src="" class="savingGif">
+                            {{'saving_changes' | i18nString}}
+                        </p>
+                        <p class="changeDesc"  ng-show="saveStatus.completed"><i class="btx-check"></i> {{'saved_changes' | i18nString}}</p>
+                        <p class="changeDesc"  ng-show="saveStatus.failed">{{'failed_saving_changes' | i18nString}}</p>
+                    </div>
+            </div>
+        </div>
+    </div>    
+</bot-modal-slider>
+<bot-modal-slider class="taskCreateOrEditModal botModalFade editSlider utterance-model" id="createSynonymSlider">
+    <div class="modalSliderContainer width700">
+         <div class="modalContent utterances-modal-content">
+            <div class="modalHeader" ng-show="views.botsynonyms">
+                <h4 class="modal-title">
+                    <i class="btx-close" ng-click="closeCreateSynonym()"></i>
+                    {{'new_synonym' | i18nString}}
+                </h4>  
+            </div>
+            <div class="modalHeader" ng-show="views.concepts">
+                <h4 class="modal-title">
+                    <i class="btx-close" ng-click="closeCreateSynonym()"></i>
+                    {{'new_concept' | i18nString}} 
+                </h4>  
+            </div>
+            <div class="modalBody" perfect-scroll height-property="height" dynamic-height dynaoffset="-60">
+                    <div class="kr-sg-input-text mb-15" ng-show="views.botsynonyms">
+                        <div class="label-text">{{'synonym_name' | i18nString}}</div>
+                        <div class="synonym-block">
+                              <input type="text" tabindex="1"  ng-model="manageBotSynonym.keyword"  class="input-text" id="editInput"> 
+                        </div>
+                        
+                    </div>
+                     <div class="kr-sg-input-text mb-15" ng-show="views.concepts">
+                        <div class="label-text">{{'concept_name' | i18nString}}</div>
+                        <div class="synonym-block">
+                              <input type="text" tabindex="1" insert-tilde ng-init="manageBotSynonym.keyword = '~'" ng-disabled="(displayMode==='VIEW')"  ng-model="manageBotSynonym.keyword" ng-keydown="validateTilde($event,manageBotSynonym.keyword)"  class="input-text" id="editInput"> 
+                        </div>
+                        
+                    </div>
+                    <div class="kr-sg-input-text mb-15 clearfix">
+                        <div class="label-text m-0">{{'synonyms_name' | i18nString}} </div>
+                        <div class="synonyms-block">
+                             <div class="col-xs-12 divTags noPadding">
+                                <tags-input ng-disabled="(displayMode==='VIEW') || ((views.botsynonyms || views.concepts) && manageBotSynonym.keyword && manageBotSynonym.keyword.startsWith('~') && manageBotSynonym.keyword.length === 1 ? true  :
+                                (views.botsynonyms && !manageBotSynonym.keyword.startsWith('~') && manageBotSynonym.keyword.length === 0) ? true : false)" add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" on-tag-added="saveManageBotTaskSynonym($node)" on-tag-removed="saveBotSynonym('deleteCall')"  use-strings="true" placeholder="{{'type_and__enter_placeholder'| i18nString}}"  ng-model="manageBotSynonym.synonyms" on-invalid-tag="onInvalidTag()"></tags-input>
+                            </div>
+                        </div>
+                        
+                        
+                          
+                        
+                    </div>
+            </div>
+            <div class="modalFooter saveChangeContainer">
+                    <div class="changesSaved">
+                        <p class="changeDesc"  ng-show="saveStatus.initial">{{'changes_saved' | i18nString}}</p>
+                        <p class="changeDesc" ng-show="saveStatus.pending">
+                            <img src="{{brokenImageSmall}}"  ng-src="{{saving}}" src="" class="savingGif">
+                            {{'saving_changes' | i18nString}}
+                        </p>
+                        <p class="changeDesc"  ng-show="saveStatus.completed"><i class="btx-check"></i> {{'saved_changes' | i18nString}}</p>
+                        <p class="changeDesc"  ng-show="saveStatus.failed">{{'failed_saving' | i18nString}}</p>
+                    </div>
+            </div>          
+        </div>
+    </div>    
+</bot-modal-slider>
+<div id="warningSynonymModal" class="modal fade kr-sg-modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> {{'add_concept_ques'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+          <p>{{'concept_desc' | i18nString}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn " ng-click='proceedAsConcept()'>{{'add_concept' | i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeSynonymModal()'>{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>

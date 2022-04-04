@@ -1,0 +1,127 @@
+<form novalidate name="signUpForm" ng-submit="submitSignUp(signUpForm)" class="login-form sign-up-in" autocomplete="off">
+    <div class="logoInCard">
+        <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+       </div>
+    <div class="loginDetails">
+        <p class="cardTitle">{{'get_started_free' | i18nString}}</p>
+        <p class="cardDesc">{{'please_provide_following_info' | i18nString}}</p>
+    </div>
+    <!-- Email -->
+    <div class="form-group">
+        
+        <!-- Country codes -->
+        <div data-ng-show="displayCountryCodes" uib-dropdown auto-close="outsideClick" class="country-codes">
+            <button uib-dropdown-toggle type="button">
+                {{selectedCountryCode.value}}
+            </button>
+
+            <div uib-dropdown-menu class="dropdown-menu dropdown-menu-left">
+
+                <!-- Search -->
+                <div class="navbar-search-wrapper">
+                    <div class="navbar-search">
+                        <div class="search-bar">
+                            <input type="text" ng-model="searchCountryCodes" class="form-control" placeholder="{{'search_name'| i18nString}}">
+                        </div>
+                    </div>
+                </div>
+
+                <perfect-scrollbar suppress-scroll-X="true" refresh-on-change="[countryCodes, searchCountryCodes]" class="country-codes-content">
+                    <ul>
+                        <li data-ng-repeat="item in countryCodes | filter:{name: searchCountryCodes}">
+                            <a data-ng-click="selectCountryCode(item)">
+                                <span class="name">{{item.name}}</span>
+                                <span class="value">{{item.value}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </perfect-scrollbar>
+            </div>
+        </div>
+        
+        <div class="input-group preMailId">
+           <input required data-ng-change="error=false" ng-model="emailPhone" name="emailPhone" email-phone email-only="true" phone-codes="phoneCode(value)" class="form-control disabled" autocomplete="off">
+           <!-- <input required data-ng-change="error=false" ng-model="emailPhone" name="emailPhone" email-phone email-only="true" phone-codes="phoneCode(value)" class="form-control" autocomplete="off" placeholder="Enter your email"> -->
+           <!-- <span class="movingingLabel">{{'enter_your_email'| i18nString}}</span> -->
+        </div>
+        
+        <!-- <div class="input-group">
+            This email address is not registered, please provide the details below to create account
+        </div> -->
+    </div>
+
+    <!-- Text -->
+    <div class="form-group">
+        <div class="input-group text-left">
+            <input required autocomplete="nope" ng-model="firstName" name="koreFN" type="text" class="form-control" maxlength = "60" ng-change="checkValidations('firstName',firstName)" placeholder="{{'firstname'| i18nString}}" ng-class="{'boredrRed':validations.invalidFirstName}">
+           <i type="button"  ng-if='validations.invalidFirstName' class="alertMsg btx-warning" tabindex="-1" tooltip="{{'alert_invalidname' | i18nString}}"  tooltip-placement="right"></i>
+            <!-- <input required ng-model="firstName" data-ng-change="error=false" name="firstName" type="text" class="form-control" autocomplete="off" placeholder="First Name" autofocus> -->
+             <!-- <span class="movingingLabel">{{'firstname'| i18nString}}</span> -->
+             <!-- <span class="nameErrorWarning">{{'alert_invalidname'| i18nString}}</span> -->
+             <div class="charactersLength" ng-show="firstName.length > 20 && !(validations.invalidFirstName)">{{(60 - firstName.length) + charRemaining }}</div>
+        </div>
+    </div>
+
+    <!-- Text -->
+    <div class="form-group">
+        <div class="input-group text-left">
+            <input required autocomplete="nope" ng-model="lastName" name="koreLN" type="text" class="form-control" maxlength = "60"  ng-change="checkValidations('lastName',lastName)"  ng-class="{'boredrRed':validations.invalidLastName}" placeholder="{{'lastname'| i18nString}}">
+           <i type="button" ng-if='validations.invalidLastName' class="alertMsg btx-warning" tabindex="-1" tooltip="{{'alert_invalidname' | i18nString}}"  tooltip-placement="right"></i>
+            <!-- <input required ng-model="lastName" data-ng-change="error=false" name="lastName" type="text" class="form-control" autocomplete="off" placeholder="Last name"> -->
+            <!-- <span class="movingingLabel">{{'lastname'| i18nString}}</span> -->
+            <!-- <span class="nameErrorWarning" ng-if='validations.invalidLastName'>{{'alert_invalidname'| i18nString}}</span> -->
+            <div class="charactersLength" ng-show="lastName.length > 20 && !(validations.invalidLastName)">{{(60 - lastName.length) + charRemaining }}</div>
+        </div>
+    </div>
+    
+      <!-- Text -->
+    <div class="form-group">
+        <div class="input-group text-left">
+            <input autocomplete="new-account" required ng-model="accountName" ng-change="checkValidations('accountName',accountName)" maxlength = "60" name="KoreAccNa" type="text" class="form-control" ng-class="{'boredrRed':validations.invalidAccountName}" placeholder="{{'accountname_capture'| i18nString}}">
+           <i type="button" class="alertMsg btx-warning" ng-if='validations.invalidAccountName' tabindex="-1" tooltip="{{'alert_invalidname'| i18nString}}"  tooltip-placement="right"></i>
+            <!-- <input required ng-model="accountName" data-ng-change="error=false" name="accountName" type="
+                text" class="form-control" autocomplete="off" placeholder="Company /Account name"> -->
+             <!-- <span class="movingingLabel">{{'accountname_capture'| i18nString}}</span> -->
+             <!-- <span class="nameErrorWarning" ng-if='validations.invalidAccountName'></span> -->
+             <div class="charactersLength" ng-show="accountName.length > 20 && !(validations.invalidAccountName)">{{(60 - accountName.length) + charRemaining }}</div>
+        </div>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+        <div class="input-group ">
+           <input autocomplete="new-password" required data-ng-change="error=false" ng-model="pass" name="KoreSecure" ng-pattern="passwordPolicy.pattern" ng-minlength="{{passwordPolicy.minLength}}"  ng-class="{'boredrRed':!signUpForm.KoreSecure.$valid && signUpForm.KoreSecure.$dirty}" ng-maxlength="{{passwordPolicy.maxLength}}" type="password" class="form-control pr-18 instant hide-invalid pass-input" placeholder="{{'password'| i18nString}}">
+        <!--    <input required data-ng-change="error=false" ng-model="pass" name="pass" ng-pattern="passwordPolicy.pattern" ng-minlength="{{passwordPolicy.minLength}}" ng-maxlength="{{passwordPolicy.maxLength}}" type="password" class="form-control instant hide-invalid pass-input" placeholder="Password"> -->
+           <!-- <span class="movingingLabel">{{'password'| i18nString}}</span> -->
+             
+                <!-- Info Password icon -->
+                <i type="button" data-ng-show="!signUpForm.KoreSecure.$valid && signUpForm.KoreSecure.$dirty" class="alertMsg btx-warning" tabindex="-1" tooltip="{{passwordPolicy.hintText}}" tooltip-placement="right"
+                    ></i>
+                
+                <!-- Valid Password icon -->
+                <i type="button" data-ng-show="signUpForm.KoreSecure.$valid"   class="alertMsg btx-billing-check" tabindex="-1"> </i>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group ">
+          <input  autocomplete="new-password" required data-ng-change="error=false" ng-model="passConfirm" name="KoreSecureConfirm" ng-minlength="{{passwordPolicy.minLength}}" ng-maxlength="{{passwordPolicy.maxLength}}"  ng-class="{'boredrRed':signUpForm.KoreSecureConfirm.$error.match && signUpForm.KoreSecureConfirm.$dirty}" match="pass" type="password" class="form-control instant pass-input" placeholder="Confirm password">
+            <!-- <span class="movingingLabel">{{'confirm_password'| i18nString}}</span> -->
+
+                <!-- Invalid Password icon -->
+                <i type="button"  data-ng-show="signUpForm.KoreSecureConfirm.$error.match && signUpForm.KoreSecureConfirm.$dirty" class="alertMsg btx-warning" tooltip="{{'password_tooltip'| i18nString}}" tooltip-placement="right"> </i>
+                
+                <!-- Valid Password icon -->
+                <i type="button"  data-ng-show="signUpForm.KoreSecureConfirm.$valid" class="alertMsg btx-billing-check"  tabindex="-1"> </i>
+        </div>
+    </div>
+
+    <div ng-show="error" class='error-message'>{{errorMsg}}</div>
+    
+    <!-- Buttons -->
+    <div class="button-group">
+        <!-- <button ng-click="cancel();" type="button" class="btn closeCancel">{{'cancel'| i18nString}}</button> -->
+        <button ng-disabled="!signUpForm.$valid" type="submit" class="btn">{{'sign_up' | i18nString}}</button>
+        <p class="linkFooter">{{'already_have_an_account' | i18nString}} <a ng-click="switchForms('default')">{{'login' | i18nString}}</a></p>
+    </div>
+ 
+</form>

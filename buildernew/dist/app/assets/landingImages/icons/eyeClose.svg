@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="12px" viewBox="0 0 14 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>eyeClose</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="eyeClose" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="eye" transform="translate(1.000000, 2.000000)" opacity="0.5" stroke="#8A959F" stroke-width="2">
+            <g id="2.1.2-(Bot-task)">
+                <g id="Group-8">
+                    <path d="M5.99899979,8.56441299 C1.71399994,8.56441299 0,4.39782607 0,4.39782607 C0,4.39782607 1.71399994,0 5.99899979,0 C10.2839996,0 11.9979996,4.39782607 11.9979996,4.39782607 C11.9979996,4.39782607 10.2839996,8.56441299 5.99899979,8.56441299 Z" id="Stroke-69"></path>
+                    <path d="M5.99899979,5.99676511 C6.94512775,5.99676511 7.71299973,5.2293937 7.71299973,4.28388251 C7.71299973,3.33837131 6.94512775,2.57099991 5.99899979,2.57099991 C5.05287182,2.57099991 4.28499985,3.33837131 4.28499985,4.28388251 C4.28499985,5.2293937 5.05287182,5.99676511 5.99899979,5.99676511 Z" id="Stroke-70"></path>
+                </g>
+            </g>
+        </g>
+        <path d="M9.5,0.5 L4.5,11.5" id="Line" stroke="#C5CACF" stroke-width="2" stroke-linecap="square"></path>
+    </g>
+</svg>

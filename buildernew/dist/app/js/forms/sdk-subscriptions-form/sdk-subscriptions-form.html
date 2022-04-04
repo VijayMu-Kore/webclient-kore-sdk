@@ -1,0 +1,221 @@
+<!-- SDK Subscriptions newStreamData.purpose==='employee' && newStreamData.profileRequired == 'true'-->
+            <div ng-if="streamId && !contentLoading" class="col-xs-12 form-group sdksubscriptonform noPadding">
+                <ng-form name="sdk.sdkConfForm" class="wf-form" novalidate>
+                <div class="col-xs-12" ng-if="!callback.isFromSettings">
+                    <label class="required-field"  tooltip-placement="right" tooltip="{{'bot_contact_details'| i18nString}}">{{'sdk_configuration_uppercase'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12" ng-if="sdkConf.noSDKConf && !callback.isFromSettings">
+                    <div><button class="btn btn-primary" ng-click="callback.openAppModal()">{{'app_subscribe'| i18nString}}</button></div>
+                </div>
+                  <div class="col-xs-12"  ng-if="sdkConf.noSDKConf && callback.isFromSettings">
+        <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert" ng-show="callback.apps.length <= 0">
+          {{'no_sdk_config'| i18nString}}
+          <p>{{'sdk_configuration'| i18nString}}</p>
+          <p><a target="_blank" ng-href="{{$root.helpLinks.BOT_SDKCONF_HELP}}" >{{'learn_more_label'| i18nString}}</a></p>
+        </div>
+        <div class="alert alert-warning alert-xs text-center" role="alert" ng-show="false">
+          {{'loading_sdk_config'| i18nString}}
+        </div>
+      </div>
+      <!-- !sdkConf.noSDKConf || callback.apps.length <= 0 -->
+                <div class="col-xs-12 noPadding" ng-if="!sdkConf.noSDKConf || callback.apps.length > 0">
+                 <div class="col-xs-12 form-group noPadding" ng-if="!loadingApps">
+                                <div class="col-xs-12"><label class="required-field">{{'app_name_uppercase'| i18nString}} </label></div>
+                                <div class="col-xs-12">
+
+                                      <select id="select2" ui-select2="selectConfig"  data-placeholder="{{'choose'| i18nString}}" name="appName" class="form-control" ng-model="sdkConf.appName"  ng-change="selectApp">
+        <option value=""></option>
+        <option value="createApp">{{'create_app'| i18nString}}</option>
+        <optgroup label="{{'select_app'| i18nString}}" >
+        <option ng-repeat="app in apps" ng-selected="{{app.clientId===selectedAppView.clientId}}" value="{{app.clientId}}" >{{app.appName}}</option>
+        <option ng-if="!sdkConf.noSDKConf" value="none">{{'none_label'| i18nString}}</option>
+        </optgroup>
+
+      </select>
+
+
+
+
+
+
+
+                                    <!-- <select class="" required ng-model="sdkConf.appName" placeholder="Choose" required name="appName">
+                                        <option value="">Choose</option>
+                                        <option value="createApp">Create App</option>
+                                        <option ng-repeat="app in apps" value="{{app.clientId}}">{{app.appName}}
+                                        </option>
+                                        <option ng-if="!sdkConf.noSDKConf" value="none">none</option>
+                                    </select> -->
+                                </div>
+                                <div class="col-xs-12" ng-show="sdk.sdkConfForm.appName.$dirty">
+                        <div error-alert ng-show="sdk.sdkConfForm.appName.$error.required" class="text-danger form-error-text"> {{'app_name_req'| i18nString}}  </div>
+                    </div>
+                            </div>
+                <div class="col-xs-12 form-group noPadding" ng-if="!noneSelected">
+                                <div class="col-xs-12"><label class="required-field">{{'constants.flowtasks_callbackURL'| i18nString}}</label></div>
+                                <div class="col-xs-12">
+                                    <input type="url" ng-model="sdkConf.cbUrl" name="cbUrl" class="form-control" required placeholder="{{'callback_url_placeholder'| i18nString}} ">
+                                </div>
+                                <div class="col-xs-12" ng-show="sdk.sdkConfForm.cbUrl.$dirty">
+                        <div error-alert ng-show="sdk.sdkConfForm.cbUrl.$error.required" class="text-danger form-error-text"> {{'callback_req'| i18nString}} </div>
+                         <div error-alert ng-show="sdk.sdkConfForm.cbUrl.$dirty && sdk.sdkConfForm.cbUrl.$error.url" class="text-danger"> {{'callback_url_invalid'| i18nString}} </div>
+                    </div>
+                            </div>
+                <div class="col-xs-12 noPadding form-group" ng-if="!noneSelected">
+                <div class="col-xs-12">
+                    <label class="required-field" > {{'events_caps'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 radioDiv sdkConfigSet">
+                <div class="col-xs-12 noPadding">
+                  <div class='row1'>
+                    <div ng-repeat="event in events" class="sdkSetblock">
+                      <div class="checkbox checkbox-primary">
+                        <input class="styled" checked type="checkbox" id="{{event.id}}" name="sdkEvents" 
+                        ng-model="event.checked" 
+                        ng-required="isOptionsRequired()"
+                        >
+                        <label for="{{event.id}}" ></label>
+                      </div>
+                      <div class="sdkSetName">{{event.name}}</div>
+                    </div>
+                  </div>
+                </div> 
+                    <div class="col-xs-12" ng-show="sdk.sdkConfForm.sdkEvents.$dirty">
+                        <div error-alert ng-show="sdk.sdkConfForm.sdkEvents.$error.required" class="text-danger form-error-text"> {{'event_value'| i18nString}} </div>
+                    </div>
+                </div>
+            </div>
+                 <div class="col-xs-12 row form-group noPadding" ng-if="!noneSelected">
+                <div class="col-xs-12">
+                  <label>{{'client_id_label_uppercase'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12">
+                  <div class="input-group">
+                    <input type="text" id="CLIENT_ID" class="form-control" ng-model="sdkConf.clientID" ng-readonly="true" name="clientID">
+                    <div class="input-group-addon pointer-hand" data-clipboard-target="#CLIENT_ID"> {{'copy_uppercase'| i18nString}} </div>
+                  </div>
+                  <div ng-show="isSafari"><span class="pull-right">{{'press_c'| i18nString}}<span></div>
+                </div>
+              </div>
+              <div class="col-xs-12 row form-group noPadding" ng-if="!noneSelected">
+                <div class="col-xs-12">
+                  <label>{{'client_Secret_uppercase'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <div class="input-group">
+                    <input type="password" id="CLIENT_SECRET" value="dsfasdfasdfasf" class="form-control" ng-model="sdkConf.clientSecret" ng-readonly="true" name="clientSecret">
+                    <div class="input-group-addon pointer-hand" ng-click="showOrHideCSKey($event)" >{{'view_uppercase'| i18nString}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 saveSDKBtnDiv" ng-hide="callback.isFromSettings">
+                <button type="button"  ng-click="callback.createAppCredentials(true)" class="pull-right btn btn-md btn-primary">{{'save'| i18nString}}</button>
+              </div>
+            </div>
+        </ng-form>
+        </div>
+
+
+        <div 
+          class="sdkcontentloading content-loading" 
+          ng-if="contentLoading">
+        
+          <span class="spinner-text">
+            <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+            <span class="spinner-text-content">  {{'loading_sdk'| i18nString}} </span>
+          </span>
+        
+        </div>
+
+            <!-- End of SDK Subscriptions -->
+
+
+<!-- Modal to add Sdk Configuration  && sdkConf.noSDKConf-->
+
+<div ng-if="streamId" class="selectAppModal modal fade" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+    <ng-form name="sdk.appCSForm" class="wf-form" novalidate>
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="callback.closeAppModal()"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                      <h4 class="modal-title" id="gridSystemModalLabel">{{'create_app'| i18nString}}</h4>
+                    </div>
+                    <div class="modal-body wf-form" ng-if="!sdkConfOnModal.createAppSuccess">
+                      <div class="col-xs-12 noPadding">
+                        <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12"><label class="required-field">{{'app_name_uppercase'| i18nString}}</label></div>
+                                <div class="col-xs-12">
+                                    <input type="text" ng-model="sdkConfOnModal.appName" name="appName"  class="form-control" ng-minlength="1" maxlength="50" required placeholder="{{'app_Name'| i18nString}} ">
+                                </div>
+                                <div class="col-xs-12" ng-show="sdk.appCSForm.appName.$dirty">
+                        <div error-alert ng-show="sdk.appCSForm.appName.$error.required" class="text-danger form-error-text"> {{'app_name_req'| i18nString}} </div>
+                    </div>
+                            </div>
+                      </div>
+                         
+
+                    </div>
+
+                    <div class="modal-body wf-form" ng-if="sdkConfOnModal.createAppSuccess">
+                        <div class="col-xs-12">
+                        <div class="col-xs-12 form-group">
+                                <div class="col-xs-12"><label class="required-field">{{'constants.flowtasks_callbackURL'| i18nString}}  </label></div>
+                                <div class="col-xs-12">
+                                    <input type="url" ng-model="sdkConfOnModal.cbUrl" name="cbUrl" class="form-control" required placeholder="{{'callback_url_placeholder'| i18nString}} " />
+                                </div>
+                                 <div class="col-xs-12" ng-show="sdk.appCSForm.cbUrl.$dirty">
+                        <div error-alert ng-show="sdk.appCSForm.cbUrl.$error.required" class="text-danger form-error-text"> {{'callback_req'| i18nString}} </div>
+                        <div error-alert ng-show="sdk.appCSForm.cbUrl.$dirty && sdk.appCSForm.cbUrl.$error.url" class="text-danger"> {{'callback_url_invalid'| i18nString}} </div>
+                    </div>
+                            </div>
+                            <div class="col-xs-12 form-group">
+                              <div class="col-xs-12">
+                                <label class="required-field" > {{'events_caps'| i18nString}} </label>
+                              </div>
+                              <div class="col-xs-12 radioDiv sdkConfigSet">
+                                <div class='row1'>
+                                  <div ng-repeat="event in events" class="sdkSetblock">
+                                    <div class="checkbox checkbox-primary">
+                                      <input class="styled" checked type="checkbox" id="{{event.id}}" name="sdkEvents" 
+                                      ng-model="event.checked" 
+                                      ng-change="selectEvents()"
+                                      ng-required="isOptionsRequired()"
+                                      >
+                                      <label for="{{event.id}}" ></label>
+                                    </div>
+                                    <div class="sdkSetName">{{event.name}}</div>
+                                  </div>
+                                </div>
+                                <div class="col-xs-12 noPadding" ng-show="sdk.appCSForm.sdkEvents.$dirty">
+                                  <div error-alert ng-show="sdk.appCSForm.sdkEvents.$error.required" class="text-danger form-error-text"> {{'event_value'| i18nString}}   </div>
+                                </div>
+                              </div>
+                            </div>
+                    </div>
+</div>
+                    <div class="modal-footer" ng-if="!sdkConfOnModal.createAppSuccess"> 
+
+                      <div class="pull-right">
+                        <!-- <button type="reset" data-dismiss="modal" ng-click="fieldData = {};closeImportModal();" class="btn btn-default"> Cancel </button> -->
+                        <button type="submit" class="btn btn-primary" ng-click="callback.createApp(sdk.appCSForm)">{{'create_label'| i18nString}}</button>
+                      </div>
+
+                    </div>
+                     <div class="modal-footer" ng-if="sdkConfOnModal.createAppSuccess"> 
+
+                      <div class="pull-right">
+                        <!-- <button type="reset" data-dismiss="modal" ng-click="fieldData = {};closeImportModal();" class="btn btn-default"> Cancel </button> -->
+                        <button type="submit" class="btn btn-primary" ng-click="callback.createAppCredentials(false, sdk.appCSForm)">{{'create_credentials'| i18nString}}</button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+            </ng-form>
+                <!-- /.modal-dialog -->
+              </div>
+
+
+<!-- End of modal to add sdk Configuraion -->
+

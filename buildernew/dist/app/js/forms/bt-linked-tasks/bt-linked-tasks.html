@@ -1,0 +1,231 @@
+<div class="modalHeader">
+    <h4 class="modal-title"><img  class="backArrow rotateLeft" ng-src={{backArrow}} ng-click="goToHome()"/>{{selectedTask.name}}</h4>
+</div>
+<div class="modalBody  linkedTasksBody" perfect-scroll dynamic-height dynaoffset="-110" height-property="height" >
+    <div class="row col-xs-12 noPadding" >
+
+                    <!-- Pre condition start -->
+                    <div class="linkedTaskLabel addMarginTop inlineEle">{{'interruption'| i18nString}} &nbsp;&nbsp;<i class="fa fa-question-circle item-icon" tooltip-placement="bottom" tooltip="{{_constants_.preconditionTooltip}}"></i></div>
+                    <div class="inlineEle" ng-show="connections.length>0" ng-class="{'screenFreeze':cb.viewMode}">
+                        <div class="addIf" ng-click="addDefaultConnection()">{{'constants.propertyPanel_addIf'| i18nString}}</div>
+                        <div class="preconditionBlock col-xs-12" ng-class="{'marginTop5':$index===0}" ng-repeat="connection in connections track by $index">
+                            <div class="removeConnection" ng-click="removeConnection($index)"><span class="fa fa-minus-circle"></span></div>
+                            <div class="radioSection col-xs-12 noPadding">
+                                <div class="labelling noPadding col-xs-1">
+                                    <label class="thickLabelColor">{{$index>0?andif:if}}</label>
+                                </div>
+                                <div class="radioDiv col-xs-11" ng-class="{'moveLeft':$index === 0,'paddingLeft15':$index > 0}">
+                                    <div class="radioInnerDiv col-xs-2 noPadding">
+                                        <label for="field23{{$index}}">
+                                            <input value='field' type="radio"  ng-model="connection.ifConditionPrefix" ng-change="clearIfConditionDetails($index)" name="field23{{$index}}" id="field23{{$index}}"/><span class="opt-title">{{'configurable_entity_name'| i18nString}}</span> 
+                                        </label>
+                                    </div>
+                                    <div class="radioInnerDiv col-xs-2 noPadding">
+                                        <label for="context23{{$index}}">
+                                            <input value='context' type="radio"  ng-model="connection.ifConditionPrefix" ng-change="clearIfConditionDetails($index)" name="context23{{$index}}" id="context23{{$index}}"/><span class="opt-title">{{'context'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <select class="form-control select3 width100 unsortable" ng-model="connection.entity" ng-show="connection.ifConditionPrefix === 'field'">
+                                <option value="">{{'select_name'| i18nString}}</option>
+                                <option ng-repeat="currEntity in parentEntities" value="{{currEntity._id}}">{{currEntity.name}}</option>
+                            </select>
+                            <textarea class="form-control input1 width100 autoGrowTA unsortable" type="text" ng-model="connection.ifCondition" ng-show="connection.ifConditionPrefix === 'context'"
+                                      placeholder="{{'context'| i18nString}}." auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" context-typeahead></textarea>
+                            <select ng-if="connection.ifConditionPrefix !== 'intent'" class="form-control select1 fullWidth unsortable" ng-model="connection.ifOperator"
+                                    ng-change="onChangeConnection(connection, 'ifOperator')">
+                                <option value="">{{'select_name'| i18nString}}</option>
+                                <option ng-repeat="ifOperator in ifOperatorList" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                            </select>
+                            <div class="preconditionInputBox" ng-hide="connection.ifOperator==='' || connection.ifOperator==='exst'"><input class="form-control" type="text" placeholder="{{'value'| i18nString}}" ng-model="connection.value"/></div>
+                        </div>
+                    </div>
+                    <div ng-class="{'screenFreeze':cb.viewMode}" ng-show="connections.length === 0" ng-click="addDefaultConnection()" class="emptyStateIfCondition">{{'add_if_plus'| i18nString}}</div>
+                    <!-- Pre condition ends -->
+
+                    <!-- Hold & Resume start -->
+                    <div  class="linkedTaskLabel">{{'hold_Resume'| i18nString}}</div>
+                    <div  class="col-xs-12 marginLeft10 radioDiv radioSection" >
+                    <div class="radioInnerDiv">
+                        <label for="developerNode">
+                            <input ng-disabled="cb.viewMode" value='developer' type="radio" ng-click="onInterruptOptionsChange()" ng-model="interruptOptions.type.option" name="developerNode" id="developerNode"/><span class="opt-title">{{'allow_hold'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <!-- Hold options -->
+                    <div ng-show="interruptOptions.type.option === 'developer'" class="linkedTaskLabel  marginLeft10 col-xs-12">{{'hold_options'| i18nString}}</div>
+                    <div ng-show="interruptOptions.type.option === 'developer'" class="col-xs-12 marginLeft10">
+                        <div class="radioInnerDiv">
+                            <label for="holdCurrTaskNode">
+                                <input ng-disabled="cb.viewMode" value='holdCurrTask' type="radio" ng-click="onInterruptOptionsChange()" ng-model="interruptOptions.holdUxOptions.option"  name="holdCurrTaskNode" id="holdCurrTaskNode"/><span class="opt-title">{{'Hold_the_curr_label'| i18nString}}</span> 
+                            </label>
+                        </div>
+                        <div class="radioInnerDiv">
+                            <label for="discardCurrTaskNode">
+                                <input ng-disabled="cb.viewMode" value='discardCurrTask' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.holdUxOptions.option" name="discardCurrTaskNode" id="discardCurrTaskNode"/><span class="opt-title">{{'Discard_the_curr_label'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('discardCurrentTask', $event)">{{'manageResponse'| i18nString}}</span></span>
+                            </label>
+                        </div>
+                           <div class="radioInnerDiv">
+                                    <label for="switchToNewEditIntrr">
+                                        <input ng-disabled="cb.viewMode" value='discardCurrTaskNoNotify' type="radio" ng-click="onInterruptOptionsChange()" ng-model="interruptOptions.holdUxOptions.option" name="switchToNewEditIntrr" id="switchToNewEditIntrr"/><span class="opt-title">{{'Switch_to_new_task_label'| i18nString}}</span>
+                                    </label>
+                         </div>
+                        <div class="radioInnerDiv">
+                            <label for="continueCurrTaskNode">
+                                <input ng-disabled="cb.viewMode" value='continueCurrTask' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.holdUxOptions.option" name="continueCurrTaskNode" id="continueCurrTaskNode"/><span class="opt-title">{{'Conti_the_curr_label'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('continueCurrentTask', $event)">{{'manageResponse'| i18nString}}</span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Hold options ends -->
+
+                    <!-- Resume options -->
+                    <div ng-if="interruptOptions.holdUxOptions.option === 'holdCurrTask' && interruptOptions.type.option === 'developer'" class="animateOptions">
+                        <div class="linkedTaskLabel paddingTop10  col-xs-12 marginLeft10">{{'resume_options'| i18nString}}</div>
+                        <div class="col-xs-12  marginLeft10">
+                            <div class="radioInnerDiv">
+                                <label for="confFromUserNodeLD">
+                                    <input ng-disabled="cb.viewMode" value='confFromUser' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option"  name="confFromUserNode" id="confFromUserNodeLD"/><span class="opt-title">{{'allinterruptions_conffromuser'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('getConfirmatonWithUser', $event)">{{'manageResponse'| i18nString}}</span></span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="notifyUserNodeLD">
+                                    <input ng-disabled="cb.viewMode" value='notifyUser' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option" name="notifyUserNode" id="notifyUserNodeLD"/><span class="opt-title">{{'allinterruptions_notifyuser'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('notifyUserWithMessage', $event)">{{'manageResponse'| i18nString}}</span></span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="noConfFromUserNodeLD">
+                                    <input ng-disabled="cb.viewMode" value='noConfFromUser' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option" name="noConfFromUserNode" id="noConfFromUserNodeLD"/><span class="opt-title">{{'allinterruptions_noconffromuser'| i18nString}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="checkbox checkbox-primary styledCSS  marginLeft10">
+                            <input ng-disabled="cb.viewMode" type="checkbox" id="checkboxIDNode" ng-click="onInterruptOptionsChange()" ng-model="interruptOptions.resumeUxOptions.neverNotify">
+                            <label for="checkboxIDNode"  class="alwaysResume">{{'resume_specific'| i18nString}} </label>
+                        </div>
+                    </div>
+                     <div  ng-if="interruptOptions.holdUxOptions.option === 'holdCurrTask' && interruptOptions.type.option === 'developer'" class="animateOptions ">
+                        <div class="linkedTaskLabel paddingTop10  col-xs-12 marginLeft10">{{'exit_behavior'| i18nString}}</div>
+                        <div class="col-xs-12  marginLeft10">
+                            <div class="radioInnerDiv">
+                                <label for="returnToNodeLNkedTask">
+                                    <input ng-disabled="cb.viewMode" value='resumeToTask' type="radio"  ng-model="interruptOptions.exitUxOptions.option" name="returnToNodeLNkedTask" id="returnToNodeLNkedTask"/><span class="opt-title">{{'resume_holdTask'| i18nString}}</span> 
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="resumeToNodeLNkedTask">
+                                    <input ng-disabled="cb.viewMode" value='resumeToNode' type="radio"  ng-model="interruptOptions.exitUxOptions.option" name="resumeToNodeLNkedTask" id="resumeToNodeLNkedTask"/><span class="opt-title">{{'resume_node'| i18nString}}</span>
+                                </label>
+                            </div>
+                            <div class="col-xs-12 paddingLeft25">
+                                <select ng-disabled="cb.viewMode" class="form-control select3 width100 unsortable" ng-model="interruptOptions.exitUxOptions.resumeToNodeOptions.nodeId" ng-show="interruptOptions.exitUxOptions.option === 'resumeToNode'">
+                                    <option value="">{{'select_name'| i18nString}}</option>
+                                    <option ng-repeat="node in parentTaskNodes" value="{{node.nodeId}}">{{component[node.componentId].name + (nodeObjCount[node.componentId].count >1?"["+node.count+"]":"")}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="doNotAllowHoldResumeBotLev">
+                            <input ng-disabled="cb.viewMode" value='doNotAllowHoldResume' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.type.option" name="doNotAllowHoldResume" id="doNotAllowHoldResumeBotLev"/><span class="opt-title">{{'do_not_allow'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="endUserNode">
+                            <input ng-disabled="cb.viewMode" value='endUser' type="radio" ng-click="onInterruptOptionsChange()" ng-model="interruptOptions.type.option" name="endUserNode" id="endUserNode"/><span class="opt-title">Allow the end user to select the behavior<span class="manageResponse" ng-click="openManageResponse('allowEndUser', $event)">Manage response</span></span>
+                        </label>
+                    </div>
+                      <div ng-if="interruptOptions.type.option === 'endUser'" class="animateOptions">
+                        <div class="linkedTaskLabel paddingTop10  col-xs-12 marginLeft10">{{'resume_options'| i18nString}}</div>
+                        <div class="col-xs-12  marginLeft10">
+                            <div class="radioInnerDiv">
+                                <label for="confFromUserNodeLE">
+                                    <input ng-disabled="cb.viewMode" value='confFromUser' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option"  name="confFromUserNode" id="confFromUserNodeLE"/><span class="opt-title">{{'allinterruptions_conffromuser'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('getConfirmatonWithUser', $event)">Manage response</span></span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="notifyUserNodeLE">
+                                    <input ng-disabled="cb.viewMode" value='notifyUser' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option" name="notifyUserNode" id="notifyUserNodeLE"/><span class="opt-title">{{'allinterruptions_notifyuser'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('notifyUserWithMessage', $event)">Manage response</span></span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="noConfFromUserNodeLE">
+                                    <input ng-disabled="cb.viewMode" value='noConfFromUser' type="radio" ng-click="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option" name="noConfFromUserNode" id="noConfFromUserNodeLE"/><span class="opt-title">{{'allinterruptions_noconffromuser'| i18nString}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="checkbox checkbox-primary styledCSS  marginLeft10">
+                            <input ng-disabled="cb.viewMode" type="checkbox" id="checkboxIDNodeL" ng-click="onInterruptOptionsChange()" ng-model="interruptOptions.resumeUxOptions.neverNotify">
+                            <label for="checkboxIDNodeL"  class="alwaysResume">{{'resume_specific'| i18nString}}  </label>
+                        </div>
+                    </div>
+                    <div  ng-if="interruptOptions.type.option === 'endUser'" class="animateOptions ">
+                        <div class="linkedTaskLabel paddingTop10  col-xs-12 marginLeft10">{{'exit_behavior'| i18nString}}</div>
+                        <div class="col-xs-12  marginLeft10">
+                            <div class="radioInnerDiv">
+                                <label for="return">
+                                    <input ng-disabled="cb.viewMode" value='resumeToTask' type="radio"  ng-model="interruptOptions.exitUxOptions.option" name="return" id="return"/><span class="opt-title">{{'resume_holdTask'| i18nString}}</span> 
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="resume">
+                                    <input ng-disabled="cb.viewMode" value='resumeToNode' type="radio"  ng-model="interruptOptions.exitUxOptions.option" name="resume" id="resume"/><span class="opt-title">{{'resume_node'| i18nString}}</span>
+                                </label>
+                            </div>
+                            <div class="col-xs-12 paddingLeft25">
+                                <select ng-disabled="cb.viewMode" class="form-control select3 width100 unsortable" ng-model="interruptOptions.exitUxOptions.resumeToNodeOptions.nodeId" ng-show="interruptOptions.exitUxOptions.option === 'resumeToNode'">
+                                    <option value="">{{'select_name'| i18nString}}</option>
+                                    <option ng-repeat="node in parentTaskNodes" value="{{node.nodeId}}">{{component[node.componentId].name + (nodeObjCount[node.componentId].count >1?"["+node.count+"]":"")}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <!-- Hold & Resume ends -->
+                    <!-- Exit Condition -->
+                     
+                    <!-- Exit condition ends -->
+          
+                    <!-- parameter Mapping starts -->
+                    <!-- PRE -->
+                    <div class="linkedTaskLabel addMarginTop">{{'parameter_mapping'| i18nString}}</div>
+                    <div class="subLabel" ng-class="{'screenFreeze':cb.viewMode}">
+                        <span>{{'pre_assignment'| i18nString}}</span>
+                        <span class="pull-right addKeyValue" ng-click="addNewPreAssignment()">{{'add_key'| i18nString}}</span>
+                    </div>
+                    <div class="sub-description mb-10">{{'hold_on_task'| i18nString}}</div>
+
+                    <div ng-class="{'screenFreeze':cb.viewMode}" ng-click="getFocusedAssignmentType('preAssign')" class="contextDiv preAssignContextDiv enableCompositeEntity" ng-repeat="context in contextMap.preassign track by $index" ng-show="($index < 3 || showmorePreassign) && !context.hide">
+                        <div class="key"><input type="text" class="form-control contextInput preAssign" placeholder="{{'key'| i18nString}}" ng-class="{'disable':context.existed}" ng-model="context.key" context-typeahead></div>
+                        <div class="contextVal"><textarea  ng-class="{parameterValueText:!context.preDefined}" class="form-control input1 width100 autoGrowTA unsortable " type="text" ng-model="context.val"
+                                                          placeholder="{{'value'| i18nString}}" auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" context-typeahead ng-disabled="cb.viewMode"></textarea><i ng-if="!context.preDefined" ng-click="deletePreAssignment($index)" class="fa fa-trash deleteParameters"></i></div>
+                        <div class="tooltip-custom helpIcon toggle-icon" ng-if="context.existed && context.entityType === 'composite'"><img class="helpdark-icon" ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"><span class="tooltiptext" ng-click="$event.stopPropagation()"  ng-bind-html="'entity_pre-assign_tooltip'| i18nString:({link:'https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/working-with-composite-entities', name: context.key})"></span></div>
+                    </div>
+                    <div class="seeAll" ng-show="contextMap.preassign.length > 3" ng-click="showmorePreassign = !showmorePreassign">
+                        <div class="text">{{showmorePreassign?showless:seeall}}<i class="fa" ng-class="{' fa-caret-up':showmorePreassign,' fa-caret-down':!showmorePreassign}"></i></div>
+                    </div>
+
+                    <!-- POST -->
+                    <div class="subLabel postAssignmentLabel col-xs-12 noPadding" ng-class="{'screenFreeze':cb.viewMode}">
+                        <span>{{'post_assignment'| i18nString}}</span>
+                        <span class="pull-right addKeyValue" ng-click="addNewPostAssignment()">{{'add_key'| i18nString}}</span>
+                    </div>
+                    <div class="sub-description mb-10">{{'context_task'| i18nString}}</div>
+
+                    <div  ng-class="{'screenFreeze':cb.viewMode}" ng-click="getFocusedAssignmentType('postAssign')" class="col-xs-12 contextDiv postAssignContextDiv noPadding enableCompositeEntity" ng-repeat="context in contextMap.postassign track by $index" ng-show="$index < 3 || showmorePostassign">
+                        <div class="key"><input type="text" class="form-control  contextInput postAssign" placeholder="{{'key'| i18nString}}" ng-class="{'disable':context.existed}" ng-model="context.key" context-typeahead></div>
+                        <div class="contextVal"><textarea ng-class="{parameterValueText:!context.preDefined}" class="form-control input1 width100 autoGrowTA unsortable" type="text" ng-model="context.val"
+                                                          placeholder="{{'value'| i18nString}}" auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" context-typeahead ng-disabled="cb.viewMode"></textarea><i ng-if="!context.preDefined" ng-click="deletePostAssignment($index)" class="fa fa-trash deleteParameters"></i></div>
+                        <div class="tooltip-custom helpIcon toggle-icon" ng-if="context.existed && context.entityType === 'composite'"><img class="helpdark-icon" ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"><span class="tooltiptext" ng-click="$event.stopPropagation()"  ng-bind-html="'entity_pre-assign_tooltip'| i18nString:({link:'https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/working-with-composite-entities', name: context.key})"></span></div>
+                    </div>
+                    <div class="seeAll" ng-show="contextMap.postassign.length > 3" ng-click="showmorePostassign = !showmorePostassign">
+                        <div class="text">{{showmorePostassign?showless:seeall}}<i class="fa" ng-class="{' fa-caret-up':showmorePostassign,' fa-caret-down':!showmorePostassign}"></i></div>
+                    </div>
+                    <!-- parameter Mapping ends -->
+    </div>
+</div>
+<div class="modalFooter">
+  <div class="pull-left">
+                <button type="button" class="btn btn-primary" ng-click="addLinkedTask()" ng-disabled="(!selectedTask || selectedTask._id === '' || cb.viewMode)">{{'save'| i18nString}}</button>
+  </div>
+</div>
+<bt-standard-response class="manageResponseIndexDiv" ng-if="showStandardResponses" cb="manageResponseCB"></bt-standard-response>

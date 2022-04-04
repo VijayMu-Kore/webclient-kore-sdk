@@ -1,0 +1,117 @@
+<div class="modalHeader">
+    <!-- <span aria-hidden="true"  ></span> -->
+    <h4 class="modal-title" id="gridSystemModalLabel"><img ng-src="{{closeCross}}" class="closeCross" ng-click="cancelUBSelection()"> Select Bots</h4>
+</div>
+<div  class="modalBody linkedBots"dynamic-height dynaoffset="-115" height-property="height">
+    <status-loader></status-loader>
+    <div class="height-width-100 create-container col-xs-12">
+        <div class="main-content" >
+
+            <p class="listText">{{'bot_selection_list_text'| i18nString:({dyn:selectedStream.name})}}</p>
+            <div class="stream-selection-view panel-group" id="accordion"  role="tablist" aria-multiselectable="false">
+
+
+                <div ng-if="false" class="panel panel-default"  ng-repeat="bot in myBots">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <div class="checkbox checkbox-primary styledCSS dataDiv" >
+                                <input type="checkbox" ng-click="$event.stopPropagation()" ng-model="bot.linked" name="bot.name" class="styled" id="botstream{{$index + 1}}">
+                                <label for="botstream{{$index + 1}}" class="labelCheck">
+                                    <div class="stream-icon bot-item-icon-div">
+                                        <img ng-src="{{bot.icon}}" alt="{{bot.name}}">
+                                        <span class="bot-item-title">{{bot.name}}</span>
+                                </label>
+                                <span data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index + 1}}" >{{'open_label'| i18nString}}</span>
+                            </div>
+                        </h4>
+                    </div>
+                    <div id="collapse{{$index + 1}}" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <p ng-bind-html="'html_link'| i18nString:({link:'https://www.tutorialrepublic.com/html-tutorial/'})"></p>
+                        </div>
+                    </div>
+                </div>
+
+                 <input type="text" placeholder=" Search bot " ng-model="searchString" class="linkBotSearch">   
+                 <div perfect-scroll dynamic-height dynaoffset="-430" height-property="height" class="linkScrollDiv">
+                    <div ng-if="searchString && filteredBots.length<1">
+                        {{'no_bots_with_this_search_criteria'| i18nString}}
+                    </div> 
+                    <div ng-if="true" class="panel panel-default" ng-repeat="bot in filteredBots= (myBots | filter:{name:searchString})"  >
+                    <!--Disabling accordion temporarily till the tasks api is ready-->
+                    <!--<div class="panel-heading collapsed universalLinkBot" ng-click="getTasks(bot.name)">-->
+                    <div class="panel-heading collapsed universalLinkBot" >
+                        <!--<div class="checkbox checkbox-primary styledCSS dataDiv" data-toggle="collapse" data-parent="#accordion" data-target="#stream{{$index+1}}">-->
+                        <div class="checkbox checkbox-primary styledCSS dataDiv">
+                            <input type="checkbox" ng-click="$event.stopPropagation()" ng-model="bot.linked" name="bot.name" class="styled" id="botstream{{$index + 1}}">
+                            <label for="botstream{{$index + 1}}" class="labelCheck">
+
+                            </label>
+                            <div class="stream-icon bot-item-icon-div collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index + 1}}"  aria-expanded="false" aria-controls="collapse{{$index + 1}}">
+                                <img ng-src="{{bot.icon}}" alt="{{bot.name}}">
+                                <span class="bot-item-title">{{bot.name}}</span>
+                                <img ng-src="{{backArrow}}"  class="fa-chevron-right">
+                                <!-- <i class="fa fa-chevron-right pull-right"></i> -->
+                            </div>  
+                        </div>
+                        <div class="accordion-group">
+                        <div ng-if="bot.description" id="collapse{{$index + 1}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse{{$index + 1}}" >
+                            <div class="panel-body">
+                                <p>{{bot.description}}</p>
+                            </div>
+                        </div>
+                        </div>
+
+                        <!--            <div id="stream{{$index+1}}" class="panel-collapse collapse universalSubMenu" role="tabpanel" aria-labelledby="headChatHistory">
+                                      <div class="panel-body noPadding">
+                                            <div class="panelOptions" ng-repeat="task in tasks" ng-if="tasks.length">
+                                                <div class="checkbox checkbox-primary styledCSS">
+                                                 <input ng-checked="bot.linked" type="checkbox" class="styled"  disabled>
+                                                  <label class="taskTitle">{{task.name}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="panelOptions" ng-if="!tasks.length && !isWorkProgress"><p>No published tasks</p></div>
+                                      </div>
+                                    </div>-->
+                    <!--  
+                        <div class="row bot-item" ng-repeat="bot in myBots" style="display: none;">
+                        <div class="radioDiv col-xs-12" >
+                            <div class="checkbox checkbox-primary styledCSS">
+                                <input type="checkBox" ng-model="bot.linked"  name="bot.name" class="styled" id="botchild{{$index+1}}"/>
+                                <label for="botchild{{$index+1}}">
+                                    <div class="stream-icon bot-item-icon-div">
+                                    <img class="newBotIcon" src="{{bot.icon}}" />
+                                <span class="bot-item-title">
+                                    {{bot.name}}
+                                </span>
+                            </div>
+                                </label>
+                            </div>
+                           
+                    
+                        </div>
+                        </div>-->
+                </div>
+            </div>
+                 </div> 
+               
+
+
+            <div class="ubBottomText marginBottom40">
+                <p>{{'note'| i18nString}}</p>
+                <ul>
+                    <li>{{'bots_selection_li1'| i18nString}}</li>
+                    <li>{{'bots_selection_li2'| i18nString}}</li>
+                    <li>{{'bots_selection_li3'| i18nString}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <div class="modalFooter">
+        <div class="col-xs-12">
+            <button ng-click="linkBots()"  class="btn"> {{'finish_label'| i18nString}}</button>
+            <button ng-click="cancelUBSelection()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+        </div>
+    </div>

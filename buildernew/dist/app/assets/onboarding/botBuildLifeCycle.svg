@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="534" height="414" viewBox="0 0 534 414">
+    <defs>
+        <path id="b" d="M49.82 38.618h104a8 8 0 0 1 8 8v104a8 8 0 0 1-8 8h-104a8 8 0 0 1-8-8v-104a8 8 0 0 1 8-8z"/>
+        <filter id="a" width="114.2%" height="114.2%" x="-7.1%" y="-5.4%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.837779845 0 0 0 0 0.854956592 0 0 0 0 0.877858922 0 0 0 1 0"/>
+        </filter>
+        <path id="d" d="M185.82 38.618h104a8 8 0 0 1 8 8v104a8 8 0 0 1-8 8h-104a8 8 0 0 1-8-8v-104a8 8 0 0 1 8-8z"/>
+        <filter id="c" width="114.2%" height="114.2%" x="-7.1%" y="-5.4%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.837779845 0 0 0 0 0.854956592 0 0 0 0 0.877858922 0 0 0 1 0"/>
+        </filter>
+        <path id="f" d="M321.82 38.955h104a8 8 0 0 1 8 8v104a8 8 0 0 1-8 8h-104a8 8 0 0 1-8-8v-104a8 8 0 0 1 8-8z"/>
+        <filter id="e" width="114.2%" height="114.2%" x="-7.1%" y="-5.4%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.837779845 0 0 0 0 0.854956592 0 0 0 0 0.877858922 0 0 0 1 0"/>
+        </filter>
+        <path id="h" d="M321.82 188.555h104a8 8 0 0 1 8 8v104a8 8 0 0 1-8 8h-104a8 8 0 0 1-8-8v-104a8 8 0 0 1 8-8z"/>
+        <filter id="g" width="114.2%" height="114.2%" x="-7.1%" y="-5.4%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.837779845 0 0 0 0 0.854956592 0 0 0 0 0.877858922 0 0 0 1 0"/>
+        </filter>
+        <linearGradient id="i" x1="97.921%" x2="27.611%" y1="-60.234%" y2="87.849%">
+            <stop offset="0%" stop-color="#BEC7CD" stop-opacity=".018"/>
+            <stop offset="100%" stop-color="#8A959F"/>
+        </linearGradient>
+        <path id="k" d="M185.82 188.555h104a8 8 0 0 1 8 8v104a8 8 0 0 1-8 8h-104a8 8 0 0 1-8-8v-104a8 8 0 0 1 8-8z"/>
+        <filter id="j" width="114.2%" height="114.2%" x="-7.1%" y="-5.4%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.837779845 0 0 0 0 0.854956592 0 0 0 0 0.877858922 0 0 0 1 0"/>
+        </filter>
+        <path id="m" d="M49.6 188.8h104a8 8 0 0 1 8 8v104a8 8 0 0 1-8 8h-104a8 8 0 0 1-8-8v-104a8 8 0 0 1 8-8z"/>
+        <filter id="l" width="114.2%" height="114.2%" x="-7.1%" y="-5.4%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.837779845 0 0 0 0 0.854956592 0 0 0 0 0.877858922 0 0 0 1 0"/>
+        </filter>
+        <linearGradient id="n" x1="180.569%" x2="-11.002%" y1="48.964%" y2="50.356%">
+            <stop offset="0%" stop-color="#BEC7CD" stop-opacity=".018"/>
+            <stop offset="100%" stop-color="#8A959F"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(7 7)">
+        <rect width="520" height="400" fill="#F2F3F5" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="14" rx="4" transform="matrix(-1 0 0 1 520 0)"/>
+        <g transform="translate(21.6 26.4)">
+            <use fill="#000" filter="url(#a)" xlink:href="#b"/>
+            <use fill="#FFF" xlink:href="#b"/>
+        </g>
+        <g transform="translate(21.6 26.4)">
+            <use fill="#000" filter="url(#c)" xlink:href="#d"/>
+            <use fill="#FFF" xlink:href="#d"/>
+        </g>
+        <g transform="translate(21.6 26.4)">
+            <use fill="#000" filter="url(#e)" xlink:href="#f"/>
+            <use fill="#FFF" xlink:href="#f"/>
+        </g>
+        <g transform="translate(21.6 26.4)">
+            <use fill="#000" filter="url(#g)" xlink:href="#h"/>
+            <use fill="#FFF" xlink:href="#h"/>
+        </g>
+        <path fill="url(#i)" fill-rule="nonzero" d="M15.423 190.03l4.528-6.548 1.316.91-6.264 9.06-.81 1.17-.579-1.299-4.49-10.058 1.462-.652 3.245 7.27.603-6.493c1.67-11.176 6.77-20.224 18.658-30.008l1.016 1.235c-11.58 9.532-16.48 18.224-18.086 28.965l-.599 6.448z" opacity=".4" transform="scale(1 -1) rotate(-30 -666.23 -53.506)"/>
+        <path fill="url(#i)" fill-rule="nonzero" d="M443.314 190.03l4.528-6.548 1.316.91-6.265 9.06-.808 1.17-.58-1.299-4.49-10.058 1.462-.652 3.244 7.27.604-6.493c1.67-11.176 6.77-20.224 18.657-30.008l1.017 1.235c-11.58 9.532-16.48 18.224-18.086 28.965l-.599 6.448z" opacity=".4" transform="scale(-1 1) rotate(-30 38.463 1905.092)"/>
+        <g transform="translate(21.6 26.4)">
+            <use fill="#000" filter="url(#j)" xlink:href="#k"/>
+            <use fill="#FFF" xlink:href="#k"/>
+        </g>
+        <g transform="translate(21.6 26.4)">
+            <use fill="#000" filter="url(#l)" xlink:href="#m"/>
+            <use fill="#FFF" xlink:href="#m"/>
+        </g>
+        <g stroke-width="1.2">
+            <path fill="#C7E6E9" stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" d="M108.385 253.579h7.2v20.8h-7.2zM132.385 259.179h7.2v15.2h-7.2zM120.385 247.979h7.2v26.4h-7.2z"/>
+            <g transform="rotate(45 -245.19 300.856)">
+                <circle cx="4.4" cy="4.4" r="3.8" fill="#FFF" stroke="#009DAB" stroke-linejoin="square"/>
+                <circle cx="4.4" cy="4.4" r="5" stroke="#FFF"/>
+            </g>
+            <path fill="#C7E6E9" stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" d="M143.751 270.545l2.634 2.634M102.8 243.6v42.788M144.951 279.968H96.785"/>
+        </g>
+        <path fill="url(#i)" fill-rule="nonzero" d="M160.302 343.8l4.528-6.548 1.316.91-6.265 9.06-.808 1.17-.58-1.299-4.49-10.058 1.461-.652 3.245 7.27.604-6.493c1.67-11.175 6.77-20.224 18.657-30.008l1.017 1.235c-11.58 9.532-16.48 18.224-18.086 28.965l-.599 6.448z" opacity=".4" transform="scale(1 -1) rotate(60 767.876 5.506)"/>
+        <path fill="url(#i)" fill-rule="nonzero" d="M160.302 37.63l4.528-6.547 1.316.91-6.265 9.06-.808 1.17-.58-1.3-4.49-10.058 1.461-.652 3.245 7.27.604-6.493c1.67-11.175 6.77-20.224 18.657-30.008l1.017 1.236c-11.58 9.531-16.48 18.224-18.086 28.965l-.599 6.447z" opacity=".4" transform="scale(-1 1) rotate(60 -33.663 -272.282)"/>
+        <path fill="url(#i)" fill-rule="nonzero" d="M297.91 343.8l4.527-6.548 1.316.91-6.265 9.06-.808 1.17-.58-1.299-4.49-10.058 1.461-.652 3.245 7.27.604-6.493c1.67-11.175 6.77-20.224 18.657-30.008l1.017 1.235c-11.58 9.532-16.48 18.224-18.086 28.965l-.599 6.448z" opacity=".4" transform="scale(1 -1) rotate(60 905.483 5.506)"/>
+        <path fill="url(#i)" fill-rule="nonzero" d="M297.91 37.63l4.527-6.547 1.316.91-6.265 9.06-.808 1.17-.58-1.3-4.49-10.058 1.461-.652 3.245 7.27.604-6.493c1.67-11.175 6.77-20.224 18.657-30.008l1.017 1.236c-11.58 9.531-16.48 18.224-18.086 28.965l-.599 6.447z" opacity=".4" transform="scale(-1 1) rotate(60 -33.663 -510.625)"/>
+        <text fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11.2" font-weight="bold" letter-spacing="-.232" transform="translate(21.6 26.4)">
+            <tspan x="66.621" y="140.018">Define &amp; Build</tspan>
+        </text>
+        <g stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" transform="translate(95.2 90.4)">
+            <path fill="#FFF" d="M40.733 4.078L52.08 21.492a2.8 2.8 0 1 1-4.749 2.968L34.07 4.078M50.8 25.828v6.594M46.775 36.532a4 4 0 1 0 4-4"/>
+            <path fill="#FFF" d="M40.187 3.458a4 4 0 0 1 0 5.657L14.731 34.57l-5.656-5.657L34.53 3.458a4 4 0 0 1 5.657 0z"/>
+            <path fill="#C7E6E9" d="M8 48.445v-20a8 8 0 0 1 16 0v20"/>
+            <rect width="6.4" height="6.4" x="12.8" y="25.245" fill="#F9F9F9" rx="3.2"/>
+            <path d="M0 48.445h32"/>
+        </g>
+        <text fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11.2" font-weight="bold" letter-spacing="-.232" transform="translate(21.6 26.4)">
+            <tspan x="225.021" y="140.018">Train</tspan>
+        </text>
+        <text fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11.2" font-weight="bold" letter-spacing="-.232" transform="translate(21.6 26.4)">
+            <tspan x="363.421" y="289.955">Test</tspan>
+        </text>
+        <text fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11.2" font-weight="bold" letter-spacing="-.232" transform="translate(21.6 26.4)">
+            <tspan x="219.421" y="289.955">Publish</tspan>
+        </text>
+        <text fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11.2" font-weight="bold" letter-spacing="-.232" transform="translate(21.6 26.4)">
+            <tspan x="80.221" y="289.955">Analyze</tspan>
+        </text>
+        <text fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11.2" font-weight="bold" letter-spacing="-.232" transform="translate(21.6 26.4)">
+            <tspan x="357.021" y="140.355">Enable</tspan>
+        </text>
+        <g stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+            <path fill="#C7E6E9" d="M377.59 125.348v-18.973h12.474v18.973z"/>
+            <path d="M403.38 131.051v-.212a4.323 4.323 0 1 1 8.647 0v.212a4.323 4.323 0 0 1-8.647 0zM403.336 118.12v-4.536c0-1.194.968-2.162 2.162-2.162h4.323c1.194 0 2.162.968 2.162 2.162v4.536a2.162 2.162 0 0 1-2.162 2.161h-4.323a2.162 2.162 0 0 1-2.162-2.161zM403.358 101.032v-.213a4.323 4.323 0 1 1 8.647 0v.213a4.323 4.323 0 0 1-8.647 0zM390.132 115.623h13.009"/>
+            <path d="M403.37 100.797h-7.422v30.435h7.193"/>
+        </g>
+        <g transform="translate(232 95.2)">
+            <circle cx="32.4" cy="2" r="2" stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
+            <ellipse cx="35.2" cy="12.4" stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" rx="1" ry="1.2" transform="matrix(1 0 0 -1 0 24.8)"/>
+            <path stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M12.267 20l-4.89-.978-.977-4.89L9.334 11.2l4.888.978.978 4.89zM29.067 24l-2.223-.444-.444-2.223L27.734 20l2.222.444.444 2.223zM52 22.859L44 24l3.605-8z"/>
+            <ellipse cx="28" cy="35.6" fill="#C7E6E9" stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" rx="28" ry="4.4"/>
+            <path fill="#FFF" stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M34.4 39.2a4.8 4.8 0 1 0-9.6 0"/>
+        </g>
+        <g stroke-width="1.2">
+            <path stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" d="M247.689 270.4H240v-29.6h38.4v29.6h-7.896"/>
+            <g stroke="#009CAB" transform="translate(254.4 247.2)">
+                <circle cx="1.2" cy="1.2" r="1"/>
+                <circle cx="5.2" cy="1.2" r="1"/>
+                <circle cx="9.2" cy="1.2" r="1"/>
+            </g>
+            <g stroke="#009DAB">
+                <path fill="#C7E6E9" d="M259.6 270.4a9.2 9.2 0 1 1 0 18.4 9.2 9.2 0 1 1 0-18.4z"/>
+                <path fill="#FFF" stroke-linecap="round" stroke-linejoin="round" d="M259.53 276h.14a3.53 3.53 0 0 1 0 7.062h-.14a3.53 3.53 0 1 1 0-7.062z"/>
+                <g stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M259.316 267.558v-12.742M256.309 257.817l3.106-3.1 3.015 3.008"/>
+                </g>
+                <g stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M266.232 267.91v-6.37M263.75 262.998l2.284-2.279 2.532 2.528"/>
+                </g>
+                <g stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M251.55 267.91v-6.37M249.069 262.998l2.283-2.279 2.532 2.528"/>
+                </g>
+            </g>
+        </g>
+        <path fill="url(#n)" fill-rule="nonzero" d="M101.045 165.417l-3.833 6.976-1.403-.77 5.305-9.653.684-1.247.71 1.233 5.495 9.545-1.386.799-3.972-6.9.065 6.478a7.202 7.202 0 0 0 7.11 6.064h254.988c5.42 0 9.813 4.393 9.813 9.813h-1.6a8.213 8.213 0 0 0-8.213-8.213H109.82a8.802 8.802 0 0 1-8.702-7.48l-.009-.111-.065-6.534z" opacity=".4" transform="translate(21.6 26.4)"/>
+        <g transform="translate(382.4 242.4)">
+            <path fill="#C7E6E9" d="M.98 25.12c5.89.287 9.94-.958 12.152-3.736 2.212-2.778 3.691-4.573 4.437-5.384v4.37c4.753 2.703 7.378 6.142 7.875 10.314-1.278 5.866-.68 10.909-11.83 13.314C5.715 44.096 1.177 40.647 0 33.65l.98-8.53z"/>
+            <circle cx="14.8" cy="37.2" r="1" stroke="#009CAB" stroke-width="1.2"/>
+            <circle cx="9.2" cy="31.6" r="1" stroke="#009CAB" stroke-width="1.2"/>
+            <circle cx="15.2" cy="25.6" r="1.8" fill="#FFF" stroke="#009CAB" stroke-width="1.2"/>
+            <circle cx="11.6" cy="11.6" r="1.4" fill="#FFF" stroke="#009CAB" stroke-width="1.2"/>
+            <path stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M16.888 20.18V0H7.912v20.18"/>
+            <path stroke="#009DAB" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M7.823 20.072C3.24 21.894 0 26.368 0 31.6 0 38.448 5.552 44 12.4 44c6.848 0 12.4-5.552 12.4-12.4 0-5.273-3.291-9.777-7.931-11.57"/>
+        </g>
+    </g>
+</svg>

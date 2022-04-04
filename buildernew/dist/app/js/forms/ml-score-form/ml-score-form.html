@@ -1,0 +1,511 @@
+<status-loader></status-loader>
+<!-- <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-if="loader.loadingMLModal">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">Loading graph.....</span>
+    </span>
+</div> -->
+<div class="form-container mlform" >
+    <div class="pageFlow mlScoreForm expandedView">
+        <div class="mLmodal-header  bt-modal-header modal-header-padding" ng-if="loadMLUI">
+            <div class="col-xs-6">
+<!--                <div class="pull-left" ng-if="!showMl">
+                    <button ng-click="exit()" type="button" class="close mlExit" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button>
+                </div>-->
+                <div class="pull-left mlBack"><ihref="#" class="noTextDecor btx-carrot-right btnBack" ng-click="back()"></i></div>
+                <div class="mLtitleHeader">
+                    <!--<bt-modal-title title="ML Score" bot="stream"></bt-modal-title>-->
+                    <bt-modal-title taskname="ML Score" fontclass="" bot="stream"></bt-modal-title>
+                </div>
+            </div>
+            <div class="col-xs-6 pull-right mLproceed">
+                <button type="button" class="btn btn-primary marginTop10" ng-disabled="doneDisabled" ng-click="filter()">{{'filter'| i18nString}}</button>
+                <button ng-if="mlInSync" type="button" class="btn btn-primary marginTop10 reRunModel"  ng-click="reRunModal()">{{'re_run_model'| i18nString}}</button>
+                <button  ng-if="!mlInSync" type="button" class="btn btn-primary marginTop10" ng-disabled="showTrainSavingDiv" ng-click="trainBot()">{{showTrainSavingDiv?training:train}}</button>
+                
+            </div>
+             <!-- <div class="col-xs-1 pull-right noPadding mLproceed ">
+                
+            </div>
+            <div class="col-xs-1 pull-right noPadding mLproceed" >
+                
+            </div> -->
+        </div>
+        
+        <bot-modal-slider class="dispalyInline" id="mlscoreFilter">
+                        <div class="modalSliderContainer right400" ng-if="loadMLUI">
+      <div class="modalHeader">
+       <!-- <span aria-hidden="true" ng-click="closeModalSlider('#mlscoreFilter')"><i class="fa fa-close"></i></span> -->
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'filter'| i18nString}} <i class="btx-close" ng-click="closeModalSlider('#mlscoreFilter')"></i></h4>
+     
+      </div>
+      <div class="sortingDiv">
+        <div ng-if="false" has-focus class="toggleSwitchML" ng-click="showType()" ng-modal="mlObj.filterToggle">
+            <span ng-click="mlObj.filterToggle = updateFilterValue('published')" ng-class="{'toggleActive':mlObj.filterToggle == 'indevelopment' , 'toggleInactive' : mlObj.filterToggle == 'published'}" name="taskState">{{'in_development_label'| i18nString}} </span>
+            <span ng-click="mlObj.filterToggle = updateFilterValue(mlObj.filterToggle)">
+                <span ng-if="mlObj.filterToggle == 'indevelopment' "><img ng-src="{{assetsBase}}images/toggle-2.png" class="toggleRadio"></span>
+                <span ng-if="mlObj.filterToggle == 'published' "><img ng-src="{{assetsBase}}images/toggle-1.png" class="toggleRadio"></span>
+                <span ng-if="publishedTasks.length==0"><span class="mltoggleMessage">{{'no_tasks_available'| i18nString}}</span><i class="fa fa-caret-up mltoggleArrow"></i></span>
+                <span ng-if="tasksInDeveploment.length==0"><span class="mltoggleMessage">{{'development_no_tasks'| i18nString}}</span><i class="fa fa-caret-up mltoggleArrow"></i></span>
+            </span>
+            <span ng-click="mlObj.filterToggle = updateFilterValue('indevelopment')" ng-class="{'toggleActive':mlObj.filterToggle == 'published' , 'toggleInactive' : mlObj.filterToggle == 'indevelopment'}" name="taskState">{{'published'| i18nString}}</span>
+</div>
+<div>
+    <div class="sortHeader">{{'sort_task'| i18nString}}</div>
+    <div class="diplayBox">
+        <div ng-click="sortMlData('toStrong')" class="buttonMLDiv" ng-class="{'activeSort' : sortType == 'weektostrong' , 'inactiveSort' : sortType == 'strongtoweak'}"><a class="sortTypeLable">{{'weak_strong'| i18nString}}</a><a class="btx-sorting sortIcon"></a></div>
+    <div ng-click="sortMlData('toWeak')" class="buttonMLDiv" ng-class="{'activeSort' : sortType == 'strongtoweak' , 'inactiveSort' : sortType == 'weektostrong'}"><a class="sortTypeLable" >{{'strong_weak'| i18nString}}</a><a class=" btx-sorting sortIcon"></a></div>
+    </div>
+</div>
+      </div>
+      <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-230" height-property="height">
+        <div class="mlFilter">
+                
+                <div>
+                    <div class="tasklistHeader" ng-click="showhideTasks()"><span>{{'task_intent'| i18nString}}</span><span class="taskCount">{{slectedTaskesCount}}</span><span class="showHideChevron" ng-class="{'btx-carrot-down':showTasks=='show','btx-carrot-right':showTasks=='hide'}"></span></div>
+                    <div ng-show="showTasks=='show'" class="totalMLTasksList">
+                    <div class=" searchMLFilter">
+                        <input type="text" ng-model="searchTask" placeholder="{{'search_tasks'| i18nString}}"><i class="btx-search searchIconPos"></i>
+                    </div>
+                    <div>
+                        <!-- <div class="userContainer pointer-hand" ng-click="selectAllTaks()">
+                                                <div class="user">
+                                                    <div class="selected-status ">
+                                                        <i area-hidden="true" ng-class="{'fa fa-square-o':alltasks === 'false','fa fa-check-square':alltasks === 'true'}"><span class="taskTitle selectAll">Select All</span></i>
+                                                    </div>
+                                                </div>
+                       </div> -->
+                    </div>
+                    <div>
+                        <div class="filterTasktitle">{{'dialog_intents'| i18nString}}</div>
+                        <div class="col-xs-12 tasks-list">
+                                        <div ng-if="filterFn(task)" class="form-group noMarginBottom" ng-repeat="task in mlSelect.tasksByType| filter : searchTask track by $index">
+                                            <div ng-show="task.taskType == 'dialog'" class="userContainer pointer-hand" ng-click="selectTask(task, $index)">
+                                                <div class="user">
+                                                    <div class="selected-status ">
+                                                        <i area-hidden="true" ng-class="{'fa fa-square-o':task.isAdded === 'NO','fa fa-check-square':task.isAdded === 'YES'}"><span class="taskTitle" title='{{task.name}}'>{{task.intent}}</span></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                         </div>
+                    </div>
+                    <div>
+                        <div class="filterTasktitle">{{'alert_tasks_uppercase'| i18nString}}</div>
+                        <div class="col-xs-12 tasks-list">
+                                        <div ng-if="filterFn(task)" class="form-group noMarginBottom" ng-repeat="task in mlSelect.tasksByType| filter : searchTask track by $index">
+                                            <div ng-show="task.taskType == 'alert'" class="userContainer pointer-hand" ng-click="selectTask(task, $index)">
+                                                <div class="user">
+                                                    <div class="selected-status ">
+                                                        <i area-hidden="true" ng-class="{'fa fa-square-o':task.isAdded === 'NO','fa fa-check-square':task.isAdded === 'YES'}"><span class="taskTitle" title='{{task.name}}'>{{task.name}}</span></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                         </div>
+                    </div>
+                    <div>
+                        <div class="filterTasktitle">{{'action_tasks_uppercase'| i18nString}}</div>
+                        <div class="col-xs-12 tasks-list">
+                                        <div ng-if="filterFn(task)" class="form-group noMarginBottom" ng-repeat="task in mlSelect.tasksByType| filter : searchTask track by $index">
+                                            <div ng-show="task.taskType == 'action'" class="userContainer pointer-hand" ng-click="selectTask(task, $index)">
+                                                <div class="user">
+                                                    <div class="selected-status ">
+                                                        <i area-hidden="true" ng-class="{'fa fa-square-o':task.isAdded === 'NO','fa fa-check-square':task.isAdded === 'YES'}"><span class="taskTitle" title='{{task.name}}'>{{task.name}}</span></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                         </div>
+                    </div>
+                    <div>
+                        <div class="filterTasktitle">{{'information_tasks_uppercase'| i18nString}}</div>
+                        <div class="col-xs-12 tasks-list">
+                                        <div ng-if="filterFn(task)" class="form-group noMarginBottom" ng-repeat="task in mlSelect.tasksByType| filter : searchTask track by $index">
+                                            <div ng-show="task.taskType == 'info'" class="userContainer pointer-hand" ng-click="selectTask(task, $index)">
+                                                <div class="user">
+                                                    <div class="selected-status ">
+                                                        <i area-hidden="true" ng-class="{'fa fa-square-o':task.isAdded === 'NO','fa fa-check-square':task.isAdded === 'YES'}"><span class="taskTitle" title='{{task.name}}'>{{task.name}}</span></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                         </div>
+                    </div>
+                </div>
+                  
+               </div>
+                <div class="clear-fix">
+                    <div>
+                        <div class="tasklistHeader mlUtteranceHeader" ng-click="showhideUtterances()"><span>{{'utterence_label'| i18nString}}</span><span class="taskCount">{{slectedUttsCount}}</span><span class="showHideChevron" ng-class="{'btx-carrot-down':showUtts=='show','btx-carrot-right':showUtts=='hide'}"></span></div>
+                        <div ng-show="showUtts === 'show'" class="totalMLTasksList">
+                            <div class="searchMLFilter">
+                                <span>
+                                    <input type="text" ng-model="searchUtts" placeholder="Search Utterances"><i class="btx-search searchIconPos"></i>
+                            </div>
+                        <div>
+                            <div class="userContainer pointer-hand" ng-click="selectAllUtts()">
+                                <div class="user">
+                                    <div class="selected-status ">
+                                        <i area-hidden="true" ng-class="{'fa fa-square-o':allUtts === 'false','fa fa-check-square':allUtts === 'true'}"><span class="taskTitle">{{'select_all'| i18nString}}</span></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div  class="marginBottom10" ng-if="filterFn(task) && filterObj.taskFilter.mlViewSelectedTask[task._id] && task.sentences.length" ng-repeat="task in mlSelect.tasksByType track by $index">
+                            <div>
+                                <div class="filterTasktitle">{{task.name}}</div>
+                                <div class="form-group noMarginBottom" ng-repeat="sentence in task.sentences| filter : searchUtts track by $index">
+                                            <div class="userContainer pointer-hand" ng-click="selectUtterances(sentence,task)">
+                                                <div class="user">
+                                                    <div class="selected-status ">
+                                                        <i area-hidden="true" ng-class="{'fa fa-square-o':sentence[1] === 'Hide','fa fa-check-square':sentence[1] === 'Show'}"><span class="taskTitle" title='{{sentence[0]}}'>{{sentence[0]}}</span></i>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                </div>
+                            </div>
+                        </div>
+                       </div>
+                    </div>
+                </div>
+            </div>      
+      </div>
+          <div class="modalFooter">
+               <div class="col-xs-12">
+        <button ng-click="createFilter()" ng-disabled="saving" class="btn btn-sm btn-primary text-info"> {{(filterInprogress)?applying:apply}}</button>
+         </div>
+          </div>
+                       
+                    </div>
+                    </bot-modal-slider>
+        <bot-modal-slider class="dispalyInline " id="mlQuadrentView"> 
+            <div ng-if='quadrentStep===1' class="modalSliderContainer width700">
+                <div class="modalHeader">
+                    <h4 class="modal-title" >{{'quadrant_view'| i18nString}} <i class="btx-close" ng-click="closeQuadrentView()"></i></h4>
+                </div>
+                <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-193" height-property="height">
+                    <div class="form-group">
+                        <label class="darkLabel">{{'task_intent'| i18nString}}</label>
+                        <select ng-change='selectQuadrentTask(quad.selectedTaskId,$index)' id='entitySelection' ng-model='quad.selectedTaskId' ng-disabled="mlObj.filterToggle === 'published'">
+                            <option  value='{{task._id}}' ng-repeat="task in mlScoreFormObj.orderedTaskList track by $index">{{task.name}}</option>
+                        </select> 
+                    </div>
+                    <div>
+                        <div class="sortHeader">{{'quardinance'| i18nString}}</div>
+                        <div class="diplayBox">
+                            <div ng-click="selectQuadrent('TP')" class="quadrentMLDiv" ng-class="{'activeSort' : qType == 'TP' , 'inactiveSort' : qType !== 'TP'}"><a class="sortTypeLable">{{'true_pve'| i18nString}}</a></div>
+                            <div ng-click="selectQuadrent('TN')" class="quadrentMLDiv" ng-class="{'activeSort' : qType == 'TN' , 'inactiveSort' : qType !== 'TN'}"><a class="sortTypeLable" >{{'true_nve'| i18nString}}</a></div>
+                            <div ng-click="selectQuadrent('FP')" class="quadrentMLDiv" ng-class="{'activeSort' : qType == 'FP' , 'inactiveSort' : qType !== 'FP'}"><a class="sortTypeLable">{{'false_pve'| i18nString}}</a></div>
+                            <div ng-click="selectQuadrent('FN')" class="quadrentMLDiv" ng-class="{'activeSort' : qType == 'FN' , 'inactiveSort' : qType !== 'FN'}"><a class="sortTypeLable" >{{'false_nve'| i18nString}}</a></div>
+                        </div>
+                    </div>
+                    <div class="mlUttlistManagement">
+                        <div class="col-xs-12 bottomBorder solidBorderBottom">
+                            <div class="paddingTopBottom10" ng-class="{'col-xs-5 0ne' : (qType === 'TP') , 
+                                                               'col-xs-5 two' : (qType === 'FP') ,
+                                                               'col-xs-9 three' : (qType === 'TN') ,
+                                                               'col-xs-9 four' : (qType === 'FN') }">
+                                <div ng-show="!showUttSearch" class="">
+                                    <span class="name">{{'utterence_label'| i18nString}}</span>
+                                    <span class="btx-search margin-left-5" ng-click="activateUttSearch(true)"></span>
+                                </div>
+                                <div class="searchComponent marginRight20" ng-show="showUttSearch">
+                                    <input focus-it tabindex="1" type="text" class="form-control focusNameSearch" ng-model="search.searchQuery" ng-keyup="searchUtterance($event)" placeholder="{{'search_utterences'| i18nString}}">
+                                    <i class="btx-search"></i>
+                                    <i class="btx-close"  ng-click="activateUttSearch(false)"></i>
+                                </div>
+                                <!-- <div ng-show="showUttSearch" class="searchUtt">
+                                    <input focus-it tabindex="1" type="text" class="form-control focusNameSearch" ng-model="search.searchQuery" ng-keyup="searchUtterance($event)" placeholder="{{'search_utterences'| i18nString}}">
+                                    <span class="fa fa-times" ng-click="activateUttSearch(false)"></span>
+                                </div> -->
+                            </div>
+                            <div class="col-xs-4 paddingTopBottom10" ng-if="qType==='TP' || qType==='FP'">
+                                <div ng-show="!showValueSearch" class=""><span class="name">{{'expected_task'| i18nString}}</span></div>
+                            </div>
+                            <div class="col-xs-2 paddingTopBottom10"><div class="">{{'score'| i18nString}}</div></div>
+                            <div class="paddingTopBottom10 col-xs-1" ></div>
+                        </div>
+                    </div>
+                    <div ng-if="qType === 'TP'" class="col-xs-12 clear-fixbottomBorder solidBorderBottom" ng-repeat="TP in quadrentTask.TP | filter:search.searchQuery track by $index">
+                        <div class="col-xs-5 paddingTopBottom10 mlTaskListElipsis">{{TP[7]}}</div>
+                        <div class="col-xs-4 paddingTopBottom10 mlTaskListElipsis">{{getTaskNameByID(TP[5])}}</div>
+                        <div class="col-xs-2 paddingTopBottom10">{{"+" + TP[1]}}</div>
+                        <div class="col-xs-1 paddingTopBottom10">
+                         <span ng-hide="mlObj.filterToggle === 'published'" ng-click="openEditUtterances($index, quadrentTask ,TP,quadrentTask.TP,'listing',$event,'TP')" class="btx-pencil mlEditUtt"></span>
+                         <span ng-hide="mlObj.filterToggle === 'published'" ng-if='!TP[9]'class="btx-delete-1  mldeleteUtt" ng-click="deleteUtterances($index, quadrentTask.TP ,TP)"></span>
+                         <span ng-hide="mlObj.filterToggle === 'published'" ng-if='TP[9]' class="fa fa-spinner fa-spin mldeleteUtt"></span>
+                        </div>
+                    </div>
+                    <div ng-if="(qType === 'TN')" class="col-xs-12 clear-fixbottomBorder solidBorderBottom" ng-repeat="TN in quadrentTask.TN | filter:search.searchQuery track by $index">
+                        <div class="col-xs-9 paddingTopBottom10 mlTaskListElipsis">{{TN[7]}}</div>
+                        <!--<div class="col-xs-4 paddingTopBottom10">{{getTaskNameByID(TN[5])}}</div>-->
+                        <div class="col-xs-2 paddingTopBottom10">{{TN[1]}}</div>
+                        <div class="col-xs-1 paddingTopBottom10">
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-click="openEditUtterances($index, quadrentTask,TN,quadrentTask.TN,'listing',$event,'TN')" class="btx-pencil mlEditUtt"></span>
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-if='!TN[9]' class="btx-delete-1  mldeleteUtt" ng-click="deleteUtterances($index, quadrentTask.TN,TN)"></span>
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-if='TN[9]' class="fa fa-spinner fa-spin mldeleteUtt"></span>
+                        </div>
+                    </div>
+                    <div ng-if="qType === 'FP'" class="col-xs-12 clear-fixbottomBorder solidBorderBottom" ng-repeat="FP in quadrentTask.FP | filter:search.searchQuery track by $index">
+                        <div class="col-xs-5 paddingTopBottom10 mlTaskListElipsis">{{FP[7]}}</div>
+                        <div class="col-xs-4 paddingTopBottom10 mlTaskListElipsis">{{getTaskNameByID(TN[5])}}</div>
+                        <div class="col-xs-2 paddingTopBottom10">{{"+" + FP[1]}}</div>
+                        <div class="col-xs-1 paddingTopBottom10">
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-click="openEditUtterances($index, quadrentTask,FP,quadrentTask.FP,'listing',$event,'FP')" class="btx-pencil mlEditUtt"></span>
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-if='!FP[9]' class="btx-delete-1  mldeleteUtt" ng-click="deleteUtterances($index, quadrentTask.FP,FP)"></span>
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-if='FP[9]' class="fa fa-spinner fa-spin mldeleteUtt"></span>
+                        </div>
+                    </div>
+                    <div ng-if="qType === 'FN'" class="col-xs-12 clear-fixbottomBorder solidBorderBottom" ng-repeat="FN in quadrentTask.FN | filter:search.searchQuery track by $index">
+                        <div class="col-xs-9 paddingTopBottom10 mlTaskListElipsis">{{FN[7]}}</div>
+                        <div class="col-xs-2 paddingTopBottom10">{{FN[1]}}</div>
+                        <div class="col-xs-1 paddingTopBottom10">
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-click="openEditUtterances($index, quadrentTask,FN,quadrentTask.FN,'listing',$event,'FN')" class="btx-pencil mlEditUtt"></span>
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-if='!FN[9]' class="btx-delete-1  mldeleteUtt" ng-click="deleteUtterances($index, quadrentTask.FN ,FN)"></span>
+                            <span ng-hide="mlObj.filterToggle === 'published'" ng-if='FN[9]' class="fa fa-spinner fa-spin mldeleteUtt"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="modalFooter">
+
+                </div> -->
+            </div>
+            <div ng-if='quadrentStep==2' class="modalSliderContainer width700">
+                <div class="modalHeader editScoreheader">
+                    <h4 class="modal-title tableRow">
+                        <i ng-if="callBy==='listing'" class="btx-arrow-back" ng-click="goToList()"></i>
+                        <i ng-if="callBy==='graph'" class="btx-close top25"  aria-hidden="true" ng-click="closeEditUtteranceView()"></i>
+                        <div class="miHeadBar">
+                            <p class="miTaskNameHeader">{{currentEditTask.name}}</p>
+                            <p class="miTitleHeader">{{'edit_utterance'| i18nString}}</p>
+                        </div>
+                    </h4>
+                </div>
+                <div class="modalBody mleditUtteranceDiv" ng-class="{'pointer-none':(stream.streamstate=='published' || mlObj.filterToggle === 'published')}" perfect-scroll dynamic-height dynaoffset="-80" height-property="height">
+                   <div class='editUtteranceInfo'>
+                            <div class='editUttTitle'><strong>{{'utterence_label'| i18nString}}:</strong><span class="mleditInnerTextInfo margin-left-5">{{quadUtterance}}</span></div>
+                            <div class='editUttTitle'><strong>{{'score'| i18nString}}:</strong><span class="mleditInnerTextInfo margin-left-5">{{quadEditUtterance[1]<0?quadEditUtterance[1]:("+"+quadEditUtterance[1])}}</span></div>
+                            <div class='editUttTitle'><strong>{{'quadrant'| i18nString}}:</strong><span class="mleditInnerTextInfo margin-left-5">{{getQuadType[quadType]}}</span></div>
+                    </div>
+                    
+                    
+                    <div class="row utterances-list-div">
+                        <div class="col-xs-12 noPadding marginTop15">
+                            <label class="mlUtteditHeader">{{'utterence_label'| i18nString}}</label>
+                            <div class="utterenceeditsection col-xs-12">
+                                <div id="{{mlEditAllUtterances._id}}" ng-mouseenter="mlEditAllUtterances.show=true" ng-mouseleave="mlEditAllUtterances.show=false" class="col-xs-10 noPadding utterance-item-title" contenteditable="true" onkeypress="return (this.innerText.length < 2048)" ng-keyup="$event.keyCode == 13" ml-entity-selection call-backs="entityCallbacks" from-edit="entityCmpt.fromEdit" utterance-before-edit="mlEditAllUtterances.sentence" selected-utterence="mlEditAllUtterances" focused-utterance="entityCmpt.focusedUtterance" offset-object="entityCmpt.offsetObject" selected-utterance-index="entityCmpt.selectedUtteranceIndex"  start-end-index="entityCmpt.startEndIndex" showentity-dropdown="entityCmpt.showentityDropdown" ng-bind-html="mlEditAllUtterances.sentence">{{mlEditAllUtterances.sentence}}</div>
+                                <!--<input type="text" class="paddingLeft15" ng-model="mlEditAllUtterances.sentence" contenteditable="true" ml-entity-selection call-backs="entityCallbacks" disable-events="true" from-edit="entityCmpt.fromEdit" utterance-before-edit="mlEditAllUtterances.sentence" selected-utterence="mlEditAllUtterances" focused-utterance="entityCmpt.focusedUtterance" offset-object="entityCmpt.offsetObject"  start-end-index="entityCmpt.startEndIndex" showentity-dropdown="entityCmpt.showentityDropdown" ng-bind-html="mlEditAllUtterances.sentence">-->
+                            </div>
+                            <div class="col-xs-12 entityInfoDiv noPadding" ng-show="mlEditAllUtterances.entities.length">
+                                <div class="col-xs-12 entitysection " ng-repeat="entity in mlEditAllUtterances.entities track by $index">
+                                    <span ng-hide="mlObj.filterToggle === 'published'" class="col-xs-5 utteranceTitle textEllipsis noPadding" ng-bind="entityCmpt.focusedUtterance.substring(entity.startIndex, entity.endIndex)"></span>
+                                    <span ng-hide="mlObj.filterToggle === 'published'" class="entityTitle col-xs-5 textEllipsis noPadding" ng-style="{color:getColorByEntity(entity.entityName)}">{{'{'+getEntityNameByID(entity.entityId)+'}'}}</span>
+                                    <span ng-hide="mlObj.filterToggle === 'published'" class="utterance-btnDelete col-xs-1 noPadding" ng-click="deleteEntityToWordMap(mlEditAllUtterances,$index,entity)"><i class="btx-delete-1 -o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <entityorfield-dropdown showentity-dropdown="entityCmpt.showentityDropdown" call-backs="entityCallbacks" selected-utterance="mlEditAllUtterances" context="context" selected-task="currentExpectedtask" entities-list="currentExpectedtask.entitiesArray" offset-object="entityCmpt.offsetObject"></entityorfield-dropdown>
+                </div>
+                    <div class="form-group marginTop15">
+                        <label class="mlUtteditHeader">{{'expected_task'| i18nString}}</label>
+                        <select ng-change='changeUtteranceTask(expectedTaskId,$index)' id='entitySelection' ng-model='expectedTaskId'>
+                            <option  value='{{task._id}}' ng-repeat="task in mlScoreFormObj.selectedtasks track by $index">{{task.name}}</option>
+                        </select> 
+                    </div> 
+                    <div class="col-xs-12 marginTop10 noPadding">
+                       
+                    </div> 
+                
+                </div>
+                <div class="modalFooter">
+                    <button ng-click="editUtterence(expectedTaskId,mlEditAllUtterances.sentence)"  ng-disabled="saving ||  (mlObj.filterToggle === 'published')" class="btn btn-sm btn-primary text-info"> {{(savingUtt)?' Saving...':'Save'}}</button>
+                    <button ng-click="closeEditUtteranceView()" class="btn closeCancel">Cancel</button>
+                </div>
+            </div>
+        </bot-modal-slider>
+<!--        <div class="mlScore">-->
+            <div ng-if="(slectedTaskesCount === 0) &&  !showMl && !showNLP" class="col-xs-12 clear-fix text-center" >
+                <div class="alert alert-xs alert-warning text-center">{{'tasks_selected'| i18nString}}</div>
+            </div>
+            <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-class="{'filterLoader':filterInprogress}" ng-show="loader.loadingMLModal || filterInprogress">
+                 <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">{{'loading_graph_label'| i18nString}}</span>
+          </span>
+          </div>
+            <!-- Graph 1 0-1 scale V3-->
+            <div class="carousalLeftArrow" ng-if='showLeft && mlScoreFormObj.orderedTaskList.length > 4 ' ng-click='loadPreviousItems()'><i class="fa fa-chevron-left"></i></div>
+            <div   class="col-xs-12 form-group full-height NLPgraph mlScrollDiv" perfect-scroll dynamic-height dynaoffset="-55" ng-if="showNLP && loadMLUI">
+                         <div ng-if="!activeNLPTasklength && (slectedTaskesCount !== 0) && !mlScoreFormObj.orderedTaskList.length" class="col-xs-12 clear-fix text-center positionFixed" >
+                       <div class="alert alert-xs alert-warning text-center">{{mlObj.filterToggle === "indevelopment"?development:published}}</div>
+                       </div>
+                       
+                        <div ng-if="filterFn(task) && ($index < mlScoreFormObj.loadedCount)" ng-repeat="task in mlScoreFormObj.orderedTaskList track by $index" class="nlpTask">
+                            <div class="nlpTaskHeader col-xs-12" ng-style="{'background-color':task.colorSelected}"><span class="taskgraphTitle" title='{{task.type === "DialogIntent" ? task.intent : task.name}}'>{{task.type === 'DialogIntent' ? task.intent : task.name}}</span><span class="toggletaskRadio" ng-click="tasktoggle(task,$index)">
+                                    <span ng-if="!filterObj.toggleTask.toggleSelected[task._id]"><img ng-src="{{assetsBase}}images/left-menu-img/inactiveToggleML.svg"  class="toggleRadio"></span>
+                                    <span ng-if="filterObj.toggleTask.toggleSelected[task._id]"><img ng-src="{{assetsBase}}images/left-menu-img/activeToggleML.svg"  class="toggleRadio"></span>
+                                </span></div>
+                            <div class="nlpQuadrentHint col-xs-12">
+                                <div class="col-xs-6 text-center"><span class="pointer-hand" tooltip-placement="top" tooltip="{{'quadrant_utterance'| i18nString}}">{{'true_pve'| i18nString}}</span></div>
+                                <div class="col-xs-6 text-center"><span class="pointer-hand" tooltip-placement="top" tooltip="{{'quadrant_expected'| i18nString}}">{{'false_pve'| i18nString}}</span></div>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <div class="leftNLPQuad noPadding col-xs-5">
+                                        <div ng-click="openQuadrentView('TP',task,$index)" class="boxTP col-xs-6"  ng-style="{'min-height':task.pHeight}">
+                                            <span ng-if="(filterObj.toggleTask.toggleActive && filterObj.toggleTask.toggleSelected[TP[5]]) || !(filterObj.toggleTask.toggleActive)" ng-repeat="TP in task.TP track by $index" ng-style="{{PlotTPDot(task, TP)}}" ng-click="openEditUtterances($index, task ,TP,task.TP,'graph',$event,'TP')" class=" dotStyl fa fa-circle" >
+                                                <span class="hoverInfoTextPositivRightQuad">
+                                                    <i class="fa fa-caret-up mlMessageArrowTP"></i>
+                                                    <span class="hoverInnerInfo">
+                                                        <p><span class="uttHeaderTitle">{{'utterence_label'| i18nString}}:</span><span class="innerText">{{TP[7]}}</span></p>
+                                                        <p><span class="uttHeaderTitle">{{'score'| i18nString}}:</span><span class="innerText">{{"+"+TP[1]}}</span></p>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div ng-click="openQuadrentView('FN',task,$index)" class="boxFN col-xs-6" ng-style="{'min-height':task.nHeight}">
+                                            <span ng-if="(filterObj.toggleTask.toggleActive && filterObj.toggleTask.toggleSelected[FN[5]]) || !(filterObj.toggleTask.toggleActive)" ng-repeat="FN in task.FN track by $index"  ng-style="{{PlotFNDot(task, FN)}}" ng-click="openEditUtterances($index, task ,FN,task.FN,'graph',$event,'FN')" class=" dotStyl fa fa-circle">
+                                                <span class="hoverInfoText">
+                                                    <span class="hoverInnerInfoLeftNegative">
+                                                        <p><span class="uttHeaderTitle">{{'utterence_label'| i18nString}}:</span><span class="innerText">{{FN[7]}}</span></p>
+                                                        <p><span class="uttHeaderTitle">{{'score'| i18nString}}:</span><span class="innerText">{{FN[1]}}</span></p>
+                                                        <i class="fa fa-caret-down mlMessageArrowFN"></i>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                </div>
+                                <div class="centerNLPQuad noPadding col-xs-2">
+                                    <span class="v3Values one">1</span>
+                                    <span class="v3Values">0.9</span>
+                                    <span class="v3Values">0.8</span>
+                                    <span class="v3Values">0.7</span>
+                                    <span class="v3Values">0.6</span>
+                                    <span class="v3Values">0.5</span>
+                                    <span class="v3Values">0.4</span>
+                                    <span class="v3Values">0.3</span>
+                                    <span class="v3Values">0.2</span>
+                                    <span class="v3Values">0.1</span>
+                                    <span class="v3Values">0</span>
+                                </div>
+                                 <div class="rightNLPQuad col-xs-5 noPadding">
+                                <div ng-click="openQuadrentView('FP',task,$index)"class="boxFP col-xs-6" ng-style="{'min-height':task.pHeight}">
+                                    <span ng-if="(filterObj.toggleTask.toggleActive && filterObj.toggleTask.toggleSelected[FP[5]]) || !(filterObj.toggleTask.toggleActive)" ng-repeat="FP in task.FP track by $index" ng-style="{{PlotFPDot(task, FP)}}" ng-click="openEditUtterances($index, task ,FP,task.FP,'graph',$event,'FP')" class=" dotStyl fa fa-circle">
+                                        <span class="hoverInfoTextPositivLeftQuad">
+                                            <i class="fa fa-caret-up mlMessageArrowTP"></i>
+                                            <span class="hoverInnerInfo">
+                                                <p><span class="uttHeaderTitle">{{'utterence_label'| i18nString}}:</span><span class="innerText">{{FP[7]}}</span></p>
+                                                <p><span class="uttHeaderTitle">{{'score'| i18nString}}:</span><span class="innerText">{{"+"+FP[1]}}</span></p>
+                                                <p><span class="uttHeaderTitle">{{'expected_task'| i18nString}}</span ><span class="innerText">{{getTaskNameByID(FP[5])}}</span></p>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div ng-click="openQuadrentView('TN',task,$index)"class="boxTN col-xs-6" ng-style="{'min-height':task.nHeight}">
+                                    <span ng-if="((filterObj.toggleTask.toggleActive && filterObj.toggleTask.toggleSelected[TN[5]]) || !(filterObj.toggleTask.toggleActive)) && (($index < 300))" ng-repeat="TN in task.TN track by $index" ng-style="{{PlotTNDot(task, TN)}}" ng-click="openEditUtterances($index, task ,TN,task.TN,'graph',$event,'TN')" class=" dotStyl fa fa-circle">
+                                        <span class="hoverInfoText">
+                                            <span class="hoverInnerInfoRightNegative">
+                                                <p><span class="uttHeaderTitle">{{'utterence_label'| i18nString}}:</span><span class="innerText">{{TN[7]}}</span></p>
+                                                <p><span class="uttHeaderTitle">{{'score'| i18nString}}:</span><span class="innerText">{{TN[1]}}</span></p>
+                                                <p><span class="uttHeaderTitle">{{'expected_task'| i18nString}}</span ><span class="innerText">{{getTaskNameByID(TN[5])}}</span></p>
+                                                <i class="fa fa-caret-down mlMessageArrowFN"></i>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="nlpQuadrentHint col-xs-12">
+                                <div class="col-xs-6 text-center marginT5"><span class="pointer-hand" tooltip-placement="top" tooltip="{{'no_quadrant'| i18nString}}">{{'false_nve'| i18nString}}</span></div>
+                                <div class="col-xs-6 text-center marginT5"><span class="pointer-hand" tooltip-placement="top" tooltip="{{'not_expected'| i18nString}}">{{'true_nve'| i18nString}}</span></div>
+                            </div>
+                    </div>
+            </div>
+
+            <!-- Graph 2 -5 to +5 scale -->
+            <div ng-if="showMl && loadMLUI" class="col-xs-12 form-group full-height mlScrollDiv" perfect-scroll dynamic-height dynaoffset="-55">
+               <div class="stylMlgraph">
+                   <div ng-if="!activeMlTaskLength && (slectedTaskesCount !== 0) && !mlScoreFormObj.orderedTaskList.length" class="col-xs-12 clear-fix text-center positionFixed" >
+                       <div class="alert alert-xs alert-warning text-center">{{mlObj.filterToggle === "indevelopment"?development:published}}</div>
+                   </div>
+                     <!--<span class="width100percent col-sm-3" ng-repeat="task in selectedtasks track by $index">-->
+                   
+                <!--                        <span class="col-sm-3">-->
+                  <div  ng-if="filterFn(task) && ($index < mlScoreFormObj.loadedCount)" class="stylgraph col-xs-3" ng-repeat="task in mlScoreFormObj.orderedTaskList track by $index">
+                    <!--            h600 w400                        <svg id="scatter" width="500" height="500"></svg>-->
+                    <div class="MLgraphTask" ng-style="{'background-color':task.colorSelected}"><span class="taskgraphTitle" title='{{task.type === "DialogIntent" ? task.intent : task.name}}'>{{task.type === 'DialogIntent' ? task.intent : task.name}}</span><span class="toggletaskRadio" ng-click="tasktoggle(task,$index)">
+                    <span ng-if="!filterObj.toggleTask.toggleSelected[task._id]"><img ng-src="{{assetsBase}}images/left-menu-img/inactiveToggleML.svg"  class="toggleRadio"></span>
+                    <span ng-if="filterObj.toggleTask.toggleSelected[task._id]"><img ng-src="{{assetsBase}}images/left-menu-img/activeToggleML.svg"  class="toggleRadio"></span>
+                    </span></div>
+                    <div class="emptySpace col-xs-12"><span class="leftQuadTitle">{{'true_capsp'| i18nString}}<span class="mlMessageTP">{{'quadrant_utterance'| i18nString}}</span><i class="fa fa-caret-up mlMessageArrowTP"></i></span>
+                        <span class="rightQuadTitle">{{'false_ve'| i18nString}}<span class="mlMessageFP">{{'quadrant_expected'| i18nString}}</span><i class="fa fa-caret-up mlMessageArrowFP"></i></span></div>
+                    <div class="thumbnailtry nopadding row">
+                        <div ng-click="openQuadrentView('TP',task,$index)" class="boxTP col-xs-6"><span ng-if="(filterObj.toggleTask.toggleActive && filterObj.toggleTask.toggleSelected[TP[5]]) || !(filterObj.toggleTask.toggleActive)" ng-repeat="TP in task.TP track by $index" ng-style="{{PlotTPDot(task, TP)}}" ng-click="openEditUtterances($index, task ,TP,task.TP,'graph',$event,'TP')" class=" dotStyl fa fa-circle">
+                                <span class="hoverInfoTextPositivRightQuad">
+                                    <i class="fa fa-caret-up mlMessageArrowTP"></i>
+                                    <span class="hoverInnerInfo">
+                                        <p><span class="uttHeaderTitle">{{'utterence_label'| i18nString}}:</span><span class="innerText">{{TP[7]}}</span></p>
+                                        <p><span class="uttHeaderTitle">{{'score'| i18nString}}:</span><span class="innerText">{{"+"+TP[1]}}</span></p>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="plotPositive">
+                            <div class="val4">4</div>
+                            <div class="val3">3</div>
+                            <div class="val2">2</div>
+                            <div class="val1">1</div>
+                            <div class="val5"></div>
+                        </div>
+                        <div ng-click="openQuadrentView('FP',task,$index)"class="boxFP col-xs-6"><span ng-if="(filterObj.toggleTask.toggleActive && filterObj.toggleTask.toggleSelected[FP[5]]) || !(filterObj.toggleTask.toggleActive)" ng-repeat="FP in task.FP track by $index" ng-style="{{PlotFPDot(task, FP)}}" ng-click="openEditUtterances($index, task ,FP,task.FP,'graph',$event,'FP')" class=" dotStyl fa fa-circle">
+                                <span class="hoverInfoTextPositivLeftQuad">
+                                    <i class="fa fa-caret-up mlMessageArrowTP"></i>
+                                    <span class="hoverInnerInfo">
+                                        <p><span class="uttHeaderTitle">{{'utterence_label'| i18nString}}:</span><span class="innerText">{{FP[7]}}</span></p>
+                                        <p><span class="uttHeaderTitle">{{'score'| i18nString}}:</span><span class="innerText">{{"+"+FP[1]}}</span></p>
+                                        <p><span class="uttHeaderTitle">{{'expected_task'| i18nString}}</span ><span class="innerText">{{getTaskNameByID(FP[5])}}</span></p>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="thumbnailtry nopadding row">
+                        <div ng-click="openQuadrentView('FN',task,$index)" class="boxFN col-xs-6"><span ng-if="(filterObj.toggleTask.toggleActive && filterObj.toggleTask.toggleSelected[FN[5]]) || !(filterObj.toggleTask.toggleActive)" ng-repeat="FN in task.FN track by $index"  ng-style="{{PlotFNDot(task, FN)}}" ng-click="openEditUtterances($index, task ,FN,task.FN,'graph',$event,'FN')" class=" dotStyl fa fa-circle">
+                                <span class="hoverInfoText">
+                                    <span class="hoverInnerInfoLeftNegative">
+                                        <p><span class="uttHeaderTitle">{{'utterence_label'| i18nString}}:</span><span class="innerText">{{FN[7]}}</span></p>
+                                        <p><span class="uttHeaderTitle">{{'score'| i18nString}}:</span><span class="innerText">{{FN[1]}}</span></p>
+                                        <i class="fa fa-caret-down mlMessageArrowFN"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="plotNegative">
+                            <div class="val1">-1</div>
+                            <div class="val2">-2</div>
+                            <div class="val3">-3</div>
+                            <div class="val4">-4</div>
+                            <div class="val5"></div>
+                        </div>
+                        <div ng-click="openQuadrentView('TN',task,$index)"class="boxTN col-xs-6">
+                            <span ng-if="((filterObj.toggleTask.toggleActive && filterObj.toggleTask.toggleSelected[FN[5]]) || !(filterObj.toggleTask.toggleActive)) && ($index < 300)" ng-repeat="TN in task.TN track by $index" ng-style="{{PlotTNDot(task, TN)}}" ng-click="openEditUtterances($index, task ,TN,task.TN,'graph',$event,'TN')" class=" dotStyl fa fa-circle">
+                                <span class="hoverInfoText">
+                                    <span class="hoverInnerInfoRightNegative">
+                                        <p><span class="uttHeaderTitle">{{'utterence_label'| i18nString}}::</span><span class="innerText">{{TN[7]}}</span></p>
+                                        <p><span class="uttHeaderTitle">{{'score'| i18nString}}:</span><span class="innerText">{{TN[1]}}</span></p>
+                                        <p><span class="uttHeaderTitle">{{'expected_task'| i18nString}}</span ><span class="innerText">{{getTaskNameByID(TN[5])}}</span></p>
+                                        <i class="fa fa-caret-down mlMessageArrowFN"></i>
+                                    </span>
+                                </span>
+                        </div>
+                    </div>
+                    <div class="emptySpace col-xs-12"><span class="leftQuadTitle"><span class="mlMessageFN">{{'no_quadrant'| i18nString}}</span><i class="fa fa-caret-down mlMessageArrowFN"></i>{{'false_caps'| i18nString}}</span><span class="rightQuadTitle"><span class="mlMessageTN">{{'not_expected'| i18nString}}</span><i class="fa fa-caret-down mlMessageArrowTN"></i>{{'true_capsn'| i18nString}}</span></div>
+                </div>
+               </div>
+            </div>
+            <div ng-if="(mlScoreFormObj.orderedTaskList.length > 4) && showRight" ng-click='loadNextItems()' class="carousalRightArrow"><i class="fa fa-chevron-right"></i></div>
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+

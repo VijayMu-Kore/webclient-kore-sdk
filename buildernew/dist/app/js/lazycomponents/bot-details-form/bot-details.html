@@ -1,0 +1,91 @@
+<!--Side Nav  container starts here-->
+<div class="col-sm-3 sidenav  hide" ng-class="{'width250 hover': sidenavhover}" ng-mouseenter="sideBarHoverEnter()" ng-mouseleave="sideBarHoverLeave()">
+    <!--Bot Expand  container starts here-->
+<div class="bot" ng-if="false">
+
+<div data-toggle="collapse" data-target="#demo" class="botName collapsed"><img ng-src="{{stream.icon}}" class="icon"><span class="name">{{stream.name}}</span> <i class="fa fa-angle-down"></i></div>
+</div>
+<!--Bot Expand  container ends here-->
+<div class="scrollableSection bot" dynamic-height  perfect-scroll height-property="height" dynaoffset = "-65">
+<ul class="nav nav-pills nav-stacked">
+<li ng-hide="isFromKora" ng-click="callbacks.showView('botsForm')"><span class="menuIconSpan"><img ng-src="{{homeIcon}}" class="fa fa-home"/><img width="30" height="30" ng-src="{{logoIcon}}" class="fa logoIcon" /></span><span class="name" title="{{'home'| i18nString}}">{{'home'| i18nString}}</span></li>
+<li ng-repeat="menuItem in sideBar.menuItems" ng-show="canShowMenuItem(menuItem.type,menuItem.hide);" class="{{menuItem.class}}" ng-class="{active:((clickedActiveType==menuItem.type) || (menuItem.type==parentOfSubMenu[clickedActiveType])), disabled:stream.isSolutionBot && stream.state == 'setup' && menuItem.type !== 'botTasks',innerNavbarMenuActive:menuItem.showInnerMenu}" ng-click="selectMainMenu(menuItem,true,true)" ng-mouseleave="menuItem.showInnerMenu=false" ng-mouseover="menuHoverEnter($event,menuItem)">
+<!-- <li ng-repeat="menuItem in sideBar.menuItems" ng-show="canShowMenuItem(menuItem.type,menuItem.hide);" class="{{menuItem.class}}" ng-class="{active:((activeType==menuItem.type) || (menuItem.type==parentOfSubMenu[activeType])), disabled:stream.isSolutionBot && stream.state == 'setup' && menuItem.type !== 'botTasks',innerNavbarMenuActive:(menuItem.showInnerMenu && sidenavhover)}" ng-click="selectMainMenu(menuItem,true)" ng-mouseover="menuHoverEnter($event,menuItem)"> -->
+<span class="menuIconSpan">
+<img class="menuIcon" ng-src="{{(clickedActiveType==menuItem.type ) || (menuItem.type==parentOfSubMenu[clickedActiveType])? menuItem.activeIcon : menuItem.icon}}" /></span>
+<span class="name">
+    <span class="name-text" ng-class="{'name-hidden':menuItem.isBeta}" title="{{menuItem.name}}">{{menuItem.name}}</span>
+    <img ng-src="{{betaIcon}}" class="betaIcon" ng-if="menuItem.isBeta">
+    <img ng-src="{{betaIconWhite}}" class="betaIconWhite" ng-if="menuItem.isBeta">
+</span><img ng-src={{backArrowGray}} ng-if="menuItem.hasInnerLeftItems" class="backArrowGray">
+<ul class="innerNavbarMenu" ng-show="sidenavhover && menuItem.showInnerMenu && subMenuItems[menuItem.type].length">
+    <li class="innerNavbarMenuText {{innerMenuItem.id}}" title="{{innerMenuItem.name}}" ng-class="{'innerMenuItemActive':clickedActiveType==innerMenuItem.id ,'hide':(!innerMenuItem.isForUniversal && (stream.type === 'universalbot'))}" ng-repeat="innerMenuItem in subMenuItems[menuItem.type]" ng-show ="getAccessRights(innerMenuItem.permissionId,innerMenuItem) !== 'NO' && !innerMenuItem.hide" ng-click="$event.stopImmediatePropagation();selectSubNav(menuItem,innerMenuItem,$event)">
+    <img ng-src="{{rightPanel.innerRightPanel.view==innerMenuItem.id ? innerMenuItem.activeIcon : innerMenuItem.icon}}" class="subMenuIcon" ng-if="fales">{{innerMenuItem.name}}
+    </li>
+</ul>
+</li>
+</ul>
+</div>
+<progress-dock bridge="progressBridge" ></progress-dock>
+</div>
+<!--Side Nav  container ends here-->
+
+
+
+
+<!--Sub panel  container starts here-->
+<div class="innerLeft col-xs-4" dynamic-height dynaoffset="-50" perfect-scroll height-property="height" ng-class="{'menuWidthLg': activeType == 'botTasks','displayNone':showUpgradeUniversal}">
+    <div class="tailsContainer">
+    <div class="animationIfEnter blockMain {{innerMenu.id}}" ng-if="rightPanel.innerRightPanel.canShow(innerMenu.id) && activeType !== 'botTasks'" ng-class="{'selected':rightPanel.innerRightPanel.view==innerMenu.id, 'overflow-inherit':innerMenu.id == 'botVersion'}" ng-click="rightPanel.innerRightPanel.showView(innerMenu.id)" ng-repeat="innerMenu in rightPanel.innerLeftPanel[activeType]">
+                        <div class="blockContent"><i class="fa fa-gear" ng-show="!innerMenu.icon"></i>
+                        <span class="imgDiv"><img ng-src="{{innerMenu.icon}}" ng-show="innerMenu.icon"/></span>
+                        <span class="name" title="{{innerMenu.id == 'developerShare' || innerMenu.id == 'synonyms' ? getMenuName(innerMenu.id) : innerMenu.name}}">{{innerMenu.id == 'developerShare' || innerMenu.id == 'synonyms' ? getMenuName(innerMenu.id) : innerMenu.name}}</span> <span class="tooltip-custom icon-beta"><img ng-src="{{rightPanel.innerRightPanel.view==innerMenu.id ? innerMenu.beta_icon_selected : innerMenu.beta_icon}}" ng-show="innerMenu.beta_icon" class="beta-icon"/><span class="tooltiptext" ng-click="$event.stopPropagation()" ng-bind-html="'beta_feature'| i18nString:({link:'https://developer.kore.ai/docs/bots/whats-new/kore-ai-beta-features/'})"></span></span>
+                        <!-- <i ng-click="redirectToLink(innerMenu.helpLink, $event)" class="fa fa-question-circle pull-right helpIcon"></i> -->
+                        <img ng-src="{{helpIcon}}" ng-click="redirectToLink(innerMenu.helpLink, $event)" class="pull-right helpIcon">
+                        </div>
+        <p class="description">{{innerMenu.id === 'synonyms' && stream.type === 'universalbot'?getDescription(innerMenu.id):innerMenu.description}}</p>
+    </div>
+    <div class="blockMain {{innerMenu.id}}" ng-show="rightPanel.innerRightPanel.canShow(innerMenu.id) && activeType == 'botTasks'" ng-class="{'selected':rightPanel.innerRightPanel.view==innerMenu.id}" ng-click="rightPanel.innerRightPanel.showView(innerMenu.id)" ng-repeat="innerMenu in rightPanel.innerLeftPanel[activeType]">
+        <div class="blockContent">
+            <div class="taskIcon">
+                <img ng-src="{{rightPanel.innerRightPanel.view==innerMenu.id ? innerMenu.activeIcon : innerMenu.icon}}" />
+            </div>
+            <div class="info">
+                <p class="name" ng-class="{'ui-forms-name':innerMenu.id=='uiForms'}"><span title="{{innerMenu.name}}" class="title-name">{{innerMenu.name}}</span><span ng-if="innerMenu.id=='uiForms'" class="tooltip-custom beta-icon-uiforms"><img ng-src="{{rightPanel.innerRightPanel.view==innerMenu.id ? innerMenu.betaIconActivated : innerMenu.betaIcon}}"><span class="tooltiptext" ng-click="$event.stopPropagation()" ng-bind-html="'beta_feature'| i18nString:({link:'https://developer.kore.ai/docs/bots/whats-new/kore-ai-beta-features/'})"></span></span></p>
+                <div ng-hide="innerMenu.hideCount " ng-if="activeType == 'botTasks'" class="positionRelative">
+                <span class="taskCount"  ng-if="rightPanel.innerRightPanel.getCount(innerMenu.id) !== false && innerMenu.id!=='widgets'" ng-bind="rightPanel.innerRightPanel.getCount(innerMenu.id)"></span>
+
+                <span class="taskCount"  ng-if="stream.type!=='universalbot' && rightPanel.innerRightPanel.getCount(innerMenu.id) === false && (innerMenu.id!=='flows' && innerMenu.id!=='smallTalk' && innerMenu.id!=='widgets')">
+                {{(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]? stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(innerMenu.id=='knowledgeCollection'?  questionsAnswers : (stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1)?  ('tasks'| i18nString) : ('task'| i18nString) ): (innerMenu.id=='knowledgeCollection')? noquestions : notasks)}}
+                </span>
+
+                <span class="taskCount"  ng-if="stream.type ==='universalbot' &&  rightPanel.innerRightPanel.getCount(innerMenu.id) === false && (innerMenu.id!=='flows' && innerMenu.id!=='smallTalk' && innerMenu.id!=='widgets')">
+                    {{(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]? stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(innerMenu.id=='knowledgeCollection'?  questionsAnswers : (stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1)? bots : botInString ): (innerMenu.id=='knowledgeCollection')? noquestions : noBots)}}
+                </span>
+
+                <span class="taskCount"  ng-if="rightPanel.innerRightPanel.getCount(innerMenu.id) === false && (innerMenu.id =='flows' && innerMenu.id !== 'smallTalk' && innerMenu.id!=='widgets')">
+                    {{stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]?(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1? flows :  flow)): noFlows}}
+                </span>
+               
+                <span class="taskCount"  ng-if="(innerMenu.id==='widgets')">
+                    <span>{{(stream._taskCounts['widgets'] && stream._taskCounts['widgets'][streamstate.toggleState]) ? (stream._taskCounts['widgets'][streamstate.toggleState] + ((stream._taskCounts['widgets'][streamstate.toggleState]>1)? widegets : widget )): noWidgets }}</span>
+                    <span>{{(stream._taskCounts['panels']  && stream._taskCounts['panels'][streamstate.toggleState])  ? (stream._taskCounts['panels'][streamstate.toggleState] + ((stream._taskCounts['panels'][streamstate.toggleState]>1)? panels : panel )): noPanels }}</span>
+                </span>
+               <span class="taskCount"  ng-if="rightPanel.innerRightPanel.getCount(innerMenu.id) === false && innerMenu.id =='uiForms'" >
+                    {{stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]?(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1? forms : form )): noForms}}
+               </span>
+                <span class="taskCount"  ng-if="rightPanel.innerRightPanel.getCount(innerMenu.id) === false && innerMenu.id =='smallTalk' && innerMenu.id!=='widgets'" >
+                    {{stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]?(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1? groups : groupLabel )): noGroups}}
+               </span>
+                <!--<span class="seperator" ng-show="innerMenu.id !== 'knowledgeCollection' && rightPanel.innerRightPanel.getCount(innerMenu.id).split(' Tasks')[0] > 0">|</span>--> 
+                <img class="actionName" ng-class="{'displayNone':((callbacks.modeOfAccess === 'VIEW') || (innerMenu.id === 'smallTalk') || (innerMenu.id === 'linkedBots') || (innerMenu.id === 'uiForms'))}" ng-if="!innerMenu.deprecated" ng-show="(streamstate.toggleState == 'indevelopment') && !showSolutionBotSetup && ((innerMenu.id == 'knowledgeCollection' && !knowledgeTasks.length) || (innerMenu.id !== 'knowledgeCollection')) && (innerMenu.id !== 'widgets')" ng-click="showForm($event, innerMenu.id)" ng-src="{{addIcon}}"/> 
+                <!-- + {{innerMenu.actionName}}</span>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="dragBar"></div>
+</div>
+<!--Sub panel  container ends here-->
+</div>

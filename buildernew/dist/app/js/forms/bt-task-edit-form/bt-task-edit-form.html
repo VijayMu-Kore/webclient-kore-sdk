@@ -1,0 +1,10 @@
+<div class="content-loading" ng-if="switchingDialogTask" style="position:fixed;height:100%;width:100%;">
+	<span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="spinner-text-content"> {{'switching'| i18nString}}</span></span>
+</div>
+<bt-solution-install ng-if="callback.isSolutionBotSetup"></bt-solution-install>
+
+<bt-wf-edit ng-if="isEditTask && (taskType === 'alert' || taskType === 'action')"></bt-wf-edit>
+<bt-knowledge-create ng-if="isEditTask && taskType === 'knowledgeTask'"></bt-knowledge-create>
+<bt-wf-mapping ng-if="taskType === 'flows'" active-entity ="activeEntityFlow" component="false" footer-mappingid='tasks-edit-mapping'></bt-wf-mapping>
+<flowtask-form ng-if="taskType === 'flowTask' && checkFlag" wf-type="{{wftype}}" display-mode="{{displayMode}}" dialog-Info="{{}}" configure="finishSetup(type)" call-back='callback'></flowtask-form>
+<!-- <conversation-dialog-builder ng-if="taskType === 'flowTask' && checkFlag && conversationBuilder" wf-type="{{wftype}}" display-mode="{{displayMode}}" dialog-Info="{{}}" configure="finishSetup(type)" call-back='callback'></conversation-dialog-builder> -->

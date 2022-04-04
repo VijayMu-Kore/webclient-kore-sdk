@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="78px" height="74px" viewBox="0 0 78 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 20 Copy 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="//-1-task-icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-912.000000, -483.000000)">
+        <g id="Group-20-Copy-2" transform="translate(913.000000, 484.000000)">
+            <circle id="Oval-5" stroke="#E5E8EC" stroke-width="1.5" opacity="0.200000003" stroke-linecap="round" stroke-dasharray="3,6" cx="40" cy="36" r="36"></circle>
+            <circle id="Oval-5" stroke="#8A959F" stroke-width="1.5" fill="#3A475B" stroke-linecap="round" cx="56.5" cy="35.5" r="19.5"></circle>
+            <circle id="Oval-5" stroke="#8A959F" stroke-width="1.5" fill="#3A475B" stroke-linecap="round" cx="56.5" cy="35.5" r="8.5"></circle>
+            <circle id="Oval-5" fill="#7C8495" cx="56.5" cy="35.5" r="2.5"></circle>
+            <g id="Group-15-Copy" transform="translate(0.000000, 27.000000)" fill="#3A475B" stroke="#8A959F" stroke-linecap="round" stroke-width="1.5">
+                <g id="Group-14">
+                    <g id="Group-19-Copy-2" transform="translate(0.000000, 0.508235)">
+                        <path d="M8.33684211,2.72998389 C8.33684211,4.237845 7.0928,5.45996779 5.55789474,5.45996779 C4.02298947,5.45996779 2.77894737,4.237845 2.77894737,2.72998389 C2.77894737,1.22212279 4.02298947,0 5.55789474,0 C7.0928,0 8.33684211,1.22212279 8.33684211,2.72998389 Z" id="Stroke-103"></path>
+                        <path d="M11.1157895,12.7452673 L0,12.7452673 C0,10.2327721 2.07309474,8.19529412 4.63157895,8.19529412 L6.48421053,8.19529412 C9.04269474,8.19529412 11.1157895,10.2327721 11.1157895,12.7452673 Z" id="Stroke-104"></path>
+                    </g>
+                    <g id="Group-12" transform="translate(14.097561, 0.000000)" stroke-linejoin="round">
+                        <polyline id="Rectangle-5" points="18.2439024 11.6470588 -4.54747351e-13 8.93521265 -4.54747351e-13 8.69681571 18.2439024 6.35294118"></polyline>
+                        <polygon id="Rectangle-5" points="18.2439024 0 27.902439 9 18.2439024 18"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

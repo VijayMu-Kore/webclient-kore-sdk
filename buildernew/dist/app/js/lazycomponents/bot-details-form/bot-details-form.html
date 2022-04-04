@@ -1,0 +1,793 @@
+
+<!---------------------------------------------------------------- ALL FULL PAGE MODALS WILL BE OPENED UNDER THIS DIRECTIVE  --------------------------------------------->
+<bt-fullpage-modal callback="fullModalCallback" group-list = "groupList" working-task-type="workingTaskType" active-entity-flow="activeEntityFlow" step="step" group-cb="groupCb"></bt-fullpage-modal>
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<!----------------------------------------------------------------- CHATWINDOW DEBUGCONSOLE PLACED HERE--------------------------------------------------------------------->
+<div class="flowTaskForm" ng-class="{'isDebugConsolePanelOpen ':isDebugConsolePanelOpened}" id="debugConsoleRT">
+    <div class="flowTaskDebugConsolePanel maximized" dynamic-height dynaoffset = "-58" height-property="height">
+        <debug-console-panel nl-trace="nlTrace" ng-if="isDebugConsolePanelOpened" nl-trace-data="nlTraceData" debug-info="debugInfo" debug-raw="debugRaw" debug-context="debugContext" is-resized="true" class="flowTaskDebugConsolePanelDiv" close-debugger="closeDebugConsolePanel()"></debug-console-panel>
+    </div>
+</div>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+<!-- <progress-dock bridge="progressBridge" ></progress-dock> -->
+
+			<!--	<div data-toggle="collapse" data-target="#demo" class="botName collapsed"><img ng-src="{{stream.icon}}" class="icon"><span class="name">{{stream.name}}</span> <i class="fa fa-angle-down"></i></div>
+			</div> -->
+			<!--Bot Expand  container ends here-->
+			<!--<div class="scrollableSection bot" dynamic-height  perfect-scroll height-property="height" dynaoffset = "-65">
+				<ul class="nav nav-pills nav-stacked">
+                <li ng-hide="isFromKora || fromSmart || fromWorkbench" ng-click="callbacks.showView('botsForm')"><span class="menuIconSpan"><img ng-src="{{homeIcon}}" class="fa fa-home"/><img width="30" height="30" ng-src="{{logoIcon}}" class="fa logoIcon" /></span><span class="name" title="{{'home'| i18nString}}">{{'home'| i18nString}}</span></li>
+				<li ng-show="fromSmart" class="ng-hide" ng-click="redirectSmart()"><span class="menuIconSpan"><img ng-src="{{homeIcon}}" class="fa fa-home"/><img width="30" height="30" ng-src="{{logoIconSmart}}" class="fa logoIcon" /></span><span class="name" title="SmartAssist">SmartAssist</span></li>
+                <li ng-show="fromWorkbench" class="ng-hide" ng-click="redirectWorkbench()"><span class="menuIconSpan"><img ng-src="{{homeIcon}}" class="fa fa-home"/><img width="30" height="30" ng-src="{{logoIcon}}" class="fa logoIcon" /></span><span class="name" title="Workbench">{{'workbench_label'| i18nString}}</span></li>
+                
+                   <li ng-repeat="menuItem in sideBar.menuItems" ng-show="canShowMenuItem(menuItem.type,menuItem.hide);" class="{{menuItem.class}}" ng-class="{active:((clickedActiveType==menuItem.type) || (menuItem.type==parentOfSubMenu[clickedActiveType])), disabled:stream.isSolutionBot && stream.state == 'setup' && menuItem.type !== 'botTasks',innerNavbarMenuActive:menuItem.showInnerMenu}" ng-click="selectMainMenu(menuItem,true,true)" ng-mouseleave="menuItem.hoverIn=false"  ng-mouseover="menuHoverEnter($event,menuItem)"> 
+            -->
+                    <!-- <li ng-repeat="menuItem in sideBar.menuItems" ng-show="canShowMenuItem(menuItem.type,menuItem.hide);" class="{{menuItem.class}}" ng-class="{active:((activeType==menuItem.type) || (menuItem.type==parentOfSubMenu[activeType])), disabled:stream.isSolutionBot && stream.state == 'setup' && menuItem.type !== 'botTasks',innerNavbarMenuActive:(menuItem.showInnerMenu && sidenavhover)}" ng-click="selectMainMenu(menuItem,true)" ng-mouseover="menuHoverEnter($event,menuItem)"> -->
+                    
+            <!--        <span class="menuIconSpan">
+                    <img class="menuIcon" ng-src="{{(clickedActiveType==menuItem.type ) || (menuItem.type==parentOfSubMenu[clickedActiveType])? menuItem.activeIcon : menuItem.icon}}" /></span>
+                    <span class="name">
+                        <span class="name-text" ng-class="{'name-hidden':menuItem.isBeta}" title="{{menuItem.name}}">{{menuItem.name}}</span>
+                        <img ng-src="{{betaIcon}}" class="betaIcon" ng-if="menuItem.isBeta">
+                        <img ng-src="{{betaIconWhite}}" class="betaIconWhite" ng-if="menuItem.isBeta">
+                    </span><img ng-src={{backArrowGray}} ng-if="menuItem.hasInnerLeftItems" class="backArrowGray">
+                    <ul class="innerNavbarMenu" ng-show="sidenavhover && menuItem.showInnerMenu && subMenuItems[menuItem.type].length">
+                        <li class="innerNavbarMenuText {{innerMenuItem.id}}" title="{{innerMenuItem.name}}" ng-class="{'innerMenuItemActive':clickedActiveType==innerMenuItem.id ,'hide':(!innerMenuItem.isForUniversal && (stream.type === 'universalbot'))}" ng-repeat="innerMenuItem in subMenuItems[menuItem.type]" ng-show ="getAccessRights(innerMenuItem.permissionId,innerMenuItem) !== 'NO' && !innerMenuItem.hide" ng-click="$event.stopImmediatePropagation();selectSubNav(menuItem,innerMenuItem,$event)">
+                        <img ng-src="{{rightPanel.innerRightPanel.view==innerMenuItem.id ? innerMenuItem.activeIcon : innerMenuItem.icon}}" class="subMenuIcon" ng-if="fales">{{innerMenuItem.name}}
+                        </li>
+                    </ul>
+                    </li>
+				</ul>
+            </div>
+            <progress-dock bridge="progressBridge" ></progress-dock>
+		</div>
+    -->
+		<!--Side Nav  container ends here-->
+
+<!----------------------------------------------------------------- MAIN DETAILS CONTAINER STARTS HERE ----------------------------------------------------------------------->
+<div class="container-fluid botLanding botDetailsContent" ng-class="{'noLeftMenu': builderNavigator.navigationTree.menuItem[rightPanel.innerRightPanel.view].fullPanel}">
+    <div class="newKoreRightNavAccordianBlock">
+        <div class="bt-leftNav" dynamic-height  perfect-scroll height-property="height" dynaoffset = "-62">
+            <div class="panel-group" id="rightNavAccordian">
+                <div class="panel panel-default" ng-show="builderNavigator.navigationTree.mainMenu[menu.component].showMenu" ng-repeat='menu in builderNavigator.tabComponents[builderNavigator.currentNavigationObj.selectedTab] track by $index' ng-class="{'navPaddingTop':builderNavigator.currentNavigationObj.selectedTab === 'botSettings','selectedMenu': builderNavigator.currentNavigationObj.selectedTabMenu === menu.component, 'pinnedMenu':builderNavigator.pinnedMenusids[menu.component],'marginTop15':$index === 1}">
+                <div class="panel-heading" href="{{'#menuItem_'+menu.component}}" ng-class="{'singleMenuItem':(builderNavigator.tabMenuItems[menu.component].length === 1)}"  data-toggle="collapse" id='menuHeader_{{menu.component}}'>
+                    <h4 class="panel-title" ng-click="(builderNavigator.tabMenuItems[menu.component].length === 1 && !(builderNavigator.pinnedMenusids[menu.component]))?rightPanel.innerRightPanel.showView(builderNavigator.tabMenuItems[menu.component][0].id):return">
+                    <i ng-if="!(builderNavigator.pinnedMenusids[menu.component])" class="{{menu.class}} leftMenuIcons"></i>
+                    <i ng-if="(builderNavigator.pinnedMenusids[menu.component])" class="btx-pin leftMenuIcons"></i>
+                    <a ng-if="builderNavigator.tabMenuItems[menu.component].length === 1 && !(builderNavigator.pinnedMenusids[menu.component])"  >
+                        {{menu.name}} 
+                        <i ng-class="{'btx-pin':!builderNavigator.pinnedItems[builderNavigator.tabMenuItems[menu.component][0].id],'btx-unpin':builderNavigator.pinnedItems[builderNavigator.tabMenuItems[menu.component][0].id]}" class="pinIcon"  ng-if="allowPinning && !(builderNavigator.pinnedMenusids[menu.component])" ng-click="$event.stopPropagation();updatePinnedMenus(builderNavigator.tabMenuItems[menu.component][0],builderNavigator.pinnedItems[builderNavigator.tabMenuItems[menu.component][0].id])"></i>
+                    </a>
+                    <a ng-if="(builderNavigator.tabMenuItems[menu.component].length > 1) || (builderNavigator.pinnedMenusids[menu.component])"  ng-click="rightNavAccordianEvents()">
+                        <span ng-if="(builderNavigator.pinnedMenusids[menu.component])">
+                            {{menu.name | i18nString}}
+                        </span>
+                        <span ng-if="!(builderNavigator.pinnedMenusids[menu.component])">
+                            {{menu.name}}
+                        </span>
+                    </a>
+                    <!-- <i class="btx-carrot-down"></i> -->
+                    <i class="btx-carrot-right" ng-if="(builderNavigator.tabMenuItems[menu.component].length > 1) || (builderNavigator.pinnedMenusids[menu.component])"></i>
+                    </h4>
+                </div>
+                <div id="menuItem_{{menu.component}}" class="panel-collapse collapse" ng-if="(builderNavigator.tabMenuItems[menu.component].length > 1) || (builderNavigator.pinnedMenusids[menu.component])">
+                    <div class="panel-body">
+                        <div ng-repeat='component in filteredMenuItems = (builderNavigator.tabMenuItems[menu.component] | filter:menuFilter:component) track by $index' class="{{innerMenu.id}} koreMenuItems">
+                            <a ng-mouseover="showNavPopoverFun(component,menu.component)" ng-mouseleave="hideNavPopover(component,menu.component)" id="popOverEvent_{{menu.component}}{{component.id}}" class="navLinks" ng-class="{'active':(rightPanel.innerRightPanel.view == component.id)}" ng-click="rightPanel.innerRightPanel.showView(component.id)"><i class="btx-icon {{component.class}}"></i>{{component.name}}</a>
+                             <i class="btx-pin pinIcon"  ng-if="allowPinning && !builderNavigator.pinnedItems[component.id]" ng-click="updatePinnedMenus(component,builderNavigator.pinnedItems[component.id])"></i>
+                             <i class="btx-unpin pinIcon"  ng-if="allowPinning && builderNavigator.pinnedItems[component.id]" ng-click="updatePinnedMenus(component,builderNavigator.pinnedItems[component.id])"></i>
+                             <div class="hide">
+                                <div class="tooltipContent" id="menuPopoverContent_{{menu.component}}{{component.id}}">
+                                   <div class="menuHeader">{{component.name}}</div>
+                                   <div class="menuContent">{{component.tooltip}}</div>
+                                   <a class="menuHelpLink" id="{{component.helpLink}}">{{'know_more'| i18nString}}</a>
+                                </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row content bt-rightNav">
+        <div ng-if="showEcomWarn" class="trailBotInfoBlue">
+            <p class="trailTitle">{{'hey_look'| i18nString}}</p>
+            <p class="trialInfo">{{trailLimitMsg}}</p>
+            <button ng-click="hideTrailWarn()" class="clsBtn">{{'close'| i18nString}}</button>
+        </div>  
+        <div class="animationIfLeave content-loading noPadding" ng-if="loadingAllTasks">
+            <span class="spinner-text"> 
+                <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+                <span class="spinner-text-content"> {{'loading_bot_content'| i18nString}}</span>
+            </span>
+        </div>
+        <right-panel></right-panel>
+    </div>
+</div>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+
+
+<!----------------------------------------------------------------- CHATWINDOW ICON PLACED HERE--------------------------------------------------------------------->
+<div class="more-btn">
+	<span class="talkToBot mainChatIcon"  ng-hide="fromSmart || (showSolutionBotSetup && stream.sbStreamId)">
+      <button class="btn btn-primary runBotBtn" ng-click="initiateChatBot()" tooltip-placement="top" tooltip="{{'talk_to_bot'| i18nString}}"><img ng-src="{{chatIcon}}"></button>
+    </span>
+</div>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+
+<!----------------------------------------------------------------- UNKNOWN HTML NEED TO UPDATE IF NOWN--------------------------------------------------------------------->
+<div ng-include="tmpltPrePath+'templates/bt-streams/modals-template.html'"></div>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+
+
+
+<!--------------------------------------------------------------           Below are the modals              --------------------------------------------------------------->
+
+<div class="modal fade ontology-form ontologyModal taskCreateOrEditModal  fullwidth-dialog height-width-100 btFullpageModal modal" data-backdrop="static"
+ role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" data-keyboard="false">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content ontology-modal-content height-width-100">
+			<bot-ontology ng-if="canShowontology" stream-id="{{selectedStream._id}}" callback='botDetailsCb'></bot-ontology>
+		</div>
+	</div>
+</div>
+<div class="modal fade kg-extraction-form-two kgExtractionModal taskCreateOrEditModal fullwidth-dialog height-width-100 btFullpageModal modal" data-backdrop="static"
+ role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content ontology-modal-content height-width-100">
+           <kg-extraction-onto-new ng-show="isKgExtractTwo" stream="stream" callback='kgExtNewCallback'></kg-extraction-onto-new>
+        </div>
+    </div>
+</div> 
+<div class="modal fade stream-create-form fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+	<div class="modal-dialog height-width-100">
+		<div class="modal-content utterances-modal-content height-width-100">
+			<div class="modal-body utterances-modal-body height-width-100" ng-if="initializeCreateBot">
+				<stream-form display-mode="edit" edit-mode="new" bot-type="bottype" on-save="onCreateNewBot()" on-cancel="onCancelBotCreation()"></stream-form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade script-node-edit-form" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header scriptErroModalHeader">
+                <button type="button" ng-click="closeModal()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">{{'error_script'| i18nString:({dyn:errNodeType})}}: {{scriptNodeName}}</h4>
+                <div ng-show="showError" error-alert class="text-danger form-error-text">{{error}}</div>
+            </div>
+            <div class="modal-body">
+                <div class="inputNote" ng-show="showError">
+                    <div class="col-xs-1 bulbicon"><img class="layer" ng-src="{{bulbIcon}}"></div>
+                    <div class="col-xs-11">
+                        <span class="name">
+                          {{scriptNodeErrorHelp}}
+                            <!--<ul>
+                                <li>{{scriptNodeErrorHelp}}</li>
+                            </ul>-->
+                        </span>
+                    </div>
+                </div>
+                <form name='rqForm'> 
+                    <div class="head">
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-12">
+                                <div class="jsEditorPromptHeader">{{'current_script'| i18nString}}</div>
+                                <div id="script-editor-dialog" acify ng-model="scriptObj" callback='aceEditorCallback'></div>
+                            </div>
+                            <!--<div class="col-xs-6 textareaModal">
+                                <div class="jsEditorPromptHeader">Resolved code</div>
+                                <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="resolvedCode" disabled></textarea>
+                            </div>-->
+                            <div class="col-xs-12">
+                                <div class="jsonEditorTitle">{{'context_object'| i18nString}}</div>           
+                                <div ng-jsoneditor class="json_editor contextEditor" ng-model="contextObject" options="options" name="context"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="closeModal()">{{'cancel'| i18nString}}</button>
+                <button class="btn btn-default" ng-click="validateJs()">{{'run'| i18nString}}</button>
+                <button type="submit" class="btn btn-primary" 
+                        ng-disabled="saveInProgress"
+                        ng-click="saveScript()">
+                    <i ng-show="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)?savingLabel:save}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade recordProgress" id="recordInProgress" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'are_you_sure'| i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 padding10">
+                    <p >{{'conversation_record'| i18nString}}
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn closeCancel" ng-click="closeInProgressModal()">{{'cancel'| i18nString}}</button>
+                <button class="btn saveSubmit proceedBtn" ng-click="confirmCloseProgressModal()">{{'confirm'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal fade recordStop" id="recordStop" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'record_completed'| i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+                    <p class="content">{{'record_success'| i18nString}}<span class="knowmore"><a target="_blank" class="knowmore" ng-href="https://github.com/Koredotcom/chatbot-test-runner"> {{'know_more'| i18nString}}</a></span> <br> {{'local_machine'| i18nString}}
+                    </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn closeCancel" ng-click="closeDownloadModal()">{{'cancel'| i18nString}}</button>
+                <button class="btn saveSubmit proceedBtn" ng-click="downloadChatJson()">{{'download'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+<create-test-case ng-show="createTestCaseConfig && createTestCaseConfig.createTestCaseFlag" ></create-test-case>
+<div class="modal fade recordStop" id="recordStop" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'record_completed'| i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+                <p class="content">{{"record_complted_desc" | i18nString}}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" ng-click="createTestCase()">{{'create_test_case' | i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="discardDownloadModal()">{{'discard' | i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade recordProgress" id="minimizeFlow" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'are_you_sure'| i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 padding10">
+                    <p >{{'conversation_record'| i18nString}}
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn closeCancel" ng-click="closeMinimizeModal()">{{'cancel'| i18nString}}</button>
+                <button class="btn saveSubmit proceedBtn" ng-click="confirmCloseMinimizeModal()">{{'confirm'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="kgExportConfirmation" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">{{'kg_export_name'| i18nString}}</h4>
+              </div>
+              <div class="modal-body">
+                <p class="desc">{{'kg_export_synonyms'| i18nString}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-cancel" ng-click='closeKgConfirmation()'>{{'ok'| i18nString}}</button>
+              </div>
+            </div>
+          </div>
+</div>
+<div id="notifyLang" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header">
+                <h4 class="modal-title">{{'language_Management'| i18nString}}</h4>
+              </div>
+            <div class="modal-body">
+               <p class="desc">The {{seedLanguages[currentLanguage]['name']}} language is currently in the ‘Disabled’ state and the bot will not interact in this language. You may continue to make changes to the bot definition. To start interacting in the {{seedLanguages[currentLanguage]['name']}} language, you need to re-enable this language from the Languages module.</p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-cancel" ng-click='closeLangModal()'>{{'ok'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- New Token Creation MODAL -->
+<div class="modal fade newTokenCreation-modal" id="newTokenCreation" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">New Token Creation</h4>
+            </div>
+            <div class="modal-body" perfect-scroll dynamic-height dynaoffset="10">
+                <div class="kr-sg-input-text">
+                    <div class="label-text">Token Name</div>
+                    <div class="label-desc">Define the name that the bot should use to store the authorization token</div>
+                    <input type="text" placeholder="Enter Name" class="input-text" maxlength="128" ng-model="tokenName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" ng-click="createNewToken()">{{'proceed' | i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeCreateTokenModal()">{{'cancel' | i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- New Token Creation MODAL -->
+<!-- Size Limit Reached MODAL -->
+<div class="modal fade size-limit-reached-modal" id="sizeLimitReachedModal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title red"><i class="btx-close" ng-click="closeSizeLimitModal()"></i>{{'size_limit_reached' | i18nString}}</h4>
+            </div>
+            <div class="modal-body" perfect-scroll dynamic-height dynaoffset="10">
+                <div class="header-title">{{'size_limit_reached_desc1' | i18nString}}</div>
+                <ul>
+                    <li>{{ 'size_limit_reached_bot_msg'| i18nString:({count:recordExceedLimit.botMsg})}}</li>
+                    <li>{{ 'size_limit_reached_user_msg'| i18nString:({count:recordExceedLimit.userMsg})}}</li>
+                    <li>{{ 'size_limit_reached_teststeps_msg'| i18nString:({count:recordExceedLimit.totalTestSteps})}}</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" ng-click="downloadChatJson()"><i class="btx-export"></i> {{'Base_language_pack_downl_json' | i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeSizeLimitModal()">{{'discard' | i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Size Limit Reached MODAL -->
+<!-- ANNO CREATE COPY MODAL -->
+<div class="modal fade create-copy-modal" id="create-copy-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h4 class="modal-title">{{'Create a copy'}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="kr-sg-input-text">
+                    <div class="label-text">Name of extract</div>
+                    <div class="Helper-text">Provide a name for the new extract to be created</div>
+                    <input type="text" placeholder="Placeholder text" class="input-text" ng-model="pdfTypeParams.copyFileName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button type="button" class="btn btn-primary" ng-click="failedAnnotion()">{{'proceed'| i18nString}}</button>
+                    <button type="button" class="btn closeCancel" ng-click="failedCaseCloseModal()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+<div *ngIf="rightPanel.innerRightPanel.view === 'dialog'" class="dialogSliders">
+    <bot-modal-slider class="dispalyInline interuptions" id="importSliderMain">
+        <div ng-if="openImportSlider">
+           <div class="modalSliderContainer width500">
+               <div class="modalHeader paddingTop10">
+                   <help-button  help-id="'importDialog'" class="pull-right" ></help-button>
+                   <h4 class="modal-title tableRow">
+                       <img class="backArrow top10" ng-src="{{closeArrow}}" ng-click="cancelImporting()">
+                       <div class="miHeadBar">
+                            <p class="miTaskNameHeader ng-binding importTitle">{{taskname}}</p>
+                           <p class="miTitleHeader"> {{'import_dialog'| i18nString}}</p>
+                       </div>
+                   </h4>
+               </div>
+                  <div class="modalBody importModal" perfect-scroll dynamic-height dynaoffset="-100" height-property="height">
+                   <div class="col-xs-12">
+                        <div class="row col-xs-12 botExportModal noPadding" ng-show="!doneImporting">
+                        <label class="importLabel"> {{'import_options'| i18nString}}</label>
+                     <div class="col-xs-12 botImportNote">
+                           <div class="heading">
+                               <span class="headingNote"> {{'important_note'| i18nString}}</span>
+                           </div>
+                           <div class="textDiv">
+                               <span class="name"> {{'dialog_import_discontinued'| i18nString}} <a target="_blank" class="knowmore" ng-href="https://developer.kore.ai/docs/bots/bot-settings/bot-management/bot-management-2/#Steps_in_Importing_to_an_Existing_Bot">{{'know_more'| i18nString}}</a></span></div>
+                       </div>
+                    <div class="col-xs-12 noPadding radioDiv marginT12" ng-init="bot.importType = 'fullImport'">
+                       <div class="radioInnerDiv marginTop10">
+                                <label for="full-import">
+                                <input value="fullImport" ng-model="bot.importType" type="radio" name="flowtask-fullimport" id="full-import">
+                                   <span class="opt-title"> {{'full_import'| i18nString}}
+                                            <div class="description noPadding"> {{'import_file_desc'| i18nString}}</div>
+                                   </span>
+                                </label>
+                       </div>
+                       <div class="radioInnerDiv marginTop10">
+                           <label for="incremental-import">
+                               <input value="incrementalImport" ng-model="bot.importType" type="radio" name="flowtask-incrementalimport" id="incremental-import">
+                               <span class="opt-title"> {{'incremental_import'| i18nString}}
+                               <div class="description noPadding"> {{'update_imported_file'| i18nString}}</div>
+                               </span>
+                           </label>
+                       </div>
+               </div>
+               </div>
+                    <label class="required-field" ng-show="displayMode !== 'view' && !doneImporting"> {{'dialog_backup'| i18nString}}</label>
+                       <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view' && !doneImporting">
+                           <div class="input-group">
+                               <input name="importFile" type="text" class="form-control" placeholder=" {{'upload_dialog'| i18nString}}" readonly ng-model="importedDialogName" required>
+                               <div class="input-group-addon btn-file">  {{'choose_file'| i18nString}} <input type="file" file-model="importObj.importDialog" id="importFile" name="importFile" ng-click="changeEvent($event)" required on-file-change="readDialog"/></div>
+                           </div>
+                           <div ng-show="fileExtensionError" class="text-danger form-error-text"> {{'only_json_file'| i18nString}} </div>
+                       </div>
+                        <div ng-if="displayMode !== 'view' && !doneImporting" class="helphint-border col-xs-12">
+                           <div class="col-xs-1 bulbicon">
+                               <span><img class="layer" ng-src='{{bulbIcon}}'></span>
+                           </div>
+                           <div class="col-xs-11 textDiv"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb552)"></span></div>
+                       </div>
+                   </div>
+                   <div class="col-xs-12" ng-show="doneImporting">
+                       <div class="jsEditorPromptHeader"> {{'import_results'| i18nString}}</div>
+                       <p class="importResultText">{{importResults}}</p>
+                   </div>
+               </div>
+               <div class="modalFooter">
+                   <div class="col-xs-12">
+                       <!-- <button ng-click="createFilter()" ng-disabled="saving" class="btn btn-sm btn-primary text-info"> {{(saving)?' Applying...':'Apply'}}</button> -->
+                       <div class="pull-left" ng-show="!doneImporting">
+                           <button type="button" class="btn" ng-disabled="fileExtensionError || !importObj.importDialog || fileEmptyError" ng-click="confirmImport()"> {{'import'| i18nString}}</button>
+                       </div>
+                       <div class="pull-left" ng-show="doneImporting">
+                           <button type="button" class="btn btn-primary btnSave" ng-click="finishImporting()">  {{'ok'| i18nString}} </button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+    </bot-modal-slider>
+    <bot-modal-slider class="interuptions" id="amendEntityDialog">
+           <div ng-if="emendEntitySliderOpen">
+           <div class="modalSliderContainer width700">
+                <div class="modalHeader ">
+                   <h4 class="modal-title tableRow">
+                       <i  class="btx-close top25" ng-click="closeAmendSlider()"></i>
+                       <div class="miHeadBar">
+                           <div class="desc">{{amendEntity.flowtask.name}}</div>
+                           <div class="heading">{{'manage_amend'| i18nString}}</div>
+                       </div>
+                   </h4>
+               </div>
+       
+               <div class="modalBody amendEntity" perfect-scroll dynamic-height dynaoffset="-140" height-property="height" >
+                   <div class="row col-xs-12 noPadding radioDiv radioSection" ng-class="{'screenFreeze':accessRights === 'VIEW' || viewMode}">
+                       <div class="heading">{{'amend_behaviour'| i18nString}}</div>
+                       <div class="paddingTop10" >
+                            <div class="radioInnerDiv">
+                           <label for="botLevel" class="noMarginBottom">
+                               <input value='bot' type="radio" name="botLevel"  ng-model="amendEntity.flowtask.amendConfig.priority" id="botLevel">
+                               <span class="opt-title">{{'bot_level_settings'| i18nString}}</span> 
+                           </label>
+                           <div class="entityDescription" ng-if="!amendEntity.streamData.amendConfig.enabled">
+                               <span class="descItalic">{{'amend_entities'| i18nString}}</span>
+                           </div> 
+                           <div class="entityDescription" ng-if="amendEntity.streamData.amendConfig.enabled">
+                               <span class="descItalic">{{'allow_amend_entities'| i18nString}}</span>{{amendEntityOptions[amendEntity.streamData.amendConfig.postAmend]}}
+                           </div> 
+                       </div>
+                        <div class="radioInnerDiv marginTop10">
+                               <label for="customize">
+                                   <input value='task' type="radio" name="customize"  ng-model="amendEntity.flowtask.amendConfig.priority" id="customize" ng-change="setDefault()">
+                                   <span class="opt-title">{{'customize_task'| i18nString}}</span> 
+                               </label>
+                       </div>
+                       </div>
+                      
+                   <div ng-show="amendEntity.flowtask.amendConfig.priority === 'task'" class="marginLeft25">
+                           <div class="radioInnerDiv">
+                                <label for="notAllowAmend">
+                                   <input value='false' type="radio"  ng-model="amendEntity.flowtask.amendConfig.enabled" data-ng-value="false"  id="notAllowAmend">
+                                   <span class="opt-title">{{'amend_entities'| i18nString}}</span> 
+                               </label>
+                           </div>
+                            <div class="radioInnerDiv">
+                                <label for="allowAmend">
+                                   <input value='true' type="radio"  ng-model="amendEntity.flowtask.amendConfig.enabled" data-ng-value="true" id="allowAmend" ng-change="setDefaultPriority()">
+                                   <span class="opt-title">{{'allow_amend_entities'| i18nString}}</span> 
+                               </label>
+                           </div>
+                           <div ng-show="amendEntity.flowtask.amendConfig.enabled" class="marginleft20 amendConfig">
+                               <div class="radioInnerDiv">
+                                    <label for="amendedNode">
+                                       <input value='continueFromAmendedNode' type="radio"  ng-model="amendEntity.flowtask.amendConfig.postAmend" id="amendedNode">
+                                       <span class="opt-title">{{'re-execute_dialog'| i18nString}}
+                                           <div class="description noPadding">{{'dialog_resume'| i18nString}}</div>
+                                       </span> 
+                                   </label>
+                                  <div ng-show="amendEntity.flowtask.amendConfig.postAmend ===  'continueFromAmendedNode'">
+                                    <div class="checkbox checkbox-primary styledCSS alwaysResume marginleft20 noMarginTop paddingLeft5">
+                                       <input type="checkbox" id="clearDownstreamEntities" ng-model="amendEntity.flowtask.amendConfig.clearDownstreamEntities" class="ng-pristine ng-untouched ng-valid">
+                                       <label for="clearDownstreamEntities" class="alwaysResume">{{'clear_downstream'| i18nString}}</label>
+                                   </div>
+                                    <div class="checkbox checkbox-primary styledCSS alwaysResume marginleft20 noMarginTop paddingLeft5">
+                                       <input type="checkbox" id="skipShownMessages" ng-model="amendEntity.flowtask.amendConfig.skipShownMessages" class="ng-pristine ng-untouched ng-valid">
+                                       <label for="skipShownMessages" class="alwaysResume">{{'skip_shownmessages'| i18nString}}</label>
+                                    </div>
+                                   </div>
+                               </div>
+                                <div class="radioInnerDiv">
+                                    <label for="currentNode">
+                                       <input value='continueFromCurrentNode' type="radio"  ng-model="amendEntity.flowtask.amendConfig.postAmend" id="currentNode">
+                                       <span class="opt-title">{{'re_execute_currdialog'| i18nString}}
+                                           <div class="description noPadding">{{'amend_description'| i18nString}}</div>
+                                       </span> 
+                                   </label>
+                               </div>
+                                <div class="radioInnerDiv">
+                                    <label for="jumpNode">
+                                       <input value='jumpToSpecificNode' type="radio"  ng-model="amendEntity.flowtask.amendConfig.postAmend" ng-change="getComponent(amendEntity.flowtask)" id="jumpNode">
+                                       <span class="opt-title">{{'jump_specific_node'| i18nString}}
+                                            <div class="description noPadding">{{'resume_dialog'| i18nString}}</div>
+                                       </span> 
+                                   </label>
+                                   <div ng-if="amendEntity.flowtask.amendConfig.postAmend === 'jumpToSpecificNode'" class="marginLeft25">
+                                        <select id='entitySelection' ng-model='amendEntity.flowtask.amendConfig.refId'>
+                                               <option value="" disabled selected>{{'select_node'| i18nString}}</option>
+                                               <option ng-repeat="node in amendEntity.flowtask.nodes" value="{{node.nodeId}}">{{component[node.componentId].name + (nodeObjCount[node.componentId].count >1?"["+node.count+"]":"")}}</option>
+                                           </select>
+                                   </div>
+                               </div>
+                               <div class="hiddenEntityAmend marginTop10">
+                                   <label>{{'hidden_amend_input' | i18nString }}</label>
+                                   <span class="opt-title">{{'hidden_amend_input_desc' | i18nString }}</span>
+                               </div>
+                               <toggle-switch ng-model="amendEntity.flowtask.amendConfig.allowHidden" class="amend-entity-toggle pull-left m-0">
+                               </toggle-switch>
+                           </div>
+                   </div>
+               </div>
+           </div>
+           <div class="modalFooter">
+               <button type="button" class="btn amend" ng-click="saveAmendSettings(amendEntity.flowtask)" ng-disabled="(amendEntity.flowtask.amendConfig.postAmend === 'jumpToSpecificNode' && !amendEntity.flowtask.amendConfig.refId) || (accessRights === 'VIEW' || viewMode)">{{'save'| i18nString}}</button>
+               <button type="button" class="btn closeCancel" ng-click="closeAmendSlider()">{{'cancel'| i18nString}}</button>
+              </div>
+          </div> 
+         </div>
+          
+       
+    </bot-modal-slider>
+    <bot-modal-slider class="interuptions" id="manageInteruptions">
+           <div class="modalSliderContainer width700" ng-if="showSteps">
+               <bt-manage-interuptions ng-if="sliderStep===1" class="animate-if form-kr backgroundWhite " cb="openManageInterruptions" step-update="stepUpdate" on-cancel="onInterruptsCancel"></bt-manage-interuptions>
+               <bt-linked-task ng-if="sliderStep===2" class="animate-if form-kr backgroundWhite linkedTasks" cb="openManageInterruptions" step-update="stepUpdate" on-cancel="onInterruptsCancel"></bt-linked-task>
+               <bt-add-interuption ng-if="sliderStep===3" class="animate-if form-kr backgroundWhite" cb="openManageInterruptions" step-update="stepUpdate" on-cancel="onInterruptsCancel"></bt-add-interuption>
+           </div>
+    </bot-modal-slider>
+    <bot-modal-slider class="create" id="createtask">
+        <div class="modalSliderContainer width800" ng-if="creationForm">
+            <div class="modalHeader">
+                <h4 class="modal-title tableRow">
+                    <i class="btx-close" ng-click="closeDialogCreation()"></i>
+                    <span ng-if="taskType === 'dialogTasks'">{{'create_dialog'| i18nString}}</span>
+                    <span ng-if="taskType === 'alertTasks'">{{'create_alert'| i18nString}}</span>
+                </h4>
+            </div>
+            <bot-tasks-creation-form></bot-tasks-creation-form>
+        </div>
+   </bot-modal-slider>
+    <bot-modal-slider class="cloneDialogCreation" id="dialogCreate">
+           <div class="modalSliderContainer width800" ng-if="flowTaskToClone || firstTimeLoad">
+                       <div class="modalHeader ">
+                           <h4 class="modal-title tableRow">
+                               <i class="btx-close" ng-click="cancelCloning()"></i>
+                               <div class="miHeadBar">
+                                    <!-- <p class="miTaskNameHeader ng-binding importTitle">{{taskname}}</p> -->
+                                   <p class="miTitleHeader mb-0"> {{'clone_dialog'| i18nString}}</p>
+                               </div>
+                           </h4>
+                       </div>
+                       <bt-create-dialog></bt-create-dialog>
+                       <div class="modalFooter">
+                           <div ng-if='flowTaskToClone' class="buttonContainer">
+                               <button ng-click="cloneThisDialog()" ng-disabled="nodeObj.isInvalid || !createDialogForm.$dirty" class="btn btnSolidBlue">
+                                   {{(savingdialogtask)?savingtask:clone}}</button>
+                               <button ng-click="cancelCloning()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+                           </div>
+                       </div>
+             </div>
+    </bot-modal-slider>
+</div>
+
+<!-- Bot cannot be published Warning modal -->
+<div class="modal fade" id="botCannotPublish" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md noHeaderFooter">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title titleRed"> {{'Bot cannot be published'}}<i class="btx-close" data-dismiss="modal"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll"  perfect-scroll dynamic-height dynaoffset="-180" height-property="height">
+          <div class="desc" id="botCannotPublishDesc">
+            {{'Universal Bots are allowed to be published only if your account has subscribed to a Standard or Enterprise plan for one or more Standard Bots. '}} 
+          </div>
+        </div>
+        <div class="modal-footer"> 
+            <button type="button" data-dismiss="modal" class="kr-sg-button-secondary btn_lg">  {{'Close'}} </button>
+            <a href="{{freeTrailSupportUrl}}" target="_blank" class="link">{{'Learn more'}}</a>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="formSecurityOverride"  data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'override_secure_fields'| i18nString}}</h4>
+            </div>
+            <div class="modal-body" perfect-scroll dynamic-height dynaoffset="-380" height-property="height">
+                <div class="col-xs-12 padding10">
+                    <p > {{'override_secure_fields_desc'| i18nString}}</p>
+                </div>
+                <div ng-repeat="details in secureFieldArr track by $index" class="padding10">
+                    <div>
+                       <span>{{$index + 1}}. {{details.displayName}}</span> <span> ( {{ details.type }} )</span> - {{details.pii_pattern.type}}
+                    </div>
+                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" ng-click="saveUiForm(true)"> {{'proceed_save'| i18nString}}</button>
+
+                <button class="btn closeCancel" ng-click="closecancelSecureOverride()"> {{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bot cannot be published Warning modal -->
+
+<!-- bot-publish status -->
+<div class="modal" id="publishStatusModal" data-backdrop="static">
+    <div class="modal-dialog noHeaderFooter" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
+          <div >
+              <h4 class="modal-title" > {{'publish_status'| i18nString}}</h4>
+          </div>
+        </div>
+        <div class="modal-body modalPerfectScroll"  perfect-scroll dynamic-height dynaoffset="-180" height-property="height">
+          <div >
+              <div class="row" >
+                  <div >
+                      <p > {{'following_tasks_components_published' | i18nString}}</p>
+                  </div>
+                </div>
+                <div class="accordiankr">
+                  <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                      <div class="panel">
+                        <div class="panel-heading" role="tab" id="publishOne">
+                          <h4 class="panel-title ">
+                            <a role="button" class="accor-collapse" data-toggle="collapse" data-parent="#accordion" href="#publishAccord" aria-expanded="true" aria-controls="collapseOne">
+                              <i class="btx-carrot-down"></i>
+                                <ng-container>{{'view_publishing_summary' | i18nString}}</ng-container>
+                              </a>
+                          </h4>
+                        </div>
+                        <div id="publishAccord" class="panel-collapse collapse" role="tabpanel" aria-labelledby="publishOne">
+                          <div class="panel-body" ng-if="messages.length">
+                              <div class="task" ng-repeat="message in messages | filter : { 'type' : 'success' }">
+                                  <div class="name" ng-show="message.type == 'success' && message.message != undefined" > <span>  &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span><i class="fa fa-check-circle-o success-color pull-right" aria-hidden="true"></i> </div>
+                              </div>
+                              <div class="task" ng-repeat="message in messages | filter : { 'type' : 'error' }">
+                                  <div class="name" ng-show="message.type == 'error'" > 
+                                      <div class="row">
+                                          <div class="col-xs-12 noPadding">
+                                            <div class="row"> <span> &nbsp;&nbsp; </span> 
+                                                <span ng-bind-html="message.message"> {{message.message}} </span>
+                                                 <i class="fa fa-times-circle-o fail-color pull-right" aria-hidden="true" style="color: red;"></i>
+                                                 </div>
+                                            <div class="row">
+                                              <div class="alert alert-danger alert-sm">
+                                                  {{message.error}}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div> 
+                  </div>
+               </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn closeCancel" ng-click="closeModal()">{{'close'| i18nString}}</button>
+          <!-- <button type="button" class="btn btn-primary" ng-disabled="!allowRetry" ng-show="(messages | filter : { 'type' : 'error' }).length > 0" ng-click="retryAll()"><i ng-class="{'fa fa-spinner fa-spin':!allowRetry}"></i>{{allowRetry?retry_all :retrying_label}}</button> -->
+        </div>
+      </div>
+    </div>
+</div>
+<!-- bot-publish status -->
+<!-- Bot publishing is taking longer than usual modal -->
+<div class="modal fade" id="publishRequestTimeout" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content noHeaderFooter">
+        <div class="modal-header">
+          <h4 class="modal-title"> {{'bot_publihing_taking_usual_title' | i18nString}}<i class="btx-close" ng-click="closeCustomModal('publishRequestTimeout')"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll"  perfect-scroll dynamic-height dynaoffset="-180" height-property="height">
+          <div class="desc">
+            {{'bot_publihing_taking_usual_desc' | i18nString}} 
+          </div>
+        </div>
+        <div class="modal-footer"> 
+            <button type="button" ng-click="closeCustomModal('publishRequestTimeout')" class="kr-sg-button-primary btn_lg">  {{'got_it_label' | i18nString}} </button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Bot publishing is taking longer than usual modal -->
+<!-- Upgrade/ Downgrade is required modal -->
+<div class="modal fade" id="upDownRequired" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md noHeaderFooter">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title titleRed"> {{'Usage exceeds the allowed limit'}} <i class="btx-close" ng-click="closeCustomModal('upDownRequired')"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll"  perfect-scroll>
+          <div class="desc" >
+            This is an invalid action. You are either using a feature beyond the allowed limit of your plan or a feature that is not available in your plan.  Please consider upgrading your plan. <a href="https://developer.kore.ai/docs/bots/bot-settings/bot-management/subscription-plans/" target="_blank">Learn more</a>
+            <!-- You are using one or more features that are not available in your current <b>{{license.planName || '---'}} Plan</b>. You can either upgrade to a higher plan to publish these features. Alternatively, you may modify the definition to remove the features that are not included in your current plan. -->
+          </div>
+          <div class="accordiankr hide" >
+            <div class="accordiankr" ng-if="planValidationDetails && planValidationDetails.exceededData">
+                <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel">
+                      <div class="panel-heading" role="tab" id="upgradeReq">
+                        <h4 class="panel-title">
+                          <a role="button" class="accor-collapse" data-toggle="collapse" data-parent="#accordion" href="#upgradeAccor" aria-expanded="true" aria-controls="collapseOne">
+                              <i class="btx-carrot-down"></i>View  features that are exceeding the limits
+                            </a>
+                        </h4>
+                      </div>
+    
+                      <div id="upgradeAccor" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="upgradeReq">
+                        <div class="panel-body" >
+                            <div ng-repeat="item in planValidationDetails.exceededData[license.planId] track  by $index" class="data-text">
+                                <div class="info-title"> <ng-container ng-if="item.exceeded !== false && item.exceeded !== true">{{item.exceeded}}</ng-container> {{item.componentName || item.key}} exceeded</div>
+                                <div class="exceed-data">Allowed: <ng-container> {{ (item.allowed !== false && item.allowed !== true) ? item.allowed: ''}} {{(item.allowed === false || item.allowed === true) ? 'No': ''}} </ng-container> {{item.componentName || item.key}}</div>
+                            </div>
+                        </div>
+                      </div>
+                    </div> 
+                </div>
+    
+    
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"> 
+            <button type="button"  class="kr-sg-button-primary btn_lg" ng-click="upgradePlan()">  {{'Upgrade'}} </button>
+            <button type="button" ng-click="closeCustomModal('upDownRequired')" class="kr-sg-button-secondary btn_lg">  {{'close'| i18nString}} </button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Upgrade/ Downgrade is required modal -->
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------->

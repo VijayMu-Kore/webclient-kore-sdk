@@ -1,0 +1,162 @@
+<div class="modalSliderContainer width700">
+   <form name="sparkForm">
+    <div class="modalHeader channelModalHeader">
+        <h4 class="modal-title" id="gridSystemModalLabel">
+            <i class="btx-close"   ng-click="goToHome()"></i>
+                {{'constants.iconsTooltips_spark'| i18nString}}</h4>
+ </div>
+    <div class="modalBody cisco-channel-page slack-channel-page inner-scroll channelInnerContent" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+        <div class="col-xs-12 step-progress-container">
+            <step-progress steps="steps" on-click="stepClick"></step-progress>
+        </div>
+        <div ng-repeat="step in steps" ng-show="step.active" class="slcakChannels widthseventy">
+                <div class="col-xs-12 noPadding" ng-show="steps[0].active">
+                    <div class="col-xs-12 channel-content">
+                        <div class="info noMargin"> 
+                            <p>{{'Bt_chnl_spark_instruct_label'| i18nString}}</p>
+                            <div class="info">
+                                <p class="channelstep marginTop15">{{'Bt_chnl_spark_instruct_step1_label'| i18nString}}</p>
+                                <p ng-bind-html="'login_cisco'| i18nString:({link:'https://developer.webex.com/'})"> </p>
+                                <img ng-src="{{assetsBase}}images/Spark_1.png" class="marginBottom10 width100percent" />
+                                <p>{{'Bt_chnl_spark_instruct_login_desc'| i18nString}}</p>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="col-xs-12 channel-content">
+                        <div class="info noMargin"> 
+                            <div class="info">
+                                <p class="channelstep marginTop15">{{'Bt_chnl_spark_instruct_step2_label'| i18nString}}</p>
+                                <p>{{'Bt_chnl_spark_instruct_step2_desc'| i18nString}} </p>
+                                <img ng-src="{{assetsBase}}images/Spark_2.png" class="marginBottom10 width100percent" />
+                                <p>{{'Bt_chnl_spark_instruct_desc_one'| i18nString}}</p>
+                                <p>{{'Bt_chnl_spark_instruct_desc_two'| i18nString}}</p>
+                                <p>{{'Bt_chnl_spark_instruct_desc_three'| i18nString}}</p>
+                                <p>{{'Bt_chnl_spark_instruct_desc_four'| i18nString}}</p>
+                            </div>
+                        </div> 
+                    </div>
+                 </div>
+                <div class="col-xs-12 noPadding" ng-show="steps[1].active">
+                    <div class="col-xs-12 channel-content marginTopBottomTen">
+                        <div class="info"><p>{{'Bt_chnl_spark_config_label'| i18nString}}</p>
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="row">
+                                    <label>{{'redirecturl_label'| i18nString}}</label>
+                                </div>
+                            <div class="form-group row">
+                                <div class="input-group">
+                                    <input type="text" id="spark_rURI{{step.step}}" class="form-control" ng-model="channel.redirect_ui" ng-readonly="true" name="redirectUi" readonly>
+                                     <div class="input-group-addon pointer-hand" data-clipboard-target="#spark_rURI{{step.step}}"> {{'copy'| i18nString}} </div>  
+                                </div>
+                                <div ng-show="isSafariwhid"><span class="pull-right">{{'press_c'| i18nString}}<span></div>
+                           </div>
+                            </div>
+                            <div class="">{{'Bt_chnl_spark_config_capture'| i18nString}}</div>
+                        </div></div>
+                        
+                        <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12 noPadding marginTopBottomFive">
+                                <label for="botEmail" class="required-field">{{'Bt_chnl_spark_config_bt_userNa'| i18nString}}</label>
+                                <p>{{'Bt_chnl_spark_config_provide'| i18nString}}</p>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <input type="text" ng-model="channel.botEmail" name="email" class="form-control" id="botEmail" placeholder="{{'Bt_chnl_spark_config_bt_userNa_placeholder'| i18nString}}" required="">
+                                <div  ng-show="sparkForm.email.$dirty">
+                                    <div error-alert ng-show="sparkForm.email.$error.required" class="text-danger">
+                                        {{'Bt_chnl_spark_config_bt_userNa_err'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div></div>
+                        
+                        <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                               <div class="col-xs-12 noPadding marginTopBottomFive">
+                                <label for="authToken" class="required-field">{{'acesstoken_label'| i18nString}}</label>
+                                <p>{{'Bt_chnl_spark_chnl_provide'| i18nString}}
+                                </p>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <input type="text" ng-model="channel.authToken" name="authToken" class="form-control" id="authToken" placeholder="{{'Bt_chnl_spark_config_access_token_placeholder'| i18nString}}" required>
+                                <div  ng-show="sparkForm.authToken.$dirty">
+                                    <div error-alert ng-show="sparkForm.authToken.$error.required" class="text-danger">
+                                        {{'please_provide_access_token_label'| i18nString}}
+                                    </div>
+                                </div>
+                                <p class="help-block"></p>
+                            </div>
+                            </div>
+                        </div></div>
+                        
+                        <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                               <div class="col-xs-12 noPadding marginTopBottomFive">
+                                <label class="required-field">{{'clientId_label'| i18nString}}</label>
+                                <p> {{'Bt_chnl_spark_provide_client'| i18nString}}</p>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <input type="text" class="form-control" id="clientID"  placeholder="{{'enter_client_id_placeholder'| i18nString}}" ng-model="channel.clientID" name="clientID" required>
+                                <div  ng-show="sparkForm.clientID.$dirty">
+                                    <div error-alert ng-show="sparkForm.clientID.$error.required" class="text-danger">
+                                        {{'Bt_chnl_slack_config_clientId_err'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div></div>
+                        
+                       <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                               <div class="col-xs-12 noPadding marginTopBottomFive">
+                                <label class="required-field">{{'clientsecret_label'| i18nString}}</label>
+                                <p>{{'Bt_chnl_spark_config_client'| i18nString}}</p>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <input type="text" class="form-control"  placeholder="{{'enter_client_secret_key'| i18nString}}" ng-model="channel.clientSecret" id="clientSecret" name="clientSecret" required>
+                                <div  ng-show="sparkForm.clientSecret.$dirty">
+                                    <div error-alert ng-show="sparkForm.clientSecret.$error.required" class="text-danger">
+                                        {{'Bt_chnl_slack_config_clientsecret_err'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div></div> 
+                       
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="col-xs-12 noPadding form-group radioDiv options-wrap">
+                            <div>
+                                <label>{{'enable_chnl'| i18nString}}</label>
+                                <p>{{'Bt_chnl_spark_config_enable_chl_desc'| i18nString}}</p>
+                            </div>
+                            <div>
+                                <label for="channel.enable.no">
+                                    <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable" name="kore.enable" id="channel.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                                </label>
+                            </div>
+                            <div>
+                                <label for="channel.enable.yes">
+                                    <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-xs-12"> </div>
+                </div>
+         </div>
+    </div>
+    <div class="modalFooter">
+        <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+        <button type="button" class="btn" ng-click="save(sparkForm)" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+        <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+     </div>
+</form>
+</div>

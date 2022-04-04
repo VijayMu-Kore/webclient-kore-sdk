@@ -1,0 +1,158 @@
+<div class="kr-sg-input-text autocomplete-wrap" ng-show="!isNamespacesLoading">
+    <div class="label-text">{{'namespace'| i18nString}}</div>
+    <input type="text" ng-disabled="manVarCb.state == 'published'" placeholder="Type & enter to add" id="namespaceTypeahead{{manVarCb.flagName}}" name="typeaheadField" autocomplete="off" ng-keyup="addNamespace($event)" ng-model="inputNamespace">
+</div>
+<div class="panel-group kr-sg-accordion" ng-if="!isNamespacesLoading" ng-repeat="nsData in addedNamespacesObjects track by $index" id="accordion{{$index + manVarCb.flagName}}" ng-init="attachCollapse()" role="tablist" aria-multiselectable="true">
+    <div class="panel">
+        <div class="panel-heading" role="tab" id="headingOne">
+        <h4 class="panel-title">
+            <a role="button" class="accor-collapse collapsed" data-toggle="collapse" data-parent="#accordion{{$index + manVarCb.flagName}}" href="#collapse{{$index + manVarCb.flagName}}" aria-expanded="true" aria-controls="collapseOne">
+                {{nsData.name}}
+            <div>
+                <span ng-if="nsData.gVariables + nsData.cVariables > 1">{{nsData.gVariables + nsData.cVariables}} variables</span>
+                <span ng-if="nsData.gVariables + nsData.cVariables < 2">{{nsData.gVariables + nsData.cVariables}} variable</span>
+                <span class="cursor-pointer" ng-if="manVarCb.state != 'published'" ng-click="removeNS($event, nsData)">
+                    <!-- <img class="grey-trash" ng-src="{{greyTrash}}" alt=""> -->
+                    <i class="btx-delete-1"></i>
+                </span>
+            </div>
+            </a>
+        </h4>
+        </div>
+        <div id="collapse{{$index + manVarCb.flagName}}" data-namespace-id="{{nsData._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body">
+            <div class="table-wrap" ng-if="nsData.tableData.length > 0">
+                <div class="label-text">{{'ns_variables'| i18nString}}</div>
+                <div class="kr-sg-data-table">
+                    <section class="table-content">
+                        <header class="table-header">
+                            <div class="col">
+                                <span class="ns-head" ng-if="!nsData.search.showName">{{'name_label' | i18nString}}</span>
+                                <span ng-if="nsData.search.showName">
+                                    <div class="kr-sg-input-search">                               
+                                        <input type="text" placeholder="Search name" class="input-search" id="searchName{{$index}}" ng-model="nsData.searchName" ng-keyup="checkKey($event)">
+                                        <!-- <img ng-src="{{closeIcon}}" ng-click="resetSearch(nsData)" class="search-icon"> -->
+                                        <i ng-src="{{closeIcon}}" ng-click="resetSearch(nsData)" class="search-icon btx-close"></i>
+                                    </div>
+                                </span>
+                                <span ng-if="!nsData.search.showName" class="greenSearch" ng-click="searchClick('name', nsData, $index)">
+                                    <!-- <img ng-src="{{searchGreen}}" alt=""> -->
+                                    <i class="btx-search"></i>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <span class="ns-head" ng-if="!nsData.search.showValue">{{'value' | i18nString}}</span>
+                                <span ng-if="nsData.search.showValue">
+                                    <div class="kr-sg-input-search">                               
+                                        <input type="text" class="input-search" id="searchValue{{$index}}" ng-model="nsData.searchValue"  ng-keyup="checkKey($event)"  placeholder="Search value">
+                                        <i ng-src="{{closeIcon}}" ng-click="resetSearch(nsData)" class="search-icon btx-close"></i>
+                                    </div>
+                                </span>
+                                <span ng-if="!nsData.search.showValue" class="greenSearch" ng-click="searchClick('value', nsData, $index)">
+                                    <i class="btx-search"></i>
+                                </span>
+                            </div>
+                            <div class="col dropdown">
+                                <span class="dropdown-toggle ns-head" data-toggle="dropdown">
+                                    {{'type'| i18nString}} <i src="{{caretDown}}" alt="" class="btx-dropdown-down"></i>
+                                </span>
+                                <ul class="dropdown-menu">
+                                    <li ng-click="selectVarType('all', nsData)">
+                                        <img ng-if="nsData.type.all" ng-src="{{checkGreen}}">
+                                        <img ng-if="!nsData.type.all" ng-src="{{checkGrey}}">
+                                        <span>{{'all'| i18nString}}</span>
+                                    </li>
+                                    <li ng-click="selectVarType('global', nsData)">
+                                        <img ng-if="nsData.type.global" ng-src="{{checkGreen}}">
+                                        <img ng-if="!nsData.type.global" ng-src="{{checkGrey}}">
+                                        <span>{{'ns_global'| i18nString}}</span>
+                                    </li>
+                                    <li ng-click="selectVarType('content', nsData)">
+                                        <img ng-if="nsData.type.content" ng-src="{{checkGreen}}">
+                                        <img ng-if="!nsData.type.content" ng-src="{{checkGrey}}">
+                                        <span>{{'ns_content'| i18nString}}</span>
+                                    </li>
+                                </ulnsData.>
+                            </div>
+                            <div class="col dropdown">
+                                <span class="dropdown-toggle ns-head" data-toggle="dropdown">
+                                    <span ng-if="nsData.group.group">{{'group'| i18nString}}</span>
+                                    <span ng-if="nsData.group.notes">{{'notes_label'| i18nString}}</span>
+                                    <i src="{{caretDown}}" alt="" class="btx-dropdown-down"></i>
+                                </span>
+                                <ul class="dropdown-menu">
+                                    <li ng-click="selectGroupNotes('group', nsData)">
+                                        <img ng-if="nsData.group.group" ng-src="{{checkGreen}}">
+                                        <img ng-if="!nsData.group.group" ng-src="{{checkGrey}}">
+                                        <span>{{'group'| i18nString}}</span>
+                                    </li>
+                                    <li ng-click="selectGroupNotes('notes', nsData)">
+                                        <img ng-if="nsData.group.notes" ng-src="{{checkGreen}}">
+                                        <img ng-if="!nsData.group.notes" ng-src="{{checkGrey}}">
+                                        <span>{{'notes_label'| i18nString}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </header>
+                        <div class="content-body" ng-repeat="cell in nsData.tableData | filter: {'key': nsData.searchName, 'value': nsData.searchValue, 'variableType':nsData.type.global?'Global':nsData.type.all?undefined:'Content'}">
+                            <div class="col tooltip-hover" data-toggle="tooltip" data-placement="top" tooltip="{{cell.key.length > 200?cell.key.slice(0, 200) + '...':(cell.key.length > 18?cell.key:'')}}">{{cell.key}}</div>
+                            <div class="col tooltip-hover" data-toggle="tooltip" data-placement="top" tooltip="{{cell.value.length > 200? cell.value.slice(0, 200) + '...':(cell.value.length > 18?cell.value:'')}}">{{cell.value}}</div>
+                            <div class="col">{{cell.variableType}}</div>
+                            <div class="col tooltip-hover" data-toggle="tooltip" data-placement="top" tooltip="{{cell.group.length > 200? cell.group.slice(0, 200) + '...':(cell.group.length > 18?cell.group:'')}}" ng-if="nsData.group.group">{{cell.group}}</div>
+                            <div class="col tooltip-hover" data-toggle="tooltip" data-placement="top" tooltip="{{cell.hint.length > 200? cell.hint.slice(0, 200) + '...':(cell.hint.length > 18?cell.hint:'')}}" ng-if="nsData.group.notes">{{cell.hint}}</div>
+                        </div>
+                        <div class="empty-message" ng-if="nsData.type.global && !nsData.counts.globConfVar && nsData.delay && manVarCb.state!= 'published'">
+                            {{'no_global_added'| i18nString}}
+                        </div>
+                        <div class="empty-message" ng-if="nsData.type.content && !nsData.counts.locConfVar && nsData.delay && manVarCb.state != 'published'">
+                            {{'no_content_added'| i18nString}}
+                        </div>
+                        <div class="empty-message" ng-if="nsData.type.global && !nsData.counts.globPubVar && nsData.delay && manVarCb.state == 'published'">
+                            {{'no_global_added'| i18nString}}
+                        </div>
+                        <div class="empty-message" ng-if="nsData.type.content && !nsData.counts.locPubVar && nsData.delay && manVarC.state == 'published'">
+                            {{'no_content_added'| i18nString}}
+                        </div>
+                    </section>                               
+                </div>  
+            </div>
+            <div class="table-empty" ng-if="nsData.tableData.length == 0">
+                <span class="table-empty-head">{{'namespace_no_variables'| i18nString}}</span>
+                <span class="table-empty-message">{{'navigate_namespace'| i18nString}}</span>
+            </div>
+        </div>
+        </div>
+        <div class="loading-namespace-variables" style="display: none;">
+            <i class="fa fa-spinner"></i>
+            {{'please_wait_exclamation'| i18nString}}
+        </div>
+    </div>                                                                     
+</div>
+<div class="empty-screen" ng-if="addedNamespacesObjects.length == 0 && !isNamespacesLoading">
+    <img ng-src="{{emptyScreen}}" alt="">
+    <div class="message">
+        {{'namespace_not_added'| i18nString}}
+    </div>
+</div>
+
+<div class="loading-namespaces" ng-if="isNamespacesLoading">
+    <i class="fa fa-spinner"></i>
+    <span>{{'loading_namespaces'| i18nString}}</span>
+</div>
+
+<div id="namespaceLastDelete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                {{'confirm_to_proceed_label'| i18nString}}
+            </div>
+            <div class="modal-body">
+                <p>This component is not mapped with any Namespace. The execution of this component may fail if you have included one or more variables in defining this component</p>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" id="proceed_removeNs">{{'proceed'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeNamespaceLastDel()">{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>

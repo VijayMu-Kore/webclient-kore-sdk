@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 6</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="15" cy="15" r="15"></circle>
+        <filter x="-23.3%" y="-16.7%" width="146.7%" height="146.7%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.541176471   0 0 0 0 0.584313725   0 0 0 0 0.623529412  0 0 0 0.381085824 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="07--Analyze" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="9.1.3-(Analyze)-sorting-and-grouping" transform="translate(-1262.000000, -172.000000)">
+            <g id="Group" transform="translate(82.000000, 117.000000)">
+                <g id="Group-6" transform="translate(1184.000000, 57.000000)">
+                    <g id="Oval">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                    <path d="M8,21.9960887 L14,16" id="Stroke-422" stroke="#8A959F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M17,17.9993481 L17,17" id="Stroke-423" stroke="#8A959F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M17,8.99934811 L17,8" id="Stroke-424" stroke="#8A959F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M12,13 L13,13" id="Stroke-425" stroke="#8A959F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M21,13 L22,13" id="Stroke-426" stroke="#8A959F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M20,9.99934811 L21,9" id="Stroke-427" stroke="#8A959F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M13,9 L14,9.99934811" id="Stroke-428" stroke="#8A959F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M20,16 L21,16.9993481" id="Stroke-429" stroke="#8A959F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

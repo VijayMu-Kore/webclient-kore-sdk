@@ -1,0 +1,103 @@
+{
+    "tags": {
+       "root": {
+          "score": 1000,
+          "unmatched": 0.1,
+          "upos": {
+             "PUNCT": {
+                "score": -1000
+             },
+             "AUX": {
+                "score": -800
+             }
+          }
+       },
+       "obj": {
+          "score": 800,
+          "unmatched": 0.5
+       },
+       "nsubj": {
+          "score": 200,
+          "unmatched": 0.5
+       },
+       "advmod": {
+          "score": 0,
+          "unmatched": 0,
+          "feats": {
+             "PronType=Neg":{
+               "score": 400
+             }
+          }
+       },
+       "amod": {
+         "score": 200,
+         "unmatched": 0.25
+       },
+       "nmod": {
+          "score": 300,
+          "unmatched": 0.5,
+          "upos": {
+             "PROPN":{
+                "score": -300
+             },
+             "num":{
+                "score": -300
+             }
+          }
+       },
+       "obl": {
+         "score": 500,
+         "unmatched": 0.5,
+         "upos": {
+            "PROPN":{
+               "score": -500
+            },
+            "PRON":{
+               "score": -500
+            }
+         }
+       },
+       "acl": {
+          "score": 400,
+          "unmatched": 0.5
+       },
+       "advcl": {
+          "score": 400,
+          "unmatched": 0.5
+       },
+       "aux": {
+          "score": 100,
+          "unmatched": 1
+       },
+       "det": {
+          "score": 100,
+          "unmatched": 1
+       },
+       "det:poss": {
+          "score": 100,
+          "unmatched": 1
+       },
+       "case": {
+          "score": 100,
+          "unmatched": 1
+       }
+    },
+    "static": {
+       "sentence": [
+          1,
+          0.75,
+          0.64,
+          0.58,
+          0.53
+       ],
+       "tasktype": 0.95,
+       "namedbot": 0.33,
+       "recentbot": [
+          1,
+          0.9,
+          0.8,
+          0.7,
+          0.6
+       ]
+    }
+}

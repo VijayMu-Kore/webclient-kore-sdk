@@ -1,0 +1,43 @@
+<div class="row form-group">
+    <div class="col-xs-12 labelling ">
+        <label ng-class="{ 'required-field' : schema.isRequired }">{{schema.title}}</label>
+    </div>
+    <div class="col-xs-12 noPaddingRight">
+        <div class="row" ng-if="!schema.isSearchable" >
+            <div class="negative-margin noPaddingRight"  ng-class="{'col-xs-12':!schema.isMultiSelect, 'col-xs-9':schema.isMultiSelect}">
+                <select ng-model="control.value">
+                    <option ng-repeat="option in options" value="{{option.value}}">{{option.title}}</option>
+                </select>
+            </div>
+            <div class="col-xs-3">
+                <button ng-if="schema.isMultiSelect" type="button" class="btn paddingtop5" ng-click="addValue(control.value)">{{'add'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="row" ng-if="schema.isSearchable">
+            <div class="row " ng-class="{'col-xs-12':!schema.isMultiSelect, 'col-xs-9':schema.isMultiSelect}">
+                <select ui-select2="select2config" class="form-control" ng-model="control.value">
+                    <option value=''></option>
+                    <option ng-repeat="option in options" value="{{option.value}}">{{option.title}}</option>
+                </select>
+            </div>
+            <div class="col-xs-3">
+                <button ng-if="schema.isMultiSelect" type="button" class="btn paddingTop5" ng-click="addValue(control.value)">{{'add'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="col-xs-12 negative-margin" ng-hide="true">
+            <div class="help-block">
+                {{schema.help}}
+            </div>
+        </div>
+        <div ng-show="schema.isMultiSelect" ng-class="{'negative-margin col-xs-12':schema.isMultiSelect}">
+            <tags-box tags="valuetags" on-delete="deleteValue"></tags-box>
+        </div>
+        <div class="col-xs-12 negative-margin ">
+            <div  ng-show="form[schema.key].$dirty">
+                <div error-alert ng-show="form[schema.key].$error.required" class="text-danger">
+                    {{'dyn_value_required'| i18nString:({dyn:schema.title})}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

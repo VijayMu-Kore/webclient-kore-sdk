@@ -1,0 +1,31 @@
+<div class='dialogReportsModal animate-show-back' ng-show='!showEditReportTemplate'>
+    <div class=''>
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeModal()"><span aria-hidden="true"><i class="fa fa-close"></i></span></button> -->
+                <h4 class="modal-title">{{editReport? editReportText : generateReport}}</h4>
+            </div>
+            <div class="modal-body container-fluid" perfect-scroll dynamic-height dynaoffset="-219">
+
+                <report-form report-cb="reportCb"
+                             wf-type="dialog" 
+                             sample-response-keys="sampleResponseKeys"
+                             display-mode="{{displayMode}}" 
+                             class="displayBlock"
+                             dialog-component="component"
+                             edit-report='editReport'
+                             >
+
+                </report-form>
+                          
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  ng-disabled="displayMode!=='edit'"  ng-click='saveReport()'>
+                    <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> 
+                    <span ng-show="config.type !== 'Edit'">{{((savingReport)?'saving':'save') | i18nString}}</span>
+                    <span ng-show="config.type === 'Edit'">{{((savingReport)?'saving':'save') | i18nString}}</span>
+                </button>
+                <button type="button" class="btn closeCancel" data-dismiss="modal" ng-click='closeModal()'>{{'cancel'| i18nString}}</button>
+            </div>
+    </div>
+
+</div>

@@ -1,0 +1,486 @@
+<bots-content-panel>
+	<!--Usage Tour container starts here-->
+	  <div 
+    class="content-loading" 
+    ng-if="(loadingStreams && loadingStream && loadingAlerts && loadingFlows && loadingActions)"
+    > <span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content"> {{'loading_your_bot'| i18nString}}</span> </span> </div>
+        <div class="row">
+			<div class="banner-bot-store" ng-if="showBanner" ng-hide="true">
+				<div class="inner-data">
+				<img class="close-store" ng-click="closeBanner()" ng-src="{{closeStoreIcon}}">
+				<img ng-src="{{botStoresImg}}" class="botStoresImg" >
+				<h5 class="main-title">Accelerate your bot lifecycle journey with our curated templates</h5>
+				<p class="desc-text-store">Explore the prebuilt templates and solution accelerators, install the one that suits your business, and customize it to your needs.</p>
+				<button class="explore-store" ng-click="lanchStore()"><img ng-src="{{botStoresIcon}}" class="botStoresIcon">{{'explore_store' | i18nString}}</button>	
+			</div>	
+			</div>	
+			<!-- <div class="buttonDiv" ng-if="obj.canCreateBot && showBanner">
+							
+				<span class="dropdown">
+					<button class="dropdown-toggle btn btn-primary newBot pull-right createNewBotBtnInHome" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						
+						<span class="plus">+</span><span class="title">{{'new_bot'| i18nString}}</span>
+					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">						
+						<li class="dropdown-item" ng-click="selectMode(contentType.type, contentType)"  ng-repeat="contentType in contentTypes"  id="{{contentType.id}}" ng-show="contentType.show">
+							<div class="img-block">
+								<img ng-src={{contentType.imgUrl}}>
+							</div>
+							<div class="content-sec">
+								<div class="m-title">{{contentType.name}}</div>
+								<div class="s-title">{{contentType.description}}</div>	
+							</div>
+							
+						</li>
+					
+					</div>
+				</span> 
+			
+			<span class="synSearch botSearchBar callclear bt-pos-relative searchExpand">
+			<input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="botModel.botSearchQuery" ng-keyup="searchBots($event)" placeholder="{{'search_bot'| i18nString}}">
+			<img ng-init="botModel.botSearchQuery = ''" ng-show="botModel.botSearchQuery === ''" class="searchBar" ng-src="{{searchIconGray}}">
+			<span ng-show="botModel.botSearchQuery !== ''" class="searchBar fa fa-remove" ng-click="clearBotSearch()"></span>
+			</span>
+			</div> -->
+
+						
+		<div class="container-fluid bg-3 text-center allBots">
+            
+            <div class="container-fluid bg-3 text-center allBots" ng-init="loaded()">
+                    <div class="allBotsContainer">
+				<!--RECENTLY USED BOTS starts here-->
+				<div class="">
+					<!--BOTS STORE BANNER-->
+					<!-- <div class="banner-bot-store">
+						<div class="inner-data">
+				
+						<img class="close-store" ng-click="closeBanner()" ng-src="{{closeStoreIcon}}">
+						<img ng-src="{{botStoresImg}}" class="botStoresImg" >
+						<h5 class="main-title">Accelerate your bot lifecycle journey with our curated templates</h5>
+						<p class="desc-text-store">Explore the prebuilt templates and solution accelerators, install the one that suits your business, and customize it to your needs.</p>
+						<button class="explore-store" ng-click="loadStore()"><img ng-src="{{botStoresIcon}}" class="botStoresIcon">{{'explore_store' | i18nString}}</button>	
+						</div>	
+						</div>	 -->
+						<!--BOTS STORE BANNER-->
+					<div class="buttonDiv" ng-if="obj.canCreateBot">
+							
+							<span class="dropdown">
+								<button class="btn btn-primary newBot pull-right createNewBotBtnInHome dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="title">{{'new_bot'| i18nString}}</span>
+								</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<!-- <a class="dropdown-item" ng-show="contentType.show" ng-repeat="contentType in contentTypes" >{{contentType.name}} <img ng-src="{{helpIcon}}" class="helpIcon" data-content="{{contentType.description}}" data-placement="top" data-toggle="popover" data-trigger="click"></a> -->
+									<!--NEW UI-->
+									<a class="dropdown-item" id="{{contentType.id}}" ng-show="contentType.show" ng-click="selectMode(contentType.type, contentType)" ng-repeat="contentType in contentTypes" >
+										<div class="img-block">
+											<img ng-src={{contentType.imgUrl}}>
+										</div>
+										<div class="content-sec">
+											<div class="m-title">{{contentType.name}}</div>
+											<div class="s-title">{{contentType.description}}</div>	
+										</div>
+									</a>
+									<!--NEW UI-->
+									<!-- <a class="dropdown-item" id="{{contentType.id}}" ng-show="contentType.show" ng-click="selectMode(contentType.type, contentType)" ng-repeat="contentType in contentTypes" >{{contentType.name}} <img ng-src="{{helpIcon}}" class="helpIcon" ooltip-placement="top" tooltip="{{contentType.description}}" ></a> -->
+								</div>
+
+							</span> 
+						<!-- /<button class="btn btn-primary newBot pull-right" ng-click="fullModalCallback.openFullPageModal(1,'createBot')"> -->
+
+						<span class="pull-right callclear bt-pos-relative searchExpand botSearch">
+                        <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="botModel.botSearchQuery" ng-keyup="searchBots($event)" placeholder="{{'search_name'| i18nString}}">
+                        <i class="searchBar btx-search" ></i>
+                        <span ng-show="botModel.botSearchQuery !== ''" class="searchBar btx-close" ng-click="clearBotSearch()"></span>
+                        </span>
+					</div>
+					<h3 class="subHeading" ng-if="isBotSearchMode()">{{'search_results'| i18nString}}</h3>
+					<h3 class="subHeading" ng-if="!isBotSearchMode() && recentBots.length >= 8">{{'recent_bots'| i18nString}}</h3>
+				
+					<div class="row" ng-show="!isBotSearchMode() && recentBots.length >= 8">
+						<div class="col-sm-2" ng-click="doAction('bot', bot)" ng-repeat="bot in recentBots">
+							<div class="container text-center">
+									<div class="trialEcomDiv" ng-if="isEcomEnabled()">
+											<span ng-if="bot && bot.license && bot.license.billingType==='free'" class="trialEcom">{{'trial'| i18nString}}</span>
+										</div>
+								<div class="shared">
+									<img  ng-show="bot.type == 'solution'" ng-src="{{solutionBotIcon}}"/>
+									<img  ng-show="bot.sbStreamId" tooltip-placement="left" tooltip="{{'inhertied_from'| i18nString:({dyn:bot.originalName})}}" ng-src="{{inheritedBotIcon}}"/>
+									<img  ng-show="bot.type == 'universalbot'" ng-src="{{universalBotIcon}}"/>
+									<img ng-show="bot.isShared"   ng-src="{{shareTwoIcon}}"/>
+
+									<img ng-src="{{sampleBotIcon}}" ng-show="bot.type == 'sample'"/>
+								</div>
+								<!-- <div class="iconDiv"><img ng-src="{{bot.icon}}" class="bitmap" ></div> -->
+								<div class="iconDiv"><img ng-src="{{bot.icon}}" class="bitmap" onerror='handleimgLoad(this)'></div>
+								<div class="descriptionDiv">
+									<h1>
+										<span class="botName" tooltip-placement="bottom" tooltip="{{bot.name}}" class="botName">{{bot.name}}</span>
+										<span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" >
+										<!-- <span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" data-toggle="popover" data-content="{{getTrailWarningMsg(bot)}}" data-placement="bottom" data-trigger="hover"> -->
+											<img ng-if="!bot.aboutToExpire" ng-src="{{exclamationCircleRed}}" class="exclamationCircleRed" tooltip-placement="top" tooltip="{{getTrailWarningMsg(bot)}}">
+                                             <img ng-if="bot.aboutToExpire"  ng-src="{{exclamationCircleOrange}}" class="exclamationCircleRed" tooltip-placement="top" tooltip="{{getTrailWarningMsg(bot)}}">
+										</span>
+									</h1>
+									<p class="tasks displayBlock">{{getTasksCount(bot)}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row yourBots" ng-show="isBotSearchMode()">
+						<div class="col-sm-4" ng-click="doAction('bot', bot)" ng-repeat="bot in searchedBots track by $index">
+							<div class="container text-center">
+									<div class="trialEcomDiv" ng-if="isEcomEnabled()">
+											<span ng-if="bot && bot.license && bot.license.billingType==='free'" class="trialEcom">{{'trial'| i18nString}}</span>
+										</div>
+								<div class="shared">
+									<img  ng-show="bot.type == 'solution'" ng-src="{{solutionBotIcon}}" class="pull-right"/>
+									<img  ng-show="bot.sbStreamId" tooltip-placement="left" tooltip="{{'inhertied_from'| i18nString:({dyn:bot.originalName})}}" ng-src="{{inheritedBotIcon}}" class="pull-right"/>
+									<img ng-show="bot.isShared" ng-src="{{shareTwoIcon}}" class="pull-right" />
+									<img class="pull-right" ng-show="bot.type == 'universalbot'" ng-src="{{universalBotIcon}}"/>
+									<img class="pull-right" ng-src="{{sampleBotIcon}}" ng-show="bot.type == 'sample'"/>
+								</div>
+								<div class="iconDiv"><img ng-src="{{bot.icon}}" class="bitmap" onerror='handleimgLoad(this)'></div>
+								<div class="descriptionDiv">
+									<h1>
+										<span tooltip-placement="bottom" tooltip="{{bot.name}}" class="botName">{{bot.name}}</span>
+										<span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" tooltip-placement="top" tooltip="{{getTrailWarningMsg(bot)}}" id="dsffs{{$index}}">
+										<!-- <span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" data-toggle="popover" data-content="{{getTrailWarningMsg(bot)}}" data-placement="bottom" data-trigger="hover" id="dsffs{{$index}}"> -->
+                                                                                            <img ng-if="!bot.aboutToExpire" ng-src="{{exclamationCircleRed}}" class="exclamationCircleRed">
+                                                                                            <img ng-if="bot.aboutToExpire"  ng-src="{{exclamationCircleOrange}}" class="exclamationCircleRed">
+											<span>
+									</h1>
+									<p class="tasks displayBlock">{{getTasksCount(bot)}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--RECENTLY USED BOTS ends here-->
+				<!--BOT FILTERS-->
+					<div class="colxs-12 filterMenu" ng-show="seeAll && !isBotSearchMode()">
+						<div class="col-xs-6 filterLeft">
+							<div class="kr-sg-dropdowns">
+								<div class="dropdown dropdown-open">
+									<button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{(botsSortOrFilterObj.filterBy || allBotsLabel)}} <i class="btx-dropdown"></i></button>                                            
+									<ul class="dropdown-menu content-menu">                                               
+									  <li  ng-click="applyFilter('allBots')"><a>{{'allBots'| i18nString}}</a></li>
+									  <li  ng-click="applyFilter('myBots')"><a>{{'myBots'| i18nString}}</a></li>
+									  <li  ng-click="applyFilter('sharedBots')"><a>{{'sharedBots'| i18nString}}</a></li>
+									</ul>
+								  </div>
+							</div>
+							<div class="alert alert-warning alert-xs text-center sortValueNew" role="alert" ng-show="sortLoading">
+								<i class="fa-spin fa fa-circle-o-notch"></i>
+							</div>
+						</div>
+						<div class="col-xs-6 pl-0 filterRight d-flex align-items-center justify-content-end">
+							<div class="filterDropdow">
+								<div class="kr-sg-dropdowns">
+                                    <div class="label-text">{{'sortBy'| i18nString}}:</div>
+                                    <div class="dropdown dropdown-open">
+                                        <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{(botsSortOrFilterObj.sortDate || createdLabel)}}</button>                                            
+                                        <ul class="dropdown-menu content-menu">
+										  <li><a href="#" ng-click="sortTaskList('BotName')">{{'botName'| i18nString}}</a></li>
+                                          <li><a href="#" ng-click="sortTaskList('createdDate')">{{'createdDate'| i18nString}}</a></li>
+                                          <li><a href="#" ng-click="sortTaskList('ModifiedDate')">{{'modifiedDate'| i18nString}}</a></li>
+										  <!-- <li><a href="#" ng-click="sortTaskList('TotalTasks')">{{'totalTasks'| i18nString}}</a></li> -->
+										  <li><a href="#" ng-click="sortTaskList('BotOwnerName')">{{'botOwnerName'| i18nString}}</a></li>
+                                        </ul>
+                                      </div>
+                                </div>
+							</div>
+							<div class="sortingIconsSpan">
+								<span ng-click="sortTaskList('name')" class="sortClick">
+									<i ng-if="botsView.yourBotsSort=='name'"  class="sortIconAZ btx-sorting" tooltip-placement="top" tooltip="{{'atoz_tooltip'| i18nString}}"></i>
+								</span>
+								<span ng-click="sortTaskList('name')" class="sortClick">
+									<i  ng-if="botsView.yourBotsSort=='-name'"  class="sortIconZA btx-sorting" tooltip-placement="top" tooltip="{{'ztoa_tooltip'| i18nString}}"></i>
+								</span>
+							</div>
+							<div class="jointButton">
+								<button ng-class="{'active_tile_list':botsView.yourBots=='tile'}" tooltip-placement="top" tooltip="{{'tile_tooltip'| i18nString}}" class="viewIconsSpan tooltip-default-behaviour text-white-space" ng-click="switchView('yourBots','tile')"  >
+									<i class="listViewIcon btx-grid-view tooltip-default-behaviour text-white-space"></i>
+									<!-- <img ng-click="switchView('yourBots','tile')" ng-if="botsView.yourBots=='list'" ng-src="{{ tileViewIcon}}" class="tileViewIcon" tooltip-placement="top" tooltip="{{'tile_tooltip'| i18nString}}"> -->
+								</button>
+								<button ng-class="{'active_tile_list':botsView.yourBots=='list'}" tooltip-placement="top" tooltip="{{'list_tooltip'| i18nString}}" class="viewIconsSpan noBorder tooltip-default-behaviour text-white-space" ng-click="switchView('yourBots','list')">
+									<!-- <img ng-click="switchView('yourBots','list')" ng-if="botsView.yourBots=='tile'" ng-src="{{ listViewIcon}}" class="listViewIcon" tooltip-placement="top" tooltip="{{'list_tooltip'| i18nString}}"> -->
+									<i class="tileViewIcon btx-list-view"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				<!--BOT FILTERS-->
+				<!--YOUR BOTS starts here-->
+
+				<div class="marginTop20" ng-show="seeAll && !isBotSearchMode()">
+					<h3 class="subHeading displyNone" ng-hide="recentBots.length < 8">
+						{{'your_bots'| i18nString}}
+						<span class="sortingIconsDiv displayNone">
+								<span class="viewIconsSpan">
+									<img ng-click="switchView('yourBots','list')" ng-if="botsView.yourBots=='tile'" ng-src="{{ listViewIcon}}" class="listViewIcon" tooltip-placement="top" tooltip="{{'list_tooltip'| i18nString}}">
+									<img ng-click="switchView('yourBots','tile')" ng-if="botsView.yourBots=='list'" ng-src="{{ tileViewIcon}}" class="tileViewIcon" tooltip-placement="top" tooltip="{{'tile_tooltip'| i18nString}}">
+								</span>
+								<span class="sortingIconsSpan">
+										<img ng-click="switchView('yourBotsSort','-name')" ng-if="botsView.yourBotsSort=='name'" ng-src="{{ sortIconAZ}}" class="sortIconAZ" tooltip-placement="top" tooltip="{{'atoz_tooltip'| i18nString}}">
+										<img ng-click="switchView('yourBotsSort','name')" ng-if="botsView.yourBotsSort=='-name'" ng-src="{{ sortIconZA}}" class="sortIconZA" tooltip-placement="top" tooltip="{{'ztoa_tooltip'| i18nString}}">
+								</span>
+								
+						</span>
+					</h3>
+					<div class="row yourBots " ng-if="botsView.yourBots=='tile'">
+						<div class="col-sm-4" ng-class="{'sharedBots':bot.isShared}" ng-click="doAction('bot', bot)" ng-repeat="bot in allBots | orderBy : (orderType || 'name')">
+							<div class="container text-center">
+									<div class="trialEcomDiv" ng-if="isEcomEnabled()">
+											<span ng-if="bot && bot.license && bot.license.billingType==='free'" class="trialEcom">{{'trial'| i18nString}}</span>
+										</div>
+										<div class="shared">
+											<img  ng-show="bot.type == 'solution'" ng-src="{{solutionBotIcon}}" class="pull-right"/>
+											<img  ng-show="bot.sbStreamId" tooltip-placement="left" tooltip="{{'inhertied_from'| i18nString:({dyn:bot.originalName})}}" ng-src="{{inheritedBotIcon}}" class="pull-right"/>
+											<img ng-show="bot.isShared" ng-src="{{shareTwoIcon}}" class="pull-right" />
+											<img class="pull-right" ng-show="bot.type == 'universalbot'" ng-src="{{universalBotIcon}}"/>
+											<img class="pull-right" ng-src="{{sampleBotIcon}}" ng-show="bot.type == 'sample'"/>
+										</div>
+								<!-- <div class="shared" ng-show="bot.type == 'universalbot'"><img class="pull-right" ng-src="{{universalBotIcon}}"/></div>
+								<div class="shared" ng-show="bot.type == 'sample'"><img class="pull-right" ng-src="{{sampleBotIcon}}"/></div>
+								<div class="shared" ng-show="bot.type == 'solution'"><img class="pull-right" ng-src="{{solutionBotIcon}}"/></div>
+								<div class="shared" ng-show="bot.isShared" ><img class="pull-right" ng-src="{{shareTwoIcon}}"/></div> -->
+								<!-- <div class="shared" ng-show="bot.sbStreamId"><img class="pull-right" tooltip-placement="left" tooltip="{{'inhertied_from'| i18nString:({dyn:bot.originalName})}}" ng-src="{{inheritedBotIcon}}"/></div> -->
+								<div class="iconDiv"><img ng-src="{{bot.icon}}" class="bitmap" onerror='handleimgLoad(this)'></div>
+								<div class="descriptionDiv">
+									<h1  >
+										<span class="botName" tooltip-placement="bottom" tooltip="{{bot.name}}">{{bot.name}}</span>
+										<span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" tooltip-placement="top" tooltip="{{getTrailWarningMsg(bot)}}">
+										<!-- <span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" data-toggle="popover" data-content="{{getTrailWarningMsg(bot)}}" data-placement="bottom" data-trigger="hover"> -->
+											<img ng-if="!bot.aboutToExpire" ng-src="{{exclamationCircleRed}}" class="exclamationCircleRed">
+                                                                                        <img ng-if="bot.aboutToExpire"  ng-src="{{exclamationCircleOrange}}" class="exclamationCircleRed">
+										<span>
+                                    </h1>
+									<p class="tasks displayBlock">{{getTasksCount(bot)}}</p>
+									<p ng-show="bot.isShared" class="nameEmail displayBlock" tooltip-placement="top" tooltip="{{bot.createdBy.firstName+' '+bot.createdBy.lastName+'  '+ bot.createdBy.emailId}}"><span class="title">{{'bot_name'| i18nString}}: </span>{{bot.createdBy.firstName+" "+bot.createdBy.lastName}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4" ng-repeat="bot in yourBotsEmpty">
+							<div class="container empty text-center">
+							</div>
+						</div>
+					</div>
+					<div class="row yourBots tableView" ng-if="botsView.yourBots=='list'">
+
+							<div class="col-sm-12 botTabHeader noPadding">
+									<div class="container text-center">
+										<div class="col-xs-6 headTitle" >{{'bot_name'| i18nString}}</div>
+										<div class="col-xs-1 headTitle">{{'bot_count'| i18nString}}</div>
+										<div class="col-xs-2 headTitle">{{'bot_status'| i18nString}}</div>
+										<div class="col-xs-2 headTitle">{{'bot_type'| i18nString}}</div>
+									</div>
+								</div>
+						<div class="col-xs-12 noPadding" ng-click="doAction('bot', bot)" ng-repeat="bot in allBots |  orderBy : (orderType || 'name')">
+							<div class="container text-center">
+								<div class="descriptionDiv col-xs-6">
+									<img ng-src="{{bot.icon}}" class="bitmap" onerror='handleimgLoad(this)'>
+									<span class="botName">{{bot.name}} </span>
+									<span ng-if="isEcomEnabled() && bot && bot.license && bot.license.billingType==='free'" class="trialEcom">{{'trial'| i18nString}}</span> 
+									<span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" tooltip-placement="top" tooltip="{{getTrailWarningMsg(bot)}}">
+                                                                                <img ng-if="!bot.aboutToExpire" ng-src="{{exclamationCircleRed}}" class="exclamationCircleRed">
+                                                                                <img ng-if="bot.aboutToExpire"  ng-src="{{exclamationCircleOrange}}" class="exclamationCircleRed">
+									<span>
+								</div>
+								<div class="col-xs-1 noPaddingRight">
+									<span class="tasks displayBlock">{{getTasksCount(bot)}}</span>
+								</div>
+								<div class="col-xs-2 botStatus">
+										<span>{{bot.visibility.namespace!=='private'?published:inDevelopment}}</span>
+								</div>
+								<div  class="col-xs-3 shared">
+									<div class="shared">
+										<img  ng-show="bot.type == 'solution'" ng-src="{{solutionBotIcon}}" class="pull-right"/>
+										<img  ng-show="bot.sbStreamId" tooltip-placement="left" tooltip="{{'inhertied_from'| i18nString:({dyn:bot.originalName})}}" ng-src="{{inheritedBotIcon}}" class="pull-right"/>
+										<img ng-show="bot.isShared" ng-src="{{shareTwoIcon}}" class="pull-right" />
+										<img class="pull-right" ng-show="bot.type == 'universalbot'" ng-src="{{universalBotIcon}}"/>
+										<img class="pull-right" ng-src="{{sampleBotIcon}}" ng-show="bot.type == 'sample'"/>
+									</div>
+										<!-- <div class="shared" ng-show="bot.type == 'universalbot'">{{'universal_bot'| i18nString}}</div>
+										<div class="shared" ng-show="bot.type == 'sample'">{{'sample_bot'| i18nString}}</div>
+										<div class="shared" ng-show="bot.type == 'solution'">{{'smart_bot'| i18nString}}</div>
+										<div class="shared" ng-show="bot.isShared">{{'shared_bot'| i18nString}}</div>
+										<div class="shared" ng-show="bot.sbStreamId" tooltip-placement="bottom" tooltip="{{'inhertied_from'| i18nString:({dyn:bot.originalName})}}">{{'inherited'| i18nString}}</div> -->
+										<div ng-show="!(bot.type == 'solution' || bot.sbStreamId || bot.type == 'universalbot' || bot.type == 'sample' || bot.isShared)">---</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!--YOUR BOTS ends here-->
+
+				<!--SHARED BOTS starts here-->
+				<!-- <div class="marginTop20" ng-show="seeAll && !isBotSearchMode() && sharedBots.length">
+					<h3 class="subHeading">{{'shared_bots'| i18nString}}
+						<span class="sortingIconsDiv">
+								<span class="viewIconsSpan">
+										<img ng-click="switchView('sharedBots','list')" ng-if="botsView.sharedBots=='tile'" ng-src="{{ listViewIcon}}" class="listViewIcon" tooltip-placement="top" tooltip="{{'list_tooltip'| i18nString}}">
+										<img ng-click="switchView('sharedBots','tile')" ng-if="botsView.sharedBots=='list'" ng-src="{{ tileViewIcon}}" class="tileViewIcon" tooltip-placement="top" tooltip="{{'tile_tooltip'| i18nString}}">
+									</span>
+									<span class="sortingIconsSpan">
+										<img ng-click="switchView('sharedBotsSort','-name')" ng-if="botsView.sharedBotsSort=='name'" ng-src="{{ sortIconAZ}}" class="sortIconAZ" tooltip-placement="top" tooltip="{{'atoz_tooltip'| i18nString}}">
+										<img ng-click="switchView('sharedBotsSort','name')" ng-if="botsView.sharedBotsSort=='-name'" ng-src="{{ sortIconZA}}" class="sortIconZA" tooltip-placement="top" tooltip="{{'ztoa_tooltip'| i18nString}}">
+									</span>
+						</span>
+					</h3>
+					<div class="row sharedBots tableView" ng-if="botsView.sharedBots=='list'">
+						<div class="col-sm-12 botTabHeader noPadding">
+							<div class="container text-center">
+								<div class="col-xs-4 headTitle" >{{'bot_name'| i18nString}}</div>
+								<div class="col-xs-1 headTitle">{{'bot_count'| i18nString}}</div>
+								<div class="col-xs-2 headTitle">{{'bot_status'| i18nString}}</div>
+								<div class="col-xs-2 headTitle">{{'bot_type'| i18nString}}</div>
+								<div class="col-xs-3 headTitle">{{'creator_name'| i18nString}}</div>
+							</div>
+						</div>
+						<div class="col-sm-12 noPadding" ng-click="doAction('bot', bot)" ng-repeat="bot in sharedBots | orderBy : botsView.sharedBotsSort">
+							<div class="container text-center">
+								<div class="descriptionDiv col-xs-4" >
+									<img ng-src="{{bot.icon}}" class="bitmap">
+									<span class="botName" tooltip-placement="bottom" tooltip="{{bot.name}}">{{bot.name}}</span>
+									<span ng-if="isEcomEnabled() && bot && bot.license && bot.license.billingType==='free'" class="trialEcom">{{'trial'| i18nString}}</span>
+									<span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" tooltip="{{getTrailWarningMsg(bot)}}" tooltip-placement="top">
+                                                                            <img ng-if="!bot.aboutToExpire" ng-src="{{exclamationCircleRed}}" class="exclamationCircleRed">
+                                                                            <img ng-if="bot.aboutToExpire"  ng-src="{{exclamationCircleOrange}}" class="exclamationCircleRed">
+									<span>
+									
+								</div>
+								<div class="col-xs-1 noPaddingRight">
+										<span class="tasks displayBlock">{{getTasksCount(bot)}}</span>
+								</div>
+
+								<div class="col-xs-2 botStatus">
+										<span>{{bot.visibility.namespace!=='private'? published: inDevelopment}}</span>
+								</div>
+								<div class="shared col-xs-2">
+										<div ng-show="bot.type == 'solution'">{{'smart_bot'| i18nString}}</div>
+									   <div ng-show="bot.sbStreamId" tooltip-placement="top" tooltip="Inherited from {{bot.originalName}}" ng-src="{{inheritedBotIcon}}">{{'inherited_bot'| i18nString}}</div>
+									   <div ng-show="bot.type == 'universalbot'">{{'universal_bot'| i18nString}}</div>
+										<div  ng-show="bot.type == 'sample'">{{'sample_bot'| i18nString}}</div>
+										<div ng-show="!(bot.type == 'solution' || bot.sbStreamId || bot.type == 'universalbot' || bot.type == 'sample')">---</div>
+								   </div>
+
+								<div class="col-xs-3">
+										<span class="nameEmail displayBlock"><span  tooltip-placement="top" tooltip="{{bot.createdBy.emailId}}" class="title">{{bot.createdBy.firstName+" "+bot.createdBy.lastName}}</span></span>
+								</div>
+							</div>
+						</div>
+            
+					</div>
+					<div class="row sharedBots " ng-if="botsView.sharedBots=='tile'">
+						<div class="col-sm-4" ng-click="doAction('bot', bot)" ng-repeat="bot in sharedBots | orderBy : botsView.sharedBotsSort">
+						<div class="container text-center">
+								<div class="trialEcomDiv" ng-if="isEcomEnabled()">
+										<span ng-if="bot && bot.license && bot.license.billingType==='free'" class="trialEcom">{{'trial'| i18nString}}</span>
+									</div>
+								
+							<div class="shared">
+									<img  ng-show="bot.type == 'solution'" ng-src="{{solutionBotIcon}}"/>
+								<img  ng-show="bot.sbStreamId" tooltip-placement="top" tooltip="{{'inhertied_from'| i18nString:({dyn:bot.originalName})}}" ng-src="{{inheritedBotIcon}}"/>
+								<img  ng-show="bot.type == 'universalbot'" ng-src="{{universalBotIcon}}"/>
+								<img ng-src="{{sampleBotIcon}}" ng-show="bot.type == 'sample'"/>
+							</div>
+							<div class="iconDiv"><img ng-src="{{bot.icon}}" class="bitmap"></div>
+							<div class="descriptionDiv" >
+								<h1>
+									<span class="botName" tooltip-placement="bottom" tooltip="{{bot.name}}">{{bot.name}}</span>
+									<span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" tooltip-placement="top" tooltip="{{getTrailWarningMsg(bot)}}">
+									<!-- <span class="trialWarnIcon" ng-if="canShowEcomWarning(bot)" data-toggle="popover" data-content="{{getTrailWarningMsg(bot)}}" data-placement="bottom" data-trigger="hover"> -->
+                                                                            <!-- <img ng-if="!bot.aboutToExpire" ng-src="{{exclamationCircleRed}}" class="exclamationCircleRed">
+                                                                            <img ng-if="bot.aboutToExpire"  ng-src="{{exclamationCircleOrange}}" class="exclamationCircleRed">
+									<span>
+								</h1>
+								<p class="tasks displayBlock">{{getTasksCount(bot)}}</p>
+								<p class="nameEmail displayBlock" tooltip-placement="top" tooltip="{{bot.createdBy.firstName+' '+bot.createdBy.lastName+'  '+ bot.createdBy.emailId}}"><span class="title">{{'bot_name'| i18nString}}: </span>{{bot.createdBy.firstName+" "+bot.createdBy.lastName}}</p>
+							</div>
+						</div>
+						</div>
+                                            <div class="col-sm-4" ng-repeat="bot in sharedBotsEmpty">
+							<div class="container empty text-center">
+							</div>
+				           </div>
+						</div>
+				</div> --> 
+
+				<!--SHARED BOTS ends here-->
+				<div class="moreLink" ng-show="!isBotSearchMode() && recentBots.length >= 8"><a href="" ng-click="toggleBots()">
+				   <span ng-show="!seeAll">{{'see_all'| i18nString}} <i class="fa fa-angle-right"></i></span>
+				   <span ng-show="seeAll">{{'see_less'| i18nString}}<i class="fa fa-angle-down"></i></span>
+
+				   </a> <span class="more hide">{{'More'| i18nString}}</span></div>
+				   <div class="text-center" ng-show="isBotSearchMode() && !searchedBots.length">{{'no_results'| i18nString}}</div>
+			</div>
+
+
+		</div>
+		</div>
+	<!--All Bots  container starts here-->
+
+	<!--Usage container starts here-->
+	<div class="row ">
+		<div class="container-fluid bg-3 text-center usage">
+
+			<div class="usageContainer">
+				<h3 class="subHeading">{{'usage'| i18nString}}</h3>
+				<div class="col-sm-6 noPadding">
+
+					<div class="container text-center totalBots">
+						<div class="descriptionDiv">
+							<div class="col-sm-4">
+								<h1>{{'total_bots'| i18nString}}</h1>
+								<div class="details"><span class="description">9</span></div>
+							</div>
+							<div class="col-sm-4 noPadding">
+								<h1>{{'sessions'| i18nString}}</h1>
+								<div class="details"><span class="description">220</span> <span class="timeStamp">{{'timestamp_week'| i18nString}}</span></div>
+							</div>
+							<div class="col-sm-4 noPadding">
+								<h1>&nbsp;</h1>
+								<div class="details"><span class="description">1354</span> <span class="timeStamp">{{'timestamp_month'| i18nString}}</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3 padding">
+
+					<div class="container text-center session">
+						<div class="descriptionDiv">
+							<h1>{{'sessions'| i18nString}}</h1>
+							<div class="details">
+								<div class="count"><i class="fa  fa-circle-o"></i></div>
+								<div class="description">75<span class="percentage">%</span></span>
+								</div>
+								<div class="timeStamp">{{'session_description'| i18nString}} <a href="#" class="link">{{'upgrade_now'| i18nString}}</a></div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+
+					<div class="container text-center currentCycle">
+						<div class="descriptionDiv">
+							<h1>{{'current_cycle'| i18nString}}</h1>
+							<div class="details"><span class="count"><i class="fa  fa-circle-o"></i></span><span class="description">50<span class="percentage">%</span></span>
+								<span class="timeStamp">{{'current_plan'| i18nString}}</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Usage container starts here-->
+	
+
+
+</bots-content-panel>
+<!-- <bt-fullpage-modal callback="fullModalCallback" step="step"></bt-fullpage-madal> -->
+	<bt-fullpage-modal bot-type="botType" initialize-create-bot="initializeCreateBot" callback="fullModalCallback" step="step">
+
+		</bt-fullpage-madal>
+

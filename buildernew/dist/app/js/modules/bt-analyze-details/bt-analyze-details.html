@@ -1,0 +1,371 @@
+<div class="modal modalSlide fade right analyzeEditTask" data-backdrop="static"  role="dialog">
+    <div class="modal-dialog editTaskBody" ng-class="{'performance':type == 'performance', 'debugLog':type == 'debugLog','addBG':currScreen===1}" dynamic-height dynaoffset="-1">
+        <div class="parentContainer" ng-show="type !== 'performance'">
+            <div class="headerContainerDiv">
+                <div class="childContainer">
+                    <ul class="nav nav-tabs">
+                        <li class="active" ng-click="updateScroll('details',0)"><a data-toggle="tab" href="#details">{{'details_label'| i18nString}}</a></li>
+                        <li ng-click="updateScroll('nlp',1)" ng-if="type !== 'debugLog'"><a data-toggle="tab" href="#nlpAnalysis">{{'nlp_analysis'| i18nString}}</a></li>
+                        <li ng-click="updateScroll('chatHistory',2)"><a data-toggle="tab" href="#chatHistory">{{'chat_history'| i18nString}}</a></li>
+                    </ul>
+                </div>
+                <i class="closeCross btx-close" ng-click="closeModal()" ></i>
+            </div>
+            <div class="tab-content paddingBTM50">
+                <!-- details tab -->
+                <div id="details" class="details tab-pane fade in active positionRelative" perfect-scroll dynamic-height dynaoffset="-100" height-property="height">
+                    <div class="bot-detail" ng-if="type !== 'debugLog'">
+                        <div class="eachSection">
+                            <div class="labelTitle" ng-if="utteranceStr">Original Utterance</div>
+                            <div class="labelValue" ng-if="utteranceStr">{{utteranceStr}}</div>
+                        </div>
+                        <div class="eachSection">
+                            <div class="labelTitle">Translated Utterance</div>
+                            <div class="labelValue" ng-if="originalInputAfterTranslation">{{originalInputAfterTranslation}}</div>
+                            <div class="labelValue" ng-if="!originalInputAfterTranslation">-NA-</div>
+                        </div>
+                        <div class="eachSection languageValues">
+                            <div class="language" ng-if="botLanguage">
+                                <div class="labelTitle">{{'bot_language'| i18nString}}</div>
+                                <div class="labelValue"> {{botLanguage}}</div>
+                            </div>
+                            <div class="language nluLanguageValue" ng-if="nluLanguage">
+                                <div class="labelTitle">{{'nlu_language'| i18nString}}</div>
+                                <div class="labelValue"> {{nluLanguage}}</div>
+                            </div>
+                        </div>
+                        <div class="eachSection">
+                            <div class="labelTitle">{{'channel_name'| i18nString}}</div>
+                            <div class="labelValue">{{channelsConfig.channelsObject[channelType].name | channelNameDisp}}</div>
+                        </div>
+                        <div class="eachSection">
+                            <div class="labelTitle">{{'intent_label'| i18nString}}</div>
+                            <span class="labelValue" ng-if = "currentTab !== 'intentNotFound'">
+                                <span class = "showSeparator" ng-show = "$index"> | </span>
+                                <span>{{intent}}</span>
+                            </span>
+                            <span class="labelValue" ng-if = "currentTab === 'intentNotFound'" ng-repeat="intent in task.NLAnalysis.finalResolver.winningIntent track by $index">
+                                <span class = "showSeparator" ng-show = "$index"> | </span>
+                                <span ng-if="stream.type==='universalbot'">{{intent.streamName}}: {{intent.intent}}</span>
+                                <span ng-if="stream.type!=='universalbot'">{{intent.intent}}</span>
+                            </span>
+                        </div>
+                        <div class="eachSection">
+                            <div class="labelTitle">{{'configurable_entity_name'| i18nString}}</div>
+                            <div class="labelValue" ng-repeat="entity in nlpData.finalResolver.entities">
+                                <span>{{entity.field}} : </span>
+                                <span>{{entity.value}}</span>
+                            </div>
+                            <div class="labelValue" ng-show="entity === '---'">{{entity}}</div>
+                        </div>
+                        <div class="eachSection" ng-show="flow !== '---'">
+                            <div class="labelTitle">{{'constants.flow'| i18nString}}</div>
+                            <div class="labelValue">{{flow}}</div>
+                        </div>
+                        <div class="eachSection" ng-show="recordTags.length">
+                            <div class="labelTitle">{{'custom_tags'| i18nString}}</div>
+                            <div class="recordTagsDiv" ng-repeat="tag in recordTags">
+                                <!-- <span class="recordsTags"> -->
+                                    <span class="recordName">{{tag.name}}</span>
+                                    <span class="recordType">({{tag.type}}):</span>
+                                    <span class="recordValue">{{tag.value}}</span>
+                                <!-- </span> -->
+                            </div>
+                        </div>
+                        <div class="eachSection" ng-show="hideSensitiveInfo">
+                            <div class="eachSection">
+                                <div class="showJson">{{showjson}}</div>
+                            </div>
+                            <div class="eachSection jsonData">
+                                <!--<pre id="jsonInfo"></pre>-->
+                                <span class="fa fa-copy copyDebugObj" ng-mouseup="copyDebugToClipboard('NLanalysis',$event)"ng-mousedown="prepareCopyClipboard('NLanalysis',$event)" title="Copy to clipboard">
+                                    <span class="copyDebugTooltip"></span>
+                                </span>
+                                <div id="jsonAnalyzeNL" class="bot-session-body">
+                                    <div class="panel-body" dynamic-height dynaoffset = "-400" height-property="height">
+                                        <div ng-if="task"
+                                            ng-jsoneditor 
+                                            ng-model="task" 
+                                            class="json_editor" 
+                                            id="nlanalysisDialog"
+                                            name="nlanalysisDialog" 
+                                            options="options">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="debugLog-details" ng-if="type === 'debugLog'">
+                        <div class="eachSection">
+                            <div class="labelTitle">{{'task_name_label2'| i18nString}}</div>
+                            <div class="labelValue">{{task.taskName || '---'}}</div>
+                        </div>
+                        <div class="eachSection">
+                            <div class="labelTitle">{{'channel_name'| i18nString}}</div>
+                            <div class="labelValue">{{ (channelsConfig.channelsObject[task.channel].name | channelNameDisp) || '---'}}</div>
+                        </div> 
+                        <div class="eachSection">
+                            <div class="labelTitle">{{'language_label'| i18nString}}</div>
+                            <div class="labelValue">{{task.language || '---'}}</div>
+                        </div> 
+                        <div class="eachSection">
+                            <div class="labelTitle">{{'flow'| i18nString}}</div>
+                            <div class="labelValue" ng-if="task.flow.length">
+                                <span class="path" ng-repeat="flow in task.flow">
+                                    <span class="path">
+                                        {{flow}}
+                                    </span>
+                                    <span ng-if="$last !== true">
+                                        >
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="labelValue" ng-if="task.flow.length === 0">
+                                ---
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <div id="nlpAnalysis" class="analyzeTab tab-pane fade positionRelative" perfect-scroll dynamic-height dynaoffset="-100" height-property="height">
+                    <div class="nlpAnalysis">
+                        <bt-train-nlpanalysis class="nlpAnalysisDiv" cb="trainBotCB" nlp-data="nlpData"></bt-train-nlpanalysis>
+                    </div>
+                </div>
+                <div id="chatHistory" class="tab-pane fade">
+                    <div class="userProfileMainComponent">
+                        <span class="img-icons profile_img" ng-click="openUserProfile('profile',$event)"><img ng-src="{{user_icon}}" class="img_"><span class="tooltiptext">{{'user_profile'| i18nString}}</span></span>
+                        <span class="img-icons user_conversation_img" ng-click="openUserProfile('conversation',$event)"><img ng-src="{{list_icon}}" class="img_"><span class="tooltiptext">{{'user_conversation_sessions'| i18nString}}</span></span>
+                        <span class="img-icons m-0 pull-right utterance_img" ng-click="openUserProfile('utterance',$event)"><img ng-src="{{chat_message}}" class="img_"><span class="tooltiptext">{{'go_to_utterance'| i18nString}}</span></span>
+                    </div>
+                    <div class="positionRelative chatHistoryScroll" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+                        <bt-chat-history class="chatHistoryDiv" cb="trainBotCB" nlp-data="nlpData" type="currScreen"></bt-chat-history>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        <div class="serviceContainer" ng-show="type == 'performance'">
+            <div class="maintitle modalHeader">
+                <h4 class="modal-title"> {{getComponentName(performanceTask.componentId)}} <i class="closeCross btx-close"  ng-click="closeModal()" ></i></h4>
+                <!-- <div class="closeBtn"></div>  -->
+            </div>
+            <div class="headerContainerDiv mt-0">
+                <div class="childContainer">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#all">{{'all'| i18nString}}</a></li>
+                        <li><a data-toggle="tab" href="#failure">{{'failure'| i18nString}}</a></li>
+                        <li><a data-toggle="tab" href="#success">{{'success'| i18nString}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content" perfect-scroll dynamic-height dynaoffset="-70" height-property="height">
+                <div id="all" class="details tab-pane fade in active" dynamic-height dynaoffset="-80">
+                    <div class="tableHeader col-xs-12 noPadding table_header">
+                        <div class="col-xs-3 headerTitle pl-8">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown">{{'User_id'| i18nString}}<img ng-src={{caretDown}} class="caretDown"></a>
+                            <ul class="dropdown-menu analyze-dropdown width100" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15" ng-click="updateUserName('koreID')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="cb.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="!cb.toShowKoreID">
+                                    <span class="paddingLeft15">{{'kore_id'| i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15" ng-click="updateUserName('channelUId')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="!cb.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="cb.toShowKoreID">
+                                    <span class="paddingLeft15">{{'chnlId_label'| i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-3 headerTitle">
+                            <a class="title dropdown-toggle left" type="button" data-toggle="dropdown">{{'date_and_time'| i18nString}}<i class="fa fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown">
+                                <li class="dropdown-subheader"><span>{{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('all', 'desc')"><span >{{'high_to_low'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('all', 'asc')"><span>{{'low_to_high'| i18nString}}</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-2 headerTitle"><a class="title pl-0 pr-0">{{'response_time'| i18nString}}</a></div>
+                        <div class="col-xs-1 headerTitle"><a class="title">{{'result'| i18nString}}</a></div>
+                        <div class="col-xs-3 headerTitle statusCode"><a class="title">{{'statusCode'| i18nString}}</a></div>
+                    </div>
+                    <div class="col-xs-12 noPadding" id="allContainer" perfect-scroll dynamic-height height-property="height" dynaoffset="-170">
+                        <div class="col-xs-12 noPadding" ng-class="{'pointerEventsNone':!hideSensitiveInfo}" ng-repeat="eachtask in performanceCollection" ng-show="performanceCollection.length > 0">
+                            <div class="col-xs-12 eachTableRow noPadding" ng-repeat="task in eachtask.records" ng-click="getJsonData(task,$event)">
+                                <div class="col-xs-3 text padding-left8" ng-if="cb.toShowKoreID">{{getEmail(task.userId)}}</div>
+                                <div class="col-xs-3 text padding-left8" ng-if="!cb.toShowKoreID">{{task.channelUId}}</div>
+                                <div class="col-xs-3 text dateStr"><span class="time1">{{getDate(task.timestamp)}}</span> (<span class="time">{{getTime(task.timestamp)}}</span>)</div>
+                                <div class="col-xs-2 text noPaddingLeft">{{eachtask.avg_res / 1000| number:2}} seconds</div>
+                                <div class="col-xs-1 text" ng-class="{'success':task.wasSuccessfull,'failure':!task.wasSuccessfull}" >{{(task.wasSuccessfull)? ('success' | i18nString): ('failure' | i18nString)}}</div>
+                                <div class="col-xs-3 text getStatusCode">{{getStatusCode(task.statusCode)}}</div>
+                            </div>
+                            <div class="serviceJsonBody">
+                                <div class="fetchingData" ng-show="isEmpty(serviceJsonData)"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span></div>
+                                <div class="serviceJsonData" ng-if="!isEmpty(serviceJsonData)">
+                                    <!--<pre id="jsonServiceInfo"></pre>-->
+                                    <span class="fa fa-copy copyDebugObj performance" ng-mouseup="copyDebugToClipboard('performance',$event)"ng-mousedown="prepareCopyClipboard('performance',$event)" title="Copy to clipboard">
+                                        <span class="copyDebugTooltip"></span>
+                                    </span>
+                                    <div id="jsonAnalyzePerformance{{$index}}" class="bot-session-body jsonAnalyzePerformance">
+                                        <div class="panel-body">
+                                            <div ng-if="serviceJsonData"
+                                                ng-jsoneditor 
+                                                ng-model="serviceJsonData" 
+                                                class="json_editor" 
+                                                id="nlanalysisDialog"
+                                                name="nlanalysisDialog" 
+                                                options="options">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="datanotFound" ng-show="!performanceDetails.all.loading && performanceCollection.length === 0"><span>{{'no_Data_found'| i18nString}}</span></div>
+                        <div class="fetchingData" ng-show="performanceDetails.all.loading"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span></div>
+                    </div>
+                </div>
+                <div id="failure" class="details tab-pane fade" dynamic-height dynaoffset="-80">
+                    <div class="tableHeader col-xs-12 noPadding table_header">
+                        <div class="col-xs-3 headerTitle pl-8">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown">{{'User_id'| i18nString}}<img ng-src={{caretDown}} class="caretDown"></a>
+                            <ul class="dropdown-menu analyze-dropdown width100" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15" ng-click="updateUserName('koreID')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="cb.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="!cb.toShowKoreID">
+                                    <span class="paddingLeft15">{{'kore_id'| i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15" ng-click="updateUserName('channelUId')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="!cb.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="cb.toShowKoreID">
+                                    <span class="paddingLeft15">{{'chnlId_label'| i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-3 headerTitle">
+                            <a class="title dropdown-toggle left" type="button" data-toggle="dropdown">{{'date_and_time'| i18nString}}<i class="fa fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown">
+                                <li class="dropdown-subheader"><span>{{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('failure', 'desc')"><span >{{'high_to_low'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('failure', 'asc')"><span>{{'low_to_high'| i18nString}}</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-2 headerTitle"><a class="title pl-0 pr-0">{{'response_time'| i18nString}}</a></div>
+                        <div class="col-xs-1 headerTitle"><a class="title">{{'result'| i18nString}}</a></div>
+                        <div class="col-xs-3 headerTitle statusCode"><a class="title">{{'statusCode'| i18nString}}</a></div>
+                    </div>
+                    <div class="col-xs-12 noPadding" id="failureContainer" perfect-scroll dynamic-height height-property="height" dynaoffset="-170">
+                        <div class="col-xs-12 noPadding" ng-class="{'pointerEventsNone':!hideSensitiveInfo}" ng-repeat="eachtask in performanceFailureCollection" ng-show="performanceFailureCollection.length > 0">
+                            <div class="col-xs-12 eachTableRow noPadding" ng-repeat="task in eachtask.records" ng-click="getJsonData(task,$event)">
+                                <div class="col-xs-3 text padding-left8" ng-if="cb.toShowKoreID">{{getEmail(task.userId)}}</div>
+                                <div class="col-xs-3 text padding-left8" ng-if="!cb.toShowKoreID">{{task.channelUId}}</div>
+                                <div class="col-xs-3 text dateStr"><span class="time1">{{getDate(task.timestamp)}}</span> (<span class="time">{{getTime(task.timestamp)}}</span>)</div>
+                                <div class="col-xs-2 text noPaddingLeft">{{eachtask.avg_res / 1000| number:2}} seconds</div>
+                                <div class="col-xs-1 text" ng-class="{'success':task.wasSuccessfull,'failure':!task.wasSuccessfull}" >{{(task.wasSuccessfull)? ('success' | i18nString): ('failure' | i18nString) }}</div>
+                                <div class="col-xs-3 text getStatusCode">{{getStatusCode(task.statusCode)}}</div>
+                            </div>
+                            <div class="serviceJsonBody">
+                                <div class="fetchingData" ng-show="isEmpty(serviceJsonData)"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span></div>
+                                <div class="serviceJsonData" ng-if="!isEmpty(serviceJsonData)">
+                                    <!-- <pre id="jsonServiceInfo"></pre> -->
+                                    <span class="fa fa-copy copyDebugObj performance" ng-mouseup="copyDebugToClipboard('performance',$event)"ng-mousedown="prepareCopyClipboard('performance',$event)" title="Copy to clipboard">
+                                        <span class="copyDebugTooltip"></span>
+                                    </span>
+                                    <div id="jsonAnalyzePerformance{{$index}}" class="bot-session-body jsonAnalyzePerformance">
+                                        <div class="panel-body">
+                                            <div ng-if="serviceJsonData"
+                                                ng-jsoneditor 
+                                                ng-model="serviceJsonData" 
+                                                class="json_editor" 
+                                                id="nlanalysisDialog"
+                                                name="nlanalysisDialog" 
+                                                options="options">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="datanotFound" ng-show="!performanceDetails.failure.loading && performanceFailureCollection.length === 0"><span>{{'no_Data_found'| i18nString}}</span></div>
+                        <div class="fetchingData" ng-if="performanceDetails.failure.loading"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span></div>
+                    </div>
+                </div>
+                <div id="success" class="details tab-pane fade" dynamic-height dynaoffset="-80">
+                    <div class="tableHeader col-xs-12 noPadding table_header">
+                        <div class="col-xs-3 headerTitle pl-8">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown">{{'User_id'| i18nString}}<img ng-src={{caretDown}} class="caretDown"></a>
+                            <ul class="dropdown-menu analyze-dropdown width100" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15" ng-click="updateUserName('koreID')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="cb.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="!cb.toShowKoreID">
+                                    <span class="paddingLeft15">{{'kore_id'| i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15" ng-click="updateUserName('channelUId')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="!cb.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="cb.toShowKoreID">
+                                    <span class="paddingLeft15">{{'chnlId_label'| i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-3 headerTitle">
+                            <a class="title dropdown-toggle left" type="button" data-toggle="dropdown">{{'date_and_time'| i18nString}}<i class="fa fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown">
+                                <li class="dropdown-subheader"><span>{{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('success', 'desc')"><span >{{'high_to_low'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('success', 'asc')"><span>{{'low_to_high'| i18nString}}</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-2 headerTitle"><a class="title pl-0 pr-0">{{'response_time'| i18nString}}</a></div>
+                        <div class="col-xs-1 headerTitle"><a class="title">{{'result'| i18nString}}</a></div>
+                        <div class="col-xs-3 headerTitle statusCode"><a class="title">{{'statusCode'| i18nString}}</a></div>
+                    </div>
+                    <div class="col-xs-12 noPadding" id="successContainer" perfect-scroll dynamic-height height-property="height" dynaoffset="-170">
+                        <div class="col-xs-12 noPadding" ng-class="{'pointerEventsNone':!hideSensitiveInfo}" ng-repeat="eachtask in performanceSuccessCollection" ng-show="performanceSuccessCollection.length > 0">
+                            <div class="col-xs-12 eachTableRow noPadding" ng-repeat="task in eachtask.records" ng-click="getJsonData(task,$event)">
+                                <div class="col-xs-3 text padding-left8" ng-if="cb.toShowKoreID">{{getEmail(task.userId)}}</div>
+                                <div class="col-xs-3 text padding-left8" ng-if="!cb.toShowKoreID">{{task.channelUId}}</div>
+                                <div class="col-xs-3 text dateStr"><span class="time1">{{getDate(task.timestamp)}}</span> (<span class="time">{{getTime(task.timestamp)}}</span>)</div>
+                                <div class="col-xs-2 text noPaddingLeft">{{eachtask.avg_res / 1000| number:2}} seconds</div>
+                                <div class="col-xs-1 text" ng-class="{'success':task.wasSuccessfull,'failure':!task.wasSuccessfull}" >{{(task.wasSuccessfull)? ('success' | i18nString): ('failure' | i18nString)}}</div>
+                                <div class="col-xs-3 text getStatusCode">{{getStatusCode(task.statusCode)}}</div>
+                            </div>
+                            <div class="serviceJsonBody">
+                                <div class="fetchingData" ng-show="isEmpty(serviceJsonData)"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span></div>
+                                <div class="serviceJsonData" ng-if="!isEmpty(serviceJsonData)">
+                                    <!--<pre id="jsonServiceInfo"></pre>-->
+                                    <span class="fa fa-copy copyDebugObj performance" ng-mouseup="copyDebugToClipboard('performance',$event)"ng-mousedown="prepareCopyClipboard('performance',$event)" title="Copy to clipboard">
+                                        <span class="copyDebugTooltip"></span>
+                                    </span>
+                                    <div id="jsonAnalyzePerformance{{$index}}" class="bot-session-body jsonAnalyzePerformance">
+                                        <div class="panel-body">
+                                            <div ng-if="serviceJsonData"
+                                                ng-jsoneditor 
+                                                ng-model="serviceJsonData" 
+                                                class="json_editor" 
+                                                id="nlanalysisDialog"
+                                                name="nlanalysisDialog" 
+                                                options="options">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="datanotFound" ng-show="!performanceDetails.success.loading && performanceSuccessCollection.length === 0"><span>{{'no_Data_found'| i18nString}}</span></div>
+                        <div class="fetchingData" ng-show="performanceDetails.success.loading"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jsonResponseContainer" dynamic-height dynaoffset="-70" height-property="height">
+        <div class="text">{{'java_script_message'| i18nString}}</div>
+        <div class="closeBtn"><span class="fa fa-close" ng-click="closeChatHistoryJsonModal()"></span></div>
+        <div class="jsonPreTag"><pre id="chatHistoryJson" perfect-scroll dynamic-height dynaoffset="-160" height-property="height"></pre></div>
+    </div>
+    <div ng-if="showNlpEditPanel" class="editNlpAnalysis" perfect-scroll dynamic-height dynaoffset = "-70" height-property="height">
+        <bt-train-nlpanalysis-edit cb="trainBotCB"></bt-train-nlpanalysis-edit>
+    </div>
+    <div ng-show="showUserProfile" class="editUserProfile" perfect-scroll dynamic-height dynaoffset = "-53" height-property="height">
+        <bt-chat-history-details cb="UserProfileCB"></bt-chat-history-details>
+    </div>
+</div>

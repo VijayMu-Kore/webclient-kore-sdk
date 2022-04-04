@@ -1,0 +1,134 @@
+<div class="summaryLoader animationIfLeave" ng-if="lodingForm">
+   <span class="spinner-text"> 
+       <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+       <span class="spinner-text-content">  {{'loading'| i18nString}}</span>
+   </span>
+</div>
+<div class="container-fluid anno-header">
+    <div class="navbar-collapse" id="pdfAnno">
+        <ul class="nav navbar-nav leftPanel">
+            <li class="back-arrow">
+                <i ng-click='goBack()' class="btx-carrot-left"></i>
+            </li>
+            <li class="header-title">
+                <span class="name">{{'annotate_document' | i18nString}}</span>
+                <span class="carrot-right">
+                    <i class="btx-carrot-right"></i>
+                </span>
+                <span class="automation">{{callbacks.fileName || '---'}}</span>
+                <!-- <span class="automation">{{'automation' | i18nString}}</span> -->
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right rightPanel">
+            <!-- Extract Starts here -->
+            <li class="extract-btn">
+                <span class="tooltip-custom info-icon" ng-if="isFormValid() && !loaderFlag">
+                    <img ng-src="{{assetsBase}}/icons-new/info/info-green.svg">
+                    <span class="tooltiptext" ng-click="$event.stopPropagation()">{{'annotation_failed_tooltip' | i18nString}}</span>
+                </span>
+               
+                <div ng-if="loaderFlag" class="loader-spinner-circle"></div>
+                <button type='button' ng-disabled="!isFormValid() || loaderFlag" class='kr-sg-button-primary btn_md marginRightTen tooltip-custom info-icon'
+                    ng-click='startExtractionProcess()'>
+                    {{loaderFlag === true? ('extracting' | i18nString): ('extract' | i18nString)}}
+                    <span class="tooltiptext" ng-if="!isFormValid()" ng-click="$event.stopPropagation()">{{'You can only extract after adding new annotations to the file.'}}</span>
+                </button>
+            </li>
+            <!-- Extract ends -->
+            <!-- Global help Starts here -->
+            <li class="gHelp">
+                <help-button help-id="'kgAnnotationTool'" class="anno-help"></help-button>
+            <li>
+            <!-- Global help ends -->
+            <!-- Toggle Starts here -->
+            <!-- <li class="menu-toggle dropdown ellipsisDropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" id="menu1">
+                    <i  class="btx-overflow" title="Rotate"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-custom" role="menu" aria-labelledby="menu1">
+                    <li><a class="rich-text-nav" ng-click="clockwise()">{{'rotate_clockwise' | i18nString}}</a></li>
+                    <li><a class="rich-text-nav" ng-click="anticlockwise()">{{'rotate_anticlockwise' | i18nString}}</a></li>
+                </ul>
+            </li> -->
+
+            <li class="kr-sg-dropdowns elipse-dropdown-info">    
+                <div class="dropdown dropdown-open">
+                    <button ng-click='deleteNIndexDD($event)' class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                    </button>                                            
+                    <ul class="dropdown-menu content-menu">                                                      
+                        <li><a class="rich-text-nav" ng-click="clockwise()">{{'rotate_clockwise' | i18nString}}</a></li>
+                        <li><a class="rich-text-nav" ng-click="anticlockwise()">{{'rotate_anticlockwise' | i18nString}}</a></li>
+                    </ul>
+                </div>
+            </li>
+            <!-- Toggle ends -->
+        </ul>
+    </div>
+</div>
+<div class="right-nav" ng-class='{"failed-block": extractionSuccess}'>
+    <div class="tooltip-custom" ng-click="reviewQuestions()">
+        <div class="title">{{'review_questions' | i18nString}}</div>
+        <span class="tooltiptext" ng-if="!extractionSuccess" ng-click="$event.stopPropagation()">{{'review_annotate_failed_tooltip' | i18nString}}</span>
+        <span class="tooltiptext" ng-if="extractionSuccess" ng-click="$event.stopPropagation()">{{'You can review the questions and answers and add them to the Knowledge Graph.' }}</span>
+    </div>
+</div>
+
+
+<iframe id="pdfanno" class="iframeContainer" dynamic-height dynaoffset="-48" height-property="height" frameBorder="0" src="{{pdfAnnoUrl}}"></iframe>
+<!-- <iframe id="pdfanno" class="iframeContainer" frameBorder="0" dynamic-height dynaoffset="-48" height-property="height"
+    src="http://localhost:4200/analytics/annotool/st-7feb9fd5-8570-5f43-82cb-172aedbc8d8f/5f79b254065689127b55f6bc"></iframe> -->
+
+
+
+<!-- REVIEW MODAL -->
+<!-- <div class="modal fade kr-sg-modal annotation-modal" id="review-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">                                 
+          <div class="modal-title" ng-if="extractedObj.status === 'success'">
+              {{'extraction_complete'| i18nString}}
+          </div>
+          <div class="modal-title" ng-if="extractedObj.status === 'failed'">
+            {{'Extraction Failed'}}
+        </div>
+        </div>
+        <div class="modal-body">
+          <p ng-if="extractedObj.status === 'success'">The document extraction is complete and
+               <span>{{extractedObj.qnaExtractedCount || 0}}</span>
+               Questions and Answers are extracted. You can now review and add them to the Knowledge Graph.</p>
+          <p ng-if="extractedObj.status === 'failed'">Document extraction failed. Please add a few more annotations and try again.</p>
+        </div>
+        <div class="modal-footer">                               
+          <button class="kr-sg-button-primary btn_md" ng-click="reviewQuestions()" ng-if="extractedObj.status === 'success'">{{'review' | i18nString}}</button>
+          <button class="kr-sg-button-secondary btn_md" ng-click="closeReviewModal()" ng-if="extractedObj.status === 'success'">{{'cancel' | i18nString}}</button>
+          <button class="kr-sg-button-secondary btn_md" ng-click="extractAgain()" ng-if="extractedObj.status === 'failed'">{{'cancel' | i18nString}}</button>
+        </div>
+      </div>
+    </div>
+</div>     -->
+
+
+
+<div class="modal fade annotation-modal" id="review-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" ng-if="extractedObj.status === 'success'">{{'extraction_complete'| i18nString}}</h4>
+                <h4 class="modal-title" ng-if="extractedObj.status === 'failed'">{{'Extraction Failed'}}</h4>
+            </div>
+            <div class="modal-body import-bot-modal-body" perfect-scroll>
+                <div ng-if="extractedObj.status === 'success'">The document extraction is complete and
+                    <span>{{extractedObj.qnaExtractedCount || 0}}</span>
+                    Questions and Answers are extracted. You can now review and add them to the Knowledge Graph.</div>
+               <div ng-if="extractedObj.status === 'failed'">Document extraction failed. Please add a few more annotations and try again.</div>
+            </div>
+            <div class="modal-footer">                               
+                <button class="kr-sg-button-primary btn_md" ng-click="reviewQuestions()" ng-if="extractedObj.status === 'success'">{{'review' | i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeReviewModal()" ng-if="extractedObj.status === 'success'">{{'cancel' | i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="extractAgain()" ng-if="extractedObj.status === 'failed'">{{'cancel' | i18nString}}</button>
+              </div>
+        </div>        
+    </div>
+</div>
+        

@@ -1,0 +1,23 @@
+<div class="bt-create-container col-xs-12 topmargin-6 containerMarginBottom">
+    <div class="row top-bar selected-stream" style="background:{{selectedStream.color}}">
+        <div class="main-body row">
+	        <div class="stream-icon">
+	        	<a href="/bt" title="">
+	            	<img alt="{{selectedStream.name}}" ng-src="{{selectedStream.icon}}">
+	        	</a>
+	        </div>
+	        <div class="stream-details">
+	          <span class="name">{{selectedStream.name}}</span>
+	          <span class="alert-action">{{'bt_stream_edit_edit_bot'| i18nString}}</span>
+	        </div>
+	    </div>
+	</div>
+	<section class="widget botStreamEdit">
+		<header class="header"> </header>
+        <div class="widget-body">
+	  <div class="col-xs-12">
+	    <stream-form stream-id="{{streamId}}" display-mode="{{displayMode}}" edit-mode="edit" on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></stream-form>
+	  </div>
+      </div>
+	</section>
+</div>

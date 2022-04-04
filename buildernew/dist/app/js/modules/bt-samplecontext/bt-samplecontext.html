@@ -1,0 +1,24 @@
+<div class="bt-response-modal">
+    <div class="modal-header">
+        <button type="button" ng-click="closeModal()"class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'add_context_map'| i18nString}}</h4>
+    </div>
+    <div class="modal-body">
+        <form name='rqForm'> 
+            <div class="head">
+                <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                        <div ng-jsoneditor class="json_editor response_json_editor" ng-model="soap.sample" options="options" name="sample" callback="sampleResCB" ></div>
+                    </div>
+                </div>    
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="closeModal()">{{'cancel'| i18nString}}</button>
+        <button type="submit" class="btn btn-primary" 
+                ng-disabled="saveInProgress"
+                ng-click="saveContextMap()">
+            <i ng-show="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)? saving : save }}</button>
+    </div>
+</div>

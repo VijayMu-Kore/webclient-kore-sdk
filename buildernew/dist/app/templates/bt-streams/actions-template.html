@@ -1,0 +1,120 @@
+<!-- <div ng-init="bulderReloaded()" class="text-center marginTop20percent" ng-if="selectedStream.type != 'universalbot'"  ng-show='!(actionTasksByState.length > 0) && (actionTasks.length > 0)'>{{'no_tasks'| i18nString}}</div> -->
+<div class="kr-sg-multi-line-notification-link marginBottom15">
+   <div class="main-heading">{{'important_note' | i18nString}}</div>
+   <div class="tost-text">{{'depricated_tasks_info'| i18nString}}</div>                                   
+   <div class="know-link"  ng-click="redirectToLink('DEPRECATED_TASKS' , $event)"><a>{{'know_more'| i18nString}}</a></div>
+ </div>
+<div ng-init="bulderReloaded()" class="actions-row"   ng-show="selectedStream.type != 'universalbot'"  >
+  <div class="panel-default" >
+    <div>
+      <div class="panel-table col-xs-12 BTtoolTip tableContainer" ng-show='actionTasksByState.length > 0'>
+        <div class="panel-table-header">
+            <div class="row tableHeaderRow">
+                <div class="col-xs-3 title cursor-pointer" ng-click="sortTaskList('nameSort')">{{'name_label_uppercase'| i18nString}}<i class="fa fa-caret-up marginLeft5"  ng-if="orderType=='name'"></i><i class="fa fa-caret-down marginLeft5" ng-if="orderType=='-name'"></i><i class="fa fa-sort marginLeft5" ng-if="orderType!=='-name' && orderType!=='name'"></i></div>
+                <div class="col-xs-3 title cursor-pointer" ng-click="sortTaskList('datesSort')">{{'last_updated'| i18nString}}<i class="fa fa-caret-down marginLeft5" ng-if="orderType=='lMod'"></i><i class="fa fa-caret-up marginLeft5" ng-if="orderType== '-lMod'"></i><i class="fa fa-sort marginLeft5" ng-if="orderType !== '-lMod' && orderType !== 'lMod'"></i></div>
+                <div class="col-xs-3 title noPaddingLeft" ng-hide="showSolutionBotSetup">{{'bot_status'| i18nString}}</div>
+                <div class="col-xs-2 title">{{'version_caps'| i18nString}}</div>
+                <div class="col-xs-1 title">&nbsp;</div>
+            </div>
+        </div>
+        <div class="panel-table-body tableBodyRow">
+           <div class="row actionTask bodyRow" ng-repeat="action in actionTasksByState | orderBy:(orderType || '-lmod')">
+              <div class="cursor-pointer contentDetails " ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(action,'action'):editOrViewWorkflow(action,'action')" ng-class="{'col-xs-3':!showSolutionBotSetup,'col-xs-3 boldRight':showSolutionBotSetup}" title="{{action.name}}" alt="{{action.name}}" tooltip-append-to-body="true">{{action.name}}
+                <p class="description" title="{{action.shortDesc}}" alt="{{action.shortDesc}}">{{action.shortDesc}}</p></div>
+              <!-- <div class="cursor-pointer" ng-click="editOrViewWorkflow(action,'action')" title="{{action.shortDesc}}" alt="{{action.shortDesc}}" ng-class="{'col-xs-4':!showSolutionBotSetup,'col-xs-7':showSolutionBotSetup}" tooltip-append-to-body="true"></div> -->
+               <div class="col-xs-3 contentDetails cursor-pointer" ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(action,'action'):editOrViewWorkflow(action,'action')" >{{action.modifiedOn | date:'MM-dd-yyyy'}}</div>
+              <div class="col-xs-3 deploymentStatus contentDetails cursor-pointer"  ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(action,'action'):editOrViewWorkflow(action,'action')" ng-class="{'hide':showSolutionBotSetup}">
+                 <span class="positionRelative"><span ng-class="{'published':action.state === 'published'}" class="status">{{(action.state === 'published' && action.parentId)?('constants.states_awaitingApproval'| i18nString):(_constants_.states[action.state] || action.state)}}</span>
+              <bot-tooltip task="action" ng-if="!isSelectedLanguageApproved(action) && (stream.supportedLanguages.length>1)"></bot-tooltip>
+              <span class="needSetup" ng-if="action.state=='inProgress'">{{'need_setup'| i18nString}}</span>
+            </span>
+              </div>
+              
+              <div class="col-xs-2 contentDetails cursor-pointer" ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(action,'action'):editOrViewWorkflow(action,'action')">{{action.version}}</div>
+              <div class="col-xs-3 contentDetails" ng-class="{'hide':!showSolutionBotSetup}">
+                  <a class="sol-task-view" ng-click="viewWorkflow(action,'action')">{{'view'| i18nString}}</a>
+              </div>
+              <div class="col-xs-1 contentDetails text-center" ng-class="{'hide':showSolutionBotSetup}">
+                <div class="dropdown panel-dropdown">
+                    <i class="fa pointer-hand" ng-class="{'gear':action.editable,'lock':!action.editable}" data-toggle="dropdown"></i>
+                    <ul class="dropdown-menu panel-dropdown-menu" role="menu" ng-class="{'publishedDropdown':action.state === 'published'}" ng-hide="!action.editable">
+                        <li>
+                           <a ng-click="viewWorkflow(action,'action')">{{'view'| i18nString}}</a>
+                        </li>
+                        <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                           <a ng-show="getAvailability(action.state,'edit')" ng-click="editWorkflow(action,'action')">{{'edit'| i18nString}}  </a>
+                        </li>
+                        <li>
+                            <a ng-show="getAvailability(action.state,'recall')" ng-click="recallWorkflow(action,'action')">{{'recall'| i18nString}}</a>
+                        </li>
+                        <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                           <a  ng-show="getAvailability(action.state,'editbasic')" ng-click="editWorkflow(action,'action')">{{'edit_basic'| i18nString}} </a>
+                        </li>
+                        <!-- <li ng-show="callbacks.modeOfAccess !== 'VIEW'"><a ng-show="getAvailability(action.state,'clone')"  ng-click="cloneWorkflow(action,'action')"> {{'clone'| i18nString}} </a></li> -->
+                        <li>
+                           <!-- <a ng-show="action.state == 'configured' && isEligibleForPublishing()"    ng-click="publishWorkflow(action,'action')"> Publish </a> -->
+                        </li>
+                        <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                           <a ng-show="getAvailability(action.state,'upgrade') && !action.child.length == 1 && botDetails.streamState==='indevelopment'"  ng-click="upgradeWorkflow(action,'action')">{{'upgrade_small'| i18nString}}  </a>
+                        </li>
+                        <li ng-show="callbacks.modeOfAccess !== 'VIEW' && getAvailability(action.state,'delete')">
+                           <a ng-click="deleteWorkflow(action,'action',$index)"> {{'delete'| i18nString}} </a>
+                        </li>
+                        <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                           <a ng-show="getAvailability(action.state,'map')" ng-click="mapWorkflows(action,'action')">{{'map_any'| i18nString}}  </a>
+                        </li>
+                        <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                           <a ng-show="getAvailability(action.state,'command')" ng-click="manageCommands(action)">
+                               {{action.hasCommand?('manage_command'| i18nString):('add_command'| i18nString)}}
+                           </a>
+                        </li>
+                        <li>
+                           <a ng-show="getAvailability(action.state,'logs')"  ng-click="viewActionLogs(action)">{{'bt_wf_logs_view_logs'| i18nString}}</a>
+                        </li>
+                        <li>
+                           <a ng-show="getAvailability(action.state,'versions')"  ng-click="workflowHistory(action,'action')">{{'bt_resouce_versions_version_history'| i18nString}} </a>
+                        </li>
+                        <li ng-show="action.lock.locktime && isEligibleToReleaseLock(action.lock.userId)">
+                           <a ng-click="releaseLock('action',action)">{{'release_locks'| i18nString}}</a>
+                        </li>
+                        <li>
+                           <a ng-show="getAvailability(action.state,'unpublish') && action.visibility.namespace==='public' && isWorkFlowAdmin()"   ng-click="unPublishWorkflow(action,'action')" >{{'unpublish'| i18nString}}</a>
+                        </li>                 
+                        <li ng-if="allowNamespace">
+                           <a ng-click="manageVarActionOpen(action)">Manage Variable Namespace</a>
+                        </li>
+                    </ul>
+                    <ul class="dropdown-menu panel-dropdown-menu" role="menu" ng-show="!action.editable" >
+                        <li>
+                            <a ng-click="viewWorkflow(action,'action')">{{'view'| i18nString}}</a>
+                        </li>
+                        <li>
+                            <a ng-click="unlockTask(action)">{{'unlock'| i18nString}}</a>
+                        </li>
+                        <li ng-show="getAvailability(action.state,'clone')">
+                            <a  ng-click="cloneWorkflow(action,'action')">{{'duplicate'| i18nString}}</a>
+                        </li>
+                        <li>
+                            <a ng-show="getAvailability(action.state,'recall')" ng-click="recallWorkflow(action,'action')">{{'Recall'| i18nString}}</a>
+                        </li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert" ng-show="(actionTasks.length == 0 && !loadingActions) || (actionTasksByState.length === 0)">
+         {{'no_action'| i18nString}}
+          <p class="hide">{{'action_desc'| i18nString}}</p>
+          <p class="hide"><a target="_blank" ng-href="{{$root.helpLinks.NO_ACTIONS}}" >{{'learn_more_label'| i18nString}}</a></p>
+        </div>
+        <div class="alert alert-warning alert-xs text-center" role="alert" ng-show="actionTasks.length == 0 && loadingActions">
+         {{'loading_action'| i18nString}}...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<manage-variable-namespace cb='manage_var_action_cb' class="manage-variable" id="manageVarNamespaceAction" ng-if="manageVarActionEnable"></manage-variable-namespace>

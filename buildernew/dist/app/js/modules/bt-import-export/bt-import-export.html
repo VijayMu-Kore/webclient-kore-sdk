@@ -1,0 +1,98 @@
+
+
+<div class="btImpEXpContainer">
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle"> {{'import_and_export'| i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            <div class="searchComponent displayNone">
+                <input  placeholder="Search">
+                <i class="btx-search"></i>
+                <i class="btx-close displayNone"></i>
+            </div>
+            <div class="creationButton borderBtn displayNone">
+                 <button class="btn btn-xs"> BTN Name</button>
+            </div>
+            <div class="filtersDetails displayNone">
+                <span class="filterListContainer">
+                    <span class="filterCat">Languages </span>
+                    <span class="filterClose">(1)</span>
+                    <i class="btx-close"></i>
+                </span>
+                <span class="filterListContainer">
+                    <span class="filterCat">User ID </span>
+                    <span class="filterClose">(3)</span>
+                    <i class="btx-close"></i>
+                </span>
+                <span class="filterListContainer">
+                    <span class="filterCat">Date Period </span>
+                    <span class="filterClose">(5 days)</span>
+                    <i class="btx-close"></i>
+                </span>
+                <div class="dropdown moreDD">
+                    <a href="#" class="moreFilters" data-toggle="dropdown">
+                        +2 more
+                        </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">
+                            <span class="filterCat">Channels </span>
+                            <span class="filterClose">(4)</span>
+                            <i class="btx-close"></i>
+                        </li>
+                        <li class="dropdown-item" >
+                            <span class="filterCat">Tasks </span>
+                            <span class="filterClose">(3)</span>
+                            <i class="btx-close"></i>
+                        </li>                       
+                    </ul>
+                </div>
+                <span class="clearAllFilters">
+                    <span class="filterCat">User ID </span>
+                    <span class="filterClose">(3)</span>
+                    <i class="btx-close"></i>
+                </span>
+            </div>
+      
+            <div class="btnActions displayNone">
+                <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+            </div>
+            <div class="titleDropdown displayNone">
+                <div class="dropdown">
+                    <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Dropdown name
+                        <i class="btx-carrot-up"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item" >Option Two</li>                       
+                     </ul>
+                </div>
+            </div>
+            <div class="titleOverflow displayNone">
+                <div class="dropdown">
+                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                        </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item" >Option Two</li>                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+    <div class="group-tabs">
+        <!-- TABS START HERE -->
+        <ul class="nav nav-tabs">
+            <li ng-class="{'active': callback.activeTab === 'IMPORT'}"><a data-toggle="tab" href="#import" ng-click="checkActiveTab('IMPORT')">{{'import'| i18nString}}</a></li>
+            <li ng-class="{'active': callback.activeTab === 'EXPORT'}"><a id="exportBotTabSelection" data-toggle="tab" href="#export" ng-click="checkActiveTab('EXPORT')">{{'export'| i18nString}}</a></li>                                
+        </ul>
+        <!-- TABS ENDS HERE -->
+        <div>
+            <bt-import-bot ng-show="callback.activeTab === 'IMPORT'" callback="callback" import-from="'existingBotImport'"></bt-import-bot>
+            <bt-export-bot ng-show="callback.activeTab === 'EXPORT'" callback="callback"></bt-export-bot>
+        </div>
+    </div>
+</div>

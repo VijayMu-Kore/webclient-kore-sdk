@@ -1,0 +1,159 @@
+<!-- <iframe ng-class="{'previewMode':previewMode}" dynamic-height dynaoffset="-63" height-property="height" id="storyBoardFrame" class="iframeContainer"  frameBorder="0" src="{{storyBoardUrl}}"></iframe> -->
+<div id="storySceneModal"  class="btFullpageModal modal height-width-100" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" data-keyboard="false">
+    <!-- starting of modal dialog -->
+    <div class="modal-dialog">
+      <!-- staring of modal content -->
+      <div class="modal-content height-width-100 fullPageModalForm">
+          <ng-container ng-if="openSceneModal">
+            <iframe ng-class="{'previewMode':previewMode}" dynamic-height dynaoffset="-63" height-property="height" id="storyBoardFrame" class="iframeContainer"  frameBorder="0" src="{{storyBoardUrl}}"></iframe>
+          </ng-container>
+      </div>
+      <!-- /.modal-content --> 
+    </div>
+    <!-- /.modal-dialog --> 
+  </div>
+<bot-modal-slider class="create" id="createScene">
+    <div class="modalSliderContainer width800" ng-if="createSceneObj.showCreation">
+        <div class="modalHeader">
+            <h4 class="modal-title tableRow">
+                <i class="btx-close" ng-click="createSceneSlider()"></i>
+                <span>New Prototype</span>
+            </h4>
+        </div>
+        <div class="modalBody dialogScrollBody" perfect-scroll dynamic-height dynaoffset="-120" height-property="height">
+            <form name="createSceneForm" class="createDialog"  novalidate>
+              <div class="col-xs-12 marginBottomn20 noPadding">
+                <div class="col-xs-12 noPadding tooltip-right-aligned-dialog-task-create">
+                  <label class="required-field">Scene name</label>
+                </div>
+                <div class="col-xs-12 hasError noPadding">
+                  <input class="form-control" id="_createDialog"  wait-time="500"  name="scenename" ng-model="createSceneObj.name" value="{{nodeObj.name}}" placeholder="Enter scene name" required maxlength="128" />
+                  <div error-alert ng-show="createSceneForm.scenename.$error.pattern" class="text-danger form-error-text">  {{'intent_name_allow'| i18nString}}</div>
+                </div>
+              </div>
+              <div class="col-xs-12 marginBottomn20 noPadding description">
+                <div class="col-xs-12 noPadding">
+                  <label class="required-field">{{'Task_description' | i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding">
+                  <div class="kr-sg-input-text-area">
+                    <input class="form-control" name="flowTaskDesc" ng-model="createSceneObj.description" placeholder="Enter scene description" maxlength="512"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 marginBottomn20 noPadding description">
+                <div class="col-xs-12 noPadding">
+                  <label class="required-field">{{'status' | i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding">
+                  <div class="kr-sg-input-text-area">
+                    <input class="form-control" name="status" ng-model="createSceneObj.status" placeholder="Enter scene description" maxlength="128"/>
+                  </div>
+                </div>
+              </div>
+          </form>
+          </div>
+          <div class="modalFooter" ng-if ='!flowTaskToClone'>
+            <div class="buttonContainer">
+                <button ng-click="proceedCreateScene()" ng-disabled="!createSceneForm.$dirty || creatingScene" class="btn btnSolidBlue">{{(creatingScene)?'saving':'proceed' | i18nString}}</button>
+            </div>
+          </div>
+    </div>
+</bot-modal-slider>
+<bot-modal-slider class="create" id="importStoryScene">
+  <div class="modalSliderContainer width800" ng-if="importScene.showImport">
+      <div class="modalHeader">
+          <h4 class="modal-title tableRow">
+              <i class="btx-close" ng-click="closeImportStoryModal()"></i>
+              <span>Import Prototype</span>
+          </h4>
+      </div>
+      <div class="modalBody dialogScrollBody" perfect-scroll dynamic-height dynaoffset="-120" height-property="height">
+          <form name="importSceneForm" class="createDialog"  novalidate>
+            <div class="col-xs-12 marginBottomn20 noPadding">
+              <div class="col-xs-12 noPadding tooltip-right-aligned-dialog-task-create">
+                <label class="required-field">Scene name</label>
+              </div>
+              <div class="col-xs-12 hasError noPadding">
+                <input class="form-control" id="importScene"  name="scenename" ng-model="importScene.name" placeholder="Enter scene name" required maxlength="128" />
+              </div>
+            </div>
+            <div class="col-xs-12  noPadding description">
+              <div class="col-xs-12 noPadding marginTop10" >
+                <label class="importLabel required-field">{{'scene_file'| i18nString}}</label>
+                <div class="noPadding">
+                    <div class="input-group btImport" ng-class="{'screenFreeze':filesObj.loadingBotDefinition}">
+                        <input name="importstorfile" type="text" class="form-control" placeholder="{{'scene_file'| i18nString}}" readonly ng-model="fileName" required>
+                        <div class="input-group-addon btn-file">{{'choose_file' | i18nString}} 
+                            <input type="file" file-model="importedSceneFile" id="importStoryFile" name="importstorfile" required on-file-change="fileChangeListener"/>
+                        </div>
+                    </div>
+                    <div ng-if="fileExtensionError" ng-show="fileExtensionError" class="text-danger form-error-text"> {{'only_csv_file'| i18nString}} </div>
+                </div>
+               </div>
+            </div>
+            <div class="kr-sg-checkbox">
+              <input id="checkbox-14" class="checkbox-custom" type="checkbox" ng-modal="incliudeComments">
+              <label for="checkbox-14" class="checkbox-custom-label">Include Comments</label>
+          </div>
+        </form>
+        </div>
+        <div class="modalFooter">
+          <div class="buttonContainer">
+              <button ng-click="importSelectedSceneFile(fileId)" ng-disabled="!importScene.name || !fileId || startImporting ||  !fileName" class="btn btnSolidBlue">{{(startImporting)?'importing':'proceed' | i18nString}}</button>
+          </div>
+        </div>
+  </div>
+</bot-modal-slider>
+<bot-modal-slider class="create" id="exportStoryScene">
+  <div class="modalSliderContainer width800">
+      <div class="modalHeader">
+          <h4 class="modal-title tableRow">
+              <i class="btx-close" ng-click="closeExportSlider()"></i>
+              <span>Share Scene</span>
+          </h4>
+      </div>
+      <div class="modalBody dialogScrollBody" perfect-scroll dynamic-height dynaoffset="-120" height-property="height">
+        <div class="shareContainer">
+          <h5 class="export-desc">Interactive</h5>
+          <div class="shareBG">
+            <div class="item-group">
+              <div class="headerShare"> 
+                  <label class="">Interactive Link</label>
+                  <label ng-click="copyInteractiveLink(shareInfo.link)" id="interactiveLinkCopyBtn" class="copyLink">Copy Link</label>
+              </div>
+              <div class="input-box">
+                  <input type="text" ng-model="shareInfo.link" readonly class="kr-form-control pl-10">
+                  <img ng-src="{{resetLinkImg}}" class="resetGreenIcon" ng-click="resetInteractiveLink()" tooltip-placement="top" tooltip="{{'reset_link'| i18nString}}">
+              </div>
+              <div class="item-group password">
+                <label class="password-protect">Password Protect</label>
+                <div class="group-radiobutton">
+                    <div class="kr-sg-radiobutton">
+                        <input type="radio" name="radio1" id="noPassword" ng-model="shareInfo.isSecured"
+                        ng-change="protectedPassword()" class="radio-custom"  ng-value="false">
+                        <label for="noPassword" class="radio-custom-label">No</label>
+                    </div>
+                    <div class="kr-sg-radiobutton">
+                        <input type="radio" name="radio1" id="yesPassword"  ng-model="shareInfo.isSecured"
+                        ng-change="protectedPassword()" class="radio-custom" ng-value="true">
+                        <label for="yesPassword" class="radio-custom-label">Yes</label>
+                    </div>
+                </div> 
+                <div class="input-item-group input-group increse-width" ng-if="shareInfo.isSecured">
+                        <input type="text"  ng-model="shareInfo.password" placeholder="Please Enter Password" class="kr-form-control export-password ">
+                        <button ng-click="updatePassword()" class="kr-btn-primary export-update">Update</button>
+                </div>
+                <!-- <div class="err-msg">{{errorMsg ? '*'+errorMsg: ''}}</div> -->
+            </div>
+            </div>
+
+          </div>
+        </div>
+        
+          
+        </div>
+        
+  </div>
+</bot-modal-slider>
+  

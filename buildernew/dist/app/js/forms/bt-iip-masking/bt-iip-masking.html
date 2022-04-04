@@ -1,0 +1,274 @@
+<div ng-if='loading'>
+   <div class='please-wait'>
+      <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+      {{'please_wait_label'| i18nString}}
+   </div>
+</div>
+<div class="btPiiMasking" ng-if='!loading'>
+   <div class="row btnSearchTitle">
+      <div class="col-xs-6 leftTitle">
+          <p class="pageTitle">{{'pii_settings'| i18nString}}</p>
+      </div>
+      <div class="col-xs-6 rightBTNSearch">
+          <div class="searchComponent displayNone">
+              <input  placeholder="Search">
+              <i class="btx-search"></i>
+              <i class="btx-close displayNone"></i>
+          </div>
+          <div class="creationButton borderBtn" ng-if='addNewEnabled && showLanding'>
+               <button class="btn btnSolidBlue" ng-click="addNewPii()"> {{'add_new'| i18nString}}</button>
+          </div>
+          <div class="titleDropdown displayNone">
+              <div class="dropdown">
+                  <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Dropdown name
+                      <i class="btx-carrot-up"></i>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li class="dropdown-item">Option One</li>
+                      <li class="dropdown-item" >Option Two</li>                       
+                   </ul>
+              </div>
+          </div>
+          <div class="titleOverflow displayNone">
+              <div class="dropdown">
+                  <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                      <i class="btx-overflow"></i>
+                      </a>
+                  <ul class="dropdown-menu">
+                      <li class="dropdown-item">Option One</li>
+                      <li class="dropdown-item" >Option Two</li>                       
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+   <div class='landingPage col-xs-12 text-center' ng-if="!showLanding">
+     <div class="alert alert-warning ">
+      <div class="emptyStateContainer">
+         <div class="emptyState">
+             <div class="emptyImage">
+                 <img ng-src="{{emptyStateIcon_pii}}" class="emptyImg">           
+             </div>  
+             <span class="mainTitle">{{'Pii_redaction'| i18nString}}</span>
+             <div class="emptyStateDesc mb-5">{{'Pii_desc'| i18nString}} <a target="_blank" ng-click="redirectToLink('PII_MASKING')">{{'learn_more'| i18nString}}</a></div>             
+            <toggle-switch class="landing-screen-center-toggle piiSettingsCenter" ng-model='details.action' ng-class="{'screenFreeze':displayMode === 'VIEW'}" ng-change="landingToggleHandler()"></toggle-switch>          
+           <div class="hintDiv">
+               <div class="icon">
+                  <i class="btx-bulb"></i>
+               </div>
+               <div class="description pr-0">
+                  {{'pii_protip'| i18nString}}
+               </div>
+            </div>
+         </div>
+     </div>
+        <!-- <span class="heading"> {{'Pii_redaction'| i18nString}}</span>
+        <p class="description"> {{'Pii_desc'| i18nString}} </p> and only authorized administrators will be able to view from Admin Console. </p> -->
+     </div>
+ 
+   </div>
+   <div ng-if="showLanding">
+      <div class="headerBar row" ng-class="{'read-only-wrap':displayMode === 'VIEW'}">
+         <div class="pii-description">
+            <p class='info-label'> {{'Pii_redaction'| i18nString}}</p>
+            <p class="dec"> {{'Pii_desc'| i18nString}} </p> <!--and only authorized administrators will be able to view from Admin Console. </p>-->
+         </div>
+         <!-- <div class="pull-right btnContainer col-lg-2" ng-if='addNewEnabled'>
+            <button class="btn btn-xs addBtn" ng-click="addNewPii()"> {{'add_new'| i18nString}}</button>
+         </div> -->
+         <div class='row col-lg-12 p-0'>
+            <toggle-switch ng-model='addNewEnabled' yes-no="true" ng-change="toggleAllPii()" ng-class="{'screenFreeze':displayMode === 'VIEW'}"></toggle-switch>
+         </div>
+      </div>
+       <div class="panel-table col-xs-12 tableContainer" ng-if='piiSettings.length !== 0'>
+        <div class="panel-table-header iip-table">
+          <div class="row tableHeaderRow" id='iip-table-head'>
+            <div class="col-xs-3 title"> {{'information_type'| i18nString}}</div>
+            <div class="col-xs-2 title">{{'source'| i18nString}}</div>
+            <div class="col-xs-3 title">{{'display_type'| i18nString}}</div>
+            <div class="col-xs-3 title">{{'action_label'| i18nString}}</div>
+            <div class="col-xs-1"></div>
+          </div>
+        </div>
+        <div class="panel-table-body tableBodyRow">
+           <div class="row bodyRow" id='iip-table-fields' ng-repeat='details in piiSettings track by $index' ng-click="editIipElement($event)" data-ind="{{$index}}">
+              <div class="cursor-pointer contentDetails col-xs-3 FuncCall">{{details.infoType}}</div>
+              <div class="cursor-pointer contentDetails col-xs-2 FuncCall capital-first">{{details.source}}</div>
+              <div class="cursor-pointer contentDetails col-xs-3 FuncCall capital-first">{{details.dispType}}</div>
+              <div class="cursor-pointer contentDetails col-xs-3 toggleColumn d-flex align-items-center" ng-class="{'read-only-wrap':displayMode === 'VIEW'}">
+                <div class='toggleDiv toggleSwitch toggle-switch-container'>
+                     <toggle-switch class="details-toggle-switch single-label-no-margin" no-opt="true" ng-model='details.action'  ng-change='enableDisableReq($index, details)'></toggle-switch>
+                  </div>
+                  <span ng-if="details.action" class='toggleOn'>
+                     <span class="">{{'enabled'| i18nString}}</span>
+                  </span>
+                  <span ng-if="!details.action" class='toggleOff'>
+                     <span>{{'disabled_label'| i18nString}}</span>
+                  </span>
+              </div>
+              <div class="trash-icon col-xs-1" ng-hide='(details.source === "system") || (displayMode === "VIEW")'>
+                  <i class='btx-delete-1 fa-trash-o cursor-pointer codeRed' ng-click='deleteIipList($index)'></i>
+               </div>
+            </div>
+        </div>
+      </div>
+<!--       <div ng-if='piiSettings.length !== 0' class="col-xs-12 psScrollZindex">
+         <table class="table iip-table" >
+            <tr class='row' id='iip-table-head'>
+               <th class='col-lg-3'>Information Type</th>
+               <th class='col-lg-3'>Source</th>
+               <th class='col-lg-3'>Display Type</th>
+               <th class='col-lg-3'>Action</th>
+            </tr>
+            <tr class='row cursor-pointer iip-table-body' ng-class='{"iip-disabled": !details.action}' id='iip-table-fields' ng-repeat='details in piiSettings track by $index' ng-click="editIipElement($event)" data-ind="{{$index}}">
+               <td class="FuncCall">{{details.infoType}}</td>
+               <td class="FuncCall capital-first">{{details.source}}</td>
+               <td class="FuncCall capital-first">{{details.dispType}}</td>
+               <td class='cursor-pointer'>
+                  <div class='toggleDiv toggleSwitch' ng-click='enableDisableReq($index, details)'>
+                     <toggle-switch class="" ng-model='details.action'></toggle-switch>
+                  </div>
+                  <span ng-if="details.action" class='toggleOn' ng-click='enableDisableReq($index, details)'>
+                     <span class="">Enabled</span>
+                  </span>
+                  <span ng-if="!details.action" class='toggleOff' ng-click='enableDisableReq($index, details)'>
+                     <span>Disabled</span>
+                  </span>
+               </td>
+               <td class="trash-icon" ng-hide='details.source === "system"'>
+                  <i class='fa fa-trash-o cursor-pointer' ng-click='deleteIipList($index)'></i>
+               </td>
+            </tr>
+         </table>
+      </div> -->
+      <div class="alert alert-warning" ng-if='piiSettings.length === 0'>
+        <span class="heading">{{'no_information_types_defined_yet'| i18nString}}</span>
+     </div>
+   </div>
+<bot-modal-slider id='iipSlider'>
+   <div class="modalSliderContainer width800">
+      <!--Header Starts Here -->
+      <div class="modalHeader">
+         <h4 class="modal-title">
+            <i class="btx-close" ng-src={{closeCross}} ng-click="importModalSliderClose()"></i> 
+               {{'info_type'| i18nString:({dyn:newOrEdit})}}
+        </h4>
+      </div>
+      <!-- Header Starts Here -->
+      <!-- Body Starts Here -->
+      <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+         <form name='iipMaskingForm' ng-class="{'read-only-wrap':displayMode === 'VIEW'}" class="informationType">
+            <div class="form-group">
+               <label for='infoType' class='required-field' id='info-type-label'>{{'information_type'| i18nString}}</label>
+               <input type='text' id='infoType' ng-model='newInfoType.infoType' ng-disabled="systemEdit"/>
+            </div>
+            <div class="form-group">
+               <label class="darkLabel, required-field">{{'definition_label'| i18nString}}</label>
+               <p class='info-details'>{{'enter_regular_expression_from_user'| i18nString}}</p>
+               <!--<label for='regexType' class='info-sub-label required-field'>Regex</label>-->
+               <input type='text' id='regexType' ng-model='regexInp.regexInput' placeholder="{{'enter_the_regex_Value'| i18nString}}" ng-disabled="systemEdit" />
+            </div>
+            <div class="form-group">
+               <label class="darkLabel">{{'map_entities'| i18nString}}</label>
+               <p class='info-details'>{{'map_entities_from_dialog'| i18nString}}</p>
+               <select ng-change='entityChange(entitySelected.entityId)' id='entitySelection' ng-model='entitySelected.entityId'>
+                  <option value="" disabled selected>{{'selectEntities'| i18nString}}</option>
+                  <option ng-value='entity.name' ng-repeat="entity in entitiesList">{{entity.name}}</option>
+               </select> 
+               <span ng-repeat='label in entitySelLabels' class="label label-default">
+                  {{label}}<i ng-click="delEntity($event)" class="fa fa-times cursor-pointer"></i>
+               </span>
+            </div>
+            <div class="hintDiv">
+               <span class="icon">
+                  <i class="btx-bulb"></i>
+               </span>
+               <span class="description text-left">
+                  {{'ensure_to_map_any_entities'| i18nString}}
+               </span>
+            </div>                  
+            <div class="form-group">
+               <label class="darkLabel">{{'display_type'| i18nString}}</label>
+               <p class='info-details'>{{'choose_how_to_display'| i18nString}}</p>
+               <div class="radioDiv" ng-init='newInfoType.dispType = "redaction"'>
+                  <div>
+                     <div>
+                        <label for="redactionDisp">
+                        <input type="radio" id="redactionDisp" ng-model='newInfoType.dispType' value='redaction' name="dispType">
+                        <span class="opt-title">{{'redaction_label'| i18nString}}</span> 
+                        <span class="opt-sub-title info-details">{{'use_a_unique_random_value'| i18nString}}</span>
+                        </label>
+                     </div>
+                     <div class="replaceDisp">
+                        <label for="replaceDisp">
+                        <input type="radio" id="replaceDisp" ng-model='newInfoType.dispType' value='replacement' name="dispType">
+                        <span class="opt-title">{{'replacement_label'| i18nString}}</span>
+                        <span class="opt-sub-title info-details">{{'define_a_static_text'| i18nString}}</span>
+                        </label>
+                        <div class="subRadioDiv marginSet" ng-if='newInfoType.dispType=="replacement"' >
+                        <input type='text' ng-model="repVal.replaceValue" placeholder="{{'enter_replacement_value'| i18nString}}" />
+                        </div>
+                     </div>
+                     <div class="maskWCharDisp">
+                        <label for="maskWCharDisp">
+                           <input type="radio" id="maskWCharDisp" ng-model='newInfoType.dispType' value='masking' name="dispType">
+                           <span class="opt-title">{{'mask_with_character'| i18nString}}</span> 
+                           <span class="opt-sub-title info-details">{{'choose_a_portion_of_text'| i18nString}}</span>
+                        </label>
+                        <div ng-if="newInfoType.dispType == 'masking'" class="subRadioDiv subRadioWidth">
+                           <div class="form-group">
+                              <span class="subRadioOptions">{{'mask_with_label'| i18nString}}</span>
+                              <select ng-model='maskVals.maskWith'>
+                                 <option value="" disabled selected>{{'select_a_mask'| i18nString}}</option>
+                                 <option ng-repeat = "mask in masks" ng-value="mask">{{mask}}</option>
+                              </select>
+                           </div>
+                           <div class="form-group">
+                              <span class="subRadioOptions">{{'no_of_char_to_skip_from_right'| i18nString}}</span>
+                              <select ng-model='maskVals.skipRight'>
+                                 <option value="" disabled selected>{{'select_a_number'| i18nString}}</option>
+                                 <option ng-value='num' ng-repeat='num in charSkip'>{{num}}</option>
+                              </select>
+                           </div>
+                           <div class="form-group">
+                              <span class="subRadioOptions">{{'no_of_char_to_skip_from_left'| i18nString}}</span>
+                              <select ng-model='maskVals.skipLeft'>
+                                 <option value="" disabled selected>{{'select_a_number'| i18nString}}</option>
+                                 <option ng-value="num" ng-repeat='num in charSkip'>{{num}}</option>
+                              </select>  
+                           </div>    
+                        </div> 
+                     </div>                                               
+                     </div>
+                  </div>
+            </div>
+         </form>
+      </div>
+      <!-- Body Ends Here -->
+      <!-- Footer Starts Here -->
+      <div class="modalFooter">
+            <button ng-disabled='isDisabled' ng-class="{'read-only-wrap':displayMode === 'VIEW'}" ng-click="saveMaskEntity()" class="btn save">{{'save'| i18nString}}</button>
+            <button ng-click="importModalSliderClose()" class="btn closeCancel">{{'cancel'| i18nString}} </button> 
+      </div>
+      <!-- Footer Ends Here -->
+   </div>
+</bot-modal-slider>
+<div id="warningModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="btx-close" ng-click='closeModal()'></i>{{'confirm_to_enable'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{'you_have_not_mapped_any_entities'| i18nString}} </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click='confirmWarningDialog()'>{{'confirm'| i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeModal()'>{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

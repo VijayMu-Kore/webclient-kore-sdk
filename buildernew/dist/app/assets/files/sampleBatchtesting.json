@@ -1,0 +1,101 @@
+{
+  "testCases": [
+    {
+      "input": "Send 200 dollars to Leonardo",
+      "intent": "Transfer Funds",
+      "entities": [
+        {
+          "entityValue": "200 USD",
+          "entityName": "TransferAmount"
+        },
+        {
+          "entityValue": "Leonardo",
+          "entityName": "PayeeName"
+        }
+      ],
+      "entityOrder":["TransferAmount", "PayeeName"]
+    },
+    {
+      "input": "What is the balance in my checking account",
+      "intent": "Show Balance",
+      "parentIntent": "Transfer Funds"
+    },
+    {
+      "input": "Repeat this transfer every month",
+      "intent": "Setup Auto Pay",
+      "parentIntent": "Transfer Funds"
+    },
+    {
+      "input": "Show my past 20 transactions",
+      "intent": "Show Account Statement",
+      "entities": [
+        {
+          "entityValue": "20",
+          "entityName": "HistorySize"
+        }
+      ]
+    },
+    {
+      "input": "Pay my credit card dues",
+      "intent": "Pay Bill"
+    },
+    {
+      "input": "looks like something is wrong in my statement",
+      "intent":"trait: Account Statement||Issue||Account Type"
+    },
+    {
+      "input": "How are you doing today",
+      "intent":"emohowzit"
+    },
+    {
+      "input": "Thank you",
+      "intent":"thank~you"
+    },
+    {
+      "input": "I understand",
+      "intent":"i_understand"
+    },
+    {
+      "input": "That's great",
+      "intent":"~positiveackwords"
+    },
+    {
+      "input": "How many people can you speak to at once?",
+      "intent":"How many people can you speak to at once?"
+    },
+    {
+      "input": "That's sweet",
+      "intent":"That's sweet",
+	  "parentIntent": "How many people can you speak to at once?"
+    },
+    {
+      "input": "What else can you do?",
+      "intent":" What else can you do?",
+	  "parentIntent": "How many people can you speak to at once? >> That's sweet "
+    },
+    {
+      "input": "What else can you do?",
+      "intent":"What else"
+    },
+    {
+      "input": "What's your age?",
+      "intent":"How old are you?"
+    },
+    {
+      "input": "Who created you?",
+      "intent":"Who made you?"
+    },
+    {
+      "input": "How many people talk to you?",
+      "intent":"How many people can you speak to at once?"
+    },
+    {
+      "input": "What's your name?",
+      "intent":"What is your name?"
+    },
+    {
+      "input": "What are you called?",
+      "intent":"What ~you called?"
+    }
+  ]
+}

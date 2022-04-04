@@ -1,0 +1,99 @@
+<!-- Test Authorization slider -->
+<bot-modal-slider id="authorizationProfileSlider">
+  <div class="modalSliderContainer width500">
+    <div class="modalHeader">
+      <h4 class="modal-title" id="gridSystemModalLabel">{{'test_auth'| i18nString}} <i class="btx-close"  ng-click="cancelAuthForm()"></i></h4>
+    </div>
+    <div class="modalBody modalPerfectScroll authorizationProfileSliderScroll" perfect-scroll dynamic-height dynaoffset="-98" height-property="height">
+      <div class="row">
+        <div class="row" ng-include="tmpltPrePath+'/js/forms/bt-test-form/idp-test-form.html'"></div>
+      </div>
+    </div>
+    <div class="modalFooter">
+
+        <div class="col-xs-12 noPadding" ng-if="!(auth.sso_type == 'api_key' || auth.sso_type == 'basic' || auth.sso_type == 'custom')">
+            <button type="button" class="btn btn-primary pull-right" ng-click="captureTenant(formHolder.authForm.$valid,formHolder.authForm)">
+                {{testOnProgress?testing:test}}</button>
+            <button type="button" ng-click="cancelAuthForm()" class="btn btn-default pull-right closeCancel"> {{'cancel'| i18nString}} </button>
+        </div>
+      <div class="col-xs-12 noPadding" ng-if="auth.sso_type == 'api_key' || auth.sso_type == 'basic' || auth.sso_type == 'custom'">
+          <div class="pull-left">
+              <button type="button" class=" btn btn-primary" ng-click="captureCredentials(formHolder.authForm.$valid,formHolder.authForm)">
+              {{testOnProgress?testing:test}}</button>
+              <button type="button" ng-click="cancelAuthForm()" class="btn btn-default closeCancel"> {{'cancel'| i18nString}} </button>
+          </div>
+      </div>
+    </div>  
+  </div>
+</bot-modal-slider>
+
+<!-- Test Modal Slider -->
+<bot-modal-slider id="alertRequestTestSlider">
+  <div class="modalSliderContainer width700">
+      <div class="modalHeader">
+          <!-- <button type="button" class="close" ng-click="fieldFormCancel()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button> -->
+          <h4 class="modal-title"><img class="closeCross" ng-src={{closeCross}} ng-click="fieldFormCancel()" />{{'test_chain'| i18nString}}</h4>
+      </div>
+      <div class="modalBody alertRequestTestSliderScroll" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+        <div class="row">
+          <div>
+            <dynamic-form fields="totalFields.fields"
+                          auth-id="totalFields.streamAccountId"
+                          on-cancel="fieldFormCancel()"
+                          is-testing-going="requestChainTest"
+                          on-save="fieldFormSave(data)" 
+                          class="dynamicForm"
+                          bridge="dynFieldsBridge">                            
+            </dynamic-form>
+          </div> 
+          <div ng-if="reqchaintestresponse">
+            <fieldset>
+              <div class="col-xs-12 noPadding">
+                <div class="well well-sm overflow-hidden">
+                  <div class="col-xs-12 background-white">
+                    <div class="panel panel-default" ng-class="{'panel-success':+reqchaintestresponse.status < 300,'panel-danger':! (+reqchaintestresponse.status < 300)}">
+                      <div class="panel-heading">{{+reqchaintestresponse.status < 400 ? success:failure}}</div>
+                      <div class="panel-body">
+                        <tabset>
+                          <tab>
+                            <tab-heading> {{'headers'| i18nString}} </tab-heading>
+                            <div ng-jsoneditor class="json_editor" ng-model="reqchaintestresponse.headers" options="options" name="reqsample"></div>
+                          </tab> 
+                          <tab>
+                            <tab-heading>{{'response'| i18nString}}  </tab-heading>
+                            <div class="form-group">
+                              <div ng-jsoneditor class="json_editor" ng-model="reqchaintestresponse.response" options="options" name="reqsample"></div>
+                            </div>
+                          </tab>
+                        </tabset>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row hide" ng-if="isHidden()">
+          <div class="hiddenParameterText">{{'hidden_params'| i18nString}}</div>
+<!--          <div>
+              <dynamic-form fields="totalFields.fields" dynamic="dynamic" submit="submit" auth-id="totalFields.streamAccountId" on-cancel="fieldFormCancel()" is-testing-going="requestChainTest" on-save="fieldFormSave(data)"></dynamic-form>
+          </div> -->
+        </div>
+      </div>
+      <div class="modalFooter">
+          <div class="col-xs-12">
+              <div class="pull-left">
+                  <button type="button" class="btn" ng-click="testClick()">
+                      <span ng-if="!nestedform">
+                          <i ng-if= "requestChainTest" class="fa fa-spinner fa-spin"></i>{{(requestChainTest)?testing:test}}
+                      </span>
+                      <span ng-if="nestedform">{{'add'| i18nString}}</span>
+                  </button>
+                  <button type="button" class="btn closeCancel" ng-click="fieldFormCancel()">{{'cancel'| i18nString}}  </button>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</bot-modal-slider>

@@ -1,0 +1,98 @@
+<div class="summaryLoader animationIfLeave" ng-if="lodingForm">
+    <span class="spinner-text">
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+        <span class="spinner-text-content"> {{'loading'| i18nString}}</span>
+    </span>
+</div>
+<iframe id="conversationTesting" class="iframeContainer" dynamic-height dynaoffset="0" height-property="height"
+    frameBorder="0" ng-src="{{iframeUrl}}"></iframe>
+
+
+  
+
+<!-- multiDeleteTestCaseModal MODAL -->
+<div class="modal fade record-test-case-modal" id="multiDeleteTestCaseModal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ 'delete_conv_testing_label'| i18nString:({count:selectedTestCaseList.length})}}</h4>
+            </div>
+            <div class="modal-body" perfect-scroll dynamic-height dynaoffset="10">
+                <div class="kr-sg-input-text">
+                    <div class="label-text">{{'delete_conv_testing_desc' | i18nString}}</div>
+                </div>
+                <div class="kr-sg-input-text">
+                    <div class="label-text"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-danger btn_md" ng-click="deleteTestCase()">{{'delete' | i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeCustomModal('multiDeleteTestCaseModal')">{{'cancel' | i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- multiDeleteTestCaseModal MODAL -->
+
+<!-- Run test case MODAL -->
+<div class="modal fade run-test-case-modal" id="runTestCasesModal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="btx-close" ng-click="closeCustomModal('runTestCasesModal')" ></i> {{'execute_conv_testing_header' | i18nString}} </h4>
+            </div>
+            <div class="modal-body" perfect-scroll dynamic-height dynaoffset="-220">
+                <div class="environments">
+                    <div class="header-title">{{'version' | i18nString}}</div>
+                    <div class="kr-sg-dropdowns">
+                        <div class="label-text padddingY10">{{'select_conv_testing_version' | i18nString}} </div>
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{runTestForm.version === 'configured' ? ('in_development_label' | i18nString): ('published' | i18nString)}}</button>                                            
+                            <ul class="dropdown-menu content-menu">                                             
+                              <li><a ng-click="selectVersion('configured')">{{'in_development_label' | i18nString}} <span class="selected" ng-if="runTestForm.version === 'configured'"><i class="btx-check"></i></span></a></li>
+                              <li><a ng-click="selectVersion('published')">{{'published' | i18nString}} <span class="selected" ng-if="runTestForm.version === 'published'"><i class="btx-check"></i></span></a></li>
+                            </ul>
+                          </div>
+                    </div>
+                </div>
+                <div class="auth-profiles" >
+                    <div class="header-title">{{'auth_profile' | i18nString}}</div>
+                    <div class="informations">
+                        <div class="kr-sg-multi-line-notification">
+                            <div class="bulb-icon"><i class="btx-info"></i></div>
+                            <div class="tost-text" ng-bind-html="'auth_conv_select_desc'| i18nString">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title avilableAuthTitle">
+                        {{'available' | i18nString}} {{'auth_profile' | i18nString}}
+                    </div>
+                    <div class="alert alert-warning alert-xs text-center" role="alert" ng-if="authLoading">
+                        <i class="fa-spin fa fa-circle-o-notch"></i>
+                        {{'loading'| i18nString}}
+                    </div>
+                    <div class="content"  ng-if="authLists.length>0 && !authLoading">
+                        <div class="auth" ng-repeat="authList in authLists">
+                            <div class="card">
+                                <span class="name">{{authList.name}}</span>
+                                <span class="btx-return" title="Generate Token" ng-click="testIdp(authList._id)"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="emptyStateContainer" ng-if="!(authLists.length > 0) && !authLoading">
+                        <div class="emptyState">
+                            <span class="mainTitle"><img class="emptyAuth" ng-src={{emptyAuth}} /> {{'no_auth_profile_available' | i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" ng-click="runTestCase()">{{'continue' | i18nString}}</button>
+            </div>
+        </div>
+    </div>
+    <bt-test-form api="btTestFormApi" status="btTestStatus" ></bt-test-form> 
+</div>
+<!-- Run test case MODAL -->
+
+

@@ -1,0 +1,220 @@
+<div class="form-container">
+    <div class="pageFlow flowTaskForm expandedView" ng-class="{'isPropertyPanelOpen':isPropertyPanelOpened, 'isDebugConsolePanelOpen':isDebugConsolePanelOpened}">
+        <div class="topBar col-xs-12" ng-if="!(callBack && callBack.type)">
+            <span class="pull-left closeBtn" ng-hide="isFromKora" ng-click="exit()">
+                <i class="backArrowGray btx-carrot-left"></i>
+            </span>
+            <bt-modal-title ng-if="!displayMode" taskname="{{flowtaskObj.name}}" title="{{'create_dialog'| i18nString}}" bot="stream"></bt-modal-title>
+            <div ng-if="displayMode" class="btmodaltitlediv">
+              <span class="botinfosection">
+                <!-- <span class="botIcon"><img class="avatar" ng-src="{{stream.icon || genericImg}}"/></span> -->
+                <span class="bottasksection dialogTitle"><span class="botname" >{{stream.name}}</span>
+                <div class="dropdown taskContainer">
+                  <div class="dropdown-toggle" type="button" data-toggle="dropdown"><span class="taskNameDropdown">{{flowtaskObj.name}}</span>
+                  <span class="caret"></span></div>
+                  <ul class="dropdown-menu" >
+                    <li ng-click="$event.preventDefault()" class="dropdownSearchInput" ng-show="dialogTaskList.length>5">
+                        <input type="text"  placeholder="{{'search_name'| i18nString}}" ng-click="$event.preventDefault()" ng-model="dialogNameFilter"><i class="fa fa-search"></i></li>
+                        <div class="tasksList" perfect-scroll>
+                            <li title="{{task.name}}" ng-repeat="task in dialogTasksByState | filter : dialogNameFilter | orderBy : 'name'" value="{{task._id}}" ng-click="changeDialogTask(task._id)"><span class="taskName">{{task.name}}</span></li>
+                        </div>
+                  </ul>
+                </div>
+                </span>
+              </span>
+                <span  ng-show="title" class="seperator">|</span><span class="modalActionSecton"><span class="modalAction" ng-show="title">{{title}}</span></span>
+            </div>
+            <notifier bridge="notifierBridge"></notifier>
+            <button class="btn btn-primary pull-right btnClearTrace hide" ng-click="clearTracepath()" style="position: relative;top: -48px;right: 52px;">{{'clear_trace'| i18nString}}</button> 
+            <div class="dropdown pull-right dialogMenu">
+                <a href="#" class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                    <i class="btx-overflow"></i>
+                    <!-- <img ng-src="{{ellipsisGray}}" class="ellipsisGray"> 
+                    <img ng-src="{{ellipsisWhite}}" class="ellipsisWhite"> 
+                     -->
+                </a>
+                <ul class="dropdown-menu">
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" class="menuOption" ng-click="callBack.openDialogSettings(flowtaskObj)">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{'dialog_Settings'| i18nString}}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" class="menuOption" ng-click="callBack.openManageInterruptions(flowtaskObj)">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{'manage_interruptions'| i18nString}}</span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- <li class="menuOption hasPadding" ng-if="displayMode !== 'view'" data-toggle="modal" ng-click="importModalSlider()" data-target="#flowtask_import">{{_constants_.menuOptions.import}}</li>
+
+                    <li class="menuOption hasPadding" ng-click="showExportDeprication()">{{_constants_.menuOptions.export}}</li> -->
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" class="menuOption" ng-click="callBack.amendEntityDialog(flowtaskObj)">
+                         <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{'manage_amend'| i18nString}}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" ng-if="allowNamespace" class="menuOption" ng-click="manageVarFlowTaskOpen()">
+                        <div class="dropdown">
+                           <div class="dropdown-toggle"  data-toggle="dropdown">
+                               <span class="menuName">{{'manage_var_namespace'| i18nString}}</span>
+                           </div>
+                       </div>
+                   </li>
+
+                </ul>
+            </div>
+            <help-button  help-id="'dialogEditor'" class="pull-right" ></help-button>
+            <button class="btn btn-primary pull-right marginTop10" ng-show="isFromKora" ng-click="publishDialog()"><i ng-if="publishInProgress" class="fa fa-spinner fa-spin ng-scope"></i>{{publishInProgress?'Publishing':'Publish'}}</button>
+            <search-options class="pull-right" ng-if="objListSearch.length > 0" search-data="objListSearch" Search-callback="objSearchedInfo"></search-options>
+            <button class="modeBtn btn marginTop pull-right" ng-if="displayMode && displayMode !== 'edit'"><img ng-src="{{$root.viewTaskIcon}}" /><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+            <span class="dhelpLink" ng-if="false">
+                <a class="" target="_blank" ng-href="https://developer.kore.ai/docs/bots/bot-builder/defining-bot-tasks/dialog-tasks/"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+            </span>
+        </div>
+        <div class="topBar col-xs-12" ng-if="callBack && callBack.type && callBack.type==='widgets'">
+            <span class="pull-left closeBtn" ng-click="exit()">
+                <span aria-hidden="true"><i class="btx-close"></i></span>
+            </span>
+            <bt-modal-title  taskname="{{flowtaskObj.name}}" bot="stream"></bt-modal-title>
+            <notifier bridge="notifierBridge" class="hide"></notifier>
+            <search-options class="pull-right" ng-if="objListSearch.length > 0" search-data="objListSearch" Search-callback="objSearchedInfo"></search-options>
+        </div>
+        <div class="subBar col-xs-12" ng-if="false" ng-class="{'hideSubBar': runBot.hideSubBar}">
+            <!--<search-options ng-if="objListSearch.length > 0" search-data="objListSearch" Search-callback="objSearchedInfo"></search-options>-->
+            <!--<div class="dropdown pull-right dialogMenu">
+                <a href="#" class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-ellipsis-v"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="menuOption" ng-click="onmMenuOptionClicked($event)">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{_constants_.menuOptions.displayOpts}}</span>
+                                <i class="fa fa-caret-right moreOptions"></i>
+                            </div>
+                            <ul class="dropdown-menu pull-right">
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('showAll', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideType && displayOpts.hideNode && displayOpts.hideConn ? _constants_.menuOptions.resetNodeOpts : _constants_.menuOptions.hideNodeOpts}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideType', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideType ? _constants_.menuOptions.showNodeType : _constants_.menuOptions.hideNodeType}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideNode', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideNode ? _constants_.menuOptions.showNodeDetails : _constants_.menuOptions.hideNodeDetails}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideConn', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideConn ? _constants_.menuOptions.showConnDetails : _constants_.menuOptions.hideConnDetails}}</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menuOption" ng-click="onmMenuOptionClicked($event)">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{_constants_.menuOptions.zoomOpts}}</span>
+                                <i class="fa fa-caret-right moreOptions"></i>
+                            </div>
+                            <ul class="dropdown-menu pull-right">
+                                <li class="subMenuOptions" ng-click="zoomOptionClicked('fitToPage')">{{_constants_.menuOptions.fitToPage}}</li>
+                                <li class="subMenuOptions" ng-click="zoomOptionClicked('resetZoom')">{{_constants_.menuOptions.resetZoom}}</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" class="menuOption" ng-click="openDialogSettings()">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">Dialog Settings</span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="menuOption hasPadding" ng-if="displayMode !== 'view'" data-toggle="modal" data-target="#flowtask_import">{{_constants_.menuOptions.import}}</li>
+                    <li class="menuOption hasPadding" ng-click="exportDialog()">{{_constants_.menuOptions.export}}</li>
+                </ul>
+            </div>-->
+            <div class="zoomInfo pull-right" ng-if='zoomScale !== 1' bt-tooltip='{{_constants_.zoomScaleTooltip}}'>
+                {{_constants_.getNewMessage(_constants_.zoomScaleInfo, ':zoomScale', zoomScalePer)}}
+            </div>
+        </div>
+        <div name="flowTaskForm" class="wf-form">
+            <div class="runBotContainer">
+                <div class="runBotHeader">
+                    <span ng-show="showRunBotHeader">
+                        <span class="runBotHeading" ng-show="isConnecting">{{'connecting'| i18nString}}</span>
+                        <span class="runBotHeading"  ng-hide="isConnecting">{{selectedStreamName}}</span>
+                        <span class="onlineModeText" ng-if="showRunBotHeader">{{botConfiguration.enableTryoutMode?offline:online}}</span>
+                    </span>
+                    <span ng-show="!showRunBotHeader">
+                        <i class="btx-carrot-left btnRefreshBotBack" ng-click="runBotConfiguration(false)"></i>
+                        <span class="runBotHeading configuration">{{'run_config'| i18nString}}</span>
+                    </span>
+
+                    <div class="iconsActions">
+                            <span ng-click="toggleRecording($event)" class="conversationRecord">
+                                    <span class="whiteBorder" data-toggle="popover" data-placement="top"><span class="dot"></span></span>
+                                </span>
+                        <i class="bug-btn safaribug-btn" ng-click="openDebugConsole()" title="Debug Log"></i>
+                        <i class="reload-btn safarireload-btn" ng-click="refreshBotData()" title="Reconnect"></i>
+                        <i class="btnConfiguration" ng-click="runBotConfiguration(true)" title="Run Configuration"></i>
+                        <i class="safarireload-btn minimize-btn" ng-click="minimizeRunBot()" title="Minimize"></i>
+
+                        <i class="close-btn" ng-click="closeRunBot()" title="Close"></i></div>
+                   
+                </div>
+                <div class="runBotBody"></div>
+                <div class="botConfigBody" ng-if="!showRunBotHeader" perfect-scroll dynamic-height dynaoffset="-180">
+                    <runbot-config bot-config="{{botConfiguration}}" update-config="dialogBotConfigDataUpdate"
+                                        class="runbotConfigDiv"
+                                        cb="runbotConfigCb"
+                                        ></runbot-config>
+                </div>
+            </div>
+            <fieldset class="dialogFieldset">
+                <div class="btn-default talkToBot btnRunBot pull-right" ng-show="runBot.show && !isChatWindowMinimized" ng-click="showBotScreen()" tooltip-placement="top" tooltip="{{'talk_to_bot'| i18nString}}">
+                    <!-- <div class="runbottitle" ng-if="!isChatWindowOpen()">Talk to bot <i class="fa  fa-caret-down downArrow"></i></div> -->
+                    <img class="chatIcon" ng-src="{{chatIcon}}">
+                </div>
+                <div class="dilogWindowChatIcon" ng-show="runBot.show && isChatWindowMinimized">
+                        <div class="minimizeTip">{{talk+stream.name}}</div>
+                        <div class="btn-default talkToBot btnRunBot pull-right"  ng-click="showBotScreen()">
+                           <img class="chatIcon" ng-src="{{chatIcon}}">
+                        </div>
+                </div>
+                <div class="headerBar">
+                    <div class="btn-default btnRunBot pull-right btn-sm" ng-show="runbot.show" ng-click="showBotScreen()">{{'run_bot'| i18nString}}</div>
+                    <div class="btn btn-primary btnClearTrace hide" ng-click="clearTracepath()">{{'clear_trace'| i18nString}}</div>
+                    <!--button type="button" ng-if="displayMode === 'edit'" class="btn btn-primary pull-right" ng-click="onFinishSetup('alert')">Finish</button-->
+                    <button class="btn btn-default pull-right btnExit btn-sm" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+                    <div class="btnExpandView">
+                        <i class="fa fa-expand expandFlowView" ng-click="expandFlowView()"></i>
+                        <i class="fa fa-compress collapseFlowView" ng-click="collapseFlowView()"></i>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group flowTaskBlock">                    
+                    <div class="flowTaskDebugConsolePanel maximized" ng-if="isDebugConsolePanelOpened">
+                        <!-- <i class="fa fa-close closeDebugConsolePanel" ng-click="closeDebugConsolePanel()"></i> -->
+                        <img class="closeDebugConsolePanel" ng-src="{{assetsBase+'debugConsoleIcons/close.svg'}}"  ng-click="closeDebugConsolePanel()">
+                        <!-- debug console component component -->
+                        <debug-console-panel debug-info="debugInfo" debug-raw="debugRaw" nl-trace-data="nlTraceData" debug-context="debugContext" is-resized="isDebugResized" class="flowTaskDebugConsolePanelDiv" from-dialog="true"></debug-console-panel>
+                    </div>
+                    <!-- <bt-dialog-settings ng-if="dialogSettingsCB.show" class="dialogTask" cb="dialogSettingsCB"></bt-dialog-settings> -->
+                    <div>
+                        <bt-linked-task ng-if="openLInkedTaskSliderCB.open" cb="openLInkedTaskSliderCB"></bt-linked-task>
+                    </div>
+                </div>
+                <!--div class="col-xs-12 footer">
+                    <div class="footerSub">
+                        <div class="help-hint-link">
+                            <a ng-hide="((wfType === 'alert') || ((wfType === 'action')))" href="" >Help with this page</a>
+                            <a ng-if="(wfType === 'alert')" class="inline-link" target="_blank"  ng-href="{{$root.helpLinks.ALERTS_TASK_BASIC}}">Help with this page</a>
+                            <a ng-if="(wfType === 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_TASK_BASIC}}">Help with this page</a>
+                        </div>
+                    </div>
+                </div-->
+            </fieldset>
+        </div>
+        <div class="wf-form" >
+            <iframe *ngIf="dialogUrl" id="dialogIFrame" class="uiformsContainer iframeContainer paddingBottomFifty"  frameBorder="0" ng-src="{{dialogUrl}}"></iframe>
+        </div>
+    </div>
+</div>
+
+

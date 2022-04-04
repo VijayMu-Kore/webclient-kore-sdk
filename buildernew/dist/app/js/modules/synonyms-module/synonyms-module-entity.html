@@ -1,0 +1,5 @@
+<tags-input ng-show="cb.type === 'entity'" ng-disabled="(displayMode !== 'FULL' || viewMode === 'VIEW')" add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" use-strings="true" placeholder="{{'type_and__enter_placeholder'| i18nString}}"  on-tag-added="saveEntitySynonymTraining('',currentEditTask)" on-tag-removed="saveEntitySynonymTraining('deleteCall',currentEditTask)" ng-model="currentEditTask.synonyms"></tags-input>
+
+  <tags-input ng-show="cb.type === 'fields'" ng-disabled="(displayMode !== 'FULL' || viewMode === 'VIEW' || upgradeViewMode === 'VIEW')" add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128"  use-strings="true" placeholder="{{'type_and__enter_placeholder'| i18nString}}" 
+  on-tag-added="saveTaskFieldSynonymsTraining('',currentEditTask.task)" on-tag-removed="saveTaskFieldSynonymsTraining('deleteCall',currentEditTask.task)" on-invalid-tag="onInvalidTag()" ng-model="currentEditTask.task.fieldSynonyms[currentEditTask.title.toLowerCase()]"></tags-input>
+

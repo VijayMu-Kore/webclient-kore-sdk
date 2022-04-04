@@ -1,0 +1,148 @@
+<!-- <div ng-if="taskType !== 'knowledgeCollection' && taskType !== 'flows' && taskType !== 'dialogTasks' && taskType ">
+    
+</div> -->
+<!-- start of flows mapping modal -->
+<!--<div ng-if="taskType === 'flows'">
+    <bt-wf-mapping active-entity="activeEntityFlow" component="false" footer-mappingid='tasks-create-mapping'></bt-wf-mapping>
+</div>-->
+<!-- end of flows mapping modal -->
+<!-- start of create dialog modal -->
+<div ng-if="taskType === 'dialogTasks'">
+    <bt-create-dialog></bt-create-dialog>
+</div>
+<!-- end of create dialog modal -->
+<div ng-if=" taskType === 'alertTasks'">
+    <div class="modalBody alertsModalSliderBody" perfect-scroll  perfect-scroll dynamic-height dynaoffset="-120" height-property="height">
+        <div class="pageFlow pageFlowPadding100" >
+            <form name="taskgen.taskGeneralInfoForm" class="wf-form" ng-submit="saveIntro(taskgen.taskGeneralInfoForm.$valid,taskgen.taskGeneralInfoForm)"
+                novalidate>
+                <fieldset>
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12 labelling noPadding">
+                            <label class="required-field"> {{'task_name_label'| i18nString}} </label>
+                            <div ng-show="introObj.name.length>0" class="pull-right obj-length"> {{60-introObj.name.length+ charremaining}} </div>
+                        </div>
+                        <div class="col-xs-12 noPaddingLeft">
+                            <input type="text" focusit="true" class="form-control alert-input" input-note wait-time="500" note-description="nameDescription" remove-one-ascii
+                                ng-disabled="(displayMode==='edit' && getEntityStatus()) || displayMode==='view'" ng-blur="checkTaskWordCount();focus=false"
+                                ng-focus="focus=true" ng-model="introObj.name" name="name" id="name" placeholder="{{taskType == 'informationTasks' ? infoName:  taskType=='actionTasks'?actionName:alertName}}"
+                                ng-minlength="1" maxlength="60" spellcheck="true" required ng-pattern="validateTaskName" autocomplete="off">
+                            <div ng-show="!focus && taskgen.taskGeneralInfoForm.name.$dirty" class="col-xs-12 noPadding">
+                                <div error-alert ng-show="taskgen.taskGeneralInfoForm.name.$error.required" class="text-danger"> {{taskType == 'informationTasks' ? infoRequired: taskType=='actionTasks'?actionRequired:alertRequired}} </div>
+                                <div error-alert ng-show="taskgen.taskGeneralInfoForm.name.$error.pattern && !botNameMatched" class="text-danger"> {{taskType == 'informationTasks' ? infoAllows: taskType=='actionTasks'?actionAllows:alertAllows}}</div>
+                                <div error-alert ng-show="botNameMatched" class="text-danger"> {{taskType == 'informationTasks' ? infoNObot: taskType=='actionTasks'?actionNObot:alertNObot}}</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 noPadding taskInfoIcon">
+                            <i ng-show="!focus && taskgen.taskGeneralInfoForm.name.$dirty && (taskgen.taskGeneralInfoForm.name.$valid && !invalidWordCount) "
+                                class="fa fa-check-circle"></i>
+                            <i ng-show="!focus && taskgen.taskGeneralInfoForm.name.$dirty && (!taskgen.taskGeneralInfoForm.name.$valid || invalidWordCount)"
+                                tooltip-placement="left" tooltip-html-unsafe="{{'name_casesensitive'| i18nString}}<br><br>{{'special_character'| i18nString}}"
+                                class="fa fa-exclamation-circle"></i>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12 labelling noPadding">
+                            <label class="required-field">
+                                {{'display_Name'| i18nString}}
+                     </label>
+                        </div>
+                        <div class="col-xs-12 noPaddingLeft">
+                            <!-- <textarea rows="1"  auto-grow-textarea="" ng-disabled="displayMode==='view'" ng-model="introObj.shortdescription" placeholder="{{'display_Name'| i18nString}}" class="form-control taskDecTextArea"
+                                name="description" spellcheck="true" required ng-minlength="1" maxlength="100"></textarea> -->
+                                <div ng-show="introObj.shortdescription.length>0" class="display-name pull-right obj-length">{{100-introObj.shortdescription.length+ charremaining}}</div>
+                                <input type="text" ng-disabled="displayMode==='view'" ng-model="introObj.shortdescription" placeholder="{{'display_Name'| i18nString}}" class="form-control alert-input"
+                                name="description" spellcheck="true" required ng-minlength="1" maxlength="100">
+                            <div ng-show="taskgen.taskGeneralInfoForm.description.$dirty">
+                                <div error-alert ng-show="taskgen.taskGeneralInfoForm.description.$error.required" class="text-danger"> {{taskType == 'informationTasks' ?displayinfoName: taskType=='actionTasks'?displayactionName:displayalertName}} </div>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding mb-0" ng-hide="taskType === 'actionTasks'" ng-if="taskType !== 'dialogTasks'">
+                        <div class="col-xs-12 labelling noPadding">
+                            <label class="required-field"> {{'connection_type'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 radioDiv noPadding">
+                            <div class="radioDivPullLeft" ng-repeat="alerttype in alerttypes" ng-init="introObj.type = 'webservice'">
+                                <label>
+                        <input ng-value='alerttype.value' type="radio"  ng-model="introObj.type" ng-disabled="(displayMode==='edit' || alertid || taskType === 'actionTasks') || displayMode==='view'" name="alertType" ng-change="setAlertspathValue()" required><span class="opt-title">{{alerttype.name}}</span> </input>
+                        </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 protipPadding" ng-hide=" true || taskType === 'actionTasks'" ng-if="taskType !== 'dialogTasks'">
+                        <div class="helphint-border col-xs-12 marginB20T0">
+                            <div class="col-xs-1 bulbicon">
+                                <span><img class="layer" ng-src='{{bulbIcon}}'></span>
+                            </div>
+                            <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb502)"></span></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding mt-10 mb-0" ng-if="introObj.type === 'webservice'">
+                        <div class="col-xs-12 labelling noPadding">
+                            <label class="required-field">{{'connection_mode'| i18nString}}</label>
+                        </div>
+                        <div class="col-xs-12 radioDiv noPadding">
+                            <div class="radioDivPullLeft" ng-repeat="subtype in subtypes" ng-init="introObj.subtype = 'rest'">
+                                <label>
+                        <input ng-value='subtype.value' type="radio"  ng-model="introObj.subtype" ng-disabled="(displayMode==='edit' || alertid) || displayMode==='view'" name="alertSubType" ng-change="setAlertspathValue()" required><span class="opt-title">{{subtype.name}}</span> </input>
+                        </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 protipPadding" ng-hide="true" ng-if="introObj.type === 'webservice'">
+                        <div class="helphint-border col-xs-12 ">
+                            <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                            <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb503)"></span></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding" ng-if="taskType !== 'dialogTasks' && false">
+                        <div class="col-xs-12 labelling noPadding">
+                            <label class="required-field" tooltip-placement="right" tooltip=" {{taskType == 'informationTasks' ? infoContext:  taskType=='actionTasks'?actionContext:alertContext}} ">{{'long_desc'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 noPadding">
+                            <textarea rows="3" ng-model="introObj.longdescription" ng-disabled="displayMode==='view'" placeholder="{{taskType == 'informationTasks' ? infoDesc:  taskType=='actionTasks'?actionDesc:alertDesc}}"
+                                class="form-control" name="ldescription" required ng-minlength="1" maxlength="2048" spellcheck="true"></textarea>
+                            <div ng-show="taskgen.taskGeneralInfoForm.ldescription.$dirty">
+                                <div error-alert ng-show="taskgen.taskGeneralInfoForm.ldescription.$error.required" class="text-danger">{{taskType == 'informationTasks' ? infoLong: taskType=='actionTasks'?actionLong:alertLong}} </div>
+                                <div ng-show="introObj.longdescription.length>0" class="pull-right"> {{2048-introObj.longdescription.length+ charremaining}} </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span  class="moreOptions more-options-aleart-task"><hr> <span data-toggle="collapse" data-target="#moreOptionsWf" class="moreOptionsAction collapsed">{{'more_options'| i18nString}} 
+                        <!-- <img ng-src="{{caretIcon}}" class="caretIcon"> -->
+                    <i class="btx-dropdown-down caretIcon"></i> </span></span>
+                    <div id="moreOptionsWf" class="collapse">
+                    <div class="manageContextStatus col-xs-12 noPadding">
+                            <div class="manageContextConditions mb-15">
+                                <label>{{'input_condition'| i18nString}}</label>
+                                <p class="pre-conditionsInfo">
+                                    {{'pre_condition_info'| i18nString}}
+                                </p>
+                                <tags-input add-on-comma="false" class="tagOrCondition"  tag-class="tagsWithOR" replace-spaces-with-dashes="false" min-length="0"
+                                    max-length="128" use-strings="true" placeholder="{{'type_enter'| i18nString}}" 
+                                    ng-model="manageContext.preConditions"></tags-input>
+                            </div>
+                            <div class="manageContextConditions mb-15">
+                                <label>{{'context_output_name'| i18nString}}</label>
+                                <p class="pre-conditionsInfo">
+                                    {{'def_context'| i18nString}} 
+                                </p>
+                                <tags-input add-on-comma="false" class="" replace-spaces-with-dashes="false" min-length="0"
+                                    max-length="128" use-strings="true" placeholder="{{'type_enter'| i18nString}}" 
+                                     ng-model="manageContext.contextTags"></tags-input>
+                            </div>
+                    </div>
+                    </div>
+                </fieldset>
+            </form>
+            
+       </div>
+    </div>
+     <div class="modalFooter" >
+        <div class="buttonContainer clear-fix">
+            <button ng-click="saveIntro(taskgen.taskGeneralInfoForm.$valid,taskgen.taskGeneralInfoForm)" class="btn btnSolidBlue"> {{(saving)?savingAlert:createProceed}}</button>
+            <button ng-click="goToTasks()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+         </div>
+     </div>
+</div>

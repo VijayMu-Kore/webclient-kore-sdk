@@ -1,0 +1,83 @@
+<div class="form-group" ng-if="false">
+<div class="authHeader" ng-if="mode!== 'view'">
+    <label tooltip-placement="right" tooltip="{{'auth_fields'| i18nString}}"> {{'auth_field'| i18nString}} </label>
+    <span ng-hide="authFieldForm || true" class="addAuthBtn pull-right" ng-click="showAuthFieldForm();" >
+    <i class="fa  fa-plus"></i>{{'add_auth_field'| i18nString}}</span>
+   
+  </div>
+</div>
+<!-- ng-show="authFieldForm" -->
+<div >
+  <div class="form-container" >
+    <ng-form name="auth_field_form" novalidate>
+    <!-- ng-if="authFieldForm" -->
+      <fieldset>
+        <div class="form-group col-xs-12 noPadding">
+          <div class="col-xs-12 labelling noPadding">
+            <label class="required-field"> {{'field_Type'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12 noPadding">
+            <select ng-change="authFormReset()" name="type" class="btn-default btnDropdown form-control" required ng-model="authField.type">
+              <option value="">{{'select_field_type'| i18nString}}</option>
+              <option value="header">{{'header'| i18nString}}</option>
+              <option value="payload">{{'payload'| i18nString}}</option>
+              <option value="querystring">{{'query_string'| i18nString}}</option>
+              <option value="pathparam">{{'path_param'| i18nString}}</option>
+            </select>
+            <div ng-show="auth_field_form.type.$dirty">
+              <div error-alert ng-show="auth_field_form.type.$error.required" class="text-danger form-error-text"> {{'field_type_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12 noPadding">
+          <div class="col-xs-12 labelling noPadding">
+            <label class="required-field">{{'auth_field_key'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 noPadding">
+            <input type="text" class="form-control fieldKey" ng-model="authField.key" id="key" placeholder="{{'auth_field_key'| i18nString}}" name="key" required />
+            <div ng-show="auth_field_form.key.$dirty">
+              <div error-alert ng-show="auth_field_form.key.$error.required" class="text-danger form-error-text">{{'auth_field_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12 noPadding">
+          <div class="col-xs-12 labelling noPadding">
+            <label>{{'auth_field_value'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12 noPadding">
+            <input type="text" class="form-control" ng-model="authField.value" id="type" placeholder="{{'auth_field_value'| i18nString}}" name="value"/>
+          </div>
+        
+        </div>
+       <!--  <div class="form-group col-xs-12">
+           <div ng-show="authFieldForm" class="col-xs-12">
+           <span class="pull-right">
+        <button type="button" ng-click="onCancel()" class="btn btn-primary btn-sm btn-outline"> Cancel </button>
+        <button type="button" class="btn btn-primary  btn-sm" ng-click="onSave(authField,auth_field_form,$event)">Add</button>
+        </span>
+    </div>
+    </div> -->
+      </fieldset>
+    </ng-form>
+  </div>
+</div>
+<div class="form-group" ng-if="false" ng-show="authFields.length > 0">
+  <div class="">
+    <table class="table table-hover">
+      <thead>
+      <th>{{'auth_field_key"'| i18nString}}</th>
+        <th>{{'field_Type'| i18nString}}</th>
+        <th>{{'auth_field_value'| i18nString}}</th>
+        <th>{{'actions'| i18nString}}</th>
+        <th>{{'actions'| i18nString}}</th>
+          </thead>
+      <tr ng-repeat="field in authFields track by $index">
+        <td>{{field.key}}</td>
+        <td>{{field.type}}</td>
+        <td>{{field.value}}</td>
+        <td ng-hide="mode ==='view'" ng-click="editField($index)"><a class="hand-pointer"> <i class="fa fa-pencil"></i> </a></td>
+        <td ng-hide="mode ==='view'" ng-click="deleteField($index)"><a class="hand-pointer"> <i class="fa fa-trash"></i> </a></td>
+      </tr>
+    </table>
+  </div>
+</div>

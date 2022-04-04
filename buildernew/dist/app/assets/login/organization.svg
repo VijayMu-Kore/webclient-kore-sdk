@@ -1,0 +1,17 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 33V43H44V33C44 31.895 43.105 31 42 31H6C4.895 31 4 31.895 4 33Z" fill="#9AA0A6"/>
+<path d="M13 9H35V7C35 5.896 34.104 5 33 5H15C13.896 5 13 5.896 13 7V9Z" fill="#E0E0E0"/>
+<path d="M6 11V31H42V11H6Z" fill="#E0E0E0"/>
+<path d="M14 35H10V39H14V35Z" fill="#E0E0E0"/>
+<path d="M38 35H34V39H38V35Z" fill="#E0E0E0"/>
+<path d="M30 35H18V43H30V35Z" fill="#E0E0E0"/>
+<path d="M14 23H10V27H14V23Z" fill="#0D6EFD"/>
+<path d="M22 23H18V27H22V23Z" fill="#0D6EFD"/>
+<path d="M30 23H26V27H30V23Z" fill="#0D6EFD"/>
+<path d="M38 23H34V27H38V23Z" fill="#0D6EFD"/>
+<path d="M14 15H10V19H14V15Z" fill="#0D6EFD"/>
+<path d="M22 15H18V19H22V15Z" fill="#0D6EFD"/>
+<path d="M30 15H26V19H30V15Z" fill="#0D6EFD"/>
+<path d="M38 15H34V19H38V15Z" fill="#0D6EFD"/>
+<path d="M42 11H6C5.447 11 5 10.553 5 10C5 9.447 5.447 9 6 9H42C42.553 9 43 9.447 43 10C43 10.553 42.553 11 42 11Z" fill="#9AA0A6"/>
+</svg>

@@ -1,0 +1,325 @@
+<div class="panel-group responseAccordion" id="responseAccordion" role="tablist" aria-multiselectable="true">
+  <!-- <div class="panel panel-default" ng-if="wfType === 'alert'">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#responseAccordion" href="#filters" role="tab" id="headingOne">
+         <div><span class="panel-title entity_count_label"> Filters</span><span class="pull-right length"> <i class="fa fa-chevron-right"></i></span>
+      <p>Define one or more filters to allow an end-user to refine the results to a specific subset of data</p>
+      </div>
+    </div>
+    <div id="filters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+         <div class="col-xs-12 noPadding" ng-if="wfType === 'alert' && alertFilter.alrtFilterObjects.rows.length">
+                    <sortable-table callback="orderFilters(type,index)"  on-view="filterDataRowView(index,row)" show-actions="{{displayMode!=='view'}}" on-edit="filterDataRowEdit(index,row)" on-delete="filterDataRowDel(index,row)" table-data="alertFilter.alrtFilterObjects"></sortable-table>
+                </div>
+                <div ng-if="!alertFilter.alrtFilterObjects.rows.length">
+                     <div class="col-xs-12 noContentDiv">
+        <div class="alert-xs text-center alert-msg-home" role="alert" ng-show="!alrtField.alrtFldObjects.rows.length">
+          <p class="noContentHeader">No Filters yet</p>
+          <p class="noContentDesc">Add one or more filters to allow an end-user to refine the results to a specific subset of data.</p>
+          <p class="createLink" ng-if="displayMode!=='view'" type="button" data-toggle="modal" data-target=".addfilter" class="btn btn-primary btn-sm" ng-click="showAlertFilterForm()">Add Filter</p>
+        </div>
+      </div>
+                </div>
+      </div>
+      <div class="panel-footer" ng-if="displayMode!=='view'">
+        <button ng-if="displayMode!=='view'" type="button" data-toggle="modal" data-target=".addfilter" class="btn btn-primary btn-sm" ng-click="showAlertFilterForm()">Add</button>
+      </div>
+    </div>
+  </div> -->
+<!--   <div class="panel panel-default" ng-if="showDedup(wfType)&&wfType!=='action'">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#responseAccordion" href="#dupStrategy" role="tab" id="headingTwo">
+        <div><span class="panel-title entity_count_label"> Deduplicate Strategy</span><span class="pull-right length"> <i class="fa fa-chevron-right"></i></span>
+      <p>Define the strategy to prevent duplication of data results displayed in the response object </p>
+      </div>
+    </div>
+    <div id="dupStrategy" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        <div>
+                        <div class="col-xs-12 row noPadding">
+                <div class="col-xs-12 noPadding">
+                    <div class="checkbox radioDiv">
+                        <label for="noneDuplicate" class="noPadding">
+                            <input type="radio" ng-disabled="displayMode==='view'" ng-model="resObj.ddStrategy" value="None" id="noneDuplicate">
+                            <span> None</span>
+                        </label>
+                    </div>
+                    </div>
+
+
+
+                    <div class="col-xs-12 noPadding">
+                    <div class="checkbox radioDiv noMargin">
+                        <label for="excludeDuplicate" class="noPadding">
+                            <input type="radio" ng-disabled="displayMode==='view'" ng-model="resObj.ddStrategy" value="ExcludeByCachedIds" id="excludeDuplicate">
+                            <span> Exclude By Cached Id's</span>
+                        </label>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-xs-12 noPadding form-group" ng-if="resObj.ddStrategy === 'SinceId'">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field"> Identifier </label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="resObj.ddStrategy === 'SinceId'">
+                    <input type="text" class="form-control" ng-model="resObj.identifier" ng-disabled="displayMode==='view'" name="identifier" placeholder="Enter identifier" required>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="resObjForm.identifier.$dirty">
+                    <br />
+                    <div error-alert ng-if="resObjForm.identifier.$error.required">
+                        Provide valid Identifiers
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 noPadding form-group" ng-if="resObj.ddStrategy === 'ExcludeByCachedIds'">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field"> Identifiers </label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="resObj.ddStrategy === 'ExcludeByCachedIds'">
+                    <input type="text" class="form-control" ng-model="resObj.identifier" name="identifier" ng-disabled="displayMode==='view'" placeholder="Enter identifiers separated by comma" required>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="resObjForm.identifier.$dirty">
+                    <br />
+                    <div error-alert ng-if="resObjForm.identifier.$error.required">
+                        Provide valid Identifiers
+                    </div>
+                </div>
+            </div>
+      </div>
+      <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button 
+                      class="btn btn-sm btn-primary text-info"  ng-click="setResponseObject(isFormValid(),resObjForm,$event, true)"><i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))?' Saving...':' Save'}} </button>
+                    </div>
+    </div>
+  </div> -->
+   <div class="panel panel-default" ng-if="reportIsThere()">
+    <div class="panel-heading collapsed"  role="button" data-toggle="collapse" data-parent="#responseAccordion" href="#showLink" role="tab" id="headingThree">
+         <div><span class="panel-title entity_count_label">{{wfType!=='action'? optional: ""}} {{'report_template_definition'| i18nString}}</span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+         <p>{{'response_object_report_template'| i18nString}}</p>
+     <!-- <p>Define a link to display report data to the end-user as a link that can display the payload response using a template or formatted for specific message type</p>-->
+      </div>
+    </div>
+    <div id="showLink" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+        <div class="col-xs-12" ng-hide="wfType==='action'">
+                        <div class="radioDiv">
+                            <label for="resObj.report.no">
+                                <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="resObj.report" name="resObj.report" id="resObj.report.no" ><span class="opt-title">{{'response_object_no_response'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                        <div class="radioDiv">
+                            <label for="resObj.report.yes">
+                                <input ng-disabled="displayMode === 'view'" ng-value='true'  type="radio"   ng-model="resObj.report" name="resObj.report" id="resObj.report.yes"><span class="opt-title">{{'response_object_yes_response'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                </div>
+                <div class="col-xs-11 form-group" ng-if="resObj.report && reportIsThere()">
+                    <report-form report-cb="reportCb" wf-type="{{wfType}}" sample-response-keys="sampleResponseKeys" display-mode="{{displayMode}}" class="grayBG displayBlock"></report-form>
+                </div>
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button 
+                      class="btn btn-sm btn-primary text-info" id='report-template-save-btn'  ng-click="setResponseObject(!isReportFormValid(),resObjForm,$event, true)"><i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))? savingLabel : save}} </button>
+                    </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="button" data-toggle="collapse" data-parent="#responseAccordion" href="#channelUxMap"  role="tab" id="headingThree">
+        <div><span class="panel-title entity_count_label">{{'response_object_message_definition'| i18nString}}</span>
+            <span  ng-if="resObj.showUxError" class="length"> <i title="{{'response_object_please_provide_chnl_ux_map'| i18nString}}" class="fa fa-warning error-color"></i></span>
+            <span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+            <p>{{'response_object_message_definition_desc'| i18nString}}</p>
+      <!--<p>Define the defalut and/or channel specific message response displayed to the user based on the payload response from the API Request and any processors defined</p>-->
+      </div>
+      
+    </div>
+    <div id="channelUxMap" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+         <div>
+                    <kore-ux-editor display-mode="displayMode" callback-object="callbackObject" response="taskresponse" config="config" uxmaps="resObj.channelUxMap"></kore-ux-editor>
+                </div>
+                <div class="col-xs-12" ng-if="resObj.showUxError">
+                    <br />
+                    <div error-alert>
+                        {{'response_object_please_provide_chnl_ux_map'| i18nString}}
+                    </div>
+                </div>
+                <div class="col-xs-12" ng-if="false">
+                    <div class="col-xs-3"></div>
+                     <div class="reportNoteDiv col-xs-9" ng-if="reportIsThere()">
+                        <div class="reportInner">
+                    <span class="task-icon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></img></span>
+            
+                <p class="name noMargin">{{'note'| i18nString}}</p>
+                <p class="description">{{'response_object_note_Desc'| i18nString}}</p>
+              <div>
+            </div>
+                </div> 
+               
+          </div>
+                </div>
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button 
+                      class="btn btn-sm btn-primary text-info"  ng-click="setResponseObject(isFormValid(),resObjForm,$event, true)"><i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))? savingLabel : save }} </button>
+                    </div>
+    </div>
+  </div>
+  
+</div>
+
+
+<div class="form-container">
+    <form name="resObjForm" class="wf-form" novalidate>
+        <fieldset>
+            <div class="col-xs-12 noPadding form-group" ng-if="wfType==='alert'">
+                <div class="col-xs-12 noPadding">
+                
+                    
+                                        <alert-filter-form wf-type="{{wfType}}" filter-frm ="filterFrm" view="displayMode==='view'" display-mode="{{editOperation?'edit':'view'}}" mode="create" set-filter-data="editingFilter" on-cancel="onFilterFormCancel({filterForm : false});" on-save="onAlertFilterSave(filterRequestObj,showIt);"></alert-filter-form>
+             
+                </div>
+            </div>
+            <div class="col-xs-12 noPadding form-group hide" ng-if="wfType==='alert'" >
+                <div class="col-xs-12 labelling noPadding">
+                    <label ng-hide="!alertFilter.alrtFilterObjects.rows.length && displayMode==='view' " class="" tooltip-placement="right" tooltip=" {{'response_object_filters_tooltip'| i18nString}}">{{'filters'| i18nString}}</label>
+                    <button ng-if="displayMode!=='view'" type="button" data-toggle="modal" data-target=".addfilter" class="btn btn-primary btn-sm pull-right" ng-click="showAlertFilterForm()">{{'add'| i18nString}}</button>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="wfType === 'alert' && alertFilter.alrtFilterObjects.rows.length">
+                    <sortable-table callback="orderFilters(type,index)"  on-view="filterDataRowView(index,row)" show-actions="{{displayMode!=='view'}}" on-edit="filterDataRowEdit(index,row)" on-delete="filterDataRowDel(index,row)" table-data="alertFilter.alrtFilterObjects"></sortable-table>
+                </div>
+            </div>
+            <div class="col-xs-12 noPadding form-group hide"  ng-if="showDedup(wfType)&&wfType!=='action'">
+                <div class="col-xs-12 noPadding">
+                    <label class="" tooltip-placement="right" tooltip="">{{'deduplicate_strategy'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 row noPadding">
+                <div class="col-xs-12 noPadding">
+                    <div class="checkbox radioDiv">
+                        <label for="noneDuplicate" class="noPadding">
+                            <input type="radio" ng-disabled="displayMode==='view'" ng-model="resObj.ddStrategy" value="None" id="noneDuplicate">
+                            <span> {{'None_label'| i18nString}}</span>
+                        </label>
+                    </div>
+                    </div>
+
+
+
+                    <div class="col-xs-12 noPadding">
+                    <div class="checkbox radioDiv noMargin">
+                        <label for="excludeDuplicate" class="noPadding">
+                            <input type="radio" ng-disabled="displayMode==='view'" ng-model="resObj.ddStrategy" value="ExcludeByCachedIds" id="excludeDuplicate">
+                            <span> {{'exclude_by_cache_id'| i18nString}}</span>
+                        </label>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-xs-12 noPadding form-group" ng-if="resObj.ddStrategy === 'SinceId'">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field"> {{'identifier'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="resObj.ddStrategy === 'SinceId'">
+                    <input type="text" class="form-control" ng-model="resObj.identifier" ng-disabled="displayMode==='view'" name="identifier" placeholder="{{'enter_identifier_placeholder'| i18nString}}" required>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="resObjForm.identifier.$dirty">
+                    <br />
+                    <div error-alert ng-if="resObjForm.identifier.$error.required">
+                        {{'provide_Valid_identifiers'| i18nString}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 noPadding form-group hide" ng-if="resObj.ddStrategy === 'ExcludeByCachedIds'">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field">  {{'identifiers'| i18nString}}  </label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="resObj.ddStrategy === 'ExcludeByCachedIds'">
+                    <input type="text" class="form-control" ng-model="resObj.identifier" name="identifier" ng-disabled="displayMode==='view'" placeholder="{{'enter_identifier_with_comma_placeholder'| i18nString}}" required>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="resObjForm.identifier.$dirty">
+                    <br />
+                    <div error-alert ng-if="resObjForm.identifier.$error.required">
+                        {{'provide_Valid_identifiers'| i18nString}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 noPadding hide">
+                <div class="col-xs-12 noPadding">
+                    <div class="row">
+                        <label class="required-field"> {{'channel_ux_map'| i18nString}} </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <kore-ux-editor display-mode="displayMode" callback-object="callbackObject" response="taskresponse" config="config" uxmaps="resObj.channelUxMap"></kore-ux-editor>
+                </div>
+                <div class="col-xs-12" ng-if="resObj.showUxError">
+                    <br />
+                    <div error-alert>
+                        {{'response_object_please_provide_chnl_ux_map'| i18nString}}
+                    </div>
+                </div>
+            </div>
+
+            <fieldset class="col-xs-12 noPadding form-group hide" ng-disabled="displayMode==='view'">
+                <div class="col-xs-12 noPadding form-group" ng-if="reportIsThere() && false">
+                    <div class="col-xs-12 lineHeight noPadding">
+                        <label tooltip-placement="right" tooltip="{{'show_link_for_more_details_tooltip'| i18nString}}">{{'show_link_for_more_details'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <div class="radioDiv">
+                            <label for="resObj.report.no">
+                                <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="resObj.report" name="resObj.report" id="resObj.report.no" ><span class="opt-title">{{'response_object_no_response'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                        <div class="radioDiv">
+                            <label for="resObj.report.yes">
+                                <input ng-disabled="displayMode === 'view'" ng-value='true'  type="radio"   ng-model="resObj.report" name="resObj.report" id="resObj.report.yes"><span class="opt-title">{{'response_object_yes_response'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-11 form-group" ng-if="false && resObj.report && reportIsThere()">
+                    <report-form wf-type="{{wfType}}" sample-response-keys="sampleResponseKeys" display-mode="{{displayMode}}" class="grayBG displayBlock"></report-form>
+                </div>
+            </fieldset>
+            </div>
+            <div class="footer noMargin form-group hide">
+                <div class="footerSub">  
+                     <div class="col-xs-3"><button ng-click="onCancel();$parent.onCancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+                    <div  class="col-xs-6 lineheight"><div class="form-ctrl-div pull-left hide">
+                        <a href="/bt">
+                            <button class="btn btn-default">{{'exit_label'| i18nString}}</button>
+                        </a>
+                    </div>
+                    <!-- <div class="taskNameHeader textEllipsis">{{resource.name}}</div> -->
+                    <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+                    </div>
+                    <div  class="col-xs-3">
+                    <div class="help-hint-link hide">
+                        <a ng-hide="((wfType == 'alert')||((wfType == 'action')))" href="" >{{'help_withpage_label'| i18nString}}</a>
+                        <a ng-if="(wfType == 'alert')" class="inline-link" target="_blank"  ng-href="{{$root.helpLinks.ALERT_RES}}">{{'help_withpage_label'| i18nString}}</a>
+                        <a ng-if="(wfType == 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_RES}}">{{'help_withpage_label'| i18nString}}</a>
+                    </div>
+                    
+                    <div class="pull-right form-ctrl-div" ng-show="displayMode!=='view'">
+                        <!-- <button type="reset" ng-if="displayMode && displayMode!=='view'" class="btn btn-default" ng-click="cancelResponseSubmition()"> Cancel </button> -->
+                        <!-- <button type="reset" ng-if="!displayMode" class="btn btn-default" ng-click="clear()"> Clear </button> -->
+                        <button type="button" ng-click="$parent.$parent.previousStep()" ng-if="!displayMode" class="btn btn-default">{{'previous'| i18nString}}</button>
+                        <button type="button" ng-click="setResponseObject(isFormValid(),resObjForm,$event)" ng-if="!displayMode && $parent.$parent.isThisSectionRequired('settings')" ng-disabled="saveInProgress" class="btn btn-primary"><i ng-if="saveInProgress && !stopNavigation" class="fa fa-spinner fa-spin"></i> {{'next'| i18nString}} </button>
+                        <button type="button" ng-click="setResponseObject(isFormValid(),resObjForm,$event, true)" ng-if="!displayMode || displayMode!=='view'" class="btn btn-primary hide" ng-disabled="saveInProgress">
+                            <i ng-if="(displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))? savingLabel : save }}</button>
+                            <button type="button" ng-if="displayMode !=='view' && !$parent.$parent.isThisSectionRequired('settings')" class="btn btn-primary" ng-click="onFinishSetup(wfType)"><i ng-if="$parent.$parent.isFinshSetupLoading" class="fa fa-spinner fa-spin"></i> {{'finish_setup'| i18nString}}</button>
+                    </div>
+                    <span class="dhelpLink">
+                    <a class="" target="_blank" ng-if="(wfType == 'alert')"  ng-href="{{$root.helpLinks.ALERT_RES}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                    <a class="" target="_blank" ng-if="(wfType == 'action') && !reportIsThere()"  ng-href="{{$root.helpLinks.ACTIONS_RES}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                    <a class="" target="_blank" ng-if="(wfType == 'action') && reportIsThere()"  ng-href="{{$root.helpLinks.INFORMATION_RES}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+             </span>
+             </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>add-green</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="add-green" transform="translate(-1.000000, -1.000000)" fill-rule="nonzero">
+            <polygon id="Path" fill-opacity="0" fill="#D8D8D8" points="0 0 16 0 16 16 0 16"></polygon>
+            <path d="M8,1.778 C8.28,1.778 8.508,1.992 8.533,2.264 L8.535,2.313 L8.535,7.463 L13.687,7.465 C13.983,7.465 14.222,7.705 14.222,8 C14.222,8.28 14.008,8.508 13.736,8.533 L13.687,8.535 L8.535,8.535 L8.535,13.687 C8.535,13.983 8.295,14.222 8,14.222 C7.72,14.222 7.492,14.008 7.467,13.736 L7.465,13.687 L7.464,8.535 L2.313,8.535 C2.017,8.535 1.778,8.295 1.778,8 C1.778,7.72 1.992,7.492 2.264,7.467 L2.313,7.465 L7.463,7.464 L7.465,2.313 C7.465,2.017 7.705,1.778 8,1.778 Z" id="Path" fill="#0D6EFD"></path>
+        </g>
+    </g>
+</svg>

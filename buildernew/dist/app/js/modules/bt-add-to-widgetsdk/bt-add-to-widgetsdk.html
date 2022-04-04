@@ -1,0 +1,23 @@
+<form role="search" name="channelForm" method="get" class="modal-row search-form">
+    <button type="button" ng-click="closeModal()"class="close workplaceModalClose" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+    <!-- Add Bot Welcome -->
+    <div class="addWebMobile"  perfect-scroll dynamic-height dynaoffset="-100">
+
+        <div class="container">
+            <div class="row botDetails">
+                <div class="col-xs-3 icon">
+                    <img alt="{{stream.name}}" ng-src="{{stream.icon}}">
+                </div>
+                <div class="col-xs-9 title">
+                    <span>
+                        {{stream.name}}
+                    </span>
+                </div>
+            </div>
+            
+        </div>
+        <div class="description" ng-bind-html="'test_widget_sdk'| i18nString:({link:'https://developer.kore.ai/docs/bots/kore-web-sdk/'})">
+<p>{{'bt_add_to_widgetsdk_desc2'| i18nString}}</p></div>
+    </div>
+</form>
+

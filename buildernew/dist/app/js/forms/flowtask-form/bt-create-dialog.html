@@ -1,0 +1,259 @@
+<div class="modalBody dialogScrollBody" perfect-scroll dynamic-height dynaoffset="-120" height-property="height">
+  <form name="createDialogForm" class="createDialog"  novalidate>
+    <div class="row btnSearchTitle">
+      <div class="col-xs-6 leftTitle">
+          <p class="pageTitle">Dialog Task</p>
+      </div>
+    </div>
+    
+    <!-- PLAN INFO -->
+    <div class="hintDiv col-xs-12 marginBottom width735" ng-if="license && notificationEnabled">
+        <span class="icon"><i class="btx-info"></i></span>
+        <span class="description ng-binding">{{'basic_plan_notification_text' | i18nString}}</span>
+        <i class="btx-close" ng-click="closeNotification()" ></i>    
+    </div>
+    <!-- PLAN INFO -->
+    <div class="col-xs-12 marginBottomn20 noPadding">
+      <div class="col-xs-12 noPadding tooltip-right-aligned-dialog-task-create">
+        <label class="required-field">{{nodeObj.type === 'intent'?intent :''}} {{nodeObjLabels.nameLabel}} <i class="btx-help" tooltip-placement="right" tooltip="{{'dialog-creation--dec' | i18nString}}"></i></label>
+        <label class="sublabel" ng-if="nodeObj.type === 'intent'">{{nodeObjLabels.nameSubLabel}}</label>
+      </div>
+      <div class="col-xs-12 hasError noPadding">
+        <!-- input-note note-description="nameDescription" -->
+        <input class="form-control" id="_createDialog"  wait-time="500"  name="flowTaskName" ng-model="nodeObj.name" value="{{nodeObj.name}}" ng-keyup="onInputKeyup($event, nodeObj.type)" placeholder="{{nodeObjLabels.namePlaceholder}}" />
+        <div error-alert ng-show="createDialogForm.flowTaskName.$error.pattern" class="text-danger form-error-text">  {{'intent_name_allow'| i18nString}}</div>
+      </div>
+    </div>
+    <div class="col-xs-12 marginBottomn20 noPadding description"  ng-if="nodeObj.desc !== undefined">
+      <div class="col-xs-12 noPadding">
+        <label class="required-field">{{_constants_.flowtasks.description}}</label>
+      </div>
+      <div class="col-xs-12 noPadding">
+        <div class="kr-sg-input-text-area">
+          <!-- <textarea class="input-text form-control"  name=" flowTaskDesc" ng-model="nodeObj.desc" value="{{nodeObj.desc}}" placeholder="{{'add_intent_description_here'| i18nString}}" ng-keyup="onCheckLength($event)"></textarea> -->
+          <input class="form-control" name=" flowTaskDesc" ng-model="nodeObj.desc" value="{{nodeObj.desc}}" placeholder="{{'add_intent_description_here'| i18nString}}" ng-keyup="onCheckLength($event)" />
+        </div>
+      </div>
+    </div>
+    <div class="cddb" ng-if ='!flowTaskToClone && (streamData.type !== "solution") && (rightPanel.innerRightPanel.view !== "storyboard") && !helpGuideOptions.showTaskCreation'>
+      <div class="cdDetails">
+        <p class="cdTitle">Conversation Driven Dialog Builder</p>
+        <p class="cdDesc">Build your Dialog Task by using the all-new conversation first approach. </p>
+      </div>
+      <div class="toggleDD">
+        <div class="infoDD">
+          <i class="btx-info" ng-click="$event.stopPropagation();toggleLearnMore()" ng-class="{expand: showLeadrnMore}" tooltip-placement="bottom" tooltip="{{'dialog-cration-info' | i18nString}}"></i>  
+          <div class="ddLearnMore" ng-if="showLeadrnMore" ng-click="$event.stopPropagation()">
+                <p class="ddTitle">{{'its_complete_package' | i18nString}}</p>
+                <p><img src="{{brokenImageSmall}}" onerror="handleimgLoad(this)"  ng-src="{{communication}}"  class="helpImg">{{'create_the_dialog' | i18nString}}</p>
+                <p><img src="{{brokenImageSmall}}" onerror="handleimgLoad(this)"  ng-src="{{compare}}" class="helpImg">{{'create_the_way' | i18nString}}</p>
+                <p class="noBTMmargin"><img  src="{{brokenImageSmall}}" onerror="handleimgLoad(this)" ng-src="{{peopleWorkingTogether}}"class="helpImg">{{'product_owner' | i18nString}}</p>
+          </div>
+        </div>
+        <label class="kr-sg-toggle large">
+          <input type="checkbox"  ng-model="conversationalBuilder" ng-change="toggleConversationBuilder()">
+          <div class="slider"></div>
+      </label>
+      </div>
+    </div>
+    <div class="dialogCreateUtteranceBlock ">
+      <div class="utteranceBody">
+        <div class="subDiv col-xs-12 noPadding">
+          <div class="kr-sg-input-text">
+            <label class="required-field tooltip-right-aligned-dialog-task-create">{{'intent_training_label' | i18nString}} <span class="intentCount marginRight10" ng-if="newDialogUtterences.length">({{newDialogUtterences.length || 0}})</span> <i class="btx-help" tooltip-placement="right" tooltip="{{'dialog-creation-intent-dec' | i18nString}}"></i> </label>
+            <input type="text" placeholder="{{'type_&_enter_to_add_utterances'| i18nString}}" class="input-text" ng-class="{'error':duplicateUtterance}" placeholder="{{'type_enter_add'| i18nString}}" ng-model="newDialogUtterance" autocomplete="off" ng-keydown="addUtterance($event,newDialogUtterance)">
+            <div class="error-msg" ng-if="duplicateUtterance"> <i class="btx-warning"></i>Utterance cannot be added as it is already part of <span ng-if="!nodeObj.name">the Intent</span><span ng-if="nodeObj.name">‘{{nodeObj.name}}’</span></div>
+          </div>
+        </div>
+        <div class="subDiv col-xs-12 btmShadow" ng-repeat="utterance in newDialogUtterences track by $index">
+          <div class="desc col-xs-11">{{utterance}}</div>
+          <div class="delete-utt col-xs-1" ng-click="deleteUtterance($index)">
+            <i class="btx-delete-1" tooltip-placement="left" tooltip="{{'dialog-cration-trash' | i18nString}}"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flow-task-add-utt-block">
+      <span ng-if="!flowTaskToClone" class="moreOptions"><span data-toggle="collapse" data-target="#moreOptions" ng-click="expandMoreOps()" class="optionsAction collapsed"><i class="btx-carrot-down"></i> {{'more_options'| i18nString}} </span></span>
+      <div id="moreOptions" class="collapse" ng-class='{"in":flowTaskToClone}'>
+        <!-- Intent Node type options -->
+          <div class="col-xs-12 " ng-show="nodeObj.type === 'intent'" ng-class='{"noPadding":flowTaskToClone}'>
+              <!-- <div class="col-xs-12 labelling noPadding">
+                  <label>{{'keyvalueform_btnLabel'| i18nString}}</label>
+              </div> -->
+              <div class="col-xs-12" ng-class='{"noPadding":flowTaskToClone}'>
+                  <div class="checkbox checkbox-primary styledCSS ">
+                      <div class="selectedType-status "  ng-click="dilogTypeselect('followUp')">
+                          <i area-hidden="true" ng-class="{'fa fa-square-o':!intentNodeType.isFollowUp,'fa fa-check-square':intentNodeType.isFollowUp}"><span class="dialogTypeTitle">{{'sub_intent'| i18nString}}</span></i>
+                      </div>
+                      <div class="dilogTypeLabelDesc ">{{'sub_task_desc'| i18nString}}</div>
+                  </div>
+                  <div class="checkbox checkbox-primary styledCSS">
+                      <div class="selectedType-status " ng-click="dilogTypeselect('hidden')">
+                          <i area-hidden="true" ng-class="{'fa fa-square-o':!intentNodeType.isHidden,'fa fa-check-square ':intentNodeType.isHidden,'disableDilogType fa fa-check-square !important':intentNodeType.isFollowUp}"><span class="dialogTypeTitle ">{{'hide_help'| i18nString}}</span></i>
+                      </div>
+                      <div class="dilogTypeLabelDesc">{{'bot_task_desc'| i18nString}}</div>
+                  </div>
+              </div>
+          </div>
+          <div class="manageContextStatus col-xs-12 " ng-class='{"noPadding":flowTaskToClone}'>
+              <div class="manageContextConditions">
+                  <label class="required-field">{{'intent_preconditions_name'| i18nString}}</label>
+                  <p class="pre-conditionsInfo">
+                    {{'pre_condition_info'| i18nString}} 
+                  </p>
+                  <tags-input add-on-comma="false" class="tagOrCondition"  tag-class="tagsWithOR" replace-spaces-with-dashes="false" min-length="0"
+                      max-length="128" use-strings="true" placeholder="{{'type_enter'| i18nString}}" 
+                      ng-model="manageContext.preConditions"></tags-input>
+              </div>
+              <div class="manageContextConditions marginTop20 marginBTM25">
+                  <label class="required-field">{{'context_output_name'| i18nString}}</label>
+                  <p class="pre-conditionsInfo">
+                    {{'def_context'| i18nString}} 
+                  </p>
+                  <tags-input add-on-comma="false" class="" replace-spaces-with-dashes="false" min-length="0"
+                      max-length="128" use-strings="true" placeholder="{{'type_enter'| i18nString}}"
+                      ng-model="manageContext.contextTags"></tags-input>
+              </div>
+            </div>
+            <!-- <div class="col-xs-12 manageContextStatus" ng-if ='!flowTaskToClone && (streamData.type !== "solution")'>
+              <div class="checkbox checkbox-primary styledCSS " ng-click="toggleConversationBuilder()">
+                <div class="selectedType-status ">
+                  <i area-hidden="true"  ng-class="{'fa fa-square-o':!conversationalBuilder,'fa fa-check-square':conversationalBuilder}"><span class="dialogTypeTitle">Create using New Conversation Driven Dialog Builder (Recommended)</span></i>
+                </div>
+              </div>
+            </div> -->
+      </div>
+    </div>
+    <!-- Node Type -->
+    <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.nodeType !== undefined">
+      <div class="col-xs-12 noPadding">
+        <label class="required-field">{{_constants_.flowtasks.nodeType}}</label>
+      </div>
+      <div class="col-xs-12 noPadding">
+        <select class="form-control selectType" ng-model="nodeObj.nodeType" ng-change="checkCreateNodeFormDirty()" ng-options="item.value as item.title for item in _constants_.entityNlp|filter : {isDepricated : false}">
+          <option value="" disabled="disabled">{{'select_name'| i18nString}}</option>
+        </select>
+        <label ng-if='nodeObj.nodeType==="regex"' class="customEntityInfoMsg sublabel"> {{'custom_entity'| i18nString}}</label>
+        <label ng-if='nodeObj.nodeType==="list_of_values"' class="customEntityInfoMsg sublabel"> {{'list_items_enumerated'| i18nString}}</label>
+        <label ng-if='nodeObj.nodeType==="list_of_items_lookup"' class="customEntityInfoMsg sublabel"> {{'list_items_lookup'| i18nString}}</label>
+        <label ng-if='nodeObj.nodeType==="quantityv2"' class="customEntityInfoMsg sublabel"> {{'quantity_entity_desc'| i18nString}}</label>
+      </div>
+    </div>
+    <!-- Node Sub-Type -->
+    <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.nodeSubType !== undefined">
+      <div class="col-xs-12 noPadding">
+        <label>{{_constants_.flowtasks.nodeSubType}}</label>
+      </div>
+      <div class="col-xs-12">
+        <select class="form-control selectType" ng-model="nodeObj.nodeSubType" ng-options="x for x in nodeSubTypeObjOptns">
+        </select>
+      </div>
+    </div>
+    <!-- Service Node Type -->
+    <div class="col-xs-12 form-group noPadding" ng-if="nodeObj.serviceNodeType !== undefined">
+      <div class="col-xs-12">
+        <label class="required-field">{{_constants_.flowtasks.serviceType}}</label>
+      </div>
+      <div class="col-xs-12">
+        <select class="form-control selectType" ng-model="nodeObj.serviceNodeType" ng-change="updateServiceNodeType(nodeObj.serviceNodeType)">
+          <option value="custom">{{_constants_.flowtasks.serviceTypes.custom}}</option>
+          <option value="htmltoimage">{{_constants_.flowtasks.serviceTypes.htmlToImage}}</option>
+          <option value="urltoimage">{{_constants_.flowtasks.serviceTypes.urlToImage}}</option>
+        </select>
+      </div>
+    </div>
+    <!-- Service Type -->
+    <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.serviceType !== undefined">
+      <div class="col-xs-12">
+        <label class="required-field">{{_constants_.flowtasks.nodeType}}</label>
+      </div>
+      <div class="col-xs-12">
+        <select class="form-control selectType"  ng-change="checkCreateNodeFormDirty()" disabled="disabled">
+          <option value="">{{'web_service'| i18nString}}</option>
+        </select>
+      </div>
+    </div>
+    <!-- Service Node Type -->
+    <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.serviceType !== undefined && nodeObj.serviceNodeType === 'custom'">
+      <div class="col-xs-12">
+        <label class="required-field">{{_constants_.flowtasks.nodeSubType}}</label>
+      </div>
+      <div id="serviceSubType" class="col-xs-12 hasError">
+        <select class="serviceNodeSubType form-control selectType"  ng-model="nodeObj.serviceType" ng-change="checkCreateNodeFormDirty()" ng-options="item.value as item.name for item in serviceTypeList">
+          <option value="" disabled="disabled">{{'choose_service'| i18nString}}</option>
+        </select>
+      </div>
+    </div>
+    <!-- Node Prompt -->
+    <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.prompt !== undefined">
+      <div class="col-xs-12">
+        <label class="required-field" ng-if="nodeObj.type === 'message'">{{_constants_.flowtasks.message}}</label>
+        <label class="required-field" ng-if="nodeObj.type !== 'message'">{{_constants_.flowtasks.promptMessage}}</label>
+      </div>
+      <div class="col-xs-12 hasError">
+        <input class="form-control" name="flowTaskPrompt" ng-model="nodeObj.prompt" value="{{nodeObj.prompt}}" ng-keyup="onInputKeyup($event, nodeObj.type, 'prompt')"/>
+      </div>
+    </div>
+
+</form>
+</div>
+<!-- <div class="newDialogBanner" ng-if ='!flowTaskToClone && (streamData.type !== "solution") && (rightPanel.innerRightPanel.view !== "storyboard")' ng-class="{'minDialog' : minDialog}">
+  <div class="kr-sg-checkbox">
+    <input id="conversationalBuilder" class="checkbox-custom" type="checkbox" ng-model="conversationalBuilder" ng-click="toggleConversationBuilder()">
+    <label for="conversationalBuilder" class="checkbox-custom-label"></label>
+</div> 
+<div class="animationGif">
+  <img src="{{brokenImageSmall}}" ng-src="{{dialogCreation}}" onerror="handleimgLoad(this)" class="dialogCreation">
+</div>
+<div class="newDialogDetails">
+  <p class="tt">{{'try_conversation' | i18nString}} <img src="{{brokenImageSmall}}"  ng-src="{{betaNew}}"></p>
+  <p class="dc">{{'build_your_dialog' | i18nString}}</p>
+</div>
+<div class="moreDetails" >
+  <i class="btx-collapse-min" tooltip-placement="bottom" tooltip="{{'dialog-cration-minimize' | i18nString}}" ng-click="toggleDialogBanner()"></i>  
+  <i class="btx-expand-max" tooltip-placement="bottom" tooltip="{{'dialog-cration-maximize' | i18nString}}" ng-click="toggleDialogBanner()"></i>  
+  <i class="btx-info" ng-click="$event.stopPropagation();toggleLearnMore()" ng-class="{expand: showLeadrnMore}" tooltip-placement="bottom" tooltip="{{'dialog-cration-info' | i18nString}}"></i>  
+  <div class="ddLearnMore" ng-if="showLeadrnMore" ng-click="$event.stopPropagation()">
+        <p class="ddTitle">{{'its_complete_package' | i18nString}}</p>
+        <p><img src="{{brokenImageSmall}}" onerror="handleimgLoad(this)"  ng-src="{{communication}}"  class="helpImg">{{'create_the_dialog' | i18nString}}</p>
+        <p><img src="{{brokenImageSmall}}" onerror="handleimgLoad(this)"  ng-src="{{compare}}" class="helpImg">{{'create_the_way' | i18nString}}</p>
+        <p class="noBTMmargin"><img  src="{{brokenImageSmall}}" onerror="handleimgLoad(this)" ng-src="{{peopleWorkingTogether}}"class="helpImg">{{'product_owner' | i18nString}}</p>
+  </div>
+</div>
+</div> -->
+<div class="modalFooter" ng-if ='!flowTaskToClone'>
+  <div class="buttonContainer">
+      <button ng-click="proceedCreateDialog()" ng-disabled="nodeObj.isInvalid || !createDialogForm.$dirty" class="btn btnSolidBlue">{{(savingdialog)?savingLabel:proceed}}</button>
+      <!-- <button ng-click="goToTasks()" class="btn closeCancel"> {{'cancel'| i18nString}}</button> -->
+  </div>
+</div>
+   
+<!--         </div>
+    </div>
+</div> -->
+
+<div class="modal fade flowtask-dialog-modal"  data-backdrop="static" tabindex="-1" role="dialog" id="createNewDialog">
+  <div class="modal-dialog">
+      <div class="modal-content myModal-content">
+          <div class="modal-header">
+              <i class="btx-close" ng-click="closeupgadeToNewDialog()"></i>
+          </div>
+          <div class="modal-body">
+              <div class="upgradeFlow">
+                  <img ng-src="{{upgradeFlowBig}}" class="upgradeFlowIMG">
+                  <div class="content">
+                    <div class="mainContent">{{'create_using_newdialog' | i18nString}} </div>
+                    <div class="description">{{'create_using_newdialog_desc' | i18nString}} </div>
+                  </div>
+                  <div class="buttonContainer">
+                      <div>
+                          <button class="kr-sg-button-primary" ng-click="proceedCreateDialog('new')">{{'button_label_use_new_dialog' | i18nString}}</button>
+                          <button class="kr-sg-button-secondary" ng-click="proceedCreateDialog('old')">{{'button_label_use_old_dialog' | i18nString}}</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

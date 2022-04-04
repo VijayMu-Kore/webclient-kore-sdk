@@ -1,0 +1,150 @@
+<div class="noBotsContentCOntainer" style="display: none;" dynamic-height dynaoffset="-50" height-property="height" perfect-scroll ng-if="!loadingStore">
+		<div class="noBotsContainer">
+				<img ng-src="{{imgTop}}" class="imgTop">
+				<img ng-src="{{noBotsPlaceholder}}" class="noBotsPlaceholder">
+				<div class="btnNdescDiv">
+					<h1 ng-if="currentUserInfo">{{'hello'| i18nString}} {{currentUserInfo.firstName +" "+ currentUserInfo.lastName}}</h1>
+					<p>{{'no_bots_kore'| i18nString}}<br>
+						{{'get_started_creating'| i18nString}}
+					</p>
+						
+					<div class="buttonDiv">
+						<button class="createBtn createNewBotBtnInHome" ng-click="selectMode(contentTypes[0].type, contentTypes[0])">{{'no_bots_form_create_your_firstbot'| i18nString}}</button>
+						<span class="dropdown">
+							<button class="createDropDown dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img ng-src={{caretDownWhit}} class="caretDownWhit">
+								<img ng-src={{caretDown}} class="caretDown">
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<!-- <a class="dropdown-item" ng-show="contentType.show" ng-repeat="contentType in contentTypes" >{{contentType.name}} <img ng-src="{{helpIcon}}" class="helpIcon" data-content="{{contentType.description}}" data-placement="top" data-toggle="popover" data-trigger="click"></a> -->
+								<!-- <a class="dropdown-item" ng-show="contentType.show" ng-click="selectMode(contentType.type, contentType)" ng-repeat="contentType in contentTypes" >{{contentType.name}} <img ng-src="{{helpIcon}}" class="helpIcon" data-content="{{contentType.description}}" data-placement="top" data-toggle="popover" data-trigger="hover"></a> -->
+							<li class="dropdown-item" ng-click="selectMode(contentType.type, contentType)"  ng-repeat="contentType in contentTypes"  id="{{contentType.id}}" ng-show="contentType.show">
+								<div class="img-block">
+									<img ng-src={{contentType.icon}}>
+								</div>
+								<div class="content-sec">
+									<div class="m-title">{{contentType.name}}</div>
+									<div class="s-title">{{contentType.description}}</div>	
+								</div>
+							
+							</li>
+							</div>
+						</span>
+
+					</div>
+				</div>
+				<!-- <img ng-src="{{imgLeft}}" class="imgLeft">
+				<img ng-src="{{imgRight}}" class="imgRight"> -->
+			</div>
+</div>
+
+<!--New UI-->
+<div class="firstTimeLanding" dynamic-height dynaoffset="-50" height-property="height" perfect-scroll ng-if="!loadingStore">
+	<div class="botsTemplates">
+		<div class="temps">
+			<div class="nobotsPrimary">
+				<img ng-src="{{nobotsPrimary}}">
+			</div>
+			<p class="expDesc">{{'explore_our_templates' | i18nString}}</p>
+			<button class="exploreBTN" ng-click="selectMode('browsebotsamples')"><i class="btx-basket"></i>{{'explore_store' | i18nString}}</button>
+		</div>
+		<div class="firstBot">
+			<div class="nobotsPrimary">
+				<img ng-src="{{nobotsSecendary}}">
+			</div>
+			<p class="expDesc">{{'getstarted_right_away' | i18nString}}</p>
+			<div class="createBTNDiv">
+				<button class="exploreBTN" ng-click="showBotCreationForm(true)"><i class="btx-scratch"></i>{{'start_from_scratch' | i18nString}}</button>
+				<div class="kr-sg-dropdowns">                                        
+					<div class="dropdown dropdown-open">
+						<a class="dropdown-toggle dropdown-input" data-toggle="dropdown"><i class="btx-overflow"></i></a>                                            
+						<ul class="dropdown-menu content-menu">
+						  <li><a ng-click="selectMode(contentTypes[2].type, contentTypes[2])">Import Bot</a></li>
+						</ul>
+					  </div>
+				</div>
+
+			</div>
+			<div class="scratchModal"  ng-if="showBotCreate">
+				<h2 class="modalTT">{{'create_vertual_assistant' |i18nString}} <i ng-click="showBotCreationForm(false)" class="btx-close"></i></h2>
+				<form name="streamForm" class="wf-form" novalidate>
+				<div class="kr-sg-input-text">
+					<div class="label-text">{{'name' | i18nString}}</div>
+					<input type="text" ng-model="streamObject.name" id= "arabicInput" name="name" ng-model-options="{ allowInvalid: true}" ng-focus="showBotNameHint = true" ng-blur="hideNote()" class="form-control alert-input" ng-class="{'boredrRed':streamForm.name.$error.minlength || streamForm.name.$error.pattern}" ng-minlength="1" maxlength="50" required ng-pattern="validateBotName" placeholder="{{'give_your_bot_a_name'| i18nString}}"  autocomplete="off" ng-keyup="$event.keyCode == 13 || $event.keyCode ==8">
+					<!-- <div  ng-show="streamForm.name.$dirty">
+						<div error-alert  ng-show="streamForm.name.$error.required" class="text-danger form-error-text"> {{'Generalform_name_error' | i18nString}} </div>
+						<div error-alert ng-show="streamForm.name.$error.minlength" class="text-danger form-error-text">{{'Generalform_name_invalid' | i18nString}} </div>
+						<div error-alert ng-show="streamForm.name.$error.pattern" class="text-danger form-error-text"> {{'Generalform_name_pattern' | i18nString}}</div>
+						<div class="charactersLength" ng-show="streamObject.name.length > 0">{{(50 - streamObject.name.length) + charRemaining }}</div>
+					  </div> -->
+					  <!-- <div class="hintDiv" ng-show="showBotNameHint" >
+						<span class="icon"><i class="layer btx-bulb"></i></span>
+						<span class="description" >{{'botNameHint'| i18nString}}</span>
+					 </div> -->
+					 <i class="btx-warning" ng-if="(streamForm.name.$error.minlength && streamObject.name ) || streamForm.name.$error.pattern"  tooltip="{{((streamForm.name.$error.pattern)?'Generalform_name_pattern':'Generalform_name_invalid') | i18nString}}" tooltip-placement="top"></i>
+				</div>
+				<div class="kr-sg-dropdowns">
+					<div class="label-text">{{'language_label' | i18nString}}</div>
+					<div class="dropdown dropdown-open">
+						<button class="dropdown-toggle dropdown-input" ng-click="dropdownClick()" data-toggle="dropdown">{{selectedlanguage.name}}</button>                                            
+						<ul class="dropdown-menu content-menu languagedrop languageDropDown">
+						  <li class="languageDrop" ng-repeat="languagein in supportedLanguages"><a ng-click="languageSelection(languagein)">{{languagein.name}}</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="create-Btn">
+					<button ng-disabled="!streamObject.name || streamForm.name.$error.minlength || streamForm.name.$error.pattern" ng-click="createStream(true, streamForm, $event)">{{(creatingBot)?creating_bot:create_bot}}</button>
+				</div>
+			</form>
+			</div>
+
+	
+		</div>
+	</div>
+	<p class="explore">You can also explore more of these learning resources</p>
+	<div class="relatedSites">
+		<div class="sitesLink" ng-click="openLinks('koreAcademy',$event)">
+			<div class="siteIcon">
+				<img class="iconSite" ng-src="{{organization}}">
+			</div>
+			<div class="detailsDec">
+				<p class="dName">{{'kore_academy' | i18nString}}</p>
+				<p class="dDesc">{{'explore_kore_academy' | i18nString}}</p>
+			</div>
+		</div>
+		<div class="sitesLink" ng-click="openLinks('documents',$event)">
+			<div class="siteIcon">
+				<img class="iconSite" ng-src="{{documents}}">
+			</div>
+			<div class="detailsDec">
+				<p class="dName">{{'documentation' | i18nString}}</p>
+				<p class="dDesc">{{'explore_community' | i18nString}}</p>
+			</div>
+		</div>
+		<div class="sitesLink no-m-r" ng-click="openLinks('community',$event)">
+			<div class="siteIcon">
+				<img class="iconSite" ng-src="{{community}}">
+			</div>
+			<div class="detailsDec" >
+				<p class="dName">{{'community' | i18nString}}</p>
+				<p class="dDesc">{{'explore_community' | i18nString}}</p>
+			</div>
+		</div>
+	</div>
+</div>
+<!--New UI-->
+<div class="scrollDiv" dynamic-height dynaoffset="-60" height-property="height">
+    <div class="summaryLoader animationIfLeave" ng-if="iframeLoadingStore">
+        <span class="spinner-text"> 
+            <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+            <span class="spinner-text-content">  {{'loading'| i18nString}}</span>
+        </span>
+    </div>
+    <div class="full-width full-height" dynaoffset="-62" dynamic-height height-property="height" ng-show="!iframeLoadingStore">            
+        <bt-store></bt-store>
+    </div>
+</div>
+
+<bt-fullpage-modal bot-type="botType" initialize-create-bot="initializeCreateBot" callback="fullModalCallback" step="step" views="views">
+
+</bt-fullpage-madal>

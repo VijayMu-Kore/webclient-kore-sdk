@@ -1,0 +1,814 @@
+
+<!-- OLD code -->
+<div class="modal modalSlide fade right analyzeFilter botModalSlider hide" ng-if="false" data-backdrop="static"
+    role="dialog">
+    <div class="modal-dialog filterBody botModalDialog right0" dynamic-height dynaoffset="0">
+        <div class="modalContent">
+            <div class="filterContainer modalSliderContainer">
+                <div class="modalHeader">
+                    <h4 class="modal-title "><i class="btx-close" ng-click="closeModal()"></i>{{'filter'| i18nString}}
+                    </h4>
+                </div>
+                <div class="body col-xs-12 modalBody" perfect-scroll dynamic-height dynaoffset="-118"
+                    height-property="height">
+                    <div class="col-xs-12 noPadding">
+                        <div class="d-flex align-items-center">
+                            <label class="title inline_block w-50">{{'user_id'| i18nString}}</label>
+                            <div class="toggle-data-large- filter-analyze-toggle">
+                                <label class="kr-sg-toggle with-label large">
+                                    <input type="checkbox" class="switch" ng-model="togglePattern"
+                                        ng-click="filterToggle()">
+                                    <div class="slider">
+                                        <span class="no">
+                                            <span class="tooltip-hover" tooltip-placement="left" tooltip="Search using the user identities provided by the channels enabled for this bot.">{{'chnlId_label'| i18nString}}</span>
+                                        </span>
+                                        <span class="yes">
+                                            <span class="tooltip-hover" tooltip-placement="left" tooltip="{{tooltipForKoreIds}}">{{'kore_id'| i18nString}}</span>
+                                        </span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- <div class="toggle-filter inline_block pull-right cursor-pointer">
+                            <span tooltip-placement="bottom" tooltip="Search using the user identities provided by the channels enabled for this bot." class="toggle-yes" ng-click="filterToggle()"
+                                ng-class="{'toggleInactive':cb.toggleCheck === 'Kore ID' , 'toggleActive' : cb.toggleCheck === 'Channel ID'}">{{'chnlId_label'| i18nString}}</span>
+                            <div class='inline_block toggleSwitch' ng-click="filterToggle()">
+                                <span ng-show="togglePattern"><img ng-src="{{assetsBase}}images/toggle-2.png"
+                                        class=""></span>
+                                <span ng-show="!togglePattern"><img ng-src="{{assetsBase}}images/toggle-1.png"
+                                        class=""></span>
+                            </div>
+                            <span tooltip-placement="bottom" tooltip="{{tooltipForKoreIds}}" class="toggle-no" ng-click="filterToggle()"
+                                ng-class="{'toggleInactive':cb.toggleCheck === 'Channel ID' , 'toggleActive' : cb.toggleCheck === 'Kore ID'}">{{'kore_id'| i18nString}}</span>
+                        </div> -->
+                        <div class="ele usersSelect">
+                            <!-- <sumo-select search=true options="users" callback="sumocb.userscb" placeholder="{{'all_users'| i18nString}}" title-key="value" value-key="id" value="selectedUsers"></sumo-select> -->
+                            <!-- <div class="userAndChannelIds" ng-click="addingUserAndChannelIds()"></div> -->
+                            <div class="dropdown user-chanels-addin-drpdown">
+                                <div class="userAndChannelIds dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <div class="kr-sg-dropdowns">
+                                        <div class="dropdown dropdown-open">
+                                            <button class="dropdown-toggle dropdown-input"
+                                                ng-class="{'excludeTextColor':showExcludeText}"
+                                                data-toggle="dropdown">{{includeExcludeValue.label}} <i class="btx-carrot-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu content-menu">
+                                                <li ng-repeat="includeExlude in includeExcludeArray"
+                                                    ng-click="excludeUserIds(includeExlude)"
+                                                    ng-if="includeExlude.id!==includeExcludeValue.id">
+                                                    <a>{{includeExlude.label}}</a></li>
+                                                <!-- <li class="excludeUserId" ng-click="excludeUserIds()"><a>Exclude</a></li> -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <ul class="dropdown-menu" ng-click="addingUserAndChannelIds($event)"></ul>
+                                    <div class="default-text">
+                                        <div class="">
+                                            <input type="text" class="form-control" ng-if="cb.toggleCheck !== 'Kore ID'"
+                                                ng-keydown="getChannelUserIds($event)"
+                                                placeholder="{{'click_here_to_add'| i18nString}}"
+                                                ng-model="kore.searchUserId">
+                                            <input type="text" class="form-control" ng-if="cb.toggleCheck === 'Kore ID'"
+                                                ng-keydown="getKoreUserIds($event)"
+                                                placeholder="{{'click_here_to_add'| i18nString}}"
+                                                ng-model="kore.searchUserName">
+                                            <!-- <span class="img"><img ng-src={{searchIconGray}}></span> -->
+                                            <!-- <span class="imgCross fa fa-close" ng-click="clearSearchField()" ng-if="kore.searchUserId.length  || kore.searchUserName.length"></span> -->
+                                        </div>
+                                    </div>
+                                    </ul>
+                                    <!-- <span class="default-text">Click here to add</span> -->
+                                </div>
+                                <span class="pressEnter">{{'press_enter_brackets'| i18nString}}</span>
+                                <div class="kr-sg-dropdowns excludeIds">
+                                    <div class="dropdown dropdown-open w-100 positionabsolute">
+                                        <!-- <button class="dropdown-toggle dropdown-input inline" data-toggle="dropdown">{{includeExcludeValue}}</button>                                             -->
+                                        <ul class="dropdown-menu content-menu items-list" dynamic-height
+                                            dynaoffset="-350">
+                                            <li class="p-0" ng-if="users.length" ng-repeat="user in users "
+                                                ng-click="addingUserAndChannelIdsToFilter(user)">
+                                                <a>{{user.value || user.id }}</a>
+                                                <!-- <div class="imgCross fa fa-close" ng-click="removeuserChannelFilterData($index,$event" ng-if="kore.searchUserId.length  || kore.searchUserName.length"></div> -->
+                                            </li>
+                                            <li ng-show="toShowText" class="noResults pl-0"><a>No results found ..</a>
+                                            </li>
+                                            <!-- <li class="excludeUserId" ng-click="excludeUserIds()"><a>Exclude</a></li> -->
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- <div class="items-list" dynamic-height dynaoffset="-550">
+                                    <li ng-if="users.length" ng-repeat="user in users " ng-click="addingUserAndChannelIdsToFilter(user)">{{user.value || user.id }} -->
+                                <!-- <div class="imgCross fa fa-close" ng-click="removeuserChannelFilterData($index,$event" ng-if="kore.searchUserId.length  || kore.searchUserName.length"></div> -->
+                                <!-- </li>
+                                </div> -->
+                                <span ng-repeat="user in selectedUsers track by $index"
+                                    ng-class="{'excludeTextColor':showExcludeText}"
+                                    class="add-tag">{{user.value || user.id}}
+                                    <i class="btx-close" ng-click="removeuserChannelFilterData($index,$event)"
+                                        aria-hidden="true"></i>
+                                </span>
+                                <!-- <ul class="dropdown-menu" ng-click="addingUserAndChannelIds($event)">
+                                     <div class="btn-add-cancel">
+                                        <button ng-click="saveUserAndChannelIds($event)" class="btn-add">Done</button>
+                                        <button ng-click="closeUserAndChannelIds($event)" class="btn-cancel">Cancel</button>
+                                    </div> -->
+                                <!-- </ul>  -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 eachSection" ng-show="currentTab=='performance'">
+                        <label class="title">{{'node_name_label'| i18nString}}</label>
+                        <div class="ele">
+                            <sumo-select sanitize='true' search=true options="scriptComponents"
+                                callback="sumocb.componentscb" placeholder="{{'all'| i18nString}}" title-key="value"
+                                value-key="id" value="selectedComponents"></sumo-select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 eachSection">
+                        <div class="title col-xs-12 noPadding d-flex align-items-center mb-5">
+                            <label class="col-xs-4 noPadding m-0">{{'date_period'| i18nString}}</label>
+                            <div class="col-xs-8 noPadding tableDisplay">
+                                <div class="dateBtn customdatepicker" type="text" name="daterange"
+                                    ng-class="{'selected':days===-1}" ng-click="getDefaultFilter(-1)">
+                                    {{'custom'| i18nString}}</div>
+                                <div class="dateBtn" ng-class="{'selected':days===7}" ng-click="getDefaultFilter(7)">
+                                    {{'last_seven_days'| i18nString}}</div>
+                                <div class="dateBtn" ng-class="{'selected':(days!==7) && days!==-1}"
+                                    ng-click="getDefaultFilter(1)">{{'24_hours_label'|
+                                    i18nString}} </div>
+                            </div>
+                            <!-- <div class="ele dateRange"><span class="dateText">{{startDate | date:'MM-dd-yyyy,hh:mm a'}}  {{'to_label'| i18nString}}  {{endDate | date:'MM-dd-yyyy,hh:mm a'}}</span></div> -->
+                        </div>
+                        <div class="ele dateRange"><span class="dateText">{{startDate | date:'MM-dd-yyyy hh:mm a'}}
+                                {{'to_label'| i18nString}} {{endDate | date:'MM-dd-yyyy hh:mm a'}}</span></div>
+                    </div>
+                    <!-- Conversation Session Type Filter dropdown -->
+                    <!-- <div class="col-xs-12  eachSection">
+                        <div class="title popover-tooltip-show">{{'conversation_session_type'| i18nString}}
+                                <img ng-src={{helpIcon}} class="sessionType_help" data-toggle="popover" data-placement="right"></i>
+                        </div>
+                        <div class="ele">
+                            <sumo-select search=false options="sessionType" callback="sumocb.sessionscb"
+                                placeholder="Select All" title-key="type" value-key="type"
+                                value="selectedSession"></sumo-select>
+                        </div>
+                    </div> -->
+                    <div class="col-xs-12  eachSection" ng-hide="currentTab=='performance'">
+                        <label class="title">{{'languages_label'| i18nString}}</label>
+                        <div class="ele">
+                            <sumo-select search=true options="supportedLanguages" callback="sumocb.languagescb"
+                                placeholder="{{'all_languages'| i18nString}}" title-key="value" value-key="type"
+                                value="selectedLanguages"></sumo-select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection">
+                        <label class="title">{{'channel_name'| i18nString}}</label>
+                        <div class="ele">
+                            <sumo-select search=true options="channels" callback="sumocb.channelscb"
+                                placeholder="{{'all_channels'| i18nString}}" title-key="value" value-key="type"
+                                value="selectedChannels"></sumo-select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection" ng-hide="currentTab=='intentNotFound'">
+                        <label class="title">{{'task_intent'| i18nString}}</label>
+                        <div class="ele">
+                            <sumo-select sanitize='true' search=true options="tasks" callback="sumocb.taskscb"
+                                placeholder="{{'all_tasks'| i18nString}}" title-key="value" value-key="id"
+                                value="selectedTasks"></sumo-select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection" ng-show="currentTab ==='intentFound'">
+                        <label class="title">{{'utterance_type'| i18nString}}</label>
+                        <div class="ele">
+                            <div class="col-xs-12 radioDiv noPadding">
+                                <div class="radioInnerDiv">
+                                    <label for="both">
+                                        <input value="both" type="radio" ng-model="utterance.type" name="both"
+                                            id="both"><span class="opt-title">{{'both_label'| i18nString}}</span>
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="nottrained">
+                                        <input value="nottrained" type="radio" ng-model="utterance.type"
+                                            name="nottrained" id="nottrained"><span
+                                            class="opt-title">{{'not_trained'| i18nString}}</span>
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="trained">
+                                        <input value="trained" type="radio" ng-model="utterance.type" name="trained"
+                                            id="trained"><span class="opt-title">{{'trained_label'| i18nString}}</span>
+                                        </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection" ng-show="currentTab ==='intentNotFound'">
+                        <label class="title">{{'ambiguous_label'| i18nString}}</label>
+                        <div class="ele">
+                            <div class="col-xs-12 radioDiv noPadding">
+                                <div class="radioInnerDiv">
+                                    <label for="showAll">
+                                        <input value="showAll" type="radio" ng-model="ambiguous.type" name="showAll"
+                                            id="showAll"><span class="opt-title">{{'showAll'| i18nString}}</span>
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="showAmbiguous">
+                                        <input value="showAmbiguous" type="radio" ng-model="ambiguous.type"
+                                            name="showAmbiguous" id="showAmbiguous"><span
+                                            class="opt-title">{{'show_ambigious'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="hideAmbiguous">
+                                        <input value="hideAmbiguous" type="radio" ng-model="ambiguous.type"
+                                            name="hideAmbiguous" id="hideAmbiguous"><span
+                                            class="opt-title">{{'hide_ambigious'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection mt-10">
+                        <label class="title mb-0">{{'developer_interactions'| i18nString}}</label>
+                        <div class="checkbox checkbox-primary styledCSS">
+                            <input type="checkbox" id="checkboxID" ng-model="isDeveloper">
+                            <label for="checkboxID">{{'include_developer_interactions'| i18nString}}</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection mt-10" ng-show="currentTab!=='debugLog'">
+                        <label class="title mb-0 14Fontbold">{{'custom_tags'| i18nString}}
+                            <img ng-src={{helpIcon}} class="helpIcon" tooltip-placement="right"
+                                tooltip="{{'customtags_filter'| i18nString}}">
+                        </label>
+                        <div class="customTagsDiv">
+                            <div class="row displayTable" ng-repeat="selectedTag in selectedTagsArray track by $index">
+                                <div class="andIcon row" ng-show="$index > 0">
+                                    <img ng-src="{{andIcon}}" class="andIconImg " ng-click="addCustomTags()">
+                                    <!-- <div class="andText">
+                                            <span class="text">AND</span>
+                                            <span class="lineBG"></span>
+                                        </div> -->
+                                </div>
+                                <div class="kr-sg-dropdowns">
+                                    <div class="dropdown  ng-click="updateScrollfunction()">
+                                        <!-- <span class="seperatorLine"></span> -->
+                                        <a class="dropdown-toggle" type="button" data-toggle="dropdown">
+                                            <div class="version"><span class="mainText"
+                                                    title="{{(selectedTag.name?selectedTag.name: select)}}">{{(selectedTag.name?selectedTag.name: select)}}</span>
+                                                <span class="subText">{{(selectedTag.type?selectedTag.type:'')}}</span>
+                                            </div>
+                                            <img ng-src={{caretDown}} class="caretDown">
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <div class="customTagsDivScroll">
+                                                <!-- <div class="searchDiv" ng-click="searchClick($event)">
+                                                    <input placeholder="{{'search_key'| i18nString}}"
+                                                        ng-model="search.nameSearchQuery" class="searchInput">
+                                                    <img ng-src={{searchIconGray}} class="searchIconGray">
+                                                </div> -->
+                                                <div class="searchComponent">
+                                                    <input placeholder="{{'search_key'| i18nString}}"
+                                                        ng-model="search.nameSearchQuery" class="searchInput"
+                                                        ng-click="$event.stopPropagation()">
+                                                    <i class="btx-search"></i>
+                                                    <i class="btx-close displayNone"></i>
+                                                </div>
+                                                <div id="scrollUpdateItems" class="item" perfect-scroll dynamic-height
+                                                    dynaoffset="-515">
+                                                    <li class="select-item"
+                                                        ng-repeat="tag in customTagsArray |filter:{name:search.nameSearchQuery} | filter:filterCustomTags track by $index">
+                                                        <div class="version" ng-click="updatedropDown(tag,$parent.$index)"
+                                                            title="{{tag.name}} ({{tag.type}})"> <img
+                                                                ng-if="selectedTag.name?(selectedTag.name === tag.name):false"
+                                                                ng-src="{{checkTickIcon}}"
+                                                                class="checkTickIcon">{{tag.name}}
+                                                            <span class="subText">({{tag.type}})</span></div>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                      
+                                <div class="containLabel " ng-click="updateScrollfunction()">
+                                    <div class="kr-sg-dropdowns">
+                                        <div class="dropdown dropdown-open">
+                                            <button class="dropdown-toggle dropdown-input mainText"
+                                                data-toggle="dropdown">{{selectedTag.isContains.label}}</button>
+                                            <ul class="dropdown-menu content-menu items-list" dynamic-height
+                                                dynaoffset="-350">
+                                                <li class="select-item"
+                                                    ng-repeat="selectedContain in selectedContainArray"
+                                                    ng-if="selectedContain.id!==selectedTag.isContains.id"
+                                                    ng-click="excludeCustomTags(selectedContain,selectedTag)">
+                                                    <a>{{selectedContain.label}}</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="dropdown col-xs-4 leftDropDown" ng-click="updateScrollfunction()">
+                                    <a class="dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <div class="version">
+                                            <span class="mainText">{{selectedContainValue.label}}</span></div>
+                                        <img ng-src={{caretDown}} class="caretDown">
+                                    </a>
+                                    
+                                    <ul class="dropdown-menu">
+                                        <div class="customTagsDivScroll">
+                                            <div id="scrollUpdateItems" class="item">
+                                                <li class="select-item" ng-repeat="selectedContain in selectedContainArray" ng-if="selectedContain.id!==selectedContainValue.id" ng-click="excludeCustomTags(selectedContain)">{{selectedContain.label}}</li>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div> -->
+                                <div class="col-xs-3 middleTags">
+                                    <tags-input ng-model="selectedTagsArray[$index].values"
+                                        add-from-autocomplete-only='true' add-on-comma="false"
+                                        allow-leftover-text='false' replace-spaces-with-dashes="false" min-length="0"
+                                        max-length="128" placeholder="{{'type_select'| i18nString}}" use-strings="true"
+                                        on-tag-added="saveCustomTag()" on-tag-removed="deleteCustomTag()"
+                                        ng-model="customTag.value" ng-blur="dynamicHeight($event,selectedTag)"
+                                        ng-focus="calculateHeight($event)">
+                                        <auto-complete min-length="1" highlight-matched-text="false"
+                                            source="searchValues($query,selectedTag.selectedValues)"></auto-complete>
+                                    </tags-input>
+                                    <div ng-show="selectedTag.invalidValue " class="invalidValue">
+                                        {{'value_entered_not_valid'| i18nString}}
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 rightIcons">
+                                    <span ng-if='$index !== selectedTagsArray.length - 1' class="trashDiv"><img
+                                            ng-src="{{minusIcon}}" class="trashIcon"
+                                            ng-click="removeCustomsTags($index)"></span>
+                                    <span ng-if='$index === selectedTagsArray.length - 1' class="addDiv">
+                                        <i class="trashIcon btx-delete1"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div class="modalFooter footerBottom">
+                    <div>
+                        <button class="kr-sg-button-primary btn_lg"
+                            ng-click="applyFilter()">{{'apply'| i18nString}}</button>
+                        <button class="kr-sg-button-secondary btn_lg"
+                            ng-click="closeModal()">{{'cancel'| i18nString}}</button>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="kr-sg-button-secondary btn_lg"
+                            ng-click="saveAsDefaultFilter()">{{'save_as_default_filter'| i18nString}}</button>
+                        <div ng-click="resetFilter()" class="reset-filter">{{'reset_filter'| i18nString}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- OLD code -->
+<div class="modal fade kr-sg-modal" id="showSwitchToggle" role="dialog" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'switch_filter_criteria'| i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{'would_you_like_userId'| i18nString}}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" data-dismiss="modal"
+                    ng-click="yesContinueWithUserId()">{{'yes_continue'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md"
+                    ng-click="resetUserId()">{{'no_reset'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- NEW CODE FILTERS -->
+<div class="row  newFilters nlpFilters">
+    <div class="filtersContent flex100">
+        <!-- <div class="filterTitle">NLP Metrics</div> -->
+        <div class="kr-sg-dropdowns noMargin" >
+            <div class="label-text">{{'date_label' | i18nString}}</div>
+            <div class="dropdown dropdown-open daterangeCustomDropdown">
+                <button class="dropdown-toggle dropdown-input pl-30 width230" data-toggle="dropdown"> 
+                    <span class="dateTime">{{dateDisplayName}}</span> 
+                </button>
+                <i class="btx-carrot-down"></i>
+                <ul class="dropdown-menu content-menu cust-date" >
+                    <li><a ><div class="dateBtn right" ng-class="{'selected':(days!==7) && days!==-1}"
+                        ng-click="getDefaultFilter(1)">{{'24_hours'| i18nString}} </div>
+                        <span class="check-icon" ng-if="days===1">
+                            <i class="btx-check"></i>
+                          </span>
+                        </a></li>
+                    <li><a ><div class="dateBtn center" ng-class="{'selected':days===7}" ng-click="getDefaultFilter(7)">
+                        {{'last_seven_days'| i18nString}}</div>
+                        <span class="check-icon" ng-if="days===7">
+                            <i class="btx-check"></i>
+                          </span></a></li>
+                    <li ng-click="$event.stopPropagation();"><a ><div class="dateBtn left" type="text" name="daterange" ng-class="{'selected':days===-1}"
+                        ng-click="getDefaultFilter(-1)">
+                        {{'custom'| i18nString}}</div>
+                        <span class="check-icon" ng-if="days===-1">
+                            <i class="btx-check"></i>
+                          </span></a></li>
+                </ul>
+            </div>
+            <span class="tooltip-custom">
+                <i class="helpIcon btx-info"></i>
+                <span class="tooltiptext">
+                    <!-- <div>{{'dateperiod_tooltip1'| i18nString}}</div>
+                    <div>1. {{'seven_days'|i18nString }}</div>
+                    <div>2. {{'24_hours'| i18nString}}</div>
+                    <div>3. {{'dateperiod_tooltip2'| i18nString}}.</div> -->
+                    <div class="mb-2">{{'dateperiod_tooltip1'| i18nString}}</div>
+                    <ul>
+                        <li class="mt-1 mb-1">{{'seven_days'|i18nString }}</li>
+                        <li class="mt-1 mb-1">{{'24_hours'| i18nString}}</li>
+                        <li class="mt-1 mb-1">{{'dateperiod_tooltip2'| i18nString}}.</li>
+                    </ul>
+                </span>
+            </span>
+        </div>
+        <div class="kr-sg-dropdowns" ng-class="{'disabled': (currentTab=='performance' || currentTab ==='pinned' || currentTab === 'debugLog')}">
+            <div class="label-text">{{'Session_type' | i18nString}} </div>
+            <div class="dropdown dropdown-open">
+                <button class="dropdown-toggle dropdown-input pl-30 width112" data-toggle="dropdown">{{sessionType? sessionType.name: ('choose_an_option' | i18nString)}}</button>
+                <i class="btx-carrot-down"></i>
+                <ul class="dropdown-menu content-menu">                                         
+                    <li ng-repeat="item in sessionTypeList" ng-click="selectSessionType(item)"><a>{{item.name}}
+                        <!-- <span class="check-icon" ng-if="item.value === sessionType.value">
+                            <i class="btx-check"></i>
+                          </span> -->
+                    </a></li>
+                </ul>
+            </div>
+            <span class="tooltip-custom">
+                <i class="helpIcon btx-info"></i>
+                <span class="tooltiptext">
+                    <!-- <div>{{'sessionType_tooltip1'| i18nString}}</div>
+                    <div>- {{'sessionType_tooltip2' | i18nString}} </div>
+                    <div>- {{'sessionType_tooltip3'| i18nString}}</div> -->
+                    <div>{{'sessionType_tooltip1'| i18nString}}</div>
+                    <ul>
+                        <li>{{'sessionType_tooltip2' | i18nString}}</li>
+                        <li>{{'sessionType_tooltip3'| i18nString}}</li>
+                    </ul>
+                </span>
+            </span>
+        </div>
+        <div class="kr-sg-dropdowns" ng-class="{'disabled': (currentTab=='performance' || currentTab ==='pinned' || currentTab === 'debugLog')}">
+            <div class="label-text">{{'session_status' | i18nString}} </div>
+            <div class="dropdown dropdown-open">
+                 <button class="dropdown-toggle dropdown-input  pl-30 width88" data-toggle="dropdown">{{sessionStatus? sessionStatus.name: ('choose_an_option' | i18nString)}}</button>   
+                 <i class="btx-carrot-down"></i>                                         
+                <ul class="dropdown-menu content-menu">                                         
+                    <li ng-repeat="item in sessionStatusList" ng-click="selectSessionStatus(item)"><a>{{item.name}}
+                        <!-- <span class="check-icon" ng-if="item.value === sessionStatus.value">
+                            <i class="btx-check"></i>
+                          </span> -->
+                    </a></li>
+                </ul>
+            </div>
+            <span class="tooltip-custom">
+                <i class="helpIcon btx-info"></i>
+                <span class="tooltiptext">
+                    <div>{{'sessionStatus_tooltip1'| i18nString}} </div>
+                    <ul>
+                        <li>{{'sessionStatus_tooltip2' | i18nString}}</li>
+                        <li>{{'sessionStatus_tooltip3' | i18nString}} {{'sessionStatus_tooltip4' | i18nString }} <a href="https://developer.kore.ai/docs/bots/analyzing-your-bot/dashboard/#Usage_Metrics" target="_blank">{{'here'| i18nString}}</a></li>
+                    </ul>
+                    <!-- <div>- {{'sessionStatus_tooltip2' | i18nString}} </div>
+                    <div>- {{'sessionStatus_tooltip3' | i18nString}}</div>
+                    {{'sessionStatus_tooltip4' | i18nString }} <a href="https://developer.kore.ai/docs/bots/analyzing-your-bot/dashboard/#Usage_Metrics" target="_blank">{{'here'| i18nString}}</a>  -->
+                </span>
+            </span>
+        </div>
+        <div class="more-filter" ng-class="{'moreFilterModal': moreFilterModal}">
+            <button ng-click="moreFilterToggle()" class="filters-btn">{{'more_filters' | i18nString}} <span class="moreFiltersCount" ng-if="moreFilterValues.length">{{moreFilterValues.length}}</span><span><i class="btx-carrot-down" ng-if="moreFilterModal"></i><i ng-if="!moreFilterModal" class="btx-carrot-up"></i></span> </button>
+            <div class="filter-container" ng-class="{'hide': !moreFilterModal}">
+                <div perfect-scroll class="scrollLi" >
+                    <div class="col-xs-12 eachSection">
+                        <div class="d-flex align-items-center">
+                            <label class="title inline_block w-50">{{'user_id'| i18nString}}</label>
+                            <div class="toggle-data-large- filter-analyze-toggle">
+                                <label class="kr-sg-toggle with-label large">
+                                    <input type="checkbox" class="switch" ng-model="togglePattern"
+                                        ng-click="filterToggle()">
+                                    <div class="slider">
+                                        <span class="no">
+                                            <div class="tooltip-hover text_left" tooltip-placement="left" tooltip="Search using the user identities provided by the channels enabled for this bot.">{{'chnlId_label'| i18nString}}</div>
+                                        </span>
+                                        <span class="yes">
+                                            <div class="tooltip-hover text_left"tooltip-placement="left" tooltip="{{tooltipForKoreIds}}">{{'kore_id'| i18nString}}</div>
+                                        </span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="ele usersSelect">
+                            <div class="dropdown user-chanels-addin-drpdown">
+                                <div class="userAndChannelIds dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <div class="kr-sg-dropdowns">
+                                        <div class="dropdown dropdown-open">
+                                            <button class="dropdown-toggle dropdown-input"
+                                                ng-class="{'excludeTextColor':showExcludeText}"
+                                                data-toggle="dropdown">{{includeExcludeValue.label}} <i class="btx-carrot-down"></i></button>
+                                            <ul class="dropdown-menu content-menu">
+                                                <li ng-repeat="includeExlude in includeExcludeArray"
+                                                    ng-click="excludeUserIds(includeExlude)"
+                                                    ng-if="includeExlude.id!==includeExcludeValue.id">
+                                                    <a>{{includeExlude.label}}</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <ul class="dropdown-menu" ng-click="addingUserAndChannelIds($event)"></ul>
+                                    <div class="default-text">
+                                        <div class="">
+                                            <input type="text" class="form-control"
+                                                ng-if="cb.toggleCheck !== 'Kore ID'"
+                                                ng-keydown="getChannelUserIds($event)"
+                                                placeholder="{{'click_here_to_add'| i18nString}}"
+                                                ng-model="kore.searchUserId">
+                                            <input type="text" class="form-control"
+                                                ng-if="cb.toggleCheck === 'Kore ID'"
+                                                ng-keydown="getKoreUserIds($event)"
+                                                placeholder="{{'click_here_to_add'| i18nString}}"
+                                                ng-model="kore.searchUserName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="pressEnter">{{'press_enter_brackets'| i18nString}}</span>
+                                <div class="kr-sg-dropdowns excludeIds">
+                                    <div class="dropdown dropdown-open w-100 positionabsolute">
+                                        <ul class="dropdown-menu content-menu items-list" dynamic-height
+                                            dynaoffset="-350">
+                                            <li class="p-0" ng-if="users.length" ng-repeat="user in users "
+                                                ng-click="addingUserAndChannelIdsToFilter(user)">
+                                                <a>{{user.value || user.id }}</a>
+                                            </li>
+                                            <li ng-show="toShowText" class="noResults pl-0"><a>No results found
+                                                    ..</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span ng-repeat="user in selectedUsers track by $index"
+                                    ng-class="{'excludeTextColor':showExcludeText}"
+                                    class="add-tag">{{user.value || user.id}}
+                                    <i class="btx-close" ng-click="removeuserChannelFilterData($index,$event)"
+                                        aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 eachSection" ng-show="currentTab=='performance'">
+                        <label class="title">{{'node_name_label'| i18nString}}</label>
+                        <div class="ele">
+                            <sumo-select sanitize='true' search=true options="scriptComponents"
+                                callback="sumocb.componentscb" placeholder="{{'all'| i18nString}}" title-key="value"
+                                value-key="id" value="selectedComponents"></sumo-select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection" ng-hide="currentTab=='performance'">
+                        <label class="title">{{'languages_label'| i18nString}}</label>
+                        <div class="ele">
+                            <sumo-select search=true options="supportedLanguages" callback="sumocb.languagescb"
+                                placeholder="{{'all_languages'| i18nString}}" title-key="value" value-key="type"
+                                value="selectedLanguages"></sumo-select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection">
+                        <label class="title">{{'channel_name'| i18nString}}</label>
+                        <div class="ele">
+                            <sumo-select search=true options="channels" callback="sumocb.channelscb"
+                                placeholder="{{'all_channels'| i18nString}}" title-key="value" value-key="type"
+                                value="selectedChannels"></sumo-select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection" ng-hide="currentTab=='intentNotFound'">
+                        <label class="title">{{'task_intent'| i18nString}}</label>
+                        <div class="ele">
+                            <sumo-select sanitize='true' search=true options="tasks" callback="sumocb.taskscb"
+                                placeholder="{{'all_tasks'| i18nString}}" title-key="value" value-key="id"
+                                value="selectedTasks"></sumo-select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection  mb-10" ng-show="currentTab ==='intentFound'">
+                        <label class="title">{{'utterance_type'| i18nString}}</label>
+                        <div class="ele">
+                            <div class="col-xs-12 radioDiv noPadding">
+                                <div class="radioInnerDiv">
+                                    <label for="both">
+                                        <input value="both" type="radio" ng-model="utterance.type" name="both"
+                                            id="both"><span class="opt-title">{{'both_label'| i18nString}}</span>
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="nottrained">
+                                        <input value="notTrained" type="radio" ng-model="utterance.type"
+                                            name="nottrained" id="nottrained"><span
+                                            class="opt-title">{{'not_trained'| i18nString}}</span>
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="trained">
+                                        <input value="trained" type="radio" ng-model="utterance.type" name="trained"
+                                            id="trained"><span
+                                            class="opt-title">{{'trained_label'| i18nString}}</span>
+                                        </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection  mb-10" ng-show="currentTab ==='intentNotFound'">
+                        <label class="title">{{'ambiguous_label'| i18nString}}</label>
+                        <div class="ele">
+                            <div class="col-xs-12 radioDiv noPadding">
+                                <div class="radioInnerDiv">
+                                    <label for="showAll">
+                                        <input value="showAll" type="radio" ng-model="ambiguous.type" name="showAll"
+                                            id="showAll"><span class="opt-title">{{'showAll'| i18nString}}</span>
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="showAmbiguous">
+                                        <input value="showAmbiguous" type="radio" ng-model="ambiguous.type"
+                                            name="showAmbiguous" id="showAmbiguous"><span
+                                            class="opt-title">{{'show_ambigious'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="hideAmbiguous">
+                                        <input value="hideAmbiguous" type="radio" ng-model="ambiguous.type"
+                                            name="hideAmbiguous" id="hideAmbiguous"><span
+                                            class="opt-title">{{'hide_ambigious'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection mb-5">
+                        <label class="title mb-0">{{'developer_interactions'| i18nString}}</label>
+                        <div class="checkbox checkbox-primary styledCSS">
+                            <input type="checkbox" id="checkboxID" ng-model="isDeveloper">
+                            <label for="checkboxID">{{'include_developer_interactions'| i18nString}}</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12  eachSection noMargin" ng-show="currentTab!=='debugLog'">
+                        <label class="title mb-0 Fontbold">{{'custom_tags'| i18nString}}
+                            <i class="btx-info" tooltip-placement="right"
+                                tooltip="{{'customtags_filter'| i18nString}}"></i>
+                        </label>
+                        <div class="customTagsDiv">
+                            <div class="row dFlex"
+                                ng-repeat="selectedTag in selectedTagsArray track by $index" ng-class='{"subTag": $index > 0}'>
+                                <div class="andIcon row" ng-show="$index > 0">
+                                    <!-- <img ng-src="{{andIcon}}" class="andIconImg " > -->
+                                    <span class="andBG" ng-click="addCustomTags()">And</span>
+                                    <!-- <div class="andText">
+                                            <span class="text">AND</span>
+                                            <span class="lineBG"></span>
+                                        </div> -->
+                                </div>
+                                <div class="kr-sg-dropdowns noMargin">
+                                    <div class="dropdown dropdown-open" ng-click="updateScrollfunction()">
+                                        <!-- <span class="seperatorLine"></span> -->
+                                        <a class="dropdown-toggle dropdown-input" type="button" data-toggle="dropdown">
+                                            <div class="version"><span class="mainText"
+                                                    title="{{(selectedTag.name?selectedTag.name: select)}}">{{(selectedTag.name?selectedTag.name: select)}}</span>
+                                                <span class="subText">{{(selectedTag.type?selectedTag.type:'')}}</span>
+                                            </div>
+                                            <i class="btx-carrot-down"></i>   
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <div class="customTagsDivScroll">
+                                                <!-- <div class="searchDiv" ng-click="searchClick($event)">
+                                                    <input placeholder="{{'search_key'| i18nString}}"
+                                                        ng-model="search.nameSearchQuery" class="searchInput">
+                                                    <img ng-src={{searchIconGray}} class="searchIconGray">
+                                                </div> -->
+                                                <div class="searchComponent">
+                                                    <input placeholder="{{'search_key'| i18nString}}"
+                                                        ng-model="search.nameSearchQuery" class="searchInput"
+                                                        ng-click="$event.stopPropagation()">
+                                                    <i class="btx-search"></i>
+                                                    <i class="btx-close displayNone"></i>
+                                                </div>
+                                                <div id="scrollUpdateItems" class="item" perfect-scroll dynamic-height
+                                                    dynaoffset="-515">
+                                                    <li class="select-item"
+                                                        ng-repeat="tag in customTagsArray |filter:{name:search.nameSearchQuery} | filter:filterCustomTags track by $index">
+                                                        <div class="version"
+                                                            ng-click="updatedropDown(tag,$parent.$index)"
+                                                            title="{{tag.name}} ({{tag.type}})"> <img
+                                                                ng-if="selectedTag.name?(selectedTag.name === tag.name):false"
+                                                                ng-src="{{checkTickIcon}}"
+                                                                class="checkTickIcon">{{tag.name}}
+                                                            <span class="subText">({{tag.type}})</span></div>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                    <div class="kr-sg-dropdowns mr-10" ng-click="updateScrollfunction()">
+                                        <div class="dropdown dropdown-open">
+                                            <button class="dropdown-toggle dropdown-input mainText"
+                                                data-toggle="dropdown">{{selectedTag.isContains.label}}  <i class="btx-carrot-down"></i> </button>
+                                                 
+                                            <ul class="dropdown-menu content-menu items-list" dynamic-height
+                                                dynaoffset="-350">
+                                                <li class="select-item"
+                                                    ng-repeat="selectedContain in selectedContainArray"
+                                                    ng-if="selectedContain.id!==selectedTag.isContains.id"
+                                                    ng-click="excludeCustomTags(selectedContain,selectedTag)">
+                                                    <a>{{selectedContain.label}}</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                <!-- <div class="dropdown col-xs-4 leftDropDown" ng-click="updateScrollfunction()">
+                                    <a class="dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <div class="version">
+                                            <span class="mainText">{{selectedContainValue.label}}</span></div>
+                                        <img ng-src={{caretDown}} class="caretDown">
+                                    </a>
+                                    
+                                    <ul class="dropdown-menu">
+                                        <div class="customTagsDivScroll">
+                                            <div id="scrollUpdateItems" class="item">
+                                                <li class="select-item" ng-repeat="selectedContain in selectedContainArray" ng-if="selectedContain.id!==selectedContainValue.id" ng-click="excludeCustomTags(selectedContain)">{{selectedContain.label}}</li>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div> -->
+                                <div class="middleTags">
+                                    <tags-input ng-model="selectedTagsArray[$index].values"
+                                        add-from-autocomplete-only='true' add-on-comma="false"
+                                        allow-leftover-text='false' replace-spaces-with-dashes="false"
+                                        min-length="0" max-length="128" placeholder="{{'type_select'| i18nString}}"
+                                        use-strings="true" on-tag-added="saveCustomTag()"
+                                        on-tag-removed="deleteCustomTag()" ng-model="customTag.value"
+                                        ng-blur="dynamicHeight($event,selectedTag)"
+                                        ng-focus="calculateHeight($event)">
+                                        <auto-complete min-length="1" highlight-matched-text="false"
+                                            source="searchValues($query,selectedTag.selectedValues)">
+                                        </auto-complete>
+                                    </tags-input>
+                                    <div ng-show="selectedTag.invalidValue " class="invalidValue">
+                                        {{'value_entered_not_valid'| i18nString}}
+                                    </div>
+                                </div>
+                                <!-- ng-if='$index !== selectedTagsArray.length - 1' -->
+                                <div class="trashDiv" ng-if='$index !== selectedTagsArray.length - 1' ng-click="removeCustomsTags($index)">
+                                            <i class="trashIcon btx-delete-1"></i>
+                                    <!-- <span ng-if='$index === selectedTagsArray.length - 1' class="addDiv">
+                                        <i class="trashIcon btx-delete1"></i>
+                                    </span> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ctFooter ">
+                  <div class="fLeft">  
+                      <button class="kr-sg-button-primary btn_lg" ng-click="applyFilter();moreFilterToggle();">{{'add' | i18nString}}</button>
+                    <button class="kr-sg-button-secondary btn_lg" ng-click="moreFilterToggle()">{{'cancel' | i18nString }}</button>
+                </div>
+                    <div class="fRight">
+                        <button class="kr-sg-button-secondary btn_lg" ng-click="saveAsDefaultFilter()">{{'save_as_default_filter'|i18nString }}</button>
+                        <button class="kr-sg-button-ghost btn_lg" ng-click="resetFilter(true)" ><span>{{'clear_filter'| i18nString }}</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rightBTNContainer nplRight">
+        <button class="kr-sg-button-ghost btn_lg" ng-click="resetFilter()"><span>{{'reset' | i18nString}}</span></button>
+        <button class="kr-sg-button-primary btn_lg" ng-click="applyFilter()">{{'apply'| i18nString}}</button>
+
+        <ng-container>
+            <div class="exportDiv" ng-if="currentTab === 'intentFound' && cb.intentFoundCollection.length > 0 " ng-click="cb.analyzeExport('successintent')"><i class="btx-export"></i></div>
+            <div class="exportDiv" ng-if="currentTab === 'intentNotFound' && cb.intentNotFoundCollection.length > 0" ng-click="cb.analyzeExport('failintent')"><i class="btx-export"></i></div>
+            <div class="exportDiv" ng-if="currentTab === 'failedTask' && cb.failedTaskCollection.length > 0" ng-click="cb.analyzeExport('failtask')"><i class="btx-export"></i></div>
+            <div class="exportDiv" ng-if="currentTab === 'performance' && cb.performanceCollection.length > 0" ng-click="cb.analyzeExport('performance')"><i class="btx-export"></i></div>
+            <div class="exportDiv" ng-if="currentTab === 'debugLog' && cb.debugLogsCollection.length > 0" ng-click="cb.analyzeExport('debugLog')"><i class="btx-export"></i></div>
+        </ng-container>
+        
+    </div>
+</div>
+<!-- NEW CODE FILTERS -->

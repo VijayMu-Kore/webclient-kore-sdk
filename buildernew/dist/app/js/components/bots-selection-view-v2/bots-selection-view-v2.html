@@ -1,0 +1,117 @@
+<div class="modalHeader">
+    <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="cancelUBSelection()"></i> {{'select_bots'| i18nString}}</h4>
+</div>
+<div  class="modalBody linkedBots pl-pr-30"dynamic-height dynaoffset="-115" height-property="height">
+    <div class="height-width-100 create-container col-xs-12">
+        <div class="main-content" >
+
+            <p class="listText">{{'choose_one'| i18nString:({name:selectedStream.name})}}</p>
+            <div class="stream-selection-view panel-group" id="accordion"  role="tablist" aria-multiselectable="false">
+
+
+                <div ng-if="false" class="panel panel-default"  ng-repeat="bot in myBots">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <div class="checkbox checkbox-primary styledCSS dataDiv" >
+                                <input type="checkbox" ng-click="$event.stopPropagation()" ng-model="bot.linked" name="bot.name" class="styled" id="botstream{{$index + 1}}">
+                                <label for="botstream{{$index + 1}}" class="labelCheck">
+                                    <div class="stream-icon bot-item-icon-div">
+                                        <img ng-src="{{bot.icon}}" onerror="handleimgLoad(this)">
+                                        <span class="bot-item-title">{{bot.name}}</span>
+                                </label>
+                                <span data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index + 1}}" >{{'open_label'| i18nString}}</span>
+                            </div>
+                        </h4>
+                    </div>
+                    <div id="collapse{{$index + 1}}" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <p ng-bind-html="'html_link'| i18nString:({link:'https://www.tutorialrepublic.com/html-tutorial/'})"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="searchComponent">
+                    <input type="text" placeholder=" {{'search_bot'| i18nString}}" ng-init="searchString = ''" ng-model="searchString" ng-keyup="searchBots(searchString)" class="linkBotSearch"> 
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                   
+                 <div perfect-scroll dynamic-height dynaoffset="-210" height-property="height" class="linkScrollDiv">
+                    <div ng-show="searchString !== '' && myBots.length === 0 && !loadingSearchResults">
+                        {{'no_bots_with_this_search_criteria'| i18nString}} 
+                    </div> 
+                    <div ng-show="loadingSearchResults && !myBots.length" class="loadingSearch">
+                        <span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content">{{'loading'| i18nString}}</span>  </span>
+                    </div>
+                    <div ng-show="!loadingSearchResults && myBots.length > 0">
+                    <div class="panel panel-default" ng-repeat="bot in myBots">
+                   
+                    <div class="panel-heading  toggleClose collapsed universalLinkBot" >
+                        
+                        <div class="dataDiv collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index + 1}}" ng-click=setUtterance(utterance) aria-expanded="true" aria-controls="collapse{{$index + 1}}">
+                             <i  class="fa-chevron-right btx-carrot-right"></i>
+                            
+                            <div class="stream-icon bot-item-icon-div">
+                                <img ng-src="{{bot.icon}}" onerror="handleimgLoad(this)">
+                                <span class="bot-item-title">{{bot.name}}</span>
+                                
+                            </div>  
+                            <span class="linkBtn" ng-show="!bot.linked">
+                                    <button class="btn btn-primary" ng-show="!bot.botLinking" ng-click="linkBot($event,bot,trainingData)">{{'link_bot'| i18nString}}</button>
+                                    <span ng-show="bot.botLinking" class="botLinking">
+                                         <img ng-src="{{botLinkLoadingImage}}" class="loadingImg marginRight10">{{'loading_bot'| i18nString}}..
+                                    </span>
+                                   
+                            </span>
+                            <span class="linkTag" ng-show="bot.linked"><span class="tick"><i class="btx-billing-checked"></i></span>{{'bot_linked'| i18nString}}</span>
+                        </div>
+                        <div class="accordion-group">
+                        <div ng-if="bot.description" id="collapse{{$index + 1}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse{{$index + 1}}" >
+                            <div class="panel-body">
+                                <p class="botdescription">{{bot.description}}</p>
+                                <div class="col-xs-12 invocation">
+                                    <label>{{'invocation'| i18nString}}<img ng-src="{{helpIcon}}" class="help-icon" ng-click="redirectToLink('INVOCATION_NAMES')"></label><p class="description">{{'provide_invocation'| i18nString}}</p>
+                                    <tags-input ng-model="bot.trainingData.invocationNames"  min-length="2" bot-name-validation="{{currentLanguage === 'en'?true:false}}" max-length="50" max-length-msg="{{'invocation_name'| i18nString}}" replace-spaces-with-dashes="false" placeholder="{{'type_enter_To'| i18nString}}"></tags-input>
+                                </div>
+                                <div class="trainingLabel col-xs-12">
+                                     <label>{{'training_utterance'| i18nString}}<img ng-src="{{helpIcon}}" class="help-icon" ng-click="redirectToLink('TRAINING_UTTERANCES')"></label><p class="description">{{'provide_training'| i18nString}}</p>
+                                        <div class="utteranceContainer">
+                                               <div class="col-xs-12 noPadding" id="tags">
+                                                    <input maxlength="2048" type="text" class="form-control background-field-white" placeholder="{{'type_add_enter'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keyup="$event.keyCode == 13 && saveUtterance(utterance,bot)" ng-model="utterance.newUtterance">
+                                                </div> 
+                                                <div class="col-xs-12 noPadding tagUtterances" ng-repeat="utterance in bot.trainingData.trainingUtterances.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) track by $index">
+                                                            <div class="col-xs-12 tagContainer tagUtterance utteranceTag{{$index}}" contenteditable="true" id="utteranceTag{{$index}}" ng-keydown="$event.keyCode == 13 && editUtterence($event,$index,bot)" onkeypress="return (this.innerText.length < 2048)">{{utterance}}</div>
+                                                               <div class="pull-right training-delete">
+                                                                    <span class="deleteBtn" ng-click="deleteUtterance($index, utterence,bot,currentPage)"><i class=" fa fa-trash-o"></i></span>
+                                                                </div>
+                                              
+                                                </div>
+                                                <div class="paginationcontainer">
+                                                    <pagination rotate="false"  total-items="bot.trainingData.trainingUtterances.length" ng-show="bot.trainingData.trainingUtterances.length > 10" ng-model="currentPage" ng-change="pageChanged(currentPage)" max-size="maxSize" class="pagination-sm" items-per-page="limit"></pagination>
+                                                </div>
+                                                 <div class="updateBtn col-xs-12 noPadding">
+                                                        <button class="btn btn-primary" ng-class="{'btnSolidBlue':bot.linked}" ng-hide="bot.botLinking" ng-click="linkBot($event,bot)">{{bot.linked?update:linkbot}}</button>
+                                                        <span ng-show="bot.botLinking && !bot.linked" class="botLinking">
+                                                            <img ng-src="{{botLinkLoadingImage}}" class="loadingImg marginRight10">{{'loading_bot'| i18nString}}..
+                                                        </span>
+                                                        <span class="linkTagOpen" ng-show="bot.linked"><span class="tick"><i class="btx-billing-checked"></i></span>{{'bot_linked'| i18nString}}</span>
+                                                 </div>
+
+                                                    
+                                                  
+                                        
+                                            </div>
+                                        </div>
+                        </div>
+                        </div>
+                </div>
+            </div>
+                 </div> 
+             </div>
+               
+
+
+           
+        </div>
+    </div>
+</div>
+</div>

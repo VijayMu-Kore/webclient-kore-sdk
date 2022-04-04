@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>lock</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Smartbot" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5">
+        <g id="(2.1-SB)-Locked-task" transform="translate(-1305.000000, -300.000000)">
+            <g id="lock" transform="translate(1305.000000, 300.000000)">
+                <polygon id="Rectangle-251" fill="#FFFFFF" transform="translate(13.000000, 13.000000) scale(1, -1) translate(-13.000000, -13.000000) " points="0 0 26 0 26 26 0 26"></polygon>
+                <rect id="Rectangle-path" stroke="#8A959F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" x="7" y="11.6016002" width="11.2032005" height="6.84640029" rx="1"></rect>
+                <path d="M9.4896001,11.6016002 L9.4896001,9.11200013 C9.4896001,7.39328992 10.88289,6 12.6016002,6 C14.3203104,6 15.7136004,7.39328992 15.7136004,9.11200013 L15.7136004,11.6016002" id="Shape" stroke="#8A959F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

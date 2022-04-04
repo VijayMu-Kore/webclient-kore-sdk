@@ -1,0 +1,694 @@
+<div class="universalPublishLoader animationIfLeave" ng-if="loadingPublishComponents">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">{{'fetching_components'| i18nString}}</span>
+    </span>
+</div>
+<bt-test-form api="btTestFormApi" status="btTestStatus" ></bt-test-form>
+
+<div class="modal fade" id="universalBotErrorMsgStatus" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
+          <h4 class="modal-title"  ng-show="selectedAccount.adminPreferences && !selectedAccount.adminPreferences.autoApproval">{{'published_for_admin_approval'| i18nString}}</h4>
+          <h4 class="modal-title"  ng-show="selectedAccount.adminPreferences && selectedAccount.adminPreferences.autoApproval">{{'publish_status'| i18nString}}</h4>
+        </div>
+        <div class="modal-body modalPerfectScroll" perfect-scroll>
+          <div class="row"> 
+  
+            <div class="row" ng-show="selectedAccount.adminPreferences && !selectedAccount.adminPreferences.autoApproval && !stream.showInMp">
+              <h4 class="text">{{'admin_approval'| i18nString}}
+                  </h4>
+
+            </div>
+  
+            <div class="row text-left" ng-show="selectedAccount.adminPreferences && selectedAccount.adminPreferences.autoApproval && !stream.showInMp">
+              <h4 class="text-left">{{'published_components'| i18nString}}</h4>  
+                 
+            </div>
+              <div class="text-left">
+                <div class="row" ng-repeat="message in universalBotPublishMessages | filter : { 'type' : 'success' }">     
+                    <div class="col-xs-12">
+                      <div class="row form-group" ng-show="message.type == 'success' && message.message != undefined" > <span> <i class="fa fa-check-circle-o success-color" aria-hidden="true"></i> &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span> </div>
+                    </div>
+                  </div>
+                  
+            </div> 
+            <div class="row text-left">
+                <div class="text-left" ng-show="(universalBotPublishMessages | filter : { 'type' : 'error' }).length > 0">
+                    <h4>{{'these_were_issues_following'| i18nString}}</h4>             
+                </div>
+                <div class="row text-left" ng-repeat="message in universalBotPublishMessages | filter : { 'type' : 'error' }"> 
+                  <div class="row form-group" ng-show="message.type == 'error'" >
+                    <div class="row text-left">
+                        <div class="row"> <span> <i class="fa fa-times-circle-o fail-color" aria-hidden="true"></i> &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span> </div>
+                        <div class="row">
+                          <div class="alert alert-danger alert-sm">
+                              {{message.error}}
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          
+          <!-- commenting as part of BB-8349  -->
+
+            <!--   <div ng-if="publishInTrailMsg" class="row text-muted text-centre">
+                {{'this_bot_is_published_under_free'| i18nString}}
+              </div> -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn closeCancel" ng-click="closeUniversalBotPublishModal()">{{'close'| i18nString}}</button>
+          <button type="button" class="btn btn-primary" ng-disabled="!allowRetry" ng-show="(messages | filter : { 'type' : 'error' }).length > 0" ng-click="retryAll()"><i ng-class="{'fa fa-spinner fa-spin':!allowRetry}"></i>{{allowRetry? ('retry_all'| i18nString) : ('retrying_label'| i18nString)}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="flows-row linkedBots bot-publish" ng-if="stream.type === 'universalbot'">
+  
+    <div ng-show="universalBotPublishView.currentStep == 'defineDeployment' " perfect-scroll dynamic-height height-property="height" dynaoffset="-108" class="panel-group publishControlAccordion ubbot-padding-publish" id="advancedSettingsAccordion" role="tablist" aria-multiselectable="true">
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'publish' | i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn displayNone">
+                     <button class="btn btn-xs"> BTN Name</button>
+                </div>
+                <div class="filtersDetails displayNone">
+                    <span class="filterListContainer">
+                        <span class="filterCat">Languages </span>
+                        <span class="filterClose">(1)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">Date Period </span>
+                        <span class="filterClose">(5 days)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <div class="dropdown moreDD">
+                        <a href="#" class="moreFilters" data-toggle="dropdown">
+                            +2 more
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">
+                                <span class="filterCat">Channels </span>
+                                <span class="filterClose">(4)</span>
+                                <i class="btx-close"></i>
+                            </li>
+                            <li class="dropdown-item" >
+                                <span class="filterCat">Tasks </span>
+                                <span class="filterClose">(3)</span>
+                                <i class="btx-close"></i>
+                            </li>                       
+                        </ul>
+                    </div>
+                    <span class="clearAllFilters">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                </div>
+          
+                <div class="btnActions displayNone">
+                    <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                </div>
+                <div class="titleDropdown displayNone">
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                         </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow displayNone">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          </div>
+        <div class=" panel panel-default  marginTop15 marg">
+        <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#advancedSettingsAccordion" href="#allBotsBodyData" role="tab" id="allbotssHeading">
+            <div class="panel-title">
+                <span class="pull-right length chevron"> <img ng-src="{{chevronRight}}" class="fa fa-chevron-right"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="allTasksCheckUncheck" 
+                       ng-click="checkOrUncheckAllBots(allBotsSelected,$event)"
+                       ng-model="allBotsSelected.isSelected">
+                <label ng-click="checkOrUncheckAllBots(allBotsSelected,$event)" for="allTasksCheckUncheck"></label>
+                </div><span class="publishMainHeaderText">{{'linked_bots_label'| i18nString}} </span><span class="publishHeaderDiscText">{{'choose_bots_deployment'| i18nString}}</span>
+            </div>
+        </div>
+        <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="alltasksHeading" id='alltasksBodyData'>
+             <div class="panel-body">
+                <div class="col-xs-12 divCenter publishAccordBody">
+                <div class="panel panel-default container">
+                    <div class="panel-body bodyContainer">
+                        <div class="panel-table row">
+                            <div class="clear-fix pos-relative" perfect-scroll dynamic-height dynaoffset="-160">
+                                <div class="row">
+                                    <div class="col-xs-12 noPadding auto-margin " ng-repeat="dialog in defaultDialogs">
+                                        <p>{{'select_default_dialog'| i18nString}}</p>
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                                    <input ng-disabled="firstDefaultDialogPubish" class="styled" checked  type="checkbox" id="{{dialog._id}}" ng-change="editTask($event, dialog)" ng-model="dialog._selected">
+                                                    <label class="textEllipsis" for="{{dialog._id}}">{{dialog.name}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 textEllipsis"> {{dialog.shortDesc}} </div>
+                                            <div class="col-xs-2 textCapitalize"> {{dialog.state}} </div>
+                                            <div class="col-xs-2"> {{dialog.version}} </div>
+                                        </div>
+                                        <div class="supportedLanguagesContainer" ng-show="dialog.supportedLanguages.length > 0">
+                                            <span>{{'languages'| i18nString}} </span>
+                                            <span class="checkbox checkbox-primary styledCSS noMargin"
+                                                ng-repeat="lang in dialog.supportedLanguages">
+                                                <input class="styled" checked type="checkbox" id="{{dialog._id}}{{lang.value}}"
+                                                    ng-change="addLanguage($event, lang, dialog)" ng-disabled="lang.disable"
+                                                    ng-model="lang.selected">
+                                                <label for="{{dialog._id}}{{lang.value}}"
+                                                    ng-class="{'disabled':lang.disable}">{{lang.value}}</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div ng-show="dialogs.length == 0 && !dialogLoading">
+                                            <div class='bt-text-muted'> {{'none_found'| i18nString}} </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+         <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="allbotssHeading" id='allBotsBodyData'>
+             <div class="panel-body publishAccordBody">
+              <div ng-if="checkUbVersion() == 1">
+                       <div class='col-xs-12 padding030' ng-if='!configuredBots.length'>{{'no_linked_bots'| i18nString}}</div>
+                         <div class="row bot-item publishLinkedTask" ng-repeat="bot in configuredBots track by $index">
+                              <div class="row">
+                            <div class="col-xs-12">
+                                <div class="checkbox checkbox-primary styledCSS uni1 noMargin" >
+                                    <input class="styled" ng-model="bot.linked" checked="" type="checkbox"  ng-change="intermediateSelection('#allBotsBodyData','#allTasksCheckUncheck')" id="bot{{$index + 1}}" name="bot.botName">
+                                    <label class="textEllipsis" for="bot{{$index + 1}}"><img class="icons iconsv1"   ng-src="{{bot.botIconUrl}}">{{bot.botName}}</label>
+                                     <p class="grayInfoText linkedBotDisc" data-title="{{bot.discription}}">{{bot.discription}}</p>
+                                </div>
+                            </div>
+                        </div>
+                 </div>     
+              </div>
+             
+                <div ng-if="checkUbVersion() == 2">
+                <div class='col-xs-12 padding030' ng-if='!linkedBotStates.length'>{{'no_linked_bots'| i18nString}}</div>
+                <div class="row marginBottom10 publishLinkedTask publish-linked-task" ng-repeat="linkedBot in linkedBotStates track by $index">
+               <div class="row col-xs-12 channelBtPublishRow channel-bt-publish-row">
+                    <div class="col-xs-4 channelPublishDiv channel-publish-checkbox-sec">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="bot{{$index + 1}}" ng-change="intermediateSelection('#allBotsBodyData','#allTasksCheckUncheck')"  ng-model="linkedBot.selected">
+                            <label class="textEllipsis" for="bot{{$index + 1}}"><img class="icons" ng-src="{{linkedBot.botIconUrl}}">
+                            <div>
+                                <div class="botName">{{linkedBot.botName}}</div>
+                                <div class="grayInfoText linkedBotDisc" title="{{linkedBot.description}}">{{linkedBot.description}}</div>
+                            </div>
+                            </label>                            
+                        </div>
+                    </div>                   
+                    <div class="col-xs-8 channelPubStatusDiv">{{linkedBot.publishState}}</div>
+                </div>
+              </div>
+            </div>
+             </div>
+         </div>
+          </div>
+        <div class=" panel panel-default dialogsContainer" ng-if="universalBotVersion() === 2">
+            <div  iv class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#advancedSettingsAccordion" href="#allPanelsBody" role="tab" id="allPanelsHeading">
+                <div class="panel-title">
+                    <span class="pull-right length chevron"> <img ng-src="{{chevronRight}}" class="fa fa-chevron-right"></span>
+                    <div class="checkbox checkbox-primary styledCSS noMargin inline_block" ng-click="$event.stopPropagation()">
+                        <input class="styled" checked type="checkbox" id="selectAllPanelTasks" 
+                        ng-click="selectAllPanels(allTasksSelected.selectAllPanelTasks,'.publishPanelTask')"
+                        ng-model="allTasksSelected.selectAllPanelTasks">
+                    <label for="selectAllPanelTasks"></label>
+                    </div>
+                    <span class="publishMainHeaderText">{{'panels_label'| i18nString}} </span><span class="publishHeaderDiscText">{{'choose_panels_deployment'| i18nString}}</span>
+                </div>
+            </div>
+            <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="allPanelsHeading" id='allPanelsBody'>
+                 <div class="panel-body">
+                    <div class="col-xs-12 divCenter publishAccordBody p-0">
+                        <div class="row tasksContainer">
+                            <div class="row publishPanelTask " ng-repeat="panel in panels">
+                                <div class="row">
+                                    <div class="col-xs-6 d-flex">
+                                         <div class="tableCell">
+                                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                                            <input class="styled allTasksCommonClass" checked type="checkbox" id="{{panel._id}}" ng-change="editPanelTask($event, panel,'.publishPanelTask','#selectAllPanelTasks')" ng-model="panel._selected">
+                                            <label class="textEllipsis pl-15" for="{{panel._id}}">&nbsp;</label>
+                                        </div>
+                                         </div>
+                                          <div class="tableCell knowledgeCollectionPublish">
+                                            <label class="textEllipsis">{{panel.name}}</label>
+                                            <p>{{panel.displayName}}</p>
+                                          </div>
+                                        
+                                    </div>
+                                    <div class="col-xs-4"> 
+                                        <div class="supportedLanguagesContainer" ng-show="panel.supportedLanguages.length > 0">
+                                              <span ng-repeat="lang in panel.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="{{panel._id}}{{lang.value}}" class="languageCheck" ng-click="addLanguagetoTaskPublish($event, lang, panel)">
+                                                <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2 secondaryFontColor"> {{panel.version}} </div>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" panel panel-default marginTop15" ng-show="stream.isSmalltalkMigrated">
+            <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#smallTalkPublishBody" role="tab" id="smallTalkPublishHead">
+                <div class="panel-title">
+                    <span class="pull-right length chevron"> <img ng-src="{{chevronRight}}" class="fa fa-chevron-right"></span>
+                    <div class="checkbox checkbox-primary styledCSS noMargin  inline_block">
+                        <input class="styled allTasksCommonClass" checked type="checkbox" id="smallTalkPublish" ng-click="checkUncheckSmallTalk($event,smallTalk)" ng-model="smallTalk._selected">
+                        <label class="textEllipsis"  ng-click="checkUncheckSmallTalk($event,smallTalk)" for="smallTalkPublish"></label>
+                    </div>
+                    <span class="publishMainHeaderText ">{{'small_talk'| i18nString}}</span><span class="publishHeaderDiscText smallTalkPublishDisc">{{'choose_small_talk_languages'| i18nString}}</span>
+                </div>
+            </div>
+            <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="smallTalkPublishHead" id='smallTalkPublishBody'>
+                <div class="panel-body publishAccordBody">
+                    <div class="supportedLanguagesContainer marginLeft15" ng-show="smallTalk.supportedLanguages.length > 0">
+                        <span ng-repeat="lang in smallTalk.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="smallTalk{{lang.value}}" class="languageCheck" ng-click="smallTalkLanguageUpdates($event, lang, smallTalk)">
+                           <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                       </span>
+                   </div>
+                </div>
+            </div>
+        </div>
+           <div class="panel panel-default marginTop15">
+            <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#languageBody" role="tab" id="languageHeading">
+              <div class="panel-title">
+                <span class="pull-right length chevron"><img ng-src="{{chevronRight}}" class="fa fa-chevron-right"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                  <input class="styled" checked type="checkbox" id="selectAllLanguages" ng-model="selectAllLanguage.selected" ng-click="selectAllLanguages($event,selectAllLanguage,'botLanguage')">
+                  <label ng-click="selectAllLanguages($event,selectAllLanguage,'botLanguage')" for="selectAllLanguages"></label>
+                    <span class="publishMainHeaderText">{{'Bot_Languages' | i18nString}}</span>
+                    <span class="publishHeaderDiscText">{{'Bot_Languages_shortdesc' | i18nString}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="languageHeading" id='languageBody'>
+            <div class="panel-body publishAccordBody">
+                <span class="warn" ng-show="advancedPublishOptions.botLanguage.modules.disabledLanguages.length || unPublishLang.length">
+                <i class="fa fa-warning"></i>
+                <p class="desc">{{'language_notify' | i18nString }}</p>
+            </span>
+            <div class="enable-disable-lang-sec">
+                <span class="label">{{'Enabled_Languages' | i18nString }}</span>
+                <div class="row  enable-disable-lang" ng-repeat="enabledLanguage in ubLanguages.enabledLanguages">
+                    <div class="row">
+                        <div class="col-xs-12 noPadding">
+                            <div class="checkbox checkbox-primary styledCSS noMargin" ng-class="{'disabled':enabledLanguage.isDisabled || defaultLanguage === enabledLanguage.value}">
+                                <input class="styled" checked type="checkbox" id="{{enabledLanguage.value}}" ng-disabled="enabledLanguage.isDisabled" ng-change="checkUncheckLanguage('#languageBody','#selectAllLanguages','botLanguage')" ng-model="enabledLanguage.selected">
+                                <label class="textEllipsis" for="{{enabledLanguage.value}}"> <span class="languagecheck">{{enabledLanguage.value}}</span>{{enabledLanguage.name}} <span class="default" ng-if="enabledLanguage.value === defaultLanguage">Default</span>
+                                </label>                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="enable-disable-lang-sec" ng-show="ubLanguages.disabledLanguages.length">
+                <span class="label">{{'Disabled_Languages' | i18nString }}</span>
+                <div class="row enable-disable-lang" ng-repeat="disabledlanguage in ubLanguages.disabledLanguages">
+                    <div class="row">
+                        <div class="col-xs-12 noPadding">
+                            <div class="checkbox checkbox-primary styledCSS noMargin" ng-class="{'disabled':disabledlanguage.isDisabled}">
+                                <input class="styled" checked type="checkbox" id="{{disabledlanguage.value}}" ng-change="checkUncheckLanguage('#languageBody','#selectAllLanguages','botLanguage')" ng-disabled="disabledlanguage.isDisabled" ng-model="disabledlanguage.selected">
+                                <label class="textEllipsis" for="{{disabledlanguage.value}}"> 
+                                <span class="languagecheck">{{disabledlanguage.value}}</span>{{disabledlanguage.name}}<span class="default" ng-if="disabledlanguage.value === defaultLanguage">Default</span>
+                                </label>                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class=" panel panel-default marginTop15">
+            <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#mlBodyData" role="tab" id="mlHeading">
+                <div class="panel-title">
+                    <span class="pull-right length chevron"> <img ng-src="{{chevronRight}}" class="fa fa-chevron-right"></span>
+                    <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                        <input class="styled" checked type="checkbox" id="selectAllML" 
+                               ng-click="selectAllAdvanced('nl',advancedPublishOptions.nl,$event)"
+                               ng-model="advancedPublishOptions.nl.allSelected">
+                        <label  ng-click="selectAllAdvanced('nl',advancedPublishOptions.nl,$event)" for="selectAllML"></label>
+                    </div><span class="publishMainHeaderText">{{'natural_langname'| i18nString}}</span><span class="publishHeaderDiscText">{{'Bt_publish_natural_language_desc'| i18nString}}</span>
+                </div>
+            </div>
+        <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="mlHeading" id='mlBodyData'>
+            <div class="panel-body publishAccordBody">
+            <div class="row marginBottom10" ng-hide="nlModule.hide" ng-repeat="nlModule in advancedPublishOptions.nl.allModules">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{nlModule.type}}" ng-change="changeAdvPubControls($event, nlModule,advancedPublishOptions.nl,'#mlBodyData','#selectAllML')" ng-model="nlModule.selected">
+                            <label class="textEllipsis" for="{{nlModule.type}}">{{nlModule.name}}</label>
+                           
+                        </div>
+                        <div ng-if="nlModule.type=='default_dialog'" class="marginLeft30imp">
+                             <span class="checkbox checkbox-primary styledCSS display-inline-block paddingLeftFive paddingLeft5" ng-repeat="lang in defaultDialogs[0].supportedLanguages">
+                                <input class="styled" checked type="checkbox" id="default{{dialog._id}}{{lang.value}}"  ng-change="addLanguage($event, lang, defaultDialogs[0])"  ng-model="lang.selected">
+                                <label for="default{{dialog._id}}{{lang.value}}" class="textCapitalizeImp" ng-class="{'disabled':lang.disable}" >{{lang.value}}</label>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 settingsNote" ng-show="nlModule.type === 'settings' && !nlModule.selected">
+                    <span class="task-icon">
+                        <img class="layer" ng-src="{{bulbicon}}">
+                    </span>
+                    <p class="description color-normal" ng-bind-html="nlp_details"></p>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        </div>
+         <div class=" panel panel-default  marginTop15" ng-if="advancedPublishOptions.channels.allModules.length">
+        <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#channelsBodyData" role="tab" id="channelsHeading">
+            <div class="panel-title">
+                <span class="pull-right length chevron"> <img ng-src="{{chevronRight}}" class="fa fa-chevron-right"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllchannels" 
+                       ng-click="selectAllAdvanced('channels',advancedPublishOptions.channels,$event)"
+                       ng-change="selectAll(allTasksSelected.selectAllDialogTask,'.publishDialogTask')"
+                       ng-model="advancedPublishOptions.channels.allSelected">
+                <label ng-click="selectAllAdvanced('channels',advancedPublishOptions.channels,$event)" for="selectAllchannels"></label>
+                </div><span class="publishMainHeaderText">{{'channels'| i18nString}}</span><span class="publishHeaderDiscText">{{'Bt_publish_channels_desc'| i18nString}} </span>
+            </div>
+        </div>
+        <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="channelsHeading" id='channelsBodyData'>
+             <div class="panel-body publishAccordBody">
+            <div class="row marginBottom10 publishedChannelsList" ng-repeat="channelsModule in advancedPublishOptions.channels.allModules">
+               <div class="row col-xs-12 channelBtPublishRow">
+                    <div class="col-xs-4 channelPublishDiv">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{channelsModule.type}}" ng-change="changeAdvPubControls($event, channelsModule,advancedPublishOptions.channels,'#channelsBodyData','#selectAllchannels')" ng-model="channelsModule.selected">
+                            <label class="textEllipsis" for="{{channelsModule.type}}"><img class="icons" ng-src="{{channelsModule.icon}}">{{channelsModule.name}}</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-8 channelPubStatusDiv">{{channelsModule.status}}</div>
+                </div>
+              </div>
+            </div>
+        </div>
+        </div>
+        <div class="marginTop15 panel panel-default">
+        <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#extensionsBodyData" role="tab" id="extensionsHeading">
+            <div class="panel-title"><span class="pull-right length chevron"> <img ng-src="{{chevronRight}}" class="fa fa-chevron-right"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllextensions" 
+                       ng-click="selectAllAdvanced('extensions',advancedPublishOptions.extensions,$event)"
+                       ng-model="advancedPublishOptions.extensions.allSelected">
+                <label ng-click="selectAllAdvanced('extensions',advancedPublishOptions.extensions,$event)" for="selectAllextensions"></label>
+            </div><span class="publishMainHeaderText">{{'api_extensions'| i18nString}}</span><span class="publishHeaderDiscText">{{'Bt_publish_api_exte_desc'| i18nString}} </span>
+            </div>
+        </div>
+        <div class="panel-collapse collapse padding"  role="tabpanel" aria-labelledby="extensionsHeading" id='extensionsBodyData'>
+            <div class="panel-body publishAccordBody">
+            <div class="row marginBottom10" ng-repeat="extensionsModule in advancedPublishOptions.extensions.allModules">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{extensionsModule.type}}" ng-change="changeAdvPubControls($event, extensionsModule,advancedPublishOptions.extensions,'#extensionsBodyData','#selectAllextensions')" ng-model="extensionsModule.selected">
+                            <label class="textEllipsis" for="{{extensionsModule.type}}">{{extensionsModule.name}}</label>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            </div>
+        </div>
+        </div>
+        <div class="marginTop15 panel panel-default">
+        <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#settingsBodyData" role="tab" id="settingsHeading">
+            <div class="panel-title">
+                <span class="pull-right length chevron"> <img ng-src="{{chevronRight}}" class="fa fa-chevron-right"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllSettings" 
+                       ng-click="selectAllAdvanced('settings',advancedPublishOptions.settings,$event)"
+                       ng-model="advancedPublishOptions.settings.allSelected">
+                <label ng-click="selectAllAdvanced('settings',advancedPublishOptions.settings,$event)" for="selectAllSettings"></label>
+                </div><span class=" publishMainHeaderText">{{'settings'| i18nString}}</span><span class="publishHeaderDiscText">{{'Bt_publish_settings_desc'| i18nString}} </span>
+            </div>
+        </div>
+        <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="settingsHeading" id='settingsBodyData'>
+            <div class="panel-body publishAccordBody">
+            <div class="row marginBottom10" ng-repeat="settingsModule in advancedPublishOptions.settings.allModules">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{settingsModule.type}}" ng-change="changeAdvPubControls($event, settingsModule,advancedPublishOptions.settings,'#settingsBodyData','#selectAllSettings')" ng-model="settingsModule.selected">
+                            <label class="textEllipsis" for="{{settingsModule.type}}">{{settingsModule.name}}</label>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="helphint-border blue mb-10">
+            <div class="bulbicon">
+              <span>
+                <i class="btx-info"></i>
+                </span>
+            </div>
+            <div class="">
+                <span class="name">End-users of the Universal Bot will be able to interact only with the published version of the linked bots. Please ensure that all the required tasks and components of the linked bots are published.</span>
+            </div>
+        </div>
+
+        <div class="help_hint_data" ng-show="deletedLinkedBots.length || ubLanguages.deletedLanguages.length || deletedTaskList.length">
+            <div class="bulb-icon">
+                <i class="btx-bulb"></i>
+            </div>
+            <div class="hint-content">
+                <div class="mb-10">{{'following'| i18nString}} </div>
+                <div ng-show="deletedLinkedBots.length">
+                    <div>{{'linked_bots'| i18nString}}</div>
+                    <div class="taskList paddingLeft10" ng-repeat="bot in deletedLinkedBots">
+                      <div class="task">- {{bot.botName}} </div>
+                    </div>
+                </div>
+                <div ng-show="ubLanguages.deletedLanguages.length">
+                    <div>{{'languages_label'| i18nString}}</div>
+                    <div class="taskList paddingLeft10" ng-repeat="language in ubLanguages.deletedLanguages">
+                      <div class="task">- {{language.name}} </div>
+                    </div>
+                </div>
+                <div ng-show="deletedTaskList.length">
+                    <div>{{'Tasks_and_languages_label'| i18nString}}</div>
+                    <div class="taskList paddingLeft10" ng-repeat="task in deletedTaskList">
+                      <div class="task">- {{task.taskName}} ({{task.type}}<span ng-show="task.language"> -{{task.language}}</span>)</div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <!-- <div class="deleteProContainer col-xs-12" ng-show="deletedLinkedBots.length || ubLanguages.deletedLanguages.length || deletedTaskList.length">
+            <div class="bulbicon">
+                <span><img class="layer" ng-src='{{bulbIcon}}'></span>
+            </div>
+          <div class="textDiv">
+                  <p>{{'following'| i18nString}}</p>
+                  <div ng-show="deletedLinkedBots.length">
+                      <label class="label">{{'linked_bots'| i18nString}}</label>
+                      <div class="taskList paddingLeft10" ng-repeat="bot in deletedLinkedBots">
+                        <div class="task">- {{bot.botName}} </div>
+                      </div>
+                  </div>
+                  <div ng-show="ubLanguages.deletedLanguages.length">
+                      <label class="label">{{'languages_label'| i18nString}}</label>
+                      <div class="taskList paddingLeft10" ng-repeat="language in ubLanguages.deletedLanguages">
+                        <div class="task">- {{language.name}} </div>
+                      </div>
+                  </div>
+                  <div ng-show="deletedTaskList.length">
+                      <label class="label">{{'Tasks_and_languages_label'| i18nString}}</label>
+                      <div class="taskList paddingLeft10" ng-repeat="task in deletedTaskList">
+                        <div class="task">- {{task.taskName}} ({{task.type}}<span ng-show="task.language"> -{{task.language}}</span>)</div>
+                      </div>
+                  </div>
+            </div>
+        </div> -->
+        </div>
+        <div class="panel-group publishControlAccordion ubbot-padding-publish" ng-if="universalBotPublishView.currentStep == 'versionComments'" perfect-scroll dynamic-height height-property="height" dynaoffset="-108">
+            <div class="row btnSearchTitle">
+                <div class="col-xs-6 leftTitle">
+                    <p class="pageTitle">{{'publish' | i18nString}}</p>
+                </div>
+                <div class="col-xs-6 rightBTNSearch">
+                    <div class="searchComponent displayNone">
+                        <input  placeholder="Search">
+                        <i class="btx-search"></i>
+                        <i class="btx-close displayNone"></i>
+                    </div>
+                    <div class="creationButton borderBtn displayNone">
+                         <button class="btn btn-xs"> BTN Name</button>
+                    </div>
+                    <div class="filtersDetails displayNone">
+                        <span class="filterListContainer">
+                            <span class="filterCat">Languages </span>
+                            <span class="filterClose">(1)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <span class="filterListContainer">
+                            <span class="filterCat">User ID </span>
+                            <span class="filterClose">(3)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <span class="filterListContainer">
+                            <span class="filterCat">Date Period </span>
+                            <span class="filterClose">(5 days)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                        <div class="dropdown moreDD">
+                            <a href="#" class="moreFilters" data-toggle="dropdown">
+                                +2 more
+                                </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">
+                                    <span class="filterCat">Channels </span>
+                                    <span class="filterClose">(4)</span>
+                                    <i class="btx-close"></i>
+                                </li>
+                                <li class="dropdown-item" >
+                                    <span class="filterCat">Tasks </span>
+                                    <span class="filterClose">(3)</span>
+                                    <i class="btx-close"></i>
+                                </li>                       
+                            </ul>
+                        </div>
+                        <span class="clearAllFilters">
+                            <span class="filterCat">User ID </span>
+                            <span class="filterClose">(3)</span>
+                            <i class="btx-close"></i>
+                        </span>
+                    </div>
+              
+                    <div class="btnActions displayNone">
+                        <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                    </div>
+                    <div class="titleDropdown displayNone">
+                        <div class="dropdown">
+                            <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               Dropdown name
+                                <i class="btx-carrot-up"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+                             </ul>
+                        </div>
+                    </div>
+                    <div class="titleOverflow displayNone">
+                        <div class="dropdown">
+                            <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                <i class="btx-overflow"></i>
+                                </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            <div class="row deploymentconfirmsection">
+            <div class="row form-group">
+                <div class="row">
+                    <h3 class="noMargin headingTitle">{{'comment_label'| i18nString}}</h3>
+
+                </div>
+                <div class="row">
+                    <textarea type="text"
+                            class="form-control" 
+                            auto-grow-textarea
+                        ng-model="universalBotPublishView.upgradeVersionComment" 
+                        placeholder="{{'enter_comments_for_public_request'| i18nString}}">
+                    </textarea>
+                </div>
+                <div class="helphint-border col-xs-12 marginTop15" ng-if="appControls.isBillingEnabled && stream.type !=='sample' && stream.type !== 'universalbot' && stream.type !=='solution' && stream.visibility.namespace=='private' && selectedAccount.adminPreferences && selectedAccount.adminPreferences.autoApproval && selectedAccount.accountType && selectedAccount.accountType===1">
+                    <div class="col-xs-1 bulbicon">
+                        <span><img class="layer" ng-src='{{bulbIcon}}'></span>
+                    </div>
+                    <div class="col-xs-11 textDiv"><span class="name">{{'publishing_bot_freePlanSessions'| i18nString:({freePlansessions:freePlan.sessions})}}</span></div>
+    <!--                                    <div class="col-xs-11 textDiv"><span class="name">You are publishing this bot under the free trial plan which is valid up to {{freePlan.sessions}} sessions or {{freePlan.validityStr}} days. You can upgrade anytime to our paid plans.</span></div>-->
+
+                </div>
+        </div>
+            </div>
+        </div>
+    <div class="newtaskdiv collapsed col-xs-12 ng-scope bottomZero universalBotPublishBtns">
+            <button ng-click="nextStep(universalBotPublishView.currentStep);" class="kr-sg-button-primary btn_lg">{{universalBotPublishView.currentStep == 'defineDeployment'? ('proceed'| i18nString) : ('confirm'| i18nString)}}</button>
+            <button ng-click="previousStep();" class="kr-sg-button-secondary btn_lg" ng-show="universalBotPublishView.currentStep == 'versionComments' ">{{'back_label'| i18nString}}</button>
+    </div>
+<!--     <div id="publishWarnUni" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header">
+                <h4 class="modal-title">Publish Bot</h4>
+              </div>
+            <div class="modal-body">
+               <p class="desc">{{publishWarnMsg}}</p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default proceed" ng-click='nextStep(universalBotPublishView.currentStep)'>{{'proceed'| i18nString}}</button>
+                <button type="button" class="btn btn-default cancel" ng-click='closePublishWarn()'>{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+</div>
+<div class="modal fade bot-publish-form taskCreateOrEditModal fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+    <div class="modal-dialog height-width-100">
+        <div class="modal-content utterances-modal-content height-width-100">
+
+            <bt-bot-publish ng-if="publishBot" on-close="onCloseBotPublishDialog"></bt-bot-publish>
+        </div>
+    </div>
+</div>
+<!-- <help-link ng-if="!publishViews.initialView" is-footer-link=true help-link-url="BOT_PUBLISH_HELP"><help-link> -->

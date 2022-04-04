@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="79px" height="67px" viewBox="0 0 79 67" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 11 Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="//-1-task-icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-667.000000, -357.000000)">
+        <g id="Group-11-Copy" transform="translate(668.000000, 358.000000)">
+            <circle id="Oval-3" fill="#E9F1FB" cx="48" cy="7" r="4"></circle>
+            <circle id="Oval-3" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round" cx="46" cy="5" r="5"></circle>
+            <circle id="Oval-3-Copy" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round" cx="13" cy="13" r="2"></circle>
+            <circle id="Oval-3-Copy-2" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round" transform="translate(73.000000, 21.000000) scale(1, -1) translate(-73.000000, -21.000000) " cx="73" cy="21" r="1"></circle>
+            <polygon id="Fill-158-Copy" fill="#E9F1FB" points="7.66703331 47 3.77765556 46.2223444 3 42.3329667 5.33406662 40 9.22234444 40.7776556 10 44.6670333"></polygon>
+            <polygon id="Stroke-159-Copy" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round" points="6.0004714 46 0.999842866 45.0001571 0 39.9995286 3.0009428 37 8.00015713 37.9998429 9 43.0004714"></polygon>
+            <polygon id="Stroke-159-Copy-2" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round" points="39.6668762 65 37.4443746 64.5556254 37 62.3331238 38.3337524 61 40.5556254 61.4443746 41 63.6668762"></polygon>
+            <polygon id="Fill-143-Copy" fill="#CCEFFF" points="77 59.1441817 71 60 73.7035245 54"></polygon>
+            <polygon id="Stroke-144-Copy" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round" points="76 60.858909 68 62 71.6046993 54"></polygon>
+            <path d="M61.0347247,50.19122 L31.387146,50.3971257 C30.6284021,50.4023953 29.8808086,50.5802793 29.2010027,50.9173014 L25,53 L25,28 C25,25.2385763 27.2385763,23 30,23 L61,23 C63.7614237,23 66,25.2385763 66,28 L66,45.1913406 C66,47.9392131 63.782531,50.1721361 61.0347247,50.19122 Z" id="Stroke-183" fill="#E0F8EF"></path>
+            <path d="M60,48.8148148 L29.9669389,48.8148148 C28.602479,48.8148148 27.2972886,49.3724373 26.3540512,50.3583654 L20,57 L20,24 C20,20.6862915 22.6862915,18 26,18 L60,18 C63.3137085,18 66,20.6862915 66,24 L66,42.8148148 C66,46.1285233 63.3137085,48.8148148 60,48.8148148 Z" id="Stroke-183" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round"></path>
+            <path d="M48.4545455,27.5 L57.5454545,27.5" id="Line-2" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round"></path>
+            <path d="M48,32 L56,32" id="Line-2-Copy" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round"></path>
+            <path d="M48,37 L54,37" id="Line-2-Copy-2" stroke="#7C8495" stroke-width="1.5" stroke-linecap="round"></path>
+            <g id="Group-6" transform="translate(28.000000, 26.000000)" stroke="#7C8495" stroke-linecap="round" stroke-width="1.5">
+                <path d="M16,8 C16,12.4182857 12.4182857,16 8,16 C3.58171429,16 0,12.4182857 0,8 C0,3.58171429 3.58171429,0 8,0 C12.4182857,0 16,3.58171429 16,8 Z" id="Stroke-249" fill="#FFFFFF"></path>
+                <path d="M8,0 L8,8" id="Stroke-250"></path>
+                <path d="M16,8 L8,8" id="Stroke-251"></path>
+                <path d="M11,15 L8,8" id="Stroke-252"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="51" height="54" viewBox="0 0 51 54">
+    <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+        <rect width="9" height="8" y="3.456" fill="#E0F8EF" rx="3"/>
+        <rect width="10.783" height="10.163" y=".768" stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" rx="3"/>
+        <rect width="9" height="8" y="17" fill="#E0F8EF" rx="3"/>
+        <rect width="9" height="8" y="31.232" fill="#E0F8EF" rx="3"/>
+        <path fill="#E9F1FB" d="M22 9.456h15a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H22a3 3 0 0 1-3-3v-11a3 3 0 0 1 3-3zM22 35h15a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H22a3 3 0 0 1-3-3v-5a3 3 0 0 1 3-3z"/>
+        <path stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" d="M22 4.768h19a3 3 0 0 1 3 3v16a3 3 0 0 1-3 3H22a3 3 0 0 1-3-3v-16a3 3 0 0 1 3-3zM22 30.768h19a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H22a3 3 0 0 1-3-3v-10a3 3 0 0 1 3-3z"/>
+        <rect width="10.783" height="10.163" y="15" stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" rx="3"/>
+        <rect width="10.783" height="10.163" y="29.232" stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" rx="3"/>
+        <path stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" d="M17.261 0h29a3 3 0 0 1 3 3v46a3 3 0 0 1-3 3h-29a3 3 0 0 1-3-3V3a3 3 0 0 1 3-3z"/>
+    </g>
+</svg>

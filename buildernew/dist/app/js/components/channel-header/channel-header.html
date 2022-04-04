@@ -1,0 +1,26 @@
+<div class="footer modal-header channelHeader form-group noMargin" ng-if="displayMode!=='view'">
+  <div class="footerSub">
+    <div  class="col-xs-9 lineheight">
+      <span class="pull-left closeBtn" ng-click="onCancel()">
+                <span aria-hidden="true"><i ng-click="callback.$parent.goToHome(true)" class="fa fa-chevron-left"></i></span>
+            </span>
+    <div class="form-ctrl-div pull-left hide">
+      <button type="button" class="btn btn-default" ng-click="callback.goToHome()">{{'exit_label'| i18nString}}</button>
+    </div>
+    <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+    <div class="help-hint-link hide"> <a target="_blank"  ng-href="{{callback.helpLink}}">{{'help_withpage_label'| i18nString}}</a> </div> </div>
+
+    <div class="col-xs-3 buttonDiv">
+      <div class="help">
+        <a class="" target="_blank" ng-href="{{callback.helpLink}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+      </div>
+    <div class="next" ng-if="tabIndex">
+      <button type="button" class="btn btn-primary nextBtn" ng-click="callback.next(tabIndex)">{{'next'| i18nString}}</button>
+    </div>
+    
+    <div class="save" ng-if="!tabIndex">
+        <button type="button" class="btn btn-primary saveBtn" ng-click="callback.save(formObject)">{{'save'| i18nString}}</button>
+    </div>
+             </div>
+  </div>
+</div>

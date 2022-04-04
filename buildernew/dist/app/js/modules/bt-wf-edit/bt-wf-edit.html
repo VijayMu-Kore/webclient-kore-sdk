@@ -1,0 +1,132 @@
+  <div class="modal-header bt-modal-header alertActionHeader">
+    <div class="bt-modal-sub botJournyHeader">
+      <div class="col-xs-6 noPadding">
+            <span class="pull-left closeBtn" ng-click="onCancel()">
+                <span aria-hidden="true"><i class="fa-chevron-left btx-carrot-left"></i></span>
+            </span>
+
+            <bt-modal-title ng-if="displayMode" taskname="{{resource.name}}" fontclass="{{displayMode === 'edit' ? 'fa-pencil' : 'fa-eye'}}" bot="selectedStream"></bt-modal-title>
+      </div>
+    <!--   <div  class="col-xs-5 lineheight">
+        <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+      </div> -->
+      <div class="col-xs-6 noPadding">
+        <help-button  help-id="updateHelpLink()" class="pull-right" ></help-button> 
+        <div class="pull-right form-ctrl-div">
+<!--  && !getEntityStatus() && !isSuspendedTask() -->
+          <button class="modeBtn btn" ng-if="displayMode && displayMode !== 'edit'"><img ng-src="{{$root.viewTaskIcon}}" /><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+          <button type="button" ng-if="displayMode==='edit' && showFinishSetup()" class="btn btn-primary" ng-click="markItConfigured(wfType)"><i ng-if="isFinshSetupLoading" class="fa fa-spinner fa-spin"></i> {{'finish_setup'| i18nString}}</button>
+
+        </div> 
+<!--        <span class="dhelpLink">
+          <a class="" target="_blank" ng-href="{{updateHelpLink()}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+        </span>-->
+        <span class="dhelpLink hide">
+          <a class="" target="_blank"  ng-if="(wfType == 'alert')" ng-href="{{$root.helpLinks.ALERTS_TASK_BASIC}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+          <a class="" target="_blank" ng-if="(wfType == 'action') && !isReportTask" ng-href="{{$root.helpLinks.ACTIONS_TASK_BASIC}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+          <a class="" target="_blank" ng-if="(wfType == 'action') && isReportTask" ng-href="{{$root.helpLinks.INFORMATION_TASK_BASIC}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+        </span>
+      </div>
+    </div>
+      
+  </div>
+  <div class="modal-body modal-body-nopadding">
+<div class="creation create-container edit-wf noPadding container-fluid">
+    <div class="row botJourny">
+	
+       <!-- <div class="row top-bar selected-stream noMargin" style="background:{{selectedStream.color}}"> <div class="main-body row">
+            <div class="stream-icon">
+                <a href="/bt" title="">
+                    <img  ng-src="{{selectedStream.icon}}">
+                </a>
+            </div>
+            <div class="stream-details">
+              <div class="name">{{selectedStream.name}}</div>
+              <div class="taskContainer">
+              <div class="categories textEllipsis positionAbsolute hide">{{resource.name}}</div>
+              <div class="alert-action " ng-if="false">
+                  <span  ng-if="action!=='view'" >Edit</span>
+                  <span  ng-if="action==='view'" >View</span>
+                  <span  ng-if="wftype!=='alert'" >an {{resource.isReport ? 'information task' : 'action'}}</span>
+                  <span  ng-if="wftype==='alert'" >an alert</span>
+              </div>
+              <div class="alert-action ">
+                  <span>{{(resource.state === 'published' && resource.parentId)? 'Awaiting Approval':(_constants_.states[resource.state] || resource.state)}}</span>
+              </div>
+                </div>
+            </div>
+             </div> -->
+  <div id="myTabs" class="tabContainer">
+  <ul class="nav nav-tabs tablist" role="tablist" >
+    <li role="presentation" class="active inactive" ng-class="{'active':sections.introForm,'disabled':!sections.introForm}" ng-click="navigate('introForm')">
+    <a href="#Tasks" aria-controls="home" role="tab" data-toggle="tab">{{'general_label'| i18nString}}</a>
+    </li>
+<!--    <li role="presentation"  class="inactive" ng-click="navigate('authForm')" ng-if="!isWebhook()">
+    <a href="#NL" aria-controls="NL" role="tab" data-toggle="tab" ng-class="{'active':sections.authForm,'disabled':!sections.authForm}">Authentication</a>
+    </li>-->
+    <li role="presentation" class="inactive" ng-click="navigate('reqObjForm')" ng-class="{'active':sections.reqObjForm,'disabled':!sections.reqObjForm}">
+    <a href="#Channels" aria-controls="Channels" role="tab" data-toggle="tab" >{{'api_request_label'| i18nString}}</a>
+    </li>
+    <li role="presentation" class="inactive" ng-click="navigate('resObjForm')"  ng-class="{'active':sections.resObjForm,'disabled':!sections.resObjForm}">
+    <a href="#Flows" aria-controls="Flows" role="tab" data-toggle="tab">{{'bot_response_label'| i18nString}}</a>
+    </li>
+    <li role="presentation"  class="inactive" ng-click="navigate('settingsForm')" ng-if="wftype !== 'action'" ng-click="navigate('settingsForm')"  ng-class="{'active':sections.settingsForm,'disabled':!sections.settingsForm}">
+    <a href="#Publish" aria-controls="Publish" role="tab" data-toggle="tab">{{'settings'| i18nString}}</a></li>
+  </ul>
+</div>
+       
+    </div>
+   
+	<div class="main-content scroll-div" perfect-scroll dynamic-height dynaoffset="-130">
+
+		 <div class="type-creation-forms" >
+
+			<div class="row forms-container">
+                <!-- Sidebar steps -->
+
+                <div class="step-forms">
+                	<div class="view-page row">
+                		<div class="col-xs-12 noPadding">
+                			<br />
+                			<section class="widget" ng-if="sections.introForm">
+               
+                				<div class="widget-body">
+                					<intro-form callbacks="callbacks.introForm" configure="markItConfigured(type)" on-complete="handleIntroForm(wftype,authRequired)" wf-type="{{wftype}}" display-mode="{{forms.introFormDisplayMode}}" resource="resource" ></intro-form>
+                				</div>
+                			</section>
+
+                			<section class="widget" ng-if="sections.reqObjForm">
+                    
+                				<div class="widget-body" ng-if="isItRestType()">
+                                    <request-object-form wf-type="{{wftype}}" callbacks="callbacks.reqObjForm" configure="markItConfigured(type)" display-mode="{{forms.reqObjFormDisplayMode}}"
+                                    on-complete="handleReqObjForm()" on-cancel="handleReqObjForm()" resource="resource"></request-object-form>
+                                </div>
+                                <div class="widget-body" ng-if="!isItRestType()">
+                                    <soap-request-object wf-type="{{wftype}}" callbacks="callbacks.soapreqform" configure="markItConfigured(type)" is-finish-setup-loading = "isFinshSetupLoading" display-mode="{{forms.reqObjFormDisplayMode}}"
+                                    on-complete="handleReqObjForm()" on-cancel="handleReqObjForm()" resource="resource"></soap-request-object>
+                				</div>
+                			</section>
+                			<section class="widget" ng-if="sections.resObjForm">
+                      
+                				<div class="widget-body">
+                					<response-object-form wf-type="{{wftype}}" callbacks="callbacks.resObjForm" configure="markItConfigured(type)" display-mode="{{forms.resObjFormDisplayMode}}"
+                					on-complete="handleResObjForm()" on-cancel="handleResObjForm()" resource="resource"></response-object-form>
+                				</div>
+                			</section>
+                			<section class="widget" ng-if="wftype==='alert' && sections.settingsForm">
+                       
+                				<div class="widget-body" ng-if="wftype==='alert'">
+                					<settings-form wf-type="{{wftype}}" callbacks="callbacks.settingsForm" configure="markItConfigured(type)" display-mode="{{forms.settingsFormDisplayMode}}"
+                						on-complete="handleSettingsForm()" on-cancel="onCancel()" resource="resource">
+                					</settings-form>
+                				</div>
+                			</section>
+            
+                		</div>
+                	</div>
+                </div>
+            </div>
+		 </div>
+	</div>
+</div>
+</div>

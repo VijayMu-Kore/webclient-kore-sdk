@@ -1,0 +1,22 @@
+<button type="button" ng-click="closeModal()"class="close workplaceModalClose" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+<!-- Add Bot Welcome -->
+<div class="add-bot">
+
+    <div class="image-header" perfect-scroll dynamic-height dynaoffset="-200">
+        <img ng-src="{{assetsBase}}images/workplace_by_facebook.png?v=1"/>
+        <div class="title">{{'bt_add_to_workplace_title_p1'| i18nString}} <b>{{source.name}}</b>{{'bt_add_to_workplace_title_p2'| i18nString}}</div>
+        <div class="description">
+            <div class="sub-title"><b>{{'bt_add_to_workplace_desc_subtitle1'| i18nString:({dyn:source.name})}}</b></div>
+
+            <div>{{'bt_add_to_workplace_desc_subtitle1_step1'| i18nString}}</div>
+            <div>{{'bt_add_to_workplace_desc_subtitle1_step2'| i18nString}}</div>
+            <div>{{'bt_add_to_workplace_desc_subtitle1_step3'| i18nString}}</div>
+
+            <div class="sub-title"><b>{{'bt_add_to_workplace_desc_subtitle2'| i18nString:({dyn:source.name})}}</b></div>
+
+            <div>{{'bt_add_to_workplace_desc_subtitle2_step1'| i18nString}}</div>
+            <div>{{'bt_add_to_workplace_desc_subtitle2_step2'| i18nString}}</div>
+            <div>{{'bt_add_to_workplace_desc_subtitle2_step3'| i18nString}}</div>
+        </div>
+    </div>
+</div>

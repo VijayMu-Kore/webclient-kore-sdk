@@ -1,0 +1,315 @@
+<div class="report-frame showForm form-wrp">
+    <div class="form-kr animate-if-back" ng-if="!showForm">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="closeTemplateModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            
+            <a ng-if="wfType==='dialog'" href="#" class="fa fa-chevron-left btnBack"  ng-click="closeTemplateModal()" ></a>
+            <h4 class="modal-title" >Card Layout Configuration</h4>
+            <a ng-if="wfType==='dialog'" href="#" class="btnDone" style="display: block;" ng-click="saveTemplateLocally()">Done</a>                        
+        </div>
+        <div class="container">
+            <form class="row">
+                <div class="form-group">
+                    <div class="">
+                        <div class="form-group hide">
+                            <div class="col-xs-12">
+                                <label class="title">Card Title</label>
+                                <div class="col-xs-4 select-key" ng-if='keys && keys.length'>
+                                    <select class="form-control" ng-model="cardTitle.key_selected" ng-change="insertKey(cardTitle.key_selected)">
+                                        <option value="">select key</option>
+                                        <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <textarea name="" ng-model="cardTitle.value" rows="3" context-typeahead-iframe class="form-control  resize-v"></textarea>
+                                <div class="help-block">
+                                    write javascript here use print to output data.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <button class="btn btn-xs btn-primary pull-right" style="margin-top: 20px;margin-bottom: 10px;" ng-click="addColumn(columns.length - 1)">
+                Add Item &nbsp;<i class="fa fa-plus-circle"></i>
+            </button>
+            <div ng-if="columns.length <= 0" class="col-xs-12 no-columns-msg">
+                No items defined yet
+            </div>
+            <table class="table table-bordered text-center" ng-if="columns.length > 0">
+                <thead>
+                    <tr>
+                        <th class="text-center">Item Name</th>
+                        <th class="text-center">Data Type</th>
+                        <th class="text-center">Sortable</th>
+                        <th class="text-center"></th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="column in columns">
+                        <td>
+                            {{column.label}}
+                        </td>
+                        <td>
+                            {{ (dataTypes | filter:{value:column.dataType})[0].name}}
+                        </td>
+                        <td>
+                            {{column.isSortable ? 'Yes' : 'No' }}
+                        </td>
+                        <td>
+                            <a href="" title=""  ng-click="editColumn($index, itemConf)">
+                                Edit
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="" title="" ng-click="removeColumn($index)">
+                                Delete
+                            </a>
+                        </td>
+                        <td ng-if="false">
+                            <div class="dropdown"  bubble>
+                                <span class="dropdown-toggle bubble-menu pointer-hand" data-toggle="dropdown">
+                                    ...
+                                </span>
+                                <ul class="dropdown-menu pull-right text-center" aria-labelledby="dropdownMenu1">
+                                    <li ng-click="addColumn($index, itemConf)">
+                                        <a href="" title="">
+                                            Add
+                                        </a>
+                                    </li>
+                                    <li ng-click="editColumn($index, itemConf)">
+                                        <a href="" title="">
+                                            Edit
+                                        </a>
+                                    </li>
+                                    <li ng-click="column.isImage = !column.isImage">
+                                        <a href="" title="">
+                                            {{column.isImage ? 'Not an image':'Display it as image'}}
+                                        </a>
+                                    </li>
+                                    <li ng-click="column.isHTML = !column.isHTML">
+                                        <a href="" title="">
+                                            {{column.isHTML ? 'Not an HTML':'Display it as HTML'}}
+                                        </a>
+                                    </li>
+                                    <li ng-click="column.isGroupByCol = !column.isGroupByCol">
+                                        <a href="" title="">
+                                            {{!column.isGroupByCol ? 'Group by this column':'Removing Grouping by this column'}}
+                                        </a>
+                                    </li>
+                                    <li ng-click="removeColumn($index)">
+                                        <a href="" title="">
+                                            Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="wfType!=='dialog'" class="modal-footer modal-kr-footer-show">
+            <button type="button" class="btn btn-default" ng-click="closeTemplateModal()" >Close</button>
+            <button type="button" class="btn btn-primary" ng-class="{'disabled':columns.length<=0}" ng-click="saveTemplate()">Save</button>
+        </div>
+    </div>
+
+
+    <div class="form-kr animate-if edit-item" ng-if="showForm">
+        <form class="form-horizontal" name="itemConf" novalidate>
+            <div class="modal-header">
+                <a href="#" class="fa fa-chevron-left btnBack" ng-click="cancel(itemConf)"></a>
+                <h4 class="modal-title" >Item Configuration</h4>
+                <a href="#" class="btnDone" style="display: block;" ng-click="saveColumn(itemConf.$valid, itemConf)">Done</a>
+            </div>
+            <div class="container panel-body">
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <label class="control-label">Item Name</label>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" name="columnlabel" ng-model="column.label" placeholder="Ex:- Oppurtunity Name" required>
+                        <div class="alert alert-xs alert-danger"  ng-if="(itemConf.$submitted || itemConf.columnlabel.$dirty) && itemConf.columnlabel.$error.required">
+                            Item name is required
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <label class="control-label">Data Type</label>
+                    </div>
+                    <div class="col-xs-12">
+                        <select class="form-control" ng-model="column.dataType" name="columndatatype" required>
+                            <option value="">Select Any</option>
+                            <option ng-repeat="type in dataTypes" value="{{type.value}}">{{type.name}}</option>
+                        </select>
+                        <div class="alert alert-xs alert-danger" ng-if="(itemConf.$submitted || itemConf.columndatatype.$dirty) && itemConf.columndatatype.$error.required">
+                            Datatype is required
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="!column.isGroupByCol" ng-init="column.isLink = column.isLink || false">
+                    <div class="col-xs-12">
+                        <label class="control-label">Is a Link</label>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-12 radioDiv" >
+                            <div>
+                                <label for="column.isLink.no">
+                                    <input ng-click="setUpColumn()" ng-value='false' ng-checked="true" type="radio"  ng-model="column.isLink" name="column.isLink" id="column.isLink.no" ><span class="opt-title">No</span> </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="column.isLink.yes">
+                                    <input ng-click="setUpColumn()" ng-value='true'  type="radio"   ng-model="column.isLink" name="column.isLink" id="column.isLink.yes"><span class="opt-title">Yes</span> </input>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="!column.isLink">
+                    <div class="col-xs-12">
+                        <label class="control-label">Item Value</label>
+                        <div class="col-xs-4 select-key" ng-if='keys && keys.length'>
+                            <select class="form-control" ng-model="href" ng-click="addKeyToHref(href); href = '';">
+                                <option value="">select key</option>
+                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <textarea class="form-control" rows="5" placeholder="Ex:- print('something')" ng-model="column.key" context-typeahead-iframe required name="columnvalue"></textarea>
+                        <div class="help-block">
+                            write javascript here use print to output data.
+                        </div>
+                        <div class="alert alert-xs alert-danger" ng-if="(itemConf.$submitted || itemConf.columnvalue.$dirty) && itemConf.columnvalue.$error.required">
+                            Item value is required
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="ifLink"  ng-if="column.isLink">
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label class="control-label">Link Label</label>
+                        </div>
+                        <div class="col-xs-12">
+                            <textarea class="form-control" rows="5" ng-model="column.key.label" context-typeahead-iframe placeholder="Ex:- print('click here')" required name="linklabel"></textarea>
+                            <div class="help-block">
+                                write javascript here use print to output data.
+                            </div>
+                            <div class="alert alert-xs alert-danger" ng-if="(itemConf.$submitted || itemConf.linklabel.$dirty) && itemConf.linklabel.$error.required">
+                                Link label is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label class="control-label">Url Value</label>
+                            <div class="col-xs-4 select-key" ng-if='keys && keys.length'>
+                                <select class="form-control" ng-model="href" ng-click="addKeyToHref(href); href = '';">
+                                    <option value="">select key</option>
+                                    <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <textarea class="form-control" rows="5" ng-model="column.key.href" context-typeahead-iframe placeholder="Ex:- print('http://www.something.com/file.ext')" required name="linkvalue"></textarea>
+                            <div class="help-block">
+                                write javascript here use print to output data.
+                            </div>
+                            <div class="alert alert-xs alert-danger" ng-if="(itemConf.$submitted || itemConf.linkvalue.$dirty) && itemConf.linkvalue.$error.required">
+                                Link value is required
+                            </div>
+                        </div> 
+                    </div> 
+                </div>
+                
+                <div class="form-group"  ng-init="column.isGroupByCol = column.isGroupByCol || false">
+                    <div class="col-xs-12">
+                        <label class="control-label">Group by this column</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv" >
+                        <div>
+                            <label for="column.isGroupByCol.no">
+                                <input ng-value='false' ng-checked="true" type="radio"  ng-model="column.isGroupByCol" name="column.isGroupByCol" id="column.isGroupByCol.no" ><span class="opt-title">No</span> </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="column.isGroupByCol.yes">
+                                <input ng-value='true'  type="radio"   ng-model="column.isGroupByCol" name="column.isGroupByCol" id="column.isGroupByCol.yes"><span class="opt-title">Yes</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" ng-show="!column.isGroupByCol" ng-init="column.isImage = column.isImage || false">
+                    <div class="col-xs-12">
+                        <label class="control-label">Display it as image</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv">
+                        <div>
+                            <label for="column.isImage.no">
+                                <input ng-value='false' ng-checked="true" type="radio"  ng-model="column.isImage" name="column.isImage" id="column.isImage.no" ><span class="opt-title">No</span> </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="column.isImage.yes">
+                                <input ng-value='true'  type="radio"   ng-model="column.isImage" name="column.isImage" id="column.isImage.yes"><span class="opt-title">Yes</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group" ng-show="!column.isGroupByCol"  ng-init="column.isHTML = column.isHTML || false">
+                    <div class="col-xs-12">
+                        <label class="control-label">Display it as HTML</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv" >
+                        <div>
+                            <label for="column.isHTML.no">
+                                <input ng-value='false' ng-checked="true" type="radio"  ng-model="column.isHTML" name="column.isHTML" id="column.isHTML.no" ><span class="opt-title">No</span> </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="column.isHTML.yes">
+                                <input ng-value='true'  type="radio"   ng-model="column.isHTML" name="column.isHTML" id="column.isHTML.yes"><span class="opt-title">Yes</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="form-group hide">
+                    <div class="col-xs-12">
+                        <label class="control-label">Action Payload Key Mapping</label>
+                        <div class="col-xs-4 select-key" ng-if='keys && keys.length'>
+                            <select class="form-control" ng-model="actionMapping" ng-click="addKeyToActionMapping(actionMapping); actionMapping = '';">
+                                <option value="">select key</option>
+                                <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <textarea name="actionMapping" rows="5" ng-model="column.actionMapping" context-typeahead-iframe class="form-control"></textarea>
+                        <div class="help-block">
+                            <!-- write javascript here use print to output data. -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+

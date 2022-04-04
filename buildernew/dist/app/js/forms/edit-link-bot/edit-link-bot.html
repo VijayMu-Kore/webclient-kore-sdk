@@ -1,0 +1,67 @@
+<div class="modalHeader">
+    <!-- <span aria-hidden="true"  ></span> -->
+    <h4 class="modal-title" id="gridSystemModalLabel"><i ng-src="{{closeCross}}" class="btx-close" ng-click="closeEditLinkBot()"></i>{{linkBot.botName}}</h4>
+    <button class="viewMode" ng-show="displayMode === 'VIEW'"><img ng-src="{{eyeImage}}"><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+
+</div>
+<div  class="modalBody editLinkBot " ng-class="{'readOnly':displayMode === 'VIEW'}" perfect-scroll dynamic-height height-property="height" dynaoffset="-122">
+    <status-loader></status-loader>
+    <div class="height-width-100 create-container col-xs-12 " >
+        <div class="main-content ">
+            <form name="editLinkBotForm.form">
+               <div class="col-xs-12 invocation noPadding">
+                    <label>{{'invocation'| i18nString}}<i class="help-icon btx-help" ng-click="redirectToLink('INVOCATION_NAMES')"></i></label><p class="description">{{'provide_invocation'| i18nString}}</p>
+                    <tags-input name="invocationNames" min-length="2" bot-name-validation="{{currentLanguage === 'en'?true:false}}" max-length="50" max-length-msg="{{'invocation_name'| i18nString}}" replace-spaces-with-dashes="false" ng-model="linktrainingData.invocationNames" placeholder="{{'type_enter_To'| i18nString}}"></tags-input>
+                </div>
+                <div class="col-xs-12 preferredBot noPadding marginTop10 d-flex flex-column">
+                    <div class="d-flex">
+                        <label class="pull-left">{{'use_as_fall_back'| i18nString}}<i class="help-icon btx-help" ng-click="redirectToLink('FALLBACK_BOTS')"></i></label><i class="fallbackBot marginLeft5"></i>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <toggle-switch ng-model="linkBot.preferredBotStatus" no-opt="true" ng-change="enableDisablePreferredBot(linkBot)">
+                        </toggle-switch>
+                        <span class="paddingRight10 paddingLeft5"> {{'fallback'| i18nString}}</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 preferredBot noPadding marginTop10 d-flex flex-column">
+                    <div class="d-flex">
+                        <label class="pull-left">{{'use_as_inclusive'| i18nString}}<i class="help-icon btx-help" ng-click="redirectToLink('INCLUSIVE_BOTS')"></i></label><i class="inclusiveBot marginLeft5"></i>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <toggle-switch ng-model="linkBot.inclusiveBot" no-opt="true" ng-change="enabledDisableInclusiveBot(linkBot)"></toggle-switch>
+                        <span class="paddingRight10 paddingLeft5"> {{'inclusive_desc'| i18nString}}</span>
+                    </div>
+                </div>
+                <div class="trainingLabel col-xs-12 noPadding marginTop10">
+                                     <label>{{'training_utterance'| i18nString}}<i class="help-icon btx-help" ng-click="redirectToLink('TRAINING_UTTERANCES')"></i></label><p class="description">{{'provide_training'| i18nString}}</p>
+                                        <div class="utteranceContainer">
+                                               <div class="col-xs-12 noPadding marginBottom15" id="tags">
+                                                    <input maxlength="2048" name="utterance" type="text" class="form-control background-field-white" placeholder="{{'type_add_enter'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keyup="$event.keyCode == 13 && addUtterance(utterance,bot)" ng-model="utterance.newUtterance">
+                                                </div> 
+                                                <div class="col-xs-12 noPadding tagUtterances" ng-repeat="utterance in linktrainingData.trainingUtterances.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) track by $index">
+                                                            <div class="col-xs-12 tagContainer tagUtterance utteranceTag{{$index}}" ng-blur=" editUtterence($event,$index,currentPage)" ng-keydown="$event.keyCode === 13 && preventEvent($event)" contenteditable="true" id="utteranceTag{{$index}}"  onkeypress="return (this.innerText.length < 2048)">{{utterance}}</div>
+                                                               <div class="pull-right training-delete">
+                                                                    <span class="deleteBtn" ng-click="deleteUtterance($index, utterence,currentPage)"><i class="btx-delete-1"></i></span>
+                                                                </div>
+                                              
+                                                </div>
+                                               
+                                      
+
+
+
+                                       
+                                        
+                                         </div>
+
+                                                
+                </div>
+            </form>
+            <pagination rotate="false"  total-items="linktrainingData.trainingUtterances.length" ng-show="linktrainingData.trainingUtterances.length > 10" ng-model="currentPage" ng-change="pageChanged(currentPage)" max-size="maxSize" class="pagination-sm" items-per-page="limit"></pagination>
+    </div>
+</div>
+</div>
+<div class="modalFooter">
+    <button type="button" ng-disabled="editLinkBotForm.form.$invalid" class="btn" ng-click="saveEditTrainingData(linktrainingData,linkBot)">{{'save'| i18nString}}</button>
+    <button class="btn closeCancel" ng-click="closeEditLinkBot()">Cancel</button>
+</div>

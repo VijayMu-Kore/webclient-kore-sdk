@@ -1,0 +1,110 @@
+<div class="support">
+    <h4 class="tabTitle" ng-show="!callback.openQuickStartSlider">{{'support'| i18nString}}</h4>
+    <h4 class="tabTitle"  ng-show="callback.openQuickStartSlider"><i class="btx-arrow-back" ng-click="closeQuickStart()"></i>{{'get_started'| i18nString}}</h4>
+    <div class="listCards" perfect-scroll dynamic-height dynaoffset="-65" height-property="height" ng-show="!callback.openQuickStartSlider">
+        <div class="listCard" ng-repeat="support in supportObject" ng-if="support.id ==='whats_New' && selectedCurrentTab ==='processApps'? false: true" ng-click="openSupportList(support)">
+            <img ng-src="{{support.icon}}">
+            <div class="descTitle" ng-if="!support.id">
+                <p class="title" ng-if="support.title">{{support.title}}</p>
+                <p class="desc" ng-if="support.desc">{{support.desc}}</p>
+            </div>
+            <div class="descTitle" kr-show-interactive-help="TAKE_TOUR" ng-if="support.id ==='whats_New'">
+                <p class="title" ng-if="support.title">{{support.title}}</p>
+                <p class="desc" ng-if="support.desc">{{support.desc}}</p>
+            </div>
+            <div class="descTitle" kr-show-interactive-help="BOT_WALK_THROUGH" ng-if="support.id ==='product_tour' && (selectedCurrentTab === 'bots' || selectedCurrentTab == 'dataForm')">
+                <p class="title" ng-if="support.title">{{support.title}}</p>
+                <p class="desc" ng-if="support.desc">{{support.desc}}</p>
+            </div>
+
+            <div class="descTitle" kr-show-interactive-help="PROCESSAPP_WALK_THROUGH" ng-if="support.id ==='product_tour' && selectedCurrentTab === 'processApps'">
+                <p class="title" ng-if="support.title">{{support.title}}</p>
+                <p class="desc" ng-if="support.desc">{{support.desc}}</p>
+            </div>
+            <a > <i ng-if="support.link || support.openSlider" class="{{support.iconClass}}"></i></a>
+        </div>
+        <div class="keyBoardShotcuts" ng-click="openSupportList(keyBoardShortcuts)" ng-show="selectedCurrentTab =='bots'">
+            <img ng-src="{{keyBoardShortcuts.icon}}">
+            <div class="descTitle">
+                <p class="title" ng-if="keyBoardShortcuts.title">{{keyBoardShortcuts.title}}</p>
+                <p class="desc" ng-if="keyBoardShortcuts.desc">{{keyBoardShortcuts.desc}}</p>
+            </div>
+        </div>
+        <!-- <div class="listCard">
+            <img ng-src="{{community}}">
+            <div class="descTitle">
+                <p class="title">Community</p>
+                <p class="desc">Mauris in arcu viverra, laoreet purus a, pellentesque tortor</p>
+            </div>
+            <i class="btx-external-link1"></i>
+        </div>
+        <div class="listCard">
+            <img ng-src="{{quick}}">
+            <div class="descTitle">
+                <p class="title">Quick start guide</p>
+                <p class="desc">Mauris in arcu viverra, laoreet purus a, pellentesque tortor</p>
+            </div>
+            <i class="btx-carrot-right"></i>
+        </div>
+        <div class="listCard">
+            <img ng-src="{{whatsNew}}">
+            <div class="descTitle">
+                <p class="title">What’s new</p>
+                <p class="desc">Mauris in arcu viverra, laoreet purus a, pellentesque tortor</p>
+            </div>
+            <i class="btx-about"></i>
+        </div>
+        <div class="listCard">
+            <img ng-src="{{contactUS}}">
+            <div class="descTitle">
+                <p class="title">Contact Us</p>
+                <p class="desc">Mauris in arcu viverra, laoreet purus a, pellentesque tortor</p>
+            </div>
+            <i class="btx-external-link1"></i>
+        </div>
+        <div class="listCard">
+            <img ng-src="{{academy}}">
+            <div class="descTitle">
+                <p class="title">Academy</p>
+                <p class="desc">Mauris in arcu viverra, laoreet purus a, pellentesque tortor</p>
+            </div>
+            <i class="btx-external-link1"></i>
+        </div> -->
+    </div>
+    <div class="quickStartGuide position-relative" perfect-scroll dynamic-height dynaoffset="-65" height-property="height" ng-show="callback.openQuickStartSlider">
+        <div class="quickStartLists">
+            <div class="showQuickStartHeader">
+                <span class="parentName" ng-click="closeQuickStart()">{{'support'| i18nString}}</span> <i class="btx-carrot-right"></i><input placeholder="{{'get_started'| i18nString}}" class="quickSearch" disabled>
+            </div>
+            <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="quickStartList panel"  ng-class='{"expanded": quickStart.expanded}' ng-repeat="quickStart in quickStartObject track by $index" ng-click="addbackground(quickStart,$index)">
+            
+                  <div class="accor-collapse collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">   
+                       <img ng-src="{{quickStart.icon}}" class="linkImg">
+                    <div class="descTitle">
+                        <a role="button" >
+                        <p class="title" ng-if="quickStart.title">{{quickStart.title}}</p>
+                        <p class="desc" ng-if="quickStart.desc">{{quickStart.desc}}</p>
+                    </a>
+                    </div>
+                    <!-- <i class="btx-external-link1"></i> -->
+                </div>
+                    <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}" style="height: 0px;" ng-click="$event.stopPropagation()">
+                        <div class="panel-body">
+                            <div class="videoContainer" ng-if="quickStart.videoUrl">
+                                <div class="videoEle"><video width="250" controls><source src="quickStart.videoUrl" type="video/mp4"></video></div>
+                            </div>
+                            <div class="textContainer" ng-if="quickStart.extendedText" ng-click="redirectToLink(quickStart)">
+                                  <div ng-if="quickStart.extendedText.text"class="qTitle">{{quickStart.extendedText.text}}</div>
+                                  <div ng-if="quickStart.extendedText.description" class="qDec">{{quickStart.extendedText.description}}
+                                    <span ng-if="quickStart.extendedText.link" class="qLink"><a ><i class="btx-external-link1"></i></a></span>
+                                  </div>
+                                  
+                            </div>
+                        </div>
+                      </div>
+             </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,377 @@
+<div class="summaryLoader animationIfLeave" ng-if="loadingForms">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">  {{'loading_forms'| i18nString}}</span>
+    </span>
+</div>
+<div class="uiForm-row" ng-init="bulderReloaded();closeFormCreation();">
+
+
+    <div class="formsTopMenu">
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'uiforms'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch" ng-if='uiForms.length > 0'>
+                <div class="searchComponent ">
+                    <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1"
+                    type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse"
+                    ng-model="formsObj.searchUiForms" ng-minlength="1" placeholder=" {{'search_form'| i18nString}}">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton">
+                     <button class="btn btnSolidBlue" ng-class="{'hide':callbacks.modeOfAccess !== 'FULL'}" ng-click="createNewForm()">{{'new_form'| i18nString}}</button>
+                </div>
+                <div class="filtersDetails displayNone">
+                    <span class="filterListContainer">
+                        <span class="filterCat">Languages </span>
+                        <span class="filterClose">(1)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">Date Period </span>
+                        <span class="filterClose">(5 days)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <div class="dropdown moreDD">
+                        <a href="#" class="moreFilters" data-toggle="dropdown">
+                            +2 more
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">
+                                <span class="filterCat">Channels </span>
+                                <span class="filterClose">(4)</span>
+                                <i class="btx-close"></i>
+                            </li>
+                            <li class="dropdown-item" >
+                                <span class="filterCat">Tasks </span>
+                                <span class="filterClose">(3)</span>
+                                <i class="btx-close"></i>
+                            </li>                       
+                        </ul>
+                    </div>
+                    <span class="clearAllFilters">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                </div>
+          
+                <div class="btnActions displayNone">
+                    <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                </div>
+                <div class="titleDropdown displayNone">
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                         </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow uiFormdDropdown hide">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Form Branding</li>
+                            <li class="dropdown-item" >Form Branding</li>                       
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          </div>
+        <div ng-if='uiForms.length > 0'>
+            <div class="uiFormdDropdown pull-right hide">
+                <div class="dropdown panel-dropdown">
+                    <span data-toggle="dropdown" class="ellipsisDarkDropDown"> <img class="ellipsisDark" 
+                        ng-src="{{ellipsisDark}}"></span>
+                       
+                    <ul class="dropdown-menu panel-dropdown-menu">
+                        <li >
+                            <a >Form Branding</a>
+                        </li>
+                        <li >
+                            <a >Import</a>
+                        </li>
+                        <!-- <li >
+                            <a >ExportUse Template</a>
+                        </li> -->
+                        <!-- <li >
+                            <a >Use Template</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- <button ng-class="{'hide':callbacks.modeOfAccess !== 'FULL'}" ng-click="createNewForm()" class="btn formCreation">{{'new_form'| i18nString}}</button>
+            <div class="formSearch">
+                <span class="synSearch dialogSearchBar callclear bt-pos-relative searchExpand">
+                    <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1"
+                        type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse"
+                        ng-model="formsObj.searchUiForms" ng-minlength="1" placeholder=" {{'search_form'| i18nString}}">
+                    <span ng-show="formsObj.searchUiForms === ''" class="searchBar fa fa-search"></span>
+                    <span ng-show="formsObj.searchUiForms !== ''" class="searchBar fa fa-remove"
+                        ng-click="formsObj.searchUiForms=''"></span>
+                </span>
+            </div> -->
+        </div>
+        <div class="panel-default">
+            <div class="" ng-show="uiForms.length > 0">
+                <div class="panel-table col-xs-12 tableContainer ui-forms-table-container">
+                    <div class="panel-table-header">
+                        <div class="row tableHeaderRow">
+                            <div class="col-xs-4 title cursor-pointer" ng-click="sortTaskList('nameSort')">
+                                {{'bot_name'| i18nString}}<i class="fa fa-caret-up marginLeft5"
+                                    ng-if="orderType=='name'"></i><i class="fa fa-caret-down marginLeft5"
+                                    ng-if="orderType=='-name'"></i><i class="fa fa-sort marginLeft5"
+                                    ng-if="orderType!=='-name' && orderType!=='name'"></i></div>
+                            <div class="col-xs-4 title cursor-pointer" ng-click="sortTaskList('datesSort')">
+                                {{'last_updated'| i18nString}}<i class="fa fa-caret-down marginLeft5"
+                                    ng-if="orderType=='lMod'"></i><i class="fa fa-caret-up marginLeft5"
+                                    ng-if="orderType=='-lMod'"></i><i class="fa fa-sort marginLeft5"
+                                    ng-if="orderType!=='-lMod' && orderType!=='lMod'"></i></div>
+                            <div class="col-xs-4 title noPaddingLeft" ng-hide="showSolutionBotSetup">
+                                {{'bot_status'| i18nString}}</div>
+                            <!-- <div class="col-xs-1 title">VERSION</div> -->                            
+                        </div>
+                    </div>
+                    <div class="panel-table-body tableBodyRow">
+                        <div class="text-center padding10" ng-show="!uiFormsByState.length">
+                            {{'no_forms_in_this_state'| i18nString}}</div>
+                        <div class="text-center padding10" ng-show="uiFormsByState.length && formsObj.searchUiForms && filtereduiForms.length===0">
+                            {{'no_results'| i18nString}}</div>
+                        <div class="row uiForm bodyRow"
+                            ng-repeat="uiForm in filtereduiForms = (uiFormsByState  | filter:{name:formsObj.searchUiForms}) | orderBy:(orderType || '-lMod') | slice:(currentPage-1)*50:currentPage*50">
+                            <div class="col-xs-4 contentDetails cursor-pointer"
+                                ng-click="callbacks.modeOfAccess === 'VIEW'?openuiForms(uiForm,'uiFormView'):openuiForms(uiForm)">
+                                {{uiForm.name}}</div>
+    
+    
+                            <div class="col-xs-4 contentDetails cursor-pointer"
+                                ng-click="callbacks.modeOfAccess === 'VIEW'?openuiForms(uiForm,'uiFormView'):openuiForms(uiForm)">
+                                {{uiForm.lMod | date:'MM-dd-yyyy'}}
+                            </div>
+                            <div class="col-xs-4 contentDetails deploymentStatus cursor-pointer"
+                                ng-click="callbacks.modeOfAccess === 'VIEW'?openuiForms(uiForm,'uiFormView'):openuiForms(uiForm)"
+                                ng-class="{'hide':showSolutionBotSetup}">
+    
+                                <span class="positionRelative">
+                                    <span ng-class="{'published':uiForm.state === 'published'}"
+                                        class="status">{{(uiForm.state === 'published' && uiForm.parentId)?(_constants_.states.awaitingApproval):(_constants_.states[uiForm.state] || uiForm.state)}}</span>
+                                    <bot-tooltip task="uiForm"
+                                        ng-if="!isSelectedLanguageApproved(uiForm) && (stream.supportedLanguages.length>1)">
+                                    </bot-tooltip>
+                                </span>
+                                <!-- <span class="hiddenStatus" ng-if="uiForm.isHidden">Visibilty Scope : HIDDEN</span> -->
+                            </div>
+    
+                            <!-- <div class="col-xs-1 contentDetails cursor-pointer"  ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(uiForm,'uiFormView'):editOrViewWorkflow(uiForm, 'dialog')">{{uiForm.version}}</div> -->
+                            <!-- <div class="col-xs-3 contentDetails" ng-class="{'hide':!showSolutionBotSetup}">
+                                <a class="sol-task-view"
+                                    ng-click="openuiForms(uiForm)">{{'view'| i18nString}}</a>
+                            </div> -->
+                            <!--div class="col-xs-3"  ng-class="{'hide':showSolutionBotSetup}">
+                              {{(uiForm.state === 'published' && uiForm.parentId)? 'Awaiting Approval':(_constants_.states[uiForm.state] || uiForm.state)}}
+                            </div>
+                            <div class="col-xs-1">{{uiForm.version}}</div-->
+                            <div class="setting-icon-form text-center" ng-class="{'hide': showSolutionBotSetup}">
+                                <div class="dropdown panel-dropdown">
+                                    <!-- <i class="fa fa-1 pointer-hand fa-cog" data-toggle="dropdown"></i> -->
+                                    <!--  <i class="fa fa-1 pointer-hand" ng-class="{'fa-cog':uiForm.editable,'fa-lock':!uiForm.editable}" data-toggle="dropdown"></i> -->
+                                    <!-- <span ng-class="{'gear':uiForm.editable,'lock':!uiForm.editable}" -->
+                                        <div class="gearToggele"
+                                        data-toggle="dropdown"><i class="btx-settings"></i></div>
+                                    <ul class="dropdown-menu panel-dropdown-menu" role="menu"
+                                        ng-class="{'publishedDropdown':uiForm.state === 'published'}">
+                                        <li role="presentation" ng-show="(uiForm.state === 'published' || uiForm.state === 'suspended') || callbacks.modeOfAccess === 'VIEW'">
+                                           <a ng-click="openuiForms(uiForm)">{{'view'| i18nString}}</a>
+                                        </li>
+                                        <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                                            <a ng-show="!(uiForm.state === 'published' || uiForm.state === 'suspended')"
+                                                ng-click="openuiForms(uiForm)"> {{'edit'| i18nString}} </a>
+                                        </li>
+                                        <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                                            <a ng-show="!(uiForm.state === 'published' || uiForm.state === 'suspended')"
+                                                ng-click="updateForm(uiForm)"> {{'form_settings'| i18nString}} </a>
+                                        </li>
+                                        <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                                            <a ng-show="!uiForm.child.length == 1 && botDetails.streamState==='indevelopment'"
+                                                ng-click="openuiForms(uiForm,'branding')"> {{'branding'| i18nString}} </a>
+                                        </li>
+    
+                                        <!-- <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                                            <a ng-show="botDetails.streamState == 'indevelopment'"
+                                                ng-click="openCloneUiFormModel(uiForm)">{{'clone'| i18nString}} </a>
+                                        </li> -->
+                                        <li role="presentation">
+                                            <a ng-click="openuiForms(uiForm,'testFlow')">{{'test'| i18nString}} </a>
+                                        </li>
+                                        <!-- <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                                            <a ng-show="botDetails.streamState == 'indevelopment'"
+                                                ng-click="importUiForms(uiForm)">{{'import'| i18nString}} </a>
+                                        </li> -->
+                                        <!-- <li role="presentation" ng-show="uiForm.state === 'awaitingApproval'">
+                                            <a ng-click="recallWorkflow(flowtask, 'flowtask')">{{'recall'| i18nString}}</a>
+                                        </li> -->
+                                        <!-- <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                                            <a ng-show="botDetails.streamState == 'indevelopment'"
+                                                ng-click="exportUiForms(uiForm)">{{'export'| i18nString}} </a>
+                                        </li> -->
+    
+                                        <li class="deleteLi" role="presentation"
+                                            ng-show="callbacks.modeOfAccess !== 'VIEW' && isEligibleToDelete(uiForm) && uiForm.state !== 'published' && uiForm.state !== 'suspended' && (!(stream.type === 'universalbot'))">
+                                            <a ng-click="deleteWorkflow(uiForm, 'uiForm', $index)">{{'delete'| i18nString}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!-- <ul class="dropdown-menu panel-dropdown-menu" ng-show="!uiForm.editable" role="menu"
+                                        ng-class="{'publishedDropdown':uiForm.state === 'published'}">
+                                        <li role="presentation">
+                                            <a ng-click="viewWorkflow(uiForm,'uiFormView')">{{'view'| i18nString}}</a>
+                                        </li>
+                                        <li role="presentation" ng-hide="callbacks.modeOfAccess === 'VIEW'">
+                                            <a ng-click="unlockTask(uiForm)"> {{'unlock'| i18nString}} </a>
+                                        </li>
+                                        <li role="presentation"
+                                            ng-show="callbacks.modeOfAccess !== 'VIEW' && (!(stream.type === 'universalbot'))">
+                                            <a ng-show="botDetails.streamState == 'indevelopment'"
+                                                ng-click="openCloneDialogModel(uiForm)"> {{'clone'| i18nString}} </a>
+                                        </li>
+                                    </ul> -->
+                                </div>
+                            </div>
+                        </div>
+                        <pagination rotate="false" ng-show="filtereduiForms.length > 50" class="pagination-sm pull-right"
+                            boundary-links="true" direction-links="false" total-items="filtereduiForms.length"
+                            items-per-page="50" ng-model="currentPage" ng-init="currentPage=1" max-size="10" first-text="<<"
+                            last-text=">>">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+
+            <div class="emptyStateContainer" ng-show='!uiForms.length'>
+                <div class="emptyState">
+                    <div class="emptyImage">
+                        <img ng-src="{{emptyStateIcon_digital_form}}" class="emptyImg">                                   
+                    </div>  
+                    <span class="mainTitle">{{'create_new_web_form'| i18nString}}</span>
+                    <div class="emptyStateDesc">{{'empty_webform_desc'| i18nString}} <a target="_blank" ng-click="redirectToLink('UI_FORM_HELP', $event)">{{'learn_more'| i18nString}}</a></div>
+                    <div class="generateBtn">
+                        <button class="btn btnSolidBlue m-0" ng-class="{'hide':callbacks.modeOfAccess !== 'FULL'}" ng-click="createNewForm()">{{'create_new_dialog_form'| i18nString}}</button>                        
+                           <!-- <button ng-click="importUIForm()" class="kr-sg-button-primary btn_md">{{'import'| i18nString}}</button>
+                        <button ng-click="useTemplateForm()" class="kr-sg-button-primary btn_md">{{'use_template'| i18nString}}</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<bot-modal-slider class="cloneDialogCreation" id="uiFormCreation">
+    <div class="modalSliderContainer width800" ng-if="uiFormCreation">
+                <div class="modalHeader ">
+                    <h4 class="modal-title tableRow">
+                        <i class="btx-close" ng-click="closeFormCreation()"></i>
+                        <div class="miHeadBar">
+                            <p class="miTitleHeader" ng-if="!uiFormCreateObj._id"> {{'new_form'| i18nString}}</p>
+                            <p class="miTitleHeader" ng-if="uiFormCreateObj._id"> {{'update_form'| i18nString}}</p>
+                        </div>
+                    </h4>
+                </div>
+                <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-140" height-property="height">
+                    <div ng-if="loadingFormDetails" >
+                        <div class="loading text-center">{{'loading' | i18nString}}</div>
+                    </div>
+                    <div class="uiFormCreate" ng-show="!loadingFormDetails" >
+                        <div class="col-xs-12 form-group noPadding">
+                            <div class="col-xs-12 labelling noPadding">
+                               <label class="required-field">{{'form_name_label'| i18nString}} </label>
+                               <div ng-show="introObj.name.length>0" class="pull-right obj-length"> {{60-uiFormCreateObj.name.length + charRemaining}} </div>
+                            </div>
+                            <div class="col-xs-12 noPadding input-new-form">
+                               <input type="text" focusit="true" class="form-control alert-input" ng-keyup="validateFormName($event)" remove-one-ascii ng-disabled="displayMode==='view'" ng-blur="checkTaskWordCount();focus=false" ng-focus="focus=true" ng-model="uiFormCreateObj.name" name="name" id="name" placeholder="{{'ui_form_create_nameplaceholder' | i18nString}}" ng-minlength="1" maxlength="60" spellcheck="true" required ng-pattern="validateTaskName" autocomplete="off">
+                            </div>
+                       </div>
+                       <div class="col-xs-12 form-group noPadding displayName">
+                            <div class="col-xs-12 noPadding labelling">
+                              <label>{{'display_Name' | i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12 noPadding input-new-form">
+                              <input class="form-control" maxlength="128" minlength="1" id = "_createUiFormsDisplayName" name="flowTaskDesc" ng-model="uiFormCreateObj.displayName" placeholder="{{'ui_form_create_displayNamePlaceholder'| i18nString}}"/>
+                            </div>
+                       </div>
+                        <!-- <div class="col-xs-12 form-group noPadding">
+                            <div class="col-xs-12 labelling noPadding">
+                               <label class="required-field"> {{'form_type'| i18nString}} </label>
+                            </div>
+                            <div class="col-xs-12 radioDiv">
+                               <div class="form_type_radio">
+                                  <label>
+                                  <input id="form_type_regular" value='regular' type="radio"  ng-model="uiFormCreateObj.type" ng-disabled="displayMode==='view'" name="uiFormType" required><span class="opt-title">{{'Form_Type_Regular' | i18nString}}</span> </input>
+                                  </label>
+                                  <label>
+                                    <input id="form_type_wizard" value='wizard' type="radio" maxlength="128" minlength="1" ng-model="uiFormCreateObj.type" ng-disabled="displayMode==='view'" name="uiFormType" required><span class="opt-title">{{'Form_Type_Wizard' | i18nString}}</span> </input>
+                                 </label>
+                               </div>
+                            </div>
+                         </div> -->
+                         
+                         <div class="col-xs-12 form-group noPadding">
+                            <div class="col-xs-12 noPadding labelling">
+                              <label>{{ 'form_description' | i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                              <textarea class="form-control new_form_textarea" maxlength="256" ng-model="uiFormCreateObj.description" placeholder="{{'tooltip_desc'| i18nString}}"></textarea>
+                            </div>
+                         </div>
+                         <!-- <div class="col-xs-12 form-group noPadding">
+                            <div class="col-xs-12 noPadding labelling">
+                              <label>{{ 'form_security' | i18nString}}</label>
+                            </div>
+                            <div class="enable-text-secure-forms">{{'form_security_desc' | i18nString}} <a ng-click="redirectToLink('UI_FORM_HELP', $event)">Lean more</a></div>
+                         </div> -->
+                        <div class="property" id="panel_secure_formdata">
+                            <div class="label-text">{{'secure_form_data' | i18nString}}</div>
+                            <div class="enable-text-secure-forms">{{'secure_form_description' | i18nString}} <a ng-click="redirectToLink('UI_FORM_HELP', $event)">{{'learn_more'| i18nString}}</a> </div>
+                             <div>
+                                <label class="kr-sg-toggle large m-0">
+                                    <input type="checkbox" ng-model="uiFormCreateObj.isSecured" ng-change="enabledSecurity()">
+                                    <div class="slider uiFormsToggle"><span class="enabled">{{'yes' | i18nString}}</span><span class="disabled">{{'no' | i18nString}}</span></div>
+                                </label>
+                            </div>
+<!--                        
+                            <div class="marginTop10" ng-if="uiFormCreateObj.isSecured">
+                                <div class="label-text">{{'secure_form_data_redacted' | i18nString}}</div><label
+                                    class="kr-sg-toggle large m-0"><input type="checkbox" ng-model="uiFormCreateObj.redactAgentBotKitData">
+                                    <div class="slider"><span class="enabled">Yes</span><span class="disabled">No</span></div>
+                                </label>
+                            </div>
+                            <div class="marginTop10" ng-if="uiFormCreateObj.isSecured">
+                                <div class="label-text">{{'secure_form_data_agent_botKit' | i18nString}}</div>
+                                <label class="kr-sg-toggle large m-0">
+                                    <input type="checkbox" ng-model="uiFormCreateObj.redactSvcData">
+                                    <div class="slider"><span class="enabled">Yes</span><span class="disabled">No</span></div>
+                                </label>
+                            </div> -->
+                        </div> 
+                    </div>
+                </div>
+                <div class="modalFooter" ng-show="!loadingFormDetails">
+                    <div class="buttonContainer">
+                        <button ng-if="uiFormCreateObj._id" ng-disabled="(!uiFormCreateObj.name || !uiFormCreateObj.displayName)" ng-click="saveUiForm()" class="btn btnSolidBlue">{{(updatingForm?'updating_label':'update') | i18nString}}</button>
+                        <button ng-if="!uiFormCreateObj._id" ng-disabled="(!uiFormCreateObj.name || !uiFormCreateObj.displayName)" ng-click="saveUiForm()" class="btn btnSolidBlue">{{updatingForm?'saving':'save_proceed'| i18nString}}</button>
+                        <button ng-click="closeFormCreation()" class="btn closeCancel">{{'cancel'| i18nString}}</button>
+                    </div>
+                </div>
+    </div>
+</bot-modal-slider>

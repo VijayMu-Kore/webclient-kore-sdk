@@ -1,0 +1,24 @@
+<!--  <div class="footer-instructions">
+    <div ng-click="toggleInstructions = !toggleInstructions" id="footerTitle">
+        <span class="Importance-of-giving">{{footerInfoTitle}}</span>
+        <span class="pull-right collapse-arrow" ><i class="fa" ng-class="toggleInstructions ? 'fa-chevron-down' : 'fa-chevron-up'" aria-hidden="true"></i></span>
+    </div>
+    <div class="instructions-body" ng-show="toggleInstructions">
+        <ng-transclude></ng-transclude>
+    </div>
+</div>-->
+
+        <div class="panel-group footerAccordion" id="{{footerHeaderId}}">
+          <div class="panel panel-default"> <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="{{'#'+footerHeaderId}}" ng-href="{{'#'+footerPanelId}}">
+            <div class="panel-heading">
+              <h4 class="panel-title"><span class="Importance-of-giving">{{footerInfoTitle}}</span></h4>
+            </div>
+            </a>
+            <div id="{{footerPanelId}}" class="panel-collapse collapse">
+              <div class="panel-body" perfect-scroll>
+                <ng-transclude></ng-transclude>
+             
+              </div>
+            </div>
+          </div>
+        </div>

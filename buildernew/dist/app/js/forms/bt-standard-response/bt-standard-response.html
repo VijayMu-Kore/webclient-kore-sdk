@@ -1,0 +1,166 @@
+<bot-modal-slider id="manageResSlider">
+   <div class="modalSliderContainer standardResponses width700">
+
+<!--Header Starts Here -->
+<div class="modalHeader">
+    <h4 class="modal-title">
+        <i class="btx-close" ng-if="btnValue === 'close'" ng-click="closeManageResponse()"></i>
+        <div class="backBtn" ng-if="btnValue !== 'close'" ng-click="handleBackBtn()"><i class="btx-arrow-back"></i></div>
+        <span  class="ng-binding ng-scope">
+            {{'manageResponse'| i18nString}}
+        </span>
+    </h4>
+</div>
+
+
+
+      <!-- <div class="modalHeader">
+         <div class="closeBtn" >
+             <img  class="closeCross" ng-src={{closeArrow}}>
+         </div>
+         <div class="backBtn" ng-if="btnValue !== 'close'" ng-click="handleBackBtn()"><img ng-src="{{assetsBase}}settingsIcons/rightArrow.svg"></div>
+        <div class="title">{{'manageResponse'| i18nString}}</div>
+        
+        
+      </div> -->
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+    <div class="modalBody standardResponseBody" perfect-scroll dynamic-height dynaoffset="-60" height-property="height" ng-class="{'viewMode':(accessRight === 'VIEW') || (botState ==='published') }">
+        <div class="form-group col-xs-12 noPadding " ng-show="responses.length>0 && !loadingPrompts && !loadingEntities" ng-init="parentIndex = $index" ng-repeat="response in responses track by $index">
+            <div class="row btnSearchTitle">
+                <div class="col-xs-6 leftTitle">
+                    <p class="pageTitle">  {{'Sentiment_management_label'| i18nString}}</p>
+                </div>
+                <div class="col-xs-6 rightBTNSearch">
+                    <div class="searchComponent displayNone">
+                        <input  placeholder="Search">
+                        <i class="btx-search"></i>
+                        <i class="btx-close displayNone"></i>
+                    </div>
+                    <div class="creationButton borderBtn displayNone">
+                        <button class="titleBTN">button</button>
+                    </div>
+                    <div class="titleDropdown displayNone">
+                        <div class="dropdown">
+                            <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               Dropdown name
+                                <i class="btx-carrot-up"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+                             </ul>
+                        </div>
+                    </div>
+                    <div class="titleOverflow displayNone">
+                        <div class="dropdown">
+                            <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                <i class="btx-overflow"></i>
+                                </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="bodyHeader marginTopBottomTen">
+                <div class="responseDec" title="{{response.condition}}">{{response.condition}}</div>
+            <div class="addResponseBtn" ng-click="addNewResponse(response,parentIndex)" ng-disabled="loadingPrompts || loadingEntities"><span class="linkText">+ {{'Add_response'| i18nString}}</span></div>
+            </div>
+            <accordion class="stdResAccordian">
+                <accordion-group ng-click="setPosition($index)" ng-repeat="prompt in response track by $index" heading="{{prompt.text}}" is-open="prompt.isOpen" ng-init="prompt.isOpen = false" ng-class="{true:'panelOpen', false:'panelClose'}[prompt.isOpen]" id="prompt-{{$index}}">
+                    <accordion-heading>
+                        <span ng-show="prompt.channel!=='' && prompt.channel=='skype'" class="col-xs-2 channelIcon fa fa-skype"></span>
+                        <span ng-show="prompt.channel!=='' && prompt.channel!=='skype'" class="col-xs-2 Oval-15 channelIcon no-background">
+                        <span ng-show="prompt.channel=='default'" tooltip-placement="bottom" tooltip="{{'all_channels'| i18nString}}" class="channelText">{{'all_labels'| i18nString}}</span>
+                            <img ng-show="prompt.channel!=='default'" tooltip-placement="bottom" tooltip="{{_channelConfig.channelsObject[prompt.channel].name}}" class="img fa fa-{{prompt.channel}}" ng-src="{{_channelConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img> 
+                        </span>
+                        <div class="col-xs-10 textHeaaderAccordian textTransformResponse" id="promptHeader-{{parentIndex}}.{{$index}}" ng-click="getTaskFields(prompt.taskId,prompt.isOpen,$index,parentIndex)">
+                            <div class="col-xs-11 noPadding textEllipsis" ng-if="prompt.isMarkDown && prompt.uxMap !== ''" class="promptText">{{prompt.uxMap}}</div>
+                            <div class="col-xs-11 noPadding textEllipsis" ng-if="prompt.isMarkDown && prompt.uxMap === ''" class="promptText italic">{{'new_prompt'| i18nString}}</div>
+                            <div class="col-xs-11 noPadding textEllipsis" ng-if="!prompt.isMarkDown" class="promptText italic">{{'js_msg'| i18nString}}</div>
+                            <div ng-hide="(accessRight === 'VIEW') || (botState ==='published')" class="deletePromptDiv col-xs-1 noPadding"><i class="btx-delete-1" ng-click="deleteStandardResponse($index,parentIndex,$event)"></i></div>
+                        </div>
+                    </accordion-heading>
+                    <div class="inner-accordion-body">
+                        <div class="col-xs-12 noPadding">
+                            <div class="form-group row override-outer noMargin">
+
+                                <div class="channel-selector">
+                                    <label class="reponseLabel">{{'channel_name'| i18nString}}</label>
+                                    <div>
+                                        <select class="" ng-model="prompt.channel" ng-change="channelChanged()">
+                                            <option value="">{{'choose_channel'| i18nString}}</option>
+                                            <option value="default">{{'any_channel'| i18nString}}</option>
+                                            <option ng-repeat="option in availableChannels" value="{{option.id}}">{{option.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="task-selector marginTop10" ng-show="prompt.channel && prompt.channel !== 'default'">
+                                    <label class="reponseLabel">{{'task'| i18nString}}</label>
+                                    <div> 
+                                        <select class="" id="select2" ui-select2="selectConfig" ng-model="prompt.taskId" ng-change="getTaskFields(prompt.taskId)">
+                                            <option value="">{{'choose_task'| i18nString}}</option>
+                                            <option value="default">{{'any_task'| i18nString}}</option>
+                                            <optgroup label="{{taskItem.type}}"  ng-repeat="taskItem in tasksByType">
+                                                <option ng-repeat="task in taskItem.tasks" value="{{task._id}}" >{{task.name| taskNameFormat : task}}</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="field-selector marginTop10" ng-show="prompt.taskId && prompt.taskId !== 'default' && prompt.channel !== 'default'">
+                                    <label class="reponseLabel">{{'field'| i18nString}}</label>
+                                    <div>
+                                        <select class="" ng-model="prompt.fieldId">
+                                            <option value="">{{'choose_field'| i18nString}}</option>
+                                            <option value="default">{{'any_field'| i18nString}}</option>
+                                            <option ng-if="option.key && option.title" ng-repeat="option in availableFields" value="{{option.key}}">{{option.title}}</option>
+                                            <option ng-if="option._id && option.name"  ng-repeat="option in availableFields" value="{{option._id}}">{{option.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="override-message marginTop10" ng-if="prompt.isOpen && (prompt.channel === 'default' || prompt.taskId === 'default' || prompt.fieldId)">
+                                        <label class="reponseLabel">{{'response'| i18nString}}</label>
+                                        <span class="pos-relative floatRight" ng-show="!prompt.isMarkDown"><sample-tempalets selected-channel="prompt.channel" selected-callback="prompt.jsEditorValue" demo-templates="demoTemplates"></sample-tempalets></span>
+                                    
+                                    <div class="editorMenus">
+                                        <div class="menuHeader" ng-class="{active: prompt.isMarkDown}" ng-click="activeTabType('basic',prompt)">{{'standard_text'| i18nString}}</div>
+                                        <div class="menuHeader moveLeft" ng-class="{active: !prompt.isMarkDown}" ng-click="activeTabType('uXMap',prompt)">{{'advanced_mode'| i18nString}}</div>
+                                    </div>
+                                    <markdown-editor no-focus="nofocus" callback="markdownCB2" ng-model="prompt.uxMap" ng-show="prompt.isMarkDown" markdownid="{{parentIndex}}markdown{{$index}}"></markdown-editor>
+                                    <div class="jsEditorDummyHeaderBlock" role="group" ng-show="!prompt.isMarkDown">{{'js_editor'| i18nString}}</div>
+                                    <div class="jseditorblock srJsEditorBlock" acify  id="jseditor" callback='jsEditorCallbacks' ng-model="prompt.jsEditorValue" ng-show="!prompt.isMarkDown"></div>
+                                    
+                                </div>
+                                <div class="col-xs-12 noPadding marginTop10">
+                                    <button type="button" class="btn btnSolidBlue" ng-click="saveMessage($index,parentIndex)" ng-disabled="(accessRight === 'VIEW') || (botState ==='published')">{{'save'| i18nString}}</button>
+                                    <button type="button" class="btn closeCancel" ng-click="prompt.isOpen = false">{{'cancel'| i18nString}}  </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </accordion-group>    
+            </accordion>
+        </div>
+        <div ng-show="loadingPrompts || loadingEntities" class="emptyResponsesContainer">
+            <div><i class="fa fa-circle-o-notch fa-spin-fast"></i>&nbsp;&nbsp;<span class="working-on">{{'loading_prompts'| i18nString}}</span>
+        </div>
+    </div>
+     
+    </div>
+<!-- Body Ends Here -->
+
+<!-- Footer Starts Here -->
+     
+<!-- Footer Ends Here -->
+
+   </div>
+</bot-modal-slider>

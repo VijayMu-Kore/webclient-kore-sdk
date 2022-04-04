@@ -1,0 +1,96 @@
+<div class="modal fade slashcommands" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="exitCommand()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h4 class="modal-title">{{!command.data._id? ('add_label'| i18nString) : ('modify'| i18nString) }}{{'bot_command'| i18nString}}</h4>
+            </div>
+            <form name="slashCommandsForm" class="wf-form overflow-hidden ">
+            <div class="modal-body modalPerfectScroll" perfect-scroll ng-if="enableCommands">
+                <div class="dispalyTableCell full-height">
+                    <slash-commands-form parent-form="slashCommandsForm" ctx="command.context" of="action" command="command.data"></slash-commands-form>
+            </div>
+            </div>
+                    <div class="modal-footer form-group" ng-if="enableCommands">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary"  ng-disabled="command.saving || command.deleting" ng-click="saveCommand(slashCommandsForm.$valid, slashCommandsForm)">
+                                {{command.saving? ('saving'| i18nString) : ('save'| i18nString)}}
+                            </button>
+                            <button type="button"
+                                    class="btn btn-danger textDangerBtn"  ng-show="command.data._id" ng-disabled="command.deleting || command.saving" ng-click="deleteCommand()">
+                                {{command.deleting? ('deleting_label'| i18nString) : 'delete'| i18nString}}
+                            </button>
+                            <button type="button" class="btn btn-default"  ng-disabled="command.saving || command.deleting" data-dismiss="modal" ng-click="exitCommand()">{{'close'| i18nString}}</button>
+                        </div>
+                    </div>
+            </form>                    
+        </div>
+    </div>
+</div>
+<div class="modal fade bot_type" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeBotChooser()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h3 class="modal-title">
+                    <b>{{'select_bot_type'| i18nString}}</b>
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="radio radioDiv">
+                        <label for="taskBot">
+                            <input type="radio" name="TaskBot" value="taskbot" ng-checked="true" ng-model="bottype" id="taskBot">
+                            <span  tooltip-placement="right" tooltip="  {{'tasks_perform_actions'| i18nString}}"><b>{{'task_bot'| i18nString}}</b></span>
+
+                        </label>
+                    </div>
+                    <div class="radio radioDiv">
+                        <label for="universalBot">
+                            <input type="radio" name="UniversalBot" value="universalbot" ng-model="bottype" id="universalBot">
+                            <span  tooltip-placement="right" tooltip="{{'bots_encompass_multiple'| i18nString}}"><b>{{'universal_bot'| i18nString}}</b></span>
+
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="initiateBotCreation(bottype)">{{'continue'| i18nString}}</button>
+                <button type="button" class="btn btn-default" ng-click="closeBotChooser()" data-dismiss="modal">{{'close'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade unlock-sol-bot" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeBotChooser()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h3 class="modal-title">
+                    {{'confirm_unlock_name'| i18nString}}
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="fontSize16 content-padding">
+                    <div>
+                        <p>{{'unlocking_task'| i18nString}}</p>
+
+                        <p>{{'once_unlocked_tasks_nolonger_upgrade'| i18nString}}</p>
+
+                        <p class="help-hint-link" ng-bind-html="'learn_more_link'| i18nString:({link:'https://developer.kore.ai/docs/bots/bot-builder/getting-started-bots/working-with-smart-bots/customizing-a-smart-bot/'})"></p>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="confirmUnlock()" ng-disabled="taskUnlocking">
+                    <span ng-show="!taskUnlocking">{{'confirm'| i18nString}}</span>
+                    <span ng-show="taskUnlocking">{{'unlocking'| i18nString}}</span>
+                </button>
+                <button type="button" class="btn closeCancel"  data-dismiss="modal">{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>

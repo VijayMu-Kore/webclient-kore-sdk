@@ -1,0 +1,6 @@
+<div>
+  <select  style="diplay:block;position:absolute;z-index:100000;" ui-select2="select2config" ng-model="currentValue" ng-change="keySelected(currentValue)">
+      <option value=''></option>
+      <option ng-repeat="key in data  | limitTo : 200 track by $index" value="{{key}}">{{key}}</option>
+  </select>
+</div>

@@ -1,0 +1,55 @@
+<div>
+  <bot-general-settings class='animationIfEnter'  ng-show="rightPanel.innerRightPanel.view == 'generalSettings'"
+  callback="gsCallback" stream-id="{{stream._id}}" display-mode="displayMode" edit-mode="edit"
+    on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></bot-general-settings>
+  <language-settings class='animationIfEnter' callback="lmmCallback" ng-if="rightPanel.innerRightPanel.view ==  'languageManagement' ">
+  </language-settings>
+  <bot-store-settings class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'botStoreSettings'"
+    callback="bssCallback" stream-id="{{stream._id}}" display-mode="displayMode" edit-mode="edit"
+    on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></bot-store-settings>
+  <bot-authorization class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'authorization'"
+    wf-type="{{wftype}}" btcallback="authorizationCallback" callbacks="callbacks.auth"
+    is-finish-setup-loading="isFinshSetupLoading" configure="finishSetup(type)" on-complete="onAuthFormResponse()">
+  </bot-authorization>
+  <bt-variable-management class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'variableManagement'"
+    btcallback="variableMngtCallback" context = "'global'"></bt-variable-management>
+  <bt-variable-management class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'variableManagementContent'" 
+    btcallback="variableMngtCallback" context = "'content'">
+  </bt-variable-management>
+  <bot-user-share class='animationIfEnter' callback="userShareCallback"
+    ng-if="rightPanel.innerRightPanel.view == 'developerShare'"></bot-user-share>
+  <bot-change-log class='animationIfEnter' callback="changeLogCallback"
+    ng-if="rightPanel.innerRightPanel.view == 'changeLogs'"></bot-change-log>
+  <bot-version class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'botVersion'" callback = "botDetailsCb" bot-version-cb="botVersionCb"></bot-version>
+  <manage-session class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'manageSessions'" callback="msCallback"></manage-session>
+  <bt-iip-masking class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'IIPMasking'"></bt-iip-masking>
+  <bt-import-bot class='animationIfEnter' callback="userImportCallback"
+    ng-if="rightPanel.innerRightPanel.view == 'importBot'" import-from="'existingBotImport'"></bt-import-bot>
+  <!-- <bot-advanced-settings ng-if="rightPanel.innerRightPanel.view == 'advancedSettings'" stream-id="{{stream._id}}" activeMenu="activeType" callback="asCallback"></bot-advanced-settings>   NOT USED SINCE ALL COMPONENTS MOVED TO GENERAL SETTINGS-->
+  <!-- <bt-ivr-settings ng-if="rightPanel.innerRightPanel.view == 'ivrSettings'" stream-id="{{stream._id}}" callback="asIVRCallback"></bt-ivr-settings> -->
+  <bt-export-bot class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'exportBot'"></bt-export-bot>
+  <smart-bot-settings ng-if="rightPanel.innerRightPanel.view == 'smartBotSettings'" stream-id="{{stream._id}}">
+  </smart-bot-settings>
+  <!-- <error-form ng-if="rightPanel.innerRightPanel.view == 'errorMessage'" ng-hide="newStreamData.type==='universalbot'" error-for="stream" error="stream.errorCodes"></error-form> -->
+  <bot-functions class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'botFunctions'"
+    callback="asCallback"></bot-functions>
+  <sample-bot-settings class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'sampleBotSettings'"
+    stream-id="{{stream._id}}"></sample-bot-settings>
+  <bt-custom-library class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'customLibrary'"
+    stream-id="{{stream._id}}" callback="customLibrary"></bt-custom-library>
+
+  <!-- <process-assignments class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view === 'processApp'">
+  </process-assignments> -->
+
+  <!-- try mode with solution bot -->
+  <div ng-if="rightPanel.innerRightPanel.view == 'tryMode'">
+    <try-mode-form callback="trymodecallback" try-update-in-progress="tryUpdateInProgress"
+      enable-try-mode="enableTryMode" account="account" trymodeid="solutionid"></try-mode-form>
+    <div class="buttonContainer">
+      <button type="button" class="btn btn-primary btn-sm" ng-click="trymodecallback.updateTryMode()"><i
+          ng-if="tryUpdateInProgress"
+          class="fa fa-spinner fa-spin"></i>{{tryUpdateInProgress ? ('saving'| i18nString) : ('save'| i18nString)}}</button>
+    </div>
+  </div>
+  <!-- End of try mode with solution bot -->
+</div>

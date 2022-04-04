@@ -1,0 +1,120 @@
+<div class="col-xs-12 please-wait text-center" ng-if="loading">
+    <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+    <span class='loading-text'> {{'loading'| i18nString}}</span>
+</div>
+
+<div class="postlogin">
+    <div class="postloginHeader">
+        <div class="postloginLogo">
+            <img ng-src="{{logoFull}}" alt="Kore">
+        </div>
+        <div class="postloginProfile">
+            <div class="kr-sg-dropdowns">
+                <div class="dropdown dropdown-open">
+                    <a class="dropdown-toggle dropdown-input profileIcon" data-toggle="dropdown"><img ng-src="{{userAvatar}}"></a>                                            
+                    <ul class="dropdown-menu content-menu">
+                      <li ng-click="closeFlow()"><a >Logout</a></li>
+                    </ul>
+                  </div>
+            </div>
+        </div>
+    </div>
+    <div class="postloginBody"  ng-if="availableAccounts && availableAccounts.length && !(pendingAccounts || requestAck)">
+        <div class="leftContent">
+            <h2 class="postloginTitle">{{'joint_accounts_desc' | i18nString}}</h2>
+            <p class="chooseAcc">{{'or_choose_account' | i18nString}}</p>
+            <div class="getStart">
+                <div class="start">{{'start_building_dialog' | i18nString}}</div>
+                <div class="getStartBtn">
+                    <button class="btn"  ng-click="createOwnAccount()" >{{'create_new' | i18nString}}</button>
+                </div>
+            </div>
+            <div>
+                <div class="accountName">{{'accounts_at' | i18nString}} <span class="">{{domain}}</span></div>
+                <div class="searchComponent">
+                    <input class="inputFiled" placeholder="Search accounts" ng-model="searchAccounts">
+                    <i class="btx-search"></i>
+                </div>
+                <div class="accountsListToJoin"  perfect-scroll dynamic-height dynaoffset="-440" height-property="height">
+                    <div class="accountContiner" ng-if="$index < showAccountsCount" ng-repeat="account in accountSearchResults = (availableAccounts | filter:{displayName:searchAccounts}) track by $index">
+                        <div class="accontAlpha" ng-style="{'background-color':account.color}">{{account.initials}}</div>
+                        <div class="accountDetails">
+                                <p class="accountName">{{account.displayName?account.displayName:account.accountName}} <i ng-if="!account.autoApprovingUserReqs" class="btx-lock-solid"></i></p>
+                                <!-- <p class="accountId">{{account.accountName}}</p> -->
+                        </div>
+                            <button ng-if="requestedAccounts[account._id] && !account.autoApprovingUserReqs" class="reqBtn" ng-init="initToolTipts()" data-container=".bt-account-setup-modal" title="{{'access_requested' | i18nString}}" data-toggle="popover" data-placement="top" data-content="{{'requested_acc_desc' | i18nString}}"><i class="btx-ok"></i>{{'requested' | i18nString}}</button>
+                            <button ng-if="requestedAccounts[account._id] && account.autoApprovingUserReqs" ng-click="updateAppControlList(account)" class="proBtn">{{'proceed' | i18nString}}</button>
+                            <button ng-if="!requestedAccounts[account._id] && requestingAccountJoining[account._id]" ng-click="requestJoinAccount(account)" class="reqInBtn">
+                                  {{((account.autoApprovingUserReqs)?'joining':'requesting') |  i18nString}}
+                                 <i class="fa fa-circle-o-notch fa-spin-fast auto-login-spinner"></i>
+                                </button>
+                            <button ng-if="!requestedAccounts[account._id] && !requestingAccountJoining[account._id] && account.autoApprovingUserReqs" ng-click="requestJoinAccount(account)" class="joinBtn">{{'join' | i18nString}}</button>
+                            <button ng-if="!requestedAccounts[account._id] && !requestingAccountJoining[account._id] && !account.autoApprovingUserReqs" ng-click="requestJoinAccount(account)" class="raBtn">{{'request_access' | i18nString}}</button>
+                            <!-- <div class="kr-sg-checkbox">
+                                <input id="accountchoice{{$index}}" class="checkbox-custom" type="checkbox" ng-model="account.selected">
+                                <label for="accountchoice{{$index}}" class="checkbox-custom-label"></label>
+                            </div>  -->
+                     </div>
+                     <div ng-if="availableAccounts.length && !accountSearchResults.length" class="noSearchResults">{{'no_search_data_available_label' | i18nString}}</div>
+                </div>
+                <div class="viewMore" ng-if="(availableAccounts.length > accountlimit) && (availableAccounts.length !== showAccountsCount)" ng-click="showMore()">
+                    {{'view' | i18nString}} {{availableAccounts.length - accountlimit}} {{'more_accounts' | i18nString}} <i class="btx-carrot-down"></i>
+                </div>
+                <!-- <button class="btn requestToJoin" ng-disabled="_.filter(availableAccounts,{selected:true}).length<1"  ng-click="requestJoinAccount()">{{'request_to_join' | i18nString}}</button> -->
+            </div>
+        </div>
+        <div class="rightImg">
+            <div class="imageContainer"></div>
+        </div>
+    </div>
+    <div class="pendingAccountsBody" ng-if="pendingAccounts || requestAck" >
+        <div class="pendingAccounts">
+            <div class="emptystate">
+                <div class="emptyStatePlaceholder"><img ng-src="{{pendingAccount}}" class="emptyStateimg"></div>
+                <p class="emptyText">{{'administrators'| i18nString}} </p>
+                <div class="meanWhile"><span>{{'meanwhile' | i18nString}}</span></div>
+            </div>
+            <div class="getStart">
+                <div class="start">{{'start_building_dialog' | i18nString}}</div>
+                <div class="getStartBtn">
+                    <button class="btn" ng-click="createOwnAccount()">{{'get_started_free' | i18nString}}</button>
+                </div>
+            </div>
+            <p class="learning">{{'learning_resource' | i18nString}}</p>
+            <div class="relatedSites">
+                <div class="sitesLink" ng-click="openLinks('community',$event)">
+                    <div class="siteIcon">
+                        <img class="iconSite" ng-src="{{community}}">
+                    </div>
+                    <div class="detailsDec" >
+                        <p class="dName">{{'community' | i18nString}}</p>
+                        <p class="dDesc">{{'explore_community' | i18nString}}</p>
+                    </div>
+                </div>
+                <div class="sitesLink" ng-click="openLinks('documents',$event)">
+                    <div class="siteIcon">
+                        <img class="iconSite" ng-src="{{documents}}">
+                    </div>
+                    <div class="detailsDec">
+                        <p class="dName">{{'documentation' | i18nString}}</p>
+                        <p class="dDesc">{{'explore_community' | i18nString}}</p>
+                    </div>
+                </div>
+                <div class="sitesLink no-m-r" ng-click="openLinks('koreAcademy',$event)">
+                    <div class="siteIcon">
+                        <img class="iconSite" ng-src="{{organization}}">
+                    </div>
+                    <div class="detailsDec">
+                        <p class="dName">{{'kore_academy' | i18nString}}</p>
+                        <p class="dDesc">{{'explore_kore_academy' | i18nString}}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="btns-footer">
+                    <button  ng-click="createOwnAccount()" type="button" class="btn createBTN m-0">{{'create_own_account'| i18nString}}</button>
+                    <button ng-click="closeFlow()" type="button" class="btn closeCancel">{{'close'| i18nString}}</button>
+            </div>     -->
+        
+        </div>
+    </div>
+</div>

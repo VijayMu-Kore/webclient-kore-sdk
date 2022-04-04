@@ -1,0 +1,1604 @@
+<div>
+    <div class="instanceControl">{{'component_properties'| i18nString}}<span class="positionFixed"><i class=" top0Imp componentProperties" aria-hidden="true"></i></span></div>
+    <div ng-if="nodeInfo.dialogNodeInstance.type === 'botAction' || nodeInfo.dialogNodeInstance.type.toLowerCase() === 'entity' || nodeInfo.dialogNodeInstance.type.toLowerCase() === 'form' || nodeInfo.dialogNodeInstance.type.toLowerCase() === 'logic' || nodeInfo.dialogNodeInstance.type.toLowerCase() === 'process'" class="entityDivContainer machineLearningLevel freeze">
+        <p class="entityHeaderText ">{{_constants_.getNewMessage(_constants_.propertyPanel.configText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        <div class="entityHeaderTextDiv displayTable">
+            <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+            <p class="headerTip">{{_constants_.getNewMessage(_constants_.propertyPanel.configTextTip, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        </div>
+        <div class="connectionRules"><span class="tabLabel">{{_constants_.propertyPanel.generalSettings}} </span>
+            <i class="entityGeneralSettings" aria-hidden="true"></i>
+            <i ng-if='nodeInfo.nodeInfo.entityType === "regex" && !nodeInfo.nodeInfo.regexPattern' class="fa fa-exclamation-circle notify-icon error-color"
+               title="No Regular expression provided"></i>
+        </div>
+        <div class="generalInfoEdit">
+
+            <!-- <span class="label col-xs-2 name">{{_constants_.propertyPanel.name}}</span>
+            <div class="col-xs-10 inputDiv">
+                <input maxlength="256" class="form-control entity nameInput node-name" type="text" ng-model="nodeName"
+                    placeholder="{{'enter_name'| i18nString}}" ng-keyup="onInputKeyup($event)" ng-keydown="saveEntityName($event)"
+                    ng-blur="saveEntityName($event)">
+            </div> -->    
+            <span ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'form'" class="label col-xs-2 name">{{_constants_.propertyPanel.uiForm}}</span>
+            <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'form'" class="col-xs-10 inputDiv">
+                <input maxlength="256" class="form-control entity nameInput node-name"
+                       type="text" ng-model="uiFormName" readonly>
+                       
+            </div>
+            
+            <span class="label col-xs-2 name">{{_constants_.propertyPanel.name}}</span>
+            <div class="col-xs-10 inputDiv">
+                <input maxlength="256" class="form-control entity nameInput node-name"
+                       type="text" ng-model="nodeName" placeholder="{{'enter_name'| i18nString}}" ng-keyup="onInputKeyup($event)" ng-keydown="saveEntityName($event)"
+                       ng-blur="saveEntityName($event)">
+            </div>
+
+            <span class="label col-xs-2 name">{{_constants_.propertyPanel.displayName}}</span>
+            <div class="col-xs-10 inputDiv">
+                <input maxlength="256" class="form-control entity nameInput node-label"
+                       type="text" ng-model="nodeLabel" 
+                       ng-keyup="onInputKeyup($event, 'label')" 
+                       ng-keydown="saveEntityName($event, 'label')"
+                       ng-blur="saveEntityName($event, 'label')">
+            </div>
+
+            <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'process'">
+                <span class="label col-xs-2 type">{{_constants_.propertyPanel.type}}</span>
+                <div class="col-xs-10 selectDiv">
+                   <div class="kr-sg-dropdowns">                                        
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{nodeInfo.nodeInfo.processType? typeList[nodeInfo.nodeInfo.processType]:'Choose an option'}}</button>                                            
+                                    <ul class="dropdown-menu content-menu">
+                                      <!-- <li ng-show="!processAppList.length" class="emptyState"><a href="#">{{'no_process_created' | i18nString}}</a></li> -->
+                                      <li ng-repeat="item in processTypeList" ng-click="setProcessType(item.type)"><a href="#">{{item.name}}</a></li>                                       
+                                    </ul>
+                                  </div>
+                    </div>
+                </div>
+                <span class="label col-xs-2 name" ng-show="nodeInfo.nodeInfo.processType === 'trigger'">{{'process_app' | i18nString}}</span>
+                <div class="col-xs-10 selectDiv" ng-show="nodeInfo.nodeInfo.processType === 'trigger'">
+                   <div class="kr-sg-dropdowns">                                        
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{process.selectedProcess?process.selectedProcess.name:'Choose an option'}}</button>                                            
+                                    <ul class="dropdown-menu content-menu">
+                                      <li ng-show="!processAppList.length" class="emptyState"><a href="#">{{'no_process_created' | i18nString}}</a></li>
+                                      <li ng-repeat="process in processAppList" ng-show="processAppList.length" ng-click="setProcessApp(process)"><a href="#">{{process.name}}</a></li>                     
+                                    </ul>
+                                  </div>
+                    </div>
+                </div>
+            </div>
+
+            <span ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'entity'" class="label col-xs-2 type">{{_constants_.propertyPanel.type}}</span>
+            <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'entity'" class="col-xs-10 inputDiv">
+                <select class="form-control selectType" ng-model="nodeInfo.nodeInfo.entityType" ng-change="changeEntityType($event)" ng-disabled="entitySelectionInProgress"
+                        >
+                    <option ng-repeat="nodeTypeObj in _constants_.entityNlp| filter:{isDepricated:false}" value="{{nodeTypeObj.value}}">{{nodeTypeObj.title}}</option>
+                </select>
+            </div>
+            <div ng-if = "selectcityAdv">
+                <span class="label col-xs-2 type">{{_constants_.propertyPanel.continent}}</span>
+                <div class=" col-xs-10 dropdown inputDiv1">
+                    <div class="dropdown-toggle form-control form-control1" type="button" data-toggle="dropdown">{{continentSelected}}
+                        <span class="caret caret1"></span></div>
+                    <ul class="dropdown-menu dropcityad">
+                        <li ng-click="$event.preventDefault()" class="dropSearchInput" ng-show="true">
+                            <input type="text"  placeholder="{{'search'| i18nString}}" ng-click="$event.preventDefault()" ng-model="continentNameFilter"><i class="fa fa-search"></i></li>
+                        <div class="tasksList tasklist1" perfect-scroll>
+                            <div class="listadv" ng-repeat="obj1 in continentsAll" style="background-color: #f2f3f5;">
+                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                    <input ng-click="continentAll(obj1, $event)" class="styled ng-pristine ng-valid" type="checkbox" id="{{obj1.id}}" ng-model = "obj1.checked">
+                                    <label for="{{obj1.id}}" style="width:100%"><div class="checkBoxmargin7 advValue">{{obj1.name}}</div></label>
+                                </div>
+                            </div>
+                            <div class="listadv" ng-repeat="continentobj in continentsList| filter:continentNameFilter">
+                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                    <input ng-click="selectContinent(continentobj, $event)" class="styled ng-pristine ng-valid" type="checkbox" id="{{continentobj.id}}" ng-model = "continentobj.checked">
+                                    <label for="{{continentobj.id}}" style="width:100%"><div class="checkBoxmargin7 advValue">{{continentobj.name}}</div></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropselect">
+                            <p class="selectOk" ng-click="contOk()" ng-disabled="contOkDisable">{{'ok'| i18nString}}</p>
+                            <p class="selectCancel" ng-click="continentCancel()">{{'cancel'| i18nString}}</p>
+                        </div>
+                    </ul>
+                </div>
+
+                <span class="label col-xs-2 type">{{_constants_.propertyPanel.country}}</span>
+                <div class=" col-xs-10 dropdown inputDiv1">
+                    <div class="dropdown-toggle form-control form-control1" type="button" data-toggle="dropdown">{{countrySelected}}
+                        <span class="caret caret1"></span></div>
+                    <ul class="dropdown-menu dropcityad">
+                        <li ng-click="$event.preventDefault()" class="dropSearchInput" ng-show="countriesLists.length > 6">
+                            <input type="text"  placeholder="{{'search'| i18nString}}" ng-click="$event.preventDefault()" ng-model="countryNameFilter"><i class="fa fa-search"></i></li>
+                        <div class="tasksList tasklist1" perfect-scroll>
+                            <div class="listadv" ng-repeat="obj2 in countriesAll" style="background-color: #f2f3f5;">
+                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                    <input ng-change="countryAll(obj2, $event)" class="styled ng-pristine ng-valid" type="checkbox" id="{{obj2.id}}" ng-model="obj2.checked">
+                                    <label for="{{obj2.id}}" style="width:100%"><div class="checkBoxmargin7 advValue">{{obj2.name}}</div></label>
+                                </div>
+                            </div>
+                            <div class="listadv" ng-repeat="countryObj in countriesLists| filter:countryNameFilter">
+                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                    <input ng-change="selectCountry(countryObj, $event)" class="styled ng-pristine ng-valid" type="checkbox" id="{{countryObj.id}}" ng-model="countryObj.checked">
+                                    <label for="{{countryObj.id}}" style="width:100%"><div class="checkBoxmargin7 advValue">{{countryObj.name}}</div></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropselect">
+                            <p class="selectOk" ng-click="countryOk()">{{'ok'| i18nString}}</p>
+                            <p class="selectCancel" ng-click="countryCancel()">{{'cancel'| i18nString}}</p>
+                        </div>
+                    </ul>
+                </div>
+
+                <span class="label col-xs-2 type">{{_constants_.propertyPanel.state}}</span>
+                <div class=" col-xs-10 dropdown inputDiv1">
+                    <div class="dropdown-toggle form-control form-control1" type="button" data-toggle="dropdown" ng-style="statesdisabled">{{stateSelected}}
+                        <span class="caret caret1"></span></div>
+                    <ul class="dropdown-menu dropcityad">
+                        <li ng-click="$event.preventDefault()" class="dropSearchInput" ng-show="statesLists.length > 6">
+                            <input type="text"  placeholder="{{'search'| i18nString}}" ng-click="$event.preventDefault()" ng-model="stateNameFilter"><i class="fa fa-search"></i></li>
+                        <div class="tasksList tasklist1" perfect-scroll>
+                            <div class="listadv" ng-repeat="obj3 in statesAll" style="background-color: #f2f3f5;">
+                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                    <input ng-change="stateAll(obj3, $event)" class="styled ng-pristine ng-valid" type="checkbox" id="{{obj3.id}}" ng-model="obj3.checked">
+                                    <label for="{{obj3.id}}" style="width:100%"><div class="checkBoxmargin7 advValue">{{obj3.name}}</div></label>
+                                </div>
+                            </div>
+                            <div class="listadv" ng-repeat="stateObj in statesLists| filter:stateNameFilter">
+                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                    <input ng-change="selectState(stateObj, $event)" class="styled ng-pristine ng-valid" type="checkbox" id="{{stateObj.id}}" ng-model="stateObj.checked">
+                                    <label for="{{stateObj.id}}" style="width:100%"><div class="checkBoxmargin7 advValue">{{stateObj.name}}</div></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropselect">
+                            <p class="selectOk" ng-click="stateOk()">{{'ok'| i18nString}}</p>
+                            <p class="selectCancel" ng-click="stateCancel()">{{'cancel'| i18nString}}</p>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+            <div class="entityHeaderTextDiv displayTable noPadding" ng-if="nodeInfo.nodeInfo.entityType == 'composite'">
+                <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                <p class="headerTip" ng-bind-html="'add_patterns_traits'| i18nString:({link:'https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/working-with-composite-entities/'})"></p>
+            </div>
+
+            <!-- Quantity type related ui -->
+
+            <span class="label col-xs-2 type" ng-if="nodeInfo.nodeInfo.entityType === 'quantityv2' && showQuantityType">{{_constants_.propertyPanel.unitType}}</span>
+            <div class="col-xs-10 inputDiv" ng-if="nodeInfo.nodeInfo.entityType === 'quantityv2' && showQuantityType">
+                <select  class="form-control selectType" ng-model="nodeInfo.nodeInfo.unitType"
+                         style="margin-right: 6px; width: 60%;" ng-change="chooseUnitType(true)">
+                    <option value="">{{'select_quantity_type'| i18nString}}</option>
+                    <option ng-repeat="quantityType in _constants_.quantityTypes" value="{{quantityType.key}}">{{capitalizeFirstLetter(quantityType.key)}}</option>
+                </select>
+            </div>
+            <span ng-if="nodeInfo.nodeInfo.unitType && nodeInfo.nodeInfo.entityType === 'quantityv2' && showQuantityType" class="label col-xs-2 type">{{_constants_.propertyPanel.defaultUnit}}</span>
+            <div class="col-xs-10 inputDiv" ng-if="nodeInfo.nodeInfo.unitType && nodeInfo.nodeInfo.entityType === 'quantityv2' && showQuantityType">
+                <select  class="form-control selectType"
+                         ng-change="saveEntityNodeType()" ng-model="nodeInfo.nodeInfo.defaultUnit" style="margin-right: 6px; width: 60%;">
+                    <option ng-repeat="(key, value) in selectedUnitType.values" value="{{value}}">{{capitalizeFirstLetter(key)}}</option>
+                </select>
+            </div>
+
+            <i class="fa fa-cog pointer-hand removeDrpOptions loIOptions settingsIcon" ng-if="nodeInfo.nodeInfo.entityType === 'list_of_values' || nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'"
+               ng-click="$parent.staticDropDownTypeChange(true)" data-toggle="modal" data-target="#List_of_values"></i>
+
+            <div class="entityHeaderTextDiv displayTable noPadding" ng-if="nodeInfo.nodeInfo.entityType === 'list_of_values' || nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'">
+                <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                <p class="headerTip">{{_constants_.propertyPanel.entityTypeTip}}</p>
+            </div>
+            <div ng-if='nodeInfo.nodeInfo.entityType === "regex"'>
+                <span class="label col-xs-2 name">{{'regex'| i18nString}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input class="form-control entity nameInput" type="text"
+                           ng-model="nodeInfo.nodeInfo.regexPattern" placeholder="{{'provide_regx'| i18nString}}" ng-keyup="onRegExInputKeyup($event)"
+                           ng-keydown="saveEntityRegEx($event)" ng-blur="saveEntityRegEx($event)">
+                </div>
+            </div>
+        </div>
+        <div class="paddingRightLeft15 multiItemSwitch" ng-if="isArrayAllowed && nodeInfo.dialogNodeInstance.type.toLowerCase() === 'entity' && !(nodeInfo.nodeInfo.entityType === 'json_object')">
+            <span class="instancePropToggleLabel">{{_constants_.propertyPanel.isArray}}</span>
+            <toggle-switch ng-model="nodeInfo.nodeInfo.isArray" ng-change="onArrayToggleChange(nodeInfo.nodeInfo.isArray)"></toggle-switch>
+            <i class="isArrayToggle"></i>
+            <p class="node-connDiv instanceProperty noPadding">{{_constants_.propertyPanel.arrayDefaultDataText}}</p>
+        </div>
+        <div class="row paddingRightLeft15" ng-show="nodeInfo.nodeInfo.entityType === 'number' && isPiiEnabled">
+            <div class="hintDiv">
+                <span class="icon"><img class="layer" ng-src='{{bulbIcon}}'></span>
+                <span class="description fontSize12">{{'pii_settings_desc'| i18nString}}</span>
+            </div>
+        </div>
+        <div class="arraySizeBlk paddingRightLeft15" ng-if="false && nodeInfo.nodeInfo.isArray">
+            <span class="instancePropToggleLabel">{{_constants_.propertyPanel.arraySize}}</span>
+            <input class="arrayInput" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.arraySize" type="number" min="1" max="20" pattern="[^0-9]"
+                   ng-keyup="onArraySizeChange($event)" ng-change="onArraySizeChange($event)" />
+            <i class="isArraySizeToggle"></i>
+        </div>
+
+        <div class="context-vars" ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'logic'">
+            <div class="connectionRules userPrompt"><span class="tabLabel">Manage Context Variables <i class="messageLevel" aria-hidden="true"></i></span></div> 
+            <div ng-repeat="item in contextVariablesArray track by $index">
+            <!-- <div ng-repeat="(key, value) in contextVariables track by $index"> -->
+                        <div class="row paddingBottom10">
+
+                            <div class="col-xs-5 " >
+                                 <input type="text" context-typeahead class="form-control" placeholder="{{'enter_key_name'| i18nString}}" name="messagekey{{$index}}" ng-class="{'invalid-custom':customForm.message.messagekey{{$index}}.$viewValue === ''}" ng-model="item.key" ng-blur="focusOnMessage('.messageLevel', item, false, 'edit')" ng-keydown="editMessage($event,'.messageLevel', item, false, 'edit')">
+                            </div>
+                            <div class="col-xs-5 noPadding">
+                                 <input type="text" context-typeahead class="form-control" placeholder=" {{'Vprop_value_placehol'| i18nString}}" name="messagevalue{{$index}}" ng-class="{'invalid-custom':customForm.message.messagevalue{{$index}}.$viewValue === ''}" ng-model="item.value" ng-blur="focusOnMessage('.messageLevel', item, false, 'edit')" ng-keydown="editMessage($event,'.messageLevel', item, false, 'edit' )"> 
+                            </div>
+                            <div class="col-xs-2">
+                            <span ng-class="['deletePrompt deletePromptIcon' + $index]">
+                                <i style="cursor: pointer;" ng-src="{{trashIcon}}" ng-click="deleteMessage($index,'.messageLevel')" class="btx-delete-1 trashIcon"></i>
+                            </span>
+                        </div>
+                        </div>
+                    </div> 
+                    <div class="row paddingBottom10">
+                            <div class="col-xs-5 ">
+                                <input type="text" context-typeahead name="messagekey" placeholder=" {{'enter_key_name'| i18nString}}"  class="form-control" id="messagekey" ng-model="initialMessageCustomTag.key" ng-blur="focusOnMessage('.messageLevel', item, false)" ng-keydown="editMessage($event,'.messageLevel', initialMessageCustomTag, true)" ng-required="true"> 
+                            </div>
+                            <div class="col-xs-5 noPadding">
+                                <input type="text" context-typeahead name="messagevalue" placeholder=" {{'Vprop_value_placehol'| i18nString}}" class="form-control" id="messagevalue" ng-model="initialMessageCustomTag.value" ng-blur="focusOnMessage('.messageLevel', item, false)" ng-keydown="editMessage($event,'.messageLevel', initialMessageCustomTag, true)" ng-required="true">
+                            </div>
+                    </div>
+        </div>
+        <!-- User prompts start here  -->
+        <div ng-hide="nodeInfo.nodeInfo.type === 'process'" ng-if="nodeInfo.nodeInfo.entityType !== 'dateperiod' && nodeInfo.dialogNodeInstance.type.toLowerCase() !== 'logic' && (nodeInfo.dialogNodeInstance.type !== 'botAction')" class="promptsDiv">
+            <div class="connectionRules userPrompt"><span class="tabLabel">{{(nodeInfo.dialogNodeInstance.type.toLowerCase() === 'form')?_constants_.propertyPanel.userMessage:_constants_.propertyPanel.userPrompt}}</span>
+                <span class="error-promt-setting-icon" ng-if="runBot.fromDialogTask" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="setting-icon" ng-src="{{assetsBase}}images/left-menu-img/settings-gray.svg">
+                </span>
+                <div class="dropdown-menu error-promt-setting" aria-labelledby="dropdownMenuButton" ng-click="$event.stopPropagation();">
+                    <div class="header">
+                        <span class="title">
+                            {{'override_for_this_instance' | i18nString}}
+                        </span>
+                        <label class="kr-sg-toggle">
+                            <input type="checkbox" ng-model="userInstancePromptOptions.override" ng-change="changePromptType('userPrompt')">
+                            <div class="slider"></div>
+                        </label>
+                    </div>
+                    <div class="desc">
+                        {{'override_user_prompt_desc' | i18nString}}
+                    </div>
+                </div>
+            </div>
+            <div class="userPromptsWelcomeDesc"> {{'user_prompt_desc'| i18nString}}</div>
+            <div ng-show="!userInstancePromptOptions.override">
+                <div ng-repeat="prompt in userPromptsCopy track by $index" class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                <div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showPromptSaveTip($index)" ng-blur="showPromptSaveTip($index)"
+                                      ng-keydown="auto_grow_prompts($event, $index)" typutteranceDataBoxe="text" ng-model="prompt.text"
+                                      auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                            <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="editPrompt(nodeInfo.nodeInfo.message, true, $index)"
+                                      ng-keydown="auto_grow_prompts($event, $index)" type="text">{{'js_msg'| i18nString}}</textarea>
+                            <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['promptSaveSpin' + $index]" aria-hidden="true"></i></span>
+                            <span ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deleteEditPrompts($index, 'prompt message')" class="fa btx-delete-1 trashIcon" ng-class="{'disabled':nodeInfo.nodeInfo.message.length === 1}"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip" ng-class="['promptSaveTip' + $index]">{{'press_save'| i18nString}}</p>
+                </div>
+                <div class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa fa-caret-left leftArrow"></i></div>
+                            </span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder="{{'add_plain_text'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                      ng-blur="showUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_prompts($event, - 1)"
+                                      type="text" ng-model="newPrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                            <span class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+                </div>
+                <div  class="If-more-than-one-pro">{{'prompt_msg'| i18nString}}</div>
+                <span class="edit-prompts pointerEventsImp" ng-click="editPrompt(nodeInfo.nodeInfo.message, true)">{{nodeInfo.displayMode!=='edit'?'VIEW PROMPTS':_constants_.propertyPanel.managePropmts}}</span>
+                <div class="col-xs-12 displayListOfValues noPadding" ng-if="showDisplayListOfvaluesOptions()">
+                    <div class="col-xs-12 labelling">
+                        <label class="label">{{'display_list'| i18nString}}</label> <span class=""><i class="listOfvaluesUserChoice" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="radioDiv">
+                        <div class="radioInnerDiv">
+                            <label for="yes">
+                                <input ng-value='true' ng-disabled="nodeInfo.displayMode !== 'edit'" type="radio"  ng-change="saveListOfValuesOptionsChoice()" ng-model="listOfValuesOptions.display" name="yes" id="yes"><span class="opt-title"><span class="innerText limitWidth">{{_constants_.propertyPanel.displayListOfvalues}}</span></span> </input>
+                            </label>
+                        </div>
+                        <div class="radioInnerDiv">
+                            <label for="no">
+                                <input ng-value='false' ng-disabled="nodeInfo.displayMode !== 'edit'" type="radio"  ng-change="saveListOfValuesOptionsChoice()" ng-model="listOfValuesOptions.display" name="no" id="no"><span class="opt-title"><span class="innerText limitWidth">{{_constants_.propertyPanel.dontDisplayListOfvalues}}</span></span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="userInstancePromptOptions.override && runBot.fromDialogTask">
+                <div clas="user-instancePrompt">
+                    <div>
+                        <div ng-repeat="prompt in userInstancePromptsCopy track by $index" class="editSynonymDiv">
+                            <div class="promptMessageDiv">
+                                <span class="ovalSpan">
+                                    <span ng-if="prompt.channel === 'default'" class="Oval-15" tooltip-placement="right" tooltip=" {{'all_channels'| i18nString}}" ><span class="channelText"> {{'All'| i18nString}}</span></span>
+                                    <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{_constants_.iconsTooltips[prompt.channel]}}"><img class="img fa fa-{{prompt.channel}}" src="{{entityInstancePropertyCB.icons[prompt.channel]}}" aria-hidden="true" /></span>
+                                    <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"  tooltip-placement="right" tooltip="{{_constants_.iconsTooltips[prompt.channel]}}"><img class="img fa fa-{{prompt.channel}}" src="{{entityInstancePropertyCB.icons[prompt.channel]}}" aria-hidden="true"/></span>
+                                    <span ng-if="prompt.channel === 'googleactions'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/google-home.svg"><div class="property-panelIconTitle"> {{'Google_asstnt'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>                        
+                                    <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"  tooltip-placement="right" tooltip="{{_constants_.iconsTooltips['Workplace For Groups']}}"><img class="img fa fa-{{prompt.channel}}" src="{{entityInstancePropertyCB.icons[prompt.channel]}}" aria-hidden="true"/><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                                </span>
+                                <div class="promptDataBoxDiv">
+                                    <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showPromptSaveTip($index)" ng-blur="showPromptSaveTip($index)"
+                                              ng-keydown="auto_grow_instance_prompts($event, $index)" typutteranceDataBoxe="text" ng-model="prompt.text"
+                                              auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                                    <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="entityInstancePropertyCB.editPrompt(nodeInfo.dialogNodeInstance.nodeOptions.message, $index)"
+                                              ng-keydown="auto_grow_instance_prompts($event, $index)" type="text"> {{'js_msg'| i18nString}}</textarea>
+                                    <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['promptSaveSpin' + $index]" aria-hidden="true"></i></span>
+                                    <!-- <span ng-class="['deletePrompt deletePromptIcon' + $index]">
+                                        <i ng-click="deleteEditInstancePrompts($index)" class="fa fa-trash-o displayBlock" ng-class="{'disabled':nodeInfo.dialogNodeInstance.nodeOptions.message.length === 1}"></i>
+                                    </span> -->
+
+                                    <span ng-class="['deletePrompt deletePromptIcon' + $index]">
+                                        <img ng-src="{{trashIcon}}" ng-click="deleteEditInstancePrompts($index)" ng-class="{'disabled':userInstancePromptsCopy.length === 1}" class="fa fa-trash-o trashIcon">
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="utteranceSaveTip" ng-class="['promptSaveTip' + $index]"> {{'press_save'| i18nString}}</p>
+                        </div>
+                        <div class="editSynonymDiv">
+                            <div class="promptMessageDiv">
+                                <span class="ovalSpan">
+                                    <span class="Oval-15" tooltip-placement="right" tooltip=" {{'all_channels'| i18nString}}" ><span class="channelText"> {{'All'| i18nString}}</span></span>
+                                </span>
+                                <div class="promptDataBoxDiv">
+                                    <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder=" {{'add_plain_text'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                              ng-blur="showUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_instance_prompts($event, - 1)"
+                                              type="text" ng-model="newInstancePrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                                    <span class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                            <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip"> {{'press_save'| i18nString}}</p>
+                        </div>
+                        <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div>
+                        <span class="edit-prompts pointerEventsImp" ng-click="entityInstancePropertyCB.editPrompt(nodeInfo.dialogNodeInstance.nodeOptions.message, - 1)">{{nodeInfo.displayMode!=='edit'?'VIEW PROMPTS':_constants_.propertyPanel.managePropmts}}</span>
+                    </div>
+                    <div class="col-xs-12 displayListOfValues noPadding" ng-if="showDisplayListOfvaluesInstanceOptions()">
+                        <div class="col-xs-12 marginBottom10">
+                            <span class="displayListOfValuesLabel"> {{'display_list'| i18nString}}</span> 
+                            <span class=""><i class="listOfvaluesUserChoice" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="radioDiv">
+                            <div class="radioInnerDiv">
+                                <label for="overrideUserPromptListofValuesYes">
+                                    <input ng-value='true' ng-disabled="nodeInfo.displayMode !== 'edit'" type="radio"  ng-change="saveListOfValuesInstanceOptionsChoice()" ng-model="overrideListOfValuesOptions.display" name="overrideUserPromptListofValuesYes" id="overrideUserPromptListofValuesYes"><span class="opt-title"><span class="innerText limitWidth">{{_constants_.propertyPanel.displayListOfvalues}}</span></span> </input>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="overrideUserPromptListofValuesNo">
+                                    <input ng-value='false' ng-disabled="nodeInfo.displayMode !== 'edit'" type="radio"  ng-change="saveListOfValuesInstanceOptionsChoice()" ng-model="overrideListOfValuesOptions.display" name="overrideUserPromptListofValuesNO" id="overrideUserPromptListofValuesNo"><span class="opt-title"><span class="innerText limitWidth">{{_constants_.propertyPanel.dontDisplayListOfvalues}}</span></span> </input>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="connectionRules userPrompt">
+                <span class="tabLabel">{{(nodeInfo.dialogNodeInstance.type.toLowerCase() === 'form')?_constants_.propertyPanel.errorMessage:_constants_.propertyPanel.errorPromts}}</span>                              
+                <span class="error-promt-setting-icon" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="setting-icon" ng-src="{{assetsBase}}images/left-menu-img/settings-gray.svg">
+                </span>
+                <div class="dropdown-menu error-promt-setting" aria-labelledby="dropdownMenuButton" ng-click="$event.stopPropagation();">
+                    <div class='dropDownElements'>
+                       <div ng-if="runBot.fromDialogTask" class="dropdownElementDiv marginBottom10-imp">
+                            <div class="header">
+                                <span class="title">
+                                    {{'override_for_this_instance' | i18nString}}
+                                </span>
+                                <label class="kr-sg-toggle">
+                                    <input type="checkbox" ng-model="errorInstancePromptOptions.override" ng-change="changePromptType('errorPrompt')">
+                                    <div class="slider"></div>
+                                </label>
+                            </div>
+                            <div class="desc">
+                                {{'override_error_prompt_desc' | i18nString}}
+                            </div>
+                       </div>
+                       <div class="dropdownElementDiv">
+                        <div class="header">
+                            <span class="title">
+                                {{'order_of_retries_title' | i18nString}}
+                            </span>
+                            <label class="kr-sg-toggle" for="errorPromptSequencing" ng-if="!errorInstancePromptOptions.override">
+                                <input type="checkbox" id="errorPromptSequencing" ng-change="reOrderChange()" ng-model="errorPromptObj.errorPromptSequencing">
+                                <div class="slider"></div>
+                            </label>
+                            <label class="kr-sg-toggle" for="errorInstancePromptSequencing" ng-if="errorInstancePromptOptions.override"  ng-class='{"screenFreeze":!userErrorInstancePromptsCopy.length}'>
+                                <input type="checkbox" id="errorInstancePromptSequencing" ng-change="reOrderInstanceChange()" ng-model="errorInstancePromptObj.errorPromptSequencing">
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <div class="desc">
+                            {{errorPromptObj.errorPromptSequencing ? ('order_of_retries_info_enable' | i18nString): ('order_of_retries_info_disable' | i18nString)}}
+                            <a class="knowmore" href="https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/working-with-the-entity-node/#Configure_the_Component_Properties" target="_blank">
+                                <img  src="{{assetsBase}}icons/helpIcon.svg"  alt="help">
+                            </a>
+                        </div>
+                       </div>
+                    </div>
+                </div>                 
+            </div>
+            <div class="userPromptsWelcomeDesc"> {{'error_prompt_desc'| i18nString}}</div>
+            <div ui-sortable="sortableOptionsErrorPromt" ng-model="userErrorPromptsCopy" ng-show="!errorInstancePromptOptions.override || !runBot.fromDialogTask">
+                <div ng-repeat="prompt in userErrorPromptsCopy track by $index" class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="sortBar ui-sortable-handle" ng-if="errorPromptObj.errorPromptSequencing">
+                            <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                        </span>
+                        <span class="ovalSpan">
+                            <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+
+                            <span ng-if="prompt.channel === 'hangoutchat'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/hangoutchat.png"><div class="property-panelIconTitle">{{'hangouts'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                <div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showErrorPromptSaveTip($index)" ng-blur="showErrorPromptSaveTip($index)"
+                                      ng-keydown="auto_grow_error_prompts($event, $index)" typutteranceDataBoxe="text" ng-model="prompt.text" auto-grow-textarea default-grown="true"
+                                      context-typeahead></textarea>
+                            <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="editError(nodeInfo.nodeInfo.errorMessage, $index)"
+                                      ng-keydown="auto_grow_error_prompts($event, $index)" type="text">{{'js_msg'| i18nString}}</textarea>
+                            <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['errorPromptSaveSpin' + $index]" aria-hidden="true"></i></span>
+                            <span ng-class="['deletePrompt deleteErrorPromptIcon' + $index]"><i ng-click="deleteEditErrorPrompts($index, 'error prompt message')" class="trashIcon btx-delete-1" ng-class="{'disabled':userErrorPromptsCopy.length === 1}"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip" ng-if="prompt.type !== 'uxmap'" ng-class="['errorPromptSaveTip' + $index]">{{'press_save'| i18nString}}</p>
+                </div>
+                <div class="editSynonymDiv" ng-class="{'errorPromtReorder': errorPromptObj.errorPromptSequencing === true}">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa fa-caret-left leftArrow"></i></div>
+                            </span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder="{{'add_plain_text'| i18nString}}" ng-focus="showErrorUtteraceDefaultTip = !showErrorUtteraceDefaultTip"
+                                      ng-blur="showErrorUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_error_prompts($event, - 1)"
+                                      type="text" ng-model="newErrorPrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                            <span class="deleteUtterance"><i class="utteranceSaveSpin defaultErrorPromptSaveIcon" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip default" ng-show="showErrorUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+                </div>
+                <div class="If-more-than-one-pro" ng-class="{'paddingLeft60': errorPromptObj.errorPromptSequencing === true}">{{errorPromptObj.errorPromptSequencing ? ('order_of_retries_info_enable' | i18nString): ('order_of_retries_info_disable' | i18nString)}}</div>
+                <span class="edit-prompts pointerEventsImp" ng-click="editError(nodeInfo.nodeInfo.errorMessage, true)">{{nodeInfo.displayMode!=='edit'?viewError:manageError}}</span>
+            </div>
+            <div ng-show="errorInstancePromptOptions.override && runBot.fromDialogTask">
+                <div ui-sortable="sortableOptionsErrorInstancePromt" ng-model="userErrorInstancePromptsCopy">
+                    <div ng-repeat="prompt in userErrorInstancePromptsCopy track by $index" class="editSynonymDiv">
+                        <div class="promptMessageDiv">
+                            <span class="sortBar ui-sortable-handle" ng-if="errorInstancePromptObj.errorPromptSequencing">
+                                <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                            </span>
+                            <span class="ovalSpan">
+                                <span ng-if="prompt.channel === 'default'" class="Oval-15" tooltip-placement="right" tooltip=" {{'all_channels'| i18nString}}" ><span class="channelText"> {{'All'| i18nString}}</span></span>
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook' && prompt.channel !== 'googleactions'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{_constants_.iconsTooltips[prompt.channel]}}"><img class="img fa fa-{{prompt.channel}}" src="{{entityInstancePropertyCB.icons[prompt.channel]}}" aria-hidden="true" /></span>
+                                <span ng-if="prompt.channel === 'googleactions'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/google-home.svg"><div class="property-panelIconTitle"> {{'Google_asstnt'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"  tooltip-placement="right" tooltip="{{_constants_.iconsTooltips[prompt.channel]}}"><img class="img fa fa-{{prompt.channel}}" src="{{entityInstancePropertyCB.icons[prompt.channel]}}" aria-hidden="true"/></span>
+                                <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"  tooltip-placement="right" tooltip="{{_constants_.iconsTooltips['Workplace For Groups']}}"><img class="img fa fa-{{prompt.channel}}" src="{{entityInstancePropertyCB.icons[prompt.channel]}}" aria-hidden="true"/><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                            </span>
+                            <div class="promptDataBoxDiv">
+                                <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showErrorInstancePromptSaveTip($index)" ng-blur="showErrorInstancePromptSaveTip($index)"
+                                          ng-keydown="auto_grow_error_instance_prompts($event, $index)" typutteranceDataBoxe="text" ng-model="prompt.text" auto-grow-textarea default-grown="true"
+                                          context-typeahead></textarea>
+                                <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="entityInstancePropertyCB.editError(nodeInfo.dialogNodeInstance.nodeOptions.errorMessage, $index)"
+                                          ng-keydown="auto_grow_error_instance_prompts($event, $index)" type="text"> {{'js_msg'| i18nString}}</textarea>
+                                <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['errorPromptSaveSpin' + $index]" aria-hidden="true"></i></span>
+                                <span ng-class="['deletePrompt deleteErrorPromptIcon' + $index]"><img ng-src="{{trashIcon}}" ng-click="deleteEditErrorInstancePrompts($index)" ng-class="{'disabled':userErrorInstancePromptsCopy.length === 1}"  class="trashIcon"></span>
+                            </div>
+                        </div>
+                        <p class="utteranceSaveTip" ng-if="prompt.type !== 'uxmap'" ng-class="['errorPromptSaveTip' + $index]"> {{'press_save'| i18nString}}</p>
+                    </div>
+                    <div class="editSynonymDiv" ng-class="{'errorPromtReorder': errorInstancePromptObj.errorPromptSequencing === true}">
+                        <div class="promptMessageDiv">
+                            <span class="ovalSpan">
+                                <span class="Oval-15" tooltip-placement="right" tooltip=" {{'all_channels'| i18nString}}" ><span class="channelText"> {{'All'| i18nString}}</span></span>
+                            </span>
+                            <div class="promptDataBoxDiv">
+                                <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder=" {{'add_plain_text'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                          ng-blur="showUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_error_instance_prompts($event, - 1)"
+                                          type="text" ng-model="newErrorInstancePrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                                <span class="deleteUtterance"><i class="utteranceSaveSpin defaultErrorPromptSaveIcon" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip"> {{'press_save'| i18nString}}</p>
+                    </div>
+                    <div class="If-more-than-one-pro" ng-class="{'paddingLeft60': errorInstancePromptObj.errorPromptSequencing === true}"> {{errorInstancePromptObj.errorPromptSequencing ? ('order_of_retries_info_enable' | i18nString): ('order_of_retries_info_disable' | i18nString)}}</div>
+                    <span class="edit-prompts pointerEventsImp"  ng-click="entityInstancePropertyCB.editError(nodeInfo.dialogNodeInstance.nodeOptions.errorMessage, - 1)" >{{nodeInfo.displayMode!=='edit'?viewError:manageError}}</span>
+                </div>
+            </div>
+
+            <div class="connectionRules sampleResponse" ng-if="nodeInfo.nodeInfo.type === 'entity' && nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'"><span class="tabLabel">{{_constants_.propertyPanel.sampleResponse}} </span>
+                <i class="sampleResponseSettings" aria-hidden="true"></i>
+                <i ng-if="(!nodeInfo.nodeInfo.sampleResponse || !nodeInfo.nodeInfo.sampleResponse.length) && nodeInfo.nodeInfo.type === 'entity' && nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'"
+                   class="fa fa-exclamation-circle notify-icon warning-color" title="Providing a sample response is highly recommended"></i>
+                <i ng-if="(nodeInfo.nodeInfo.sampleResponse && nodeInfo.nodeInfo.sampleResponse.length) && nodeInfo.nodeInfo.type === 'entity' && nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'"
+                   class="fa fa-check-circle notify-icon success-color"></i>
+            </div>
+            <p class="serviceHeaderText" ng-if="nodeInfo.nodeInfo.type === 'entity' && nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'">{{_constants_.propertyPanel.sampleResponseText}}</p>
+            <div class="sampleResponseTextDiv" ng-click="addSampleResponse($index)" ng-repeat="sampleResponse in nodeInfo.nodeInfo.sampleResponse track by $index">
+                <p class="response">{{sampleResponse.name}} {{sampleResponse.isDefault?default:""}}</p>
+                <p class="response edit" ng-click="deleteSampleResponse($index, $event)"><i class="fa fa-trash-o"></i></p>
+            </div>
+            <span ng-if="nodeInfo.nodeInfo.type === 'entity' && nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'" class="define-request sampleResponse" ng-click="addSampleResponse( - 1)">{{'add_response'| i18nString}}</span>
+        </div>
+        <!--start of category prompts-->
+
+        <div ng-if="nodeInfo.nodeInfo.entityType === 'dateperiod'" class="promptsDiv">
+            <div ng-repeat="category in multiCategoryPromptsCopy"  ng-show="!(overrideMultiCategoryPrompts[category.category].message)">
+                <div class="connectionRules userPrompt"><span class="tabLabel">{{category.category==='from'?_constants_.propertyPanel.userPromptFromDate:_constants_.propertyPanel.userPromptToDate}}</span>
+                    <span class="error-promt-setting-icon" ng-if="runBot.fromDialogTask" id="multiCatagoryUserdropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="setting-icon" ng-src="{{assetsBase}}images/left-menu-img/settings-gray.svg">
+                    </span>
+                    <div class="dropdown-menu error-promt-setting" aria-labelledby="multiCatagoryUserdropdownMenuButton" ng-click="$event.stopPropagation();">
+                        <div class="header">
+                            <span class="title">
+                                {{'override_for_this_instance' | i18nString}}
+                            </span>
+                            <label class="kr-sg-toggle"  ng-class='{"screenFreeze":(category.category!=="from")}'>
+                                <input type="checkbox" ng-model="overrideMultiCategoryPrompts[category.category].message" id="userCatgoryPromptToggle" ng-change="changePromptType('userCatgoryInstancePrompt',category.category)">
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <div class="desc">
+                            {{'override_user_prompt_desc' | i18nString}}
+                        </div>
+                    </div>
+                </div>
+                <div class="userPromptsWelcomeDesc"> {{'user_prompt_desc'| i18nString}}</div>
+                <div>
+                    <div ng-repeat="prompt in category.message track by $index" class="editSynonymDiv">
+                        <div class="promptMessageDiv">
+                            <span class="ovalSpan">
+                                <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                    <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                                </span>
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+                                <span ng-if="prompt.channel === 'hangoutchat'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/hangoutchat.png"><div class="property-panelIconTitle">{{'Hangouts'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                    <div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                                </span>
+                                <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                            </span>
+                            <div class="promptDataBoxDiv">
+                                <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showPromptSaveTip($index, category.category)" ng-blur="showPromptSaveTip($index, category.category)"
+                                          ng-keydown="auto_grow_category_prompts($event, $index, category.category)" typutteranceDataBoxe="text" ng-model="prompt.text"
+                                          auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                                <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="editPrompt(nodeInfo.nodeInfo.message, true, $index)"
+                                          ng-keydown="auto_grow_category_prompts($event, $index, category.category)" type="text">{{'js_msg'| i18nString}}</textarea>
+                                <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['promptSaveSpin{{category.category}}' + $index]" aria-hidden="true"></i></span>
+                                <span ng-class="['deletePrompt deletePromptIcon{{category.category}}' + $index]"><i ng-click="deleteEditCategoryPrompts($index, 'prompt message', category.category)" class="fa fa-trash-o" ng-class="{'disabled':category.message.length === 1}"></i></span>
+                            </div>
+                        </div>
+                        <p class="utteranceSaveTip" ng-class="['promptSaveTip{{category.category}}' + $index]">{{'press_save'| i18nString}}</p>
+                    </div>
+                    <div class="editSynonymDiv">
+                        <div class="promptMessageDiv">
+                            <span class="ovalSpan">
+                                <span class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                    <div
+                                        class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa fa-caret-left leftArrow"></i></div>
+                                </span>
+                            </span>
+                            <div class="promptDataBoxDiv">
+                                <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder="{{'add_plain_text'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                          ng-blur="showUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_category_prompts($event, - 1, category.category)"
+                                          type="text" ng-model="category.newPrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                                <span class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon{{category.category}}" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+                    </div>
+                    <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div>
+
+                    <span class="edit-prompts pointerEventsImp" ng-click="editPrompt(category.message, true, - 1, category.category)">{{nodeInfo.displayMode!=='edit'?'VIEW PROMPTS':_constants_.propertyPanel.managePropmts}}</span>
+                </div>
+            </div>
+            <div ng-repeat="category in instanceMultiCategoryPromptsCopy"  ng-show="overrideMultiCategoryPrompts[category.category].message">
+                <div class="connectionRules userPrompt"><span class="tabLabel">{{category.category==='from'?_constants_.propertyPanel.userPromptFromDate:_constants_.propertyPanel.userPromptToDate}}</span>
+                    <span class="error-promt-setting-icon" ng-if="runBot.fromDialogTask" id="userMultiInstancedropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="setting-icon" ng-src="{{assetsBase}}images/left-menu-img/settings-gray.svg">
+                    </span>
+                    <div class="dropdown-menu error-promt-setting" aria-labelledby="userMultiInstancedropdownMenuButton" ng-click="$event.stopPropagation();">
+                        <div class="header">
+                            <span class="title">
+                                {{'override_for_this_instance' | i18nString}}
+                            </span>
+                            <label class="kr-sg-toggle"  ng-class='{"screenFreeze":(category.category!=="from")}'>
+                                <input type="checkbox"  ng-model="overrideMultiCategoryPrompts[category.category].message" id="userCatgoryInstancePromptToggle" ng-change="changePromptType('userCatgoryInstancePrompt',category.category)">
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <div class="desc">
+                            {{'override_user_prompt_desc' | i18nString}}
+                        </div>
+                    </div>
+                </div>
+                <div class="userPromptsWelcomeDesc"> {{'user_prompt_desc'| i18nString}}</div>
+                <div>
+                    <div ng-repeat="prompt in category.message track by $index" class="editSynonymDiv">
+                        <div class="promptMessageDiv">
+                            <span class="ovalSpan">
+                                <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText"> {{'All'| i18nString}}</span>
+                                    <div class="property-panelIconTitle"> {{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                                </span>
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" src="{{icons[prompt.channel]}}" aria-hidden="true"></img><div class="property-panelIconTitle">{{_constants_.iconsTooltips[prompt.channel]}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" src="{{icons[prompt.channel]}}" aria-hidden="true"></span>
+                                    <div class="property-panelIconTitle">{{_constants_.iconsTooltips[prompt.channel]}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                                </span>
+                                <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" src="{{icons[prompt.channel]}}" aria-hidden="true"></img><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                            </span>
+                            <div class="promptDataBoxDiv">
+                                <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showInstancePromptSaveTip($index, category.category)" ng-blur="showPromptSaveTip($index, category.category)"
+                                          ng-keydown="auto_grow_category_instance_prompts($event, $index, category.category)" typutteranceDataBoxe="text" ng-model="prompt.text"
+                                          auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                                <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="editPrompt(nodeInfo.nodeInfo.message, true, $index)"
+                                          ng-keydown="auto_grow_category_instance_prompts($event, $index, category.category)" type="text"> {{'js_msg'| i18nString}}</textarea>
+                                <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['promptSaveSpin{{category.category}}' + $index]" aria-hidden="true"></i></span>
+                                <span ng-class="['deletePrompt deletePromptIcon{{category.category}}' + $index]"><i ng-click="deleteEditCategoryInstancePrompts($index, 'prompt message', category.category)" class="fa fa-trash-o  displayBlock" ng-class="{'disabled':category.message.length === 1}"></i></span>
+                            </div>
+                        </div>
+                        <p class="utteranceSaveTip" ng-class="['promptSaveTip{{category.category}}' + $index]"> {{'press_save'| i18nString}}</p>
+                    </div>
+                    <div class="editSynonymDiv">
+                        <div class="promptMessageDiv">
+                            <span class="ovalSpan">
+                                <span class="Oval-15"><span class="channelText"> {{'All'| i18nString}}</span>
+                                    <div
+                                        class="property-panelIconTitle"> {{'all_channels'| i18nString}}<i class="fa fa-caret-left leftArrow"></i></div>
+                                </span>
+                            </span>
+                            <div class="promptDataBoxDiv">
+                                <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder=" {{'add_plain_text'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                          ng-blur="showUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_category_instance_prompts($event, - 1, category.category)"
+                                          type="text" ng-model="category.newInstancePrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                                <span class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon{{category.category}}" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip"> {{'press_save'| i18nString}}</p>
+                    </div>
+                    <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div> 
+                    <span class="edit-prompts pointerEventsImp" ng-click="entityInstancePropertyCB.editPrompt(category.message, - 1,category.category)">{{nodeInfo.displayMode!=='edit'?'VIEW PROMPTS':_constants_.propertyPanel.managePropmts}}</span> 
+                </div>
+            </div>
+            <div ng-repeat="category in multiCategoryPromptsCopy" ng-show="!overrideMultiCategoryPrompts[category.category].errorMessage">
+                <div class="connectionRules userPrompt"><span class="tabLabel">{{category.category==='from'?_constants_.propertyPanel.userErrorPromptFromDate:_constants_.propertyPanel.userErrorPromptToDate}}</span>
+                    <span class="error-promt-setting-icon" ng-if="runBot.fromDialogTask" id="errorrMultidropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="setting-icon" ng-src="{{assetsBase}}images/left-menu-img/settings-gray.svg">
+                    </span>
+                    <div class="dropdown-menu error-promt-setting" aria-labelledby="errorrMultidropdownMenuButton" ng-click="$event.stopPropagation();">
+                        <div class="header">
+                            <span class="title">
+                                {{'override_for_this_instance' | i18nString}}
+                            </span>
+                            <label class="kr-sg-toggle"  ng-class='{"screenFreeze":(category.category!=="from")}'>
+                                <input type="checkbox" ng-model="overrideMultiCategoryPrompts[category.category].errorMessage" ng-change="changePromptType('errorCatgoryInstancePrompt',category.category)">
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <div class="desc">
+                            {{'override_error_prompt_desc' | i18nString}}
+                        </div>
+                    </div>
+                </div>
+                <div class="userPromptsWelcomeDesc"> {{'error_prompt_desc'| i18nString}}</div>
+                <div>
+                    <div ng-repeat="prompt in category.errorMessage track by $index" class="editSynonymDiv">
+                        <div class="promptMessageDiv">
+                            <span class="ovalSpan">
+                                <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                    <div
+                                        class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                                </span>
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                    <div
+                                        class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                                </span>
+                                <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                            </span>
+                            <div class="promptDataBoxDiv">
+                                <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showErrorPromptSaveTip($index)" ng-blur="showErrorPromptSaveTip($index)"
+                                          ng-keydown="auto_grow_error_category_prompts($event, $index, category.category)" typutteranceDataBoxe="text" ng-model="prompt.text" auto-grow-textarea default-grown="true"
+                                          context-typeahead></textarea>
+                                <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="editError(nodeInfo.nodeInfo.errorMessage, $index)"
+                                          ng-keydown="auto_grow_error_category_prompts($event, $index, category.category)" type="text">{{'js_msg'| i18nString}}</textarea>
+                                <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['errorPromptSaveSpin{{category.category}}' + $index]" aria-hidden="true"></i></span>
+                                <span ng-class="['deletePrompt deleteErrorPromptIcon{{category.category}}' + $index]"><i ng-click="deleteEditCategoryErrorPrompts($index, 'error prompt message', category.category)" class="fa fa-trash-o" ng-class="{'disabled':category.errorMessage.length === 1}"></i></span>
+                            </div>
+                        </div>
+                        <p class="utteranceSaveTip" ng-if="prompt.type !== 'uxmap'" ng-class="['errorPromptSaveTip' + $index]">{{'press_save'| i18nString}}</p>
+                    </div>
+                    <div class="editSynonymDiv">
+                        <div class="promptMessageDiv">
+                            <span class="ovalSpan">
+                                <span class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                    <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa fa-caret-left leftArrow"></i></div>
+                                </span>
+                            </span>
+                            <div class="promptDataBoxDiv">
+                                <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder="{{'add_plain_text'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                          ng-blur="showUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_error_category_prompts($event, - 1, category.category)"
+                                          type="text" ng-model="category.newErrorPrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                                <span class="deleteUtterance"><i class="utteranceSaveSpin defaultErrorPromptSaveIcon" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+                    </div>
+                    <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div>
+
+                    <span class="edit-prompts pointerEventsImp" ng-click="editError(category.errorMessage, - 1, category.category)">{{nodeInfo.displayMode!=='edit'?viewError:manageError}}</span>
+                </div>
+            </div>
+            <div ng-repeat="category in instanceMultiCategoryPromptsCopy" ng-show="overrideMultiCategoryPrompts[category.category].errorMessage">
+                <div class="connectionRules userPrompt"><span class="tabLabel">{{category.category==='from'?_constants_.propertyPanel.userErrorPromptFromDate:_constants_.propertyPanel.userErrorPromptToDate}}</span>
+                    <span class="error-promt-setting-icon" ng-if="runBot.fromDialogTask" id="errorrMultiInstancedropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="setting-icon" ng-src="{{assetsBase}}images/left-menu-img/settings-gray.svg">
+                    </span>
+                    <div class="dropdown-menu error-promt-setting" aria-labelledby="errorrMultiInstancedropdownMenuButton" ng-click="$event.stopPropagation();">
+                        <div class="header">
+                            <span class="title">
+                                {{'override_for_this_instance' | i18nString}}
+                            </span>
+                            <label class="kr-sg-toggle"  ng-class='{"screenFreeze":(category.category!=="from")}'>
+                                <input type="checkbox" ng-model="overrideMultiCategoryPrompts[category.category].errorMessage" ng-change="changePromptType('errorCatgoryInstancePrompt',category.category)">
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <div class="desc">
+                            {{'override_error_prompt_desc' | i18nString}}
+                        </div>
+                    </div>
+                </div>
+                <div class="userPromptsWelcomeDesc"> {{'error_prompt_desc'| i18nString}}</div>
+                <div ng-repeat="prompt in category.errorMessage track by $index" class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText"> {{'All'| i18nString}}</span>
+                                <div
+                                    class="property-panelIconTitle"> {{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" src="{{icons[prompt.channel]}}" aria-hidden="true"></img><div class="property-panelIconTitle">{{_constants_.iconsTooltips[prompt.channel]}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" src="{{icons[prompt.channel]}}" aria-hidden="true"></span>
+                                <div
+                                    class="property-panelIconTitle">{{_constants_.iconsTooltips[prompt.channel]}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" src="{{icons[prompt.channel]}}" aria-hidden="true"></img><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showErrorInstancePromptSaveTip($index)" ng-blur="showErrorPromptSaveTip($index)"
+                                      ng-keydown="auto_grow_error_category_instance_prompts($event, $index, category.category)" typutteranceDataBoxe="text" ng-model="prompt.text" auto-grow-textarea default-grown="true"
+                                      context-typeahead></textarea>
+                            <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="editError(nodeInfo.nodeInfo.errorMessage, $index)"
+                                      ng-keydown="auto_grow_error_category_instance_prompts($event, $index, category.category)" type="text"> {{'js_msg'| i18nString}}</textarea>
+                            <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['errorPromptSaveSpin{{category.category}}' + $index]" aria-hidden="true"></i></span>
+                            <span ng-class="['deletePrompt deleteErrorPromptIcon{{category.category}}' + $index]"><i ng-click="deleteEditCategoryErrorInstancePrompts($index, 'error prompt message', category.category)" class="fa fa-trash-o  displayBlock" ng-class="{'disabled':category.errorMessage.length === 1}"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip" ng-if="prompt.type !== 'uxmap'" ng-class="['errorPromptSaveTip' + $index]"> {{'press_save'| i18nString}}</p>
+                </div>
+                <div class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span class="Oval-15"><span class="channelText"> {{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle"> {{'all_channels'| i18nString}}<i class="fa fa-caret-left leftArrow"></i></div>
+                            </span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder=" {{'add_plain_text'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                      ng-blur="showUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_error_category_instance_prompts($event, - 1, category.category)"
+                                      type="text" ng-model="category.newErrorInstancePrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                            <span class="deleteUtterance"><i class="utteranceSaveSpin defaultErrorPromptSaveIcon" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip"> {{'press_save'| i18nString}}</p>
+                </div>
+                <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div>   
+                <span class="edit-prompts pointerEventsImp" ng-click="entityInstancePropertyCB.editError(category.errorMessage, - 1,category.category)">{{nodeInfo.displayMode!=='edit'?viewError:manageError}}</span> 
+            </div>
+        </div>
+
+        <!-- Reuse Used-up User Input -->
+        <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'form'">
+            <div class="connectionRules userPrompt"><span class="tabLabel">{{_constants_.propertyPanel.submitMessage}}</span></div>
+            <div>
+                <div ng-repeat="prompt in submitMessagesCopy track by $index" class="editSynonymDiv" ng-show="!entityInstancePropertyCB.isUserPromptsOveridden()">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+
+                            <span ng-if="prompt.channel === 'hangoutchat'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/hangoutchat.png"><div class="property-panelIconTitle">{{'hangouts'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                <div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showSubmitPromptSaveTip($index)" ng-blur="showSubmitPromptSaveTip($index)"
+                                      ng-keydown="auto_grow_submit_prompts($event, $index)" typutteranceDataBoxe="text" ng-model="prompt.text"
+                                      auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                            <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="editPrompt(nodeInfo.nodeInfo.message, true, $index)"
+                                      ng-keydown="auto_grow_submit_prompts($event, $index)" type="text">{{'js_msg'| i18nString}}</textarea>
+                            <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['submitPromptSaveSpin' + $index]" aria-hidden="true"></i></span>
+                            <span ng-class="['deletePrompt deleteSubmitIcon' + $index]"><i  ng-click="deleteSubmitPrompts($index, 'submit message')" class="trashIcon btx-delete-1" ng-class="{'disabled':submitMessagesCopy.length === 1}"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip" ng-if="prompt.type !== 'uxmap'" ng-class="['submitpPromptSaveTip' + $index]">{{'press_save'| i18nString}}</p>
+                </div>
+                <div class="editSynonymDiv" ng-show="!entityInstancePropertyCB.isUserPromptsOveridden()">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa fa-caret-left leftArrow"></i></div>
+                            </span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder="{{'add_plain_text'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                      ng-blur="showUtteraceDefaultTip = false" ng-keyup="updateActiveWord()" ng-keydown="auto_grow_submit_prompts($event, - 1)"
+                                      type="text" ng-model="newSubmitPrompt.text" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                            <span class="deleteUtterance"><i class="utteranceSaveSpin submitPromptSaveIcon" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+                </div>
+                <div ng-show="!entityInstancePropertyCB.isUserPromptsOveridden()" class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div> 
+
+                <span ng-show="!entityInstancePropertyCB.isUserPromptsOveridden()" class="edit-prompts pointerEventsImp" ng-click="editPrompt(nodeInfo.nodeInfo.submitMessage, true,false,false,false,'submit')">{{nodeInfo.displayMode!=='edit'?'VIEW PROMPTS':_constants_.propertyPanel.manageSubmits}}</span>
+                <div class="col-xs-12 displayListOfValues noPadding" ng-if="showDisplayListOfvaluesOptions()" ng-show="!entityInstancePropertyCB.isUserPromptsOveridden()">
+                    <div class="col-xs-12 labelling">
+                        <label class="label">{{'display_list'| i18nString}}</label> <span class=""><i class="listOfvaluesUserChoice" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="radioDiv">
+                        <div class="radioInnerDiv">
+                            <label for="yes">
+                                <input ng-value='true' ng-disabled="nodeInfo.displayMode !== 'edit'" type="radio"  ng-change="saveListOfValuesOptionsChoice()" ng-model="listOfValuesOptions.display" name="yes" id="yes"><span class="opt-title"><span class="innerText limitWidth">{{_constants_.propertyPanel.displayListOfvalues}}</span></span> </input>
+                            </label>
+                        </div>
+                        <div class="radioInnerDiv">
+                            <label for="no">
+                                <input ng-value='false' ng-disabled="nodeInfo.displayMode !== 'edit'" type="radio"  ng-change="saveListOfValuesOptionsChoice()" ng-model="listOfValuesOptions.display" name="no" id="no"><span class="opt-title"><span class="innerText limitWidth">{{_constants_.propertyPanel.dontDisplayListOfvalues}}</span></span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'form'"  class="connectionRules entityUserInput rtmRenderType"><span class="tabLabel">{{'rtmformbehaviour'| i18nString}}<i
+                    class="entityUserInputToggle"></i></span>
+        <div class="reuseInput">
+            <!-- RADIO BUTTONS STARTS HERE -->
+            <div class="radioDiv col-xs-12 ">
+                <div>
+                    <div>
+                        <label for="reuseOptions1">
+                            <input value='pop-up' type="radio" ng-click="saveRtmRenderType('.entityUserInputToggle')"
+                                ng-model="nodeInfo.nodeInfo.rtmRenderType" name="reuseOptions1"
+                                id="reuseOptions1"><span class="opt-title">{{'rtmformbehaviour_op1'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="reuseOptions2">
+                            <input value='inline' type="radio" ng-click="saveRtmRenderType('.entityUserInputToggle')"
+                                ng-model="nodeInfo.nodeInfo.rtmRenderType" name="reuseOptions2"
+                                id="reuseOptions2"><span class="opt-title">{{'rtmformbehaviour_op2'| i18nString}}</span>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        </div>
+        <!--end of category propmts-->
+        <!--end of category propmts-->
+    </div>
+    <!-- Message -->
+    <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'message'" class="freeze">
+        <div class="msg-properties-container machineLearningLevel">
+            <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.configText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+            <div class="entityHeaderTextDiv displayTable">
+                <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                <p class="headerTip">{{_constants_.getNewMessage(_constants_.propertyPanel.configTextTip, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+            </div>
+            <div class="connectionRules"><span class="tabLabel">{{_constants_.propertyPanel.generalSettings}} </span><i class="msgSettings" aria-hidden="true"></i></div>
+            <div class="col-xs-12 generalInfoEdit">
+                <span class="label col-xs-2 name">{{_constants_.propertyPanel.name}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input maxlength="256" class="form-control entity serv-err-msg node-name"
+                           type="text" ng-model="nodeName" placeholder="{{'service_error'| i18nString}}" ng-change="onInputChange()" ng-keyup="onInputKeyup($event)"
+                           ng-keypress="saveMessagePropertyName($event, null, '.componentProperties')" ng-blur="saveMessagePropertyName($event, null, '.componentProperties')">
+                </div>
+            </div>
+            <div class="col-xs-12 generalInfoEdit">
+                <span class="label col-xs-2 name">{{_constants_.propertyPanel.displayName}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input maxlength="256" class="form-control entity serv-err-msg node-label"
+                           type="text" ng-model="nodeLabel"
+                           ng-change="onInputChange()" 
+                           ng-keyup="onInputKeyup($event, 'label')"
+                           ng-keypress="saveMessagePropertyName($event, 'label', '.componentProperties')" 
+                           ng-blur="saveMessagePropertyName($event, 'label', '.componentProperties')">
+                </div>
+            </div>
+            <div class="col-xs-12 noPadding" ng-show="false">
+                <span class="shareAcrossIntentLabel">{{'share_intents'| i18nString}}</span>
+                <toggle-switch ng-model="nodeInfo.dialogNodeInstance.switchSession" ng-change="onSessionToggleChange(switchSession)"></toggle-switch>
+                <i class="propertySessionToggle"></i>
+                <p class="node-connDiv">{{_constants_.propertyPanel.shareAcrossIntents}}</p>
+            </div>
+            <div class="col-xs-12 noPadding">
+                <div class="connectionRules"><span class="tabLabel">{{'bot_res'| i18nString}}</span>
+                    <i class="connectionRulesIcon"></i>
+                </div>
+                <p class="node-connDiv paddingRightLeft15">{{_constants_.propertyPanel.userPromptsHelp}}</p>
+                <div ng-repeat="prompt in userPromptsCopy track by $index" class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div
+                                    class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                <div
+                                    class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="!prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showPromptSaveTip($index)" ng-blur="showPromptSaveTip($index)"
+                                      ng-keydown="auto_grow_prompts($event, $index)" typutteranceDataBoxe="text" ng-model="prompt.text" auto-grow-textarea default-grown="true"
+                                      context-typeahead></textarea>
+                            <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" ng-click="editPrompt(nodeInfo.nodeInfo.message, true, $index)"
+                                      readonly="readonly" ng-keydown="auto_grow_prompts($event, $index, $index)" ng-keydown="auto_grow_prompts($event, $index)"
+                                      type="text">JavaScript Message</textarea>
+                            <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['promptSaveSpin' + $index]" aria-hidden="true"></i></span>
+                            <span ng-class="['deletePrompt deletePromptIcon' + $index]"><img ng-src="{{trashIcon}}" ng-click="deleteEditPrompts($index, 'bot response')" ng-hide="nodeInfo.nodeInfo.message.length === 1" class="fa fa-trash-o trashIcon" ng-class="{'disabled':nodeInfo.nodeInfo.message.length === 1}"></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip" ng-class="['promptSaveTip' + $index]">{{'press_save'| i18nString}}</p>
+                </div>
+                <div class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder="{{'plain_bot_res'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                      ng-blur="showUtteraceDefaultTip = false" ng-keydown="auto_grow_prompts($event, - 1)" type="text" ng-model="newPrompt.text"
+                                      auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                            <span class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+                </div>
+                <span class="edit-prompts pointerEventsImp" ng-click="editPrompt(nodeInfo.nodeInfo.message, false)">{{nodeInfo.displayMode!=='edit'?view:manage}} {{'responses'| i18nString}}</span>
+            </div>
+
+            <div class="col-xs-12 noPadding dialog-reports">
+                <div class="connectionRules"><span class="tabLabel">{{'report_url'| i18nString}}</span>
+                    <i class="connectionRulesIcon"></i>
+                </div>
+                <p class="node-connDiv paddingRightLeft15">{{'optionally_desc'| i18nString}}</p>
+                <div class="dialog-report" ng-repeat="report in nodeInfo.nodeInfo.report" ng-click="editReport(report)">
+                    <div class="report-name">
+                        {{report.config.title}}<br>
+                    </div>
+                    <span class="delete-report" ng-hide="nodeInfo.displayMode !== 'edit'">
+                        <i  ng-click="deleteReport(report, $event)"
+                            class="fa fa-trash-o" >
+                        </i>
+                    </span>
+                </div>
+
+                <span class="add-reports" ng-click="editReport()" title="{{'generate_link'| i18nString}}">{{'generate_link'| i18nString}}</span>
+            </div>
+        </div>
+    </div>
+    <!-- intent -->
+    <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'intent'" class="intentDivContainer freeze">
+        <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.configText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        <div class="entityHeaderTextDiv displayTable">
+            <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+            <p class="headerTip">{{_constants_.getNewMessage(_constants_.propertyPanel.configTextTip, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        </div>
+
+        <div>
+            <div class="connectionRules"><span class="tabLabel">{{_constants_.propertyPanel.generalSettings}} </span><i class="intentGeneralSettings" aria-hidden="true"></i></div>
+            <form name="intentForm" class="generalInfoEdit" novalidate>
+                <span class="label col-xs-2 name">{{_constants_.propertyPanel.name}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input class="form-control entity nameInput"
+                           type="text" ng-model="intentName" 
+                           ng-change="onInputChange()" 
+                           ng-keyup="onInputKeyup($event,'intentName'); saveIntent($event, intentForm,'name')" ng-blur="saveIntent($event, intentForm,'name')">
+                </div>
+                <span class="label col-xs-2 name">{{_constants_.propertyPanel.displayName}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input class="form-control entity nameInput node-name"
+                           name="intentName" type="text" ng-model="nodeInfo.dialogNodeInstance.intent"
+                           ng-pattern="validateTaskName" placeholder="{{'configurable_intent_name'| i18nString}}" ng-keyup="onInputKeyupIntent($event); saveIntent($event, intentForm)" ng-blur="saveIntent($event, intentForm)">
+                </div>
+                <div error-alert ng-show="intentForm.intentName.$error.pattern" class="text-danger form-error-text"> {{'intent_name_allow'| i18nString}}</div>
+                <span class="label col-xs-2 name">{{_constants_.propertyPanel.description}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input class="form-control entity nameInput"
+                           type="text" ng-model="nodeInfo.dialogNodeInstance.desc" placeholder="{{'tooltip_desc'| i18nString}}" ng-keypress="saveIntentDesc($event)"
+                           ng-blur="saveIntentDesc($event)">
+                </div>
+
+            </form>
+        </div>
+
+
+    </div>
+    <!-- SDK Web Hook -->
+    <div class="paddingRightLeft15 freeze" ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'sdkwebhook' || nodeInfo.dialogNodeInstance.type.toLowerCase() === 'agenttransfer'">
+        <div class="sdkConfigurationDivContainer">
+            <div class="col-xs-12 generalInfoEdit marginTop15 noPadding">
+                <span class="label col-xs-2 name">{{'constants.propertyPanel_name'| i18nString}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input maxlength="256" class="form-control nameInput node-name" type="text"
+                           ng-model="nodeName" placeholder="{{'sdk_name'| i18nString}}" ng-keyup="onInputKeyup($event)" ng-keypress="saveMessagePropertyName($event, null, '.componentProperties')"
+                           ng-blur="saveMessagePropertyName($event, null, '.componentProperties')">
+                </div>
+            </div>
+            <div class="col-xs-12 generalInfoEdit noPadding">
+                <span class="label col-xs-2 name">{{_constants_.propertyPanel.displayName}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input maxlength="256" class="form-control nameInput node-label" type="text"
+                           ng-model="nodeLabel" 
+                           ng-keyup="onInputKeyup($event, 'label')" 
+                           ng-keypress="saveMessagePropertyName($event, 'label', '.componentProperties')"
+                           ng-blur="saveMessagePropertyName($event, 'label', '.componentProperties')">
+                </div>
+            </div>
+
+            <div class="col-xs-12 infoText" ng-if="sdkConfiguration === null || sdkConfiguration.subscribedFor.length == 0">
+                {{'sdk_config'| i18nString}} 
+            </div>
+            <div ng-if="sdkConfiguration !== null && sdkConfiguration.subscribedFor.length > 0">
+                <div class="col-xs-12 noPadding">
+                    <span class="label">{{'callback_url_name'| i18nString}}</span>
+                    <input class="form-control nameInput" type="text" ng-model="sdkConfiguration.sdkHostUri" placeholder="{{'callback_url_name'| i18nString}}" disabled="disabled">
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <span class="label">{{'events'| i18nString}}</span>
+                </div>
+                <div class="col-xs-12 hasError input-group checkbox-wrp">
+                    <div ng-repeat="event in events" class="checkbox checkbox-primary disabled" ng-class="{'hide':stream.type==='universalbot' && event.id==='onVariableUpdate'}">
+                        <input class="styled" checked type="checkbox" id="{{event.id}}" ng-model="event.checked">
+                        <label class="fontSize12" for="{{event.id}}">{{event.name}}</label>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <div class="col-xs-12 noPadding">
+                        <span class="label">{{'client_id'| i18nString}}</span><span class="configurationCOPY" ng-click="copySDKClientID()">{{'Bt_chnl_googleAsstnt_config_enablechnl_copy'| i18nString}}</span>
+                        <input class="form-control nameInput" readonly id="configInput" type="text" ng-model="sdkConfiguration.sdkClientId" placeholder="{{'client_id'| i18nString}}">
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding timeouts" ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'sdkwebhook'">
+                    <span class="label">{{'timeouts'| i18nString}}</span><i class="timeoutProperties"></i>
+                    <div>
+                        <div class="col-xs-12 noPadding">
+                            <select class="form-control nameInput" name="timeout" ng-model="nodeInfo.nodeInfo.webhookTimeout" ng-options="toInt(key) as value for (key,value) in timeouts" ng-change="saveTimeoutProperties($event, 'webhookTimeout', '.timeoutProperties')">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 infoText">
+                    {{'visit_api_extensions'| i18nString}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Dialog Act -->
+    <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'dialogact'" class="machineLearningLevel freeze">
+        <div class="dialogActDivContainer">
+            <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.configText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+            <div class="entityHeaderTextDiv displayTable">
+                <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                <p class="headerTip">{{_constants_.getNewMessage(_constants_.propertyPanel.configTextTip, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+            </div>
+            <div class="connectionRules"><span class="tabLabel">{{_constants_.propertyPanel.generalSettings}} </span><i class="dialogGeneralSettings" aria-hidden="true"></i></div>
+            <div class="generalSettingBlk generalInfoEdit">
+                <span class="label col-xs-2 name">{{_constants_.propertyPanel.name}}</span>
+                <div class="col-xs-10 inputDiv"><input maxlength="256" class="form-control nameInput node-name"
+                                                       type="text" ng-model="nodeName" placeholder="{{'dialog_name'| i18nString}}" ng-keyup="onInputKeyup($event)" ng-keypress="saveDialogPropertyName($event)"
+                                                       ng-blur="saveDialogPropertyName($event)">
+                </div>
+            </div>
+            <div class="generalSettingBlk generalInfoEdit">
+                <span class="label col-xs-2 name">{{_constants_.propertyPanel.displayName}}</span>
+                <div class="col-xs-10 inputDiv">
+                    <input maxlength="256" class="form-control nameInput node-label"
+                           type="text" 
+                           ng-model="nodeLabel" 
+                           ng-keyup="onInputKeyup($event, 'label')" 
+                           ng-keypress="saveDialogPropertyName($event, 'label')"
+                           ng-blur="saveDialogPropertyName($event, 'label')">
+                </div>
+            </div>
+            <div class="col-xs-12 noPadding">
+                <div class="connectionRules"><span class="tabLabel">{{_constants_.propertyPanel.userPrompt}}</span>
+                    <i class="connectionRulesIcon"></i>
+                </div>
+                <p class="node-connDiv paddingRightLeft15">{{_constants_.propertyPanel.userPromptsHelp}}</p>
+                <div ng-repeat="prompt in userPromptsCopy track by $index" class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div
+                                    class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+
+                            <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                <div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                            <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="!prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showPromptSaveTip($index)" ng-blur="showPromptSaveTip($index)"
+                                      ng-keydown="auto_grow_prompts($event, $index)" typutteranceDataBoxe="text" ng-model="prompt.text" auto-grow-textarea default-grown="true"
+                                      context-typeahead></textarea>
+                            <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" ng-click="editPrompt(nodeInfo.nodeInfo.message, true, $index)"
+                                      readonly="readonly" ng-keydown="auto_grow_prompts($event, $index, $index)" ng-keydown="auto_grow_prompts($event, $index)"
+                                      type="text">{{'js_msg'| i18nString}}</textarea>
+                            <span class="deletePrompt"><i class="utteranceSaveSpin" ng-class="['promptSaveSpin' + $index]" aria-hidden="true"></i></span>
+                            <span ng-class="['deletePrompt deletePromptIcon' + $index]"><img ng-src="{{trashIcon}}" ng-click="deleteEditPrompts($index, 'confirmation message')" class="fa fa-trash-o trashIcon"></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip" ng-class="['promptSaveTip' + $index]">{{'press_save'| i18nString}}</p>
+                </div>
+                <div class="editSynonymDiv">
+                    <div class="promptMessageDiv">
+                        <span class="ovalSpan">
+                            <span class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                            </span>
+                        </span>
+                        <div class="promptDataBoxDiv">
+                            <textarea class="form-control promptDataBox promptDataBoxDefault" placeholder="{{'plain_bot_res'| i18nString}}" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip"
+                                      ng-blur="showUtteraceDefaultTip = false" ng-keydown="auto_grow_prompts($event, - 1)" type="text" ng-model="newPrompt.text"
+                                      auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                            <span class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+                </div>
+                <div class="col-xs-12 displayListOfValues confirmation noPadding" ng-if="showDisplayListOfvaluesOptions()">
+                    <div class="col-xs-12 labelling">
+                        <label class="label">{{'confirm_options'| i18nString}}</label> <span class=""><i class="listOfvaluesUserChoice" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="radioDiv">
+                        <div class="radioInnerDiv">
+                            <label for="yes">
+                                <input ng-value='true' type="radio"  ng-disabled="nodeInfo.displayMode !== 'edit'" ng-change="saveListOfValuesOptionsChoice()" ng-model="listOfValuesOptions.display" name="yes" id="yes"><span class="opt-title"><span class="innerText limitWidth">{{_constants_.propertyPanel.displayConfirmationOptions}}</span></span> </input>
+                            </label>
+                        </div>
+                        <div class="radioInnerDiv">
+                            <label for="no">
+                                <input ng-value='false' type="radio" ng-disabled="nodeInfo.displayMode !== 'edit'" ng-change="saveListOfValuesOptionsChoice()" ng-model="listOfValuesOptions.display" name="no" id="no"><span class="opt-title"><span class="innerText limitWidth">{{_constants_.propertyPanel.dontDisplayConfirmationOptions}}</span></span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span class="edit-prompts confirmation pointerEventsImp" ng-click="editPrompt(nodeInfo.nodeInfo.message, true)">{{nodeInfo.displayMode!=='edit'?'VIEW PROMPTS':_constants_.propertyPanel.managePropmts}}</span>
+            </div>
+            <div class="col-xs-12 noPadding">
+                <div class="userSynonymsDiv">
+                    <div class="connectionRules negativeMargin10">
+                        <span class="tabLabel">{{'synonyms_name'| i18nString}}<i class="instanceSynonyms" aria-hidden="true"></i></span>
+                    </div><p class="detectionInfo">{{'provide_synonyms'| i18nString}}</p>
+                    <div class="userConfirmationSynonyms">
+                        <p class="entityHeaderText">{{'yes'| i18nString}}</p>
+                        <tags-input add-on-blur='false' class="paddingLeftRight15" add-on-comma="false" do-not-allow-special-characters="true" replace-spaces-with-dashes="false" min-length="1" max-length="128" use-strings="true" placeholder="{{'type_enter'| i18nString}}"  on-tag-added="saveConfirmationSynonyms()" on-tag-removed="saveConfirmationSynonyms()" ng-model="synonymsObj.yes"></tags-input>
+                    </div>
+                    <div class="userConfirmationSynonyms marginTop10">
+                        <p class="entityHeaderText ">{{'no'| i18nString}}</p>
+                        <tags-input add-on-blur='false' add-on-comma="false" class="paddingLeftRight15" do-not-allow-special-characters="true" replace-spaces-with-dashes="false" min-length="1" max-length="128"  use-strings="true" placeholder="{{'type_enter'| i18nString}}" on-tag-added="saveConfirmationSynonyms()" on-tag-removed="saveConfirmationSynonyms()" ng-model="synonymsObj.no"></tags-input>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service -->
+    <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'service'" class="serviceDivContainer freeze">
+        <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.configText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        <div class="entityHeaderTextDiv displayTable">
+            <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+            <p class="headerTip">{{_constants_.getNewMessage(_constants_.propertyPanel.configTextTip, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        </div>
+        <div class="connectionRules">
+            <span class="tabLabel">{{_constants_.propertyPanel.generalSettings}} </span><i class="serviceGeneralSettings" aria-hidden="true"></i></div>
+        <div class="generalInfoEdit">
+            <span class="label col-xs-2 name">{{_constants_.propertyPanel.name}}</span>
+            <div class="col-xs-10 inputDiv">
+                <input maxlength="256" class="form-control nameInput node-name"
+                       type="text" ng-model="nodeName" ng-keyup="onInputKeyup($event)" ng-keypress="saveServicePropertyName($event)" ng-blur="saveServicePropertyName($event)">
+            </div>
+            <span class="label col-xs-2 name">{{_constants_.propertyPanel.displayName}}</span>
+            <div class="col-xs-10 inputDiv">
+                <input maxlength="256" class="form-control nameInput node-label"
+                       type="text" 
+                       ng-model="nodeLabel" 
+                       ng-keyup="onInputKeyup($event, 'label')" 
+                       ng-keypress="saveServicePropertyName($event, 'label')" 
+                       ng-blur="saveServicePropertyName($event, 'label')">
+            </div>
+
+            <span class="label col-xs-2 name">{{_constants_.propertyPanel.serviceType}}</span>
+            <div class="col-xs-10 inputDiv">
+                <select class="form-control selectType" ng-model="nodeInfo.nodeInfo.serviceNodeType" ng-change="serviceNodeTypesChange(nodeInfo.nodeInfo.serviceNodeType,'{{nodeInfo.nodeInfo.serviceNodeType}}')">
+                    <option ng-repeat="serviceNodeType in serviceNodeTypes" value="{{serviceNodeType.id}}">{{serviceNodeType.name}}</option>
+                </select>
+            </div>
+
+            <span class="label col-xs-2 type" ng-if = "nodeInfo.nodeInfo.serviceNodeType == 'datatable'">{{_constants_.propertyPanel.type}}</span>
+            <div class="col-xs-10 inputDiv" ng-if = "nodeInfo.nodeInfo.serviceNodeType == 'datatable'">
+                <select class="form-control selectType serviceType" ng-model="nodeInfo.nodeInfo.payload.resource" ng-change="saveServiceType($event,'{{nodeInfo.nodeInfo.payload.resource}}')">
+                    <option value="dataTable">{{'Table'}}</option>
+                    <option value="view">{{'View'}}</option>
+                </select>
+            </div>
+
+            <span class="label col-xs-2 type" ng-if = "nodeInfo.nodeInfo.serviceNodeType !== 'customauthentication' && nodeInfo.nodeInfo.serviceNodeType !== 'datatable'">{{_constants_.propertyPanel.type}}</span>
+            <div class="col-xs-10 inputDiv" ng-if = "nodeInfo.nodeInfo.serviceNodeType !== 'customauthentication' && nodeInfo.nodeInfo.serviceNodeType !== 'datatable'">
+                <select class="form-control selectType serviceType" ng-init="webservice = 'Webservice'" ng-model="webservice" ng-change="saveServiceType($event,'{{nodeInfo.nodeInfo.serviceNodeType}}')" disabled>
+                    <option value="Webservice">{{'web_service'| i18nString}}</option>
+                </select>
+            </div>
+
+            <span class="label col-xs-2 subtype" ng-if="nodeInfo.nodeInfo.serviceNodeType === 'custom'">{{_constants_.propertyPanel.subType}}</span>
+            <div class="col-xs-10 inputDiv">
+                <select class="form-control selectType" ng-model="nodeInfo.nodeInfo.serviceType" ng-change="saveServiceType($event,'{{nodeInfo.nodeInfo.serviceNodeType}}')" ng-if="nodeInfo.nodeInfo.serviceNodeType === 'custom'" ng-disabled="nodeInfo.nodeInfo.serviceNodeType !== 'custom'">
+                    <option ng-repeat="nodeTypeObj in _constants_.serviceSubType" value="{{nodeTypeObj.value}}">{{nodeTypeObj.title}}</option>
+                </select>
+            </div>
+
+            <span class="label col-xs-2 name" ng-if = "nodeInfo.nodeInfo.serviceNodeType === 'customauthentication'">{{'auth_url'| i18nString}}</span>
+            <div class="col-xs-10 inputDiv" ng-if = "nodeInfo.nodeInfo.serviceNodeType === 'customauthentication'">
+                <input maxlength="256" class="form-control nameInput node-name"
+                    type="text" 
+                    ng-model="nodeAuthURL" 
+                    ng-keyup="onInputKeyup($event, 'authURL')" 
+                    ng-keypress="saveServicePropertyName($event, 'authURL')" 
+                    ng-blur="saveServicePropertyName($event, 'authURL')">
+            </div>
+            <div class = "row" ng-show = "urlValidation" ng-if = "nodeInfo.nodeInfo.serviceNodeType === 'customauthentication'">
+                <div error-alert class="text-danger form-error-text"> {{'callback_url_invalid'| i18nString}}</div> 
+            </div>
+        </div>
+        <div ng-if = "nodeInfo.nodeInfo.serviceNodeType == 'datatable'">
+            <div class="connectionRules requestDefinition"><span class="tabLabel">{{_constants_.propertyPanel.reqDefinition}} </span><i class="reqDefinitionSettings" aria-hidden="true"></i>
+                <i ng-if="requestServiceData === ''" class="fa fa-exclamation-circle notify-icon error-color" title="No request definition"></i>
+            </div>
+            <p class="serviceHeaderText">{{'Define the service request for accessing data tables or data views.'}}</p>
+            <p ng-if="!requestServiceData.name" class="noRequestDefinition">{{_constants_.propertyPanel.noReqDefinition}}</p>
+            <div style="display: inline-block;width: 100%;padding: 0 15px;">
+                <textarea ng-show="requestServiceData.name && nodeInfo.nodeInfo.serviceNodeType === 'datatable'" class="requestDataBox" type="text" disabled="disabled">{{requestServiceData.name}}</textarea>
+            </div>            
+            <span ng-if="!requestServiceData.name" class="define-request" ng-click="daasRequestDefinition(nodeInfo.nodeInfo.payload.resource)">{{'def_request'| i18nString}}</span>
+            <span ng-if="requestServiceData.name" class="define-request edit pointerEventsImp" ng-click="daasRequestDefinition(nodeInfo.nodeInfo.payload.resource)">{{nodeInfo.displayMode!=='edit'?viewRequest:manageRequest}}</span>
+            <div class="connectionRules sampleResponse" ng-if="nodeInfo.nodeInfo.serviceNodeType === 'datatable'"><span class="tabLabel">{{_constants_.propertyPanel.sampleResponse}} </span>
+                <i class="sampleResponseSettings" aria-hidden="true"></i>
+                <i ng-if="(!nodeInfo.nodeInfo.sampleResponse || !nodeInfo.nodeInfo.sampleResponse.length) && nodeInfo.nodeInfo.serviceNodeType === 'datatable'"
+                   class="fa fa-exclamation-circle notify-icon warning-color" title="Providing a sample response is highly recommended"></i>
+                <i ng-if="(nodeInfo.nodeInfo.sampleResponse && nodeInfo.nodeInfo.sampleResponse.length) && nodeInfo.nodeInfo.serviceNodeType === 'datatable'"
+                   class="fa fa-check-circle notify-icon success-color"></i>
+            </div>
+            <p class="serviceHeaderText" ng-if="nodeInfo.nodeInfo.serviceNodeType === 'datatable'">{{_constants_.propertyPanel.sampleResponseText}}</p>
+            <div class="sampleResponseTextDiv pointerEventsImp" ng-click="addSampleResponse($index)" ng-repeat="sampleResponse in nodeInfo.nodeInfo.sampleResponse track by $index">
+                <p class="response">{{sampleResponse.name}} {{sampleResponse.isDefault?default:""}}</p>
+                <p class="response edit" ng-hide="nodeInfo.displayMode === 'view'" ng-click="deleteSampleResponse($index, $event)"><i class="fa fa-trash-o"></i></p>
+            </div>
+            <span ng-if="nodeInfo.nodeInfo.serviceNodeType === 'custom'" class="define-request sampleResponse" ng-click="addSampleResponse( - 1)">{{'add_res'| i18nString}}</span>
+        </div>
+        <div ng-if = "nodeInfo.nodeInfo.serviceNodeType !== 'customauthentication' && nodeInfo.nodeInfo.serviceNodeType !== 'datatable'">
+            <div class="connectionRules requestDefinition"><span class="tabLabel">{{_constants_.propertyPanel.reqDefinition}} </span><i class="reqDefinitionSettings" aria-hidden="true"></i>
+                <i ng-if="requestServiceData === ''" class="fa fa-exclamation-circle notify-icon error-color" title="No request definition"></i>
+            </div>
+            <p class="serviceHeaderText">{{_constants_.propertyPanel.reqDefinitionText}}</p>
+            <p ng-if="requestServiceData === ''" class="noRequestDefinition">{{_constants_.propertyPanel.noReqDefinition}}</p>
+            <div style="display: inline-block;width: 100%;padding: 0 15px;">
+                <textarea ng-show="requestServiceData !== '' && nodeInfo.nodeInfo.serviceNodeType === 'custom'" class="requestDataBox" type="text" disabled="disabled">{{requestServiceData}}</textarea>
+            </div>
+            <span ng-if="requestServiceData === ''" class="define-request" ng-click="requestDefinition('smartalert')">{{'def_request'| i18nString}}</span>
+            <span ng-if="requestServiceData !== ''" class="define-request edit pointerEventsImp" ng-click="requestDefinition('smartalert')">{{nodeInfo.displayMode!=='edit'?viewRequest:manageRequest}}</span>
+            <div class="connectionRules sampleResponse" ng-if="nodeInfo.nodeInfo.serviceNodeType === 'custom'"><span class="tabLabel">{{_constants_.propertyPanel.sampleResponse}} </span>
+                <i class="sampleResponseSettings" aria-hidden="true"></i>
+                <i ng-if="(!nodeInfo.nodeInfo.sampleResponse || !nodeInfo.nodeInfo.sampleResponse.length) && nodeInfo.nodeInfo.serviceNodeType === 'custom'"
+                   class="fa fa-exclamation-circle notify-icon warning-color" title="Providing a sample response is highly recommended"></i>
+                <i ng-if="(nodeInfo.nodeInfo.sampleResponse && nodeInfo.nodeInfo.sampleResponse.length) && nodeInfo.nodeInfo.serviceNodeType === 'custom'"
+                   class="fa fa-check-circle notify-icon success-color"></i>
+            </div>
+            <p class="serviceHeaderText" ng-if="nodeInfo.nodeInfo.serviceNodeType === 'custom'">{{_constants_.propertyPanel.sampleResponseText}}</p>
+            <div class="sampleResponseTextDiv pointerEventsImp" ng-click="addSampleResponse($index)" ng-repeat="sampleResponse in nodeInfo.nodeInfo.sampleResponse track by $index">
+                <p class="response">{{sampleResponse.name}} {{sampleResponse.isDefault?default:""}}</p>
+                <p class="response edit" ng-hide="nodeInfo.displayMode === 'view'" ng-click="deleteSampleResponse($index, $event)"><i class="fa fa-trash-o"></i></p>
+            </div>
+            <span ng-if="nodeInfo.nodeInfo.serviceNodeType === 'custom'" class="define-request sampleResponse" ng-click="addSampleResponse( - 1)">{{'add_res'| i18nString}}</span>
+        </div>
+        <div class = "serviceNodeClass" ng-if = "nodeInfo.nodeInfo.serviceNodeType === 'customauthentication'">
+            <div class="connectionRules userPrompt">
+                <span class="tabLabel">{{'response'| i18nString}}</span>
+                <span class="tabLabelManage pull-right" ng-click="editPrompt(nodeInfo.nodeInfo.message, true)">{{'manage'| i18nString}}</span>
+            </div>
+            <div class="customAuthenticationServiceSentence">{{'def_auth'| i18nString}} <i class="fa fa-question-circle" aria-hidden="true" tooltip-placement = "top" tooltip= "{{'url_tooltip_desc'| i18nString}}" ></i> </div>
+            <div ng-repeat="prompt in userPromptsCopy track by $index" class="editSynonymDiv">
+                <div class="promptMessageDiv">
+                    <span class="ovalSpan">
+                        <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                            <div class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                        </span>
+                        <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+
+
+                        <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                            <div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                        </span>
+                        <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="prompt.isMention === false" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                    </span>
+                    <div class="promptDataBoxDiv">
+                        <textarea ng-if="prompt.type !== 'uxmap'" class="form-control promptDataBox" ng-focus="showPromptSaveTip($index)" ng-blur="showPromptSaveTip($index)"
+                                  ng-keydown="auto_grow_prompts($event, $index)" typutteranceDataBoxe="text" ng-model="prompt.text"
+                                  auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                        <textarea ng-if="prompt.type === 'uxmap'" class="form-control promptDataBox inactive" readonly="readonly" ng-click="editPrompt(nodeInfo.nodeInfo.message, true, $index)"
+                                  ng-keydown="auto_grow_prompts($event, $index)" type="text">{{'js_msg'| i18nString}}</textarea>
+                        <span class="deletePrompt"><i class="utteranceSaveSpin serviceCheck" ng-class="['promptSaveSpin' + $index]" aria-hidden="true"></i></span>
+                        <span ng-class="['deletePrompt deletePromptIcon' + $index]">
+                            <i ng-click="deleteEditPrompts($index, 'prompt message')" class="fa btx-delete-1 trashIcon"></i>
+                        </span>
+                    </div>
+                </div>
+                <p class="utteranceSaveTip" ng-class="['promptSaveTip' + $index]">{{'press_save'| i18nString}}</p>
+            </div>
+        </div>
+        <div class="advanced pointerEventsImp" ng-class="{'service-height':nodeInfo.nodeInfo.type === 'service'}" ng-if="nodeInfo.nodeInfo.serviceNodeType === 'custom'">
+            <accordion>
+                <accordion-group class="panel panel-default" ng-init="status={isOpen:nodeInfo.dialogNodeInstance.type.toLowerCase() === 'message'?true:false}" is-open="status.isOpen">
+                    <div class="accordion-group-wrp">
+                        <accordion-heading>
+                            <div data-prop-section-id="advanced">
+                                <div class="connectionRules" ng-class="{'advActive': status.isOpen}">
+                                    <span class="tabLabel">{{'advanced_ctrl'| i18nString}}</span>
+                                    <i class="savingIndicator"></i>
+                                    <img class="ivrIcon" ng-show="!status.isOpen" ng-src="{{rightArrow}}" />
+                                    <img class="ivrIcon" ng-show="status.isOpen" ng-src="{{closeIcon}}" />
+                                </div>
+                            </div>
+                        </accordion-heading>
+                        <div class="accordion-panel-body" ng-class="{'isReadOnly':readonly}">
+                            <div class="advanced-body">
+                                <div class="adv-item timeout">
+                                    <div class="adv-item-wrp">
+                                        <div class="fontsize10">
+                                            {{'timeout'| i18nString}} 
+                                            <i class="savingIndicator serviceTimeouts"></i>
+                                        </div>
+                                        <p class="node-connDiv fontsize10">
+                                            {{'terminate_call'| i18nString}}
+                                        </p>
+                                        <select class="form-control select1 unsortable" ng-options="toInt(key) as value for (key,value) in serviceTimeouts" ng-model="nodeInfo.nodeInfo.serviceAPITimeout" ng-change="saveServiceTimeout()">
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+          <div class="advanced pointerEventsImp" ng-class="{'service-height':nodeInfo.nodeInfo.type === 'service'}" ng-if=" nodeInfo.nodeInfo.serviceNodeType === 'customauthentication'">
+            <accordion>
+                <accordion-group class="panel panel-default" ng-init="status={isOpen:nodeInfo.dialogNodeInstance.type.toLowerCase() === 'message'?true:false}" is-open="status.isOpen">
+                    <div class="accordion-group-wrp">
+                        <accordion-heading>
+                            <div data-prop-section-id="advanced">
+                                <div class="connectionRules" ng-class="{'advActive': status.isOpen}">
+                                    <span class="tabLabel">{{'advanced_ctrl'| i18nString}}</span>
+                                    <i class="savingIndicator"></i>
+                                    <img class="ivrIcon" ng-show="!status.isOpen" ng-src="{{rightArrow}}" />
+                                    <img class="ivrIcon" ng-show="status.isOpen" ng-src="{{closeIcon}}" />
+                                </div>
+                            </div>
+                        </accordion-heading>
+                        <div class="accordion-panel-body" ng-class="{'isReadOnly':readonly}">
+                            <div class="advanced-body">
+                                <div class="adv-item timeout">
+                                    <div class="adv-item-wrp">
+                                        <div class="fontsize10">
+                                            {{'timeout'| i18nString}} 
+                                            <i class="savingIndicator serviceTimeouts"></i>
+                                        </div>
+                                        <p class="node-connDiv fontsize10">
+                                            {{'terminate_call'| i18nString}}
+                                        </p>
+                                        <select class="form-control select1 unsortable" ng-options="toInt(key) as value for (key,value) in serviceTimeoutsAuth" ng-model="nodeInfo.nodeInfo.serviceAPITimeout" ng-change="saveServiceTimeout()">
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+
+
+
+    </div>
+    <!-- Script -->
+    <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'script'" class="scriptDivContainer freeze">
+        <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.configText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        <div class="entityHeaderTextDiv displayTable">
+            <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+            <p class="headerTip">{{_constants_.getNewMessage(_constants_.propertyPanel.configTextTip, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        </div>
+        <div class="connectionRules"><span class="tabLabel">{{_constants_.propertyPanel.generalSettings}} </span><i class="serviceGeneralSettings" aria-hidden="true"></i></div>
+        <div class="generalInfoEdit">
+
+            <span class="label col-xs-2 name">{{_constants_.propertyPanel.name}}</span>
+            <div class="col-xs-10 inputDiv">
+                <input maxlength="256" class="form-control nameInput node-name" type="text" ng-model="nodeName" ng-keyup="onInputKeyup($event)"
+                       ng-keypress="saveServicePropertyName($event)" ng-blur="saveServicePropertyName($event)" />
+            </div>
+
+            <span class="label col-xs-2 name">{{_constants_.propertyPanel.displayName}}</span>
+            <div class="col-xs-10 inputDiv">
+                <input maxlength="256"
+                       class="form-control nameInput node-label"
+                       type="text" 
+                       ng-model="nodeLabel" 
+                       ng-keyup="onInputKeyup($event, 'label')"
+                       ng-keypress="saveServicePropertyName($event, 'label')" 
+                       ng-blur="saveServicePropertyName($event, 'label')" />
+            </div>
+        </div>
+        <div>
+            <div class="connectionRules scriptDefinition">
+                <span class="tabLabel">{{_constants_.propertyPanel.scriptDefinition}}</span>
+                <i class="scriptDefinitionSettings" aria-hidden="true"></i>
+                <i ng-if="scriptData === ''" class="fa fa-exclamation-circle notify-icon error-color" title="No script definition"></i>
+            </div>
+            <p class="scriptHeaderText h-auto">{{_constants_.propertyPanel.scriptDefinitionText}}</p>
+            <p ng-if="scriptData === ''" class="noScriptDefinition">{{_constants_.propertyPanel.noScriptDefinition}}</p>
+            <div style="display: inline-block;width: 100%;padding: 0 15px;">
+                <textarea ng-if="scriptData != ''" class="scriptBox" type="text" readonly>{{scriptData}}</textarea>
+            </div>
+            <span ng-if="scriptData === ''" class="define-script" ng-click="scriptDefinition()">{{'def_script'| i18nString}}</span>
+            <span ng-if="scriptData !== ''" class="define-script edit pointerEventsImp" ng-click="scriptDefinition()">{{nodeInfo.displayMode!=='edit'?viewScript:editScript}}</span>
+        </div>
+    </div>
+    <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() != 'intent' && allowNamespace">
+        <div class="connectionRules userPrompt"><span class="tabLabel">{{'var_namespaces'| i18nString}}</span></div>
+        <div class="man-var-wrap">
+            <div class="group-radiobutton">
+                <div class="heading-title">{{'associate_name_radio'| i18nString}}</div>
+                <div class="kr-sg-radiobutton d-block freeze">
+                    <input id="varManageUseRadio" ng-click="propertyNamespaceCb.propertyPanelRadio('use')" ng-model="rad.manageVar" name="varManageRadio" class="radio-custom" type="radio" value="use">
+                    <label for="varManageUseRadio" class="radio-custom-label">{{'use_name_radio'| i18nString}}</label>
+                </div> 
+                <div class="kr-sg-radiobutton d-block freeze">
+                    <input id="varManageCustRadio" ng-click="propertyNamespaceCb.propertyPanelRadio('customize')" ng-model="rad.manageVar" name="varManageRadio" class="radio-custom" type="radio" value="customize">
+                    <label for="varManageCustRadio" class="radio-custom-label">{{'cust_node'| i18nString}}</label>
+                </div> 
+            </div>
+            <div ng-if="rad.manageVar == 'customize'" id="propertyPanelNameWrap">
+                <!-- class  accordion-namespaces-comp has some properties verify before removing it-->
+                <namespaces-search-accordions man-var-cb="propertyNamespaceCb" class="accordion-namespaces-comp"></namespaces-search-accordions>
+            </div>
+        </div>
+    </div>
+    <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'entity'">
+        <div class="connectionRules userPrompt"><span class="tabLabel">{{'redactionPiiData'| i18nString}}<i class="piiDataToggle"></i></span></div>
+        <div class="man-var-wrap">
+            
+            <div class="group-radiobutton">
+                <div class="heading-title">{{'redactionPiiDataDesc'| i18nString}}</div>
+                <div class="kr-sg-radiobutton d-block freeze">
+                    <input id="PiiManageRadio" ng-change="savePiiDataOptions()" ng-model="status.piiDataEnabled" name="PiiManageRadio" class="radio-custom" type="radio" value="false">
+                    <label for="PiiManageRadio" class="radio-custom-label">{{'doNotDeidentify'| i18nString}}</label>
+                </div> 
+                <div class="kr-sg-radiobutton d-block freeze">
+                    <input id="PiiOriginalRadio" ng-change="savePiiDataOptions()" ng-model="status.piiDataEnabled" name="PiiOriginalRadio" class="radio-custom" type="radio" value="true">
+                    <label for="PiiOriginalRadio" class="radio-custom-label">{{'usePiiOriginal'| i18nString}}</label>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <!-- Process -->
+    <div ng-if="nodeInfo.nodeInfo.type === 'process'">
+        <div class="connectionRules">
+            <span class="tabLabel">{{'dialog_contextmapping' | i18nString}}</span>
+            <i class="contextMapping" aria-hidden="true"></i>
+            <p class="entityHeaderText">{{'hint_context' | i18nString}}<span class="entityHeaderEx">Eg: context.<,variable>,.<,variable>,</span></p>
+            <div class="row selectedProcess paddingBottom10" ng-show="process.selectedProcess.variables.length && nodeInfo.nodeInfo.processType === 'trigger'" ng-repeat="variable in process.selectedProcess.contextKeyValues track by $index">
+                <div class="col-xs-3 marginTop5" >
+                   <div class="font-weight-500">{{variable.key}}</div>
+                </div>
+                <div class="col-xs-8">
+                    <input type="text" context-typeahead="" name="value" placeholder="Enter value" class="form-control" id="contextvalue" ng-model="variable.value" ng-keydown="addContextValue($event,$index,variable)">
+                </div>
+                <div class="col-xs-1">
+                     <span class="savingValue"><i class="contextValue" ng-class="['contextSaveSpin' + $index]" aria-hidden="true"></i></span>
+                </div>
+            </div>
+            <div class="row selectedProcess paddingBottom10" ng-show="nodeInfo.nodeInfo.processType === 'participate'">
+                <div class="col-xs-3 marginTop5" >
+                   <div class="font-weight-500">Task ID</div>
+                </div>
+                <div class="col-xs-8">
+                    <input type="text" context-typeahead="" name="value" placeholder="Enter value" class="form-control" id="contextvalue" ng-model="processTypeContext['taskId']" ng-keydown="addParticipateContextValue($event,0)">
+                </div>
+                <div class="col-xs-1">
+                     <span class="savingValue"><i class="contextValue" ng-class="['contextParticipateSaveSpin' + 0]" aria-hidden="true"></i></span>
+                </div>
+            </div>
+            <div class="row selectedProcess paddingBottom10" ng-show="nodeInfo.nodeInfo.processType === 'participate'">
+                <div class="col-xs-3 marginTop5" >
+                   <div class="font-weight-500">Action ID</div>
+                </div>
+                <div class="col-xs-8">
+                    <input type="text" context-typeahead="" name="value" placeholder="Enter value" class="form-control" id="contextvalue" ng-model="processTypeContext['action']" ng-keydown="addParticipateContextValue($event,1)">
+                </div>
+                <div class="col-xs-1">
+                     <span class="savingValue"><i class="contextValue" ng-class="['contextParticipateSaveSpin' + 1]" aria-hidden="true"></i></span>
+                </div>
+            </div>
+           
+        </div>
+        
+    </div>
+</div>

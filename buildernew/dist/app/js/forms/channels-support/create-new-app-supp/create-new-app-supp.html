@@ -1,0 +1,88 @@
+
+<div id="createNewAppSupport">
+    <div ng-if="cb.loadingAppDetails" class="new-app-channel-loading">
+        <i class="fa fa-spinner"></i>
+        {{'loading_config'| i18nString}} 
+    </div>
+    <div class="channel-content ivr-channel" ng-if="!cb.loadingAppDetails">
+        <div class="row form-group col-xs-12 paddingLeft0 mb-0">
+            <div  ng-show="apps.length < 1" class="apps-empty">
+                <div>{{'you_dont_have_any_apps_now'| i18nString}}</div>
+                <div ng-class="{'screenFreeze':streamState=='published'}">{{'bt_chnl_rtm_chnl_create_app'| i18nString}} <a ng-click="createApp()">{{'create_app'| i18nString}}</a></div>
+                <div ng-bind-html="'read_app_creation'| i18nString:({link:$root.helpLinks.CREATE_APP})"> </div>
+            </div>
+            <div class="form-ele-title col-xs-8 noPadding noMargin" ng-show="apps.length > 0" ><label class="required-field">{{'Bt_chnl_config_selectApp_label'| i18nString}}</label></div>
+            <div class="col-xs-8 selectAppInput noPadding" ng-show="apps.length > 0" ng-class="{'screenFreeze':streamState=='published'}">
+                <!-- <select id="select2" ui-select2="selectConfig" ng-disabled="isNonEditable" data-placeholder="{{'choose'| i18nString}}" ng-model="sel.selectedApp">
+                    <option value=""></option>
+                    <option value="create" ng-class="{'screenFreeze':streamState=='published'}">{{'create_app'| i18nString}}</option>
+                    <optgroup label="{{'select_app'| i18nString}}" >
+                        <option ng-repeat="app in apps" ng-selected="{{app.clientId === cb.selectedAppView.clientId}}" value="{{app.clientId}}" >{{app.appName}}</option>
+                    </optgroup>
+                </select> -->
+                <div class="kr-sg-dropdowns selectapp-dropdown">                                        
+                    <div class="dropdown dropdown-open">
+                        <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{cb.selectedAppView.appName || 'Choose'}}</button>                                            
+                        <ul class="dropdown-menu content-menu" perfect-scroll style="max-height: 250px;">
+                          <li ng-click="createApp()" ng-class="{'screenFreeze':streamState.state=='published'}"><a >{{'create_app'| i18nString}}</a></li>
+                          <li class="selectTitle">{{'select_app'| i18nString}}</li>
+                          <li ng-repeat="app in apps" ng-click="onSelectedApp(app.clientId)"><a title="{{app.appName}}">{{app.appName}} <span class="check-icon pull-right" ng-if="cb.selectedAppView.clientId === app.clientId"><i class="btx-check"></i></span></a></li>
+                        </ul>
+                      </div>
+                </div>
+            </div>
+            <div class="col-xs-3 appButtonsDiv" ng-hide="isNonEditable" ng-class="{'screenFreeze':streamState=='published'}">
+                <span class="appButtons displayFlex">
+                    <button ng-show="cb.selectedAppView.clientId" ng-click="editApp()" type="button" class="btn marginRight10" >{{'edit'| i18nString}}</button>
+                    <button ng-click="createApp()" type="button" class="btn" >{{'add'| i18nString}}</button>
+                </span>
+            </div>
+        </div>
+        <div class="col-xs-12 ivr-channel noPadding" ng-show="cb.selectedAppView.clientId">
+            <div class="edit-appDetailsDiv">
+                <div class="row form-group">
+                    <div class="form-ele-title col-xs-10 " >{{'botName'| i18nString}}</div>
+                    <div class="col-xs-10 noPaddingRight">
+                        <input id="botname" readonly class="form-control" ng-model='stream.name' type="text"/>
+                    </div>
+                    <div class="col-xs-2">
+                        <button  data-clipboard-target="#botname"  type="button" class="btn btn-primary btnCopySave" >{{'copy'| i18nString}}</button>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="form-ele-title col-xs-10 " >{{'bot_id'| i18nString}}</div>
+                    <div class="col-xs-10 noPaddingRight">
+                        <input readonly id="botId" class="form-control" ng-model='stream._id' type="text"/>
+                    </div>
+                    <div class="col-xs-2">
+                        <button  data-clipboard-target="#botId"  type="button" class="btn btn-primary btnCopySave" >{{'copy'| i18nString}}</button>
+                    </div>
+                </div>
+                <div class="row form-group" ng-show="cb.selectedAppView.clientId">
+                    <div class="form-ele-title col-xs-8" >{{'clientId_label'| i18nString}}</div>
+                    <div class="col-xs-10 noPaddingRight">
+                        <div>
+                            <input id="clientId_addChnl" readonly class="form-control" value='{{cb.selectedAppView.clientId}}' type="text"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <button  data-clipboard-target="#clientId_addChnl"  type="button" class="btn btn-primary btnCopySave" >{{'copy'| i18nString}}</button>
+                    </div>
+                </div>
+                <div class="row form-group"  ng-show="cb.selectedAppView.clientId">
+                    <div class="form-ele-title col-xs-8" >{{'clientsecret_label'| i18nString}}</div>
+                    <div class="col-xs-10 noPaddingRight">
+                        <div>
+                            <input ng-show="secretKeyShown" id="secretKeyId_addChnl" readonly class="form-control" value='{{cb.selectedAppView.clientSecret}}' type="text"/>
+                            <input ng-hide="secretKeyShown" disabled class="form-control" value='{{cb.selectedAppView.clientSecret| mask}}' type="text"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <button ng-show="secretKeyShown" data-clipboard-target="#secretKeyId_addChnl"  type="button" class="btn btn-primary btnCopySave" >{{'copy'| i18nString}}</button>
+                        <button ng-hide="secretKeyShown" ng-click="showHideSecret()" type="button" class="btn btn-primary btnCopySave" >{{'view'| i18nString}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

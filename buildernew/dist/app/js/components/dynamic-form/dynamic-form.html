@@ -1,0 +1,157 @@
+<div class="form-container"
+     ng-class="{true:'col-xs-12 grayBG',false:''}[nestedform?true:false]"
+    >
+    <div class="pageFlow">
+        <ng-form name="dynamic.payloadForm" class="wf-form"  novalidate ng-if="showFields">
+            <fieldset>
+                <div ng-repeat="field in fieldsInfo track by $index" class="col-xs-12 noPadding">
+
+                    <bt-textbox  
+                        ng-if     = "field.fieldType   == 'textbox' && field.visibility !== 'hidden'" 
+                        ng-model  = "payload[field.key]"  
+                        schema    = "field"
+                        validator = "validators"
+                    >
+                    </bt-textbox>
+
+                    <bt-textarea 
+                        ng-if     = "field.fieldType   == 'textarea' && field.visibility !== 'hidden'" 
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-textarea>
+
+                    <bt-url 
+                        ng-if     = "field.fieldType   == 'url' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-url>
+
+                    <bt-label 
+                        ng-if     = "field.fieldType   == 'label' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field" >
+                    </bt-label>
+
+                    <bt-password 
+                        ng-if     = "field.fieldType   == 'password' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-password>
+
+                    <bt-email 
+                        ng-if     = "field.fieldType   == 'email' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-email>
+
+                    <bt-checkbox 
+                        ng-if     = "field.fieldType   == 'checkbox' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-checkbox>
+
+                    <bt-checkbox 
+                        ng-if     = "field.fieldType   == 'staticDropdownCB' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-checkbox>
+
+                    <bt-date 
+                        class     = "datePickerTbody" 
+                        ng-if     = "field.fieldType == 'date' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-date>
+
+                    <bt-datetime 
+                        ng-if     = "field.fieldType == 'datetime' && field.visibility !== 'hidden'" 
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators"
+                        class     = "datePickerTbody">
+                    </bt-datetime>
+
+                    <bt-location 
+                        ng-if     = "field.fieldType == 'location' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-location>
+
+                    <bt-timezone
+                        ng-if     = "field.fieldType == 'timezone' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        ng-hide   = "false">
+                    </bt-timezone>
+
+                    <bt-fileupload 
+                        ng-if     = "field.fieldType == 'file' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators" >
+                    </bt-fileupload>
+
+                    <bt-staticdropdown
+                        ng-if     = "field.fieldType == 'staticDropDown' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"  
+                        schema    = "field"  
+                        validator = "validators">
+                    </bt-staticdropdown>
+
+                    <bt-dynamicdropdown 
+                        ng-if     = "field.fieldType == 'dynamicDropDown' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-dynamicdropdown>
+
+                    <bt-typeahead 
+                        ng-if     = "field.fieldType   == 'typeahead' && field.visibility !== 'hidden'"  
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-typeahead>
+
+                    <bt-nestedform 
+                        ng-if     = "field.fieldType == 'nestedform' && field.visibility !== 'hidden'"
+                        ng-model  = "payload[field.key]"
+                        schema    = "field"
+                        validator = "validators">
+                    </bt-nestedform>
+
+                    <!--
+
+                    <bt-radio ng-if="field.fieldType == 'radio' && field.visibility !== 'hidden'"  ng-model="payload[field.key]"  schema="field"  validator="validators">
+                    </bt-radio>
+
+                    <bt-directory ng-if="field.fieldType == 'directory' && field.visibility !== 'hidden'"  ng-model="payload[field.key]"  schema="field"  validator="validators" auth-id="authId" >
+                    </bt-directory>
+
+                    <bt-searchcontrol ng-if="field.fieldType == 'search' && field.visibility !== 'hidden'"  ng-model="payload[field.key]"  schema="field"  validator="validators" auth-id="authId" >
+                    </bt-searchcontrol>
+
+                    -->
+                </div>
+            </fieldset>
+            <!-- <fieldset ng-if="hideControls">
+                <div class="controls form-group" ng-class="{true:'',false:'modal-footer customFooter'}[nestedform?true:false]">
+                    <div class="pull-right">
+                        <button class="btn closeCancel"  ng-click="onCancel()">Close</button>
+                        <button class="btn" ng-class="{true:'',false:'subPlayloadBTN'}[nestedform?true:false]" ng-click="submit(dynamic.payloadForm)">
+                            <span ng-if="!nestedform"><i ng-if= "isTestingGoing" class="fa fa-spinner fa-spin"></i>{{(isTestingGoing)?' Testing...':'Test'}}</span>
+                            <span ng-if="nestedform">Add</span>
+                        </button>
+                    </div>
+                </div>
+            </fieldset> -->
+        </ng-form>
+    </div>
+</div>

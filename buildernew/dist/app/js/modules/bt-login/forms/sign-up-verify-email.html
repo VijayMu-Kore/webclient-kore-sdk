@@ -1,0 +1,21 @@
+<div ng-show="error" class='error-message'>{{errorMsg}}</div>
+<form novalidate name="verifyEmailForm" class="login-form">
+    <!-- <div class="logoInCard">
+        <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+       </div> -->
+    <p class="almost">{{'almost_done' | i18nString}}</p>
+    <p class="verLink">{{'verify_email_form' | i18nString}} <span class="mailID">{{emailPhone}}</span> <br>
+        {{'please_check_your_email' | i18nString}}</p>
+    <p class="linkValidity">{{"signup_link_validity_desc" | i18nString}}</p>
+    <p class="resendMail">{{'did_not_receive_signUp_email' | i18nString}} <a  data-ng-click="resendEmail()" animate-on-change>{{emailSent}}</a></p>
+    <!-- Text -->
+    
+    <!-- <p>{{'verify_email_form'| i18nString}} <span class="cta-text">{{emailPhone}}</span>. {{'protect_check'| i18nString}}</p> -->
+    
+    <!-- Buttons -->
+    <!-- <div class="button-group">
+        <button data-ng-click="changeEmailPhone()" type="button" class="btn btn-default">Change email</button>
+        <button data-ng-click="resendEmail()" animate-on-change value="emailSent" type="button" class="btn btn-primary">{{emailSent}}</button>
+    </div> -->
+
+</form>

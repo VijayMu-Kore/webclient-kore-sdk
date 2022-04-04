@@ -1,0 +1,74 @@
+<form novalidate name="forgotPassForm" ng-submit="submitResetLink(forgotPassForm)" class="login-form"  ng-class="{'forgetTitle': resetLinkSent}">
+    <div class="logoInCard">
+        <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+        <img ng-src="{{platform}}" alt="Kore" class="platformLogo">
+       </div>
+    <div class="loginDetails">
+        <p class="cardTitle">{{'formtitles_forgot' | i18nString}}</p>
+        <p class="cardDesc"   data-ng-show="!resetLinkSent">{{'forget_password' | i18nString}}</p>
+    </div>
+    <!-- Email or Phone -->
+    <div class="form-group">
+        
+        <!-- Country codes -->
+        <div data-ng-show="displayCountryCodes" uib-dropdown auto-close="outsideClick" class="country-codes">
+            <button uib-dropdown-toggle type="button">
+                {{selectedCountryCode.value}}
+            </button>
+
+            <div uib-dropdown-menu class="dropdown-menu dropdown-menu-left">
+
+                <!-- Search -->
+                <div class="navbar-search-wrapper">
+                    <div class="navbar-search">
+                        <div class="search-bar">
+                            <input type="text" ng-model="searchCountryCodes" class="form-control" placeholder="{{'search_name'| i18nString}}">
+                        </div>
+                    </div>
+                </div>
+
+                <perfect-scrollbar suppress-scroll-X="true" refresh-on-change="[countryCodes, searchCountryCodes]" class="country-codes-content">
+                    <ul>
+                        <li data-ng-repeat="item in countryCodes | filter:{name: searchCountryCodes}">
+                            <a data-ng-click="selectCountryCode(item)">
+                                <span class="name">{{item.name}}</span>
+                                <span class="value">{{item.value}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </perfect-scrollbar>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <input required 
+                   data-ng-change="error=false"
+                   ng-model="emailPhone" 
+                   name="emailPhone" 
+                   email-phone 
+                   email-only="true" 
+                   phone-codes="phoneCode(value)" 
+                   class="form-control" 
+                   autocomplete="off" 
+                   data-ng-show="!resetLinkSent">
+                   <!-- <span class="movingingLabel">{{'enter_your_email'| i18nString}}</span> -->
+        </div>
+    </div>
+
+    
+
+    <!-- Buttons -->
+    <p data-ng-show="resetLinkSent" class="fade-animation paddingTo30">{{'forgot_password_link_sent' | i18nString}} </p>
+    <p data-ng-show="resetLinkSent" class="alertNote">{{'forgot_note' | i18nString}}</p>
+    <!-- <button class="btn btn-primary resend" data-ng-show="resetLinkSent"><a  type="submit">{{emailResetLinkLabel}}</a></button> -->
+    <button class="btn btn-primary resend" data-ng-show="resetLinkSent"><span class="underline">{{emailResetLinkLabel}}</span></button>
+    <button data-ng-click="switchForms('credentials')"   data-ng-show="resetLinkSent"  type="button" class="btn btnNObg btnNObg">{{'back_to_login' | i18nString}}</button>
+    <div class="button-group " data-ng-show="!resetLinkSent" >
+        <button ng-disabled="!forgotPassForm.$valid" type="submit" class="btn btn-primary">{{emailResetLinkLabel}}</button>
+        <button data-ng-click="switchForms('credentials')"  type="button" class="btn btnNObg">{{'back_to_login' | i18nString}}</button>
+    </div>
+    <div ng-show="error" class='error-message'>{{errorMsg}}</div>
+    <!-- Text Group -->
+    
+
+</form>

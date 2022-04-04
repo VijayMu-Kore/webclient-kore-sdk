@@ -1,0 +1,337 @@
+<div class="loadingSmallTalkContent" ng-show="loadingSmallTalk">
+     <span class="spinner-text">
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+        <span class="spinner-text-content">{{'please_wait'| i18nString}}</span>
+    </span>
+</div>
+<div class="smallTalkContainer" ng-if="!showNoMigrate && !loadingSubMenu && !loadingSmallTalk" ng-init="bulderReloaded()">
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">Small Talk</p>
+        </div>
+    </div>
+    <div class="emptyStateContainer">
+        <div class="emptyState">
+            <div class="emptyImage">
+                <img ng-src="{{emptyStateIcon_smalltalk_proceed}}" class="emptyImg">           
+            </div>               
+            <div class="emptyStateDesc">{{'small_talk_desc'| i18nString}} <a target="_blank" ng-href="{{$root.helpLinks.SMALL_TALK}}">{{'learn_more'| i18nString}}</a></div>
+            <div class="help_hint_data">
+                <div class="bulb-icon">
+                    <i class="btx-bulb"></i>
+                </div>
+                <div class="hint-content">{{'general_small_talk'| i18nString}}</div>
+            </div>
+            <div class="generateBtn">
+                <button class="btn btnSolidBlue"  ng-hide="getStreamState('BOTBUILDER_TASKS')" ng-disabled="!enableProceed" ng-click="proceedSmallTalk();">{{'proceed'| i18nString}}</button>                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="smallTalk-emptyState" ng-if="(showNoMigrate && groups.length === 0 && !loadingSmallTalk)" ng-init="bulderReloaded()" ng-class="{'read-only':accessRights === 'VIEW' || botDetails.streamState === 'published'}">
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">Small Talk</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch displayNone">
+            <div class="searchComponent">
+                <input  type="text" ng-init="searchQuery = ''" ng-model="searchQuery" placeholder="{{'search_name'| i18nString}}">
+                <i class="btx-search"></i>
+                <i class="btx-close" ng-click="searchQuery = ''" ng-class="{displayNone: !searchQuery.length}"></i>
+            </div>
+            <div class="creationButton ">
+                <button class="titleBTN" ng-show="callbacks.modeOfAccess !== 'VIEW'" ng-click="createGroup()" title="{{'small_talk_newgroup'| i18nString}}">{{'small_talk_newgroup'| i18nString}}</button>
+            </div>
+            <div class="titleOverflow">
+                <div class="dropdown">
+                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" ng-hide="callbacks.modeOfAccess === 'VIEW' || botDetails.streamState === 'published'" ng-click="importSmallTalk()">
+                            <div class="dropdown">
+                                <div class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="menuName">{{'import'| i18nString}}</span>
+                                </div>
+                            </div>
+                        </li>
+                         <li class="dropdown-item" ng-click="exportSmallTalk('tsv')">
+                            <div class="dropdown">
+                                <div class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="menuName">{{'export_tsv'| i18nString}}</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="dropdown-item" ng-click="exportSmallTalk('json')">
+                            <div class="dropdown">
+                                <div class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="menuName">{{'export_json'| i18nString}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="emptyStateContainer">
+        <div class="emptyState">
+            <div class="emptyImage">
+                <img ng-src="{{emptyStateIcon_smalltalk}}" class="emptyImg">
+            </div>
+            <div class="mainTitle">{{'no_small_talk_available'| i18nString}}</div>
+            <div class="emptyStateDesc">{{'small_talk_desc_empty'| i18nString}} <a target="_blank" ng-href="{{$root.helpLinks.SMALL_TALK}}">{{'learn_more'| i18nString}}</a></div>
+            <div class="generateBtn">
+                <button class="btn btnSolidBlue" ng-show="callbacks.modeOfAccess !== 'VIEW'"  ng-click="createGroup()">{{'create_new'| i18nString}}</button>
+                <button class="learnmoreBTN" ng-click="importSmallTalk()">{{'import'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="smallTalkGroups" ng-init="bulderReloaded()" ng-if="(groups.length > 0 && showNoMigrate && !loadingSmallTalk)">
+    <div class="panel-default">
+            <div class="smTlakContainer">
+                <div class="row btnSearchTitle">
+                    <div class="col-xs-6 leftTitle">
+                        <p class="pageTitle">{{'small_talk'| i18nString}}</p>
+                    </div>
+                    <div class="col-xs-6 rightBTNSearch">
+                        <div class="searchComponent">
+                            <input  type="text" ng-init="searchQuery = ''" ng-model="searchQuery" placeholder="{{'search_name'| i18nString}}">
+                            <i class="btx-search"></i>
+                            <i class="btx-close" ng-click="searchQuery = ''" ng-class="{displayNone: !searchQuery.length}"></i>
+                        </div>
+                        <div class="creationButton ">
+                            <button class="titleBTN" ng-show="callbacks.modeOfAccess !== 'VIEW'" ng-click="createGroup()" title="{{'small_talk_newgroup'| i18nString}}">{{'small_talk_newgroup'| i18nString}}</button>
+                        </div>
+                        <div class="titleOverflow">
+                            <div class="dropdown">
+                                <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                    <i class="btx-overflow"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item" ng-hide="callbacks.modeOfAccess === 'VIEW' || botDetails.streamState === 'published'" ng-click="importSmallTalk()">
+                                        <div class="dropdown">
+                                            <div class="dropdown-toggle" data-toggle="dropdown">
+                                                <span class="menuName">{{'import'| i18nString}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                     <li class="dropdown-item" ng-click="exportSmallTalk('tsv')">
+                                        <div class="dropdown">
+                                            <div class="dropdown-toggle" data-toggle="dropdown">
+                                                <span class="menuName">{{'export_tsv'| i18nString}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="dropdown-item" ng-click="exportSmallTalk('json')">
+                                        <div class="dropdown">
+                                            <div class="dropdown-toggle" data-toggle="dropdown">
+                                                <span class="menuName">{{'export_json'| i18nString}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            <!-- <div class="smallTalkActionsHeader">
+                <div class="smallTalkSearch">
+                    <input class="searchInput form-control"  type="text" ng-init="searchQuery = ''" ng-model="searchQuery" placeholder="{{'search_name'| i18nString}}">
+                  
+                    <img ng-src="{{searchIcon}}" ng-show="searchQuery === '' " class="searchBar fa fa-search">
+                    <img ng-src="{{closeIcon}}" ng-show="searchQuery !== '' " class="searchBar fa fa-remove" ng-click="searchQuery=''">
+                </div>
+                <span class="new-group">
+                    <button class="btn overflow_btn" ng-click="createGroup()" title="{{'small_talk_newgroup'| i18nString}}"></button>
+                    <a href="#" class="smEllipsis dropdown-toggle" data-toggle="dropdown">
+                            <img ng-src="{{ellipsisDark}}" class="ellipsisDark">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="menuOption" ng-hide="accessRights === 'VIEW' || botDetails.streamState === 'published'">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="menuName" ng-click="importSmallTalk()">{{'import'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                             <li class="menuOption">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="menuName" ng-click="exportSmallTalk('tsv')">{{'export_tsv'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="menuOption">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="menuName" ng-click="exportSmallTalk('json')">{{'export_json'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                </span>
+            </div> -->
+            <div class="panel-table col-xs-12 tableContainer smallTalkTableContainer">
+                <div class="panel-table-header">
+                    <div class="row tableHeaderRow">
+                        <div class="col-xs-3 title cursor-pointer"> {{'group_name'| i18nString}}</div>
+                        <div class="col-xs-4 title cursor-pointer">{{'usersays_label'| i18nString}}</div>
+                        <div class="col-xs-4 title botSays">{{'bot_says_caps'| i18nString}}</div>
+                    </div>
+                </div>
+                <div class="panel-table-body tableBodyRow" ng-repeat="group in groups | filter:searchQuery">
+                    <div class="row" >
+                        <div class="col-xs-3 cursor-pointer" ng-click="openGroup(group)" tooltip-placement="bottom" tooltip="{{group.groupName}}" data-trigger="click"><span class="maxWidthInline">{{group.groupName}}</span></div>
+                        <div class="col-xs-4 cursor-pointer" ng-click="openGroup(group)"><span class="maxWidthInline">{{group.userUtterance}}</span></div>
+                        <div class="col-xs-4 cursor-pointer" ng-click="openGroup(group)">
+                            <ng-container ng-if="group.botUtterance.type === 'basic'">
+                                <span class="maxWidthInline">{{group.botUtterance.text}}</span>
+                            </ng-container>
+                            <ng-container ng-if="group.botUtterance.type === 'uxmap'">
+                                <span class="maxWidthInline">{{group.botUtterance.uiText}}</span>
+                            </ng-container>                           
+                        </div>                  
+                        <div class="smalltalkIconSpan col-xs-1">
+                        <i ng-click="deleteGroup(group)"  ng-class="{'hide':accessRights === 'VIEW' || botDetails.streamState === 'published'}" class="trashSmalltalk btx-delete-1"></i>
+                            <span class="dropdown gearIcon"  ng-if="allowNamespace">
+                                <i class="dropdown-toggle btx-settings" data-toggle="dropdown"></i>
+                                <ul class='dropdown-menu'>
+                                    <li><a href="" ng-click="manageVarSmallSlider(group)">{{'manage_var_namespace'| i18nString}}</a></li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div class="modal fade createGroupModal" data-backdrop="static" id="create-group" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content ">
+                        <div class="modal-header ">
+                            <h4 class="modal-title " id="gridSystemModalLabel"><i class="btx-close" ng-click="closeSmallTalkModal(group)" ></i>{{'small_talk_newgroup'| i18nString}}</h4>
+                        </div>
+                        <form name="createGroupForm">
+                            <div class="modal-body">
+                                    <div class="col-xs-12 grpName">
+                                        <div class="required-field name">
+                                            <label class="">{{'group_name_small'| i18nString}}</label>
+                                            <input class="form-control"  name="groupname" maxlength="50" placeholder="{{'enter_group_name' | i18nString}}" autofocus onblur="this.focus()" id="groupName" ng-model="group.groupName" ng-required="true">
+                                        </div>
+                                    </div>
+                            </div>
+                        </form>
+                        <div class="modal-footer">
+                                <button class="btn proceedBtn" ng-disabled="createGroupForm.$invalid" ng-click="proceedGroupCreation(group)">{{'proceed'| i18nString}}</button>
+                                <button ng-click="closeSmallTalkModal(group)" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+</div>
+<div class="modal fade import-small-talk import-bot-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+     <div class="modal-content" ng-show="importing === 'initial'">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'import_small_talk'| i18nString}}</h4>
+            </div>
+            <div class="modal-body" perfect-scroll>
+                <div class="col-xs-12">
+                    <div class="col-xs-12 form-group smallTalkFileDropLanding noPadding">
+                        <div class="imgCntr">
+                          <img class="" ng-src="{{dragDropIcon}}">
+                        </div>
+                        <div class="dragdrophelp" ng-hide="smallTalkFileName">
+                            <div class="dragdroptitle">{{'drag_drop'| i18nString}}</div>
+                            <div class="ortitle">{{'or'| i18nString}}</div>
+                            <div class="browsetitle"><span class="browseBtn cursor-pointer">{{'browse'| i18nString}}</span>
+                            </div>
+                        </div>
+                        <div class="downloadBlock" ng-hide="smallTalkFileName">
+                         <p>{{'download'| i18nString}} <span class="download-title"><a download target="_blank" href="{{assetsBase}}/files/sampleSmallTalk.tsv">{{'sample_tsv'| i18nString}}</a></span>{{'or'| i18nString}} <span class="download-title"><a download target="_blank" href="{{assetsBase}}/files/sampleSmallTalk.json">{{'sample_json'| i18nString}}</a></span> {{'file'| i18nString}}</p>
+                        </div>
+                        <div class="uploadedSmallTalkFile" ng-show="smallTalkFileName"><span class="filename">{{smallTalkFileName}}</span><span class="removefile"><i ng-click="removeSmallTalkFile()" class="fa fa-close"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-disabled="!smallTalkFileName" class="btn btn-primary" ng-click="startImportSmallTalk()">{{'next'| i18nString}}</button>
+                 <button type="button" class="btn closeCancel" ng-click="onCancel()">{{'cancel'| i18nString}}</button>
+            </div>
+           
+        </div>
+        <div class="modal-content" ng-if="importing === 'pending'">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'import_small_talk'| i18nString}}</h4>
+            </div>
+               <div class="modal-body" perfect-scroll>
+                <div class="col-xs-12">
+                    <div class="imgCntr">
+                        <img class="layer" ng-src="{{importingSvg}}">
+                    </div>
+                    <div class="importingText">
+                      <span class="processing">{{'importing'| i18nString}}</span>
+                    </div>
+                    <div class="progressouter"><div class="progressinner" ng-style="{width : (totalProgress + '%') }"></div></div>
+                </div>
+            </div>
+                 <div class="modal-footer importFooter">
+                    <button type="button" class="btn btn-primary" ng-disabled="importing === 'pending'">{{'done'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importing === 'failed'">
+           <div class="modal-header">
+                <h4 class="modal-title">{{'import_small_talk'| i18nString}}</h4>
+            </div>
+           <div class="modal-body" perfect-scroll>
+              <div class="col-xs-12">
+                    <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                        <div class="text-center importimage">
+                            <img class="" ng-src="{{importFailed}}">
+                        </div>
+                        <div class="importerror">
+                            <div class="title importmessage" ng-if="importmessage">{{importmessage}}</div>
+                            <div class="title" ng-if="!importmessage">{{'some_error'| i18nString}}</div>
+                            <div class="errors" ng-if="showFailedErrors" ng-repeat="error in errorMsg">
+                                <div class="statementutterdiv col-xs-12">
+                                    <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                                    <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                 <div class="modal-footer importFooter">
+                    <button type="button" class="btn btnClose" ng-click="onCancel()"> {{'close'| i18nString}} </button>
+                    <button type="button" class="btn btn-primary" ng-click="goToStepStatus('initial')">{{'retry'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importing === 'success'">
+           <div class="modal-header">
+                <h4 class="modal-title">{{'import_small_talk'| i18nString}}</h4>
+            </div>
+                 <div class="modal-body" perfect-scroll>
+              <div class="col-xs-12 form-group noPadding importsuccess">
+                    <div class="text-center importsuccessimage">
+                        <img ng-src="{{importDoneIcon}}">
+                    </div>
+                    <div class="importsuccessdiv">
+                        <div class="title">{{'import_success'| i18nString}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer importFooter">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="onDone()">{{'done'| i18nString}}</button>
+            </div>
+        </div>
+</div>
+<manage-variable-namespace cb='manage_var_small_talk_cb' class="manage-variable" id="manageVarNamespaceSmallTalk" ng-if="manageVarSmallTalkEnable"></manage-variable-namespace>

@@ -1,0 +1,21 @@
+<div class="toggle-data-large-directive" ng-class="{'yes-no': yesNo}">
+	<label class="kr-sg-toggle large" ng-class="{'with-label': !noOpt}">
+		<input type="checkbox" class="switch">
+			<div class="slider" ng-if="yesNo">
+				<span class="no" ng-hide="noOpt">
+					{{'no'| i18nString}}
+				</span>
+				<span class="yes" ng-hide="noOpt">
+					{{'yes'| i18nString}}
+				</span>
+			</div>
+			<div class="slider" ng-if="!yesNo">
+				<span class="no" ng-hide="noOpt">
+					{{'disabled'| i18nString}}
+				</span>
+				<span class="yes" ng-hide="noOpt">
+					{{'enabled'| i18nString}}
+				</span>
+			</div>
+	</label>
+</div>

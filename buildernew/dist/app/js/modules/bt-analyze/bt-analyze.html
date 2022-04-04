@@ -1,0 +1,1326 @@
+<div class="analyzeBodyContainer">
+    <div class="container">
+        <div class="row btnSearchTitle metricsFilters ">
+            <span class='clustering-progress' data-toggle="popover" data-placement="top"
+                data-content=" {{'you_may_continue_to_work_cluster_msg'| i18nString}}"
+                ng-show='regroupDone.progress && !regroupDone.message'>
+                <img class='clustering-icon' ng-src="{{iconContextPath}}/clustering-session-flow-blue.png" />
+                <span class='clustering-text'> {{'clustering'| i18nString}}</span>
+            </span>
+            <span class='clustering-progress' ng-show='regroupDone.message && !regroupDone.progress'>
+                <i class="btx-billing-checked"></i>
+                <span class='clustering-text'> {{'done_exclamation'| i18nString}}</span>
+                <button class='btnBlue' ng-click="updateCurrentTab('intentFound')"> {{'reload_label'|
+                    i18nString}}</button>
+            </span>
+            <span class='clustering-progress error' ng-show='regroupDone.error && !regroupDone.dockError'>
+                <span>{{regroupDone.error}}</span>
+                <button class='btnBlue' ng-click='scheduleCluster()'> {{'retry'| i18nString}}</button>
+            </span>
+            <span class='clustering-progress dock-error' ng-show='regroupDone.dockError'>
+                <span>{{regroupDone.error}}</span>
+                <button class='btnBlue' ng-click='scheduleCluster()'> {{'retry'| i18nString}}</button>
+            </span>
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'metrics'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch displayNone">
+                <div class="searchComponent displayNone">
+                    <input placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <!-- FILTER CUSTOM TAGS -->
+                <div class="filtersDetails">
+                    <ng-container ng-if="!defaultFilter">
+                        <span class="filterListContainer"  ng-repeat="tag in filterTags.slice(0,3) track by $index">
+                            <div id="popOverEvent{{tag.type}}" ng-init="initPopover(tag)" >
+                            <span class="filterCat"  >{{tag.value}} </span>
+                            <span class="filterClose" ng-if="tag.count">({{tag.count}})</span>
+                            <i class="btx-close" ng-click="removeFilterTag($index, tag)"></i>
+                        </div>
+                            <div class="hide">
+                            <div id="filterTagPopover{{tag.type}}">
+                            <div class="" ng-repeat="value in tag.tooltipValue track by $index">
+                                 {{value}}
+                            </div>
+                            <div class="" ng-if="tag.count > 5">+ {{tag.count-5}} More</div>
+                            </div>
+                        </div>
+                        </span>
+                    </ng-container>
+                    <ng-container ng-if="!defaultFilter && showJapaneseFilter">
+                        <span class="filterListContainer">
+                            <span class="filterCat" data-toggle="popover" data-trigger="click" data-placement="bottom"
+                                data-content="{{tooltipValue}}">{{dateValue}} </span>
+                            <!-- <span class="filterCat" tooltip-placement="bottom" tooltip="{{tooltipValue}}">{{dateValue}} </span> -->
+                            <span class="filterClose" ng-click="removeFilterTag($index, tag)"
+                                ng-if="tag.count">({{tag.count}})</span>
+                            <i class="btx-close"></i>
+                        </span>
+                    </ng-container>
+                    <ng-container ng-if="defaultFilter">
+                        <span class="filterListContainer">
+                            <span class="filterCat" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+                                data-content="{{defaultFilterMsg}}">{{defaultFilterMsg}} </span>
+                                <!-- <span class="filterClose" ng-if="tag.count">({{tag.count}})</span> -->
+                                <i class="btx-close" ng-click="removeFilterTag($index, defaultTag)"></i>
+                            <!-- <span class="filterCat" tooltip-placement="bottom" tooltip="{{defaultFilterMsg}}">{{defaultFilterMsg}} </span> -->
+                        </span>
+                    </ng-container>
+                    <div class="dropdown moreDD" ng-if="filterTags.length > 3">
+                        <a href="#" class="moreFilters" data-toggle="dropdown">
+                            +{{(filterTags.length - 3)}} more
+                            </a>
+                        <ul class="dropdown-menu" >
+                            <li class="dropdown-item" bs-popover ng-repeat="tag in filterTags.slice(3, filterTags.length) track by $index">
+                                <div id="popOverEvent{{tag.type}}" ng-init="initPopover(tag,'moreFilter')" >
+                                    <span class="filterCat">{{tag.value}} </span>
+                                    <span class="filterClose" ng-if="tag.count">({{tag.count}})</span>
+                                    <i class="btx-close" ng-click="removeFilterTag($index, tag)"></i>
+                                </div>
+                                    <div class="hide">
+                                    <div id="filterTagPopover{{tag.type}}">
+                                    <div class="" ng-repeat="value in tag.tooltipValue track by $index">
+                                         {{value}}
+                                    </div>
+                                    <div class="" ng-if="tag.count > 5">+ {{tag.count-5}} More</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <span class="clearAllFilters" ng-if="filterTags.length>1" class="filterTag addRedColor"
+                        ng-click="clearFilterTags()">
+                        <span class="filterCat">{{'clear_all_label'| i18nString}} </span>
+                        <span class="filterClose"></span>
+                        <i class="btx-close"></i>
+                    </span>
+                </div>
+                <div class="btnActions">
+                    <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                </div>
+                <div class="btnActions">
+                    <button class="importExportBTN"
+                        ng-if="currentTab === 'intentFound' && intentFoundCollection.length > 0 "
+                        ng-click="analyzeExport('successintent')"><i class="btx-export"></i></button>
+                    <button class="importExportBTN"
+                        ng-if="currentTab === 'intentNotFound' && intentNotFoundCollection.length > 0"
+                        ng-click="analyzeExport('failintent')"><i class="btx-export"></i></button>
+                    <button class="importExportBTN"
+                        ng-if="currentTab === 'failedTask' && failedTaskCollection.length > 0"
+                        ng-click="analyzeExport('failtask')"><i class="btx-export"></i></button>
+                    <button class="importExportBTN"
+                        ng-if="currentTab === 'performance' && performanceCollection.length > 0"
+                        ng-click="analyzeExport('performance')"><i class="btx-export"></i></button>
+                    <button class="importExportBTN" ng-if="currentTab === 'debugLog' && debugLogsCollection.length > 0"
+                        ng-click="geneateDebugLog('debugLog')"><i class="btx-export"></i></button>
+                </div>
+                <!-- FILTER CUSTOM TAGS -->
+            </div>
+        </div>
+        <!-- NEW FILTER UI -->
+        <bt-analyze-filter all-tasks-data="allTasks" cb="analyzeCB" current-tab="currentTab"
+            filter-component="filterComponent" components="components" selected-tags-array="selectedTagsArray" more-filter-values="moreFilterValues">
+        </bt-analyze-filter>
+        <!-- NEW FILTER UI -->
+
+        <!-- <div class="btnActions">
+            <button class="importExportBTN"
+                ng-if="currentTab === 'intentFound' && intentFoundCollection.length > 0 "
+                ng-click="analyzeExport('successintent')"><i class="btx-export"></i></button>
+            <button class="importExportBTN"
+                ng-if="currentTab === 'intentNotFound' && intentNotFoundCollection.length > 0"
+                ng-click="analyzeExport('failintent')"><i class="btx-export"></i></button>
+            <button class="importExportBTN"
+                ng-if="currentTab === 'failedTask' && failedTaskCollection.length > 0"
+                ng-click="analyzeExport('failtask')"><i class="btx-export"></i></button>
+            <button class="importExportBTN"
+                ng-if="currentTab === 'performance' && performanceCollection.length > 0"
+                ng-click="analyzeExport('performance')"><i class="btx-export"></i></button>
+            <button class="importExportBTN" ng-if="currentTab === 'debugLog' && debugLogsCollection.length > 0"
+                ng-click="geneateDebugLog('debugLog')"><i class="btx-export"></i></button>
+        </div> -->
+        <!-- <div  class="row  newFilters hide">
+            <div class="filtersContent">
+             <div class="filterTitle">NLP Metrics</div>
+             <bt-analyze-filter all-tasks-data="allTasks" cb="analyzeCB" current-tab="currentTab"
+                filter-component="filterComponent" components="components" selected-tags-array="selectedTagsArray">
+            </bt-analyze-filter>
+             <div class="filter">
+                 <div class="label-text">Date Period <span class="dateTime">(01-11-21 - 07-11-21)</span></div>
+                 <div class="filer-btns">
+                     <tabset type="pills" ng-model="selectedRange">
+                         <tab class="left" ng-click="selectRange('24hours')" active="true" heading="{{'24_hours_label'| i18nString}}"></tab>
+                         <tab class="center" ng-click="selectRange('7days')" heading="{{'7_days'| i18nString}}"></tab>
+                         <input class="customdatepicker" type="text" name="daterange" value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" />
+                         <tab class="right" ng-click="selectRange('custom')"heading="{{'custom'| i18nString}}"></tab>
+                     </tabset>
+                 </div>
+             </div>
+             <div class="kr-sg-dropdowns">
+                 <div class="label-text">Session Type <i class="btx-info"></i></div>
+                 <div class="dropdown dropdown-open">
+                     <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">Choose an option</button>                                            
+                     <ul class="dropdown-menu content-menu">
+                     <li class="search-box">
+                         <input type="text" placeholder="Search" class="seach-input">
+                     </li>                                                
+                     <li><a href="#">Option 1</a></li>
+                     <li><a href="#">Option 2</a></li>
+                     <li><a href="#">Option 3</a></li>
+                     </ul>
+                 </div>
+             </div>
+         <div class="kr-sg-dropdowns">
+             <div class="label-text">Session Status <i class="btx-info"></i></div>
+             <div class="dropdown dropdown-open">
+                 <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">Choose an option</button>                                            
+                 <ul class="dropdown-menu content-menu">
+                 <li class="search-box">
+                     <input type="text" placeholder="Search" class="seach-input">
+                 </li>                                                
+                   <li><a href="#">Option 1</a></li>
+                   <li><a href="#">Option 2</a></li>
+                   <li><a href="#">Option 3</a></li>
+                 </ul>
+               </div>
+         </div>
+         <div class="kr-sg-dropdowns channels">
+             <div class="label-text">&nbsp;</div>
+             <div class="dropdown dropdown-open">
+                 <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"><i class="btx-filters"></i> Advanced Filters</button>                                            
+                 <ul class="dropdown-menu content-menu">
+                    <div class="kr-sg-dropdowns uid">
+                        <div class="label-text">User ID</i>                 
+                            <label class="kr-sg-toggle with-label large usrtIDToggle">                                       
+                            <input type="checkbox" checked>
+                            <div class="slider"> <span class="no">Channel User ID</span><span class="yes">Kore User ID</span></div>
+                        </label>
+                    </div>
+                        <input type="text" placeholder="Search" class="seach-input">
+                    </div>
+                 <li >
+                     <div class="kr-sg-dropdowns width100">
+                         <div class="label-text">Channel</i></div>
+                         <div class="dropdown dropdown-open">
+                             <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">Choose an option</button>                                            
+                             <ul class="dropdown-menu content-menu">
+                             <li class="search-box">
+                                 <input type="text" placeholder="Search" class="seach-input">
+                             </li>                                                
+                               <li><a href="#">Option 1</a></li>
+                               <li><a href="#">Option 2</a></li>
+                               <li><a href="#">Option 3</a></li>
+                             </ul>
+                           </div>
+                     </div>
+                 </li>     
+                 <li >
+                    <div class="kr-sg-dropdowns width100">
+                        <div class="label-text">Language</i></div>
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">Choose an option</button>                                            
+                            <ul class="dropdown-menu content-menu">
+                            <li class="search-box">
+                                <input type="text" placeholder="Search" class="seach-input">
+                            </li>                                                
+                              <li><a href="#">Option 1</a></li>
+                              <li><a href="#">Option 2</a></li>
+                              <li><a href="#">Option 3</a></li>
+                            </ul>
+                          </div>
+                    </div>
+                </li> 
+                <li >
+                    <div class="kr-sg-dropdowns width100">
+                        <div class="label-text">Task/Intent</i></div>
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">Choose an option</button>                                            
+                            <ul class="dropdown-menu content-menu">
+                            <li class="search-box">
+                                <input type="text" placeholder="Search" class="seach-input">
+                            </li>                                                
+                              <li><a href="#">Option 1</a></li>
+                              <li><a href="#">Option 2</a></li>
+                              <li><a href="#">Option 3</a></li>
+                            </ul>
+                          </div>
+                    </div>
+                </li>  
+                <li>
+                    <div class="group-radiobutton">
+                        <div class="heading-title">Utterance Type</div>
+                        <div class="kr-sg-radiobutton">
+                            <input id="radio-27" name="radio" class="radio-custom" type="radio">
+                            <label for="radio-27" class="radio-custom-label">Both</label>
+                        </div>
+                        <div class="kr-sg-radiobutton">
+                            <input id="radio-28" name="radio" class="radio-custom" type="radio">
+                            <label for="radio-28" class="radio-custom-label">Not-trained</label>
+                        </div>
+                        <div class="kr-sg-radiobutton">
+                            <input id="radio-29" name="radio" class="radio-custom" type="radio" disabled="">
+                            <label for="radio-29" class="radio-custom-label">Trained</label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="group-checkbox">
+                        <div class="heading-title">Developer Interactions</div>
+                        <div class="kr-sg-checkbox">
+                            <input id="checkbox_grpa" class="checkbox-custom" type="checkbox">
+                            <label for="checkbox_grpa" class="checkbox-custom-label">Checkbox item</label>
+                        </div>                                        
+                    </div>
+                </li>                                          
+                   <li class="customTags">
+                     <div class="label-text ctt">Custom Tags<i class="btx-info"></i></div>
+                     <div class="customTagsFilters">
+                         <div class="kr-sg-dropdowns smallInput">
+                             <div class="dropdown dropdown-open">
+                                 <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">Choose</button>                                            
+                                 <ul class="dropdown-menu content-menu">
+                                 <li class="search-box">
+                                     <input type="text" placeholder="Search" class="seach-input">
+                                 </li>                                                
+                                   <li><a href="#">Option 1</a></li>
+                                   <li><a href="#">Option 2</a></li>
+                                   <li><a href="#">Option 3</a></li>
+                                 </ul>
+                               </div>
+                         </div>
+                         <div class="kr-sg-dropdowns bigInput">
+                             <input type="text" placeholder="Search" class="seach-input">
+                         </div>
+                         <div class="trashDiv">
+                             <i class="btx-delete-1"></i>
+                         </div>
+                     </div>
+                   </li>
+                   <li class="ctFooter nlpChannels">
+                     <button class="kr-sg-button-primary btn_lg">Add</button>
+                     <button class="kr-sg-button-secondary btn_lg">Cancel</button>
+                     <button class="kr-sg-button-ghost btn_lg"><span>Clear</span></button>
+                   </li>
+                 </ul>
+               </div>
+         </div>
+            </div>
+            <div class="rightBTNContainer">
+                <button class="kr-sg-button-primary btn_lg">Apply</button>
+                <div class="exportDiv"><i class="btx-export"></i></div>
+            </div>
+        </div> -->
+        <div class="nlpBG">
+            <div class="headerContainerDiv">
+                <div class="childContainer">
+                    <ul class="nav nav-tabs" id="analyzeTabs">
+                        <li class="active" ng-click="updateCurrentTab('intentFound')"><a data-toggle="tab"
+                                href="#intentFound" title="{{'intent_found'| i18nString}}"> {{'intent_found'|
+                                i18nString}}</a></li>
+                        <li ng-click="updateCurrentTab('intentNotFound')"><a data-toggle="tab" href="#intentNotFound"
+                                title="{{'intent_not_found'| i18nString}}"> {{'intent_not_found'| i18nString}}</a></li>
+                        <li ng-click="updateCurrentTab('failedTask')"><a data-toggle="tab" href="#failedTask"
+                                title="{{'Failed_task'| i18nString}}"> {{'Failed_task'| i18nString}}</a></li>
+                        <li ng-click="updateCurrentTab('performance')"><a data-toggle="tab" href="#performance"
+                                title="{{'performance'| i18nString}}"> {{'performance'| i18nString}}</a></li>
+                        <li ng-click="updateCurrentTab('pinned')"><a data-toggle="tab" href="#pinned"
+                                title="{{'Pinned'| i18nString}}"> {{'Pinned'| i18nString}}</a></li>
+                        <li ng-click="updateCurrentTab('debugLog')"><a id="debugLogTabSelector" data-toggle="tab"
+                                href="#debugLog" title="{{'Debug_Log'| i18nString}}"> {{'Debug_Log'| i18nString}}</a></li>
+                    </ul>
+                </div>
+    
+                <!-- OLD FILTER CODE FOR REFERENCE -->
+                <!-- <div class="childContainer addBG">
+                    <div class="exportIcon" ng-if="currentTab === 'intentFound' && intentFoundCollection.length > 0 " ng-click="analyzeExport('successintent')"><i class="btx-collapse"></i></div>
+                    <div class="exportIcon" ng-if="currentTab === 'intentNotFound' && intentNotFoundCollection.length > 0" ng-click="analyzeExport('failintent')"><i class="btx-collapse"></i></div>
+                    <div class="exportIcon" ng-if="currentTab === 'failedTask' && failedTaskCollection.length > 0" ng-click="analyzeExport('failtask')"><i class="btx-collapse"></i></div>
+                    <div class="exportIcon" ng-if="currentTab === 'performance' && performanceCollection.length > 0" ng-click="analyzeExport('performance')"><i class="btx-collapse"></i></div>
+                    <div class="exportIcon" ng-if="currentTab === 'debugLog' && debugLogsCollection.length > 0" ng-click="geneateDebugLog('debugLog')"><i class="btx-collapse"></i></div>
+                    <div class="exportIcon" ng-show="currentTab === 'pinned'" ng-click="analyzeExport('pinned')"><img ng-src="{{assetsBase}}images/left-menu-img/export.svg"></div>
+                    <button class="filterBtn btn" ng-click="editFilter()"> {{'filter'| i18nString}}</button>
+                    <div ng-if="!defaultFilter" class="filterTagParent">
+                        <div class="filterTag" ng-repeat="tag in filterTags track by $index">
+                            <div class="tagContainer"><span  tooltip-placement="bottom" tooltip="{{tag.tooltipValue}}">{{tag.value}}</span><span ng-click="removeFilterTag($index, tag)" class="fa fa-close closeIcon"></span></div>
+                        </div>
+                        <div ng-if="filterTags.length>1" class="filterTag addRedColor" ng-click="clearFilterTags()"><span class="fa fa-close red"></span> {{'clear_all_label'| i18nString}}</div>
+                    </div>
+                    <div class="filterDefaultMsg" ng-if="defaultFilter" title="{{defaultFilterMsg}}">{{defaultFilterMsg}}</div>
+                        <div ng-if="!defaultFilter && showJapaneseFilter" class="filterTagParent">
+                            <div class="filterTag">
+                                <div class="tagContainer"><span  tooltip-placement="bottom" tooltip="{{tooltipValue}}">{{dateValue}}</span><span ng-click="removeFilterTag($index, tag)" class="fa fa-close closeIcon"></span></div>
+                            </div>
+                            <div ng-if="filterTags.length>1" class="filterTag addRedColor" ng-click="clearFilterTags()"><span class="fa fa-close red"></span> {{'clear_all_label'| i18nString}}</div>
+                        </div>
+                  
+                    <div ng-if="filterTags.length>1" class="filterTag addRedColor" ng-click="clearFilterTags()"><span class="fa fa-close red"></span> {{'clear_all_label'| i18nString}}</div>
+                </div> -->
+    
+          
+            </div>
+       
+            <div class="tab-content">
+                <!-- INTENT FOUND STARTS HERE -->
+                <div id="intentFound" class="tab-pane fade in active">
+                    <div class="tableHeader col-xs-12 noPadding">
+                        <div class="headerTitle noPadding dropdown traitsModule"
+                        ng-class="{'col-xs-2':(showTraitsNew.isPTE),'col-xs-3':(!showTraitsNew.isPTE)}">
+                        <a class="dropdown-toggle" type="button" data-toggle="dropdown" title="{{'translated_utterances'| i18nString}}"> {{'translated_utterances'| i18nString}}(
+                                <span class="utteranceCount">{{dataAvailble.successIntent.total}}</span> )<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions utterance" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_utterances'| i18nString}}">
+                                        {{'group_by_utterances'| i18nString}}</span>
+                                    <div class="paddingTop20">
+                                        <toggle-switch ng-model="filterToggle.successIntent.utterances" no-opt="true"
+                                            ng-change="(filterToggle.successIntent.intent = false); updatePage('successIntent', 'toggle');">
+                                        </toggle-switch>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+    
+    
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'Intent'| i18nString}}<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_intent'| i18nString}}">
+                                        {{'group_by_intent'| i18nString}}</span>
+                                    <div class="paddingTop20">
+                                        <toggle-switch ng-model="filterToggle.successIntent.intent" no-opt="true"
+                                            ng-change="(filterToggle.successIntent.utterances = false); updatePage('successIntent', 'toggle');">
+                                        </toggle-switch>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown" ng-if="showTraitsNew.isPTE ">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'traits_capital'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown" >
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"
+                                title="{{'User_id'| i18nString}}">{{'User_id'| i18nString}}<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown width100" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('koreID')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'kore_id'| i18nString}}"> {{'kore_id'|
+                                        i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('channelUId')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'chnlId_label'| i18nString}}"> {{'chnlId_label'|
+                                        i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle noPadding dropdown traitsModule col-xs-2">
+                            <a class="dropdown-toggle" title="{{'Language'| i18nString}}">{{'Language'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'date_and_time'|
+                                i18nString}}<i
+                                    ng-class="{'btx-dropdown-down fa-sort-desc':dataAvailble.successIntent.sortby==='desc','fa fa-sort-asc':dataAvailble.successIntent.sortby!=='desc'}"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdown-subheader"><span title="{{'sort_by_label'| i18nString}}">
+                                        {{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('successIntent', 'desc')"><span
+                                        title="{{'newest_to_oldest'| i18nString}}"> {{'newest_to_oldest'|
+                                        i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('successIntent', 'asc')"><span
+                                        title="{{'oldest_to_newest'| i18nString}}"> {{'oldest_to_newest'|
+                                        i18nString}}</span></li>
+                            </ul>
+                        </div>
+    
+                        <div class="kr-sg-dropdowns elipse-dropdown-">
+                            <div class="dropdown dropdown-open">
+                                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"><i
+                                        class="btx-overflow"></i></button>
+                                <ul class="dropdown-menu content-menu">
+                                    <div class="kr-sg-checkbox d-block">
+                                        <input id="checkboxTraits" class="checkbox-custom" type="checkbox"
+                                            ng-model="showTraitsNew.isPTE"
+                                            ng-change="checkShowTraits($event,'intentFound')">
+                                        <label for="checkboxTraits" class="checkbox-custom-label">{{'show_traits'| i18nString}} </label>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+    
+                        <!-- <div class="headerTitle col-xs-1 text-right">
+                            <div class="titleOverflow">
+                                <div class="dropdown">
+                                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                        <i class="btx-overflow"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item">
+                                            <div class="kr-sg-checkbox">
+                                                <input id="checkboxTraits" class="checkbox-custom" type="checkbox"  ng-model="showTraitsNew.isPTE" ng-change="checkShowTraits($event,'intentFound')">
+                                                <label for="checkboxTraits" class="checkbox-custom-label"> Show Traits</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-xs-12 logContainer" id="intentFoundContainer" perfect-scroll dynamic-height
+                        height-property="height" dynaoffset="-290">
+                        <div class="col-xs-12 noPadding parentGroupDivBlock" ng-repeat="eachtask in intentFoundCollection"
+                            ng-init="parent1Index = $index" ng-show="intentFoundCollection.length > 0">
+                            <span class="fa fa-compress"></span>
+                            <span class="fa fa-compress right"></span>
+                            <div class="col-xs-12 eachTableRow noPadding"
+                                ng-class="{'grouped':(eachtask.records.length > 1 && $index > 0)}"
+                                ng-repeat="task in eachtask.records track by $index"
+                                ng-click="editTask(task,'intentFound',$event)">
+                                <div class="text padding-left8 traitsModule"
+                                    ng-class="{'col-xs-2':(showTraitsNew.isPTE),'col-xs-3':(!showTraitsNew.isPTE)}">
+                                    {{task.input}} <span class="groupByTask"
+                                        ng-if="eachtask.records.length > 1 && $index === 0 && eachtask.total >=2">+{{eachtask.total-1}}</span>
+                                </div>
+                                <div class="col-xs-2 text taskName">{{getTaskName(task.taskId,task)}}</div>
+                                <div class="col-xs-2 text traits" ng-if="showTraitsNew.isPTE">
+                                    <div class="traitsMetrics" ng-if="task.traits.length"
+                                        ng-repeat="trait in task.traits | slice:0:2">
+                                        <div class="mainTraits" title="{{trait.label}}">{{trait.label}}</div>
+                                        <!-- <span class="dropdown-toggle groupByTask"  ng-if="task.traits.length > 2 && $index === 1" ng-click="showTraits(task.traits)" data-toggle="dropdown">
+                                                                             +{{task.traits.length-2}}
+                                                                            </span> -->
+                                    </div>
+                                    <div class="traitsMetrics emptyState" ng-if="!task.traits.length">
+                                        <div class="mainTraits">---</div>
+                                    </div>
+                                    <span class="kr-sg-dropdowns" ng-if="task.traits.length > 2">
+                                        <div class="dropdown dropdown-open">
+                                            <button class="dropdown-toggle dropdown-input"
+                                                data-toggle="dropdown">+{{task.traits.length-2}}</button>
+                                            <ul class="dropdown-menu content-menu">
+                                                <li ng-repeat="traits in task.traits | slice:2:task.traits.length">
+                                                    <a>{{traits.label}}</a></li>
+    
+                                            </ul>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="col-xs-2 text" ng-if="analyzeCB.toShowKoreID">{{getEmail(task.userId)}}</div>
+                                <div class="col-xs-2 text" ng-if="!analyzeCB.toShowKoreID">{{task.channelUId}}</div>
+                                <div class="text traitsModule"
+                                    ng-class="{'col-xs-2':(showTraitsNew.isPTE),'col-xs-3':(!showTraitsNew.isPTE)}">
+                                    {{getLanguage(task.language)}}</div>
+                                <div class="col-xs-2 text dateStr">
+                                    <p>{{getDate(task.timestamp)}}</p>
+                                    <p class="time">{{getTime(task.timestamp)}}</p>
+                                </div>
+                                <div class="col-xs-2 text posAbs">
+                                    <span class="hoverIconsDiv">
+                                        <span class="pinIcon"
+                                            tooltip-placement="{{(parent1Index===0 && $index === 0)?'bottom':'top'}}"
+                                            tooltip=" {{'pin_tooltip'| i18nString}}" ng-if="!task.pinned"
+                                            ng-click="pinTask(task, $event)"><img
+                                                ng-src="{{assetsBase}}images/left-menu-img/pin.svg"></span>
+                                        <span class="pinIcon"
+                                            tooltip-placement="{{(parent1Index===0 && $index === 0)?'bottom':'top'}}"
+                                            tooltip=" {{'unpin_tooltip'| i18nString}}" ng-class="{'pinned':task.pinned}"
+                                            ng-if="task.pinned" ng-click="pinTask(task, $event)"><img
+                                                ng-src="{{assetsBase}}images/left-menu-img/pinned.svg"></span>
+                                        <span class="trainIcon"
+                                            tooltip-placement="{{(parent1Index===0 && $index === 0)?'bottom':'top'}}"
+                                            tooltip=" {{'train'| i18nString}}" ng-click="trainTask($event,task)"><img
+                                                ng-src="{{assetsBase}}images/left-menu-img/testNtrain-gray.svg"></span>
+                                    </span>
+                                    <span ng-if="task.trained" class="trainIndicator"> {{'trained_label'|
+                                        i18nString}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="datanotFound" ng-show="!dataAvailble.successIntent.fetching && intentFoundCollection.length === 0"><span> {{'no_data_found'| i18nString}}</span></div> -->
+                        <div class="emptyStateContainer"
+                            ng-show="!dataAvailble.successIntent.fetching && intentFoundCollection.length === 0">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">
+                                </div>
+                                <span class="mainTitle">{{'no_data_found'| i18nString}}</span>
+                                <!-- <div class="emptyStateDesc">Description</div>
+                                <div class="generateBtn">
+                                    <button class="btn btnSolidBlue" >Add</button>
+                                    <button class="btn" target="_blank" >learn more</button>
+                                </div> -->
+                            </div>
+                        </div>
+    
+                        <div class="fetchingData" ng-show="dataAvailble.successIntent.fetching"><i
+                                class="fa fa-circle-o-notch fa-spin-fast"></i><span> {{'loading_data'| i18nString}}</span>
+                        </div>
+                        <div class="fetchingDetails" ng-show="editTaskLoading">
+                            <div>
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i><span> {{'loading_details'|
+                                    i18nString}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- INTENT FOUND ENDS HERE -->
+    
+                <!-- INTENT-NOT FOUND STARTS HERE -->
+                <div id="intentNotFound" class="tab-pane fade">
+                    <div class="tableHeader col-xs-12 noPadding">
+                        <div class="headerTitle col-xs-3 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> <span
+                                    class="name" title="{{'translated_utterances'| i18nString}}"> {{'translated_utterances'| i18nString}}</span>( <span
+                                    class="utteranceCount">{{dataAvailble.failedintent.total}}</span> )<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions utterance" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_utterances'| i18nString}}">
+                                        {{'group_by_utterances'| i18nString}}</span>
+    
+                                        <div class="paddingTop20">
+                                            <toggle-switch ng-model="filterToggle.failedintent.utterances" no-opt="true"
+                                                ng-change="updatePage('failedIntent', 'toggle');">
+                                            </toggle-switch>
+                                        </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown" ng-if="showTraitsNew.isPTE ">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'traits_capital'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown">{{'User_id'| i18nString}}<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown width100" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('koreID')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'kore_id'| i18nString}}"> {{'kore_id'|
+                                        i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('channelUId')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'chnlId_label'| i18nString}}">{{'chnlId_label'|
+                                        i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'Language'| i18nString}}">{{'Language'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'date_and_time'|
+                                i18nString}}<i
+                                    ng-class="{'btx-dropdown-down fa-sort-desc':dataAvailble.failedintent.sortby==='desc','fa fa-sort-asc':dataAvailble.failedintent.sortby!=='desc'}"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdown-subheader"><span title="{{'sort_by_label'| i18nString}}">
+                                        {{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('failedIntent', 'desc')"><span
+                                        title="{{'newest_to_oldest'| i18nString}}">{{'newest_to_oldest'| i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('failedIntent', 'asc')"><span
+                                        title="{{'oldest_to_newest'| i18nString}}">{{'oldest_to_newest'| i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle text-right"  ng-class="{'col-xs-1':(showTraitsNew.isPTE),'col-xs-3':(!showTraitsNew.isPTE)}">
+                            <div class="titleOverflow">
+                                <div class="dropdown">
+                                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                        <i class="btx-overflow"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item">
+                                            <div class="kr-sg-checkbox">
+                                                <input id="checkboxTraits" class="checkbox-custom" type="checkbox"
+                                                    ng-model="showTraitsNew.isPTE"
+                                                    ng-change="checkShowTraits($event,'intentFound')">
+                                                <label for="checkboxTraits" class="checkbox-custom-label"> {{'show_traits'| i18nString}}</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 logContainer" id="intentNotFoundContainer" perfect-scroll dynamic-height
+                        dynaoffset="-230" height-property="height">
+                        <div class="col-xs-12 noPadding parentGroupDivBlock"
+                            ng-repeat="eachtask in intentNotFoundCollection" ng-init="parent2Index = $index"
+                            ng-show="intentNotFoundCollection.length > 0">
+                            <span class="fa fa-compress"></span>
+                            <span class="fa fa-compress right"></span>
+                            <div class="col-xs-12 eachTableRow noPadding"
+                                ng-class="{'grouped':(eachtask.records.length > 1 && $index > 0)}"
+                                ng-repeat="task in eachtask.records" ng-click="editTask(task,'intentNotFound')">
+                                <div class="col-xs-3 text padding-left8">{{task.input}} <span class="groupByTask"
+                                        ng-if="eachtask.records.length > 1 && $index === 0 && eachtask.total >=2">+{{eachtask.total-1}}</span>
+                                </div>
+                                <div class="col-xs-2 text traits" ng-if="showTraitsNew.isPTE">
+                                    <div class="traitsMetrics" ng-if="task.traits.length"
+                                        ng-repeat="trait in task.traits | slice:0:2">
+                                        <div class="mainTraits" title="{{trait.label}}">{{trait.label}}</div>
+                                    </div>
+                                    <div class="traitsMetrics emptyState" ng-if="!task.traits.length">
+                                        <div class="mainTraits">---</div>
+                                    </div>
+                                    <span class="kr-sg-dropdowns" ng-if="task.traits.length > 2">
+                                        <div class="dropdown dropdown-open">
+                                            <button class="dropdown-toggle dropdown-input"
+                                                data-toggle="dropdown">+{{task.traits.length-2}}</button>
+                                            <ul class="dropdown-menu content-menu">
+                                                <li ng-repeat="traits in task.traits | slice:2:task.traits.length">
+                                                    <a>{{traits.label}}</a></li>
+    
+                                            </ul>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="col-xs-2 text" ng-if="analyzeCB.toShowKoreID">{{getEmail(task.userId)}}</div>
+                                <div class="col-xs-2 text" ng-if="!analyzeCB.toShowKoreID">{{task.channelUId}}</div>
+                                <div class="col-xs-2 text">{{getLanguage(task.language)}}</div>
+                                <div class="col-xs-2 text dateStr">
+                                    <p>{{getDate(task.timestamp)}}</p>
+                                    <p class="time">{{getTime(task.timestamp)}}</p>
+                                </div>
+                                <div class="col-xs-2 text hoverItemsDiv posAbs">
+                                    <span class="ambiguous" ng-show="task.isAmbiguous"> {{'ambiguous_label'|
+                                        i18nString}}</span>
+                                    <span ng-if="task.trained" class="trainIndicator"> {{'trained_label'|
+                                        i18nString}}</span>
+                                    <span class="hoverIconsDiv">
+                                        <span class="pinIcon"
+                                            tooltip-placement="{{(parent2Index===0 && $index === 0)?'bottom':'top'}}"
+                                            tooltip="{{'pin_tooltip'| i18nString}}" ng-if="!task.pinned"
+                                            ng-click="pinTask(task, $event)"><img
+                                                ng-src="{{assetsBase}}images/left-menu-img/pin.svg"></span>
+                                        <span class="pinIcon"
+                                            tooltip-placement="{{(parent2Index===0 && $index === 0)?'bottom':'top'}}"
+                                            tooltip="{{'unpin_tooltip'| i18nString}}" ng-class="{'pinned':task.pinned}"
+                                            ng-if="task.pinned" ng-click="pinTask(task, $event)"><img
+                                                ng-src="{{assetsBase}}images/left-menu-img/pinned.svg"></span>
+                                        <span class="trainIcon"
+                                            tooltip-placement="{{(parent2Index===0 && $index === 0)?'bottom':'top'}}"
+                                            tooltip=" {{'train'| i18nString}}" ng-click="trainTask($event,task)"><img
+                                                ng-src="{{assetsBase}}images/left-menu-img/testNtrain-gray.svg"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="datanotFound" ng-show="!dataAvailble.failedintent.fetching && intentNotFoundCollection.length === 0"><span>{{'no_data_found'| i18nString}}</span></div> -->
+                        <div class="emptyStateContainer"
+                            ng-show="!dataAvailble.failedintent.fetching && intentNotFoundCollection.length === 0">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">
+                                </div>
+                                <span class="mainTitle">{{'no_data_found'| i18nString}}</span>
+                                <!-- <div class="emptyStateDesc">Description</div>
+                                <div class="generateBtn">
+                                    <button class="btn btnSolidBlue" >Add</button>
+                                    <button class="btn" target="_blank" >learn more</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="fetchingData" ng-show="dataAvailble.failedintent.fetching"><i
+                                class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span>
+                        </div>
+                        <div class="fetchingDetails" ng-show="editTaskLoading">
+                            <div>
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i><span> {{'loading_details'|
+                                    i18nString}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- INTENT-NOT FOUND ENDS HERE -->
+    
+                <!-- FAILED TASK STARTS HERE -->
+                <div id="failedTask" class="tab-pane fade">
+                    <div class="tableHeader col-xs-12 noPadding">
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"title="{{'translated_utterances'| i18nString}}"> {{'translated_utterances'| i18nString}}(
+                                <span class="utteranceCount">{{dataAvailble.failed.total}}</span> )<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions utterance" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_utterances'| i18nString}}">
+                                        {{'group_by_utterances'| i18nString}}</span>
+                                    <div class="paddingTop20">
+                                        <toggle-switch ng-model="filterToggle.failed.utterances" no-opt="true"
+                                            ng-change="(filterToggle.failed.intent = false); updatePage('failed', 'toggle');">
+                                        </toggle-switch>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+    
+    
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'task_name_uppercase'|
+                                i18nString}}<i class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_task'| i18nString}}">
+                                        {{'group_by_task'| i18nString}}</span>
+    
+                                    <div class="paddingTop20">
+                                        <toggle-switch ng-model="filterToggle.failed.intent" no-opt="true"
+                                            ng-change="(filterToggle.failed.utterances = false);updatePage('failed', 'toggle');">
+                                        </toggle-switch>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-1 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'failure_point'| i18nString}}"> {{'failure_point'|
+                                i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'type_of_issue'| i18nString}}"> {{'type_of_issue'|
+                                i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'User_id'| i18nString}}<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown width100" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('koreID')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'kore_id'| i18nString}}"> {{'kore_id'|
+                                        i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('channelUId')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'chnlId_label'| i18nString}}">{{'chnlId_label'|
+                                        i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-1 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'Language'| i18nString}}">{{'Language'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'date_and_time'|
+                                i18nString}}<i
+                                    ng-class="{'btx-dropdown-down fa-sort-desc':dataAvailble.failed.sortby==='desc','fa fa-sort-asc':dataAvailble.failed.sortby!=='desc'}"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdown-subheader"><span title="{{'sort_by_label'| i18nString}}">
+                                        {{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('failed', 'desc')"><span
+                                        title="{{'newest_to_oldest'| i18nString}}">{{'newest_to_oldest'| i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('failed', 'asc')"><span
+                                        title="{{'oldest_to_newest'| i18nString}}">{{'oldest_to_newest'| i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-1">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 logContainer" id="failedTaskContainer" perfect-scroll dynamic-height
+                        dynaoffset="-230" height-property="height">
+                        <div class="col-xs-12 noPadding parentGroupDivBlock" ng-repeat="eachtask in failedTaskCollection"
+                            ng-init="parent3Index = $index" ng-show="failedTaskCollection.length > 0">
+                            <span class="fa fa-compress"></span>
+                            <span class="fa fa-compress right"></span>
+                            <div class="col-xs-12 eachTableRow noPadding"
+                                ng-class="{'grouped':(eachtask.records.length > 1 && $index > 0)}"
+                                ng-repeat="task in eachtask.records track by $index" ng-click="editTask(task,'failed')">
+                                <div class="col-xs-2 text padding-left8">{{task.input}} <span class="groupByTask"
+                                        ng-if="eachtask.records.length > 1 && $index === 0 && eachtask.total >=2">+{{eachtask.records.length-1}}</span>
+                                </div>
+                                <div class="col-xs-2 text">{{getTaskName(task.taskId,task)}}</div>
+                                <div class="col-xs-1 text">{{task.failedNode?task.failedNode:'---'}}</div>
+                                <div class="col-xs-2 text">{{task.reason}}</div>
+                                <div class="col-xs-2 text" ng-if="analyzeCB.toShowKoreID">{{getEmail(task.userId)}}</div>
+                                <div class="col-xs-2 text" ng-if="!analyzeCB.toShowKoreID">{{task.channelUId}}</div>
+                                <div class="col-xs-1 text paddingLeft5">{{getLanguage(task.language)}}</div>
+                                <div class="col-xs-1 text dateStr paddingLeft5">
+                                    <p>{{getDate(task.timestamp)}}</p>
+                                    <p class="time">{{getTime(task.timestamp)}}</p>
+                                </div>
+                                <div class="col-xs-1 text">
+                                    <span tooltip-placement="{{(parent3Index===0 && $index === 0)?'bottom':'top'}}"
+                                        tooltip="{{'pin_tooltip'| i18nString}}" class="pinIcon" ng-if="!task.pinned"
+                                        ng-click="pinTask(task, $event)"><img
+                                            ng-src="{{assetsBase}}images/left-menu-img/pin.svg"></span>
+                                    <span tooltip-placement="{{(parent3Index===0  && $index === 0)?'bottom':'top'}}"
+                                        tooltip="{{'unpin_tooltip'| i18nString}}" class="pinIcon"
+                                        ng-class="{'pinned':task.pinned}" ng-if="task.pinned"
+                                        ng-click="pinTask(task, $event)"><img
+                                            ng-src="{{assetsBase}}images/left-menu-img/pinned.svg"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="datanotFound" ng-show="!dataAvailble.failed.fetching && failedTaskCollection.length === 0"><span>{{'no_data_found'| i18nString}}</span></div> -->
+                        <div class="emptyStateContainer"
+                            ng-show="!dataAvailble.failed.fetching && failedTaskCollection.length === 0">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">
+                                </div>
+                                <span class="mainTitle">{{'no_data_found'| i18nString}}</span>
+                                <!-- <div class="emptyStateDesc">Description</div>
+                                <div class="generateBtn">
+                                    <button class="btn btnSolidBlue" >Add</button>
+                                    <button class="btn" target="_blank" >learn more</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="fetchingData" ng-show="dataAvailble.failed.fetching"><i
+                                class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span>
+                        </div>
+                        <div class="fetchingDetails" ng-show="editTaskLoading">
+                            <div>
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i><span> {{'loading_details'|
+                                    i18nString}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FAILED TASK ENDS HERE -->
+    
+                <!-- PERFORMANCE STARTS HERE -->
+                <div id="performance" class="tab-pane fade">
+                    <div class="tableHeader col-xs-12 noPadding">
+                        <div class="headerTitle col-xs-2 noPadding dropdown scriptDiv">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'node_name'| i18nString}}(
+                                <span class="utteranceCount">{{dataAvailble.performance.total}}</span> )<img
+                                    ng-src="{{caretDown}}" class="caretDown"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions performance" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_component'| i18nString}}">
+                                        {{'group_by_component'| i18nString}}</span>
+                                    <div class="paddingTop20">
+                                        <toggle-switch ng-model="filterToggle.performance.utterances" no-opt="true"
+                                            ng-change="(filterToggle.performance.intent = false); updatePage('performance', 'toggle');">
+                                        </toggle-switch>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+    
+    
+                        <div class="headerTitle col-xs-1 noPadding dropdown typeDiv">
+                            <a class="dropdown-toggle" title="{{'Type'| i18nString}}"> {{'Type'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown taskDiv">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'task_name_uppercase'|
+                                i18nString}}<img ng-src="{{caretDown}}" class="caretDown"></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_task'| i18nString}}">
+                                        {{'group_by_task'| i18nString}}</span>
+                                    <div class="paddingTop20">
+                                        <toggle-switch ng-model="filterToggle.performance.intent" no-opt="true"
+                                            ng-change="(filterToggle.performance.utterances = false); updatePage('performance', 'toggle');">
+                                        </toggle-switch>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown totalDiv">
+                            <a class="dropdown-toggle" title="{{'total_runs'| i18nString}}"> {{'total_runs'|
+                                i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown sucessDiv">
+                            <a class="dropdown-toggle" title="{{'Success_per'| i18nString}}"> {{'Success_per'|
+                                i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown responseDiv">
+                            <a class="dropdown-toggle" title="{{'two_x_responses'| i18nString}}"> {{'two_x_responses'|
+                                i18nString}} </a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown nonResponseDiv">
+                            <a class="dropdown-toggle" title="{{'non_two_x_responses'| i18nString}}">
+                                {{'non_two_x_responses'| i18nString}} </a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown avgResponsaceDiv">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'avg_response_time'|
+                                i18nString}}<i
+                                    ng-class="{'btx-dropdown-down fa-sort-desc':dataAvailble.performance.sortby==='desc','fa fa-sort-asc':dataAvailble.performance.sortby!=='desc'}"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdown-subheader"><span title="{{'sort_by_label'| i18nString}}">
+                                        {{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('performance', 'desc')"><span
+                                        title="{{'high_to_low'| i18nString}}"> {{'high_to_low'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('performance', 'asc')"><span
+                                        title="{{'low_to_high'| i18nString}}"> {{'low_to_high'| i18nString}}</span></li>
+                            </ul>
+                        </div>
+    
+                        <div class="headerTitle col-xs-1">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 logContainer" id="performanceContainer" perfect-scroll dynamic-height
+                        dynaoffset="-230" height-property="height">
+                        <div class="col-xs-12 noPadding parentGroupDivBlock" parentIndex={{parent4Index}}
+                            ng-repeat="eachtask in performanceCollection" ng-init="parent4Index = $index">
+                            <span class="fa fa-compress"></span>
+                            <span class="fa fa-compress right"></span>
+                            <div class="col-xs-12 eachTableRow noPadding"
+                                ng-class="{'grouped':(eachtask.records.length > 1 && $index > 0)}"
+                                ng-repeat="task in eachtask.records" ng-click="editTask(task,'performance')">
+                                <div class="col-xs-2 text padding-left8 scriptDiv">{{getComponentName(task.componentId)}}
+                                    <span class="groupByTask"
+                                        ng-if="eachtask.records.length > 1 && $index === 0 && eachtask.total >=2">+{{eachtask.total-1}}</span>
+                                </div>
+                                <div class="col-xs-1 text typeDiv">{{task.logType}}</div>
+                                <div class="col-xs-2 text taskDiv">{{getTaskName(task.taskId,task)}}</div>
+                                <div class="col-xs-2 text totalDiv">{{eachtask.isOpen?task.total:eachtask.total}}</div>
+                                <div class="col-xs-2 text sucessDiv">
+                                    {{eachtask.isOpen?getSuccessRatio(task.successCount,task.total):getSuccessRatio(eachtask.successCount,eachtask.total)
+                                    | number:0}}%<span
+                                        class="marginLeft5 bthelptextcolor">({{eachtask.isOpen?task.successCount:eachtask.successCount}})</span>
+                                </div>
+                                <div class="col-xs-2 text responseDiv"
+                                    ng-show="task.logType !== 'script' &&  task.logType !== 'webhook'">
+                                    {{eachtask.isOpen?getSuccessRatio(task._2xxResponsesCount,task.total):getSuccessRatio(eachtask._2xxResponsesCount,eachtask.total)
+                                    | number:0}}%<span
+                                        class="marginLeft5 bthelptextcolor">({{eachtask.isOpen?task._2xxResponsesCount:eachtask._2xxResponsesCount}})</span>
+                                </div>
+                                <div class="col-xs-2 text nonResponseDiv"
+                                    ng-show="task.logType !== 'script' && task.logType !== 'webhook'">
+                                    {{eachtask.isOpen?getSuccessRatio(task.non2xxResponsesCount,task.total):getSuccessRatio(eachtask.non2xxResponsesCount,eachtask.total)
+                                    | number:0}}%<span
+                                        class="marginLeft5 bthelptextcolor">({{eachtask.isOpen?task.non2xxResponsesCount:eachtask.non2xxResponsesCount}})</span>
+                                </div>
+                                <div class="col-xs-2 text responseDiv"
+                                    ng-show="task.logType === 'script' || task.logType === 'webhook'">---</div>
+                                <div class="col-xs-2 text nonResponseDiv"
+                                    ng-show="task.logType === 'script' ||  task.logType === 'webhook'">---</span></div>
+                                <div class="col-xs-2 text avgResponsaceDiv">{{eachtask.isOpen?task.avg_res /
+                                    1000:eachtask.avg_res / 1000 | number:2}} {{'seconds_label'| i18nString}}</div>
+    
+                                <div class="col-xs-1 text getTaskErrorTitleIcon">
+                                    <span ng-if="eachtask.records.length > 2 && getTaskErrorTitle(eachtask) !== '---'"
+                                        tooltip-placement="{{(parent4Index===0 && $index === 0)?'bottom':'top'}}"
+                                        tooltip="{{getTaskErrorTitle(eachtask)}}"
+                                        class="triangleIcon fa fa-exclamation-triangle"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="datanotFound" ng-show="!dataAvailble.performance.fetching && performanceCollection.length === 0"><span>{{'no_data_found'| i18nString}}</span></div> -->
+                        <div class="emptyStateContainer"
+                            ng-show="!dataAvailble.performance.fetching && performanceCollection.length === 0">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">
+                                </div>
+                                <span class="mainTitle">{{'no_data_found'| i18nString}}</span>
+                                <!-- <div class="emptyStateDesc">Description</div>
+                                <div class="generateBtn">
+                                    <button class="btn btnSolidBlue" >Add</button>
+                                    <button class="btn" target="_blank" >learn more</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="fetchingData" ng-show="dataAvailble.performance.fetching"><i
+                                class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- PERFORMANCE ENDS HERE -->
+    
+                <!-- PINNED STARTS HERE -->
+                <div id="pinned" class="tab-pane fade">
+                    <div class="tableHeader col-xs-12 noPadding">
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"title="{{'translated_utterances'| i18nString}}"> {{'translated_utterances'| i18nString}}(
+                                <span class="utteranceCount">{{dataAvailble.pinned.total}}</span> )<i
+                                    ng-class="{'btx-dropdown-down fa-sort-desc':dataAvailble.pinned.sortby==='desc','fa fa-sort-asc':dataAvailble.pinned.sortby!=='desc'}"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions utterance" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_utterances'| i18nString}}">
+                                        {{'group_by_utterances'| i18nString}}</span>
+                                    <div class="paddingTop20">
+                                        <toggle-switch ng-model="filterToggle.pinned.utterances" no-opt="true"
+                                            ng-change="(filterToggle.pinned.intent = false); updatePage('pinned', 'toggle');">
+                                        </toggle-switch>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+    
+    
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'Intent'| i18nString}}<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions" ng-click="$event.stopPropagation();">
+                                    <span class="label-text-name" title="{{'group_by_intent'| i18nString}}">
+                                        {{'group_by_intent'| i18nString}}</span>
+                                    <div class="paddingTop20">
+                                        <toggle-switch ng-model="filterToggle.pinned.intent" no-opt="true"
+                                            ng-change="(filterToggle.pinned.utterances = false); updatePage('pinned', 'toggle');">
+                                        </toggle-switch>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'type_of_issue'| i18nString}}"> {{'type_of_issue'|
+                                i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'User_id'| i18nString}}<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown width100" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('koreID')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'kore_id'| i18nString}}"> {{'kore_id'|
+                                        i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('channelUId')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'chnlId_label'| i18nString}}">{{'chnlId_label'|
+                                        i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-1 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'Language'| i18nString}}">{{'Language'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'date_and_time'|
+                                i18nString}}<i class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdown-subheader"><span title="{{'sort_by_label'| i18nString}}">
+                                        {{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('pinned', 'desc')"><span
+                                        title="{{'newest_to_oldest'| i18nString}}">{{'newest_to_oldest'| i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('pinned', 'asc')"><span
+                                        title="{{'oldest_to_newest'| i18nString}}">{{'oldest_to_newest'| i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-1">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 logContainer" id="pinnedContainer" perfect-scroll dynamic-height dynaoffset="-230"
+                        height-property="height">
+                        <div class="col-xs-12 noPadding parentGroupDivBlock" ng-repeat="eachtask in pinnedTasksCollection"
+                            ng-init="parent5Index = $index">
+                            <span class="fa fa-compress"></span>
+                            <span class="fa fa-compress right"></span>
+                            <div class="col-xs-12 eachTableRow noPadding"
+                                ng-class="{'grouped':(eachtask.records.length > 1 && $index > 0)}"
+                                ng-repeat="task in eachtask.records" ng-click="editTask(task,'pinned')">
+                                <div class="col-xs-2 text padding-left8">{{task.input}} <span class="groupByTask"
+                                        ng-if="eachtask.records.length > 1 && $index === 0 && eachtask.total >=2">+{{eachtask.records.length-1}}</span>
+                                </div>
+                                <div class="col-xs-2 text padding-left8">{{getTaskName(task.taskId,task)}}</div>
+                                <div class="col-xs-2 text">{{task.reason}}</div>
+                                <div class="col-xs-2 text" ng-if="analyzeCB.toShowKoreID">{{getEmail(task.userId)}}</div>
+                                <div class="col-xs-2 text" ng-if="!analyzeCB.toShowKoreID">{{task.channelUId}}</div>
+                                <div class="col-xs-1 text">{{getLanguage(task.language)}}</div>
+                                <div class="col-xs-1 text dateStr">
+                                    <p>{{getDate(task.timestamp)}}</p>
+                                    <p class="time">{{getTime(task.timestamp)}}</p>
+                                </div>
+                                <div class="col-xs-2 text textRightAlign">
+                                    <span class="ambiguous" ng-show="task.isAmbiguous">Ambiguous</span>
+                                    <span class="pinIcon"
+                                        tooltip-placement="{{(parent5Index===0 && $index === 0)?'bottom':'top'}}"
+                                        tooltip="{{'pin_tooltip'| i18nString}}" ng-if="!task.pinned"
+                                        ng-click="pinTask(task, $event)"><img
+                                            ng-src="{{assetsBase}}images/left-menu-img/pin.svg"></span>
+                                    <span class="pinIcon"
+                                        tooltip-placement="{{(parent5Index===0 && $index === 0)?'bottom':'top'}}"
+                                        tooltip="{{'unpin_tooltip'| i18nString}}" ng-class="{'pinned':task.pinned}"
+                                        ng-if="task.pinned" ng-click="pinTask(task, $event)"><img
+                                            ng-src="{{assetsBase}}images/left-menu-img/pinned.svg"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="datanotFound" ng-show="!dataAvailble.pinned.fetching && pinnedTasksCollection.length === 0"><span>{{'no_data_found'| i18nString}}</span></div> -->
+                        <div class="emptyStateContainer"
+                            ng-show="!dataAvailble.pinned.fetching && pinnedTasksCollection.length === 0">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">
+                                </div>
+                                <span class="mainTitle">{{'no_data_found'| i18nString}}</span>
+                                <!-- <div class="emptyStateDesc">Description</div>
+                                <div class="generateBtn">
+                                    <button class="btn btnSolidBlue" >Add</button>
+                                    <button class="btn" target="_blank" >learn more</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="fetchingData" ng-show="dataAvailble.pinned.fetching"><i
+                                class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span>
+                        </div>
+                        <div class="fetchingDetails" ng-show="editTaskLoading">
+                            <div>
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i><span> {{'loading_details'|
+                                    i18nString}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PINNED ENDS HERE -->
+                <!-- DEBUGLOG STARTS HERE -->
+                <div id="debugLog" class="tab-pane fade">
+                    <div class="tableHeader col-xs-12 noPadding">
+    
+                        <div class="headerTitle col-xs-2 noPadding dropdown pointer-none">
+                            <a class="dropdown-toggle">LOG {{dataAvailble.logs.totalCount>1? statements_label :
+                                statement_label}}( <span class="utteranceCount">{{dataAvailble.logs.totalCount || 0}}</span>
+                                )</a>
+                        </div>
+    
+    
+                        <div class="headerTitle col-xs-2 noPadding dropdown pointer-none">
+                            <a class="dropdown-toggle" title="{{'task_name_uppercase'| i18nString}}">
+                                {{'task_name_uppercase'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-1 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'debug_point'| i18nString}}"> {{'debug_point'|
+                                i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'channel'| i18nString}}"> {{'channel'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-1 noPadding dropdown">
+                            <a class="dropdown-toggle" title="{{'Language'| i18nString}}">{{'Language'| i18nString}}</a>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'User_id'| i18nString}}<i
+                                    class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown width100" ng-click="handleDropdownClose($event)">
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('koreID')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'kore_id'| i18nString}}"> {{'kore_id'|
+                                        i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable fontSize14 paddingLeft15"
+                                    ng-click="updateUserName('channelUId')">
+                                    <img ng-src="{{checkTickIcon}}" ng-if="!analyzeCB.toShowKoreID">
+                                    <img ng-src="{{checkTickIconDisabled}}" ng-if="analyzeCB.toShowKoreID">
+                                    <span class="paddingLeft15" title="{{'chnlId_label'| i18nString}}">{{'chnlId_label'|
+                                        i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="headerTitle col-xs-2 noPadding dropdown">
+                            <a class="dropdown-toggle" type="button" data-toggle="dropdown"> {{'date_and_time'|
+                                i18nString}}<i class="btx-dropdown-down fa-sort-desc"></i></a>
+                            <ul class="dropdown-menu analyze-dropdown" ng-click="handleDropdownClose($event)">
+                                <li class="dropdown-subheader"><span title="{{'sort_by_label'| i18nString}}">
+                                        {{'sort_by_label'| i18nString}}</span></li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('debugLog', 'desc')"><span
+                                        title="{{'newest_to_oldest'| i18nString}}">{{'newest_to_oldest'| i18nString}}</span>
+                                </li>
+                                <li class="dropdownOptions clickable" ng-click="updatePage('debugLog', 'asc')"><span
+                                        title="{{'oldest_to_newest'| i18nString}}">{{'oldest_to_newest'| i18nString}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <div class="headerTitle col-xs-1 noPadding dropdown">
+                            <span class="dropdown-toggle"></span>
+                        </div> -->
+                    </div>
+                    <div class="col-xs-12 logContainer" id="debugLogsContainer" perfect-scroll dynamic-height
+                        dynaoffset="-230" height-property="height">
+                        <div class="col-xs-12 noPadding parentGroupDivBlock">
+                            <span class="fa fa-compress"></span>
+                            <span class="fa fa-compress right"></span>
+                            <div class="col-xs-12 eachTableRow noPadding"
+                                ng-class="{'grouped':(eachtask.records.length > 1 && $index > 0)}"
+                                ng-repeat="task in debugLogsCollection" ng-click="editTask(task,'debugLog')">
+    
+                                <div class="col-xs-2 text padding-left8">{{task.log}} <span class="groupByTask"
+                                        ng-if="eachtask.records.length > 1 && $index === 0 && eachtask.total >=2">+{{eachtask.records.length-1}}</span>
+                                </div>
+                                <div class="col-xs-2 text padding-left8">{{task.taskName}}</div>
+                                <div class="col-xs-1 text">{{task.debugPoint}}</div>
+                                <div class="col-xs-2 text" ng-if="task.channel === 'ivr'">{{task.channelDispName}}</div>
+                                <div class="col-xs-2 text" ng-if="task.channel !== 'ivr'">
+                                    {{(channelsConfig.channelsObject[task.channel].name | channelNameDisp) || '---'}}</div>
+                                <div class="col-xs-1 text">{{getLanguage(task.botLanguage)}}</div>
+                                <div class="col-xs-2 text" ng-if="analyzeCB.toShowKoreID">{{getEmail(task.userId)}}</div>
+                                <div class="col-xs-2 text" ng-if="!analyzeCB.toShowKoreID">{{task.channelUId}}</div>
+                                <div class="col-xs-1 text dateStr">
+                                    <p>{{getDate(task.createdOn)}}</p>
+                                    <p class="time">{{getTime(task.createdOn)}}</p>
+                                </div>
+                                <div ng-show="task.isDeveloper" class="col-xs-1 text"><img tooltip-placement="bottom"
+                                        tooltip=" {{'developer_label'| i18nString}}"
+                                        ng-src="{{assetsBase}}images/developerIcon.svg" class="developerConversation"></div>
+                            </div>
+                        </div>
+                        <!-- <div class="datanotFound" ng-show="!dataAvailble.logs.fetching && debugLogsCollection.length === 0"><span>{{'no_data_found'| i18nString}}</span></div> -->
+                        <div class="emptyStateContainer"
+                            ng-show="!dataAvailble.logs.fetching && debugLogsCollection.length === 0">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">
+                                </div>
+                                <span class="mainTitle">{{'no_data_found'| i18nString}}</span>
+                                <!-- <div class="emptyStateDesc">Description</div>
+                                <div class="generateBtn">
+                                    <button class="btn btnSolidBlue" >Add</button>
+                                    <button class="btn" target="_blank" >learn more</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="fetchingData" ng-show="dataAvailble.logs.fetching"><i
+                                class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading_data'| i18nString}}</span>
+                        </div>
+                        <div class="fetchingDetails" ng-show="editTaskLoading">
+                            <div>
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i><span> {{'loading_details'|
+                                    i18nString}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- DEBUGLOG ENDS HERE -->
+            </div>
+            <!-- <div>
+                <bt-analyze-filter all-tasks-data="allTasks" cb="analyzeCB" current-tab="currentTab"
+                    filter-component="filterComponent" components="components" selected-tags-array="selectedTagsArray">
+                </bt-analyze-filter>
+            </div> -->
+            <div class="analyzeEditNLP">
+                <bt-analyze-details current-tab="currentTab" filter-component="filterComponent" cb="analyzeCB">
+                </bt-analyze-details>
+            </div>
+        </div>
+        <div class="modal modalSlide fade right analyzeTrain" data-backdrop="static" role="dialog">
+            <div class="modal-dialog trainBody" dynamic-height dynaoffset="0" height-property="height">
+                <!--<div class="traintitle">Test and Train</div>-->
+                <!-- <div class="closeBtn fa fa-close" ng-click="closeTestTrainModal()"></div> -->
+                <img ng-src="{{closeCross}}" class="closeCross closeBtn" ng-click="closeTestTrainModal()">
+                <bt-train-bot train-offset="trainOffset" call-from="'analyzeTrain'" analyzerecord="currentTrainOpentask"
+                    cb="testTrainCB"></bt-train-bot>
+            </div>
+        </div>
+    </div>
+</div>

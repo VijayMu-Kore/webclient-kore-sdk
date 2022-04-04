@@ -1,0 +1,382 @@
+<status-loader ng-hide="!showStatusLoader"></status-loader>
+
+
+<bot-modal-slider id="languageManagement">
+           
+    <div class="modalSliderContainer width800">
+    <div class="modalHeader">
+
+        <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-carrot-left" ng-click="closeModalSlider('#languageManagement')" ></i>{{selectedLanguage.configure? Enable :manage }} {{'language_selectedName'| i18nString:({selectedLanguageName:selectedLanguage.name})}}</h4>
+        
+        
+        <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="closeModalSlider()" ></i></span> -->
+    </div>
+    <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-65" height-property="height">
+        <div class="instructionsContainer scrollDiv">
+    <div class="instuctionContent">
+
+        <p class="enableThislanguage title">{{manageLanguageTitle}} <a href="https://developer.kore.ai/docs/bots/advanced-topics/multi-lingual/building-multi-language-bots/" target="_blank" class="learnMoreLink ng-binding"> Learn more</a></p>
+        <!--STEPS BLOCK-->
+        <div class="stepsBlock">
+            <!--Step One-->
+            <div class="langauaStepOne">
+                <div class="stepBlockCount">1</div>
+                <div class="stepTitleDesc">
+                    <p class="stepTitle">{{'choose_nlu_model' | i18nString}}</p>
+                    <p class="stepDesc">{{'below_lang_model' | i18nString}} <a href="https://developer.kore.ai/docs/bots/advanced-topics/multi-lingual/building-multi-language-bots/" target="_blank" class="learnMoreLink ng-binding"> Learn more</a></p>
+                    <div class="kr-sg-dropdowns">
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{nluLanguage?nluLanguage.name:chooseOptioni18n}}</button>                                            
+                            <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-425">
+                                <li class="search-box">
+                                    <input type="text" placeholder="Search" class="seach-input" ng-model="searchLanguage.languageSearch" ng-click="$event.stopPropagation();" ng-blur="hideLanguageDropdown($event)" >
+                                </li>
+                                <li  ng-repeat="nluLanguages in nluSupportedLanguages | filter:{'name':searchLanguage.languageSearch}  track by $index"  ng-if="nluLanguages.value !== nluLanguage.value">
+                                    <a ng-click="addNluLanguage(nluLanguages,$index)">{{nluLanguages.name}}</a>
+                                  </li>
+                            </ul>
+                          </div>
+                    </div>
+                    <div class="hintDiv col-xs-12 " ng-show="nluLanguage.value !== selectedLanguage.value && nluLanguage.value!=='ge'">
+                        <div class="icon">
+                        <i class="btx-info"></i>
+                        </div>
+                        <div class="description">
+                            {{'consider_enabling_userinput' | i18nString}} 
+                        </div>
+                        </div>
+                </div>
+            </div>
+             <!--Step One-->
+              <!--Step Two-->
+            <div class="enableLanguageDiv langauaStepTwo">
+                <div class="stepBlockCount"  ng-hide="stream.type ==='universalbot' && selectedLanguage.configure">2</div>
+                <div class="stepTitleDesc"  ng-hide="stream.type ==='universalbot' && selectedLanguage.configure">
+                    <p class="stepTitle"> {{addEnableLangDefinition}}</p>
+                    <p class="stepDesc"> {{addEnableNewLangDesc}}  <a href="https://developer.kore.ai/docs/bots/advanced-topics/multi-lingual/building-multi-language-bots/" target="_blank" class="learnMoreLink">{{'learn_more_label'| i18nString}}</a></p>
+                    <!-- <p class="stepDesc">Below language model will be used to train the bot</p> -->
+                 
+                </div>
+    
+                <!-- Radio inputs section -->
+                <div class="col-xs-12 radioDiv noPadding marginTop10 marginBottom10" ng-show="selectedLanguage.configure && stream.type !=='universalbot'">
+                    <div ng-show="selectedLanguage.configure">
+                        <label class="required" for="defaultCopy">
+                            <input type="radio" ng-model="i18n.enableLanguageType" value="defaultContent" name="enableLanguageType" id="defaultCopy" />
+                            <span class="opt-title"> {{'basic_mode' | i18nString}}</span>
+                            <span class="info-tips">
+                                <i class="btx-info"></i>
+                                <div class="custom-info-tooltip">
+                                    <div class="title-heading"> {{'heres_copied' | i18nString}}</div>
+                                    <div class="text-img">
+                                        <i class="btx-check"></i>
+                                        <span> {{'dialogprompts_messages' | i18nString}}</span>
+                                    </div>
+                                    <div class="text-img">
+                                        <i class="btx-close"></i>
+                                        <span> {{'knowledge_graph' | i18nString}} </span>
+                                    </div>
+                                    <div class="text-img">
+                                        <i class="btx-close"></i>
+                                        <span> {{'training_data' | i18nString}}</span>
+                                    </div>
+                                </div>
+                            </span>
+                        </label>
+                        <!-- <p class="subText" ng-class="{addMargin: !selectedLanguage.enabled}">{{'subText'| i18nString:({dyn:selectedLanguage.name})}}</p> -->
+                        <label class="required" for="advancedCopy">
+                            <input type="radio" ng-model="i18n.enableLanguageType" value="advancedContent" name="enableLanguageType" id="advancedCopy" />
+                            <span class="opt-title">{{'advanced_mode' | i18nString}}</span>
+                            <span class="info-tips">
+                                <i class="btx-info"></i>
+                                <div class="custom-info-tooltip">
+                                    <div class="title-heading">{{'heres_copied' | i18nString}}</div>
+                                    <div class="text-img">
+                                        <i class="btx-check"></i>
+                                        <span>{{'dialogprompts_messages' | i18nString}}</span>
+                                    </div>
+                                    <div class="text-img">
+                                        <i class="btx-info"></i>
+                                        <span>{{'knowledge_graph' | i18nString}} <span class="optional-text">{{'optional_label' | i18nString}}</span></span>
+                                    </div>
+                                    <div class="text-img">
+                                        <i class="btx-info"></i>
+                                        <span>{{'small_talk' | i18nString}} <span class="optional-text">{{'optional_label' | i18nString}}</span></span>
+                                    </div>
+                                    <div class="text-img">
+                                        <i class="btx-info"></i>
+                                        <span>{{'training_data' | i18nString}} <span class="optional-text">{{'optional_label' | i18nString}}</span></span>
+                                    </div>
+                                </div>
+                            </span>
+                        </label>
+                            <label for="modifiedJson">
+                                <input type="radio" ng-click="scrollUpdate()" ng-model="i18n.enableLanguageType" value="modifiedContent" name="enableLanguageType" id="modifiedJson" />
+                                <span class="opt-title">{{'useLang'| i18nString:({dyn:selectedLanguage.name})}}</span>
+                                <span class="info-tips">
+                                    <i class="btx-info"></i>
+                                    <div class="custom-info-tooltip right-0">
+                                        <div class="title-heading mb-0">{{'upload_specific_lang_json'| i18nString:({dyn:selectedLanguage.name})}}</div>
+                                    </div>
+                                </span>
+                            </label>
+                    </div>
+                    <!-- <p class="subText" ng-class="{addMargin: !selectedLanguage.enabled}">{{'manageLanguage_enable_language_label_desc'| i18nString:({dyn:selectedLanguage.name})}}</p> -->
+    
+                </div>
+                <div class="languageStepDiv" ng-show="i18n.enableLanguageType === 'defaultContent' && stream.type !=='universalbot'" >
+                    <div class="innerSteps"><span class="stepDot"></span></div>
+                    <p class="steps">{{'select_base_lang' | i18nString}}</p>
+                    <p class="enableThislanguage">{{'used_base_lang' | i18nString}}</p>
+                    <div class="kr-sg-dropdowns">
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{i18n.baseCopyLanguage?i18n.baseCopyLanguage.name:selecti18n}}</button>                                            
+                            <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-425">
+                              <li ng-click="selectCopyConfigBaseLanguage(language)" ng-repeat="language in supportedLanguages" ng-if="language.value !=='ge'">{{language.name}}</li>
+                            </ul>
+                          </div>
+                    </div>
+           
+                </div>
+                <div class="languageStepDiv" ng-show="i18n.enableLanguageType === 'advancedContent' && stream.type !=='universalbot'">
+                    <div class="innerSteps"><span class="stepDot"></span></div>
+                    <p class="steps">{{'select_base_lang' | i18nString}}</p>
+                    <p class="enableThislanguage">{{'used_base_lang' | i18nString}}</p>
+                    <div class="kr-sg-dropdowns">
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{i18n.baseAdvancedLanguage?i18n.baseAdvancedLanguage.name:selecti18n}}</button>                                            
+                            <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-425">
+                              <li ng-click="selectAdvancedConfigBaseLanguage(language)" ng-repeat="language in supportedLanguages">{{language.name}}</li>
+                            </ul>
+                          </div>
+                    </div>
+                    <p class="steps paddingTop20">{{'choose_what_copy' | i18nString}}</p>
+                    <p class="enableThislanguage">{{'choose_what_to_copy_desc' | i18nString}}</p>
+                    <div class="checkBoxContainer">
+                        <div class="firstCheck" ng-repeat="copyvalue in copyValues">
+                            <p class="checkTitle">{{copyvalue.title}}</p>
+                            <div class="kr-sg-checkbox d-block" ng-repeat="item in copyvalue.items">
+                                <input id="checkbox_{{item.value}}" class="checkbox-custom" type="checkbox" ng-disabled="(item.read_only_one || (item.value ==='ontology' && copyvalue.items[0].value === 'faqs' && !copyvalue.items[0].selected))" ng-model="item.selected"> 
+                                <label for="checkbox_{{item.value}}" class="checkbox-custom-label" ng-class="{disabledValue: (item.read_only_one || (item.value ==='ontology' && copyvalue.items[0].value === 'faqs' && !copyvalue.items[0].selected))}">{{item.name}} </label>
+                                <div class="itemDescription">{{item.description}}</div>
+                                <!-- <i class="btx-info" tooltip-placement="left" tooltip="Enable German language by copying the bot definition and training data "></i> -->
+                            </div>
+                        </div>
+                        <!-- <div class="secondCheck">
+                            <p class="checkTitle">Knowledge Graph</p>
+                            <div class="kr-sg-checkbox d-block">
+                                <input id="checkbox_faqs" class="checkbox-custom" type="checkbox">
+                                <label for="checkbox_faqs" class="checkbox-custom-label">FAQs & Answers </label>
+                                <i class="btx-info" tooltip-placement="left" tooltip="Enable German language by copying the bot definition and training data "></i>
+                            </div>
+                            <div class="kr-sg-checkbox d-block">
+                                <input id="checkbox_ontology" class="checkbox-custom" type="checkbox">
+                                <label for="checkbox_ontology" class="checkbox-custom-label">Ontology Structure </label>
+                                <i class="btx-info" tooltip-placement="left" tooltip="Enable German language by copying the bot definition and training data "></i>
+                            </div>
+                        </div>
+                        <div class="thirdCheck">
+                            <p class="checkTitle">Others</p>
+                            <div class="kr-sg-checkbox d-block">
+                                <input id="checkbox_smalltalk" class="checkbox-custom" type="checkbox">
+                                <label for="checkbox_smalltalk" class="checkbox-custom-label">Small Talk </label>
+                                <i class="btx-info" tooltip-placement="left" tooltip="Enable German language by copying the bot definition and training data "></i>
+                            </div>
+                            <div class="kr-sg-checkbox d-block">
+                                <input id="checkbox_traits" class="checkbox-custom" type="checkbox">
+                                <label for="checkbox_traits" class="checkbox-custom-label">Traits</label>
+                                <i class="btx-info" tooltip-placement="left" tooltip="Enable German language by copying the bot definition and training data "></i>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="languageStepDiv" ng-show="i18n.enableLanguageType === 'modifiedContent'">
+                    <div class="innerSteps"><span class="stepDot"></span></div>
+                    <p class="steps">{{step1Title}}</p>
+                    <p class="enableThislanguage">{{step1Description}}</p>
+                    <div class="col-xs-12 form-group noPadding marginDown">
+                        <!-- <div class="col-xs-12 labelling noPadding">
+                            <label class="required-field downloadLabel">{{'base_language_pack'| i18nString}}</label>
+                        </div> -->
+                        <div class="col-xs-9 form-group noPadding">
+                            <!-- <div class="field-type-dd">
+                                <select ng-model="i18n.baseLanguage" class="form-control btnDropdown width100percent" id="language" name="language" required ng-options="language as language.name for language in supportedLanguages">
+                                </select>
+                            </div> -->
+                            <div class="kr-sg-dropdowns">
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{i18n.baseLanguage?i18n.baseLanguage.name:selectBaseLangi18n}}</button>                                            
+                                    <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-425">
+                                      <li ng-click="selectConfigBaseLanguage(language)" ng-repeat="language in supportedLanguages">{{language.name}}</li>
+                                    </ul>
+                                  </div>
+                            </div>
+                            <div ng-show="alertFieldsForm.language.$dirty">
+                                <div error-alert ng-show="alertFieldsForm.language.$error.required" class="text-danger form-error-text"> {{'default_lang_req'| i18nString}} </div>
+                            </div> 
+                        </div>
+                        <div class="col-xs-3">
+                            <button type="button" class="btn noMargin" ng-disabled ="!i18n.baseLanguage" ng-click="downloadDefaultLanguage()">{{'download_json'| i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="languageStepDiv" ng-show="i18n.enableLanguageType === 'modifiedContent'">
+                    <div class="innerSteps"><span class="stepDot"></span></div>
+                    <p class="steps">{{step2Title}}</p>
+                    <p class="enableThislanguage">{{step2Description}}</p>
+                    <img ng-src="{{manualJSON}}" class="manualJSON">
+                </div>
+                <div class="languageStepDiv" ng-show="i18n.enableLanguageType === 'modifiedContent' || !selectedLanguage.configure">
+                    <div class="innerSteps"><span class="stepDot"></span></div>
+                    <p class="steps">{{step3Title}}</p> 
+                    <p class="enableThislanguage">{{'upload_lang_pack'| i18nString}}</p>    
+                    <!-- <div class="kr-sg-multi-line-notification error-notification" ng-show="!selectedStream.translationEngine || !selectedStream.translationAPIKey">
+                        <div class="bulb-icon"><i class="btx-warning"></i></div>
+                        <div class="tost-text">  {{'you_need_configure_translations' | i18nString}}  </div>          
+                        <div class="configLink" ng-click="openInputTranslation()">{{'configure' | i18nString}}</div>                         
+                    </div>    -->
+                    <div class="col-xs-12  noPadding">
+                        <div class="uploadPackDiv" ng-show="i18n.enableLanguageType === 'modifiedContent' || !selectedLanguage.configure">
+                            <!-- <div class="col-xs-12 labelling noPadding" >
+                                <label class="required-field downloadLabel">{{'manageLanguagenote_download_json'| i18nString:({dyn:selectedLanguage.name})}}</label>
+                            </div> -->
+                            <div class="noPadding">
+                                <div class="input-group">
+                                    <input name="uploadLanguageFile" type="text" class="form-control" placeholder="{{'Upload_a_lang_pack_placeholder'| i18nString}}" readonly ng-model="i18n.updatedLanguageFileName" required>
+                                    <div class="input-group-addon btn-file"> {{'upload'| i18nString}} <input type="file" file-model="i18n.updatedLanguageFile" id="uploadLanguageFile" name="importFile" required on-file-change="readLangaugeFile"/></div>
+                                </div>
+                                <div ng-show="fileExtensionError" class="text-danger form-error-text"> {{'only_json_file'| i18nString}} </div>
+                            </div>
+                        </div>
+                        <div class="inputNote" ng-show="!selectedLanguage.configure">
+                            <div class="col-xs-1 bulbicon"><span class="exclamationTriangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span></div>
+                            <div class="col-xs-11 paddingLeftFive">
+                                <span class="name">
+                                    {{languageSettings.enableLanguageProtip}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!--Step Two-->
+              <!--Step Three-->
+            <div class="langauaStepThree paddingBTMZero">
+                <div class="stepBlockCount" ng-if="stream.type !=='universalbot'">3</div>
+                <div class="stepBlockCount" ng-if="stream.type ==='universalbot' && !selectedLanguage.configure">3</div>
+                <div class="stepBlockCount" ng-if="stream.type ==='universalbot' && selectedLanguage.configure">2</div>
+                <div class="stepBlockEnd"></div>
+                <div class="stepTitleDesc">
+                    <p class="stepTitle">{{'manage_translations' | i18nString}}</p>
+                    <p class="stepDesc desBG">{{'optional' | i18nString}}</p>
+                </div>
+                <div class="kr-sg-multi-line-notification error-notification" ng-show="!(stream.translationEngineId && stream.translationEngine._id) && (selectedLanguage.value !== nluLanguage.value) ">
+                    <div class="bulb-icon"><i class="btx-warning"></i></div>
+                    <div class="tost-text">  {{'you_need_configure_translations' | i18nString}}  </div>          
+                    <!-- <div class="configLink" ng-click="openInputTranslation()">{{'configure' | i18nString}}</div>                          -->
+                </div>  
+                <div ng-show="showInputTranslation" class="configurationEngine">
+                    <div class="kr-sg-dropdowns">
+                        <div class="label-text">{{'configuring_translation_engine' | i18nString}}</div>
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input"  data-toggle="dropdown">{{getTransilationEngineName(selectedTransitionEngine.translationEngine)}}</button>                                            
+                            <ul class="dropdown-menu content-menu">
+                                <li ng-repeat="engine in translationEngines" ng-if="selectedTransitionEngine.translationEngine !== engine.type" ng-click="selectedTransitionEngine.translationEngine = engine.type"><a>{{engine.displayName}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kr-sg-input-text">
+                        <!-- <div class="label-text">{{'access_key' | i18nString}}</div> -->
+                        <input type="text" placeholder="{{'enter_access_key' | i18nString}}" class="input-text" ng-model="selectedTransitionEngine.translationAPIKey">
+                    </div>
+                    <div class="btn-info-ftr">
+                        <button class="kr-sg-button-primary btn_lg" ng-disabled="!selectedTransitionEngine.translationEngine || !selectedTransitionEngine.translationAPIKey" ng-click="configureTransitionEngine()">{{'configure' | i18nString}}</button>
+                        <button class="kr-sg-button-secondary btn_lg" ng-click="closeLanguageTranslationEngine()">{{'cancel' | i18nString}}</button>
+                    </div>
+                </div>            
+                <div class="kr-sg-checkbox d-block">
+                    <input id="checkbox_Translation" class="checkbox-custom" type="checkbox" ng-click="enableUpdateButton()"
+                    ng-model="multiLingual.inputTranslation" ng-disabled="(nluLanguage.value === 'ge') || (selectedLanguage.value === nluLanguage.value)">
+                    <label for="checkbox_Translation" class="checkbox-custom-label"  ng-class="{'disable-options':((nluLanguage.value === 'ge') || (selectedLanguage.value === nluLanguage.value))}">{{'enable_user_input_translation' | i18nString}}</label>
+                    <div class="checkDesc">{{'translation_Service_translate' | i18nString}}</div>
+                </div>
+                <div class="kr-sg-checkbox d-block paddingBTMZero">
+                    <input id="checkbox_platform" class="checkbox-custom" type="checkbox" ng-click="enableUpdateButton()"
+                    ng-model="multiLingual.responseTranslation" ng-disabled = "(selectedLanguage.value === nluLanguage.value)">
+                    <label for="checkbox_platform" class="checkbox-custom-label" ng-class="{'disable-options':((selectedLanguage.value === nluLanguage.value))}">{{'enable_runtime_response' | i18nString}}</label>
+                    <div class="checkDesc">{{'enable_runtime_desc' | i18nString}}</div>
+                </div>
+            </div>
+             <!--Step Three-->
+        </div>
+       <!--STEPS BLOCK-->
+    </div>
+</div>
+</div>
+    <div class="modalFooter">
+        <button type="button" ng-if="(stream.type !== 'universalbot')"ng-disabled="(!i18n.enableLanguageType && !i18n.updatedLanguageFile) ||(i18n.enableLanguageType === 'defaultContent' && !i18n.baseCopyLanguage) || (i18n.enableLanguageType === 'advancedContent' && !i18n.baseAdvancedLanguage) || (i18n.enableLanguageType !== 'defaultContent' && (i18n.enableLanguageType === 'modifiedContent' && !i18n.enableUpdate))" ng-click="updateLanguagePack()" class="btn">{{selectedLanguage.configure ? Enable : update}}</button>
+        <button type="button" ng-if="(stream.type === 'universalbot')" ng-click="updateLanguagePack()" class="btn">{{selectedLanguage.configure ? Enable : update}}</button>
+        <button type="button" class="btn closeCancel" ng-click="closeModalSlider('#languageManagement')">{{'cancel'| i18nString}}</button>
+    </div>
+                    
+    </div>
+</bot-modal-slider>
+
+<div class="modal fade" id="language_import" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md textareaModal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="finishImporting()"  aria-label="Close">
+                    <span aria-hidden="true" ><i class="fa fa-close"></i></span>
+                </button>
+                <h4 class="modal-title">{{'importModalTitle'| i18nString:({dyn:importModalTitle})}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden">
+                <div class="col-xs-12 form-group noPadding">
+                    <p><language>{{importModalDescription}}</p>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <div class="jsEditorPromptHeader">{{'import_results'| i18nString}}</div>
+                    <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="importResults" disabled></textarea>
+                    </textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer form-group">
+                    <button type="submit" ng-click="finishImporting()" class="btn btn-primary" ng-disabled="importing">
+                            <i ng-show="importing" class="fa fa-spinner fa-spin"></i>{{(importing)? importing : ok}}
+                        </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="changeNluLanguage" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="nluModalHeader">
+                    <div class="changeNluDesc">Change NLU Language</div>
+                    <div class="nluModalClose"><i class="btx-close" ng-click="changeNluLanguageModal()"></i> </div>
+                </div>
+                <p>{{changeNluLanguageDescription}}</p>
+                <button class="kr-sg-button-primary btn_md" data-dismiss="modal">Confirm</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="changeNluLanguageModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="trainingNluLanguage" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="nluModalHeader">
+                    <div class="changeNluDesc">Confirm NLU Language</div>
+                    <div class="nluModalClose"><i class="btx-close" ng-click="changeNluLanguageModal()"></i> </div>
+                </div>
+                <p>{{trainNluLanguageDescription}}</p>
+                <button class="kr-sg-button-primary btn_md" ng-click="updateNluLangTraining()">Confirm</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="trainNluLanguageModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

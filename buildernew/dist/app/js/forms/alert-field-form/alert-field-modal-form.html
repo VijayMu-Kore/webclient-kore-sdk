@@ -1,0 +1,1225 @@
+    <div class="modalSliderContainer width700">
+        <div class="modalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                <i  class="btx-close" ng-click="fieldData = {};cancelFieldForm();" ></i>
+              {{displayMode === 'view' ? viewTask :setupTask}}
+              </h4>
+            <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="fieldData = {};cancelFieldForm();" ></i></span> -->
+        </div>
+        <div class="modalBody alertFieldFormScroll" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+            <div class="form-container row">
+  <div class="sub-form">
+    <form class="wf-form synonyms_manage" name="alertFieldsForm" novalidate>
+        <fieldset ng-disabled="view">
+        <div class="form-group" ng-if="wfType === 'action'">
+            <div class="col-xs-12 labelling">
+                <label class="required-field"> {{'task_parameter'| i18nString}}</label>
+            </div>
+            <div class="col-xs-12 radioDiv">
+                <div class="radioDivPullLeft">
+                    <label>
+                        <input ng-value="true" type="radio"  ng-change="selectActionField()" ng-model="form.actionFieldType"><span class="opt-title">{{'payload_parameter'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input ng-value="false"  type="radio"  ng-change="selectActionField()" ng-model="form.actionFieldType"><span class="opt-title">{{'query_parameter'| i18nString}}</span> 
+                    </label>
+                </div>
+            </div>
+          <div class="col-xs-12 marginTop10"  ng-if="nested && !fieldData.actionFieldType"><button type="reset" ng-click="fieldData = {};cancelFieldForm();" class="btn closeCancel">{{'cancel'| i18nString}} </button></div>
+        </div>
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field"> {{'parameter_name'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input maxlength="256" type="text" class="form-control" ng-model="fieldData.name" id="alertFieldName" placeholder="{{'field_title'| i18nString}}" name="name" required ng-pattern="validateParamName" >
+            <div ng-show="alertFieldsForm.name.$dirty">
+              <div error-alert ng-show="alertFieldsForm.name.$error.required" class="text-danger form-error-text"> {{'parameter_name_req'| i18nString}} </div>
+              <div error-alert ng-show="alertFieldsForm.name.$error.pattern" class="text-danger"> {{'parameter_name_alert'| i18nString}}</div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" ng-if="(wfType === 'alert' || fieldData.actionFieldType) && fieldData.fieldtype.value!=='label'">
+          <div class="col-xs-12 labelling">
+            <label class="required-field" >{{'prompt_message'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" ng-model="fieldData.help" note-description="promptMessageDescription" id="help" placeholder="Add a Prompt Message for this field" name="help" required>
+            <div ng-show="alertFieldsForm.help.$dirty">
+              <div error-alert ng-show="alertFieldsForm.help.$error.required" class="text-danger form-error-text"> {{'parameter_prompt_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="(wfType === 'alert' || fieldData.actionFieldType) && fieldData.fieldtype.value==='label'">
+          <div class="col-xs-12 labelling">
+            <label>{{'help_hint'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" ng-model="fieldData.help" id="help" placeholder="{{'add_help_hint'| i18nString}}" name="help">
+            <div  ng-show="alertFieldsForm.help.$dirty">
+              <div error-alert ng-show="alertFieldsForm.help.$error.required" class="text-danger form-error-text">{{'parameter_help_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field"> {{'parameter_key'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12">
+            <input maxlength="256" type="text" class="form-control" ng-model="fieldData.key" id="key" placeholder="{{'field_key'| i18nString}}" name="key" required>
+            <div  ng-show="alertFieldsForm.key.$dirty"> <br />
+              <div error-alert ng-show="alertFieldsForm.key.$error.required" class="text-danger form-error-text">{{'parameter_key_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <!-- Entity type (Metadata) -->
+         <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field">{{'entity_type'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <select name="metadata" ng-model="fieldData.metadata" required ng-change="populateFieldDataTypes(fieldData.metadata)" class="btn-default btnDropdown">
+              <option value="">{{'select_entity_type'| i18nString}}</option>
+              <option ng-repeat="const in _constants_.entityNlpFieldDataTypes|filter: {isDepricated : false}" value="{{const.value}}">{{const.title}}</option>
+            </select>
+            <div  ng-show="alertFieldsForm.metadata.$dirty">
+              <div error-alert ng-show="alertFieldsForm.metadata.$error.required" class="text-danger form-error-text"> {{'entity_type_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field" > {{'parameter_type'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12">
+            <div class="field-type-dd">
+              <select ng-model="fieldData.fieldtype" class="btn-default btnDropdown" id="fieldtype" name="fieldtype" required ng-options="fieldtype.name for fieldtype in supportedFieldTypes">
+                <option value="">{{'select_field_type'| i18nString}} </option>
+              </select>
+            </div>
+            <div ng-show="alertFieldsForm.fieldtype.$dirty">
+              <div error-alert ng-show="alertFieldsForm.fieldtype.$error.required" class="text-danger form-error-text"> {{'parametertype_req'| i18nString}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field" >{{'data_type'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12">
+              <select ng-if="!nested" ng-model="fieldData.datatype" ng-disabled="fieldData.fieldtype.value == 'file' || fieldData.fieldtype.value == 'location' || fieldData.fieldtype.value === 'nestedform' " class="btn-default btnDropdown" id="datatype" name="datatype" required ng-options="datatype.name for datatype in supportedFilteredDataTypes" required>
+                  <option value=""> {{'select_data_type'| i18nString}} </option>
+              </select>
+              <select ng-if="nested" ng-model="fieldData.datatype" ng-disabled="fieldData.fieldtype.value == 'file' || fieldData.fieldtype.value == 'location' || fieldData.fieldtype.value === 'nestedform' " class="btn-default btnDropdown" id="datatype" name="datatype" required ng-options="datatype.name for datatype in supportedDataTypes" required>
+                  <option value=""> {{'select_data_type'| i18nString}}</option>
+              </select>
+            <div ng-show="alertFieldsForm.datatype.$dirty">
+              <div error-alert ng-show="alertFieldsForm.datatype.$error.required" class="text-danger form-error-text">{{'parameter_datatype_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.datatype.value === 'array'">
+          <div class="col-xs-12 labelling">
+            <label class="required-field" > {{'array_element_type'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12">
+            <select ng-model="fieldData.arrayElementType"
+                    ng-disabled="fieldData.fieldtype.value === 'nestedform'"
+                    class="btn-default btnDropdown" id="arrayElementType" name="arrayElementType" required ng-options="datatype.name for datatype in supportedDataTypes" required>
+            <option value=""> {{'select_type'| i18nString}} </option>
+            </select>
+            <div ng-show="alertFieldsForm.arrayElementType.$dirty">
+              <div error-alert ng-show="alertFieldsForm.arrayElementType.$error.required" class="text-danger form-error-text"> {{'parametertype_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform'">
+          <div class="col-xs-12 labelling">
+            <label>{{'nested_parameter'| i18nString}}</label> <div class="btn btn-primary pull-right paddingTop5" ng-click="showNestedFieldForm()">{{'add'| i18nString}}  </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform' && showFieldForm">
+          <div class="col-xs-12">
+            <div class="well well-sm overflow-hidden">
+              <div class="col-xs-12 grayBG" nested-alert-fields></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform'">
+          <div class="col-xs-12">
+            <table class="table table-hover table-bordered" ng-if="fieldData.fields.length>0">
+              <tr>
+                <td class="col-xs-3">{{'parameter_title'| i18nString}}</td>
+                <td class="col-xs-3">{{'key'| i18nString}}</td>
+                <td class="col-xs-3">{{'parameter'| i18nString}}</td>
+                <td class="col-xs-3">{{'actions'| i18nString}}</td>
+              </tr>
+              <tr ng-repeat="field in fieldData.fields">
+                <td data-ellipsis data-ellipsis-symbol="..">{{field.title}}</td>
+                <td data-ellipsis data-ellipsis-symbol="..">{{field.key}}</td>
+                <td data-ellipsis data-ellipsis-symbol="..">{{field.fieldType}}</td>
+                <td>
+                  <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default no-padding" ng-click="edit($index,row)"><i class="btx-pencil"></i></button>
+                    <button type="button" class="btn btn-default no-padding" ng-click="delete($index,row)"><i class="btx-delete-1"></i></button>
+                    <button type="button" class="btn btn-default no-padding" ng-show="$index != 0" ng-click="moveUp($index)"><i class="fa fa-caret-up"></i></button>
+                    <button type="button" class="btn btn-default no-padding" ng-show="$index != fieldData.fields.length - 1" ng-click="moveDown($index)"><i class="fa fa-caret-down"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'datetime' || fieldData.fieldtype.value === 'date'">
+          <div class="col-xs-12">
+            <label class="required-field" >{{'format'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <div ng-if="showDateField">
+              <div class=" col-xs-6" >
+                <input type="text" class="form-control" placeholder="{{'date_time'| i18nString}}" name="date_format" ng-model="fieldData.format" required="">
+              </div>
+              <div class="col-xs-2">
+                <span><i class="fa fa-times remove-new-date-format" ng-click="hideDateTextField()"></i></span>
+              </div>
+            </div>
+            <select id="alertFieldsFormDateTimeSelect" name="date_format" ng-if="fieldData.fieldtype.value === 'datetime' && !showDateField" class="btn-default btnDropdown" ng-model="dateFormat" ng-change="fieldData.format = dateFormat;showDateTextField(fieldData.format)" required>
+              <option value="">{{'select_date_time'| i18nString}}</option>
+              <option value="dd-MM-yyyyThh:mm:ssZ">dd-MM-yyyyThh:mm:ssZ</option>
+              <option value="MM-dd-yyyyThh:mm:ssZ">MM-dd-yyyyThh:mm:ssZ</option>
+              <option value="dd-MM-yyThh:mm:ssZ">dd-MM-yyThh:mm:ssZ</option>            
+              <option value="yyyy-MM-ddThh:mm:ssZ">yyyy-MM-ddThh:mm:ssZ</option>
+              
+              <option value="_new_">{{'add_new'| i18nString}}</option>
+            </select>
+            <select ng-if="fieldData.fieldtype.value === 'date' &&  !showDateField" name="date_format" class="btnDropdown" ng-model="fieldData.format" ng-change="showDateTextField(fieldData.format)" required>
+              <option value="">{{'select_date'| i18nString}}</option>
+              <option ng-repeat="(key,value) in formats" value="{{key}}">{{value}}</option>
+              <option value="_new_">{{'add_new'| i18nString}}</option>
+            </select>
+            <div ng-show="alertFieldsForm.date_format.$dirty">
+              <div error-alert ng-show="alertFieldsForm.date_format.$error.required" class="text-danger form-error-text">{{'format_req'| i18nString}} </div>
+            </div>
+              <div ng-show="invalidDateFormat">
+              <div error-alert ng-show="invalidDateFormat" class="text-danger form-error-text">{{'format_invalid'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        
+       
+        <!-- End of Entity type changes-->
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'file'">
+          <key-value-form form="keyvalueform" options="fieldData.fileMeta"></key-value-form>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'file'">
+          <div class="col-xs-12">
+            <label >{{'allow_file_upload'| i18nString}}</label>
+          </div>
+           <div class="col-xs-12 radioDiv">
+            <div>
+              <label for="fieldData.allowMultiple.no" ng-init="fieldData.allowMultiple = fieldData.allowMultiple || false">
+                <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.allowMultiple" name="fieldData.allowMultiple" id="fieldData.allowMultiple.no" ><span class="opt-title">{{'no'| i18nString}}</span> 
+              </label>
+            </div>
+            <div>
+              <label for="fieldData.allowMultiple.yes">
+                <input ng-value='true'  type="radio"   ng-model="fieldData.allowMultiple" name="fieldData.allowMultiple" id="fieldData.allowMultiple.yes"><span class="opt-title">{{'yes'| i18nString}}</span> 
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'textarea' || fieldData.fieldtype.value === 'datetime'">
+          <div class="col-xs-12">
+            <label>{{'placeholder'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" placeholder="{{'field_placeholder'| i18nString}}" ng-model="fieldData.textplaceholder">
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'url'">
+          <div class="col-xs-12">
+            <label>{{'placeholder'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" placeholder="{{'enter_url'| i18nString}}" ng-model="fieldData.textplaceholder">
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'email'">
+          <div class="col-xs-12">
+            <label>{{'placeholder'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" placeholder="{{'enter_validemail'| i18nString}}" ng-model="fieldData.textplaceholder">
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'textbox' || fieldData.fieldtype.value === 'file'">
+          <div class="col-xs-12">
+            <label>{{'placeholder'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" placeholder="{{'field_placeholder'| i18nString}}" ng-model="fieldData.textplaceholder">
+          </div>
+        </div>
+        <div class="form-group col-xs-12">
+          <div class="well well-sm overflow-hidden"
+                      ng-if="fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search' || fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'staticDropdownCB' || fieldData.fieldtype.value === 'directory'"
+                      >
+            <div class="col-xs-12 grayBG">
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'staticDropdownCB' || fieldData.fieldtype.value === 'checkbox'">
+                <key-value-form payload-type="array" form="keyvalueform" options="fieldData.staticDropDownFields"></key-value-form>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'endpoint_url'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <input  class="form-control" name="dynamicDropDownURL" placeholder="https://integration.api.io/requestid" ng-model="fieldData.dynamicDropDownURL" required>
+                  <div ng-show="alertFieldsForm.dynamicDropDownURL.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownURL.$error.required" class="text-danger form-error-text">{{'endpoint_url_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'staticDropDown'">
+                <div class="col-xs-12">
+                  <label>{{'default_value'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <select class="btnDropdown" ng-model="fieldData.value">
+                    <option value="" > {{'select_default_value'| i18nString}}</option>
+                    <option ng-repeat="value in fieldData.staticDropDownFields" value="{{value.value}}">{{value.value}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'content_type'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <select class="btnDropdown" name="dynamicDropDownContentType" required ng-model="fieldData.dynamicDropDownContentType" ng-options="contenttypes.name for contenttypes in dynamicDropDownContentTypes">
+                    <option value="" >{{'select_content_type'| i18nString}}</option>
+                  </select>
+                  <div ng-show="alertFieldsForm.dynamicDropDownContentType.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownContentType.$error.required" class="text-danger form-error-text"> {{'content_type_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead'  || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'endpoint_method'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <select class="btnDropdown" name="dynamicDropDownMethod" ng-model="fieldData.dynamicDropDownMethod" required>
+                    <option value=""> {{'select_method'| i18nString}}</option>
+                    <option value="GET">{{'get'| i18nString}}</option>
+                    <option value="POST">{{'post'| i18nString}}</option>
+                  </select>
+                  <div ng-show="alertFieldsForm.dynamicDropDownMethod.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownMethod.$error.required" class="text-danger form-error-text"> {{'endpoint_method_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label>{{'response_path'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <input type="text" class="form-control" placeholder="{{'url_response'| i18nString}}" ng-model="fieldData.dynamicDropDownPath">
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'label_key'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <input type="text" class="form-control" placeholder="{{'Label_key_placeholder'| i18nString}}" name="dynamicDropDownLabelKey" ng-model="fieldData.dynamicDropDownLabelKey" required>
+                  <div ng-show="alertFieldsForm.dynamicDropDownLabelKey.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownLabelKey.$error.required" class="text-danger form-error-text">{{'label_key_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'value_key'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <input type="text" class="form-control" placeholder="{{'value_key_placeholder'| i18nString}}" name="dynamicDropDownValueKey" ng-model="fieldData.dynamicDropDownValueKey" required>
+                  <div ng-show="alertFieldsForm.dynamicDropDownValueKey.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownValueKey.$error.required" class="text-danger form-error-text">{{'value_key_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="(fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead') && fieldData.dynamicDropDownMethod ==  'POST' ">
+                <key-value-form form="payloadfieldsform" payload-type="isobject" options="fieldData.dynamicDropDownPayloadFields"></key-value-form>
+              </div>
+                
+              <!--not making any sense having non editable typeahead hence hiding it--> 
+              <div class="form-group" ng-if="false && fieldData.fieldtype.value === 'typeahead'">
+                <div class="col-xs-12" ng-if="false && fieldData.fieldtype.value === 'typeahead'">
+                  <label class="requird-field">{{'editable'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv">
+                  <div>
+                    <label for="fieldData.editable.no" ng-init="fieldData.editable = fieldData.editable || false">
+                    <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.editable" name="fieldData.editable" id="fieldData.editable.no" ><span class="opt-title">{{'no'| i18nString}}</span> 
+                  </label>
+                  </div>
+                  <div>
+                    <label for="fieldData.editable.yes">
+                      <input ng-value='true'  type="radio"   ng-model="fieldData.editable" name="fieldData.editable" id="fieldData.editable.yes"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'dynamicDropDown'">
+                <div class="col-xs-12">
+                  <label>{{'searchable'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv">
+                  <div>
+                    <label for="fieldData.isSearchable.no" ng-init="fieldData.isSearchable = fieldData.isSearchable || false">
+                      <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.isSearchable" name="fieldData.isSearchable" id="fieldData.isSearchable.no" ><span class="opt-title">{{'no'| i18nString}}</span> 
+                    </label>
+                  </div>
+                  <div>
+                    <label for="fieldData.isSearchable.yes">
+                      <input ng-value='true'  type="radio"   ng-model="fieldData.isSearchable" name="fieldData.isSearchable" id="fieldData.isSearchable.yes"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'dynamicDropDown' && enterpriseLicenseType" ng-init="fieldData.dynamicDropdownConnectorEnabled = fieldData.dynamicDropdownConnectorEnabled || false">
+                <div class="col-xs-12">
+                    <label >{{'access_connector'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv">
+                    <div>
+                        <label>
+                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.dynamicDropdownConnectorEnabled"><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input ng-value='true'  type="radio"   ng-model="fieldData.dynamicDropdownConnectorEnabled"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> 
+                        </label>
+                    </div>  
+                    <div class="no-connectors-msg" ng-show="fieldData.dynamicDropdownConnectorEnabled && connectors.length <= 0">{{'active_connectors'| i18nString}}</div>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="isMultiRequired(fieldData.fieldtype.value) && (wfType === 'alert' || fieldData.actionFieldType)">
+          <div class="col-xs-12 labelling">
+            <label>{{'multi_select'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 radioDiv">
+            <div>
+              <label for="fieldData.isMultiSelect.no" ng-init="fieldData.isMultiSelect = fieldData.isMultiSelect || false">
+                <input ng-value='false' type="radio"  ng-model="fieldData.isMultiSelect" name="fieldData.isMultiSelect" id="fieldData.isMultiSelect.no" ><span class="opt-title">{{'no'| i18nString}}</span> 
+              </label>
+            </div>
+            <div>
+              <label for="fieldData.isMultiSelect.yes">
+                <input ng-value='true'  type="radio"   ng-model="fieldData.isMultiSelect" name="fieldData.isMultiSelect" id="fieldData.isMultiSelect.yes"><span class="opt-title">{{'yes'| i18nString}}</span> 
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12" ng-if="wfType==='alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling noPadding">
+            <label > {{'mandatory'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12 radioDiv noPadding">
+            <div>
+              <label for="fieldData.isRequired.no"
+              ng-init="fieldData.isRequired = fieldData.isRequired || false">
+                <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.isRequired" name="fieldData.isRequired" id="fieldData.isRequired.no" ><span class="opt-title">{{'not_mandatory_prompt'| i18nString}}</span>
+              </label>
+            </div>
+            <div>
+              <label for="fieldData.isRequired.yes">
+                <input ng-value='true'  type="radio"   ng-model="fieldData.isRequired" name="fieldData.isRequired" id="fieldData.isRequired.yes"><span class="opt-title">{{'mandatory_prompt'| i18nString}}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12">
+        <div ng-if = "(wfType === 'alert' || fieldData.actionFieldType)" class="col-xs-12 borderTopBottom" id="advancedoptdiv"><span class="col-xs-12 noPadding" ng-click="showAdvancedOptions()">
+          {{'advanced_settings'| i18nString}} <i class="fa  fa-chevron-right  pull-right fontSize13 iconArrow"></i>
+         <p>{{'advanced_settings_fields'| i18nString}}</p></span>
+       
+         <div ng-show="showadvancedoptions " class="showadvancedoptions">
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling noPadding">
+            <label >{{'visibility'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 noPadding">
+            <div class="field-type-dd">
+              <select ng-model="fieldData.visibility" class="btnDropdown" id="fieldtype" name="visibility">
+                <option value=""> {{'visible'| i18nString}} </option>
+                <option value="static">{{'custom'| i18nString}}</option>
+                <option value="hidden">{{'hidden'| i18nString}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="(wfType === 'alert' || fieldData.actionFieldType) && hasDependsOn(fieldData.fieldtype.value)">
+          <div class="col-xs-12 labelling noPadding">
+            <label>{{'depends_on'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 noPadding">
+            <input type="text" ng-model="fieldData.dependsOn" placeholder="{{'workspace_project'| i18nString}}"  class="form-control">
+          </div>
+        </div>
+      
+        <div class="form-group" ng-if="wfType==='alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling noPadding">
+            <label >{{'transpose_key'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12 radioDiv noPadding">
+            <div>
+              <label for="fieldData.untranspose.no" ng-init="fieldData.untranspose = fieldData.untranspose || false">
+                <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.untranspose" name="fieldData.untranspose" id="fieldData.untranspose.no" ><span class="opt-title">{{'allow_key_transposition'| i18nString}}</span>
+              </label>
+            </div>
+            <div>
+              <label for="fieldData.untranspose.yes">
+                <input ng-value='true'  type="radio"   ng-model="fieldData.untranspose" name="fieldData.untranspose" id="fieldData.untranspose.yes"><span class="opt-title">{{'not_allow_key_transposition'| i18nString}}</span>
+              </label>
+          </div>
+        </div>
+        <div class="col-xs-12"><div class="helphint-border col-xs-12 noMargin">
+          <div class="col-xs-1 bulbicon">
+            <span class="icon"><i class="btx-bulb"></i></span></div>
+          <div class="col-xs-11 noPadding"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb514)"></span></div></div></div>
+        <div class="form-group" ng-if="(wfType === 'alert' || fieldData.actionFieldType) && fieldData.visibility === 'hidden'">
+          <div class="col-xs-12 labelling noPadding">
+            <label >{{'mapping'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 noPadding">
+              <div class="field-type-dd">
+                  <!--<input type="text" class="form-control" ng-model="fieldData.mapping">-->
+                  <div acify id="fieldData.mapping" ng-model="fieldData.mapping"></div>                          
+              </div>
+          </div>
+        </div>
+       </div>
+                      
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+            <div class="col-xs-12 labelling noPadding">
+                <label >{{'fetch_session'| i18nString}}</label>
+            </div>
+
+            <div class="col-xs-12 radioDiv noPadding">
+                <div>
+                    <label for="fieldData.getFromSession.enabled.no" ng-init="fieldData.getFromSession.enabled = fieldData.getFromSession.enabled || false">
+                        <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.getFromSession.enabled" name="fieldData.getFromSession.enabled" id="fieldData.getFromSession.enabled.no" ><span class="opt-title">{{'provide_value'| i18nString}}</span>
+                    </label>
+                </div>
+                <div>
+                    <label for="fieldData.getFromSession.enabled.yes">
+                        <input ng-value='true'  type="radio"   ng-model="fieldData.getFromSession.enabled" name="fieldData.getFromSession.enabled" id="fieldData.getFromSession.enabled.yes"><span class="opt-title">{{'get_value'| i18nString}}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-12"><div class="helphint-border col-xs-12 noMargin"><div class="col-xs-1 bulbicon"><span class="icon"><i class="btx-bulb"></i></span></div><div class="col-xs-11 noPadding"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb515)"></span></div></div></div>
+        </div>
+        <div class="form-group" ng-show="fieldData.getFromSession.enabled">
+            <div class="labelling">
+                <label class="required-field">{{'paramvalue_session'| i18nString}}</label>
+            </div>
+
+            <div class="form-group">
+                <!-- <input class="auto-complete-class form-control" ng-focus="bindAutoComplete()" placeholder="please select key" ng-model="fieldData.getFromSession.key" name="fieldKey" ng-change="clearContext()" required>
+                 <div class="ui-complete"></div>-->
+                <select  class="full-width" ui-select2 data-placeholder="{{'select_field'| i18nString}} " ng-model="fieldData.selectedId"  id="sessionKey" name="sessionKey" ng-required="fieldData.getFromSession.enabled">
+                    <option value=""></option>
+                    <option ng-repeat="value in values track by $index"  ng-value="$index">{{value.label}}</option>
+                </select>
+            </div>
+            <div ng-if="showContextFields && fieldData.selectedId">
+             <div class="labelling">
+                <label class="required-field">{{'scope'| i18nString}}</label>
+            </div>
+            <div class="form-group">
+                <select  class="full-width" ui-select2 data-placeholder="{{'select_scope'| i18nString}}" ng-model="fieldData.getFromSession.context"  id="fieldData.getFromSession.context" name="fieldData.getFromSession.context" ng-required="fieldData.getFromSession.enabled">
+                    <option value=""></option>
+                    <option ng-repeat="context in contexts"  ng-value="{{context}}">{{context}}</option>
+                </select>
+
+            </div>
+             <div class="labelling">
+                <label class="required-field" >{{'key_name'| i18nString}} </label>
+            </div>
+            <div class="form-group">
+                <input class="form-control"  placeholder="{{'enter_key'| i18nString}}" ng-model="fieldData.getFromSession.key" name="fieldKey" ng-required="fieldData.getFromSession.enabled">
+            </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="col-xs-12 labelling">
+                    <div error-alert ng-show="alertFieldsForm.fieldKey.$invalid && alertFieldsForm.fieldKey.$dirty"> {{'session_variable'| i18nString}} </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="col-xs-12 labelling">
+              <div error-alert ng-show="alertFieldsForm.__$invalid"> {{'enter_req_values'| i18nString}} </div>
+          </div>
+        </div>  
+        </div>  
+        </div>
+        </div> 
+      </fieldset>
+    </form>
+  </div>
+</div>
+        </div>
+        <div class="modalFooter" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+            <div class="col-xs-12">
+      <button type="submit" ng-hide="view" ng-disabled="!alertFieldsForm.$dirty" class="btn" ng-click="saveAlertFieldObj(alertFieldsForm.$valid,true,$event,alertFieldsForm)">{{'add_continue'| i18nString}}</button>
+      <button type="submit" ng-hide="view" ng-disabled="!alertFieldsForm.$dirty" class="btn" ng-click="saveAlertFieldObj(alertFieldsForm.$valid,false,$event,alertFieldsForm)">{{'add_exit'| i18nString}}</button>
+              <button type="reset"  ng-click="fieldData = {};cancelFieldForm();" class="btn closeCancel"> {{'close'| i18nString}} </button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+<div class="modal fade alertFieldsModal" ng-if="false" role="dialog" data-backdrop="static" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md widthNineHundred">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="fieldData = {};cancelFieldForm();" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h4 class="modal-title" ng-hide="displayMode === 'view'" id="gridSystemModalLabel">{{'set_up'| i18nString}} <!-- {{isReport ? _constants_.report : wfType.toLowerCase() == 'action' ? (_constants_.action) : (_constants_.alert)}} -->Task Parameter</h4>
+                <h4 class="modal-title" ng-show="displayMode === 'view'" id="gridSystemModalLabel">{{'view_task'| i18nString}}<!-- {{isReport ? _constants_.report : wfType.toLowerCase() == 'action' ? (_constants_.action) : (_constants_.alert)}} --> Parameter</h4>
+            </div>
+            <div class="modal-body alertTaskParameter modalPerfectScroll" perfect-scroll>
+<div class="form-container row">
+  <div class="sub-form">
+    <ng-form class="wf-form synonyms_manage" name="alertFieldsForm" novalidate>
+        <fieldset ng-disabled="view">
+        <div class="form-group" ng-if="wfType === 'action'">
+            <div class="col-xs-12 labelling">
+                <label class="required-field"> {{'task_parameter'| i18nString}}</label>
+            </div>
+            <div class="col-xs-12 radioDiv">
+                <div class="radioDivPullLeft">
+                    <label>
+                        <input ng-value="true" type="radio"  ng-change="selectActionField()" ng-model="form.actionFieldType"><span class="opt-title">{{'payload_parameter'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input ng-value="false"  type="radio"  ng-change="selectActionField()" ng-model="form.actionFieldType"><span class="opt-title">{{'query_parameter'| i18nString}}</span> 
+                    </label>
+                </div>
+            </div>
+          <div class="col-xs-12 marginTop10"  ng-if="nested && !fieldData.actionFieldType"><button type="reset" ng-click="fieldData = {};cancelFieldForm();" class="btn closeCancel"> {{'cancel'| i18nString}} </button></div>
+        </div>
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field"> {{'parameter_name'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input maxlength="256" type="text" class="form-control" ng-model="fieldData.name" id="name" placeholder="{{'field_title'| i18nString}}" name="name" required ng-pattern="validateParamName" >
+            <div ng-show="alertFieldsForm.name.$dirty">
+              <div error-alert ng-show="alertFieldsForm.name.$error.required" class="text-danger form-error-text">{{'parameter_name_req'| i18nString}} </div>
+              <div error-alert ng-show="alertFieldsForm.name.$error.pattern" class="text-danger">{{'parameter_name_alert'| i18nString}} </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label tooltip-placement="right" tooltip="The synonyms against each word in your task name will to be stored at the bot level and these are used for customizing natural language processing"> Synonyms</label>
+          </div>
+          <div class="col-xs-12">
+            <add-tags tags="fieldData.synonyms"></add-tags>
+            <div ng-show="alertFieldsForm.synonyms.$dirty">
+              <div error-alert ng-show="alertFieldsForm.synonyms.$error.required" class="text-danger form-error-text"> Synonyms required. </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="form-group" ng-if="(wfType === 'alert' || fieldData.actionFieldType) && fieldData.fieldtype.value!=='label'">
+          <div class="col-xs-12 labelling">
+            <label class="required-field" > {{'prompt_message'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" ng-model="fieldData.help" note-description="promptMessageDescription" id="help" placeholder="{{'add_prompt_message'| i18nString}}" name="help" required>
+            <div ng-show="alertFieldsForm.help.$dirty">
+              <div error-alert ng-show="alertFieldsForm.help.$error.required" class="text-danger form-error-text"> {{'parameter_prompt_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="(wfType === 'alert' || fieldData.actionFieldType) && fieldData.fieldtype.value==='label'">
+          <div class="col-xs-12 labelling">
+            <label>{{'help_hint'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" ng-model="fieldData.help" id="help" placeholder="{{'add_help_hint'| i18nString}}" name="help">
+            <div  ng-show="alertFieldsForm.help.$dirty">
+              <div error-alert ng-show="alertFieldsForm.help.$error.required" class="text-danger form-error-text"> {{'parameter_help_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field"> {{'parameter_key'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input maxlength="256" type="text" class="form-control" ng-model="fieldData.key" id="key" placeholder="{{'field_key'| i18nString}}" name="key" required>
+            <div  ng-show="alertFieldsForm.key.$dirty"> <br />
+              <div error-alert ng-show="alertFieldsForm.key.$error.required" class="text-danger form-error-text"> {{'parameter_key_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <!-- Entity type (Metadata) -->
+         <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field">{{'entity_type'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <select name="metadata" ng-model="fieldData.metadata" required ng-change="populateFieldDataTypes(fieldData.metadata)" class="btn-default btnDropdown">
+              <option value="">{{'select_entity_type'| i18nString}}</option>
+              <option ng-repeat="const in _constants_.entityNlpFieldDataTypes|filter: {isDepricated : false}" value="{{const.value}}">{{const.title}}</option>
+            </select>
+            <div  ng-show="alertFieldsForm.metadata.$dirty">
+              <div error-alert ng-show="alertFieldsForm.metadata.$error.required" class="text-danger form-error-text"> {{'entity_type_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field" >{{'parameter_type'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12">
+            <div class="field-type-dd">
+              <select ng-model="fieldData.fieldtype" class="btn-default btnDropdown" id="fieldtype" name="fieldtype" required ng-options="fieldtype.name for fieldtype in supportedFieldTypes">
+                <option value="">{{'field_type'| i18nString}} </option>
+              </select>
+            </div>
+            <div ng-show="alertFieldsForm.fieldtype.$dirty">
+              <div error-alert ng-show="alertFieldsForm.fieldtype.$error.required" class="text-danger form-error-text"> {{'parametertype_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label class="required-field" > {{'data_type'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12">
+              <select ng-if="!nested" ng-model="fieldData.datatype" ng-disabled="fieldData.fieldtype.value == 'file' || fieldData.fieldtype.value == 'location' || fieldData.fieldtype.value === 'nestedform' " class="btn-default btnDropdown" id="datatype" name="datatype" required ng-options="datatype.name for datatype in supportedFilteredDataTypes" required>
+                  <option value=""> {{'select_data_type'| i18nString}} </option>
+              </select>
+              <select ng-if="nested" ng-model="fieldData.datatype" ng-disabled="fieldData.fieldtype.value == 'file' || fieldData.fieldtype.value == 'location' || fieldData.fieldtype.value === 'nestedform' " class="btn-default btnDropdown" id="datatype" name="datatype" required ng-options="datatype.name for datatype in supportedDataTypes" required>
+                  <option value=""> {{'select_data_type'| i18nString}} </option>
+              </select>
+            <div ng-show="alertFieldsForm.datatype.$dirty">
+              <div error-alert ng-show="alertFieldsForm.datatype.$error.required" class="text-danger form-error-text"> {{'parameter_datatype_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.datatype.value === 'array'">
+          <div class="col-xs-12 labelling">
+            <label class="required-field" > {{'array_element_type'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12">
+            <select ng-model="fieldData.arrayElementType"
+                    ng-disabled="fieldData.fieldtype.value === 'nestedform'"
+                    class="btn-default btnDropdown" id="arrayElementType" name="arrayElementType" required ng-options="datatype.name for datatype in supportedDataTypes" required>
+            <option value="">{{'select_type'| i18nString}} </option>
+            </select>
+            <div ng-show="alertFieldsForm.arrayElementType.$dirty">
+              <div error-alert ng-show="alertFieldsForm.arrayElementType.$error.required" class="text-danger form-error-text"> {{'parametertype_req'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform'">
+          <div class="col-xs-12 labelling">
+            <label>{{'nested_parameter'| i18nString}}</label> <div class="btn btn-primary pull-right paddingTop5" ng-click="showNestedFieldForm()">{{'add'| i18nString}}  </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform' && showFieldForm">
+          <div class="col-xs-12">
+            <div class="well well-sm overflow-hidden">
+              <div class="col-xs-12 grayBG" nested-alert-fields></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform'">
+          <div class="col-xs-12">
+            <table class="table table-hover table-bordered" ng-if="fieldData.fields.length>0">
+              <tr>
+                <td class="col-xs-3">{{'parameter_title'| i18nString}}</td>
+                <td class="col-xs-3">{{'key'| i18nString}}</td>
+                <td class="col-xs-3">{{'parameter'| i18nString}}</td>
+                <td class="col-xs-3">{{'actions'| i18nString}}</td>
+              </tr>
+              <tr ng-repeat="field in fieldData.fields">
+                <td data-ellipsis data-ellipsis-symbol="..">{{field.title}}</td>
+                <td data-ellipsis data-ellipsis-symbol="..">{{field.key}}</td>
+                <td data-ellipsis data-ellipsis-symbol="..">{{field.fieldType}}</td>
+                <td>
+                  <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default no-padding" ng-click="edit($index,row)"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-default no-padding" ng-click="delete($index,row)"><i class="fa fa-trash"></i></button>
+                    <button type="button" class="btn btn-default no-padding" ng-show="$index != 0" ng-click="moveUp($index)"><i class="fa fa-caret-up"></i></button>
+                    <button type="button" class="btn btn-default no-padding" ng-show="$index != fieldData.fields.length - 1" ng-click="moveDown($index)"><i class="fa fa-caret-down"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'datetime' || fieldData.fieldtype.value === 'date'">
+          <div class="col-xs-12">
+            <label class="required-field" >{{'format'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <div ng-if="showDateField">
+              <div class=" col-xs-6" >
+                <input type="text" class="form-control" placeholder="{{'date_time'| i18nString}}" name="date_format" ng-model="fieldData.format" required="">
+              </div>
+              <div class="col-xs-2">
+                <span><i class="fa fa-times remove-new-date-format" ng-click="hideDateTextField()"></i></span>
+              </div>
+            </div>
+            <select id="alertFieldsFormDateTimeSelect" name="date_format" ng-if="fieldData.fieldtype.value === 'datetime' && !showDateField" class="btn-default btnDropdown" ng-model="dateFormat" ng-change="fieldData.format = dateFormat;showDateTextField(fieldData.format)" required>
+              <option value="">{{'select_date_time'| i18nString}}</option>
+              <option value="dd-MM-yyyyThh:mm:ssZ">dd-MM-yyyyThh:mm:ssZ</option>
+              <option value="MM-dd-yyyyThh:mm:ssZ">MM-dd-yyyyThh:mm:ssZ</option>
+              <option value="dd-MM-yyThh:mm:ssZ">dd-MM-yyThh:mm:ssZ</option>            
+              <option value="yyyy-MM-ddThh:mm:ssZ">yyyy-MM-ddThh:mm:ssZ</option>
+              
+              <option value="_new_">{{'field_name'| i18nString}}</option>
+            </select>
+            <select ng-if="fieldData.fieldtype.value === 'date' &&  !showDateField" name="date_format" class="btnDropdown" ng-model="fieldData.format" ng-change="showDateTextField(fieldData.format)" required>
+              <option value="">{{'select_date'| i18nString}}</option>
+              <option ng-repeat="(key,value) in formats" value="{{key}}">{{value}}</option>
+              <option value="_new_">{{'field_name'| i18nString}}</option>
+            </select>
+            <div ng-show="alertFieldsForm.date_format.$dirty">
+              <div error-alert ng-show="alertFieldsForm.date_format.$error.required" class="text-danger form-error-text"> {{'format_req'| i18nString}}</div>
+            </div>
+              <div ng-show="invalidDateFormat">
+              <div error-alert ng-show="invalidDateFormat" class="text-danger form-error-text"> {{'format_invalid'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+        
+        <!--<div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling">
+            <label tooltip-placement="right" tooltip="Select to save the user entered field value to use when performing follow on tasks with this bot. You will need to provide the duration for which the field needs to be saved"> Remember field value </label>
+          </div>
+          <div class="col-xs-12">
+            <input type="checkbox" name="remembervalue" ng-model="fieldData.remembervalue">
+            <div class="row form-group" ng-if="fieldData.remembervalue">
+              <div class="col-xs-12 labelling">
+                <label>Duration</label>
+              </div>
+              <div class="row col-xs-12">
+                <div class="col-xs-8">
+                  <div class="input-group">
+                    <input type="number" ng-model="fieldData.timeToSave" only-number name="timeToSave" class="form-control" />
+                    <div class="input-group-addon">minutes</div>
+                  </div>
+                  <br>
+                  <div ng-if="$parent.alertFieldsForm.timeToSave.$dirty">
+                    <div ng-if="$parent.alertFieldsForm.timeToSave.$error.min">
+                      <div error-alert> Please enter valid value. </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-4"></div>
+                <div class="col-xs-12">
+                  <div class="help-block"> Please specify duration in minutes. </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>  -->
+        <!-- End of Entity type changes-->
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'file'">
+          <key-value-form form="keyvalueform" options="fieldData.fileMeta"></key-value-form>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'file'">
+          <div class="col-xs-12">
+            <label >{{'allow_file_upload'| i18nString}}</label>
+          </div>
+           <div class="col-xs-12 radioDiv">
+            <div>
+              <label for="fieldData.allowMultiple.no" ng-init="fieldData.allowMultiple = fieldData.allowMultiple || false">
+                <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.allowMultiple" name="fieldData.allowMultiple" id="fieldData.allowMultiple.no" ><span class="opt-title">{{'no'| i18nString}}</span> 
+              </label>
+            </div>
+            <div>
+              <label for="fieldData.allowMultiple.yes">
+                <input ng-value='true'  type="radio"   ng-model="fieldData.allowMultiple" name="fieldData.allowMultiple" id="fieldData.allowMultiple.yes"><span class="opt-title">{{'yes'| i18nString}}</span> 
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'textarea' || fieldData.fieldtype.value === 'datetime'">
+          <div class="col-xs-12">
+            <label>{{'placeholder'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" placeholder="{{'field_placeholder'| i18nString}}" ng-model="fieldData.textplaceholder">
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'url'">
+          <div class="col-xs-12">
+            <label>{{'placeholder'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" placeholder="{{'enter_url'| i18nString}}" ng-model="fieldData.textplaceholder">
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'email'">
+          <div class="col-xs-12">
+            <label>{{'placeholder'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" placeholder="{{'enter_validemail'| i18nString}}" ng-model="fieldData.textplaceholder">
+          </div>
+        </div>
+        <div class="form-group" ng-if="fieldData.fieldtype.value === 'textbox' || fieldData.fieldtype.value === 'file'">
+          <div class="col-xs-12">
+            <label>{{'placeholder'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" placeholder="{{'field_placeholder'| i18nString}}" ng-model="fieldData.textplaceholder">
+          </div>
+        </div>
+        <div class="form-group col-xs-12">
+          <div class="well well-sm overflow-hidden"
+                      ng-if="fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search' || fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'staticDropdownCB' || fieldData.fieldtype.value === 'directory'"
+                      >
+            <div class="col-xs-12 grayBG">
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'staticDropdownCB' || fieldData.fieldtype.value === 'checkbox'">
+                <key-value-form payload-type="array" form="keyvalueform" options="fieldData.staticDropDownFields"></key-value-form>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'endpoint_url'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <input  class="form-control" name="dynamicDropDownURL" placeholder="https://integration.api.io/requestid" ng-model="fieldData.dynamicDropDownURL" required>
+                  <div ng-show="alertFieldsForm.dynamicDropDownURL.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownURL.$error.required" class="text-danger form-error-text"> {{'endpoint_url_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'staticDropDown'">
+                <div class="col-xs-12">
+                  <label>{{'default_value'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <select class="btnDropdown" ng-model="fieldData.value">
+                    <option value="" > {{'select_default_value'| i18nString}}</option>
+                    <option ng-repeat="value in fieldData.staticDropDownFields" value="{{value.value}}">{{value.value}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'content_type'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <select class="btnDropdown" name="dynamicDropDownContentType" required ng-model="fieldData.dynamicDropDownContentType" ng-options="contenttypes.name for contenttypes in dynamicDropDownContentTypes">
+                    <option value="" >{{'select_content_type'| i18nString}} </option>
+                  </select>
+                  <div ng-show="alertFieldsForm.dynamicDropDownContentType.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownContentType.$error.required" class="text-danger form-error-text">{{'content_type_req'| i18nString}}  </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead'  || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'endpoint_method'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <select class="btnDropdown" name="dynamicDropDownMethod" ng-model="fieldData.dynamicDropDownMethod" required>
+                    <option value="">{{'select_method'| i18nString}} </option>
+                    <option value="GET">{{'get'| i18nString}}</option>
+                    <option value="POST">{{'post'| i18nString}}</option>
+                  </select>
+                  <div ng-show="alertFieldsForm.dynamicDropDownMethod.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownMethod.$error.required" class="text-danger form-error-text"> {{'endpoint_method_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label>{{'response_path'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <input type="text" class="form-control" placeholder="{{'url_response'| i18nString}}" ng-model="fieldData.dynamicDropDownPath">
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'label_key'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <input type="text" class="form-control" placeholder="{{'Label_key_placeholder'| i18nString}}" name="dynamicDropDownLabelKey" ng-model="fieldData.dynamicDropDownLabelKey" required>
+                  <div ng-show="alertFieldsForm.dynamicDropDownLabelKey.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownLabelKey.$error.required" class="text-danger form-error-text"> {{'label_key_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'directory' || fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                <div class="col-xs-12">
+                  <label class="required-field">{{'value_key'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                  <input type="text" class="form-control" placeholder="{{'value_key_placeholder'| i18nString}}" name="dynamicDropDownValueKey" ng-model="fieldData.dynamicDropDownValueKey" required>
+                  <div ng-show="alertFieldsForm.dynamicDropDownValueKey.$dirty">
+                    <div error-alert ng-show="alertFieldsForm.dynamicDropDownValueKey.$error.required" class="text-danger form-error-text"> {{'value_key_req'| i18nString}} </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="(fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead') && fieldData.dynamicDropDownMethod ==  'POST' ">
+                <key-value-form form="payloadfieldsform" payload-type="isobject" options="fieldData.dynamicDropDownPayloadFields"></key-value-form>
+              </div>
+                
+              <!--not making any sense having non editable typeahead hence hiding it--> 
+              <div class="form-group" ng-if="false && fieldData.fieldtype.value === 'typeahead'">
+                <div class="col-xs-12" ng-if="false && fieldData.fieldtype.value === 'typeahead'">
+                  <label class="requird-field">{{'editable'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv">
+                  <div>
+                    <label for="fieldData.editable.no" ng-init="fieldData.editable = fieldData.editable || false">
+                    <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.editable" name="fieldData.editable" id="fieldData.editable.no" ><span class="opt-title">{{'no'| i18nString}}</span> 
+                  </label>
+                  </div>
+                  <div>
+                    <label for="fieldData.editable.yes">
+                      <input ng-value='true'  type="radio"   ng-model="fieldData.editable" name="fieldData.editable" id="fieldData.editable.yes"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'dynamicDropDown'">
+                <div class="col-xs-12">
+                  <label>{{'searchable'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv">
+                  <div>
+                    <label for="fieldData.isSearchable.no" ng-init="fieldData.isSearchable = fieldData.isSearchable || false">
+                      <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.isSearchable" name="fieldData.isSearchable" id="fieldData.isSearchable.no" ><span class="opt-title">{{'no'| i18nString}}</span> 
+                    </label>
+                  </div>
+                  <div>
+                    <label for="fieldData.isSearchable.yes">
+                      <input ng-value='true'  type="radio"   ng-model="fieldData.isSearchable" name="fieldData.isSearchable" id="fieldData.isSearchable.yes"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="fieldData.fieldtype.value === 'dynamicDropDown' && enterpriseLicenseType" ng-init="fieldData.dynamicDropdownConnectorEnabled = fieldData.dynamicDropdownConnectorEnabled || false">
+                <div class="col-xs-12">
+                    <label >{{'access_connector'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv">
+                    <div>
+                        <label>
+                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.dynamicDropdownConnectorEnabled"><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input ng-value='true'  type="radio"   ng-model="fieldData.dynamicDropdownConnectorEnabled"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> 
+                        </label>
+                    </div>  
+                    <div class="no-connectors-msg" ng-show="fieldData.dynamicDropdownConnectorEnabled && connectors.length <= 0">{{'active_connectors'| i18nString}}</div>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="isMultiRequired(fieldData.fieldtype.value) && (wfType === 'alert' || fieldData.actionFieldType)">
+          <div class="col-xs-12 labelling">
+            <label>{{'multi_select'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 radioDiv">
+            <div>
+              <label for="fieldData.isMultiSelect.no" ng-init="fieldData.isMultiSelect = fieldData.isMultiSelect || false">
+                <input ng-value='false' type="radio"  ng-model="fieldData.isMultiSelect" name="fieldData.isMultiSelect" id="fieldData.isMultiSelect.no" ><span class="opt-title">{{'no'| i18nString}}</span> 
+              </label>
+            </div>
+            <div>
+              <label for="fieldData.isMultiSelect.yes">
+                <input ng-value='true'  type="radio"   ng-model="fieldData.isMultiSelect" name="fieldData.isMultiSelect" id="fieldData.isMultiSelect.yes"><span class="opt-title">{{'yes'| i18nString}}</span> 
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12">
+        <div ng-if = "(wfType === 'alert' || fieldData.actionFieldType)" class="col-xs-12 borderTopBottom" id="advancedoptdiv"><span class="col-xs-12 noPadding" ng-click="showAdvancedOptions()">
+          {{'advanced_settings'| i18nString}}  <i class="fa  fa-chevron-right  pull-right fontSize13 iconArrow"></i>
+         <p>{{'advanced_settings_fields'| i18nString}}</p></span>
+       
+         <div ng-show="showadvancedoptions " class="showadvancedoptions">
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling noPadding">
+            <label >{{'visibility'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 noPadding">
+            <div class="field-type-dd">
+              <select ng-model="fieldData.visibility" class="btnDropdown" id="fieldtype" name="visibility">
+                <option value="">{{'visible'| i18nString}}  </option>
+                <option value="static">{{'custom'| i18nString}}</option>
+                <option value="hidden">{{'hidden'| i18nString}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="(wfType === 'alert' || fieldData.actionFieldType) && hasDependsOn(fieldData.fieldtype.value)">
+          <div class="col-xs-12 labelling noPadding">
+            <label>{{'depends_on'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 noPadding">
+            <input type="text" ng-model="fieldData.dependsOn" placeholder="{{'workspace_project'| i18nString}}"  class="form-control">
+          </div>
+        </div>
+        <div class="form-group" ng-if="wfType==='alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling noPadding">
+            <label > {{'mandatory'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12 radioDiv noPadding">
+            <div>
+              <label for="fieldData.isRequired.no"
+              ng-init="fieldData.isRequired = fieldData.isRequired || false">
+                <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.isRequired" name="fieldData.isRequired" id="fieldData.isRequired.no" ><span class="opt-title">{{'not_mandatory_prompt'| i18nString}} </span>
+              </label>
+            </div>
+            <div>
+              <label for="fieldData.isRequired.yes">
+                <input ng-value='true'  type="radio"   ng-model="fieldData.isRequired" name="fieldData.isRequired" id="fieldData.isRequired.yes"><span class="opt-title">{{'mandatory_prompt'| i18nString}}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="wfType==='alert' || fieldData.actionFieldType">
+          <div class="col-xs-12 labelling noPadding">
+            <label >{{'transpose_key'| i18nString}} </label>
+          </div>
+          <div class="col-xs-12 radioDiv noPadding">
+            <div>
+              <label for="fieldData.untranspose.no" ng-init="fieldData.untranspose = fieldData.untranspose || false">
+                <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.untranspose" name="fieldData.untranspose" id="fieldData.untranspose.no" ><span class="opt-title">{{'allow_key_transposition'| i18nString}}</span>
+              </label>
+            </div>
+            <div>
+              <label for="fieldData.untranspose.yes">
+                <input ng-value='true'  type="radio"   ng-model="fieldData.untranspose" name="fieldData.untranspose" id="fieldData.untranspose.yes"><span class="opt-title">{{'not_allow_key_transposition'| i18nString}}</span>
+              </label>
+          </div>
+        </div>
+        <div class="col-xs-12"><div class="helphint-border col-xs-12 noMargin"><div class="col-xs-1 bulbicon"><span class="icon"><i class="btx-bulb"></i></span></div><div class="col-xs-11 noPadding"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb514)"></span></div></div></div>
+        <div class="form-group" ng-if="(wfType === 'alert' || fieldData.actionFieldType) && fieldData.visibility === 'hidden'">
+          <div class="col-xs-12 labelling noPadding">
+            <label >{{'mapping'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12 noPadding">
+              <div class="field-type-dd">
+                  <!--<input type="text" class="form-control" ng-model="fieldData.mapping">-->
+                  <div acify id="fieldData.mapping" ng-model="fieldData.mapping"></div>                          
+              </div>
+          </div>
+        </div>
+       </div>
+                      
+        <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+            <div class="col-xs-12 labelling noPadding">
+                <label >{{'fetch_session'| i18nString}}</label>
+            </div>
+
+            <div class="col-xs-12 radioDiv noPadding">
+                <div>
+                    <label for="fieldData.getFromSession.enabled.no" ng-init="fieldData.getFromSession.enabled = fieldData.getFromSession.enabled || false">
+                        <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.getFromSession.enabled" name="fieldData.getFromSession.enabled" id="fieldData.getFromSession.enabled.no" ><span class="opt-title">{{'provide_value'| i18nString}}</span>
+                    </label>
+                </div>
+                <div>
+                    <label for="fieldData.getFromSession.enabled.yes">
+                        <input ng-value='true'  type="radio"   ng-model="fieldData.getFromSession.enabled" name="fieldData.getFromSession.enabled" id="fieldData.getFromSession.enabled.yes"><span class="opt-title">{{'get_value'| i18nString}}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-12"><div class="helphint-border col-xs-12 noMargin"><div class="col-xs-1 bulbicon"><span class="icon"><i class="btx-bulb"></i></span></div><div class="col-xs-11 noPadding"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb515)"></span></div></div></div>
+        </div>
+        <div class="form-group" ng-show="fieldData.getFromSession.enabled">
+            <div class="labelling">
+                <label class="required-field">{{'paramvalue_session'| i18nString}}</label>
+            </div>
+
+            <div class="form-group">
+                <!-- <input class="auto-complete-class form-control" ng-focus="bindAutoComplete()" placeholder="please select key" ng-model="fieldData.getFromSession.key" name="fieldKey" ng-change="clearContext()" required>
+                 <div class="ui-complete"></div>-->
+                <select  class="full-width" ui-select2 data-placeholder="{{'select_field'| i18nString}}" ng-model="fieldData.selectedId"  id="sessionKey" name="sessionKey" ng-required="fieldData.getFromSession.enabled">
+                    <option value=""></option>
+                    <option ng-repeat="value in values"  ng-value="{{$index}}">{{value.label}}</option>
+                </select>
+            </div>
+            <div ng-if="showContextFields && fieldData.selectedId">
+             <div class="labelling">
+                <label class="required-field">{{'scope'| i18nString}}</label>
+            </div>
+            <div class="form-group">
+                <select  class="full-width" ui-select2 data-placeholder="{{'select_scope'| i18nString}}" ng-model="fieldData.getFromSession.context"  id="fieldData.getFromSession.context" name="fieldData.getFromSession.context" ng-required="fieldData.getFromSession.enabled">
+                    <option value=""></option>
+                    <option ng-repeat="context in contexts"  ng-value="{{context}}">{{context}}</option>
+                </select>
+
+            </div>
+             <div class="labelling">
+                <label class="required-field" >{{'key_name'| i18nString}} </label>
+            </div>
+            <div class="form-group">
+                <input class="form-control"  placeholder="{{'enter_key'| i18nString}}" ng-model="fieldData.getFromSession.key" name="fieldKey" ng-required="fieldData.getFromSession.enabled">
+            </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="col-xs-12 labelling">
+                    <div error-alert ng-show="alertFieldsForm.fieldKey.$invalid && alertFieldsForm.fieldKey.$dirty"> {{'session_variable'| i18nString}} </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="col-xs-12 labelling">
+              <div error-alert ng-show="alertFieldsForm.__$invalid">{{'enter_req_values'| i18nString}}  </div>
+          </div>
+        </div>  
+        </div>  
+        </div>
+        </div> 
+      </fieldset>
+    </ng-form>
+  </div>
+</div>
+            </div>
+            
+  <div class="modal-footer form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType" >
+    <div class="pull-right">
+      <button type="submit" ng-hide="view" ng-disabled="!alertFieldsForm.$dirty" class="btn" ng-click="saveAlertFieldObj(alertFieldsForm.$valid,true,$event,alertFieldsForm)">{{'add_continue'| i18nString}}</button>
+      <button type="submit" ng-hide="view" ng-disabled="!alertFieldsForm.$dirty" class="btn" ng-click="saveAlertFieldObj(alertFieldsForm.$valid,false,$event,alertFieldsForm)">{{'add_exit'| i18nString}}</button>
+      <button type="reset"  ng-click="fieldData = {};cancelFieldForm();" class="btn closeCancel">{{'close'| i18nString}} </button>
+    </div>
+  </div>
+        </div>
+    </div>
+</div>

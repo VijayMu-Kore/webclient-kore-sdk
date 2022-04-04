@@ -1,0 +1,101 @@
+{
+	"city":{
+			"ignoreWords": "send"
+		},
+	"currencyv2": {
+	  "defaultCode": "NZ",
+	  "maxDigits": 5,
+	  "currencyCodes": [
+	    "US",
+	    "INR",
+	    "NZ"
+	  ]
+	},
+	"time":{
+	  "timeRangePossible": true,
+	  "preferredTimes": {
+	    "from": [
+	      "",
+	      "T09:00",
+	      "T21:00",
+	      "T21:00",
+	      "T12:00",
+	      "T07:00",
+	      ""
+	    ],
+	    "to": [
+	      "",
+	      "T18:00",
+	      "T23:00",
+	      "T23:00",
+	      "T23:00",
+	      "T12:00",
+	      ""
+	    ]
+	  }
+	},
+    "number":{
+		"asString": true
+   },
+   "date":{
+  	"range": {
+	    "from": "2020-01-01",
+	    "to": "today"
+	  },
+  	"referenceDate": "2020-07-09"
+	},
+	"dateperiod":{
+	  "range": {
+	    "from": "2020-01-01",
+	    "to": "2020-12-31"
+	  },
+	  "tense": "past",
+	  "referenceDate": "2020-07-09"
+	},
+	"datetime":{
+	  "range": {
+	    "from": "2020-01-01T00:00:00+05:30",
+	    "to": "2021-01-01T00:00:00+05:30"
+	  },
+	  "preferredTimes": {
+	    "from": "T02:00:00",
+	    "to": "T18:00:00",
+	    "favor": "pm"
+	  }
+	},
+	"string":{
+	  "avoidSingleWord": "~stringConept1",
+	  "stripTrailing": "~stringConept2 ~stringConept3",
+	  "stripLeading": [
+	    "~stringConept2"
+	  ],
+	  "avoidSingleVerb": true
+	},
+	"location":{
+	  "preferredCountries": [
+	    "TR"
+	  ]
+	},
+	"list_of_values":{
+	  "ownership": "exclude",
+	  "includeWords": "~lovHelper1",
+	  "excludeWords": [
+	    "great"
+	  ]
+	},
+	"person_name":{
+	  "disablePatterns": [
+	    "possessive"
+	  ],
+	  "ignoreWords": [
+	    "review",
+	    "~prepositionList"
+	  ]
+	},
+	"zipcode":{
+	  "preferredCountries": [
+	    "GB"
+	  ]
+	}
+
+}

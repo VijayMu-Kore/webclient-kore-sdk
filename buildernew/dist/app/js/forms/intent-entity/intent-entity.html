@@ -1,0 +1,574 @@
+<div class="row btnSearchTitle">
+  <div class="col-xs-6 leftTitle">
+      <p class="pageTitle">{{'ignore_words'| i18nString}}</p>
+  </div>
+  <div class="col-xs-6 rightBTNSearch">
+      <div class="searchComponent displayNone">
+          <input  placeholder="Search">
+          <i class="btx-search"></i>
+          <i class="btx-close displayNone"></i>
+      </div>
+      <div class="creationButton borderBtn displayNone">
+           <button class="btn btn-xs"> BTN Name</button>
+      </div>
+      <div class="filtersDetails displayNone">
+          <span class="filterListContainer">
+              <span class="filterCat">Languages </span>
+              <span class="filterClose">(1)</span>
+              <i class="btx-close"></i>
+          </span>
+          <span class="filterListContainer">
+              <span class="filterCat">User ID </span>
+              <span class="filterClose">(3)</span>
+              <i class="btx-close"></i>
+          </span>
+          <span class="filterListContainer">
+              <span class="filterCat">Date Period </span>
+              <span class="filterClose">(5 days)</span>
+              <i class="btx-close"></i>
+          </span>
+          <div class="dropdown moreDD">
+              <a href="#" class="moreFilters" data-toggle="dropdown">
+                  +2 more
+                  </a>
+              <ul class="dropdown-menu">
+                  <li class="dropdown-item">
+                      <span class="filterCat">Channels </span>
+                      <span class="filterClose">(4)</span>
+                      <i class="btx-close"></i>
+                  </li>
+                  <li class="dropdown-item" >
+                      <span class="filterCat">Tasks </span>
+                      <span class="filterClose">(3)</span>
+                      <i class="btx-close"></i>
+                  </li>                       
+              </ul>
+          </div>
+          <span class="clearAllFilters">
+              <span class="filterCat">User ID </span>
+              <span class="filterClose">(3)</span>
+              <i class="btx-close"></i>
+          </span>
+      </div>
+
+      <div class="btnActions displayNone">
+          <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+      </div>
+      <div class="titleDropdown displayNone">
+          <div class="dropdown">
+              <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 Dropdown name
+                  <i class="btx-carrot-up"></i>
+              </a>
+              <ul class="dropdown-menu">
+                  <li class="dropdown-item">Option One</li>
+                  <li class="dropdown-item" >Option Two</li>                       
+               </ul>
+          </div>
+      </div>
+      <div class="titleOverflow displayNone">
+          <div class="dropdown">
+              <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                  <i class="btx-overflow"></i>
+                  </a>
+              <ul class="dropdown-menu">
+                  <li class="dropdown-item">Option One</li>
+                  <li class="dropdown-item" >Option Two</li>                       
+              </ul>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="intent-entity"  ng-class="{'read-only-div':displayMode==='VIEW'}">
+<bot-modal-slider id="intent-entity-form">
+   <div class="modalSliderContainer intent-entity-form width700">
+
+<!--Header Starts Here -->
+      <div class="modalHeader">
+         <h4 class="modal-title"><i class="btx-close" ng-click="closeModalSlider('#intent-entity-form')" ></i>{{'edit_task'| i18nString}}</h4>
+      </div>
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+      <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+        <form>
+            <div class="row form-group">
+                <div>
+              <label class="col-xs-3">{{'task'| i18nString}}</label>
+                </div>
+            <div class="col-xs-12">
+              {{task.name}}
+            </div>
+            </div>
+          <div class="row form-group">
+            <div class="col-xs-12">
+              <div class="labelling">
+                <label class="wrap" tooltip-placement="right" tooltip="{{'bot_nlp_meta_user_interacting_withbot_nl_capability_tooltip'| i18nString}}">{{'turn_confirmation'| i18nString}}</label>
+              </div>
+              <div class="row radioDiv">
+                <div>
+                  <label>
+                    <input ng-value='false' ng-checked="true" type="radio"  ng-model="task.offKoraConfirmation" name="offKoraConfirmation">
+                      <span class="opt-title">{{'bot_nlp_meta_no_let_bot_confirm_radio'| i18nString}}</span>
+                    </input>
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input ng-value='true'  type="radio"   ng-model="task.offKoraConfirmation" name="offKoraConfirmation">
+                      <span class="opt-title">{{'bot_nlp_meta_yes_skip_confirm_radio'| i18nString}}</span>
+                    </input>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row form-group">
+              <div class="col-xs-12 labelling">
+                <label tooltip-placement="right" tooltip="{{'add_ignore_words'| i18nString}}">{{'ignore_words_label'| i18nString}}  </label>
+              </div>
+              <div class="col-xs-12">
+                <add-tags tags="task.ignoreWords" placeholder="placeholder"></add-tags>
+              </div>
+          </div>
+        </form>
+     
+      </div>
+<!-- Body Ends Here -->
+
+<!-- Footer Starts Here -->
+      <div class="modalFooter">
+         <div class="col-xs-12">
+            <button type="button" class="btn" ng-click="saveEditIntent()">{{'save'| i18nString}}</button>
+            <button type="button" class="btn closeCancel" ng-click="cancelEditIntent()">{{'cancel'| i18nString}}</button>
+         </div>
+      </div>
+<!-- Footer Ends Here -->
+
+   </div>
+</bot-modal-slider>
+
+<bot-modal-slider id="intent-field-form">
+   <div class="modalSliderContainer intent-field-form width700">
+
+<!--Header Starts Here -->
+      <div class="modalHeader">
+         <h4 class="modal-title"><i class="btx-close" ng-click="closeModalSlider('#intent-field-form')" ></i>{{'field_memory'| i18nString}}</h4>
+      </div>
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+      <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+         <form name="forms.intent_entityFieldsForm" novalidate>
+          <div class="form-group col-xs-12 noPadding">
+            <label class="required-field">{{'field_Name'| i18nString}}</label>
+            <input type="text" class="form-control" ng-model="field.title" ng-disabled="true" placeholder="{{'field_Name'| i18nString}}" >
+          </div>
+          <div class="form-group  col-xs-12 noPadding">
+            <label class="required-field">{{'entity_type'| i18nString}}</label>
+            <select name="entitytype" required class="form-control" ng-model="field.metadata">
+              <option value="">{{'select'| i18nString}}</option>
+              <option ng-repeat="metadata in  _constants_.entityNlp" value="{{metadata.value}}">{{metadata.title}}</option>
+            </select>
+            <div  ng-show="forms.intent_entityFieldsForm.$dirty">
+              <div error-alert ng-show="forms.intent_entityFieldsForm.$error.required" class="text-danger form-error-text"> {{'entity_type_req'| i18nString}} </div>
+            </div>
+          </div>
+          <div class="form-group  col-xs-12 noPadding">
+            <label class="required-field">{{'memorize'| i18nString}}</label>
+            <div claSS="radioDiv">
+              <label class="pointer-hand" for="memoryNo">
+                <input ng-value='false' ng-checked="true" type="radio"  ng-model="field.storevalue" name="storevalue" id="memoryNo" required>
+                  <span class="opt-title">{{'future_intent'| i18nString}}</span>
+                </input>
+              </label>
+            </div>
+            <div  claSS="radioDiv">
+              <label class="pointer-hand" for="memoryYes">
+                <input ng-value='true'  type="radio"   ng-model="field.storevalue" name="storevalue" id="memoryYes" required>
+                  <span class="opt-title">{{'memorize_period'| i18nString}}</span>
+                </input>
+              </label>
+            </div>
+          </div>
+          <div class="form-group  col-xs-12 noPadding" ng-if="field.storevalue == true">
+            <div>
+              <label class="required-field">{{'memory_length'| i18nString}}</label>
+            </div>
+            <div class="negative-margin col-xs-6">
+              <input type="number" class="form-control inline-block" only-number ng-model="field.timeToSave" required name="timeToSave">
+            </div>
+            <div class="col-xs-6">
+              <select class="form-control">
+                <option value="">{{'min'| i18nString}}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+<!-- Body Ends Here -->
+
+<!-- Footer Starts Here -->
+      <div class="modalFooter">
+         <div class="col-xs-12">
+        <button type="button" ng-disabled="forms.intent_entityFieldsForm.$error.required" class="btn" ng-click="saveFieldInfo(task)">{{'save'| i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click="cancelFieldForm()">{{'cancel'| i18nString}}</button>
+         </div>
+      </div>
+<!-- Footer Ends Here -->
+
+   </div>
+</bot-modal-slider>
+      <div class="col-xs-12 noPadding">
+        <p>
+          {{'nl_intent_recog'| i18nString}}
+        </p>
+        <p>
+          {{'retention'| i18nString}} 
+        </p>
+      </div>
+    <div class="col-xs-12 noPadding">
+      <div class="row">
+        <div class="col-xs-6 negative-margin">
+          <h3>{{_constants_.alerts}}</h3>
+        </div>
+        <div class="col-xs-6">
+          <div class="pull-right" ng-hide="loadingAlerts || alertTasksByState.length == 0">
+            <div class="workflows-container marginTop15 searchNewComponent">
+              <div class="searchComponent" ng-show="alertTasksByState.length">
+                <input type="text" ng-init="alertSearch = ''" placeholder="{{'search_here'| i18nString}}" ng-model="alertSearch">
+                <i class="btx-search"></i>
+                <i  ng-class="{displayNone: !alertSearch.length}" ng-click="alertSearch=''" class="btx-close"></i>
+            </div>
+              <!-- <span class="synSearch callclear" callback="clearAlertSearch" search-expand>
+                <input tabindex="1" type="text" class="form-control fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="alertSearch" placeholder="{{'search_here'| i18nString}}">
+                <span class="searchBar fa btx-search top"></span>
+              </span> -->
+              <!--<div class="search searchExpand negative-margin">
+                <input focus-it tabindex="1" type="text" class="form-control" ng-model="alertSearch" placeholder="Search here">
+              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+			<!-- <div class="text-center" ng-show="alertTasksByState.length ==0 && !loadingAlerts">
+        <div class="alert alert-sm alert-warning">
+          {{'no_alert_tasks'| i18nString}}
+        </div>
+      </div> -->
+      <div class="emptyStateContainer" ng-show="alertTasksByState.length ==0 && !loadingAlerts">
+        <div class="emptyState">
+            <div class="emptyImage">
+                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+            </div>  
+            <span class="mainTitle">{{'no_alert_tasks'| i18nString}}</span>
+            <!-- <div class="emptyStateDesc">Description</div>
+            <div class="generateBtn">
+                <button class="btn btnSolidBlue" >Add</button>
+                <button class="btn" target="_blank" >learn more</button>
+            </div> -->
+        </div>
+    </div>
+      <div class="text-center" ng-show="loadingAlerts">
+        <div class="alert alert-sm alert-warning">
+          {{'loading_alert'| i18nString}} 
+        </div>
+      </div>
+    </div>
+		<div class="readonly-row row pointer-hand col-xs-12 noPadding" ng-repeat="task in (alertTasksByState | filter : { name : alertSearch }).slice((currentPage-1)*10,currentPage*10) | orderBy : 'name'">
+			<div class="col-xs-12 bottomBorderPadding" ng-click="manageIntent('alert',task,$index)">
+				<div class="col-xs-3 textEllipsis fontSize16" title="{{task.name}}">
+					{{task.name}}
+				</div>
+				<div class="col-xs-3">
+					{{((task.ignoreWords && task.ignoreWords.length) ? task.ignoreWords.length : '0')  + ignoreWords}}
+				</div>
+				<div class="col-xs-3">
+					{{task.offKoraConfirmation ? confirmOff : confirmOn}}
+				</div>
+        <div class="col-xs-2">
+          {{task.fields.length + fields}}
+        </div>
+				<div class="col-xs-1 text-right ">					
+          <!-- <img ng-src="{{editIcon}}" class="editCtrl pull-right" ng-click="showIntentForm(task,$event)"> -->
+           <i class="editCtrl pull-right btx-pencil" ng-click="showIntentForm(task,$event)"> </i>
+					<span class="accordion-toggle"></span>
+				</div>
+			</div>
+			<div class="col-xs-12 noPadding" ng-show="alertTaskToShow == $index && task.fields.length">
+        <div class="form-group row">
+          <div class="col-xs-12">
+            <label>{{'field_memory'| i18nString}}</label>
+          </div>
+        </div>
+				<div class="readonly-row col-xs-12 bottomBorderPaddingBG" ng-repeat="field in task.fields">
+					<div class="col-xs-3">
+						<label><i class="fa fa-angle-double-right" aria-hidden="true">&nbsp;</i>{{field.title}}</label>
+					</div>
+					<div class="col-xs-3">
+						<label>{{field.metadata || '-'}}</label>
+					</div>
+					<div class="col-xs-3">
+						<label>{{ field.timeToSave ? (field.timeToSave + " min" ) : '-' }}</label>
+					</div>
+					<div class="col-xs-3">
+            <span ng-click="showFieldForm(task,field,$index,$event)"><i class="btx-pencil"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- <div class="text-center" ng-show="!loadingAlerts && alertTasksByState.length != 0 && (alertTasksByState | filter :  { name : alertSearch }).length == 0">
+          <div class="alert alert-sm alert-warning">
+            {{'no_alert_Tasks'| i18nString}}
+          </div>
+        </div> -->
+        <div class="emptyStateContainer" ng-show="!loadingAlerts && alertTasksByState.length != 0 && (alertTasksByState | filter :  { name : alertSearch }).length == 0">
+          <div class="emptyState">
+              <div class="emptyImage">
+                  <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+              </div>  
+              <span class="mainTitle">{{'no_alert_Tasks'| i18nString}}</span>
+              <!-- <div class="emptyStateDesc">Description</div>
+              <div class="generateBtn">
+                  <button class="btn btnSolidBlue" >Add</button>
+                  <button class="btn" target="_blank" >learn more</button>
+              </div> -->
+          </div>
+      </div>
+        <pagination  rotate="false" max-size="5" ng-show="(alertTasksByState | filter :  { name : alertSearch }).length > 10" class="pagination-sm" boundary-links="true" direction-links="false" total-items="(alertTasksByState | filter :  { name : alertSearch }).length" items-per-page="10" ng-model="currentPage"></pagination>
+      </div>
+    </div>
+
+    <div class="col-xs-12 marginBottom10 noPadding">
+      <br>
+      <div class="row">
+        <div class="col-xs-6 negative-margin">
+          <h3>{{_constants_.actions}}</h3>
+        </div>
+        <div class="col-xs-6">
+          <div class="pull-right" ng-hide="loadingActions || actionTasksByState.length == 0">
+            <div class="workflows-container marginTop15">
+               <span class="synSearch callclear" callback="clearActionSearch" search-expand>
+                 <input  tabindex="1" type="text" class="form-control fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="actionSearch" placeholder="{{'search_here'| i18nString}}">
+                        <span class="searchBar fa fa-search top"></span>
+                        </span>
+              <!--<div class="search searchExpand negative-margin">
+                <input focus-it tabindex="1" type="text" class="form-control" ng-model="actionSearch" placeholder="Search here">
+              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="text-center" ng-show="actionTasksByState.length ==0 && !loadingActions">
+        <div class="alert alert-sm alert-warning">
+          {{'no_action_tasks'| i18nString}}  
+        </div>
+      </div> -->
+      <div class="emptyStateContainer" ng-show="actionTasksByState.length ==0 && !loadingActions">
+        <div class="emptyState">
+            <div class="emptyImage">
+                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+            </div>  
+            <span class="mainTitle"> {{'no_action_tasks'| i18nString}}  </span>
+            <!-- <div class="emptyStateDesc">Description</div>
+            <div class="generateBtn">
+                <button class="btn btnSolidBlue" >Add</button>
+                <button class="btn" target="_blank" >learn more</button>
+            </div> -->
+        </div>
+    </div>
+      <div class="text-center" ng-show="loadingActions">
+        <div class="alert alert-sm alert-warning">
+          {{'loading_action'| i18nString}} 
+        </div>
+      </div>
+      <div class="readonly-row pointer-hand" ng-repeat="task in (actionTasksByState | filter : { name : actionSearch }).slice((currentPage-1)*10,currentPage*10) | orderBy : 'name'">
+        <div ng-show= "!task.isReport" class="col-xs-12 bottomBorderPadding" ng-click="manageIntent('action',task,$index)">
+          <div class="col-xs-3 textEllipsis fontSize16" title="{{task.name}}">
+            {{task.name}}
+          </div>
+          <div class="col-xs-3">
+            {{((task.ignoreWords && task.ignoreWords.length) ? task.ignoreWords.length : '0')  + ignoreWords}}
+          </div>
+          <div class="col-xs-3">
+            {{task.offKoraConfirmation ? confirmOff : confirmOn}}
+          </div>
+          <div class="col-xs-2">
+            {{task.fields.length + fields}}
+          </div>
+          <div class="col-xs-1 text-right ">
+            <!-- <img ng-src="{{editIcon}}" class="editCtrl pull-right" ng-click="showIntentForm(task,$event)"> -->
+            <i class="editCtrl pull-right btx-pencil" ng-click="showIntentForm(task,$event)"> </i>
+            <span class="accordion-toggle"></span>
+          </div>
+        </div>
+        <div class="col-xs-12 noPadding" ng-if = "!task.isReport" ng-show="actionTaskToShow == $index && task.fields.length">
+          <div class="form-group row">
+            <div class="col-xs-12">
+              <label>{{'field_memory'| i18nString}}</label>
+            </div>
+          </div>
+          <div class="readonly-row col-xs-12 bottomBorderPaddingBG" ng-repeat="field in task.fields">
+            <div class="col-xs-3">
+              <label><i class="fa fa-angle-double-right" aria-hidden="true">&nbsp;</i>{{field.title}}</label>
+            </div>
+            <div class="col-xs-3">
+              <label>{{field.metadata || '-'}}</label>
+            </div>
+            <div class="col-xs-3">
+              <label>{{ field.timeToSave ? (field.timeToSave + " min" ) : '-' }}</label>
+            </div>
+            <div class="col-xs-3">
+              <span ng-click="showFieldForm(task,field,$index,$event)"><i class="btx-pencil"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- <div class="text-center" ng-show="!loadingActions && actionTasksByState.length != 0 && (actionTasksByState | filter :  { name : actionSearch }).length == 0">
+          <div class="alert alert-sm alert-warning">
+            {{'no_action_Tasks'| i18nString}}
+          </div>
+        </div> -->
+        <div class="emptyStateContainer" ng-show="!loadingActions && actionTasksByState.length != 0 && (actionTasksByState | filter :  { name : actionSearch }).length == 0">
+          <div class="emptyState">
+              <div class="emptyImage">
+                  <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+              </div>  
+              <span class="mainTitle"> {{'no_action_tasks'| i18nString}}  </span>
+              <!-- <div class="emptyStateDesc">Description</div>
+              <div class="generateBtn">
+                  <button class="btn btnSolidBlue" >Add</button>
+                  <button class="btn" target="_blank" >learn more</button>
+              </div> -->
+          </div>
+      </div>
+        <pagination  rotate="false" max-size="5" ng-show="(actionTasksByState | filter :  { name : actionSearch }).length > 10" class="pagination-sm" boundary-links="true" direction-links="false" total-items="(actionTasksByState | filter :  { name : actionSearch }).length" items-per-page="10" ng-model="currentPage"></pagination>
+      </div>
+    </div>
+
+    <!-- Information Tasks -->
+
+    <div class="col-xs-12 marginBottom10 noPadding">
+      <br>
+      <div class="row">
+        <div class="col-xs-6 negative-margin">
+          <h3>{{_constants_.reports}}</h3>
+        </div>
+        <div class="col-xs-6">
+          <div class="pull-right" ng-hide="loadingActions || actionTasksByState.length == 0">
+            <div class="workflows-container marginTop15">
+               <span class="synSearch callclear" callback="clearActionSearch" search-expand>
+                 <input  tabindex="1" type="text" class="form-control fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="actionSearch" placeholder="{{'search_here'| i18nString}}">
+                        <span class="searchBar fa fa-search top"></span>
+                        </span>
+              <!--<div class="search searchExpand negative-margin">
+                <input focus-it tabindex="1" type="text" class="form-control" ng-model="actionSearch" placeholder="Search here">
+              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="text-center" ng-show="actionTasksByState.length ==0 && !loadingActions">
+        <div class="alert alert-sm alert-warning">
+          {{'no_info_task'| i18nString}}
+        </div>
+      </div> -->
+      <div class="emptyStateContainer" ng-show="actionTasksByState.length ==0 && !loadingActions">
+        <div class="emptyState">
+            <div class="emptyImage">
+                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+            </div>  
+            <span class="mainTitle"> {{'no_info_task'| i18nString}}</span>
+            <!-- <div class="emptyStateDesc">Description</div>
+            <div class="generateBtn">
+                <button class="btn btnSolidBlue" >Add</button>
+                <button class="btn" target="_blank" >learn more</button>
+            </div> -->
+        </div>
+    </div>
+      <div class="text-center" ng-show="loadingActions">
+        <div class="alert alert-sm alert-warning">
+          {{'loading_info'| i18nString}} 
+        </div>
+      </div>
+      <div class="readonly-row pointer-hand" ng-repeat="task in (actionTasksByState | filter : { name : actionSearch }).slice((currentPage-1)*10,currentPage*10) | orderBy : 'name'">
+        <div ng-show= "task.isReport" class="col-xs-12 bottomBorderPadding" ng-click="manageIntent('action',task,$index)">
+          <div class="col-xs-3 textEllipsis fontSize16" title="{{task.name}}">
+            {{task.name}}
+          </div>
+          <div class="col-xs-3">
+            {{((task.ignoreWords && task.ignoreWords.length) ? task.ignoreWords.length : '0')  + ignoreWords}}
+          </div>
+          <div class="col-xs-3">
+            {{task.offKoraConfirmation ? confirmOff : confirmOn}}
+          </div>
+          <div class="col-xs-2">
+            {{task.fields.length + fields}}
+          </div>
+          <div class="col-xs-1 text-right ">
+            <!-- <img ng-src="{{editIcon}}" class="editCtrl pull-right" ng-click="showIntentForm(task,$event)"> -->
+            <i class="editCtrl pull-right btx-pencil" ng-click="showIntentForm(task,$event)"> </i>
+            <span class="accordion-toggle"></span>
+          </div>
+        </div>
+        <div class="col-xs-12 noPadding" ng-if = "task.isReport" ng-show="actionTaskToShow == $index && task.fields.length">
+          <div class="form-group row">
+            <div class="col-xs-12">
+              <label>{{'field_memory'| i18nString}}</label>
+            </div>
+          </div>
+          <div class="col-xs-12 bottomBorderPaddingBG" ng-repeat="field in task.fields">
+            <div class="col-xs-3">
+              <label><i class="fa fa-angle-double-right" aria-hidden="true">&nbsp;</i>{{field.title}}</label>
+            </div>
+            <div class="col-xs-3">
+              <label>{{field.metadata || '-'}}</label>
+            </div>
+            <div class="col-xs-3">
+              <label>{{ field.timeToSave ? (field.timeToSave + " min" ) : '-' }}</label>
+            </div>
+            <div class="col-xs-3">
+              <span ng-click="showFieldForm(task,field,$index,$event)"><i class="fa fa-pencil"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- <div class="text-center" ng-show="!loadingActions && actionTasksByState.length != 0 && (actionTasksByState | filter :  { name : actionSearch }).length == 0">
+          <div class="alert alert-sm alert-warning">
+            {{'no_info_Tasks'| i18nString}} 
+          </div>
+        </div> -->
+        <div class="emptyStateContainer" ng-show="!loadingActions && actionTasksByState.length != 0 && (actionTasksByState | filter :  { name : actionSearch }).length == 0">
+          <div class="emptyState">
+              <div class="emptyImage">
+                  <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+              </div>  
+              <span class="mainTitle"> {{'no_info_Tasks'| i18nString}} </span>
+              <!-- <div class="emptyStateDesc">Description</div>
+              <div class="generateBtn">
+                  <button class="btn btnSolidBlue" >Add</button>
+                  <button class="btn" target="_blank" >learn more</button>
+              </div> -->
+          </div>
+      </div>
+        <pagination  rotate="false" max-size="5" ng-show="(actionTasksByState | filter :  { name : actionSearch }).length > 10" class="pagination-sm" boundary-links="true" direction-links="false" total-items="(actionTasksByState | filter :  { name : actionSearch }).length" items-per-page="10" ng-model="currentPage"></pagination>
+      </div>
+    </div>
+    
+<div class="footer form-group noMargin ng-hide">
+  <div class="footerSub">
+    <div class="form-ctrl-div pull-left">
+        <button class="btn btn-default" ng-click="$parent.exit()">{{'exit_label'| i18nString}}</button>
+    </div>
+    <div class="help-hint-link">
+        <a target="_blank"  ng-href="{{$root.helpLinks.INTENT_ENTITY}}">{{'help_withpage_label'| i18nString}}</a>
+    </div>
+    <div class="pull-right form-ctrl-div"></div>
+  </div>
+</div>
+</div>

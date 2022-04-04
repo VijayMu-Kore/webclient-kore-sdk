@@ -1,0 +1,101 @@
+
+
+<form novalidate name="autoLoginForm"  ng-submit="submitAutoLogin(autoLoginForm)" class="login-form">
+   <div class="logoInCard">
+    <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+    <img ng-src="{{platform}}" alt="Kore" class="platformLogo">
+   </div>
+<!-- main login form block -->
+    <div class="form-group auto-login-form">
+            <div class="loginDetails">
+                <!-- <p class="cardTitle">{{'formtitles_default' | i18nString}}</p> -->
+                <p class="cardDesc">{{'default_signin_desc' | i18nString}}</p>
+            </div>
+        <!-- Country codes -->
+            <div data-ng-show="displayCountryCodes" uib-dropdown auto-close="outsideClick" class="country-codes">
+                <button uib-dropdown-toggle type="button">
+                    {{selectedCountryCode.value}}
+                </button>
+
+                <div uib-dropdown-menu class="dropdown-menu dropdown-menu-left">
+
+                    <!-- Search -->
+                    <div class="navbar-search-wrapper">
+                        <div class="navbar-search">
+                            <div class="search-bar">
+                                <input type="text" ng-model="searchCountryCodes" class="form-control" placeholder="{{'search_name'| i18nString}}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <perfect-scrollbar suppress-scroll-X="true" refresh-on-change="[countryCodes, searchCountryCodes]" class="country-codes-content">
+                        <ul>
+                            <li data-ng-repeat="item in countryCodes | filter:{name: searchCountryCodes}">
+                                <a data-ng-click="selectCountryCode(item)">
+                                    <span class="name">{{item.name}}</span>
+                                    <span class="value">{{item.value}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+             <!-- Social Media Buttons -->
+        <div ng-show="!hideSSOBtns && ssoOptions && ssoOptions.length" class="ssoContainer"> 
+            <div class="loginWith" ng-if="ssoOptions.length > 1">{{'login_with' | i18nString}}</div>
+            <div class="button-group social-media">
+                <div class="row SSOFlexRow SSO-{{ssoOptions.length}}">
+                    <a data-ng-click="ssoLogin(ssoOption.key)" class="btn btnSSO {{ssoOption.class}}" data-ng-repeat="ssoOption in ssoOptions">
+                        <img ng-src="{{ssoOption.image}}" class="ssoIcon">
+                       <span class="ssoName"> <span ng-if="ssoOptions.length == 1">{{'login_with' | i18nString}}</span> {{ssoOption.name}}</span>
+                    </a>
+                </div>
+                <div class="ssoSeperator">
+                    <hr>
+                    <span class="seperatorBG">{{'or'| i18nString}}</span>
+                </div>
+            </div>
+  
+        </div>
+        <!-- Country codes ends-->
+            <div class="input-group textCenter">
+                <!-- <i ng-show="showSpinner" class="fa fa-circle-o-notch fa-spin-fast auto-login-spinner"></i> -->
+            <input autofocus required data-ng-change="error = false" ng-model="emailPhone" email-phone email-only="true" phone-codes="phoneCode(value)" class="form-control emailPhoneInpt" name="emailPhone" autocomplete="off" placeholder="Enter your email">
+            </div>
+            <!-- <button ng-disabled="!autoLoginForm.$valid" ng-hide="showSpinner" type="submit"  class="continueBtn">{{'continue'| i18nString}}</button> -->
+            <button ng-disabled="!autoLoginForm.$valid || showSpinner" type="submit"  class="continueBtn">
+                <i ng-show="showSpinner" class="fa fa-circle-o-notch fa-spin-fast auto-login-spinner"></i>
+                <span ng-show="!showSpinner">{{'continue'| i18nString}}</span>
+            </button>
+            <div class="noAccount">
+                {{'dont_have_account' | i18nString}} <a ng-click="switchForms('pre-sign-up')">{{'sign_up' | i18nString}}</a>
+            </div>
+    </div>
+<!-- main login form block ends-->
+
+<!-- Error Block --> 
+     <div ng-show="error" class='error-message'>{{errorMsg}}</div>
+<!-- Error Block Ends -->
+
+
+
+        <!-- <div ng-hide="hideSSOBtns" class="button-group">
+            {{'or'| i18nString}}
+        </div>
+        <div  ng-hide="hideSSOBtns" class="button-group social-media">
+            <div class="row">
+                <a data-ng-click="ssoLogin('google')" class="btn btn-social btn-google">
+                <span class="googleIconBg"><i class="fa"></i></span>{{'connect_google'| i18nString}}</a>
+                <a data-ng-click="ssoLogin('facebook')" class="btn btn-social btn-facebook"><i class="fa fa-facebook-square"></i>{{'connect_facebook'| i18nString}}</a>
+            </div>
+         </div> -->
+ <!-- Social Media Buttons ends here-->
+
+
+<!-- Terms and conditions -->
+    <!-- <div class="footer">
+        <span ng-show="!showJapanesePolicy" ng-bind-html="'privacy_policy_dyn'| i18nString:({tslink:$root.helpLinks.KORE_AI_TERMS,pplink:$root.helpLinks.KORE_AI_PRIVACY_POLICY})"></span>
+        <span  ng-show="showJapanesePolicy" ng-bind-html="'privacy_policy_dyn'| i18nString:({tslink:$root.helpLinks.KORE_AI_TERMS_JAPANESE,pplink:$root.helpLinks.KORE_AI_PRIVACY_POLICY_JAPANESE})"></span>
+    </div> -->
+<!-- Terms and conditions -->
+</form>

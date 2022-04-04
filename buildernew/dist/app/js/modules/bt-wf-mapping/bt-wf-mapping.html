@@ -1,0 +1,105 @@
+<div class="modal-header flowHeader" ng-show="!component">
+    <div class="col-xs-8 noPadding">
+        <a href="#" class="fa fa-chevron-left btnBack" ng-click="exit()" data-dismiss="modal" aria-label="Close"></a>
+        <bt-modal-title taskname="{{editMode?'Edit ':'Create '}}{{_constants_.flow}}" bot="stream"></bt-modal-title>
+    </div>
+    <div class="col-xs-4 buttonAdjustment buttonsDiv" ng-show="!editMode">
+    <button  ng-if="currentStep === 3"  class="btn btnCreate" ng-click="stepBack()" ng-disabled="currentStep != 3"> {{'bt_wf_mapping_previous_step'| i18nString}} </button>
+        <button  ng-if="currentStep < 3"  class="btn btnCreate " ng-click="stepNext()"> 
+            <i class="fa fa-check"></i> {{'bt_wf_mapping_next_step'| i18nString}}
+        </button>
+        <button  class="btn btnCreate"  ng-click="saveAndExit(form.mapping_form.$valid,form.mapping_form);"  ng-if="currentStep === 3">
+            <span ng-show="mappingInProgress"><i class="fa fa-spinner fa-spin"></i></span> {{'save_exit'| i18nString}}
+        </button>
+        <a class="help-icon" target="_blank" ng-href="{{$root.helpLinks.FLOWS_CREATE}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+    </div>
+    <div class="col-xs-4 buttonsDiv" ng-show="editMode">
+        <button class="btn btnCreate" ng-click="saveAndExit(form.mapping_form.$valid,form.mapping_form);">
+            <span ng-show="mappingInProgress"><i class="fa fa-spinner fa-spin"></i></span>
+            &nbsp;
+            {{component? update: save_exit }}
+            &nbsp;
+        </button>
+        <a class="help-icon" target="_blank" ng-href="{{$root.helpLinks.FLOWS_CREATE}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+    </div>
+</div> 
+<div class="modal-header bt-modal-header" ng-show="!component && false">
+    <div class="bt-modal-sub">
+        <div class="col-xs-4"><button ng-click="exit()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+        <div class="col-xs-4 lineheight">
+            <div>
+                <div class="taskNameHeader textEllipsis">{{editMode?  edit : create}}{{_constants_.flow}}</div>      
+            </div>
+        </div>
+        <div class="col-xs-4 buttonAdjustment" ng-show="!editMode">
+            <div class="pull-right form-ctrl-div">
+            <button  ng-if="currentStep === 3"  class="btn " ng-click="stepBack()" ng-disabled="currentStep != 3"> {{'bt_wf_mapping_previous_step'| i18nString}} </button>
+                <button  ng-if="currentStep < 3"  class="btn" ng-click="stepNext()">
+                    <i class="fa fa-check"></i> {{'bt_wf_mapping_next_step'| i18nString}}
+                </button>
+                <button  class="btn btn-save-n-exit exitBtn "  ng-click="saveAndExit(form.mapping_form.$valid,form.mapping_form);"  ng-if="currentStep === 3">
+                    <span ng-show="mappingInProgress"><i class="fa fa-spinner fa-spin"></i></span> {{'save_exit'| i18nString}}
+                </button>
+            </div>
+            <span class="dhelpLink">
+                <a class="" target="_blank" ng-href="{{$root.helpLinks.FLOWS_CREATE}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+            </span>
+        </div>
+        <div class="col-xs-4" ng-show="editMode">
+            <div class="pull-right form-ctrl-div">
+                <button class="btn " ng-click="saveAndExit(form.mapping_form.$valid,form.mapping_form);">
+                    <span ng-show="mappingInProgress"><i class="fa fa-spinner fa-spin"></i></span>
+                    &nbsp;
+                    {{component? update:save_exit }}
+                    &nbsp;
+                </button>
+            </div>
+            <span class="dhelpLink">
+                <a class="" target="_blank" ng-href="{{$root.helpLinks.FLOWS_CREATE}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="modal-header" ng-show="!component && false">
+    <div ng-show="!editMode">
+        <div class="col-xs-4"><button ng-click="exit()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>   
+        <div>
+            <span class="alert-action taskNameHeader textEllipsis">{{editMode? edit  : create }}{{_constants_.flow}}</span>    
+        </div>
+        <button  ng-show="!editMode && isStepNext"  class="btn " ng-click="stepBack()" ng-disabled="currentStep != 3"> {{'bt_wf_mapping_previous_step'| i18nString}} </button>
+        <button  ng-show="!editMode && currentStep < 3"  class="btn " ng-click="stepNext()">
+            <i class="fa fa-check"></i> {{'bt_wf_mapping_next_step'| i18nString}}
+        </button>
+        <button class="btn "  ng-click="saveAndExit(form.mapping_form.$valid,form.mapping_form);"  ng-show="currentStep === 3">
+            <span ng-show="mappingInProgress"><i class="fa fa-spinner fa-spin"></i></span> {{'save_exit'| i18nString}}
+        </button>
+        <span class="dhelpLink pull-right">
+            <a class="" target="_blank" ng-href="{{$root.helpLinks.FLOWS_CREATE}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+        </span>
+    </div>
+    <div class="col-xs-12" ng-show="editMode">
+            <div class="col-xs-4"><button ng-click="exit()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+        <div>
+            <span class="alert-action taskNameHeader textEllipsis">{{editMode? edit  : create }}{{_constants_.flow}}</span> 
+        </div>
+        <button  ng-show="editMode" class="btn" ng-click="saveAndExit(form.mapping_form.$valid,form.mapping_form);">
+            <span ng-show="mappingInProgress"><i class="fa fa-spinner fa-spin"></i></span>
+            &nbsp;
+            {{component? update:save_exit}}
+            &nbsp;
+        </button>
+        <span class="dhelpLink pull-right">
+            <a class="" target="_blank" ng-href="{{$root.helpLinks.FLOWS_CREATE}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+        </span>
+    </div>
+</div>
+<div class="modal-body modal-body-nopadding noPadding">
+    <div class="view-page bt-mapping-container row wrapper">
+        <div class="scroll-div"  perfect-scroll dynamic-height dynaoffset = "-70" offset-exclude="component">
+            <div ng-include="tmpltPrePath+'templates/bt-streams/mappings-template.html'"></div>
+        </div>
+    </div>
+    <footer-info ng-if="updateFooterHeader()">
+        <div ng-bind-html="$root.getSanitizedText($root.lableData.bb053)"></div>
+    </footer-info>
+</div>

@@ -1,0 +1,56 @@
+<!-- <div class="bt-welcome-modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Hello, {{koreUserInfo.firstName}}</h4>
+        <h4>Would you like to take a tour of Kore.ai's bot builder?</h4>
+    </div>
+    <div class="modal-body">
+        <div class="bootbox-body">
+            <p class="welcome-body">
+            The tour will help you get familiar with all the different features the platform offers. We highly recommend it. A few sample bots have been pre-installed for you to check out at your leisure. There are additional sample bots available to explore advanced functions as well. Just click ‘New Bot’ to get started.
+            </p>
+            <br>
+        </div>
+    </div>
+    <div class="modal-footer" >
+       
+        <button ng-click="skipGuidedHints()" type="button" class="btn skipTour">SKIP THE TOUR</button>
+         <button ng-click="showMeGuidedHints()" type="button" class="btn closeCancel">YES! SHOW ME AROUND</button>
+    </div>
+</div>     -->
+
+<div>
+
+    <!-- Login -->
+    <div id="login" class="login-page full-page">
+
+        <!-- Login Container Wrapper -->
+        <div class="full-page-center animated fadeIn noPaddingTop">
+
+            <!-- Brand Elements -->
+            <div class="line-circle animated zoomIn"></div>
+            <div class="dotted-circle animated zoomIn"></div>
+            <div class="onboardContainer">
+                <div class="onBoardContent">
+                    <h2 class="onBoardTitle"><span class="welcomeNote">{{'welcome_builder'| i18nString}} </span>
+                        {{'get_video'| i18nString}}</h2>
+                    <div class="onBoardVideo pointer-hand" ng-if="showImage" ng-click="loadVideo()" ><img class="videoBgImg" ng-src="{{videoBG}}"></div>
+                            <div class="onBoardVideo" ng-if="!showImage" >
+<!--                    <embed width="724" height="455" src="https://www.youtube.com/embed/9FM1RnBmY_8?controls=1&autoplay=1" allow='autoplay'  allowfullscreen="allowfullscreen"
+        mozallowfullscreen="mozallowfullscreen" 
+        msallowfullscreen="msallowfullscreen" 
+        oallowfullscreen="oallowfullscreen" 
+        webkitallowfullscreen="webkitallowfullscreen">-->
+                    <iframe  src="https://www.youtube.com/embed/9FM1RnBmY_8?controls=1&autoplay=1" allow='autoplay'  allowfullscreen="allowfullscreen"
+        mozallowfullscreen="mozallowfullscreen" 
+        msallowfullscreen="msallowfullscreen" 
+        oallowfullscreen="oallowfullscreen" 
+        webkitallowfullscreen="webkitallowfullscreen"></iframe>
+                            </div>
+                    <a class="onBoardSkip" ng-click="skipGuidedHints()">{{'skip_proceed'| i18nString}} <img ng-src="{{backArrow}}"></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div id="guidedTourModal" class="guidedTourModal">
+    <div class="guideContentBody col-xs-12 row">
+        <div class="contentDiv col-xs-6">
+            <h1>{{'take_product_tour'| i18nString}}</h1>
+            <div>{{'welcome_bot'| i18nString}}</div>
+            <div class="buttonSection">
+                <button class="takeTour btn" id="takeTour" ng-click="takeTour()">{{'take_tour'| i18nString}} </button>
+                <button class="skipTour btn" id="skipTour" ng-click="skipTour()">{{'skip_tour'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="imageDiv col-xs-6"><img ng-src="{{productTour}}"></div>
+    </div>
+</div>

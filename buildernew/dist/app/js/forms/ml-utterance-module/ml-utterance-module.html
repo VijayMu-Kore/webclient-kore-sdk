@@ -1,0 +1,366 @@
+<div class="form-container mlform"  ng-class="{'read-only-div':displayMode === 'VIEW' || flowTaskDisplayMode == 'VIEW'}">
+   <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-if="loadingUtterances">
+        <span class="spinner-text"> 
+            <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+            <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+        </span>
+    </div>
+    <div class="pageFlow mlScoreForm utteranceContent" ng-show="!loadingUtterances">
+
+        <div class="modal-header mlHeader">
+            <h4 class="modal-title"><span class="intentTitle">Intent -</span> <span class="intentName">{{intentData.intent?intentData.intent:intentData.name}}</span>
+                <span class="primaryIntent" ng-show="intentData && intentData.intentTypeName.length">
+                    {{intentData.intentTypeName === 'Dialog Intent'?'(Primary Intent)':""}}
+                </span>
+                <i class="btx-close cursor-pointer" ng-click="back()"></i>
+            </h4>
+   
+            <div class="pull-right viewHeader nlu-popover-header">
+                <nlu-warning ng-if="!loadingUtterances && !buildingRules" icon-type="'infoIcon'" class="nluRules" nlu-rules="intentData.nluRules || intentData['localeData.en.nluRules']" id="intentData._id+'header'" type="'intent'" container="'.utteranceContent'" placement="'bottom'"></nlu-warning>
+                <button class="modeBtn viewBtn" ng-show="displayMode === 'VIEW' || flowTaskDisplayMode == 'VIEW'"><i ng-src="{{viewImage}}" class="btx-password"></i><span class="modeTitle">{{'view_only'| i18nString}}</span></button>               
+            </div>  
+        </div>
+        <div class="modal-body ml-utterances-modal-body" dynamic-height height-property="height" dynaoffset="-60" ng-class="{'pt-0 m-0': (showTrainBtn || showTrainSavingDiv) && (displayMode !== 'VIEW' && flowTaskDisplayMode !== 'VIEW')}">            
+            <!-- <div ng-show="showTrainBtn" class="MLtrainDiv">
+                <div class="helphint col-xs-12">
+                    <div class="col-xs-1 bulbicon">
+                        <span><i class="layer btx-bulb"></i></span>
+                    </div>
+                    <div class="col-xs-10 textDiv"><span class="name ng-binding" ng-bind-html="isTrainInprogress()?$root.getSanitizedText($root.lableData.bb534) : $root.getSanitizedText($root.lableData.bb533)"></span>
+                    </div>
+                    <div class="trainUtteraceBtn">
+                        <button type="button" class="pull-right btn btn-sm btn-outline trainBtn" ng-disabled="isTrainInprogress()" ng-click="trainBot();">{{'train'| i18nString}}</button>
+                    </div>
+                </div>
+            </div> -->
+
+
+            <div class="show-train-info" ng-show="showTrainBtn && flowTaskDisplayMode !== 'VIEW' " >
+                <i class="btx-info"></i>
+                <div class="title">{{trainLabel}}</div>
+                <button type="button" class="train-btn" ng-disabled="isTrainInprogress()" ng-click="trainBot();">{{'train'| i18nString}}</button>
+            </div>
+            <div ng-show="showTrainSavingDiv">
+                <div class="inprogress-training" ng-if="trainStatus.saving">
+                    <div class="loader-inprogress"></div>
+                    <div class="title">Training in Progress</div>
+                    <div class="title-secondary">{{trainProgressLabel}}</div>
+                </div>
+                <div ng-if="trainStatus.success" class="success-complete-training">                    
+                    <img ng-src="{{roundCheck}}"> 
+                    <span>Training Complete</span>
+                </div>               
+            </div>
+
+            <div class="intent-section" ng-show="cb.showIntentsLabel">
+                <div class="label-text">Intent :</div>
+                <div class="kr-sg-dropdowns">                                        
+                    <div class="dropdown dropdown-open">
+                        <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"><span class="added-intent-name" title="{{intentData.intent?intentData.intent:intentData.name}}">{{intentData.intent?intentData.intent:intentData.name}}</span><span class="primaryIntentLabel" ng-if="cb.primaryIntentOb._id === intentData._id">Primary Intent</span></button>                                            
+                        <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-325">
+                            <li class="intentsList with-primary-text" ng-click="setIntent(cb.primaryIntentOb._id)">
+                                <a href="javascript:void(0)" title="{{cb.primaryIntentOb.intent?cb.primaryIntentOb.intent:cb.primaryIntentOb.name}}">{{cb.primaryIntentOb.intent?cb.primaryIntentOb.intent:cb.primaryIntentOb.name}}</a>
+                                <span class="primaryLabel m-0">Primary Intent</span>
+                            </li>
+                            <li class="intentsList" title="{{intent.intent?intent.intent:intent.name}}" ng-if="cb.primaryIntentOb._id !== intent._id"  ng-repeat="intent in intentsArray" ng-click="selectIntent(intent)">
+                                <a href="javascript:void(0)">{{intent.intent?intent.intent:intent.name}}</a>                            
+                            </li>                         
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="pad-left-right">                
+            <!-- <div ng-show="showTrainSavingDiv" class="col-xs-12 MLSavingProgressDiv">
+                    <div class="row saveRow">
+                        <div class="col-xs-3 intentTraining"><span class="tip">{{'intent_training_label'| i18nString}} </span><span class="trainIcon fa" ng-class="{'fa-check-circle':trainStatus.success,'fa-exclamation-circle':trainStatus.failed,'fa-spinner fa-spin':trainStatus.saving}" title="{{trainTitle}}"></span>
+                        </div>
+                        <div class="col-xs-3 intentTraining"><span class="tip">{{'entity_training_label'| i18nString}} </span><span class="trainIcon fa" ng-class="{'fa-check-circle':trainStatus.success,'fa-exclamation-circle':trainStatus.failed,'fa-spinner fa-spin':trainStatus.saving}" title="{{trainTitle}}"></span>
+                        </div>
+                        <div class="col-xs-6"><span ng-click="closeTrainSaveDiv()" class="fa fa-times"></span>
+                        </div>
+                    </div>
+            </div>      -->
+           <!--  <div class="desc-info-modal">{{'add_utterences_label'| i18nString}}</div> -->
+                <div class="modal-tab-header"> 
+                    <!-- <div class="modal-tabs-block"> -->
+                        <div class="leftTabs">
+                            <div class="modal-tabs" ng-show="showView['utterances']" ng-click="showActiveType('utterances')" ng-class="{'modal-syntabs-active':views.utterances,'warning-dot':warnObj.all.length}"><a ng-show="intentData.utteranceCount > 0">{{'Utterances'| i18nString}}&nbsp;({{intentData.utteranceCount}})</a>
+                                <a ng-show="intentData.utteranceCount === 0">{{'Utterances'| i18nString}}</a>
+                            </div>
+                             <div class="modal-tabs" ng-show="showView['patterns']" ng-click="showActiveType('patterns')"  ng-class="{'modal-syntabs-active':views.patterns,'warning-dot':warnObj.allPatterns.length}">
+                                <a ng-show="intentData.patterns.length">{{'pattern_name'| i18nString}}&nbsp;({{intentData.patterns.length}})</a>
+                                <a ng-show="!intentData.patterns.length">{{'pattern_name'| i18nString}}</a>
+                            </div>
+                             <div class="modal-tabs" ng-show="showView['negativepatterns'] && selectedStream.enableNegativePatterns"  ng-click="showActiveType('negativepatterns')"  ng-class="{'modal-syntabs-active':views.negativepatterns}">
+                                <a ng-show="intentData.negativePatterns.length">{{'Negative_patterns_label'| i18nString}}&nbsp;({{intentData.negativePatterns.length}})</a>
+                                 <a ng-show="!intentData.negativePatterns.length">{{'Negative_patterns_label'| i18nString}}</a>
+                            </div>
+                            <div class="modal-tabs" ng-show="showView['rules'] && intentData.type !== 'webservice'"  ng-click="showActiveType('rules')" ng-class="{'modal-syntabs-active':views.rules}" >
+                                <a ng-show="intentData.traitRules.length">{{'rules'| i18nString}}&nbsp;({{intentData.traitRules.length}})</a>
+                                <a ng-show="!intentData.traitRules.length">{{'rules'| i18nString}}</a>
+                            </div>
+                        </div>
+                        <div class="rightTabs">
+                             <div class="changesSaved">
+                                <p class="changeDesc" ng-show="saveStatus.pending">
+                                   <img src="{{brokenImageSmall}}"  ng-src="{{saving}}" src="" class="savingGif">
+                                   {{'saving_changes' | i18nString}}
+                                </p>
+                                <p class="changeDesc" ng-show="saveStatus.completed"><i class="btx-check"></i> {{'saved_changes' | i18nString}}</p>
+                                <p class="changeDesc" ng-show="saveStatus.failed">{{'failed_saving' | i18nString}}</p>
+                            </div>
+                            <div class="searchComponent" ng-if="(views.utterances && (intentData.utteranceCount > 0 || intentData.utterances.length )) && !(autoTrainedUtteranceCount > 0 || selectedStream.enableAutoUtteranceAddition)">
+                                <input focus-it=""  ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text" ng-keyup="searchUtterance($event)"  class="fsynSearchInput form-control" ng-model="utteranceSearch.utteranceSearchQuery"  ng-minlength="1" placeholder="{{'search_here' | i18nString }}">
+                                <i class="btx-search"></i>
+                                <i class="btx-close" ng-show="utteranceSearch.utteranceSearchQuery.length > 0" ng-click="clearSearch()"></i>
+                                 <div class="utterence-enter-help" ng-show="utteranceSearch.utteranceSearchQuery.length"> {{'press_enter_label'| i18nString}}  </div>
+                            </div>
+                            <div class="searchComponent" ng-if="(views.patterns && intentData.patterns.length)">
+                                <input focus-it="" ng-init="search.searchQuery = ''"  ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text"  class="fsynSearchInput form-control" ng-model="search.searchQuery"  ng-minlength="1" placeholder="{{'search_here'| i18nString}}">
+                                <i class="btx-search"></i>
+                                 <i class="btx-close" ng-show="search.searchQuery.length > 0" ng-click="clearSearchPattern()"></i>
+                            </div>
+                             <div class="searchComponent" ng-if="(views.negativepatterns && intentData.negativePatterns.length)">
+                                <input focus-it="" ng-init="search.searchQuery = ''"  ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text"  class="fsynSearchInput form-control" ng-model="search.searchQuery"  ng-minlength="1" placeholder="{{'search_here'| i18nString}}">
+                                <i class="btx-search"></i>
+                                 <i class="btx-close" ng-show="search.searchQuery.length > 0" ng-click="clearSearchPattern()"></i>
+                            </div>
+                        </div>
+                        
+                    <!-- </div> -->
+            
+                </div>
+            <div class="standard-response-header utteranceInternalHeader" ng-if="views.utterances">
+                <div class="modal-tab-header marginTop15 leftTabs">
+                    <div class="modal-tabs" ng-show="autoTrainedUtteranceCount > 0 || selectedStream.enableAutoUtteranceAddition" ng-click="showUtteranceInternalHeader('developer')" ng-class="{'modal-tabs-active':activeTabType==='developer'}">
+                        <a ng-show="count > 0">{{'Developer_defined'| i18nString}}&nbsp;({{count}})</a>
+                        <a ng-show="!count">{{'Developer_defined'| i18nString}} </a>
+                    </div>
+                    <div class="modal-tabs" ng-show="autoTrainedUtteranceCount > 0 || selectedStream.enableAutoUtteranceAddition" ng-click="showUtteranceInternalHeader('auto')" ng-class="{'modal-tabs-active':activeTabType==='auto'}">
+                        <a ng-show="autoTrainedUtteranceCount > 0">{{'Auto_trained_label'| i18nString}}&nbsp;({{autoTrainedUtteranceCount}})</a>
+                        <a ng-show="!autoTrainedUtteranceCount" class="mr-10">{{'Auto_trained_label'| i18nString}} </a>
+                        <span ng-show="!selectedStream.enableAutoUtteranceAddition" class="info-tooltip tooltip-hover" tooltip="Auto Training is disabled" tooltip-placement="right" data-toggle="popover"><i class="btx-info"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="rightTabs search searchUtterance moveright noPadding rightBTNSearch" ng-show="(autoTrainedUtteranceCount > 0 || selectedStream.enableAutoUtteranceAddition)">
+                   <!--  <div class="searchUtterance">                   
+                            <span class="synSearch callclear" search-expand>
+                                    <input type="text" ng-blur="inSearchBox = false" tabindex="1" ng-keyup="searchUtterance($event)" ng-model="utteranceSearch.utteranceSearchQuery" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                                    <span class="searchBar uttSearch fa-search">
+                                        <img ng-src="{{searchIcon}}" class="searchIconGray">
+                                        <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearch()">
+                                    </span>
+                            </span>
+                                         
+                    </div> -->
+                    <div class="searchComponent" ng-show="intentData.utteranceCount > 0">
+                        <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text" ng-keyup="searchUtterance($event)"  class="fsynSearchInput form-control" ng-model="utteranceSearch.utteranceSearchQuery"  ng-minlength="1" placeholder="{{'search_here'| i18nString}}">
+                        <i class="btx-search"></i>
+                        <i class="btx-close" ng-show="utteranceSearch.utteranceSearchQuery.length > 0" ng-click="clearSearch()"></i>
+                        <div class="utterence-enter-help" ng-show="utteranceSearch.utteranceSearchQuery.length"> {{'press_enter_label'| i18nString}}  </div>
+                        
+                    </div>
+
+                </div>
+            </div>    
+        </div>
+        <div class="loc-spinner text-center utterances-empty-view" ng-if="!trainingScreenLoaded && views.utterances">
+                <span>
+                    <i class="fa fa-circle-o-notch wf-spinner"></i>  {{'fetching_utterences_label'| i18nString}} 
+                </span>
+        </div>
+        <!-- <div class="warning-error-alert">
+            <div class="warning-error-desc"><span class="icon-span"><i class="btx-warning icon-warning"></i></span>Please add 25 more unique utterances to create a balanced model</div>
+            <div class="warning-close"><span class="close-icon-span"><i class="btx-close"></i></span></div>
+        </div> -->
+        <div class="utterances-content-view app-view full-height psScrollZindex" perfect-scroll dynamic-height height-property="height" dynaoffset="(showTrainBtn && cb.showIntentsLabel)?-330:cb.showIntentsLabel?-300:showTrainBtn?-240:-210" ng-if="views.utterances && trainingScreenLoaded">
+                <div class="botsDetailContainer">                    
+                    <div class="row utterances-form-div addUtteranceDiv" ng-show="activeTabType==='developer' && filterToggle == 'indevelopment' ">
+                        <form name="utterances-form" class="utterances-form" ng-submit="addUtterance" novalidate>
+                            <div class="col-xs-12 row  form-group mb-0">
+                                <!-- <div class="col-xs-12 noPadding">
+                                    <div class="col-xs-5 usersays">
+                                        <label class="lineHeight usersays">{{'usersays_label'| i18nString}} </label>
+                                    </div>
+                                    <div class="col-xs-5">
+                                    </div>
+                                    <div class="col-xs-2 trainUtteraceBtn">
+                                    </div>
+                                </div> -->
+                                <i class="mainUtteranceInput defaultUtteranceInput" aria-hidden="true"></i>
+                                <div class="col-xs-12 utterence-textview mb-0" ng-hide="displayMode == 'VIEW' || flowTaskDisplayMode == 'VIEW'">
+                                    <input maxlength="2048" type="text" autofocus="true" autocomplete="off" focus-me="true"  ng-keydown="addUtterance(null, null, 'uttModule',$event)" id="utterance-text" placeholder=" {{'utter_placeholder'| i18nString}}" class="form-control" ng-model="btUtteranceObject.utteranceText" name="utterance-text">
+                                    <div class="utterence-enter-help" ng-show="btUtteranceObject.utteranceText.length"> {{'press_enterto_add_label'| i18nString}}  </div>
+                                </div>                                
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row utterances-list-div" ng-show="activeTabType==='developer'">
+                        <div class="col-xs-12 noPadding" ng-repeat="utterence in (utterences | orderBy: 'name') track by $index" ng-init="utterence.show = false">
+                            <div class="col-xs-12 uttrence-view">
+                                <div  ng-hide="(filterToggle == 'published' || (displayMode === 'VIEW' || flowTaskDisplayMode === 'VIEW'))" class="utterenceeditsection col-xs-12">
+                                    <div id="{{utterence._id}}" focus-in ng-mouseenter="utterence.show=true" ng-mouseleave="utterence.show=false" class="col-xs-12 noPadding utterance-item-title" contenteditable="true" onkeypress="return (this.innerText.length < 2048)" ng-keyup="$event.keyCode == 13 && editUtterence($index, utterence._id)" ng-click="clickedUtterance(utterence)" ng-blur="focusedIndex = -1" ml-entity-selection call-backs="entityCallbacks" from-edit="entityCmpt.fromEdit" utterance-before-edit="utterence.sentence" selected-utterence="utterence" focused-utterance="entityCmpt.focusedUtterance" offset-object="entityCmpt.offsetObject" selected-utterance-index="entityCmpt.selectedUtteranceIndex" utteranceIndex="{{$index}}" start-end-index="entityCmpt.startEndIndex" showentity-dropdown="entityCmpt.showentityDropdown" ng-show="editId !==$index" ng-bind-html="trustAsHtml(utterence.sentence)" ng-class="{'emoji-fontStyle': constants.isEmoji(utterence.sentence)}"></div>
+                                    <span class="warning-error-popover"><nlu-warning ng-if="!loadingRules && checkForRules(utterence.nluRules)" icon-type="'font'" class="nluRules" intents-obj="cb.intentsObj" nlu-rules="utterence.nluRules" id="utterence._id" type="'utterance'" container="'.ml-utterances-modal-body'"></nlu-warning></span>
+                                    <div class="pull-right ml-utterance-btn-div">
+                                        <span class="utterance-btn" ng-hide="true" focus-me="true" ng-click="editThis($index)">{{'edit'| i18nString}}</span>
+                                        <span class="utterance-btnDelete"  ng-click="delete($index, utterence._id)"><i class="btx-delete-1"></i></span>
+                                    </div>
+                                    <div class="pull-right saveSpin"><span class="utterance-spin" style="display:none;"><i class="utterance-spin-fa" ng-class="'utteranceInput'+utterence._id" aria-hidden="true"></i>{{editSaveText}}</span>
+                                    </div>
+                                </div>
+                                <div ng-show="filterToggle == 'published' || (displayMode === 'VIEW' || flowTaskDisplayMode == 'VIEW')" class="utterenceeditsection col-xs-12">
+                                    <div id="{{utterence._id}}" class="col-xs-12 noPadding utterance-item-title" contenteditable="true" ml-entity-selection call-backs="entityCallbacks" disable-events="true" from-edit="entityCmpt.fromEdit" utterance-before-edit="utterence.sentence" selected-utterence="utterence" focused-utterance="entityCmpt.focusedUtterance" offset-object="entityCmpt.offsetObject" selected-utterance-index="entityCmpt.selectedUtteranceIndex" utteranceIndex="{{$index}}" start-end-index="entityCmpt.startEndIndex" showentity-dropdown="entityCmpt.showentityDropdown" ng-bind-html="trustAsHtml(utterence.sentence)" ng-show="editId !==$index">{{utterence.sentence}}</div>
+
+                                </div>
+                                <div class="col-xs-12 entityInfoDiv" ng-show="utterence.entities.length">
+                                    <div class="col-xs-12 entityInfoDivHeader">
+                                            <span class="col-xs-3 title">{{'entity_value_label'| i18nString}} </span> 
+                                            <span class="col-xs-3 title">{{'node_name_label'| i18nString}} </span> 
+                                            <span class="col-xs-2 title">{{'entity_type'| i18nString}} </span>
+                                            <span class="col-xs-3 title">{{'confidence_score'|i18nString}} <span class="info tooltip-hover" tooltip="The Confidence Score is based on NER Training" tooltip-placement="top"  id="confidenceScore" data-toggle="popover"><i class="btx-info"></i></span> </span>
+                                            <span class="col-xs-1 title"></span>                                          
+                                    </div>
+                                    <div class="col-xs-12 entitysection" ng-repeat="entity in utterence.entities track by $index">
+                                        <span class="col-xs-3 utteranceTitle" ng-bind="entityCmpt.focusedUtterance.substring(entity.startIndex, entity.endIndex)"></span>
+                                        <span class="entityTitle col-xs-3" ng-style="{color:getColorByEntity(entity.entityName)}">{{'{'+entity.entityName+'}'}}</span>
+                                        <span class="entityTitle col-xs-2" ng-if='entity.entityType' ng-style="{color:getColorByEntity(entity.entityName)}">{{'{'+entity.entityType+'}'}}</span>  
+                                        <span class="entityTitle col-xs-2" ng-if='!entity.entityType' ng-style="{color:getColorByEntity(entity.entityName)}">...</span>
+                                        <span class="entityTitle col-xs-3">{{entity.score | number:3}}</span>
+                                                                            
+                                        <span  ng-hide="(filterToggle == 'published' || (displayMode === 'VIEW' || flowTaskDisplayMode === 'VIEW'))" class="utterance-btnDelete col-xs-1" ng-click="deleteEntityToWordMap(utterence, $parent.$index, $index)"><i class="btx-delete-1"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="filterToggle == 'indevelopment'" class="utterence-enter-help marginbottom5 col-xs-12 pull-right" ng-show="utterence.sentence.length && focusedIndex == $index">
+                                {{'press_enterto_save_label'| i18nString}}  </div>
+                        </div>
+                        <div class="text-center" ng-show="utteranceSearch.utteranceSearchQuery && isFromSearch && utterences.length == 0">
+                            <div class="col-xs-12 text-center">
+                                <div class="alert alert-xs alert-warning">
+                                    {{'no_results_forsearch_label'| i18nString}}  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row utterances-list-div auto-train-border-top" ng-show="activeTabType==='auto'">
+                        <div class="col-xs-12 p-0" ng-repeat="utterence in (autoTrainedUtterances | orderBy: 'name') track by $index" ng-init="utterence.show = false">
+                            <div class="col-xs-12 uttrence-view">
+                                <div class="utterenceeditsection col-xs-12">
+                                    <div id="{{utterence._id}}" ng-mouseenter="utterence.show=true" ng-mouseleave="utterence.show=false" class="col-xs-12 noPadding utterance-item-title" contenteditable="false" ng-focus="focusedIndex = $index" ng-blur="focusedIndex = -1" selected-utterence="utterence" focused-utterance="entityCmpt.focusedUtterance" selected-utterance-index="entityCmpt.selectedUtteranceIndex" utteranceIndex="{{$index}}" start-end-index="entityCmpt.startEndIndex" ng-show="editId !==$index" ng-bind-html="utterence.sentence">{{utterence.sentence}}</div>
+                                    <div class="pull-right ml-utterance-btn-div">
+                                        <span class="utterance-btn" ng-hide="true" focus-me="true" ng-click="editThis($index)">{{'edit'| i18nString}}</span>
+                                        <span class="utterance-btnDelete"  ng-hide="(filterToggle == 'published' || (displayMode === 'VIEW' || flowTaskDisplayMode === 'VIEW'))" ng-click="deleteAutoTrainUtterance($index, utterence._id)"><i class="btx-delete-1"></i></span>
+                                    </div>
+                                    <div class="pull-right saveSpin"><span class="utterance-spin" style="display:none;"><i class="utterance-spin-fa" ng-class="'utteranceInput'+utterence._id" aria-hidden="true"></i>{{editSaveText}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 entityInfoDiv" ng-show="utterence.entities.length" ng-class="{'pointer-none': (displayMode == 'VIEW' || flowTaskDisplayMode == 'VIEW') || (filterToggle == 'indevelopment')}">
+                                        <div class="col-xs-12 entityInfoDivHeader">
+                                                <span class="col-xs-5 title">{{'entity_value_label'| i18nString}} </span> 
+                                                <span class="col-xs-5 title">{{'node_name_label'| i18nString}} </span> 
+                                                <span class="col-xs-2 title"></span> 
+                                        </div>
+                                    <div class="col-xs-12 entitysection" ng-repeat="entity in utterence.entities">
+                                        <span class="col-xs-5 utteranceTitle" ng-bind="entityCmpt.focusedUtterance.substring(entity.startIndex, entity.endIndex)"></span>
+                                        <span class="entityTitle col-xs-5 " ng-style="{color:getColorByEntity(entity.entityName)}">{{'{'+entity.entityName+'}'}}</span>
+                                        <span class="utterance-btnDelete col-xs-2"  ng-hide="(filterToggle == 'published' || (displayMode === 'VIEW' || flowTaskDisplayMode === 'VIEW'))" ng-click="deleteEntityToWordMap(utterence, $parent.$index, $index)"><i class="btx-delete-1"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="utterence-enter-help marginbottom5 col-xs-12 pull-right" ng-show="utterence.sentence.length && focusedIndex == $index">
+                                {{'press_enterto_save_label'| i18nString}} </div>
+                        </div>
+                        <div class="text-center" ng-show="utteranceSearch.utteranceSearchQuery && isFromSearch && autoTrainedUtterances.length == 0">
+                            <div class="col-xs-12 text-center">
+                                <div class="alert alert-xs alert-warning">
+                                    {{'no_results_forsearch_label'| i18nString}}  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loc-spinner text-center utterances-empty-view" ng-if="fetchingUtterances">
+                        <span>
+                                <i class="fa fa-circle-o-notch wf-spinner"></i>  {{'loading_more_utterences_label'| i18nString}} 
+                            </span>
+                    </div>
+                    <div class="loc-spinner text-center utterances-empty-view" ng-if="fetching && activeTabType!=='auto'">
+                        <span>
+                                <i class="fa fa-circle-o-notch wf-spinner"></i>  {{'fetching_utterences_label'| i18nString}} 
+                            </span>
+                    </div>
+                    <div class="loc-spinner text-center utterances-empty-view" ng-if="autoTrainFetching && activeTabType==='auto'">
+                        <span>
+                                <i class="fa fa-circle-o-notch wf-spinner"></i>  {{'fetching_utterences_label'| i18nString}} 
+                            </span>
+                    </div>
+                   
+                   
+                    <div class="emptyStateContainer" ng-show="dataLoaded && activeTabType==='developer' && !utteranceSearch.utteranceSearchQuery.length && !utterences.length">
+                        <div class="emptyState">
+                            <div class="emptyImage">
+                                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                            </div>  
+                            <span class="mainTitle">{{'no_utterences_defined_yet_label'| i18nString}}</span>
+                            <div class="emptyStateDesc">{{'add_utterences_label'| i18nString}}</div>
+                            <div class="generateBtn">
+                                <!-- <button class="addBTN" >Add</button> -->
+                                <button class="learnmoreBTN"><a target="_blank" ng-click="redirectToLink('MACHINE_LEARINING_HELP')">{{'learn_more_label'| i18nString}}</a></button>
+                            </div>
+                        </div>
+                    </div>
+                 
+                    <div class="emptyStateContainer" ng-if="!autoTrainFetching && activeTabType==='auto'" ng-hide="autoTrainedUtteranceCount > 0">
+                        <div class="emptyState">
+                            <div class="emptyImage">
+                                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                            </div>  
+                            <span class="mainTitle">{{'No_auto_trained_desc'| i18nString}}</span>
+                           
+                        </div>
+                    </div>
+                    <div class="footer form-group noMargin ng-hide">
+                        <div class="footerSub">
+                            <div class="form-ctrl-div pull-left">
+                                <button class="btn btn-default" ng-click="$parent.goBack()">{{'exit_label'| i18nString}} </button>
+                            </div>
+                            <div class="help-hint-link">
+                                <a target="_blank" ng-href="{{$root.helpLinks.PATTERNS}}">{{'help_withpage_label'| i18nString}} </a>
+                            </div>
+                            <div class="pull-right form-ctrl-div">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <entityorfield-dropdown showentity-dropdown="entityCmpt.showentityDropdown" call-backs="entityCallbacks" selected-utterance="utterences[entityCmpt.selectedUtteranceIndex]" context="context" selected-task="intentData" entities-list="intentData.entitiesArray" offset-object="entityCmpt.offsetObject"></entityorfield-dropdown>
+        </div>
+            <div ng-show="views.patterns" class="btPatterns">
+                <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-if="patternsCB.loadingPatterns">
+                                    <span class="spinner-text"> 
+                                        <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                        <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+                                    </span>
+                </div>
+                <bt-pattern ng-show="!patternsCB.loadingPatterns"  selected-task="intentData" tasks="tasks" cb="patternsCB"  views="views" save-status-pattern="saveStatus" flow-task-mode="{{flowTaskDisplayMode}}" view-mode="displayMode" search="search" show-intents-label="cb.showIntentsLabel" i-patterns="iPatterns" show-train="showTrainBtn"></bt-pattern>
+            </div>
+            <div ng-show="views.negativepatterns && selectedStream.enableNegativePatterns" class="btPatterns">
+                <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-if="negativepatternsCB.loadingNegativePatterns">
+                                    <span class="spinner-text"> 
+                                        <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                        <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+                                    </span>
+                </div>
+                <negative-patterns views="views" cb="negativepatternsCB" selected-task="intentData" show-train="showTrain" search="search" flow-task-mode="{{flowTaskDisplayMode}}" show-intents-label="cb.showIntentsLabel" save-status-npattern="saveStatus"></negative-patterns>
+            </div>
+            <div ng-show="views.rules" class="btPatterns">
+                 <div class="summaryLoader animationIfLeave mlScoreMainLoader" ng-if="patternsCB.loadingPatterns">
+                                    <span class="spinner-text"> 
+                                        <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                        <span class="spinner-text-content">{{'loading'| i18nString}}</span>
+                                    </span>
+                </div>
+                 <bt-pattern ng-show="!patternsCB.loadingPatterns"   selected-task="intentData" tasks="tasks" views="views" search="search" cb="patternsCB" flow-task-mode="{{flowTaskDisplayMode}}"  save-status-pattern="saveStatus" view-mode="displayMode" show-intents-label="cb.showIntentsLabel" show-train="showTrainBtn"></bt-pattern>
+            </div>
+        </div>
+    </div>
+</div>

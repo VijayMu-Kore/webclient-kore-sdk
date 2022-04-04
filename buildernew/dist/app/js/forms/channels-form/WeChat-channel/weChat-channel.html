@@ -1,0 +1,113 @@
+<div class="modalSliderContainer width700">
+    <form name = "weChatForm">
+        <div class="modalHeader channelModalHeader">
+	        <h4 class="modal-title" id="gridSystemModalLabel">
+                <i class="btx-close"   ng-click="goToHome()"></i>
+                    {{'constants.iconsTooltips_wechat'| i18nString}}
+                </h4>
+ </div> 
+        <div class="modalBody fb-channel-page inner-scroll channelInnerContent" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+            <div class="col-xs-12 step-progress-container">
+	            <step-progress steps="steps" on-click="stepClick"></step-progress>
+	        </div>   
+            <div ng-repeat="step in steps" ng-if="step.active" class="slcakChannels widthseventy">
+                <div class="col-xs-12 noPadding" ng-show="steps[0].active">
+                    <div class="col-xs-12 channel-content">
+                        <div class="info"
+                            ng-bind-html="'to_setup_wechat'| i18nString:({link:'https://admin.wechat.com/cgi-bin/readtemplate?t=ibg_en/en_faq_tmpl&type=info&lang=en_US'})">
+                            
+                        </div>
+                        <div class="info">
+                            <p class="channelstep marginTop15">{{'Bt_chnl_wechat_instruct_step1_label'| i18nString}}</p>
+                            <p ng-bind-html="'register_login'| i18nString:({link:'http://admin.wechat.com/debug/cgi-bin/sandbox?t=sandbox/login',link1:'https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login'})"></p>
+                            <img ng-src="{{assetsBase}}images/WeChat - 1.png" class="marginBottom10 width100percent" />
+                            <p>{{'Bt_chnl_wechat_instruct_step1_desc2'| i18nString}}</p>
+                            <p class="channelstep marginTop15">{{'Bt_chnl_wechat_instruct_step2_label'| i18nString}}</p>
+                            <p>{{'Bt_chnl_wechat_instruct_step2_desc'| i18nString}} </p>
+                            <img ng-src="{{assetsBase}}images/WeChat - 2.png" class="marginBottom10 width100percent" />
+                            <p>{{'Bt_chnl_wechat_instruct_step2_desc2'| i18nString}} </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 " ng-show="steps[1].active">
+                    <div class="col-xs-12 row form-group noPadding channel-content">
+                        <div class="info">{{'Bt_chnl_wechat_config_desc'| i18nString}}
+                            <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-10 noPadding">
+                                    <label>{{'webhookurl_label'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-10 noPadding">
+                                    <div class="input-group">
+                                        <input type="text" id="weChat_webhook_url" class="form-control" ng-model="channel.webhook_url" ng-readonly="true" name="appName">
+                                        <div class="input-group-addon pointer-hand" data-clipboard-target="#weChat_webhook_url"> {{'copy'| i18nString}}</div> 
+                                    </div> 
+                                    <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}<span></div>              
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                    <div class="col-xs-10 noPadding">
+                                        <label>{{'acesstoken_label'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-10 noPadding">
+                                        <div class="input-group">
+                                            <input type="text" id="weChat_verify_token" class="form-control" ng-model="channel.verify_token" ng-readonly="true" name="appName">
+                                            <div class="input-group-addon pointer-hand" data-clipboard-target="#weChat_verify_token"> {{'copy'| i18nString}} </div>  
+                                        </div> 
+                                        <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}<span></div>              
+                                    </div>
+                                </div>
+                            <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <p>{{'Bt_chnl_wechat_config_acesstoken_note'| i18nString}}</p>
+                                <div class="col-xs-10 noPadding">
+                                    <label class="required-field">{{'Bt_chnl_wechat_config_appid_label'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-10 noPadding">
+                                    <input type="text" class="form-control" ng-model="channel.clientID" name="clientID" required="">
+                                    <div  ng-show="weChatForm.clientID.$dirty || clientIDRequired">
+                                        <div error-alert ng-show="weChatForm.clientID.$error.required" class="text-danger">
+                                            {{'appId_err'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <div class="col-xs-10 noPadding">
+                                    <label class="required-field">{{'Bt_chnl_wechat_config_apppswd_label'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-10 noPadding">
+                                    <input type="password" ng-pattern="patternPass" class="form-control" ng-model="channel.clientSecret" name="clientSecret" required="">
+                                    <div ng-show="weChatForm.clientSecret.$dirty || clientSecretRequired">
+                                    <div error-alert ng-show="weChatForm.clientSecret.$error.required || weChatForm.clientSecret.$error.pattern" class="text-danger">
+                                        {{'Bt_chnl_wechat_config_apppswd_err'| i18nString}}
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding">
+                                <label>{{'enable_chnl'| i18nString}}</label>
+                                <!-- <p>Select ‘Yes’ and click on ‘Save’ to enable WEChat!@# Channel</p> -->
+                            </div>
+                            <div class="col-xs-12 radioDiv noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <div>
+                                    <label for='enableNo'>
+                                        <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable" name="channel.enable" id="enableNo" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for='enableYes'>
+                                        <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable"  class="ng-pristine ng-untouched ng-valid" id='enableYes' value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modalFooter">
+            <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+            <button type="button" class="btn" ng-click="save(weChatForm)" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+            <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+         </div>
+    </form>
+</div>

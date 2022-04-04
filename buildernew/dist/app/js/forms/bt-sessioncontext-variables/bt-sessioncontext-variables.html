@@ -1,0 +1,189 @@
+<!-- <div ng-show="showJsoneditor"> -->
+<div class="copySummaryBtnDiv" ng-if="showJsoneditor">
+    <button ng-if="isBirightModeActive " class="copyJsonGray " ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj',sessionContextObj.selectedJsonObj)"
+        ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj',sessionContextObj.selectedJsonObj)" title="{{'copy_to_clipboard'| i18nString}}">
+        <img ng-src="{{assetsBase+'debugConsoleIcons/copyJson-gray.svg'}}" class="copyJson-gray">
+    </button>
+    <button ng-if="!isBirightModeActive" class="copyJsonWhite " ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj',sessionContextObj.selectedJsonObj)"
+        ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj',sessionContextObj.selectedJsonObj)" title="{{'copy_to_clipboard'| i18nString}}">
+        <img ng-src="{{assetsBase+'debugConsoleIcons/copyJson-white.svg'}}" class="copyJson-gray">
+    </button>
+    <button ng-if="isBirightModeActive" ng-click="closeJsonEditor(true)" class="summaryGrayBtn">{{'summary'| i18nString}}</button>
+    <button ng-if="!isBirightModeActive" ng-click="closeJsonEditor(true)" class="summaryWhiteBtn">{{'summary'| i18nString}}</button>
+</div>
+<div class="modal fade bt_jsonEditor_modal " id="jsEditorModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md textareaModal" role="document">
+        <div class="modal-content">
+            <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'context'| i18nString}} - {{getKeyTitle[selectedVariable]}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div  ng-jsoneditor ng-model="sessionContextObj.selectedJsonObj" class="json_editor jsModal" id="debugContextDialog"
+                options="options"></div>
+            </div>
+            <div class="modal-footer form-group">
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="closeJsonEditor(false)">{{'close'| i18nString}}  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="showJsoneditor" ng-jsoneditor ng-model="sessionContextObj.selectedJsonObj" class="json_editor" id="debugContextDialog"
+    options="options"></div>
+<!-- </div> -->
+<div ng-if="!showJsoneditor" class="sessionVariables text-left">
+    <div class="col-xs-12 sessionHeaderDiv ">
+        <div class="col-xs-3 currentTask">
+            <div class="currentTaskHeader textTransformUpper">{{'current_task'| i18nString}}</div>
+            <div class="currentTaskName" title="{{sessionContextObj.intent}}">{{sessionContextObj.intent}}</div>
+        </div>
+        <div class="col-xs-3 currentNode">
+            <div class="currentNodeHeader textTransformUpper">{{'current_node'| i18nString}}</div>
+            <div class="currentNodeName" title="{{sessionContextObj.currentNodeName}}">{{sessionContextObj.currentNodeName}}</div>
+        </div>
+        <div class="col-xs-3 previousNode">
+            <div class="previousNodeHeader textTransformUpper">{{'prev_node'| i18nString}}</div>
+            <div class="previousNodeName" title="{{sessionContextObj.previousNodeName}}" tooltip-placement="top">{{sessionContextObj.previousNodeName}}</div>
+        </div>
+        <div class="col-xs-3"><button ng-click="openJsonEditor(sessionInfo,true)" class="jsonView">{{'json_label'| i18nString}}</button></div>
+    </div>
+    <div class="col-xs-12 sessionContextDiv marginTop20 text-left">
+        <div class="col-xs-12 no-padding contextObjHeader ">
+            <div class="col-xs-4 textTransformUpper noPaddingLeft">{{'context'| i18nString}}</div>
+            <div class="col-xs-8 textTransformUpper paddingLeft25">{{'value'| i18nString}}</div>
+        </div>
+        <div class="clear-fix">
+            <accordion>
+                <accordion-group is-open="status.open" ng-click="toggleAcc(status.open)" acc-open='{{(status && status.open)?"true":"false"}}' class=""
+                    ng-repeat="(key, value) in sessionContextObj.context track by $index">
+                    <accordion-heading class="col-xs-12 no-padding">
+                        <!-- <span class="show-more-toggle fa "
+                            ng-class="{'fa-angle-down': !(status && status.open),'fa-angle-up':(status && status.open)}">
+                        </span> -->
+                        <span class="show-more-toggle " ng-if="isBirightModeActive">
+                            <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-gray.svg'}}" class="closed-arrow-gray"
+                                ng-if="!(status && status.open)">
+                            <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-blue.svg'}}" class="closed-arrow-blue"
+                                ng-if="(status && status.open)">
+                        </span>
+                        <span class="show-more-toggle " ng-if="!isBirightModeActive">
+                            <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-white.svg'}}" class="closed-arrow-white"
+                                ng-if="!(status && status.open)">
+                            <img ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-green.svg'}}" class="closed-arrow-green"
+                                ng-if="(status && status.open)">
+                        </span>
+                        <span class="titleEntity" ng-class="{'openExpand': (status && status.open)}">{{getKeyTitle[key]}}</span>
+                    </accordion-heading>
+                    <div ng-if="checkForObj(value) == 'obj' && key!=='customVariables'" class="col-xs-12 checkForObj" ng-class="{'heightAuto':selectedJsonObjIndex == $index}" ng-repeat="(key1,value1) in value track by $index">
+                        <div ng-click="checkForObj(value1) == 'obj'?openJsonEditor(value1,false,key,$index,$event):selectedJsonObjIndex=-1" class="col-xs-4 keyObject" title="{{key1}}">{{key1}}</div>
+                        <div ng-click="$event.stopImmediatePropagation()" ng-if="checkForObj(value1) =='string' || checkForObj(value1) =='undefined'" class="col-xs-8 objectValue"><span title="{{value1}}">{{value1}}</span>
+                            <img ng-if="isBirightModeActive" ng-src="{{assetsBase+'debugConsoleIcons/copy-json-blue.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+getCopypat[key]+'.'+key1,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+getCopypath[key]+'.'+key1)" title="{{'copypath'| i18nString}}">
+                            <img ng-if="!isBirightModeActive" ng-src="{{assetsBase+'debugConsoleIcons/copy-json-green.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+getCopypat[key]+'.'+key1,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+getCopypath[key]+'.'+key1)" title="{{'copypath'| i18nString}}">
+                        </div>
+                        <div ng-click="openJsonEditor(value1,false,key,$index,$event)" ng-if="checkForObj(value1) == 'obj'"  ng-class="{'clickedClass':selectedJsonObjIndex==$index}" class="col-xs-8 objectValueBtn">
+                        <a>
+                            <img ng-class="{'rotate90':selectedJsonObjIndex===$index}" ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-gray.svg'}}" class="closed-arrow-gray"
+                            ng-if="isBirightModeActive">
+                            <img ng-class="{'rotate90':selectedJsonObjIndex===$index}" ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-white.svg'}}" class="closed-arrow-blue"
+                            ng-if="!isBirightModeActive">{{stringfyVal(value1)}}
+                        </a>
+                            <img ng-click="$event.stopImmediatePropagation()" ng-if="isBirightModeActive" ng-src="{{assetsBase+'debugConsoleIcons/copy-json-blue.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+getCopypath[key]+'.'+key1,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+getCopypath[key]+'.'+key1)" title="{{'copypath'| i18nString}}">
+                            <img ng-click="$event.stopImmediatePropagation()" ng-if="!isBirightModeActive" ng-src="{{assetsBase+'debugConsoleIcons/copy-json-green.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+getCopypat[key]+'.'+key1,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+getCopypath[key]+'.'+key1)" title="{{'copypath'| i18nString}}">
+                        </div>
+                        <div class="objectValueBtn" ng-click="$event.stopImmediatePropagation()">
+                            <div ng-if="selectedJsonObjIndex==$index" ng-show="showJsoneditor" ng-jsoneditor ng-model="value1" class="json_editor" id="debugContextDialog"
+                            options="options"></div>
+                        </div>
+                    </div>
+                    <div ng-if="checkForObj(value) == 'obj' && key=='customVariables'" ng-class="{'heightAuto':selectedJsonObjIndex == $index}" class="col-xs-12 checkForObj" ng-repeat="(key1,value1) in value track by $index">
+                        <div ng-click="checkForObj(value1) == 'obj'?openJsonEditor(value1,false,key,$index,$event):selectedJsonObjIndex=-1" class="col-xs-4 keyObject" title="{{key1}}">{{key1}}</div>
+                        <div ng-click="$event.stopImmediatePropagation()" ng-if="checkForObj(value1) =='string' || checkForObj(value1) =='undefined'" class="col-xs-8 objectValue"><span title="{{value1}}">{{value1}}</span>
+                            <img ng-if="isBirightModeActive" ng-src="{{assetsBase+'debugConsoleIcons/copy-json-blue.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+key1,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+key1)" title="{{'copypath'| i18nString}}">
+                            <img ng-if="!isBirightModeActive " ng-src="{{assetsBase+'debugConsoleIcons/copy-json-green.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+key1,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+key1)" title="{{'copypath'| i18nString}}">
+                        </div>
+                        <div ng-click="openJsonEditor(value1,false,key,$index,$event)" ng-if="checkForObj(value1) == 'obj'"  ng-class="{'clickedClass':selectedJsonObjIndex==$index}" class="col-xs-8 objectValueBtn">
+                         <a>
+                                 <img ng-class="{'rotate90':selectedJsonObjIndex===$index}" ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-gray.svg'}}" class="closed-arrow-gray"
+                                 ng-if="isBirightModeActive">
+                                 <img ng-class="{'rotate90':selectedJsonObjIndex===$index}" ng-src="{{assetsBase+'debugConsoleIcons/closed-arrow-white.svg'}}" class="closed-arrow-blue"
+                                 ng-if="!isBirightModeActive">{{stringfyVal(value1)}}
+                         </a>
+                            <img ng-click="$event.stopImmediatePropagation()" ng-if="isBirightModeActive" ng-src="{{assetsBase+'debugConsoleIcons/copy-json-blue.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+key1,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+key1)" title="{{'copypath'| i18nString}}">
+                            <img ng-click="$event.stopImmediatePropagation()" ng-if="!isBirightModeActive " ng-src="{{assetsBase+'debugConsoleIcons/copy-json-green.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+key1,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+key1)" title="{{'copypath'| i18nString}}">
+                        </div>
+                        <div class="objectValueBtn" ng-click="$event.stopImmediatePropagation()">
+                            <div ng-if="selectedJsonObjIndex==$index" ng-show="showJsoneditor" ng-jsoneditor ng-model="value1" class="json_editor" id="debugContextDialog"
+                            options="options"></div>
+                        </div>
+                    </div>
+                    <div ng-if="checkForObj(value)  == 'string'" class="col-xs-12 checkForObj">
+                        <div class="col-xs-4 keyObject" title="{{key}}">{{key}}</div>
+                        <div class="col-xs-8 objectValue"><span title="{{value}}">{{value}}</span>
+                            <img ng-if="isBirightModeActive " ng-src="{{assetsBase+'debugConsoleIcons/copy-json-blue.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+key,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+key)" title="{{'copy_to_clipboard'| i18nString}}">
+                            <img ng-if="!isBirightModeActive " ng-src="{{assetsBase+'debugConsoleIcons/copy-json-green.svg'}}" ng-mouseup="options.copyDebugToClipboard($event,'sessionContextObj','context.'+key,'Key copied successfully!!!')"
+                            ng-mousedown="options.prepareCopyClipboard($event,'sessionContextObj','context.'+key)" title="{{'copy_to_clipboard'| i18nString}}">
+                        </div>
+                    </div>
+                    <div ng-if="checkForObj(value)=='undefined'" class="col-xs-12">
+                        <div class="col-xs-4 keyObject" style="height: 34px; line-height:34px;">{{'copy_to_clipboard'| i18nString}}No data</div>
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+    <div class="col-xs-12 sessionContextDiv  marginTop20" ng-if="sessionContextObj.messageTone.length">
+        <div class="col-xs-12 no-padding contextObjHeader allHeadersDivs">
+            {{'msg_tone'| i18nString}} 
+        </div>
+        <div class="dialogTone col-xs-12 no-padding">
+            <div class="col-xs-4 noPaddingLeft">{{'tone_name'| i18nString}}</div>
+            <div class="col-xs-4 noPaddingLeft">{{'level'| i18nString}}</div>
+            <div class="col-xs-4 noPaddingLeft">{{'count'| i18nString}}</div>
+        </div>
+        <div class="dialogTone col-xs-12 subText no-padding" ng-repeat="messageTone in sessionContextObj.messageTone">
+            <div class="col-xs-4 noPaddingLeft">{{messageTone.tone_name}}</div>
+            <div class="col-xs-4 noPaddingLeft">{{messageTone.level}}</div>
+            <div class="col-xs-4 noPaddingLeft">{{messageTone.count}}</div>
+        </div>
+    </div>
+    <div class="col-xs-12 sessionContextDiv  marginTop20 marginBottom15" ng-if="sessionContextObj.dialogTone.length">
+        <div class="col-xs-12 no-padding contextObjHeader allHeadersDivs">
+            {{'dialog_tone'| i18nString}} 
+        </div>
+        <div class="dialogTone col-xs-12 no-padding">
+            <div class="col-xs-4 noPaddingLeft">{{'tone_name'| i18nString}}</div>
+            <div class="col-xs-4 noPaddingLeft">{{'level'| i18nString}}</div>
+            <div class="col-xs-4 noPaddingLeft">{{'count'| i18nString}}</div>
+        </div>
+        <div class="dialogTone col-xs-12 no-padding subText" ng-repeat="dilogTone in sessionContextObj.dialogTone">
+            <div class="col-xs-4 noPaddingLeft">{{dilogTone.tone_name}}</div>
+            <div class="col-xs-4 noPaddingLeft">{{dilogTone.level}}</div>
+            <div class="col-xs-4 noPaddingLeft">{{dilogTone.count}}</div>
+        </div>
+    </div>
+    <!-- <div class="col-xs-12 sessionContextDiv  marginTop20" ng-if="sessionContextObj.history">
+        <div class="col-xs-12 no-padding contextObjHeader allHeadersDivs">
+            <div class="col-xs-3 noPaddingLeft">History</div>
+            <div class="col-xs-3 noPaddingLeft">Intent</div>
+            <div class="col-xs-3 noPaddingLeft">State</div>
+            <div class="col-xs-3 noPaddingLeft">TimeStamp</div>
+        </div>
+
+        <div class="dialogTone col-xs-12 no-padding subText" ng-repeat="history in sessionContextObj.history">
+            <div class="col-xs-3 noPaddingLeft">{{history.history}}</div>
+            <div class="col-xs-3 noPaddingLeft">{{history.type}}</div>
+            <div class="col-xs-3 noPaddingLeft">{{history.state}}</div>
+            <div class="col-xs-3 noPaddingLeft">{{history.timeStamp}}</div>
+        </div>
+    </div> -->
+</div>

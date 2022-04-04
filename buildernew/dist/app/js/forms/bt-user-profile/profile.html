@@ -1,0 +1,144 @@
+<div class="container">
+  <div class="content">
+
+    <!--User details container starts here -->
+    <div class="row profileDetailesDiv">
+      <form class="wf-form" novalidate name="userProfileform">
+        <div class="col-xs-12 panel-table details">
+            <h2 class="pageTitle">{{'personal_details'| i18nString}} <a type="button" class="change-pwd-text pull-right" ng-click="changePassword()" data-ng-if="showChangePassword"><i ng-src="{{lockGreen}}" class="lockGreen btx-lock"></i>{{'change_Pwd'| i18nString}}</a></h2>
+            
+          <!--Details form container starts here -->
+          <div class="col-xs-7 leftPanel">
+            <form>
+              <div class="form-group ">
+                <label f>{{'first_name_caps'| i18nString}}</label>
+                <input type="text" class="form-control" name="firstName" maxLength="60" placeholder="{{'firstname'| i18nString}}" ng-model="userProfile.firstName" ng-change="checkValidations('firstName',userProfile.firstName)">
+                <span class="nameErrorWarning" ng-if='validations.invalidFirstName'>{{'alert_invalidname'| i18nString}}</span>
+                <div class="charactersLength" ng-show="userProfile.firstName.length > 0">{{(60 - userProfile.firstName.length) + charRemaining }}</div>
+              </div>
+              <div class="form-group">
+                <label>{{'last_name_caps'| i18nString}}</label>
+                <input type="text" class="form-control" name="lastName" maxLength="60" placeholder="{{'lastname'| i18nString}}" ng-model="userProfile.lastName" ng-change="checkValidations('lastName',userProfile.lastName)">
+                <span class="nameErrorWarning" ng-if='validations.invalidLastName'>{{'alert_invalidname'| i18nString}}</span>
+                <div class="charactersLength" ng-show="userProfile.lastName.length > 0">{{(60 - userProfile.lastName.length) + charRemaining }}</div>
+              </div>
+              <div class="form-group">
+                <!-- <label>{{'title_caps'| i18nString}}</label>
+                <input type="text" class="form-control" maxLength="150" name="title" placeholder="{{'developer'| i18nString}}" ng-model="userProfile.jTitle" ng-change="checkValidations('Title',userProfile.jTitle)">
+                <span class="nameErrorWarning" ng-if='validations.invalidTitle'>{{'alert_invalidname'| i18nString}}</span>
+                <div class="charactersLength" ng-show="userProfile.jTitle.length > 0">{{(100 - userProfile.jTitle.length) + charRemaining }}</div> -->
+
+                <div class="kr-sg-dropdowns w-100">
+                  <div class="label-text">{{'job_title' | i18nString}}</div>
+                  <div class="dropdown dropdown-open">
+                      <button class="dropdown-toggle dropdown-input" data-toggle="dropdown" ng-click="updateScroll('#roleEle')">{{(userProfile.jTitle ?(getDisplayName('role') || userProfile.jTitle): ('select' | i18nString) )}}</button>                                            
+                      <ul class="dropdown-menu content-menu" perfect-scroll  style="max-height: 150px;" id="roleEle">
+                        <li class="search-box">
+                          <input type="text" placeholder="Search" class="seach-input" ng-model="searchRole" ng-click="$event.stopPropagation();" autocomplete="off" >
+                        </li>                                                
+                        <li ng-repeat="role in rolesList | filter:searchRole" ng-click="changeRole(role.value)"><a >{{role.name}}</a></li>
+                      </ul>
+                    </div>
+              </div>
+              </div>
+              <div class="form-group">
+                <!-- <label>{{'department'| i18nString}}</label>
+                <input type="text" class="form-control" maxLength="100" name="department" placeholder="{{'what_dep'| i18nString}}" ng-model="userProfile.dept" ng-change="checkValidations('dept',userProfile.dept)">
+                <span class="nameErrorWarning" ng-if='validations.invalidDepartment'>{{'alert_invalidname'| i18nString}}</span>
+                <div class="charactersLength" ng-show="userProfile.dept.length > 0">{{(100 - userProfile.dept.length) + charRemaining }}</div> -->
+
+                <div class="kr-sg-dropdowns w-100">
+                  <div class="label-text">{{'department' | i18nString}}</div>
+                  <div class="dropdown dropdown-open">
+                      <button class="dropdown-toggle dropdown-input" data-toggle="dropdown" ng-click="updateScroll('#deptEle')">{{(userProfile.dept ?(getDisplayName('dept') || userProfile.dept): ('select' | i18nString) )}}</button>                                            
+                      <ul class="dropdown-menu content-menu" perfect-scroll  style="max-height: 150px;" id="deptEle">  
+                        <li class="search-box">
+                          <input type="text" placeholder="Search" class="seach-input" ng-model="searchDept" ng-click="$event.stopPropagation();" autocomplete="off" >
+                        </li>                                             
+                        <li ng-repeat="dept in departmentList | filter:searchDept" ng-click="changeDepartment(dept.value)"><a >{{dept.name}}</a></li>
+                      </ul>
+                    </div>
+              </div>
+              </div>
+              <div class="form-group">
+                <label>{{'company'| i18nString}}</label>
+                <input type="text" class="form-control" name="companyName" placeholder="{{'company_label'| i18nString}}" ng-model="userProfile.companyName" disabled>
+
+              </div>
+                
+              <div ng-if='selectedAccount.self' class="form-group">
+                <label>{{'account'| i18nString}}</label>
+                <input type="text" class="form-control" maxLength="100" name="accountName" placeholder="{{'account_name'| i18nString}}" ng-model="userProfile.accountName" ng-change="checkValidations('accountName',userProfile.accountName)">
+                <span class="nameErrorWarning" ng-if='validations.invalidAccountName'>{{'alert_invalidname'| i18nString}}</span>
+                <div class="charactersLength" ng-show="userProfile.accountName.length > 0">{{(100 - userProfile.accountName.length) + charRemaining }}</div>
+              </div>  
+                
+              <div class="form-group ">
+                <label>{{'email_caps'| i18nString}}</label>
+                <input type="text" class="form-control" name="emailId" placeholder="{{'constants.iconsTooltips_email'| i18nString}}" ng-model="userProfile.emailId" disabled>
+              </div>
+              <!--<div class="form-group ">
+                <label>PASSWORD</label>
+                <input type="password" class="form-control" name="password" placeholder="Password" ng-model="userProfile.password">
+              </div>-->
+              <!-- <button type="button" class="btn btn-default updateBTN" ng-click="callbacks.showView('botsForm')" ng-disabled="iconObj.profileUploading">Back</button> -->
+              <!-- <button type="submit" class="btn btn-default updateBTN" ng-click="sendProfileData(userProfileform.$valid, userProfileform)" ng-disabled="iconObj.profileUploading || !userProfileform.$valid || !userProfileform.$dirty">update</button> -->
+              <div class="form-group positionFixed">
+                <button type="submit" class="btn updateBTN" ng-click="sendProfileData(userProfileform.$valid, userProfileform)" ng-disabled="iconObj.profileUploading || !userProfileform.$valid || !userProfileform.$dirty || validations.invalidFirstName || validations.invalidLastName || validations.invalidAccountName || validations.invalidDepartment || validations.invalidTitle">{{'save'| i18nString}}</button>
+                <!-- <button ng-click="closeProfile()" class="btn closeCancel"> Close</button> -->
+              </div>
+            </form>
+
+          </div>          
+          <!--Details form container ends here -->
+
+          <!--Profile  avatar container starts here -->
+          <div class="col-xs-5 rightPanel">
+            <div class="avatar">
+              <div class="uploadingProfile" ng-if="iconObj.profileUploading"><i class="fa fa-circle-o-notch fa-spin-fast"></i></div>
+              <img class="photo" ng-src="{{context_url}}/img/user-gray.svg" ng-if="iconObj.profileUploading ||( userProfile.profImage && (userProfile.profImage === 'no-avatar'))" >
+              <img class="photo" ng-src="{{getProfile()}}" class="photo" ng-if="!iconObj.profileUploading && userProfile.profImage && (userProfile.profImage !== 'no-avatar')" onerror='handleimgLoad(this)'>
+              <p class="links">
+                <a href="" ng-click="changePic(userProfileform)">{{'change'| i18nString}}</a>
+                <span class="seperator">|</span>
+                <a href="" ng-click="deleteStreamProfile(userProfileform)">{{'Remove'| i18nString}}</a>
+              </p>
+              <input type="file" id="profileFile" name="profileFile" class="profileFile hide" on-file-change="uploadStreamProfile" file-model="newStreamData.profileFile"
+              />
+            </div>
+          </div>
+          <!--Profile  avatar container ends here -->
+        </div>
+        <!--User details container ends here -->
+      </form>
+      <div class="item accounts">
+          <h2 class="pageTitle">{{'accounts'| i18nString}}</h2>
+          <!-- <div class="item accounts" ng-show="accounts.length>1"> -->
+            <div class="col-xs-12 accountsHeader ">
+              <div class="col-xs-4 noPadding">{{'account_caps'| i18nString}}</div>
+              <div class="col-xs-4 noPadding">{{'owner'| i18nString}}</div>
+              <div class="col-xs-4 noPaddingRight"></div>
+            </div>
+          <div class="accountsBody col-xs-12 " ng-repeat="account in accounts" ng-class="{'activeAccount': selectedAccount.accountId===account.accountId}">
+              <div class="version col-xs-4 userdisplay" tooltip="{{account.displayName}}" tooltip-placement="top" data-trigger="hover"><img ng-src="{{checkTickIcon}}" class="checkTickIcon" ng-if="selectedAccount.accountId===account.accountId">{{account.displayName}}</div>
+              <div class="col-xs-4 userName">{{account.userFullName}}</div>
+              <div class="selectedDefault col-xs-4 noPaddingRight" ng-hide="account.accountId!==defaultAccountId"><span class="defaultText">{{'default_small'| i18nString}}<i class="starOrangeIcon btx-rating"> </i></span> 
+                <!-- <i class="favorite fa fa-star" ng-click="setFavoriteAccount(account)" ng-class="{selected:account.accountId===defaultAccountId}" aria-hidden="true"></i> -->
+            </div>
+              <div class="col-xs-4 makeDefaultDiv" ng-hide="account.accountId===defaultAccountId">
+                <button tooltip="{{'make_Default'| i18nString}}" tooltip-placement="top" data-trigger="hover" class="makeDefaultBtn" ng-click="setFavoriteAccount(account)"><i class="starGrayIcon btx-rating"></i>{{'make_Default'| i18nString}}</button>
+              </div>
+          </div>
+          <div class="newAccount col-xs-12" ng-if="canCreateAccount">
+            <div class="col-xs-7">
+              <p class="newAccountDesc">{{'build_manage'| i18nString}}</p>
+              <a href="#" ng-click="createAccount()" class="newAccountBtn">{{'account_create'| i18nString}}</a>
+            </div>
+            <div class="col-xs-5">
+              <img ng-src="{{createPlaceholder}}" class="createPlaceholder">
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+
+<div class="form-container">  
+  <bt-test-form api="btTestFormApi" status="btTestStatus" ></bt-test-form> 
+  <!-- Webhook -->
+  <div class="text-centre"  ng-if="alertType === 'webhook' || alertType === 'email'">
+    <p>{{'auth_mechanism'| i18nString}}</p>
+    <button type="button" class="btn btn-primary" ng-click="skipAuthRqObj()">{{'continue'| i18nString}}</button>
+  </div>
+
+  <!-- RSS, webservice, and action -->
+  <div class="row">
+    <form name="authForm" class="wf-form" ng-submit="setAuth(authForm.$valid)" novalidate>
+        <fieldset class="panel-body" ng-if="alertType === 'rss' || alertType === 'webservice' || wfType === 'action' || wfType === 'serviceNode'">
+        <div class="col-xs-12 form-group noPaddingLeft" ng-if="authLists.length>0" ng-hide="wfType === 'serviceNode'">
+          <div class="col-xs-12 labelling noPadding">
+            <label class="required-field">{{'auth_provider'| i18nString}}</label>
+          </div>
+          <div class="col-xs-6 noPadding">
+            <select ng-model="newAuth.selected" ng-disabled="displayMode == 'view'" class="form-control " name="authList" ng-options="authList.name for authList in authLists" ng-change="getselectedObj(newAuth.selected)" >
+              <option value=""> {{'select_option'| i18nString}} </option>
+            </select>
+          </div>
+          <div class="col-xs-6 noPadding">
+            <button ng-if="displayMode!=='view' && newAuth.selected && newAuth.selected.sso_type !== 'none'" type="button" class="btn btn-primary btn-outline authorizationBTN" ng-click="authEdit()"> {{'edit'| i18nString}} </button>
+            <button ng-if="displayMode==='view' && newAuth.selected && newAuth.selected.sso_type !== 'none'" type="button" class="btn btn-primary btn-outline authorizationBTN" ng-click="authView()"> {{'view'| i18nString}} </button>
+            <span ng-if="displayMode!=='view' && newAuth.selected">
+            <button ng-if="newAuth.selected.sso_type !== 'none'" type="button" class="btn btn-primary btn-outline authorizationBTN" ng-click="testIdp()">{{'test_auth'| i18nString}}</button>
+            </span> <span ng-if="displayMode!=='view'">
+            <div class="btn btnSolidBlue authorizationBTN" ng-click="showAuth()">{{'create_new'| i18nString}}</div>
+            </span> <span ng-switch on="btTestStatus.testResult"> <span ng-switch-when="validating">{{'validating'| i18nString}} </span> <span ng-switch-when="aborted">{{'aborted'| i18nString}} </span> <span ng-switch-when="success"> {{'success'| i18nString}} </span> <span ng-switch-when="failed"> {{'failed'| i18nString}} </span> </span> </div>
+
+        </div>
+       <div ng-include="tmpltPrePath+'templates/bt-streams/bot-authorization-modal.html'"></div>  
+         <!--<div ng-include="tmpltPrePath+'templates/bt-streams/auth-modal-template.html'"></div>     -->
+      </fieldset>
+        <div class="panel-footer" ng-show="displayMode !== 'view' && wfType !== 'serviceNode'">
+            <!--              <button class="btn btn-sm btn-primary text-info" ng-click="showAlertFieldForm()"> Add </button>-->
+            <button class="btn btn-sm btn-primary text-info"  ng-if="!displayMode || displayMode==='edit'" type="button" ng-click="setAuth(authForm.$valid, true, true)" ng-disabled="saveInProgress || !newAuth.selected || !authForm.$dirty">
+                <i ng-if="(displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))?savingLabel:save}}
+            </button>
+
+        </div>
+    </form>
+  </div>
+</div>

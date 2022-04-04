@@ -1,0 +1,90 @@
+/* 
+    Created on : 3 May, 2018, 4:42:41 PM
+    Author     : rajasekhar
+    Purpose    : css styles which cannot go to the process of minifing etc.. via grunt
+*/
+
+@supports (-ms-ime-align: auto) {
+    /* Microsoft EdgeV13&14 CSS styles go here */
+   .flowTaskForm .btmodaltitlediv .botIcon {
+       top:4px !important;
+   }
+   .btmodaltitlediv .bottasksection.dialogTitle{top:-5px !important;}
+   .flowTaskForm.expandedView .topBar .dialogMenu .dialogMenuIcon{
+    font-size:18px !important;  
+    padding: 5px !important;
+    margin-left: 0 !important;  
+}
+    .flowTaskForm.expandedView .topBar .searchNodes{
+        margin: 0 15px 0 0 !important;
+    }
+    .dropdown.dialogMenu{
+        position:absolute !important; 
+        top:10px !important; 
+        right: 5px !important;
+    }
+    .flowTaskForm.expandedView .topBar search-options{
+        right: 10px;
+    }
+ }
+
+/* SAFARI LOGIN PAGE HEIGHT*/
+.safari body{
+   height: 100vh;
+}
+/*SAFARI HACK*/
+html.safari{
+  transform: translate3d(0%, 0, 0); 
+}
+html.safari .safaribug-btn{
+        padding: 0 10px !important; 
+    }
+html.safari .safarireload-btn{
+        padding: 0 10px !important; 
+    }
+html.safari .flowTaskForm .flowTaskConnectionBlock .draggableEle .dummyConnections .addConnectionDropdown .commonEle .eleType .eleTypeDropdown .dropdown-menu li.nodesData .nodeType{
+  margin-top:0;
+}
+html.safari .flowTaskForm .btmodaltitlediv .botIcon{
+    top: -8px;
+}
+/* ---- Firefox CSS --- */
+@-moz-document url-prefix() {
+   search.botShare::before {
+   left:10px !important;
+  }
+  body.modal-open {
+      position: relative;
+  }
+  /* .gecko .btPiiMasking .toggleSwitch.toggle-switch-container {
+    display: inline-block;
+    height: 16px;
+    position: relative;
+    top: -28px;
+  }
+.gecko .details-toggle-switch{
+    position: absolute;
+    top: -6px;
+    width: 100%;
+  }
+.gecko .btPiiMasking .toggleOff{margin-left: 25px;}
+.gecko .btPiiMasking .toggleOn span{margin-left: 25px;} */
+}
+/* ---- IE CSS --- */
+@supports (-ms-ime-align:auto) {
+  slack-channel .step-progress-step.active .step-name, fb-channel .step-progress-step.active .step-name
+  {margin-right:28px;}
+  slack-channel .step-progress-step .step-name, fb-channel .step-progress-step .step-name{margin-right:28px;}
+   .step-progress-step.active .step-name {
+margin-right:28px;
+}
+ .step-progress-step .step-name {
+margin-right:28px;
+}
+}
+/* ---- IE CSS --- */
+
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body, 
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body{
+    position: absolute;
+}

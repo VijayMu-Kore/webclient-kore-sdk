@@ -1,0 +1,125 @@
+<div class="kr-sg-multi-line-notification-link marginBottom15">
+  <div class="main-heading">{{'important_note' | i18nString}}</div>
+  <div class="tost-text">{{'depricated_tasks_info'| i18nString}}</div>                                   
+  <div class="know-link"  ng-click="redirectToLink('DEPRECATED_TASKS' , $event)"><a>{{'know_more'| i18nString}}</a></div>
+</div>
+<div class="flows-row" ng-init="bulderReloaded()">
+     <!--  <div class="panel-table-heading">
+        <h3 class="panel-title entity_count_label">{{_constants_.flows}} <!--({{mappingTasks.length}})</h3>
+        <button ng-click="newMapping()"
+          class="btn btn-sm btn-primary text-info pull-right" ng-class="{'hide':showSolutionBotSetup}">
+          Add
+        </button>
+      </div> -->
+      <div class="panel-table col-xs-12" ng-show="mappingTasks.length > 0">
+        <div class="panel-table-header">
+          <div class="row">
+             <div class="col-xs-4">{{'alert_caps'| i18nString}}:</div>
+             <div class="col-xs-1"></div>
+             <div class="col-xs-4">
+              <div class="row">
+                {{'action_caps'| i18nString}}:
+              </div>
+             </div>
+             <div class="col-xs-2">
+              {{'flow_state'| i18nString}}
+             </div>
+             <div class="col-xs-1">{{'settings_uppercase'| i18nString}}</div>
+          </div>
+        </div>
+        <div class="panel-table-body row">
+          <div class="col-xs-12 flows-tbl" ng-repeat="mapping in mappingTasks">
+            <div ng-if="mapping.alertId" class="col-xs-3" ng-class="{'cursor-pointer':isNotAParentOf(mapping)}" ng-click="isNotAParentOf(mapping)&&editMapping(mapping)">
+              <img class="flow-icon" ng-src="{{mapping.alertStreamIcon}}" alt="">
+              <span>{{mapping.alertName}} (v{{+mapping.alertVersion}})</span>
+            </div>
+            <div ng-if="mapping.sourceResourceId" class="col-xs-3" ng-class="{'cursor-pointer':isNotAParentOf(mapping)}" ng-click="isNotAParentOf(mapping)&&editMapping(mapping)">
+              <img class="flow-icon" ng-src="{{mapping.sourceStreamIcon}}" alt="">
+              <span>{{mapping.sourceResourceName}} (v{{+mapping.sourceResourceVersion}})</span>
+            </div>
+            <div class="col-xs-1 text-center" ng-class="{'cursor-pointer':isNotAParentOf(mapping)}" ng-click="isNotAParentOf(mapping)&& editMapping(mapping)"> <i class="fa fa-arrow-right"></i></div>
+            <div ng-if="mapping.actionId" class="col-xs-4" ng-class="{'cursor-pointer':isNotAParentOf(mapping)}" ng-click="isNotAParentOf(mapping) && editMapping(mapping)">
+              <div class="col-xs-12 textEllipsis">
+                <img class="flow-icon" ng-src="{{mapping.actionStreamIcon}}" alt="">
+                <span>{{mapping.actionName}} (v{{+mapping.actionVersion}})</span>
+              </div>
+            </div>
+            <div ng-if="mapping.targetResourceId" class="col-xs-4" ng-class="{'cursor-pointer':isNotAParentOf(mapping)}" ng-click="isNotAParentOf(mapping) && editMapping(mapping)">
+              <div class="col-xs-12 textEllipsis">
+                <img class="flow-icon" ng-src="{{mapping.targetStreamIcon}}" alt="">
+                <span>{{mapping.targetResourceName}} (v{{+mapping.targetResourceVersion}})</span>
+              </div>
+            </div>
+            <div class="col-xs-3 deploymentStatus" ng-class="{'cursor-pointer':isNotAParentOf(mapping)}" ng-click="isNotAParentOf(mapping) && editMapping(mapping)"><span class="status"  ng-class="{'published':mapping.state === 'active'}" >
+              {{_constants_.flowStates[mapping.state]}}</span>
+            </div>
+            <div class="col-xs-1 text-center" ng-class="{'hide':showSolutionBotSetup}">
+              <div class="dropdown panel-dropdown" ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                <i class="fa gear fa-1 pointer-hand" data-toggle="dropdown"></i>
+                <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                  <!-- ng-show="mapping.state == 'configured'" -->
+                  <li>
+                    <a ng-hide="mapping.parentOf" ng-click="editMapping(mapping)">{{'edit'| i18nString}}</a>
+                  </li>
+                  <li ng-show="mapping.state == 'configured'">
+                    <a ng-click="publishMapping(mapping,$index)">{{'publish'| i18nString}} </a>
+                  </li>
+                  <li>
+                    <a ng-click="deleteMapping(mapping,$index)"> {{'delete'| i18nString}} </a>
+                  </li>
+                  <!-- <li ng-show="mapping.oldVersions.length > 0 ">
+                    <a ng-click="mapping.showolder=!mapping.showolder">{{ !mapping.showolder ? 'Show older versions' : 'Hide older versions' }}</a>
+                  </li> -->
+                </ul>
+              </div>
+            </div>
+            <div class="col-xs-12" ng-show="mapping.showolder">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <label>{{'older_version'| i18nString}}</label>
+                </div>
+                <div class="panel-body">
+                  <table class="table table-bordered text-center">
+                    <tr>
+                      <th class="text-center">{{'triggered'| i18nString}}:</th>
+                      <th class="text-center">{{'perform_task'| i18nString}}:</th>
+                      <th class="text-center">{{'settings_uppercase'| i18nString}}</th>
+                    </tr>
+                    <tr ng-repeat="version in mapping.oldVersions">
+                      <td>
+                        <img class="flow-icon" ng-src="{{version.alertStreamIcon}}" alt="">
+                        <span>{{version.alertName}} (v{{+version.alertVersion}})</span>
+                      </td>
+                      <td>
+                        <img class="flow-icon" ng-src="{{version.actionStreamIcon}}" alt="">
+                        <span>{{version.actionName}} (v{{+version.actionVersion}})</span>
+                      </td>
+                      <td>
+                        <div class="dropdown">
+                          <i class="fa gear fa-1 pointer-hand" data-toggle="dropdown"></i>
+                          <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                             <!--  <li>
+                                 <a ng-click="editMapping(version)"> Edit </a>
+                              </li> -->
+                              <li>
+                                <a ng-click="deleteMapping(version,$index)">{{'delete'| i18nString}} </a>
+                              </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert" ng-show="mappingTasks.length == 0 && !loadingFlows">
+          {{'no_flows'| i18nString}}
+          <p class="hide"> {{'alert_action'| i18nString}}</p>
+          <p class="hide"><a target="_blank"  ng-href="{{$root.helpLinks.NO_FLOWS}}" >{{'learn_more_label'| i18nString}}</a></p>
+        </div>
+      </div>
+</div>

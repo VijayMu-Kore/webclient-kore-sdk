@@ -1,0 +1,242 @@
+<div class="modal fade add-pattern full-height height-width-100" id="synonymModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" ng-hide="true">
+  <div class="modal-dialog">
+	<div class="modal-content" ng-if="pattern.show">
+		<div class="modal-header">
+			<button type="button" ng-click="cancelAddPattern()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+    		<h4 class="modal-title" id="gridSystemModalLabel">{{'add_new_pattern'| i18nString}}</h4>
+		</div>
+		<div class="modal-body full-height height-width-100">
+            <form name="AddTaskPatternForm">
+			  <div class="form-group row" ng-show="{{hideUi}}">
+			    <label>{{'word_selected'| i18nString}}</label>
+			    <input type="text" class="form-control" placeholder="{{'pattern_selected'| i18nString}}" ng-model="pattern.text">
+			  </div>
+			  <div class="form-group row">
+			    <label>{{'select_task_name'| i18nString}}</label>
+			    <select class="form-control" ng-model="pattern.intent">
+			    	<option value="">{{'select_task_name'| i18nString}}</option>
+			    	<option ng-repeat="task in tasks" value="{{task._id}}">{{task.name}}</option>
+			    </select>
+			  </div>
+			  <div class="form-group row" ng-hide="{{hideUi}}">
+			    <label>{{'enter_pattern'| i18nString}}</label>
+                            <input type="text" class="form-control" placeholder="{{'pattern_asterisk'| i18nString}}" ng-model="pattern.text" required ng-pattern="/^[^*]+$/" name="taskPattern">
+			  </div>  
+                          <div error-alert ng-show="AddTaskPatternForm.taskPattern.$error.pattern" class="text-danger">{{'asterisk'| i18nString}}</div> 
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="submit" class="btn  btn-default" ng-click="cancelAddPattern()">{{'cancel'| i18nString}}</button>
+            <button type="submit" class="btn  btn-primary" ng-disabled="AddTaskPatternForm.$invalid || saving" ng-click="saveAddPattern()">{{'save'| i18nString}}</button>
+		</div>
+	</div>
+  </div>
+</div>
+<div class="modal fade add-field-pattern" ng-hide="true"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-md">
+	<div class="modal-content" ng-if="pattern.show">
+		<div class="modal-header">
+			<button type="button" ng-click="cancelFieldPattern()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+    		 <h4 class="modal-title" id="gridSystemModalLabel">{{'add_pattern_field'| i18nString}}</h4>
+		</div>
+		<div class="modal-body">
+			<form name="AddFieldPatternForm">
+			  <div class="form-group row" ng-show="{{hideUi}}">
+			    <label>{{'word_selected'| i18nString}}</label>
+			    <input type="text" class="form-control" placeholder="{{'pattern_selected'| i18nString}}" ng-model="pattern.text">
+			  </div>
+			  <div class="form-group row">
+			    <label>{{'select_task_name'| i18nString}}</label>
+			    <select class="form-control" ng-model="pattern.intent" ng-change="onTaskSelected(task)">
+			    	<option value="">{{'select_task_name'| i18nString}}</option>
+			    	<option ng-repeat="task in tasks" value="{{task._id}}">{{task.name}}</option>
+			    </select>
+			  </div>
+	      	  <div class="form-group row">
+	      	    <label>{{'select_field_pattern'| i18nString}}</label>
+	      	    <select class="form-control" ng-model="pattern.field">
+	  		    	<option value="">{{'select_field_label'| i18nString}}</option>
+	  		    	<option ng-repeat="field in getSelectedTaskForPattern().fields" value="{{field.title}}">{{field.title}}</option>
+	      	    </select>
+	      	  </div>
+	      	  <div class="form-group row" ng-hide="{{hideUi}}" ng-if="pattern.showFieldPattern">
+	      	    <label>{{'enter_pattern'| i18nString}}</label>
+                <input  type="text" class="form-control" placeholder="{{'pattern_use'| i18nString}}" ng-model="pattern.text" required ng-pattern='validateFieldPattern' name='fieldPattern'>
+           		<div error-alert ng-show="AddFieldPatternForm.fieldPattern.$error.pattern" class="text-danger">{{'field_Patterns'| i18nString}}</div>
+	      	  </div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="submit" class="btn  btn-default" ng-click="cancelFieldPattern()">{{'cancel'| i18nString}}</button>
+			<button type="submit" class="btn  btn-primary" ng-click="saveFieldPattern()"  ng-disabled="AddTaskPatternForm.$invalid || saving">{{'save'| i18nString}}</button>
+		</div>
+	</div>
+  </div>
+</div>
+<div class="pattern-manage-form col-xs-12 chatPatterns" ng-hide="{{hideUi}}">
+	<div class="col-xs-3 noPadding sidenav-container chat-response-menu">
+	  <div class="sidebar-nav leftNav">
+	    <ul class="workflow-sidebar">
+	      <li class="pointer-hand">
+	        <div >
+	          <div class="wf-sidebar-step" ng-click="showType('taskPatterns')">
+	            <div class="step-title" ng-class="{'active':views.taskPatterns,'disabled':!views.taskPatterns}">
+	              <div class="">{{'task_patterns'| i18nString}}</div>
+	            </div>
+	            <div class="step-desc"></div>
+	          </div>
+	        </div>
+	      </li>
+	      <li class="pointer-hand">
+	        <div >
+	          <div class="wf-sidebar-step" ng-click="showType('fieldPatterns')">
+	            <div class="step-title" ng-class="{'active':views.fieldPatterns,'disabled':!views.fieldPatterns}">
+	              <div class="">{{'field_patterns'| i18nString}}</div>
+	            </div>
+	            <div class="step-desc"></div>
+	          </div>
+	        </div>
+	      </li>
+	    </ul>
+	  </div>
+	</div>
+	<div class="col-xs-9 rightPanel">
+		<div class="row rightPanelContainer" ng-show="views.taskPatterns">
+			<div class="col-xs-12 noPadding form-group">
+				<div class="save-ctrl pull-right">
+                  <div class="workflows-container">
+                    <div class="search ">
+                      <input focus-it tabindex="1" type="text" class="form-control" ng-model="taskPatternSearch" placeholder="{{'search_here'| i18nString}}">
+                    </div>
+                  </div>
+                </div>
+			</div>
+			<div class="col-xs-12">
+	         	<!-- <div class="nlp-heading">
+	        		<h3 tooltip-placement="right" tooltip="Patterns help in intent recognition. You can manage all the patterns against an intent.">Patterns</h3>
+	        	</div> -->
+				<div class="row intent-item" ng-repeat="task in tasks | filter : taskPatternSearch"  ng-hide="task.parentId">
+					<div class="col-xs-12 " ng-click="showPatterns($index)">
+						<div class="col-xs-6 noPadding">
+							{{task.name}}
+						</div>
+						<div class="col-xs-3">
+							{{(task.task_patterns ? task.task_patterns.length : '0' )+ " Pattern(s)"}}
+						</div>
+						<div class="col-xs-3 text-right">
+							<a class="editCtrl" href="" ng-click="context.addPattern('',$event,task)">
+								{{'add'| i18nString}}
+							</a>
+						</div>
+						<div class="row col-xs-12 noPadding">
+							<div class="divider marginTopBottom"></div>
+						</div>
+					</div>
+					<div class="col-xs-12 " ng-show="steps.currentPatternStage == $index">
+						<div class="col-xs-12 noPadding" ng-repeat="pattern in task.task_patterns">
+							<div class="col-xs-4 noPadding">
+								<label><b>{{pattern.original}}</b></label>
+							</div>
+							<div class="col-xs-4">
+								<div>{{pattern.value |formatTaskPattern}}</div>
+							</div>
+							<div class="col-xs-4 text-right">
+								<span class="codeRed" ng-click="deletePattern(task,pattern)">{{'delete'| i18nString}}</span>
+							</div>
+							<div class="row col-xs-12 noPadding">
+								<div class="divider marginTopBottom"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+<!-- 			<div class="col-xs-12 text-center" ng-show="!taskPatternsLoading && tasks.length != 0 && (tasks | filter : taskPatternSearch).length == 0">
+	    		<div class="alert alert-sm alert-warning">
+					{{'no_patterns_available_with_search_desc'| i18nString}}	
+	    		</div>
+			</div>
+	 		<div class="col-xs-12 text-center" ng-show="!taskPatternsLoading && tasks.length == 0">
+	     		<div class="alert alert-sm alert-warning">
+					{{'no_patterns_created_desc'| i18nString}}
+	     		</div>
+	 		</div> -->
+	 		<!-- <div class="col-xs-12 text-center" ng-show="taskPatternsLoading">
+	 			<div class="alert alert-sm alert-warning">
+					{{'loading_patterns'| i18nString}}
+	     		</div>
+	 		</div> -->
+		</div>
+		<div class="row rightPanelContainer"  ng-show="views.fieldPatterns">
+			<div class="col-xs-12 noPadding form-group">
+				<div class="save-ctrl pull-right">
+                  <div class="workflows-container">
+                    <div class="search ">
+                      <input focus-it tabindex="1" type="text" class="form-control" ng-model="fieldPatternSearch" placeholder="{{'search_here'| i18nString}}">
+                    </div>
+                  </div>
+                </div>
+			</div>
+			<div class="col-xs-12 noPadding">
+	         	<!-- <div class="nlp-heading">
+	        		<h3 tooltip-placement="right" tooltip="Patterns that will help Bot to better identify fields in the user statements.">Field Patterns</h3>
+	        	</div> -->
+				<div class="row intent-item" ng-repeat="task in tasks | filter : fieldPatternSearch"  ng-click="showFieldPatterns($index)" ng-hide="task.parentId">
+					<div class="col-xs-12 noPadding">
+						<div class="col-xs-8 noPadding">
+							{{task.name}}
+						</div>
+						<div class="col-xs-4 text-right">
+							<a class="editCtrl" href="" ng-click="context.addFieldPattern('',$event,task)">
+								{{'add'| i18nString}}
+							</a>
+						</div>
+						<div class="row col-xs-12 noPadding">
+							<div class="divider"></div>
+						</div>
+					</div>
+					<div class="col-xs-12 noPadding" ng-show="steps.currentFieldPatternStage == $index">
+						<div class="col-xs-12" ng-repeat="pattern in task.field_patterns" ng-show="pattern.value.length > 0">
+							<div class="col-xs-4 noPadding">
+								<label><b>{{pattern.fieldName}}</b></label>
+							</div>
+                            <div class="col-xs-8">
+								<add-tags tags="pattern.value"></add-tags>
+								<span class="codeRed" ng-click="deleteFieldPattern(task,pattern)">{{'delete'| i18nString}}</span>
+							</div>
+							<div class="row col-xs-12 noPadding">
+								<div class="divider marginTopBottom"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 text-center" ng-show="!taskFieldPatternsLoading && tasks.length != 0 && (tasks | filter : fieldPatternSearch).length == 0">
+	     		<div class="alert alert-sm alert-warning">
+					{{'field_patterns_search'| i18nString}}	
+	     		</div>
+	 		</div>
+	 		<div class="col-xs-12 text-center" ng-show="!taskFieldPatternsLoading && tasks.length == 0">
+	     		<div class="alert alert-sm alert-warning">
+					{{'field_patterns_def'| i18nString}}	
+	     		</div>
+	 		</div>
+			<div class="col-xs-12 text-center" ng-show="taskFieldPatternsLoading">
+				<div class="alert alert-sm alert-warning">
+	    			{{'task_fields'| i18nString}}
+	    		</div>
+			</div>
+		</div>
+	</div>
+    <div class="footer form-group noMargin">
+        <div class="footerSub">
+         <div class="form-ctrl-div pull-left">
+                    <button class="btn btn-default" ng-click="$parent.exit()">{{'exit_label'| i18nString}}</button>
+                </div>
+                <div class="help-hint-link">
+                    <a target="_blank"  ng-href="{{$root.helpLinks.PATTERNS}}" >{{'help_withpage_label'| i18nString}}</a>
+                </div>
+                <div class="pull-right form-ctrl-div">
+            </div>
+        </div>
+    </div>
+</div>

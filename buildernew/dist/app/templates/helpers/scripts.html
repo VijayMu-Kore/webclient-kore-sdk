@@ -1,0 +1,31 @@
+<script type="text/ng-template" id="/wsdloperationio.html">
+    <tr id="ioView">
+        <td colspan="{{colSpan}}">
+            <div class="col-xs-12">
+                <div ng-disable="true" ng-jsoneditor class="json_editor" ng-model="operation" options="options"></div>
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script type="text/ng-template" id="langpopover.html">
+    <span class="bot-tooltip" ng-show="task.state == 'published' || task.state == 'configured' || task.state == 'upgradeInProgress'">
+
+        <ul class="langlistScroll" perfect-scroll>
+            <li ng-repeat="language in stream.supportedLanguages" class="langlist"><i class="fa" ng-class="{'fa-check':isApproved(language), 'fa-warning':!isApproved(language)}"></i><span class="langname" ng-class="{'approved':isApproved(language)}">{{getLangNameByValue(language)}}</span></li>
+    </ul>
+
+    </span>
+</script>
+
+<script type="text/ng-template" id="publishlangpopover.html">
+    <div class="dropdown-content" ng-hide="task.approvedLanguages.length <= 2">
+        <a href="#" ng-show="$index > 1" ng-repeat="name in getLangArrayByValue(task.approvedLangString, task) track by $index">{{name}}</a>
+    </div>
+</script>
+
+<script type="text/ng-template" id="smartAlertPopOver.html">
+    <div class="dropdown-content" >
+        <a href="#">Parameter Type:{{parameterType}} Format:{{format}}</a>
+    </div>
+</script>

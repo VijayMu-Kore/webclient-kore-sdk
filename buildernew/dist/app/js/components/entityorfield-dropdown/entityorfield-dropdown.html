@@ -1,0 +1,11 @@
+<ul ng-show="entitiesList && entitiesList.length" class="entityfielddropdown dropdown-menu noPadding" aria-labelledby="dropdownMenu1">
+		<li class="entityHeader">
+            <span class="selectEntity">{{'select_entity'| i18nString}}</span>
+            <input type='text' ng-model='entity.searchName' placeholder="{{'search_name'| i18nString}}" autofocus><i class='fa fa-search'></i>
+        </li>
+        <div class="scrollDiv" perfect-scroll>
+        	<li class="entity" ng-repeat="entity in entitiesList | filter: entity.searchName"  ng-click="mapEntityToWord(entity)" ng-show="(entity.type === 'entity' && selectedTaskType == 'DialogIntent') || selectedTaskType !== 'DialogIntent'"><a ng-style="{color:getColorBasedOnMap(entity)}" class="rich_context-menu {{getClassBasedOnMap(entity)}}">
+            {{selectedTaskType == "DialogIntent" ?  entity.name : entity.title}}</a></li>
+        </div>
+        
+</ul>

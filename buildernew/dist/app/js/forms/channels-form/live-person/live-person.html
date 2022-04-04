@@ -1,0 +1,245 @@
+<div class="modalSliderContainer width700">
+    <form name="livePersonForm">
+    <div class="modalHeader channelModalHeader">
+        <h4 class="modal-title" id="gridSystemModalLabel">
+            <i class="btx-close" ng-click="goToHome()"></i>
+                {{'constants.iconsTooltips_liveperson'| i18nString}}
+            </h4>
+ </div>
+    <div class="modalBody line-channel-page slack-channel-page inner-scroll channelInnerContent" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+        <div class="col-xs-12 step-progress-container">
+            <step-progress steps="steps" on-click="stepClick"></step-progress>
+        </div>
+        <div ng-repeat="step in steps" ng-if="step.active" class="slcakChannels widthseventy">
+      <div class="col-xs-12 noPadding" ng-show="step.step == 1">
+        <div class="col-xs-12 channel-content">
+          
+            <div class="info noMargin"> 
+              <p>{{'Bt_chnl_liveperson_instruct_label'| i18nString}}</p>
+              <p ng-bind-html="'sign_liveperson'| i18nString:({link:'https://authentication.liveperson.net/login.html'})"></p>
+              <p class="channelstep">{{'Bt_chnl_liveperson_instruct_step1_label'| i18nString}}</p>
+              <p>{{'Bt_chnl_liveperson_instruct_step1_desc'| i18nString}}</p>
+              <ul class="marginBottom10">
+                  <li>{{'Bt_chnl_liveperson_instruct_step1_point1'| i18nString}}</li>
+                  <li>{{'Bt_chnl_liveperson_instruct_step1_point2'| i18nString}}</li>
+                  <li>{{'Bt_chnl_liveperson_instruct_step1_point3'| i18nString}}</li>
+              </ul>
+              <img ng-src="{{assetsBase}}/images/liveperson-1.png" class="marginAuto width100percent"/>
+               <p class="channelstep margin-top">{{'Bt_chnl_liveperson_instruct_step2_label'| i18nString}}</p>
+              <p>{{'Bt_chnl_liveperson_instruct_step2_desc'| i18nString}}</p>
+              <ul class="text-justify">
+                  <li>{{'Bt_chnl_liveperson_instruct_step2_point1'| i18nString}}</li>
+                  <li>{{'Bt_chnl_liveperson_instruct_step2_point2'| i18nString}}</li>
+                  <li>{{'Bt_chnl_liveperson_instruct_step2_point3'| i18nString}}</li>
+                  <li>{{'Bt_chnl_liveperson_instruct_step2_point4'| i18nString}}</li>
+                  <li>{{'Bt_chnl_liveperson_instruct_step2_point5'| i18nString}}</li>
+                  <li>{{'Bt_chnl_liveperson_instruct_step2_point6'| i18nString}}</li>
+                  <li>{{'Bt_chnl_liveperson_instruct_step2_point7'| i18nString}}</li>
+              </ul>
+            <img ng-src="{{assetsBase}}/images/liveperson-2.png" class="marginAuto width100percent"/>
+            <p class="paddingTop10">{{'Bt_chnl_liveperson_instruct_note'| i18nString}} </p>
+             </div>
+         </div>
+      </div>
+      <div class="col-xs-12 noPadding" ng-show="step.step == 2">
+        
+        <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}"> 
+            <div class="info"> 
+                <div class="form-group">
+                    <div class="col-xs-11 noPadding">
+                        <label class="required-field">{{'Bt_chnl_liveperson_config_accountId_label'| i18nString}}</label>
+                    </div>
+                    <p class="col-xs-11 noPadding">{{'Bt_chnl_liveperson_config_accountId_desc'| i18nString}}</p>
+                    <div class="col-xs-11 form-group noPadding">
+                        <input type="text" class="form-control" ng-model="channel.accountId" name="accountId" required>
+                        <div  ng-show="livePersonForm.accountId.$dirty">
+                            <div error-alert ng-show="livePersonForm.accountId.$error.required" class="text-danger">
+                                {{'Bt_chnl_liveperson_config_accountId_err'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+          </div>
+            
+        <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}"> 
+            <div class="info"> 
+                <div class="form-group">
+                    <div class="col-xs-11 noPadding">
+                        <label class="required-field">{{'Bt_chnl_liveperson_config_loginname_label'| i18nString}}</label>
+                    </div>
+                    <p class="col-xs-11 noPadding">{{'Bt_chnl_liveperson_config_loginname_desc'| i18nString}}</p>
+                    <div class="col-xs-11 form-group noPadding">
+                        <input type="text" class="form-control" ng-model="channel.username" name="lpLoginName" required>
+                        <div  ng-show="livePersonForm.lpLoginName.$dirty">
+                            <div error-alert ng-show="livePersonForm.lpLoginName.$error.required" class="text-danger">
+                                {{'Bt_chnl_liveperson_config_loginname_err'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+          </div>
+            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">  
+            <div class="info"> 
+                <div class="col-xs-12 row form-group noPadding">
+
+                <div class="col-xs-11 noPadding">
+                  <label class="required-field">{{'Bt_chnl_liveperson_config_interactoption_label'| i18nString}}</label>
+                </div>
+                <div class="col-xs-11 form-group noPadding">
+                    <p>{{'Bt_chnl_liveperson_config_interactoption_desc'| i18nString}}</p>
+                  <div class="checkbox checkbox-primary styledCSS noMargin" id="checkrequired">
+                      <div>
+                       <input class="styled" type="checkbox" id="isChatAPIEnabled" ng-model="channel.isChatAPIEnabled" name="isChatAPIEnabled">
+                       <label for="isChatAPIEnabled"><span> {{'Bt_chnl_liveperson_config_interactoption_opt1'| i18nString}}</span></label>
+                      </div>
+                      <div>
+                       <input class="styled" type="checkbox" id="isSDKEnabled" ng-model="channel.isSDKEnabled" name="isSDKEnabled">
+                       <label for="isSDKEnabled"><span>{{'Bt_chnl_liveperson_config_interactoption_opt2'| i18nString}}</span></label>
+                      </div>
+                      <div  ng-show="checkBoxInValidate">
+                            <div error-alert ng-hide="channel.isSDKEnabled || channel.isChatAPIEnabled" class="text-danger">
+                                {{'Bt_chnl_liveperson_config_interactoption_err'| i18nString}}
+                            </div>
+                       </div>
+                      <div class="bulbiconwrappernew dispalyTable helphint-border">
+                          <div class="col-xs-1 bulbicon"><i class="btx-bulb"></i></div>
+                          <div class="col-xs-11 text-justify padding-0">
+                              <ul class="step2Note p-0">
+                                  <li>{{'Bt_chnl_liveperson_config_interactoption_protip1'| i18nString}}</li>
+                                  <li>{{'Bt_chnl_liveperson_config_interactoption_protip2'| i18nString}}</li>
+                              </ul> 
+                          </div>
+                      </div>
+                 
+                  </div>
+                 </div>
+           </div>
+            </div>
+          </div>
+            
+       <div class="col-xs-12 channel-content">
+           <div class="info">
+           <div class="form-group paddingTopBottom10">
+                    <div class="col-xs-11 noPadding">
+                        <label>{{'Bt_chnl_liveperson_config_apiKeyDetail_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-11 noPadding">{{'Bt_chnl_liveperson_config_apiKeyDetail_desc'| i18nString}}</div></div>
+           </div>
+       </div>
+        <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+            <div> 
+                <div class="form-group">
+                    <div class="col-xs-11 noPadding">
+                        <label class="required-field lpApiSection">{{'Bt_chnl_liveperson_config_appkey_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-11 form-group noPadding">
+                        <input type="text" class="form-control" ng-model="channel.appKey" name="appKey" required>
+                        <div  ng-show="livePersonForm.appKey.$dirty">
+                            <div error-alert ng-show="livePersonForm.appKey.$error.required" class="text-danger">
+                                {{'Bt_chnl_liveperson_config_appkey_err'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+          </div>
+            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+            <div> 
+                <div class="form-group">
+                    <div class="col-xs-11 noPadding">
+                        <label class="required-field lpApiSection">{{'Bt_chnl_liveperson_config_secret_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-11 form-group noPadding">
+                        <input type="text" class="form-control" ng-model="channel.secret" name="secret" required>
+                        <div  ng-show="livePersonForm.secret.$dirty">
+                            <div error-alert ng-show="livePersonForm.secret.$error.required" class="text-danger">
+                                {{'app_secret_req'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+          </div>
+            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+            <div> 
+                <div class="form-group">
+                    <div class="col-xs-11 noPadding">
+                        <label class="required-field lpApiSection">{{'acesstoken_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-11 form-group noPadding">
+                        <input type="text" class="form-control" ng-model="channel.accessToken" name="accessToken" required>
+                        <div  ng-show="livePersonForm.accessToken.$dirty">
+                            <div error-alert ng-show="livePersonForm.accessToken.$error.required" class="text-danger">
+                                {{'acesstoken_err'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+          </div>
+            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+            <div class="info"> 
+                <div class="form-group">
+                    <div class="col-xs-11 noPadding">
+                        <label class="required-field lpApiSection">{{'acesstokenSecret_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-11 form-group noPadding">
+                        <input type="text" class="form-control" ng-model="channel.accessTokenSecret" name="accessTokenSecret" required>
+                        <div  ng-show="livePersonForm.accessTokenSecret.$dirty">
+                            <div error-alert ng-show="livePersonForm.accessTokenSecret.$error.required" class="text-danger">
+                                {{'acesstokenSecret_err'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+          </div>
+          
+            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                <div class="info"> 
+                    <div class="">
+                        <div class="col-xs-12 form-group noPadding noMargin">
+                            <label>{{'enable_chnl'| i18nString}}</label>
+                    </div>
+                </div>
+                    <p>{{'Bt_chnl_liveperson_config_enablechnl_desc'| i18nString}}</p> 
+                </div>
+            <div class="radioDiv">
+                <div>
+                    <label for="channel.enable.no">
+                        <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div >
+                    <label for="channel.enable.yes">
+                        <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true">
+                        <span class="opt-title">{{'yes'| i18nString}}</span> 
+                    </label>
+                </div>
+            </div>
+                </div>
+      </div>
+   </div>
+    </div>
+    <div class="modalFooter">
+        <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+        <button type="button" class="btn " ng-click="save(livePersonForm)" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+        <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+    </div>
+  </form>
+</div>
+

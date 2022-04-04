@@ -1,0 +1,68 @@
+<div class="bt-notifier" ng-if="bridge.dialogType !== 'conversationBuilder'">
+    <div ng-if="types.length<= 0" class="no-warn-block">
+        <i class="fa fa-check-circle"></i>
+        <span>{{'no_error'| i18nString}}</span>
+    </div>
+    <div ng-repeat="type in types | orderBy:'type'" class="types">
+        <div class="dropdown">
+            <div ng-if="$index > 0" class="seperator"></div>
+            <button class="btn btn-default dropdown-toggle bt-notifier-btn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="fa fa-exclamation-circle {{type.class}}"></i>
+                {{filtered.length}} {{type.name}}{{filtered.length>1?'s':''}}
+            </button>
+                        
+            <ul class="dropdown-menu dropdown-menu-arrow dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                <div perfect-scroll class='noti-scroll-div'>
+                    <li ng-repeat="notification in filtered = (notifications| filter: { type: type.type })" class="notification" >
+                        <a href="#" class="item" ng-click="notificationClick(notification.navigateInfo)">
+                            <i class="fa fa-exclamation-circle {{type.class}} item-icon"></i>
+                            <div class="item-content" >
+                                <div class='msg' data-ng-bind="notification.msg" data-ellipsis >
+                                </div>
+
+                                <div class="item-breadcrumb"><div class="item-breadcrumb-left">{{notification.breadCrumb[0]}}</div>
+                                    <div class="item-breadcrumb-right">{{notification.breadCrumb[1]}}</div></div>
+                            </div>
+                        </a>
+                    </li>
+                </div>
+            </ul>
+        </div> 
+    </div>
+</div>
+
+<div class="bt-notifier-new" ng-if="bridge.dialogType === 'conversationBuilder'">
+    <div ng-if="types.length<= 0" class="no-warn-block">
+        <i class="btx-billing-checked"></i>
+        <span>{{'no_error'| i18nString}}</span>
+    </div>
+    <div ng-repeat="type in types | orderBy:'type'" class="types">
+        <div class="dropdown">
+            <!-- <div ng-if="$index > 0" class="seperator"></div> -->
+            <button class="btn btn-default dropdown-toggle bt-notifier-btn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="btx-warning {{type.class}}" ng-if="type.type === 'error'"></i>
+                <i class="btx-error-info {{type.class}}" ng-if="type.type === 'warn'"></i>
+                {{filtered.length}} {{type.name}}{{filtered.length>1?'s':''}}
+            </button>
+                        
+            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="dropdownMenu1">
+                <div perfect-scroll class='noti-scroll-div'>
+                    <li ng-repeat="notification in filtered = (notifications| filter: { type: type.type })" class="notification" >
+                        <a href="#" class="item" ng-click="notificationClick(notification.navigateInfo)">
+                           
+                            <div class="item-content" >
+                                <div class='msg' data-ng-bind="notification.msg" data-ellipsis >
+                                </div>
+
+                                <div class="item-breadcrumb">
+                                    <i class="newNodeCollors[notification.nodeType].icon {{type.class}} item-icon" ng-style="{'background':newNodeCollors[notification.nodeType].bgcolor}"></i>
+                                    <div class="item-breadcrumb-left">{{notification.breadCrumb[0]}}</div>
+                                    <div class="item-breadcrumb-right">{{notification.breadCrumb[1]}}</div></div>
+                            </div>
+                        </a>
+                    </li>
+                </div>
+            </ul>
+        </div> 
+    </div>
+</div>

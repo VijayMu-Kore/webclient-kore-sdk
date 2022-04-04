@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>inDevIcon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="inDevIcon">
+            <circle id="Oval-1-Copy" fill="#E5E8EC" cx="13" cy="13" r="13"></circle>
+            <g id="group-2" transform="translate(6.000000, 9.000000)" stroke="#8A959F" stroke-linecap="round" stroke-width="1.5">
+                <path d="M11.027,0.973 L14.527,4.473 C14.6230026,4.56440662 14.6769306,4.69144512 14.676,4.824 C14.6772078,4.95690153 14.6232573,5.08435502 14.527,5.176 L11.027,8.676 M3.676,0.973 L0.176,4.473 C0.0799974395,4.56440662 0.026069416,4.69144512 0.027,4.824 C0.027,4.96 0.077,5.077 0.176,5.176 L3.676,8.676" id="Shape"></path>
+                <path d="M9.11,3.389 L5.76,6.739" id="Path" stroke-linejoin="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

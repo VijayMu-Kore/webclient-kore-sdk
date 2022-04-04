@@ -1,0 +1,53 @@
+<div class="flows-row linkedBots" ng-show="!linkedBots.length"  ng-init="bulderReloaded()">
+      <div class="col-xs-12">
+        <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert" ng-show="true">
+          <span class="title">{{'no_linked_bots_yet'| i18nString}}</span>
+          <p class="description">{{'nosummary_data'| i18nString}}</p>
+          <p class="link"><span class="bt-cursor-pointer bt-link-color" ng-click="linkBots('.bots-selection-form')">{{'link_a_bot'| i18nString}}</span></p>
+        </div>
+      </div>
+  
+</div>
+<div ng-show="linkedBots.length" class="linkedBots"  ng-init="bulderReloaded()">
+<div class="alert alert-danger" role="alert" ng-show="selectedStream.universalBotState === 'rejected'">{{'enterprise_Admin_rejected_bot'| i18nString}}</div>
+  <div class="newtaskdiv collapsed col-xs-12" ng-show="linkedBots.length">
+    <div><button ng-class="{'screenFreeze':botDetails.streamState=='published'}" ng-disabled="botDetails.streamState=='published'" ng-click="linkBots('.bots-selection-form')" class="pull-right btn btn-sm btn-primary">{{'manage_linked_bot'| i18nString}}</button></div>
+</div> 
+<p>{{'bots_tasks_linked_to_universalBot'| i18nString}}</p>
+<div ng-include="tmpltPrePath+'templates/bt-streams/linked-bots-list-template.html'"></div>
+</div>
+<div class="col-xs-12 text-center footerHelp linkedBots linkedBotDiv">
+    <p class="link"><span class="bt-cursor-pointer bt-link-color"><a target="_blank" href="{{$root.helpLinks.UNIVERSAL_BOT_LINKEDBOTS}}">{{'help_withpage_label'| i18nString}}</a></span></p>
+</div>
+<div class="panel-group accordion-streams linkedBots noTaskAccordion clear-fix" ng-if="!linkedBots.length" role="tablist" aria-multiselectable="true">
+    <div class="taskTitleHeader"><h3>{{'steps_for_universalBOt'| i18nString}}</h3></div>
+    <div class="panel panel-default">
+        <div id="simpleTasks" class="panel-collapse col-xs-12" role="tabpanel" aria-labelledby="headGS">
+        <div class="panel-body">
+                <div><div class="taskheader">{{'steps_for_universalBOt_step1'| i18nString}}</div><div class="description"><p>{{'steps_for_universalBOt_step1_desc'| i18nString}}</p></div></div>
+                <div><div class="taskheader">{{'steps_for_universalBOt_step2'| i18nString}}</div><div class="description"><p></p>{{'steps_for_universalBOt_step2_desc'| i18nString}}</div></div>
+                <div><div class="taskheader">{{'steps_for_universalBOt_step3'| i18nString}}</div><div class="description"><p>{{'steps_for_universalBOt_step3_desc'| i18nString}}</p></div></div>
+                <div><div class="taskheader">{{'steps_for_universalBOt_step4'| i18nString}}</div><div class="description"><p>{{'steps_for_universalBOt_step4_desc'| i18nString}}</p></div></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!--<div class="modal fade bots-selection-form fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+    <div class="modal-dialog height-width-100">
+        <div class="modal-content utterances-modal-content height-width-100">
+            <div class="modal-body utterances-modal-body height-width-100" ng-if="showContent">
+                <bots-selection-view call-back="" streams-list="streams"></bots-selection-view>
+
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
+<bot-modal-slider id='linkedBotsList'>
+    <div class="modalSliderContainer width500">
+        <bots-selection-view  streams-list="streams"></bots-selection-view>
+    </div>
+</bot-modal-slider> 

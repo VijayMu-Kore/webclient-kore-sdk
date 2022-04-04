@@ -1,0 +1,55 @@
+<div ng-if="!(loadingStreams && loadingStream && loadingAlerts && loadingFlows && loadingActions) && streams.length===0">
+  <div class="workflows-content full-height text-center front_page_info">
+    <h1 class="welcome">
+      {{'welcome_message'| i18nString}} 
+    </h1>
+    <p class="tagline">
+      {{'build_configure'| i18nString}} <br/> 
+      {{'deploy_bots'| i18nString}}
+    </p>
+    <p>
+      <a href="" class="btn btn-primary" ng-click="openBotChooser()"> {{'bt_watch_videos_get_started_label'| i18nString}}</a>
+    </p>
+    <p>
+      <a target="_blank" ng-href="{{$root.helpLinks.HOME}}"title=""> {{'learn_more_bots'| i18nString}} </a>
+    </p>
+    <div class="steps">
+      <h1 class="welcome">
+        {{'create_great_bot'| i18nString}}
+      </h1>
+      <div class="step">
+        {{'define_bot'| i18nString}}
+      </div>
+      <p>
+        {{'bot_name_color'| i18nString}} 
+      </p>
+      <div class="step">
+        {{'give_something'| i18nString}}...
+      </div>
+      <p>
+        {{'bots_fun'| i18nString}} 
+      </p>
+      <div class="step">
+        {{'refine'| i18nString}}
+      </div>
+      <p>
+        {{'synonyms_patterns'| i18nString}} 
+      </p>
+      <div class="step">
+        {{'add_flows'| i18nString}}
+      </div>
+      <p>
+        {{'bots_users'| i18nString}} 
+      </p>
+      <div class="step">
+        {{'publish_channels'| i18nString}} 
+      </div>
+      <p>
+        {{'multiple_channels'| i18nString}} 
+      </p>
+    </div>
+    <p>
+      {{'thats_lets'| i18nString}}  <a href="" ng-click="openBotChooser()">{{'get_start'| i18nString}}…</a>
+    </p>
+  </div>
+</div>

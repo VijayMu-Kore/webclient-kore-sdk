@@ -1,0 +1,105 @@
+<form novalidate name="loginForm" ng-submit="submitLogin(loginForm)" class="login-form sign-up-in">
+    <div class="logoInCard">
+        <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+        <img ng-src="{{platform}}" alt="Kore" class="platformLogo">
+       </div>
+    <div class="loginDetails">
+        <!-- <p class="cardTitle">{{'formtitles_default' | i18nString}}</p> -->
+        <p class="cardDesc">{{'default_signin_desc' | i18nString}}</p>
+    </div>
+    <!-- Email or Phone -->
+    <div class="form-group">
+        
+        <!-- Country codes -->
+        <div data-ng-show="displayCountryCodes" uib-dropdown auto-close="outsideClick" class="country-codes">
+            <button uib-dropdown-toggle type="button">
+                {{selectedCountryCode.value}}
+            </button>
+
+            <div uib-dropdown-menu class="dropdown-menu dropdown-menu-left">
+
+                <!-- Search -->
+                <div class="navbar-search-wrapper">
+                    <div class="navbar-search">
+                        <div class="search-bar">
+                            <input type="text" ng-model="searchCountryCodes" class="form-control" placeholder="{{'search_name'| i18nString}}">
+                        </div>
+                    </div>
+                </div>
+
+                <perfect-scrollbar suppress-scroll-X="true" refresh-on-change="[countryCodes, searchCountryCodes]" class="country-codes-content">
+                    <ul>
+                        <li data-ng-repeat="item in countryCodes | filter:{name: searchCountryCodes}">
+                            <a data-ng-click="selectCountryCode(item)">
+                                <span class="name">{{item.name}}</span>
+                                <span class="value">{{item.value}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </perfect-scrollbar>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <input required 
+                   ng-model="emailPhone" 
+                   name="emailPhone" 
+                   email-phone 
+                   email-only="true" 
+                   phone-codes="phoneCode(value)" 
+                   class="form-control disabled" 
+                   autocomplete="off" >
+                   <!-- <span class="movingingLabel">{{'enter_your_email'| i18nString}}</span> -->
+        </div>
+        
+    </div>
+    
+    <!-- Password -->
+    <div class="form-group">
+        <div class="input-group">
+            
+            <!-- Password input -->
+            <input placeholder="{{'password'| i18nString}}" required 
+                   ng-model="pass" 
+                   name="pass" 
+                   data-ng-change="login.error = false"
+                   data-ng-class="{'submit-error': login.error}"
+                   type="password" 
+                   class="form-control no-check" 
+                   autofocus>
+             <!-- <span class="movingingLabel">{{'password'| i18nString}}</span> -->
+            <span class="form-control-feedback" ng-if="false">
+                
+                <!-- Error password icon -->
+                <span type="button"
+                        data-ng-show="login.error" 
+                        class="animated fadeIn fa fa-exclamation-circle" 
+                        uib-popover="The password entered is incorrect." 
+                        popover-append-to-body="true" 
+                        popover-placement="top"
+                        popover-is-open="login.error"
+                        popover-popup-delay="800">
+            </span>
+                
+            </span>
+        </div>
+    </div>
+
+    <div ng-show="login.error" class='error-message'>{{errorMsg}}</div>
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <button data-ng-disabled="!loginForm.$valid || $root.showLoginLoader" type="submit" class="btn btn-primary">
+            <i ng-show="$root.showLoginLoader" class="fa fa-circle-o-notch fa-spin-fast auto-login-spinner"></i>
+             <span ng-show="!$root.showLoginLoader">{{'login' | i18nString}}</span>
+    </button>
+        <!-- <button data-ng-click="cancel();" type="button" class="btn closeCancel">{{'cancel'| i18nString}}</button> -->
+
+        <!-- Forgot Password -->
+        <p class="forgot-password">
+            <a data-ng-click="switchForms('forgot')">{{'formtitles_forgot'| i18nString}}</a> <a data-ng-click="switchForms('default',true)" class="diffUser">{{'different_user' | i18nString}}</a>
+        </p>
+        
+    </div>
+
+</form>

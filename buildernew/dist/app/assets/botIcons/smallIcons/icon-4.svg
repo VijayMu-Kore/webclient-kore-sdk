@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>icon-4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="22.2222083%" y1="1.977625e-06%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#26DBE9" offset="0%"></stop>
+            <stop stop-color="#0680D7" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-4" fill-rule="nonzero">
+            <rect id="Rectangle" fill="url(#linearGradient-1)" x="0" y="0" width="24" height="24" rx="2"></rect>
+            <path d="M11.3856,4 C9.35674,4 7.69327,5.66346 7.69327,7.69231 L5.23174,7.69231 C4.90481,7.69231 4.63558,7.94711 4.61635,8.27404 L4.00097,19.351 C3.99135,19.5192 4.05385,19.6875 4.16924,19.8077 C4.28462,19.9327 4.44808,20 4.61635,20 L18.1548,20 C18.3231,20 18.4865,19.9327 18.6019,19.8077 C18.7173,19.6875 18.7798,19.5192 18.7702,19.351 L18.1548,8.27404 C18.1356,7.94711 17.8664,7.69231 17.5394,7.69231 L15.0779,7.69231 C15.0779,5.66346 13.4144,4 11.3856,4 Z M11.3856,5.23077 C12.7414,5.23077 13.8471,6.33654 13.8471,7.69231 L8.92404,7.69231 C8.92404,6.33654 10.0298,5.23077 11.3856,5.23077 Z M5.81347,8.92308 L7.69327,8.92308 L7.69327,11.3846 L8.92404,11.3846 L8.92404,8.92308 L13.8471,8.92308 L13.8471,11.3846 L15.0779,11.3846 L15.0779,8.92308 L16.9577,8.92308 L17.501,18.7692 L5.2702,18.7692 L5.81347,8.92308 Z" id="Shape" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,1148 @@
+<status-loader></status-loader>
+<div ng-if='groupNode'>
+    <div ng-include="tmpltPrePath+'/js/forms/property-panel/property-panel-nlp.html'"></div>
+</div>
+<div class="property-panel-cntnr" ng-if='!groupNode'>
+    <div class="property-panel-header">
+        <div class="property-panel-name"><span class="nodeTitle">{{nodeInfo.dialogNodeInstance.intent ? nodeInfo.dialogNodeInstance.intent : nodeInfo.dialogNodeInstance.name }}</span><span class="grayInfoText">{{getNodeCount(nodeInfo.dialogNodeInstance)}}</span></div>
+         <i ng-if="nodeInfo.nodeInfo.editLocked" ng-click="unlockDailogComponent(nodeInfo)" class="fa fa-lock dailogLocked " ng-class="{'disableEdit':editComponentLockInView,'screenFreeze':(stream.state==='setup') && stream.sbStreamId,'screenFreeze':flowtaskObj.state==='published'}"></i>
+        <div class="property-panel nodeTypeName {{nodeInfo.dialogNodeInstance.type.toLowerCase()}}" ng-style="{{getNodeTypeColor(nodeInfo.dialogNodeInstance.type)}}">{{getNodeTypeName(nodeInfo.dialogNodeInstance.type) | uppercase}}</div>
+    </div>
+    <div class="componentWarningHeader" ng-if="(!runBot.fromDialogTask && nodeInfo.nodeInfo.parentId)">
+        <div class="componentHeaderWarningTextDiv displayTable">
+            <span class="exclamation-circle"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
+            <p class="headerTip warningTip">{{_constants_.propertyPanel.componentWarningInfo}}</p>
+        </div>
+    </div>
+    <div class="container">
+        <ul class="nav nav-pills">
+            <li data-prop-section-id="nodeProperties" ng-click="openTabSection('nodeProperties')" ng-class="{'active':headingsList.showNodeProperty.isOpen}" ng-if="headingsList.showNodeProperty.show">
+                <a data-toggle="pill" href="#menu3" title="COMPONENT PROPERTIES">
+                    <!-- <img class="nlIcon" ng-src="{{headingsList.showNodeProperty.isOpen?componentPropertyGreen:componentPropertyGray}}"/> -->
+                    <i class="btx-left-menu-generalSettings"></i>
+                </a>
+            </li>
+            <li data-prop-section-id="instanceProperties" ng-click="openTabSection('instanceProperties')" ng-class="{'active':headingsList.showInstanceProperty.isOpen}" ng-if="headingsList.showInstanceProperty.show && runBot.fromDialogTask">
+                <a data-toggle="pill" href="#menu1" title="INSTANCE PROPERTIES">
+                    <!-- <img class="nlIcon" ng-src="{{headingsList.showInstanceProperty.isOpen?instancePropertyGreen:instancePropertyGray}}"/> -->
+                    <i class="btx-instance-property"></i>
+                </a>
+            </li>
+            <li data-prop-section-id="connection" ng-click="openTabSection('connection')" ng-class="{'active':headingsList.showInstanceConnection.isOpen}" ng-if="headingsList.showInstanceConnection.show && runBot.fromDialogTask">
+                <a data-toggle="pill" href="#menu2" title="CONNECTIONS">
+                    <!-- <img class="nlIcon" ng-src="{{headingsList.showInstanceConnection.isOpen?connectionsGreen:connectionsGray}}"/> -->
+                    <i class="btx-connections"></i>
+                </a>
+            </li>
+            <li data-prop-section-id="showNLPProperty" ng-click="openTabSection('nlpProperties')" ng-class="{'active':headingsList.showNLPProperty.isOpen}" ng-if="headingsList.showNLPProperty.show">
+                <a data-toggle="pill" href="#menu5" title="NLP PROPERTIES">
+                    <!-- <img class="nlIcon" ng-src="{{headingsList.showNLPProperty.isOpen?nlpIconGreen:nlpIconGray}}"/> -->
+                    <i class="btx-share"></i>
+                </a>
+            </li>
+            <li data-prop-section-id="showIVRProperty" ng-click="openTabSection('ivrProperties')" ng-class="{'active':headingsList.showIVRProperty.isOpen}" ng-if="headingsList.showIVRProperty.show">
+                <a data-toggle="pill" href="#menu4" title="IVR PROPERTIES">
+                    <!-- <img class="ivrIcon" ng-src="{{headingsList.showIVRProperty.isOpen?IvrGreen:ivrGray}}"/> -->
+                    <i class="btx-ivr"></i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content scroll-content" dynamic-height dynaoffset="offsetValue" height-property="height">
+            <div id="menu1" class="tab-pane fade" ng-class="{'in active':headingsList.showInstanceProperty.isOpen && runBot.fromDialogTask}">
+
+                <div>
+                    <div class="instanceControl">{{'instance_properties'| i18nString}}</div>
+                    <p class="node-connDiv paddingRightLeft15">{{_constants_.getNewMessage(_constants_.propertyPanel.instanceHeaderText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p><br>
+                    <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'entity'">
+                    <div class="connectionRules entityUserInput"><span class="tabLabel">{{'user_input_name'| i18nString}}</span><i class="propertyRequireToggle"></i></div>
+                    <div class="" >
+                        <div class="col-xs-12 radioDiv">
+                            <div class="radioInnerDiv" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                                <label for="required">
+                                    <input value='required' type="radio"  ng-change="confirmIndicator(prompt.promptOptions,'Mandatory')" ng-model="prompt.promptOptions" name="required" id="required"><span class="opt-title fontSize14">{{'mandatory'| i18nString}}</span>
+                                </label>
+                            </div>
+                            <div class="entityOptionsText">{{_constants_.propertyPanel.entityOptionMandatory}}</div>
+                            <div class="selectRetries" ng-show="prompt.promptOptions === 'required'">
+                               <div class="kr-sg-dropdowns">
+                                  <div class="label-text">{{'allowed_retries' | i18nString}}</div>
+                                  <p class="desc">{{'retry_desc' | i18nString}}</p>
+                                  <!-- <select class="form-control" ng-change="setEventOptions()" ng-model="defaultMaxRetry.retry_limit" ng-options="toInt(key) as value for (key,value) in instanceRetries">
+                                  </select> -->
+                                  <div class="dropdown dropdown-open width30">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{defaultMaxRetry.retry_limit?defaultMaxRetry.retry_limit:"Choose an option"}}</button>                                            
+                                    <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-457">                                                                                
+                                      <li ng-click="setDefaultMaxRetry(retry)" ng-repeat="retry in instanceRetries track by $index">
+                                        <a>{{retry}}</a>
+                                     </li>
+                                    </ul>
+                                </div>
+                               </div>
+                            </div>
+                             <div class="exceedRetry" ng-show="prompt.promptOptions === 'required'">
+                           <div class="kr-sg-dropdowns">
+                              <div class="label-text">{{'behaviour_retries' | i18nString}}</div>
+                              <p class="desc">{{'behaviour_retries_desc' | i18nString}}</p>
+                              <div class="dropdown dropdown-open">
+                                 <button class="instanceEntity dropdown-toggle dropdown-input" data-toggle="dropdown" retry-action="{{defaultMaxRetry}}">{{default.defaultRetryValue}}</button>                                            
+                                 <ul class="dropdown-menu content-menu instance-menu">
+                                    <li value="endOfDialog" class="list" ng-click="saveDropdown($event,'endOfDialog')"><a href="#">{{_constants_.flowtasks.end}}</a></li>
+                                    <li class="multi-dropdown dropdown-submenu" ng-if="transitionNodes.length">
+                                       <a href="javascript:void(0)" multi-dropdown>{{'transition_node' | i18nString}}<img ng-src="{{caretRightIcon}}" class="caretRightIcon"></a>
+                                       <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-325">
+                                         <!--  <li value="" class="list" ng-click="saveDropdown($event,'')"><a href="javascript:void(0)">{{'not_connected' | i18nString}}</a></li> -->
+                                          <li value="{{node.uId}}" class="list" ng-click="saveDropdown($event,node)" ng-if="nodeInfo.dialogNodeInstance.uId !== node.uId && getIntentAllowed(node) && (nodeInfo.dialogInfo.firstNodeId !== node.uId)" ng-repeat ="node in nodeObjList| orderObjectBy : 'name'"><a href="javascript:void(0)">{{(node.intent || node.name) + getNodeCount(node)}}</a></li>
+                                       </ul>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                            <div class="radioInnerDiv" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                                <label for="optional">
+                                    <input value='prompt' type="radio" ng-change="confirmIndicator(prompt.promptOptions,'Optional')" ng-model="prompt.promptOptions" name="optional" id="optional"><span class="opt-title fontSize14">{{'optional'| i18nString}}</span> 
+                                </label>
+                            </div>
+                            <div class="entityOptionsText">{{_constants_.propertyPanel.entityOptionOptional}}</div>
+                            <div class="defaultValueMain" ng-show="prompt.promptOptions === 'prompt'">
+                                <div class="defaultHeader">
+                                    <div class="defaultHeadertitle">{{'default_value_label' | i18nString}}</div>
+                                    <div class="defaultHeaderDescription">{{'default_value_desc' | i18nString}}
+                                        <a class="knowmore" href="https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/working-with-the-entity-node/#Configure_the_Instance_Properties" target="_blank">
+                                            <img src="{{assetsBase}}icons/helpIcon.svg"  alt="help">
+                                        </a></div>
+                                </div>
+                                <div class="defaultBody" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                                    <div class="kr-sg-input-text">
+                                        <input type="text" placeholder="{{'provide_text' | i18nString}}" ng-model="defaultValue.defaultOptionValue" class="input-text" ng-blur="saveDefaultValue($event,prompt.promptOptions,defaultTextValue)" ng-focus="showSave($index)">
+                                    </div>
+                                    <!-- <div class="saveContent" ng-show="showSaveText">{{'press_enter_save' | i18nString}}</div> -->
+                                </div>
+                             </div>
+                            <div class="radioInnerDiv" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                                <label for="prompt">
+                                    <input value='optional' type="radio" ng-change="confirmIndicator(prompt.promptOptions,'Hidden')" ng-model="prompt.promptOptions" name="prompt" id="prompt"><span class="opt-title fontSize14">{{'hidden'| i18nString}}</span> 
+                                </label>
+                            </div>
+                            <div class="entityOptionsText">{{_constants_.propertyPanel.entityOptionHidden}}</div>
+                            <div class="defaultValueMain" ng-show="prompt.promptOptions === 'optional'">
+                                <div class="defaultHeader">
+                                    <div class="defaultHeadertitle">{{'default_value_label' | i18nString}}</div>
+                                    <div class="defaultHeaderDescription">{{'default_value_desc' | i18nString}}
+                                        <a class="knowmore" href="https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/working-with-the-entity-node/#Configure_the_Instance_Properties" target="_blank">
+                                            <img src="{{assetsBase}}icons/helpIcon.svg"  alt="help">
+                                        </a></div>
+                                </div>
+                                <div class="defaultBody" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                                    <div class="kr-sg-input-text">
+                                        <input type="text" placeholder="{{'provide_text' | i18nString}}" ng-model="defaultValue.defaultHiddenValue" class="input-text" ng-blur="saveDefaultValue($event,prompt.promptOptions,defaultTextValue)" ng-focus="showSave($index)">
+                                    </div>
+                                    <!-- <div class="saveContent" ng-show="showSaveText">{{'press_enter_save' | i18nString}}</div> -->
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+
+                    <div class="userInputCorrection" ng-if="nodeInfo.nodeInfo.entityType === 'label'" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                        <span class="tabLabel">{{'user_input_correction'| i18nString}}<i class="userInputToggle"></i></span>
+                        <div class="paddingTop10 d_inline_block">
+                            <div class="radioDiv col-xs-12">
+                              <div class="radioInnerDiv">
+                                    <label for="autoCorrect">
+                                        <input value='true' type="radio" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.autoCorrect" ng-change="saveAutoCorrectOptions()" name="autoCorrect" id="autoCorrect"><span class="opt-title fontSize14">{{'autocorrect'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                <div class="entityOptionsText fontNormal">{{'user_input_auto'| i18nString}} <span><a ng-click="redirectToLink('AUTO_CORRECT')" class="link">{{'Know_More'| i18nString}}</a></span></div>
+                                
+                                <div class="radioInnerDiv">
+                                    <label for="noAutoCorrect">
+                                        <input value='false' type="radio" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.autoCorrect" ng-change="saveAutoCorrectOptions()" name="noAutoCorrect" id="noAutoCorrect"><span class="opt-title fontSize14">{{'donot_correct'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                <div class="entityOptionsText fontNormal">{{'user_input_used'| i18nString}}</div>
+                                
+                      
+                        </div>
+                        </div>
+                        
+                    </div>
+                    <!-- Reuse Used-up User Input -->
+                    <div ng-if="nodeInfo.nodeInfo.entityType !== 'json_object'">
+                    <div class="connectionRules entityUserInput"><span class="tabLabel">{{'entity_extract'| i18nString}}<i class="entityUserInputToggle"></i></span></div>
+                    <div class="reuseInput" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                        <!-- RADIO BUTTONS STARTS HERE -->
+                        <div class="radioDiv col-xs-12 ">
+                            <div>
+                                <div>
+                                    <label for="reuseOptions1">
+                                        <input value='1' type="radio"  ng-change="onRequiredToggleChange('.entityUserInputToggle')" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.reuseOptions" name="reuseOptions1" id="reuseOptions1"><span class="opt-title">{{'evaluate_utterance'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="reuseOptions2">
+                                        <input value='2' type="radio" ng-change="onRequiredToggleChange('.entityUserInputToggle')" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.reuseOptions" name="reuseOptions2" id="reuseOptions2"><span class="opt-title">{{'evaluate_unused'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="reuseOptions3">
+                                        <input value='3' type="radio" ng-change="onRequiredToggleChange('.entityUserInputToggle')" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.reuseOptions" name="reuseOptions3" id="reuseOptions3"><span class="opt-title">{{'donot_evaluate'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                   <div class="paddingRightLeft15 marginLeft10" ng-if="nodeInfo.dialogNodeInstance.nodeOptions.reuseOptions === '3'">
+                                        <div ng-if="checkForEntityType(nodeInfo.nodeInfo.entityType)" class="checkbox checkbox-primary styledCSS noMargin">
+                                            <input  type="checkbox" id="checkboxIDReuse1" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.noAutoCorrection" ng-change="onRequiredToggleChange('.entityUserInputToggle')">
+                                            <label for="checkboxIDReuse1" class="fontSize14 marginTop5">{{'auto_correct'| i18nString}} </label>
+                                        </div>
+                                        <div ng-if="checkForEntityType(nodeInfo.nodeInfo.entityType)" class="entityOptionsText noMargin">{{'platform_apply'| i18nString}}</div>
+                                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                                            <input  type="checkbox" id="checkboxIDReuse2" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.notForReuse" ng-change="onRequiredToggleChange('.entityUserInputToggle')">
+                                            <label for="checkboxIDReuse2" class="fontSize14 noMargin">{{'donot_reuse'| i18nString}} </label>
+                                        </div>
+                                        <div class="entityOptionsText noMargin">{{'platform_entities'| i18nString}}</div>
+                                    </div>
+                            </div>
+                        </div>
+                        <!-- RADIO BUTTONS ENDS HERE -->
+                    </div>
+                </div>
+                <div class="entityRulesContainer" ng-show="supportedEntityRules(nodeInfo)" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                    <div class="entityRules">
+                        <span class="tabLabel">{{'entity_rules' | i18nString}}</span>
+                        <!-- <button class="trainBtn pull-right kr-sg-button-primary" ng-disabled="trainStatus.success || trainStatus.saving" ng-show="showEntityTrain" ng-click="trainEntityRules()">
+                        {{trainStatus.success?trained:trainStatus.saving?training:train}}</button> -->
+                        <p class="desc">{{'entity_rules_desc' | i18nString}} <a href="#" ng-click="redirectToLink('ENTITY_RULES')">{{'know_more' | i18nString}}</a></p> 
+                    </div>
+                    <div class="customizeBtn">
+                        <button class="kr-sg-button-secondary-two btn_md" ng-click="entityRuleEditor()">{{readonly?'View':rulesKeys.length?customize : add}}</button>
+                    </div>
+                </div>
+                </div>
+                <div class="advancedControl" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}"><entity-instance-prompts cb="entityInstancePropertyCB" node-info="nodeInfo"></entity-instance-prompts></div>
+                <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'intent'" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                    <!--<p class="node-connDiv paddingRightLeft15">{{_constants_.getNewMessage(_constants_.propertyPanel.instanceHeaderText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>-->
+                    <div class="contextMapInfo" ng-if="callAnotherDialog">
+                        <div class="connectionRules"><span class="tabLabel">{{_constants_.propertyPanel.contextMap}}</span><i class="contextMapSettings"
+                                aria-hidden="true"></i></div>
+                        <p class="paddingRightLeft15 contextMapHeaderText" ng-bind-html="_constants_.propertyPanel.contextMapHeaderText"></p>
+                        <span class="contextMapLoading" ng-if="contextMap.isLoading">{{_constants_.propertyPanel.contextMapLoading}}</span>
+                        <div ng-click="getFocusedAssignmentType('preAssign')" class="paddingRightLeft15 contextMapBlock" ng-if="!contextMap.isLoading">
+                            <span class="noEntitiesInIntent" ng-if="contextMap.keyCount === 0">{{_constants_.propertyPanel.emptyContenxtMap}}</span>
+                            <div  class="entitiesList enableCompositeEntity" ng-if="contextMap.keyCount > 0" ng-repeat="entities in contextMap.subIntentEntities">
+                                <span class="entityKey">{{entities.key}}</span>
+                                <textarea class="form-control input1 autoGrowTA unsortable entityVal" type="text" ng-model="entities.val" ng-blur="contextMapChange($event)"
+                                    placeholder="{{'value'| i18nString}}" auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" ng-keypress="contextMapChange($event)"
+                                    context-typeahead ng-disabled="readonly || nodeInfo.nodeInfo.editLocked"></textarea>
+                                <span class="tooltip-custom helpIcon toggle-icon" ng-if="entities.entityType === 'composite'">
+                                    <!-- <img class="helpdark-icon" ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"> -->
+                                    <i class="btx-help helpdark-icon"></i>
+                                    <span class="tooltiptext" ng-click="$event.stopPropagation()"  ng-bind-html="'entity_pre-assign_tooltip'| i18nString:({link:'https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/working-with-composite-entities', name: entities.key})"></span>
+                                </span>
+                            </div>
+                            <div class="newKeyList" ng-if="contextMap.keyCount > 0" ng-repeat="keys in contextMap.remainingKeys">
+                                <textarea class="form-control input1 autoGrowTA unsortable newKey" type="text" ng-model="keys.key" ng-blur="contextMapChange($event)"
+                                    placeholder="{{'key'| i18nString}}" auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" ng-keypress="contextMapChange($event)"
+                                    context-typeahead></textarea>
+                                <textarea class="form-control input1 autoGrowTA unsortable newKeyVal" type="text" ng-model="keys.val" ng-blur="contextMapChange($event)"
+                                    placeholder="{{'value'| i18nString}}" auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" ng-keypress="contextMapChange($event)"
+                                    context-typeahead></textarea>
+                                <i class="removeKeys btx-delete-1" ng-click="removeRemainingKeys($index)"></i>
+                            </div>
+                        </div>
+                        <span class="paddingRightLeft15 define-contextmap" ng-click="addContextMap()">{{'add_key'| i18nString}}</span>
+                    </div>
+                    <div class="contextMapInfo" ng-if="callAnotherDialog && transitionOptions.mode=='initiateCurrentTask'">
+                        <div class="connectionRules"><span class="tabLabel">{{_constants_.propertyPanel.postContextMap}}</span><i class="contextMapPostassignmentsSettings"
+                                aria-hidden="true"></i></div>
+                        <p class="paddingRightLeft15 contextMapHeaderText" ng-bind-html="_constants_.propertyPanel.postContextMapHeaderText"></p>
+                        <span class="contextMapLoading" ng-if="postContextMap.isLoading">{{_constants_.propertyPanel.postContextMapLoading}}</span>
+                        <div ng-click="getFocusedAssignmentType('postAssign')" class="paddingRightLeft15 contextMapBlock" ng-if="!postContextMap.isLoading">
+                            <span class="noEntitiesInIntent" ng-if="postContextMap.keyCount === 0">{{_constants_.propertyPanel.emptyPostContenxtMap}}</span>
+                            <div  ng-click="getFocusedAssignmentType('preAssign')" class="entitiesList enableCompositeEntity" ng-if="postContextMap.keyCount > 0" ng-repeat="entities in postContextMap.subIntentEntities">
+                                <span class="entityKey">{{entities.key}}</span>
+                                <textarea class="form-control input1 autoGrowTA unsortable entityVal" type="text" ng-model="entities.val" ng-blur="postContextMapChange($event)"
+                                    placeholder="{{'value'| i18nString}}" auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" ng-keypress="postContextMapChange($event)"
+                                    context-typeahead ng-disabled="readonly || nodeInfo.nodeInfo.editLocked"></textarea>
+                                <span class="tooltip-custom helpIcon toggle-icon" ng-if="entities.entityType === 'composite'">
+                                    <i class="btx-help helpdark-icon"></i>
+                                    <span class="tooltiptext" ng-click="$event.stopPropagation()"  ng-bind-html="'entity_pre-assign_tooltip'| i18nString:({link:'https://developer.kore.ai/docs/bots/bot-builder-tool/dialog-task/working-with-composite-entities', name: entities.key})"></span></span>
+                            </div>
+                            <div class="newKeyList" ng-if="postContextMap.keyCount > 0" ng-repeat="keys in postContextMap.remainingKeys">
+                                <textarea class="form-control input1 autoGrowTA unsortable newKey" type="text" ng-model="keys.key" ng-blur="postContextMapChange($event)"
+                                    placeholder="{{'key'| i18nString}}" auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" ng-keypress="postContextMapChange($event)"
+                                    context-typeahead></textarea>
+                                <textarea class="form-control input1 autoGrowTA unsortable newKeyVal" type="text" ng-model="keys.val" ng-blur="postContextMapChange($event)"
+                                    placeholder="{{'value'| i18nString}}" auto-grow-textarea default-grown="true" ng-keydown="autoGrowTextArea($event)" ng-keypress="postContextMapChange($event)"
+                                    context-typeahead></textarea>
+                                <i class="removeKeys btx-delete-1" ng-click="removeRemainingPostContextMapKeys($index)"></i>
+                            </div>
+                        </div>
+                        <span class="paddingRightLeft15 define-contextmap" ng-click="addPostContextMap()">{{'add_key'| i18nString}}</span>
+                    </div>
+                </div>
+                <div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'intent' && callAnotherDialog" class="transitionOptions" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                    <p class="connectionRules paddingRightLeft15">{{'transition_option'| i18nString}} <i class="transiTionOptionsSuccess"></i></p>
+                    <p class="paddingRightLeft15 transitionOptionText"> {{'flow_execute'| i18nString}}</p>
+
+                    <div class="col-xs-12 radioDiv radioSection">
+                        <div class="radioInnerDiv">
+                            <label for="initiateCurrentTask">
+                                <input value='initiateCurrentTask' type="radio"  ng-model="transitionOptions.mode" ng-change="onRequiredToggleChangeOptions('.transiTionOptionsSuccess')" name="initiateCurrentTask" id="initiateCurrentTask" /><span class="opt-title">{{'initiate_node'| i18nString}} <b>{{nodeInfo.nodeInfo.name}}</b>, {{'once_complete'| i18nString}}</span>
+                            </label>
+                        </div>
+                        <div class="radioInnerDiv">
+                            <label for="endCurrentTask">
+                                <input value='endCurrentTask' type="radio"  ng-model="transitionOptions.mode" ng-change="onRequiredToggleChangeOptions('.transiTionOptionsSuccess')" name="endCurrentTask" id="endCurrentTask" /><span class="opt-title">{{'end_current_task'| i18nString}} <b>{{nodeInfo.nodeInfo.name}}</b></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div id="menu2" class="tab-pane fade" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked, 'in active':headingsList.showInstanceConnection.isOpen}">
+                <div ng-include="tmpltPrePath+'/js/forms/property-panel/property-panel-connections.html'" class="scrollPadding"></div>     
+            </div>            
+            <div id="menu3" class="tab-pane fade" ng-class="{'isPropReadOnly':readonly || nodeInfo.nodeInfo.editLocked, 'in active':headingsList.showNodeProperty.isOpen}">
+                 <div ng-include="tmpltPrePath+'/js/forms/property-panel/property-panel-node-props.html'" ></div>
+            </div>
+            <div id="menu4" class="tab-pane fade" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked, 'in active':headingsList.showIVRProperty.isOpen}">
+                <div ng-include="tmpltPrePath+'/js/forms/property-panel/ivr-settings.html'"></div>
+
+            </div>
+            
+            <div id="menu5" class="tab-pane fade" ng-class="{'isReadOnly': nodeInfo.nodeInfo.editLocked, 'in active':headingsList.showNLPProperty.isOpen}">                               
+                 <div ng-include="tmpltPrePath+'/js/forms/property-panel/property-panel-nlp.html'"></div>         
+            </div>
+    
+                       
+        </div>
+    </div>
+</div>
+
+<node-level-voice-channels-all-sliders class="nodeLevelChannelSlider" ng-class="{'paddingLeftRight15':groupNode}" ng-if="isAllVoiceEnabled" cb="prop_panel_voice_channels_all_cb" nodeInfo="nodeInfo"></node-level-voice-channels-all-sliders>
+<div ng-if='!groupNode'>
+<!-- DAAS -->
+<bot-modal-slider id='data-service'>
+    <div class="modalSliderContainer width700">
+            <daas-tables ng-if="nodeInfo.nodeInfo.payload.resource == 'dataTable'" callbacks="daasCallbackObj"  reqdefcb="reqDefCb" servicenodetype="nodeInfo.nodeInfo.serviceNodeType" componentid="nodeInfo.dialogNodeInstance.componentId" resource="nodeInfo.nodeInfo.payload.resource" on-cancel="daasCloseModal()" requestservicedata="requestServiceData" ></daas-tables>
+            <daas-views ng-if="nodeInfo.nodeInfo.payload.resource == 'view'" callbacks="daasCallbackObj" reqdefcb="reqDefCb" servicenodetype="nodeInfo.nodeInfo.serviceNodeType" componentid="nodeInfo.dialogNodeInstance.componentId" resource="nodeInfo.nodeInfo.payload.resource" on-cancel="daasCloseModal()" requestservicedata="requestServiceData"></daas-views>
+        
+    </div>
+</bot-modal-slider>
+<!-- Daas-TEST -->
+<bot-modal-slider id='daas-test'>
+    <div class="modalSliderContainer execute-test-data width700 test-data-service-view">
+        <div class="modalHeader">
+            <h4 class="modal-title" id="test">
+                <i class="btx-close top25" 
+                    ng-click="closeDaasTest()" ></i>
+                {{'Response'}}
+            </h4>
+            <p class="sub-title noPadding">Review the response from the Data Service</p>
+        </div>
+        <div class="modalBody json-editor-modal" perfect-scroll dynamic-height dynaoffset="-130" height-property="height">
+            <div class="col-xs-12 json-editor">
+                <div ng-jsoneditor prefer-text=true class="json_editor" ng-model="daasCallbackObj.sampleResponse" id="serviceNodeSampleRes2" name="reqsample" options="daasOptions" callback="sampleResCB"></div>
+            </div>
+        </div>
+        <div class="modalFooter">
+            <div class="col-xs-12 zIndex">
+                <button ng-click="saveSampleResponse()" class="btn btn-xs saveBtn">Save Sample Response</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeDaasTest()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</bot-modal-slider>
+<div class="modal fade vxml-prop-modal" id="vxml-add" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+    <div class="modal-content vxml-dialog">
+    <div class="modalHeader vxmlHeader">
+        <h4 class="modal-title vxml-title" id="gridSystemModalLabel">{{'new_call_cont_param'| i18nString}}</h4>
+        <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="closeNodeVxmlProp(vprop)" ></i></span> -->
+    </div>
+    <form name="vxmlform">
+    <div class="modalBody vxml-body" height-property="height">
+        <div class="newVariable">
+            <div class="col-xs-12  paddingTop10">
+                <div class="required-field name"><label class="vxml-font">{{'param_name'| i18nString}}</label></div>
+                <div><textarea class="form-control autoGrowTA required-field vxml-textarea" name="propertyname" type="text" ng-model="vprop.name" auto-grow-textarea default-grown="true"
+                            placeholder="{{'place_param'| i18nString}}" ng-required="true"></textarea></div>
+            </div>
+            <div class="col-xs-12 paddingTop10">
+                <div class="required-field name"><label class="vxml-font">{{'value'| i18nString}}</label></div>
+                <div><textarea class="form-control autoGrowTA required-field vxml-textarea" name="propertyvalue" type="text" ng-model="vprop.value" auto-grow-textarea default-grown="true" placeholder="{{'Vprop_value_placehol'| i18nString}}" ng-required="true"></textarea></div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div class="modalFooter vxml-footer">
+        <div class="col-xs-12">
+             <button ng-if='!saveEdit' class="btn saveSubmit" ng-click="addProperty(vprop,nodeInfo.nodeInfo.ivrOptions.advance.properties)" ng-disabled="vxmlform.$invalid" class="btn"> {{(saving)?savingproperty:confirmproperty}}</button>
+            <button ng-click="closeNodeVxmlProp()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+           
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!-- List_of_values -->
+<div class="modal fade taskCreateOverlayModal listOfValMain height-width-100" id="List_of_values" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content height-width-100">
+            <div class="topBar col-xs-12">
+                <!-- <a class="btnBack dialogbackBtn listOfItemBackBtn" aria-label="Close" ng-click="closeModal()"><span aria-hidden="true"><i class="fa fa-chevron-left"></i></span></a> -->
+                <span class="pull-left closeBtn" ng-click="closeModal()">
+                    <span aria-hidden="true"><i class="fa btx-carrot-left"></i></span>
+                </span>
+                <bt-modal-title taskname="{{dialogTask.name}}" title="{{getEntityTypeName(nodeInfo.nodeInfo.entityType)}} Setup" bot="stream"></bt-modal-title>
+                <!-- <h4 class="modal-title">{{getEntityTypeName(nodeInfo.nodeInfo.entityType)}} Setup</h4> -->
+                <button type="button" class="btn btn-primary btnSave dialogCreateBtn" ng-hide="nodeInfo.displayMode !== 'edit'" ng-click="closeListOfValuesModal()">{{'save'| i18nString}}</button>
+            </div>
+            <div perfect-scroll dynamic-height dynaoffset="-60" id="lookupEditor" class="modal-body listOfItems width100percent overflow-hidden" ng-show="nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'" ng-class="{'hasFormErrors' : nodeObj.isInvalid}">
+                <div class="col-xs-12 editor" ng-class="{'col-xs-11':hideSideMenu,'col-xs-12':!hideSideMenu, 'responseeditor':!hideSideMenu}">
+                    <div class="staticRemoteContainer">
+                            <label class="entityNameHeading">{{nodeInfo.dialogNodeInstance.name}}</label>
+                            <span class="entityHeaderText noPadding">{{'choose_entity'| i18nString}}</span>
+        
+                            <div class="radioDiv marginBtm10 marginTop10" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                                <div>
+                                    <label for="listForStatic">
+                                        <input type="radio" ng-click ="initiateSliderRemote()" ng-model="listOfValues.listOfValuesModel" value="static" name="listForEntity" id="listForStatic" />
+                                        <span class="opt-title">{{'static_list'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="listForRemote">
+                                        <input type="radio" ng-click ="initiateSliderRemote()" ng-model="listOfValues.listOfValuesModel" value="remote" name="listForEntity" id="listForRemote" />
+                                        <span class="opt-title">{{'remote_list'| i18nString}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div ng-if="listOfValues.listOfValuesModel === 'static'" class="staticContainer">
+                        <div class="inputNote" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                            <div class="col-xs-1 bulbicon"><i class="btx-bulb" ></i></div>
+                            <div class="col-xs-11">
+                                    <ul>
+                                         <li>{{'download_files'| i18nString}}<a download target="_blank" href="{{assetsBase}}/files/sampleLookup.json">{{'json_label'| i18nString}}</a> {{'or'| i18nString}} <a download target="_blank" href="{{assetsBase}}/files/sampleLookup.csv">{{'csv_label'| i18nString}}</a> {{'file'| i18nString}}</li>
+                                        <li>{{_constants_.propertyPanel.lookupFileuploadProTip1}}</li>
+                                        <li>{{editorProps.editorEnabled ? _constants_.propertyPanel.listofValuesProtip3 : _constants_.propertyPanel.contextLookupProtip2}}</li>
+                                    </ul>
+                            </div>
+                        </div>
+                        <div class="row editorRow pull-left">
+                            <label for="file-upload" class="pull-right btn borderBtn paddingTop5" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">{{'upload_file'| i18nString}}</label>
+                            <input id="file-upload" style="display: none" file-model="fileToUpload" on-file-change="uploadLookUpFile" type="file" />
+                            <tabset class="markupTabs">
+                                <tab active="true" ng-click="editorProps.editorEnabled = false">
+                                    <tab-heading ng-click="updateJsonData();">
+                                        {{'json_label'| i18nString}}
+                                    </tab-heading>
+                                    <div class="row">
+                                        <div ng-jsoneditor class="json_editor" ng-model="lookup.jsonData" callback="editorCallback" options="options" name="sample"></div>
+                                    </div>
+                                </tab>
+                                <tab ng-click="editorProps.editorEnabled = true">
+                                    <tab-heading>
+                                        {{'editor'| i18nString}} 
+                                    </tab-heading>
+                                    <div class="lookupListItemsmain">
+                                        <div ui-sortable="sortableOptions" ng-model="lookup.jsonData" class="listItemSort">
+                                            <div class="lookuplistItemsBlocks" ng-repeat="value in lookup.jsonData.slice((paginationOptions.currentPage-1) * 20, paginationOptions.currentPage * 20) track by $index">
+                                                <div class="col-xs-1 sortBar item1" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                                                    <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                                                </div>
+                                                <div class="item2 col-xs-3" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                                                    <input maxlength="100" type="text" name="item2Inputs" ng-class="{'emptyValue': !value.title.length}" ng-model="value.title" placeholder="{{'enter_display'| i18nString}}"
+                                                        ng-keypress="onStaticDrpDownValChange($event)" ng-blur="updateJsonData()"
+                                                        class="form-control " />
+                                                </div>
+                                                <div class="item3 col-xs-3" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                                                    <input maxlength="100" type="text" name="item3Inputs" ng-class="{'emptyValue': !value.value.length}" ng-model="value.value" placeholder="{{'Vprop_value_placehol'| i18nString}}"
+                                                        ng-keypress="onStaticDrpDownValChange($event)" ng-blur="updateJsonData()"
+                                                        class="form-control " />
+                                                </div>
+                                                <div class="item4 col-xs-5">
+                                                    <textarea type="text" name="item3Inputs" ng-model="value.synonyms" placeholder="Enter synonyms(comma separated)" ng-keypress="onStaticDrpDownValChange($event);dynamicHeight($event)" ng-blur="updateJsonData()" ng-focus= "dynamicHeight($event)" class=""></textarea>
+                                                </div>
+                                                <div class="item5 col-xs-1 deleteButton " ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}" ng-click="removeJsonValue((paginationOptions.currentPage-1) * 20 + $index)">
+                                                    <i class="btx-delete-1"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="newListItem row" ng-show="newJson" ng-class="{'refreshCss': !lookup.jsonData.length}" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                                            <div class="item2 col-sm-3">
+                                                <input maxlength="100" type="text" name="item2Inputs" autofocus ng-model="newJsonValue.title" placeholder="{{'enter_display'| i18nString}}" ng-keypress="onStaticDrpDownValChange($event)"
+                                                    ng-blur="onNewJsonValChange($event)" class="form-control " />
+                                            </div>
+                                            <div class="item3 col-sm-3">
+                                                <input maxlength="100" type="text" name="item3Inputs" ng-model="newJsonValue.value" placeholder="{{'Vprop_value_placehol'| i18nString}}" ng-keypress="onStaticDrpDownValChange($event)"
+                                                    ng-blur="onNewJsonValChange($event)" class="form-control" />
+                                            </div>
+                                            <div class="item4 col-sm-4">
+                                                <textarea type="text" name="item3Inputs" ng-model="newJsonValue.synonyms" placeholder="{{'enter_synonyms'| i18nString}}" ng-keypress="onStaticDrpDownValChange($event);dynamicHeight($event)" ng-focus = "dynamicHeight($event)" ng-blur="onNewJsonValChange($event)" class=""></textarea>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <pagination rotate="false" num-pages="paginationOptions.numberOfPages" ng-change="pageChanged()" max-size="paginationOptions.maxSize"
+                                                ng-show="lookup.jsonData.length > 20" class="pagination-sm" total-items="lookup.jsonData.length"
+                                                items-per-page="paginationOptions.itemsPerPage" ng-model="paginationOptions.currentPage"></pagination>
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabset>
+                            <label class="autoCorrectHeading">{{'auto_correction'| i18nString}}</label>
+                            <label class="autoCorrectsubHeading">{{'auto_desc'| i18nString}}</label>
+                            <div class="col-xs-12 single-slider noPadding" id="lookup-slider" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                                <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">50%</span></div>
+                                <span id="hybrid-slider1" class="width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="50" data-slider-step="5"  ticks-tooltip="false" data-slider-value="0"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if = "listOfValues.listOfValuesModel === 'remote'" class="remoteContainer">
+                        <div class="hintContainer">
+                            <div class="inputNote" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                                <div class="col-xs-1 bulbicon"><i class="btx-bulb" ></i></div>
+                                <div class="col-xs-11">
+                                        <ul>
+                                            <li>{{'relevant_info'| i18nString}}</li>
+        <pre>
+            { 	
+                "input": [ "transfer funds from checking", "500 dollars", "Send it to John"], 
+                "usedUp":[ "1-1-2,1-4-4", "2-1-2", "0-x-x"], "pattern": "from *", 
+                "isMultiItem": true 
+            }
+        </pre>
+                                            <li>{{'map_response'| i18nString}}</li>
+                                        </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12  getMethodContainer">
+                            <div class="col-xs-1 noPaddingLeft getMethod">
+                            <select required name="method" class="btnDropdown method-select" ng-model="endPoint.method">
+                                <!-- <option value="put"> PUT </option>
+                                <option value="patch"> PATCH </option>
+                                <option value="delete"> DELETE </option> -->
+                                <option value="get"> {{'get'| i18nString}} </option>
+                                <option value="post"> {{'post'| i18nString}} </option>
+                            </select>
+                            <div ng-show="rqForm.method.$dirty"> <br />
+                                <div ng-show="rqForm.method.$error.required">
+                                    <div error-alert > {{'method_req'| i18nString}} </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-11 noPadding urlRequired">
+                            <div class="displayTable">
+                                <div class="leftDiv">
+                                    <textarea  auto-grow-textarea default-grown="true" rows="1" class="form-control whiteInput methodTextarea" url-validate ng-model="props.endPoint.requestUrl" id="requestUrl" context-typeahead placeholder="{{'req_url'| i18nString}}" name="requestUrl" ng-keyup="appendingParamsToInput()" ></textarea>
+                                </div>
+                                <div class="rightDiv">
+                                    <button class="btn saveBtn" ng-click="executeServiceForRemote()"><i ng-show="testInProgress" class="fa fa-spinner fa-spin"></i><img ng-src="{{testArrowIcon}}" class="testArrowIcon"/>{{(testInProgress)?testing:test}}</button> 
+                                </div>
+                            </div>
+                        </div>
+                        <accordion ng-show = "props.contextParams.length">
+                            <accordion-group is-open="status.open" ng-click="toggleAcc(status.open)" acc-open='{{(status && status.open)?"true":"false"}}' class="">
+                                <accordion-heading class="">{{'sample_values'| i18nString}}
+                                    <img ng-src="{{backArrowGreen}}" class="ContextValuesArrow" >
+                                </accordion-heading>
+                                <div class="row">
+                                    <div class="firstDiv col-xs-1 noPadding">
+                                    </div>
+                                    <div class="middleDiv col-xs-11 noPadding">
+                                        <div class="disPlayTable">
+                                            <div class="leftDiv">
+                                                    <div class="row col-xs-12 keyValueTitleContainer">
+                                                            <div class="col-xs-6 keyDiv">{{'variable_name'| i18nString}}</div>
+                                                            <div class="col-xs-6 valueDiv">{{'value'| i18nString}}</div>
+                                                        </div>
+                                                        <div class="row col-xs-12 keyValueContainer" ng-repeat="contextParam in props.contextParams track by $index">
+                                                            <div class="col-xs-6 keyDiv">
+                                                                <input  type="text"  ng-model="contextParam.key" ng-value="contextParam.key | removeArrayPath" placeholder="{{'key'| i18nString}}" ng-readonly="true">
+                                                            </div>
+                                                            <div class="col-xs-5 valueDiv">
+                                                                <input type="text" ng-model="contextParam.value" placeholder="{{'value'| i18nString}}">
+                                                            </div>
+                                                            <div class="col-xs-1 helpIconDiv">
+                                                                <img ng-src="{{helpIcon}}" class="helpIcon" tooltip-placement="left" tooltip="{{'variable_def_tooltip'| i18nString}}" >
+                                                            </div>
+                                                        </div>
+                                                </div>
+
+                                            <div class="rightDiv"></div>
+                                            </div>
+                                    </div>
+                                    
+                                </div>
+                            </accordion-group>
+                        </accordion>
+                        </div>
+                        <div class="greenTagDiv" ng-show="statusCode">
+                            <span class="greenTag">
+                                {{'http_statuscode'| i18nString}}/1.1 {{statusCode}}
+                            </span>
+                        </div>
+                        <div class="remoteLookupTabContainer">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#params">{{'params'| i18nString}}</a></li>
+                                <li><a data-toggle="tab" href="#auth">{{'auth'| i18nString}}</a></li>
+                                <li><a data-toggle="tab" class="headersTabBtn" href="#headers">{{'headers'| i18nString}}</a></li>
+                                <li ng-class="{'hide':endPoint.method !== 'post'}"><a data-toggle="tab" href="#body">{{'body'| i18nString}}</a></li>
+                                <li><a id ="triggerResponse" data-toggle="tab" href="#response">{{'response'| i18nString}}</a></li>
+                                <li><a data-toggle="tab" href="#map">{{'map_res'| i18nString}}</a></li>
+                                <li role="presentation" class="advOpt"><a class="show-adv-opt" ng-click="showAdvancedOptions()">{{'advance'| i18nString}}  <img ng-src="{{backArrowGreen}}" class="backArrowGreen" ></a></li>
+                            </ul>
+                                    
+                            <div class="tab-content">
+                                <div id="params" class="tab-pane fade in active">
+                                    <div class="row col-xs-12 keyValueTitleContainer">
+                                        <div class="col-xs-5 keyDiv">{{'key'| i18nString}}</div>
+                                        <div class="col-xs-5 valueDiv">{{'value'| i18nString}}</div>
+                                        <div class="col-xs-2 trashIconDiv"></div>
+                                    </div>
+                                    <div class="row col-xs-12 keyValueContainer" ng-repeat="header in props.headers track by $index">
+                                        <div class="col-xs-5 keyDiv">
+                                            <input ng-model="header.key" placeholder="{{'key'| i18nString}}" ng-focus="onHeaderFocus($index)" ng-keyup="appendingParamsToURL()" context-typeahead>
+                                        </div>
+                                        <div class="col-xs-5 valueDiv">
+                                                <input type="text" ng-model="header.value" placeholder="{{'value'| i18nString}}" ng-focus="onHeaderFocus($index)" ng-keyup="appendingParamsToURL()" context-typeahead>
+                                        </div>
+                                        <div class="col-xs-2 trashIconDiv" ng-click = "props.headers.length > 1 && deleteParams($index)" ng-class="{true:'',false:'inactive'}[props.headers.length > 1]" ><img ng-src="{{trashIcon}}" class="trashIcon"></div>
+                                    </div>
+                                </div>
+                                <div id="auth" class="tab-pane fade">
+                                    <h3>{{'select_auth'| i18nString}}</h3>
+                                    <p>{{'choose_auth_request'| i18nString}}</p>
+                                    <div class="row">
+                                        <div class="col-xs-3/4 noPadding">
+                                            <select ng-model="newAuth.selected" ng-change="idpSelectionChange()" ng-disabled="nodeInfo.displayMode !== 'edit'" class="form-control newAuth width40percent fontSize16" name="authList" ng-options="authList.name for authList in authLists" ng-change="getselectedObj(newAuth.selected)" >
+                                                <option value=""> {{'create_new'| i18nString}} </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-6 noPadding" ng-show="newAuth.selected && newAuth.selected.sso_type !== 'none'">
+                                            <button type="button" class="btn editauthIDP" ng-click="authEdit()"> {{'edit'| i18nString}} </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="headers" class="tab-pane fade">
+                                    <div class="row col-xs-12 keyValueTitleContainer">
+                                        <div class="col-xs-5 keyDiv">{{'key'| i18nString}}</div>
+                                        <div class="col-xs-5 valueDiv">{{'value'| i18nString}}</div>
+                                        <div class="col-xs-2 trashIconDiv"></div>
+                                    </div>
+                                    <div class="row col-xs-12 keyValueContainer" ng-repeat="params in props.params track by $index">
+                                        <div class="col-xs-5 keyDiv"><input class="headerKey" type="text" 
+                                            ng-model="params.key" placeholder="{{'key'| i18nString}}"  
+                                            ng-focus="onHeaderFocusParams($index)"
+                                            context-typeahead>
+                                        </div>
+                                        <div class="col-xs-5 valueDiv"><input class="headerValue" type="text" 
+                                            ng-model="params.value" placeholder="{{'value'| i18nString}}"  
+                                            ng-focus="onHeaderFocusParams($index)"
+                                            context-typeahead>
+                                        </div>
+                                        <div class="col-xs-2 trashIconDiv" ng-click = "props.params.length > 1 && deleteHeaders($index)" ng-class="{true:'',false:'inactive'}[props.params.length > 1]"><img ng-src="{{trashIcon}}" class="trashIcon"></div>
+                                    </div>
+                                </div>
+                                <div ng-disabled="endPoint.method !== 'post'" id="body" class="tab-pane fade">
+                                    <div class="bodyContainer">
+                                        <div class="radioDivContainer">
+                                            <div class="radioDiv">
+                                                <label for="custom" ng-click="onParamTypeChange()">
+                                                    <input type="radio" ng-model="paramsBody.value" value="custom" id="custom" >
+                                                    <span class="opt-title">{{'custom'| i18nString}}</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="radioDiv">
+                                                    <label for="urlencoded" ng-click="onParamTypeChange()">
+                                                        <input type="radio" ng-model="paramsBody.value" value="urlencoded" id="urlencoded" >
+                                                        <span class="opt-title">{{'app_www'| i18nString}}</span>
+                                                    </label>
+                                                </div>
+
+                                            <div class="radioDiv">
+                                                    <label for="applicationJson" ng-click="onParamTypeChange()">
+                                                        <input type="radio" ng-model="paramsBody.value" value="application/json" id="applicationJson" >
+                                                        <span class="opt-title">{{'app_json'| i18nString}}</span>
+                                                    </label>
+                                                </div>
+
+                                            <div class="radioDiv">
+                                                    <label for="applicationXML" ng-click="onParamTypeChange()">
+                                                        <input type="radio" ng-model="paramsBody.value" value="applicationXML" id="applicationXML" >
+                                                        <span class="opt-title">{{'app_xml'| i18nString}}</span>
+                                                    </label>
+                                                </div>
+                                        </div>
+                                        <div ng-show="paramsBody.value !== 'urlencoded'" ng-jsoneditor prefer-text=true class="json_editor"  ng-model="props.rawParams" id="serviceNodeParamsRaw" name="serviceNodeParamsRaw" options="options" callback="rawParamsCB"></div>
+                                        <div ng-show="paramsBody.value === 'urlencoded'" class="row col-xs-12 keyValueContainer" ng-repeat="params in props.params track by $index">
+                                            <div class="col-xs-5 keyDiv"><input class="headerKey" type="text" 
+                                                ng-model="params.key" placeholder="{{'key'| i18nString}}"  
+                                                ng-focus="onHeaderFocusParams($index)"
+                                                context-typeahead>
+                                            </div>
+                                            <div class="col-xs-5 valueDiv"><input class="headerValue" type="text" 
+                                                ng-model="params.value" placeholder="{{'value'| i18nString}}"  
+                                                ng-focus="onHeaderFocusParams($index)"
+                                                context-typeahead>
+                                            </div>
+                                            <div class="col-xs-2 trashIconDiv" ng-click = "props.params.length > 1 && deleteHeaders($index)" ng-class="{true:'',false:'inactive'}[props.params.length > 1]"><img ng-src="{{trashIcon}}" class="trashIcon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="response" class="tab-pane fade">
+                                    <div class="col-xs-12 responseContainer">
+                                        <button ng-show="true" class="btn sampleResponseBtn" ng-click = "sampleResponseBtn()"><i ng-show="resSaveInProgress" class="fa fa-spinner fa-spin"></i>{{(resSaveInProgress)?savingproperty:sampleRes}}</button> 
+                                        <div ng-jsoneditor class="json_editor" ng-model="lookupRemote.jsonData" options="options" name="sample"></div>
+                                    </div>
+                                </div>
+
+                                <div id="map" class="tab-pane fade">
+                                    <div class="mapContainer">
+                                        <div class="col-xs-12 form-group noPadding">
+                                            <div class="col-xs-12 noPadding">
+                                                <label>{{'specify_context'| i18nString}} </label>
+                                            </div>
+                                            <div class="col-xs-12 noPadding">
+                                                <input type="text" class ="inputBox" name="lookupInput" placeholder="{{'example_context'| i18nString}}" ng-model="dropDownInfo.contextDropdownVals.contextVal"
+                                                    ng-keydown="onContextDrpDownValChange($event)" ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)"
+                                                    context-typeahead>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 form-group noPadding">
+                                            <div class="col-xs-12 noPadding">
+                                                <label>{{'display_name_key'| i18nString}}</label>
+                                            </div>
+                                            <div class="col-xs-12 noPadding">
+                                                <input type="text" class ="inputBox" name="lookupInput" placeholder="{{'title'| i18nString}}" ng-model="dropDownInfo.contextDropdownVals.contextTitleKey" ng-keydown="onContextDrpDownValChange($event)"
+                                                    ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 form-group noPadding">
+                                            <div class="col-xs-12 noPadding">
+                                                <label>{{'value_key_name'| i18nString}}</label>
+                                            </div>
+                                            <div class="col-xs-12 noPadding">
+                                                <input type="text" class ="inputBox" name="lookupInput" placeholder="{{'value'| i18nString}}" ng-model="dropDownInfo.contextDropdownVals.contextValKey" ng-keydown="onContextDrpDownValChange($event)"
+                                                    ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 form-group noPadding">
+                                            <div class="col-xs-12 noPadding">
+                                                <label>{{'synonyms_key'| i18nString}}</label>
+                                            </div>
+                                            <div class="col-xs-12 noPadding">
+                                                <input type="text" class ="inputBox" name="lookupInput" placeholder="{{'synonyms_name'| i18nString}}" ng-model="dropDownInfo.contextDropdownVals.contextSynonymsKey"
+                                                    ng-keydown="onContextDrpDownValChange($event)" ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 form-group noPadding">
+                                            <div class="col-xs-12 noPadding">
+                                                <label>{{'matched_index'| i18nString}}</label>
+                                            </div>
+                                            <div class="col-xs-12 noPadding">
+                                                <input type="text" class ="inputBox" name="lookupInput" placeholder="{{'word_index'| i18nString}}" ng-model="dropDownInfo.contextDropdownVals.contextWordIndex"
+                                                    ng-keydown="onContextDrpDownValChange($event)" ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 form-group noPadding">
+                                            <div class="autoCorrectStyle autoCorrectHeading noMarginTop">{{'auto_correction'| i18nString}}
+                                                <i tooltip-placement="top" tooltip="{{'applicable_tooptip'| i18nString}}" class="btx-warning"></i>
+                                            </div>
+                                            <label class="autoCorrectsubHeading">{{'auto_desc'| i18nString}}</label>
+                                            <div class="col-xs-12 single-slider noPadding" id="remote-slider" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                                                <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">50%</span></div>
+                                                <span id="hybrid-slider2" class="width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="50" data-slider-step="5"  ticks-tooltip="false" data-slider-value="0"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="languageConfig" ng-class="{'screenFreeze':nodeInfo.displayMode !== 'edit'}" ng-show="currentLanguage == 'ge'">
+                        <label class="autoCorrectHeading">{{'language_dependency' |  i18nString}}</label>
+                        <label class="autoCorrectsubHeading marginBottom8">{{'language_dependency_desc' |  i18nString}}</label>
+                        <div class="kr-sg-checkbox noMargin">
+                            <input id="languageDependency" class="checkbox-custom" type="checkbox" ng-model="lovObj.isMultiLangDetectionEnabled">
+                            <label for="languageDependency" class="checkbox-custom-label noBold">LOVs are common across all languages.</label>
+                        </div> 
+                        <!-- <div class="hintDiv col-xs-12 align-items-center width735"> 
+                            <div class="icon">
+                                <i class="bulbIconLayer btx-bulb"></i>
+                            </div> 
+                            <div class="description">
+                                {{'language_help_tip' |  i18nString}}
+                            </div> 
+                        </div> -->
+                    </div>
+                    <div ng-if="nodeInfo.nodeInfo.entityType === 'list_of_items_lookup'" ng-show="!lovObj.isMultiLangDetectionEnabled && (currentLanguage == 'ge')" class="lookEntityContainer triple-slider-thresh paddingBottom15" ng-mouseleave="hideReset('.resetdual')" ng-mouseover="showReset('.resetdual','#dual-sliders')" ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">     
+                        <div class="col-xs-12 labelling noPadding">
+                          <div class="descTitle">{{'confidence_threshold'| i18nString}}</div>
+                          <div class="description">{{'probable_definite'| i18nString}}</div>              
+                        </div>
+                  
+                        <span class='pull-left triple-slider-0'>0</span>
+                        <div id='triple-slider' class='col-xs-12' ng-mouseup='tripleSliderChanged($event)'></div>
+                        <span class='triple-slider-100'>1</span>
+        
+                        <a class="resetButton resetdual pull-right hide resetTripleSlid" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+        
+                        <div class="thresholdDir">
+                          <div class="col-xs-12 dual-sliders noPadding ng-hide" ng-mouseover="showReset('.resetdual','#dual-sliders')" ng-mouseleave="hideReset('.resetdual')">
+                              <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">1</span></div>
+                              <span id="dual-sliders" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="1" data-slider-step="0.05"  ticks-tooltip="false" data-slider-value="[0.6,0.9]"></span>
+                          </div>
+                          <div class="col-xs-12 noPadding"><span class="circle cb-1"></span><span class="LovEntityDesc"> {{'matches_range_ignored'| i18nString}}</span></div>
+                          <div class="col-xs-12 noPadding"><span class="circle cb-2"></span><span class="LovEntityDesc"> {{'probable_threshold'| i18nString}}</span></div>
+                          <div class="col-xs-12 noPadding"><span class="circle cb-3"></span><span class="LovEntityDesc"> {{'definite_threshold'| i18nString}}</span></div>
+                        </div>
+                    </div>
+                </div>
+            <bot-modal-slider class="dispalyInline" id="remoteModelAdvanced">
+                    <div class="modalSliderContainer width700">
+                        <div class="modalHeader paddingTop10">
+                                <h4 class="modal-title tableRow">
+                                    <i class="btx-close"  ng-click="closeRequestModal()"></i>
+                                    {{'advance'| i18nString}} 
+                                </h4>
+                        </div>
+                        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-70" height-property="height" >
+                                <div class="col-xs-12 form-group noPadding"   ng-if="enterpriseLicenseType" ng-init="props.endPoint.connectorEnabled = props.endPoint.connectorEnabled || false">
+                                        <div class="col-xs-12 noPadding">
+                                                <label>{{'access_connector'| i18nString}}</label>
+                                                <img ng-src={{helpIcon}} class="helpIcon" tooltip-placement="bottom" tooltip="{{'access_url'| i18nString}}">    
+                                        </div>
+                                        <div class="col-xs-12 radioDiv noPadding">
+                                            <div>
+                                                <label for="props.endPoint.connectorEnabled.no">
+                                                    <input ng-value='false' ng-checked="true" type="radio"  ng-model="props.endPoint.connectorEnabled" name="props.endPoint.connectorEnabled" id="props.endPoint.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label for="props.endPoint.connectorEnabled.yes">
+                                                    <input ng-value='true'  type="radio"   ng-model="props.endPoint.connectorEnabled" name="props.endPoint.connectorEnabled" id="props.endPoint.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span>
+                                                </label>
+                                            </div>  
+                                            <div class="no-connectors-msg" ng-show="props.endPoint.connectorEnabled && connectors.length <= 0">{{'no_active_conn'| i18nString}}</div>
+                                        </div>  
+                                    </div>  
+                                    <div class="col-xs-12 form-group noPadding" >
+                                        <div class="col-xs-12 noPadding">
+                                            <label>{{'deidentify_pii'| i18nString}}</label>
+                                            <img ng-src={{helpIcon}} class="helpIcon" tooltip-placement="right" tooltip="{{'deidentify_tooltip'| i18nString}}">
+                                        </div>
+                                        <div class="col-xs-12 radioDiv noPadding">
+                                            <div>
+                                                <label for="piiDataDisable">
+                                                    <input ng-value='false' type="radio" id="piiDataDisable" ng-model="piiDataEnabled.status">
+                                                    <span class="opt-title">{{'deidentify_service'| i18nString}}</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label for="piiDataEnable">
+                                                    <input ng-value='true'  type="radio" id="piiDataEnable" ng-model="piiDataEnabled.status">
+                                                    <span class="opt-title">{{'use_original_pii'| i18nString}}</span>
+                                                </label>
+                                            </div> 
+                                        </div>  
+                                    </div> 
+                        </div>
+                        <div class="modalFooter">
+                            <button ng-disabled="nodeInfo.displayMode !== 'edit'" ng-click="closeRequestModal()" class="btn ">{{'ok'| i18nString}}</button>
+                            <!-- <button class="btn closeCancel" ng-click="closeRequestModal()">Cancel</button> -->
+                        </div>
+                    </div>
+                </bot-modal-slider>
+        </div>
+        <div perfect-scroll dynamic-height dynaoffset="-53" class="modal-body listOfvals overflow-hidden" ng-show="nodeInfo.nodeInfo.entityType === 'list_of_values'"
+                ng-class="{'hasFormErrors' : nodeObj.isInvalid}">
+                <div class="col-xs-12 responseeditor">
+                        <div class="staticRemoteContainer">
+                    <label class="entityNameHeading">{{nodeInfo.dialogNodeInstance.name}}</label>
+                    <p class="mainHeading">{{'choose_entity'| i18nString}}.</p>
+                    <div class="radioDiv marginBtm10" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                        <div>
+                            <label for="listFor1">
+                                <input type="radio" ng-model="dropDownInfo.staticDropdownType" value="staticList" name="listFor" id="listFor1" />
+                                <span class="opt-title">{{_constants_.propertyPanel.staticList}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="listFor3">
+                                <input type="radio" ng-model="dropDownInfo.staticDropdownType" value="context" name="listFor" id="listFor3" />
+                                <span class="opt-title">{{_constants_.propertyPanel.context}}</span>
+                                <span class="opt-title loVContext">{{'context'| i18nString}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="inputNote" ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}">
+                        <div class="col-xs-1 bulbicon"><i class="btx-bulb" ></i></div>
+                        <div class="col-xs-11">
+                                <ul>
+                                    <li>{{dropDownInfo.staticDropdownType === 'staticList' ? _constants_.propertyPanel.listofValuesProtip1 : _constants_.propertyPanel.contextLookupProtip}}</li>
+                                    <li>{{dropDownInfo.staticDropdownType === 'staticList' ? _constants_.propertyPanel.listofValuesProtip2 : _constants_.propertyPanel.contextLookupProtip2}}</li>
+                                    <li ng-show="dropDownInfo.staticDropdownType === 'staticList'">{{dropDownInfo.staticDropdownType === 'staticList' ? _constants_.propertyPanel.listofValuesProtip3 : ''}}</li>
+                                </ul>
+                        </div>
+                    </div>
+                 </div>
+                    <div class="listItemsMain" ng-if="dropDownInfo.staticDropdownType === 'staticList'">
+                        <label class="listItems" ng-show="newStatic || (dropDownInfo.staticDropdownVals && dropDownInfo.staticDropdownVals.length)">{{_constants_.propertyPanel.staticDrpLbl}}<i class="entityDrpdownSettings" aria-hidden="true"></i><span class="savingStatus"></span></label>
+                        <div class="listItemSort header">
+                            <!-- <div class="col-xs-1 listItemSortTitle item1"></div> -->
+                            <div class="col-xs-4 listItemSortTitle item2">
+                                {{'display_name'| i18nString}}
+                            </div>
+                            <div class="col-xs-4 listItemSortTitle item2">
+                                {{'value_caps'| i18nString}}
+                            </div>
+                            <div class="col-xs-3 listItemSortTitle item4">
+                                {{'synonyms'| i18nString}} 
+                            </div>
+                            <div class="col-xs-1 listItemSortTitle item5"></div>
+                        </div>
+                        <div ui-sortable="sortableOptions" ng-model="dropDownInfo.staticDropdownVals" class="listItemSort">
+                            <div class="listItemsBlocks" ng-repeat="drpVal in dropDownInfo.staticDropdownVals">
+                                <!-- <div ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}" class="col-xs-1 sortBar item1">
+                                    <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                                </div> -->
+                                <div ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}" class="item2 col-xs-4">
+                                    <input maxlength="100" type="text" name="item2Inputs" ng-class="{'emptyValue': !drpVal.title.length}" ng-model="drpVal.title" placeholder="{{'enter_display'| i18nString}}"
+                                        ng-keypress="onStaticDrpDownValChange($event)" />
+                                </div>
+                                <div ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}" class="item2 col-xs-4">
+                                    <input maxlength="100" type="text" name="item3Inputs" ng-class="{'emptyValue': !drpVal.value.length}" ng-model="drpVal.value" placeholder="{{'Vprop_value_placehol'| i18nString}}"
+                                        ng-keypress="onStaticDrpDownValChange($event)" />
+                                </div>
+                                <div class="item4 col-xs-3" >
+                                    <textarea type="text" name="item3Inputs" ng-model="drpVal.synonyms" placeholder="{{'enter_synonyms'| i18nString}}" ng-focus= "dynamicHeight($event)" ng-keypress="onStaticDrpDownValChange($event);dynamicHeight($event)"></textarea>
+                                </div>
+                                <div class="item5 col-xs-1 deleteButton " ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}" ng-click="removeDrpDownVal($index)">
+                                    <i class="btx-delete-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}" class="newListItem row" ng-show="newStatic">
+                            <!-- <div class="col-xs-1 sortBar item1 visibility">
+                                <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                            </div> -->
+                            <div class="item2 col-sm-4">
+                                <input type="text" name="item2Inputs" autofocus ng-model="newStaticValue.title" maxlength="100" placeholder="{{'enter_display'| i18nString}}" ng-keypress="onStaticDrpDownValChange($event)"
+                                    ng-blur="onNewStaticDropDownValChange($event)" />
+                            </div>
+                            <div class="item3 col-sm-4">
+                                <input type="text" name="item3Inputs" ng-model="newStaticValue.value" maxlength="100" placeholder="{{'Vprop_value_placehol'| i18nString}}" ng-keypress="onStaticDrpDownValChange($event)"
+                                    ng-blur="onNewStaticDropDownValChange($event)" />
+                            </div>
+                            <div class="item4 col-sm-3">
+                                <textarea type="text" name="item3Inputs" ng-model="newStaticValue.synonyms" placeholder="{{'enter_synonyms'| i18nString}}" ng-focus= "dynamicHeight($event)"
+                                    ng-keypress="onStaticDrpDownValChange($event);dynamicHeight($event) " ng-blur="onNewStaticDropDownValChange($event);dynamicHeight($event)"></textarea>
+                            </div>
+                            <div class="item5 col-xs-1 ">
+                              
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lookupMain"  ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}" ng-if="dropDownInfo.staticDropdownType === 'context'">
+                        <div class="lookupBlock">
+                            <label>{{_constants_.propertyPanel.contextLbl}}</label>
+                            <input type="text" name="lookupInput" placeholder="{{'example_context'| i18nString}}" ng-model="dropDownInfo.contextDropdownVals.contextVal"
+                                ng-keydown="onContextDrpDownValChange($event)" ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)"
+                                context-typeahead>
+                        </div>
+                        <div class="lookupBlock">
+                            <label>{{_constants_.propertyPanel.contextTitleKey}}</label>
+                            <input type="text" name="lookupInput" placeholder="{{'title'| i18nString}}" ng-model="dropDownInfo.contextDropdownVals.contextTitleKey" ng-keydown="onContextDrpDownValChange($event)"
+                                ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)">
+                        </div>
+                        <div class="lookupBlock">
+                            <label>{{_constants_.propertyPanel.contextValKey}}</label>
+                            <input type="text" name="lookupInput" placeholder="{{'value'| i18nString}}" ng-model="dropDownInfo.contextDropdownVals.contextValKey" ng-keydown="onContextDrpDownValChange($event)"
+                                ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)">
+                        </div>
+                        <div class="lookupBlock">
+                            <label>{{_constants_.propertyPanel.contextSynonymsKey}}</label>
+                            <input type="text" name="lookupInput" placeholder="{{'Vprop_value_placehol'| i18nString}}Synonym" ng-model="dropDownInfo.contextDropdownVals.contextSynonymsKey"
+                                ng-keydown="onContextDrpDownValChange($event)" ng-blur="onContextDrpDownValChange($event)" ng-keyup="onContextDrpDownValKeyup($event)">
+                        </div>
+                    </div>
+                    <div class="autoCorrection">
+                            <label class="autoCorrectHeading">{{'auto_correction'| i18nString}}</label>
+                    <label class="autoCorrectsubHeading">{{'auto_desc'| i18nString}}</label>
+                    <div  ng-class="{'isReadOnly':nodeInfo.displayMode !== 'edit'}" class="col-xs-12 single-slider noPadding" id="enum-slider">
+                        <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">50%</span></div>
+                        <span id="hybrid-slider" class="width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="50" data-slider-step="5"  ticks-tooltip="false" data-slider-value="0"></span>
+                    </div>
+                    </div>
+                    <div class="languageConfig" ng-class="{'screenFreeze':nodeInfo.displayMode !== 'edit'}" ng-show="currentLanguage == 'ge'">
+                        <label class="autoCorrectHeading">{{'language_dependency' |  i18nString}}</label>
+                        <label class="autoCorrectsubHeading marginBottom8">{{'language_dependency_desc' |  i18nString}}</label>
+                        <div class="kr-sg-checkbox noMargin">
+                            <input id="languageDependency" class="checkbox-custom" type="checkbox" ng-model="lovObj.isMultiLangDetectionEnabled">
+                            <label for="languageDependency" class="checkbox-custom-label noBold">LOVs are common across all languages.</label>
+                        </div> 
+                        <!-- <div class="hintDiv col-xs-12 align-items-center width735"> 
+                            <div class="icon">
+                                <i class="bulbIconLayer btx-bulb"></i>
+                            </div> 
+                            <div class="description">
+                                {{'language_help_tip' |  i18nString}}
+                            </div> 
+                        </div> -->
+                    </div>
+                    <div ng-if="nodeInfo.nodeInfo.entityType === 'list_of_values'" ng-show="!lovObj.isMultiLangDetectionEnabled && (currentLanguage == 'ge')" class="lookEntityContainer triple-slider-thresh" ng-mouseleave="hideReset('.resetdual')" ng-mouseover="showReset('.resetdual','#dual-sliders')" ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">     
+                        <div class="col-xs-12 labelling noPadding">
+                          <div class="descTitle">{{'confidence_threshold'| i18nString}}</div>
+                          <div class="description">{{'probable_definite'| i18nString}}</div>              
+                        </div>
+                        <span class='pull-left triple-slider-0'>0</span>
+                        <div id='triple-slider' class='col-xs-12'></div>
+                        <span class='triple-slider-100'>1</span>
+        
+                        <a class="resetButton resetdual pull-right hide resetTripleSlid" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+        
+                        <div class="thresholdDir">
+                          <div class="col-xs-12 dual-sliders noPadding ng-hide" ng-mouseover="showReset('.resetdual','#dual-sliders')" ng-mouseleave="hideReset('.resetdual')">
+                              <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">1</span></div>
+                              <span id="dual-sliders" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="1" data-slider-step="0.05"  ticks-tooltip="false" data-slider-value="[0.6,0.9]"></span>
+                          </div>
+                          <div class="col-xs-12 noPadding"><span class="circle cb-1"></span><span class="LovEntityDesc"> {{'matches_range_ignored'| i18nString}}</span></div>
+                          <div class="col-xs-12 noPadding"><span class="circle cb-2"></span><span class="LovEntityDesc"> {{'probable_threshold'| i18nString}}</span></div>
+                          <div class="col-xs-12 noPadding"><span class="circle cb-3"></span><span class="LovEntityDesc"> {{'definite_threshold'| i18nString}}</span></div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    </div>     
+</div>
+<!-- End of List_of_values -->
+<!-- ivr node -->
+<div class="modal fade ivrNode" id="ivrNode" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header ivr-header">
+                <h4 class="modal-title">{{'are_you_sure'| i18nString}}</h4>
+            </div>
+            <div class="modal-body ivr-body">
+                    <p class="content">{{'confirm_ivr'| i18nString}}
+                    </p>
+            </div>
+            <div class="modal-footer ivr-footer">
+                 <button class="btn saveSubmit proceedBtn" ng-click="openBotLevelIVR()">{{'enable_name'| i18nString}}</button>
+                <button class="btn closeCancel" ng-click="closeIvrModal()">{{'cancel'| i18nString}}</button> 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ivr node end -->
+<!-- Entity Rule Editor -->
+<bot-modal-slider id="entityRuleConfigurations" ng-if="showEntityModal">
+  <div class="modalSliderContainer width700">
+    <div class="modalHeader">
+        <div class="closeBtn"  ng-click="closeEntityRule()">
+             <img class="closeCross top3" ng-src={{backArrow}}>
+         </div>
+         <div class="title">{{'entity_rules' | i18nString}}</div>
+    </div>
+    <div class="modalBody" ng-class="{'view':displayMode === 'VIEW'}" height-property="height" dynamic-height dynaoffset="-170">
+        <p class="desc">{{'entity_rules_desc' | i18nString}} <a href="#" ng-click="redirectToLink('ENTITY_RULES')">{{'know_more' | i18nString}}</a></p>
+       <div class="hintDiv">
+         <span class="icon"><i class="btx-warning"></i></span>
+         <span class="description">
+           <p class="noMargin">{{'validation_desc' | i18nString}}</p>
+         </span>
+       </div>
+       <div class="col-xs-12 noPadding marginTop10 jsonEditor entityRuleEditor" height-property="height" dynamic-height dynaoffset="-269" ng-class="{'isReadOnly':readonly}" ng-if="showRuleEditor">
+            <!-- <div class="col-xs-12 noPadding restore" ng-hide="hideRestore || displayMode === 'VIEW'">
+              <a href="#" ng-click="compareJson()">{{'restore_default' | i18nString}}</a>
+          </div> -->
+          <div ng-jsoneditor class="json_editor" ng-model="entityRules.rules" name="configuration" options="options" callback="editorCallback" placeholder="placeholderText"></div>
+       </div>
+    </div>
+    <div class="modalFooter">
+      <button class="kr-sg-button-primary btn_md" ng-disabled="readonly" ng-click="updateEntityRules(entityRules)">{{'save'| i18nString}}</button>
+      <button class="kr-sg-button-secondary btn_md" ng-click="closeEntityRule()">{{'cancel'| i18nString}}</button>
+    </div>
+  </div>
+  
+  
+</bot-modal-slider>
+<!-- end modal -->
+<!-- Entity Retry -->
+<div class="modal fade modal fade kr-sg-modal " id="entityBehaviour" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header entityBehaviourModalHeader">                                 
+          <h4 class="modal-title">{{'confirm_proceed' | i18nString}}</h4>
+        </div>
+        <div class="modal-body entityBehaviourModalBody">
+          <p>Changing this entity from Mandatory to <span>{{selectedLabel}}</span> will result in disconnecting this entity from {{default.defaultRetryValue}}.</p>
+         <p>{{'would_like_proceed' | i18nString}}</p>
+        </div>
+        <div class="modal-footer">                               
+          <button class="kr-sg-button-primary btn_md" ng-click="proceedToggleChange()">{{'proceed' | i18nString}}</button>
+          <button class="kr-sg-button-secondary btn_md" ng-click="cancelBehaviourChanges()">{{'cancel' | i18nString}}</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Entity Retry end -->
+</div>
+<bot-modal-slider id='ivrBotLevel' ng-if="(nodeInfo.openSection === 'ivrProperties') || (groupIntentIvrCb.type === 'groupNodeIntent' && groupIntentIvrCb.openIvr)">
+    <div class="modalSliderContainer width700">
+        <div class="modalHeader channelModalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                    <i class="btx-close" ng-click="closeBotLevelIvr()"></i>
+                    {{'Ivr_settings_modal_title'| i18nString}}
+                
+            </h4>
+         
+        </div>
+        <div class="modalBody alertFieldFormScroll" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+            <div class="col-xs-12" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                <bt-ivr-settings stream-id="{{streamId}}" callback="callback"></bt-ivr-settings>
+            </div>
+        </div>
+        <div class="modalFooter">
+              <div class="col-xs-12 zIndex">
+                    <button ng-click="saveIvrStream()" ng-disabled="selectedStreamState === 'published'" class="btn btn-xs saveBtn">{{'save'| i18nString}}</button>
+             </div>
+        </div>
+    </div>
+</bot-modal-slider>
+<bot-modal-slider id="manageGroupResponse" ng-if="groupNode && showGroupNodeManaeResponse">
+    <div class="modalSliderContainer width700">
+      <div class="modalHeader border-header">
+        <h4 class="modal-title" id="gridSystemModalLabel">
+            <i class="btx-arrow-back" ng-click="closeManageGroupResponse()"></i>
+            <span ng-if='groupIntentResponseTypeEdit === "ivrProperties"'>Voice Call Properties</span>
+            <span ng-if='groupIntentResponseTypeEdit === "message"'>Manage Responses</span>
+        </h4>
+           <!-- <div class="closeBtn"  ng-click="closeManageGroupResponse()">
+               <img class="closeCross" ng-src={{backArrow}}>
+           </div> -->
+           <!-- <div class="title" ng-if='groupIntentResponseTypeEdit === "ivrProperties"'>Voice Call Properties</div>
+           <div class="title" ng-if='groupIntentResponseTypeEdit === "message"'>Manage Responses</div> -->
+      </div>
+      <div ng-if='groupIntentResponseTypeEdit === "ivrProperties"' class="modalBody add-message" perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+        <ivr-settings ivr-options="groupIntenivrOptions" bridge="groupIntentIvrBridge" callback='groupIntentIvrCb'></ivr-settings>
+     </div>
+      <div ng-if='groupIntentResponseTypeEdit === "message"' class="modalBody groupNodeIntnetMessage" height-property="height" dynamic-height dynaoffset="-110" perfect-scroll>
+        <prompts-genric  on-done="onGrouupPromptSave" scroll-container='".groupNodeIntnetMessage"' selected-node="nodeInfo" messages-object="groupNodeMsgObj" on-cancel-prompt="onGrouupPromptClose" display-mode="nodeInfo.displayMode"></prompts-genric>
+      </div>
+    </div>
+    <div class="modalFooter" ng-if='groupIntentResponseTypeEdit === "ivrProperties"' >
+        <button class="kr-sg-button-primary btn_md" ng-disabled="readonly" ng-click="saveIvrProperties()">{{'save'| i18nString}}</button>
+        <button class="kr-sg-button-secondary btn_md" ng-click="closeManageGroupResponse()">{{'cancel'| i18nString}}</button>
+      </div>
+</bot-modal-slider>
+

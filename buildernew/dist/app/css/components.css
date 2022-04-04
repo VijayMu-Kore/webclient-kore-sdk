@@ -1,0 +1,528 @@
+/*Tag Box Item CSS*/
+toggle-switch.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope {
+	margin-right: 40px;
+	line-height: 35px;
+}
+.tag_box_item {
+	border: 1px solid #009dab;
+	padding: 3px 8px 2px 10px;
+	margin-left: 3px;
+	border-radius: 3px;
+	margin-bottom: 3px !important;
+	display: inline-block;
+	background: #009dab;
+	color: #fff;
+}
+.tag_box_cancel_icon {
+	margin-left: 5px;
+	cursor: pointer;
+}
+/*Switch CSS*/
+
+input.switch:empty {
+	opacity: 0;
+}
+input.switch:empty ~ label {
+	position: relative;
+	float: left;
+	width: 1px;
+	line-height: 1.6em;
+	text-indent: 4em;
+	margin: 0.2em 0;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	height: 30px;
+	padding-top: 2px;
+}
+input.switch:empty ~ label:before, input.switch:empty ~ label:after {
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	content: ' ';
+	width: 3.6em;
+	background-color: #e5e8ec;
+	border-radius: 20px;
+	transition: all 100ms ease-in;
+	box-shadow: 0 0 0 0 rgb(223, 223, 223) inset;
+	/*border: 1px solid #e5e8ec;*/
+}
+input.switch:empty ~ label:after {
+	width: 28px;
+	height: 28px;
+	top: 0.1em;
+	bottom: 0.1em;
+	background-color: #fff;
+	border-radius: 100%;/*box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);*/
+}
+input.switch:checked ~ label:before {
+	background-color: #009dab;
+}
+input.switch:checked ~ label:after {
+	margin-left: 1.5em;
+}
+.inline_block {
+	display: inline-block;
+}
+/** Expander  **/
+
+._expander_header {
+	border: 1px solid #bbb;
+	border-radius: 2px;
+	padding: 6px 5px 6px 5px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+._expander_from {
+	margin-left: 25%;
+}
+/* Expander*/
+
+
+.date-component .dropdown-menu{
+	padding : 15px 15px 15px 0px !important;
+}
+
+/* Type ahead control */
+
+.typeahead-options {
+	position: absolute;
+	z-index: 1000;
+	background: #fff;
+	border-radius: 5px;
+	-webkit-box-shadow: 10px 10px 43px 0px rgba(209,202,209,1);
+	-moz-box-shadow: 10px 10px 43px 0px rgba(209,202,209,1);
+	box-shadow: 10px 10px 43px 0px rgba(209,202,209,1);
+	max-height: 200px;
+	overflow-y: scroll;
+	margin-top: 50px;
+}
+.typeahead-options > ul {
+	list-style: none;
+	margin: 0px;
+	padding: 5px 5px;
+}
+.typeahead-options > ul li {
+	padding: 5px 5px;
+	cursor: pointer;
+}
+.typeahead-options > ul li:nth-child(1) {
+	padding: 0px 5px 5px 5px;
+}
+.typeahead-options > ul li:last-child {
+	padding: 5px 5px 0px 5px;
+}
+.typeahead-options > ul li:hover {
+	background-color: #009cde;
+	color: white;
+}
+/* Type ahead control */
+
+
+/* Keyword Highlighter */
+
+.keyword_highlight {
+	width: 100%;
+	min-height: 44px;
+	padding: 11px 10px;
+	border-bottom: 2px solid #dbdbdb;
+	line-height: 1.42857143;
+	background-color: #fff;
+	background-image: none;
+	font-size: 18px;
+	color: #26344a;
+}
+/* Keyword Highlighter */
+
+/**
+ * Step progress component start
+ */
+ step-progress{
+    display: table;
+    z-index: 1;
+    position: relative;
+    background: #fff;
+    width: 100%;
+}
+.step-progress-component {
+	margin-bottom: 20px;
+}
+.step-progress-component .step-name {
+	display: inline;
+	top: 50px;
+	padding-left: 10px;
+}
+.step-progress-component .step-circle::before {
+	font-family: "FontAwesome";
+	content: "\f111";
+	padding: 10px;
+	font-size: 40px;
+	color: #CCCCCC;
+	cursor: pointer;
+}
+.active .step-circle::before {
+	color: #009dab !important;
+}
+.step-progress-component .step-progress-step {
+	display: table-cell;
+	/*width: 1%;*/
+	z-index: 10;
+}
+.slack-channel-page .col-xs-12 .pull-right button.btn {
+	/*margin-bottom: 20px;*/
+}
+/**
+ * Step progress component end
+ */
+
+.keyword_placeholder:focus, .keyword_highlight:focus {
+	border-color: #009dab;
+	outline: 0;
+}
+.keyword_placeholder {
+	width: 100%;
+	min-height: 44px;
+	padding: 6px 12px;
+	border: 1px solid gray;
+	line-height: 1.42857143;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15;
+	font-style: italic;
+	color: lightgray;
+	font-size: 16px;
+}
+/* Keyword Highlighter */
+
+/**
+ * Nlp text control css changes start
+ */
+
+.nlp-text-ctrl .keyword_highlight:focus {
+	border-color: #009DAB !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	outline: none;
+}
+.nlp-text-ctrl .keyword_highlight {
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	-webkit-transition: initial !important;
+}
+.nlp-text-ctrl .keyword_placeholder {
+	border: 1px solid #eee;
+	outline: 0px !important;
+	padding: 4px 10px;
+	font-style: italic !important;
+	font-size: 16px !important;
+	-webkit-transition: inherit;
+	box-shadow: none;
+}
+/**
+ * Nlp text control css changes end
+ */
+
+/**
+ * Add tag css
+ */
+
+.add-tags .select2-results {
+	display: none;
+}
+/**
+ * Add tag css
+ */
+
+/**
+ * color circle comp css
+ */
+
+.color-circle {
+	font-size: 15px;
+}
+.color-circle::before {
+	content: '\f111';
+	font-family: FontAwesome;
+	font-size: 14px;
+}
+.color-circle-o::before {
+	content: '\f1db';
+	font-family: FontAwesome;
+	font-size: 24px;
+}
+/**
+ * rich editor css
+ */
+
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+
+.rich-editor span {
+	border: 0px !important;
+}
+.rich-editor-container {
+	position: relative;
+}
+.rich-editor-dropdown {
+	display: inherit !important;
+	position: absolute;
+}
+/**
+ * profilepic component css
+ */
+
+.profile-pic {
+	display: inline-block;
+	border-radius: 50%;
+	width: 40px;
+	background-color: #e8e8e8;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	color: #fff;
+}
+/**
+ * Select2 styles overriding
+
+
+.select2-choices {
+	overflow: inherit !important;
+	border: none !important;
+} */
+.modal button.close {
+	background: transparent;
+	border-color: transparent;
+}
+._expander_ .mapping-ctrl {
+	padding: 5px 12px !important;
+}
+/* Markdown editor component css*/
+
+.markdown-editor .toolbar {
+    padding: 0 20px;
+    background-color: #89959e;
+    width: 100%;
+    height: 30px;
+}
+.markdown-editor .ace-chrome {
+	min-height: 100px !important;
+}
+markdown-editor {
+	border : none !important;
+}
+.markdown-editor .controls {
+	border : none !important;
+	background : transparent !important;
+	color: #ffffff !important;
+	padding: 5px 8px !important;
+}
+.markdown-editor .toolbar .controls:hover {
+	background: transparent !important;
+	color: #ffffff !important;
+}
+.step-progress-container{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+}
+.step-progress-container.top108{
+    top:108px;
+}
+.step-progress-component {
+	display: table;
+	padding-left: 65px;
+}
+.step-progress-component .step-progress-step {
+	display: table-cell;
+	width: auto;
+	z-index: 10;
+}
+.step-progress-step .step-name {
+	margin: 0;
+    line-height: 1.3;
+    cursor: pointer;
+    padding: 0 0 8px;
+    margin-right: 15px;
+    font-size: 16px;
+    color: #8a959f;
+}
+.step-progress-step .step-name:hover {
+    color: #26344a;
+}
+.step-progress-step.active .step-name {
+    color: #26344a;
+    font-weight: normal;
+    border-bottom: 2px solid #009dab;
+}
+
+/* ---- Firefox CSS --- */
+/* ---- IE CSS --- */
+@supports (-ms-ime-align:auto) {
+ .step-progress-step.active .step-name {
+margin-right:28px;
+}
+ .step-progress-step .step-name {
+margin-right:28px;
+}
+}
+/* ---- IE CSS --- */
+
+.markdown-editor .fa {
+	color : white;
+	    font-size: 12px;
+}
+/*
+*	Kore Ux Editor CSS
+*/
+
+.kore-ux-editor .side-menu .heading {
+	padding: 10px 10px;
+	/*background-color: #009dab
+	color: white;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;;*/
+	height: 37px;
+}
+.kore-ux-editor .side-menu .heading i.fa.fa-bars.pointer-hand{
+    display: none;
+}
+.kore-ux-editor .side-menu.col-xs-1 .heading{
+    text-align: center;
+}
+.kore-ux-editor .side-menu .channels > .item {
+	padding: 7px 10px;
+    border-bottom: 1px solid #e5e8ec;
+    cursor: pointer;
+    border-left: 3px solid #fff;
+    font-size: 13px;
+    font-weight: 600;
+    color: #26344a;
+}
+.kore-ux-editor .side-menu .channels > .item.active {
+	background-color: #e5e8ec;
+    border-left: 3px solid #8a959f;
+    outline: none;
+}
+.kore-ux-editor .side-menu .add-channel {
+	padding: 7px 10px;
+}
+.kore-ux-editor .side-menu .add-channel span{
+	font-size: 13px;
+	font-weight: 600;
+	color: #009dab;    
+	cursor: pointer;
+
+}
+.kore-ux-editor .side-menu .add-channel span i.fa.fa-plus{
+    font-size: 10px;
+    margin-right: 5px;
+}
+.kore-ux-editor .side-menu {
+	padding: 0;
+}
+.kore-ux-editor .editor {
+	padding-left: 0px !important;
+	transition:1s;
+}
+.kore-ux-editor .channel-list {
+	padding: 10px 10px;
+}
+.kore-ux-editor .ace-chrome {
+	min-height: 350px !important;
+    margin-bottom: 20px;
+}
+.kore-ux-editor .color-red {
+	color : red;
+	padding-left: 10px;
+}
+
+.keys-tree .item {
+	padding: 5px 5px 5px 20px;
+	cursor: pointer;
+}
+.keys-tree .item .control {
+	padding: 3px 3px 3px;
+}
+.keys-tree .item.active {
+	background-color: lightgreen;
+}
+.keys-tree .title {
+	padding: 5px;
+	font-size: 18px;
+}
+.keys-tree .heading {
+	font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+	    cursor: pointer;
+}
+.kore-ux-editor .markupTabs .nav-tabs > li.active > a, .kore-ux-editor .markupTabs .nav-tabs > li.active > a:hover, .kore-ux-editor .markupTabs .nav-tabs > li.active > a:focus {
+	outline: none;
+	border-width: 0;
+	background: #8a959f;
+	color: #fff;
+	padding: 10px 15px;
+	font-size: 12px;
+	margin: 0 10px 0 0;
+	/*min-width: 150px;*/
+}
+.kore-ux-editor .markupTabs .nav-tabs > li > a {
+	padding: 10px 15px;
+	border: 0;
+	color: #8a959f;
+	background: #e5e8ec;
+	margin: 0 5px 0 0;
+	font-size: 12px;
+	/*min-width: 150px;*/
+	-webkit-transition: color 0.15s ease-in-out;
+	-o-transition: color 0.15s ease-in-out;
+	transition: color 0.15s ease-in-out;
+	font-weight: bold;
+}
+.kore-ux-editor .tab-content{
+    border: 0;
+    min-height: 415px;
+}
+.kore-ux-editor .col-xs-5.btnsDIV {
+    width: 275px;
+    position: absolute;
+    right: 15px;
+    /*top: 24px;	*/
+    z-index: 2;
+}
+.kore-ux-editor .channel-image{
+	width : 25px !important;
+	font-size :25px !important;
+	color : #009dab;
+}
+
+/**
+date time picker chooser
+**/
+
+.date-time-chooser{
+	background-color: #fbfbfb;
+    margin-top: 5px;
+    padding: 10px 25px 10px 10px;
+    position: absolute;
+    z-index: 1000;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(235,230,235,1);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(235,230,235,1);
+    box-shadow: none;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+}
+.date-time-chooser input{padding: 0;}

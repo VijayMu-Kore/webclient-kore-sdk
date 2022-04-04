@@ -1,0 +1,22 @@
+<div class="sidebar utterancesidebar" perfect-scroll  height-property="height">
+  <div class="noPadding col-xs-12">
+    <div class="row">
+      <div class="items-list">
+        <div class="col-xs-12 items-list-container">
+          <div class="sidebar-list" adjusttasklist ng-show="tasks.length>0">
+              <div ng-if="!task.hide && filterFn(task)" task-index="{{$index}}" class="sagrigate-task" has-focus ng-class="{'active':activeTask===$index}"  ng-click="selectTask($index)" ng-repeat="task in tasks track by $index">
+                <div class="list-item-details clearfix">
+                  <span title="{{task.taskType === 'DialogIntent' ? task.intent : task.name}}">{{task.taskType === 'DialogIntent' ? task.intent : task.name}}</span>
+                </div>
+              </div>
+<!--              <div ng-if="!task.hide && (task.state !== 'published' || task.status === 'published') && (filterToggle === 'indevelopment')" class="sagrigate-task" has-focus ng-class="{'active':activeTask===$index}"  ng-click="selectTask($index)" ng-repeat="task in tasks track by $index">
+                <div class="list-item-details clearfix">
+                  <span title="{{task.taskType === 'DialogIntent' ? task.intent : task.name}} {{task.taskstate}}">{{task.taskType === 'DialogIntent' ? task.intent : task.name}} {{task.taskstate}}</span>
+                </div>
+              </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

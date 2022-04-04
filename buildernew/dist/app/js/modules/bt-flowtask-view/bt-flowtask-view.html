@@ -1,0 +1,52 @@
+<div class="creation create-container container-fluid noPadding"> 
+    <!-- Top bar -->
+    <div class="row top-bar selected-stream noMargin" style="background:{{selectedStream.color}}">
+        <div class="main-body row">
+            <div class="stream-icon"> <a href="/bt" title=""> <img  ng-src="{{selectedStream.icon}}"> </a> </div>
+            <div class="stream-details">
+                <span class="name">{{selectedStream.name}}</span>
+                <div class="flowTaskEdit">
+                    <span class="flowTaskName">{{flowtaskObj.name}}</span>
+                    <span class="taskType">{{_constants_.flowTask}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Type Creation -->
+        <div class="type-creation-forms widget-body noBottomFooter" >
+            <div class="row forms-container"> 
+                <!-- Sidebar steps -->
+                <div class="sidebar-nav hide">
+                    <ul class="workflow-sidebar">
+                        <li class="pointer-hand">
+                            <div ng-if="isThisSectionRequired('showFlow')"  ng-click="navigateTo('showFlow')" >
+                                <div class="wf-sidebar-step task" ng-class="{'active':sections.showFlow,'disabled':!sections.showFlow}">
+                                    <h4 class="step-title">
+                                        <div class="step-serial"> {{getStepNo('showFlow')}} </div>
+                                        {{_constants_.conversationBuilder}}</h4>
+                                    <div class="step-desc">
+                                        <p ng-if="wftype === 'alert'"> {{'authorization_alert_task'| i18nString}}. <a class="inline-link" target="_blank"  href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/setting-up-authentication-for-alert-tasks/#Auth">{{'bt_flow_task_view_more'| i18nString}}</a> </p>
+                                        <p ng-if="wftype === 'action'"> {{'authorization_action_task'| i18nString}} <a class="inline-link" target="_blank"  href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-action-tasks/setting-up-authentication-for-action-tasks/#Auth">{{'bt_flow_task_view_more'| i18nString}}</a> </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Forms for steps -->
+                <div class="step-forms">
+                    <div class="bt-flowStep" ng-if="sections.showFlow"> 
+                        <!-- Step Body -->
+                        <div class="step-body">
+                            <flowtask-form wf-type="{{wftype}}" display-mode="{{displayMode}}" dialog-Info="{{}}" configure="finishSetup(type)"></flowtask-form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

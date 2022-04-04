@@ -1,0 +1,37 @@
+<div class="addSynonymsModal">
+    <div class="modal-header">
+        <button type="button" ng-click="closeModal()"class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'synonyms_name'| i18nString}}</h4>
+    </div>
+    <div class="modal-body">
+        <form name="manageTaskSynonymForm" class="wf-form">          
+            <div class="form-group col-xs-12 noPadding">
+                <label class="required-field"> <b>{{'word'| i18nString}}</b> </label>
+                <input maxlength="128" type="text" class="form-control" name="keyword" required ng-model="manageSynonym.keyword" placeholder="{{'bt_add_synonyms_keyword_placeholder'| i18nString}}">
+                <div  ng-show="manageTaskSynonymForm.keyword.$dirty">
+                    <div error-alert ng-show="manageTaskSynonymForm.keyword.$error.required" class="text-danger"> {{'keyword_req'| i18nString}} </div>
+                </div>
+            </div>           
+            <div class="form-group col-xs-12 noPadding">
+                <label> <b>{{'Synonym_word'| i18nString}}</b> </label>
+                <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128"  use-strings="true" placeholder="{{'type_enter'| i18nString}}"  ng-model="manageSynonym.synonyms"></tags-input>
+                <p class="synonyms-help-hint">{{'press_enter_to_Add_synonyms'| i18nString}}<p>
+            </div>
+            <div class="hintDiv" ng-if='fromPP'>
+               <span class="icon">
+                  <img class="layer"  ng-src="{{assetsBase}}/images/24x29-bulbicon.png">
+               </span>
+               <span class="description text-left">
+                {{'bt_add_synonyms_desc'| i18nString}}
+               </span>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn" 
+                ng-disabled="(!manageSynonym.keyword) || saveInProgress"
+                ng-click="addBotSynonym(manageTaskSynonymForm)">
+            <i ng-show="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)? saving : save }}</button>
+        <button type="submit" class="btn closeCancel" ng-click="closeModal()">{{'cancel'| i18nString}}</button>
+    </div>
+</div>

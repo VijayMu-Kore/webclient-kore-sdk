@@ -1,0 +1,275 @@
+<div ng-show="showStandardResponses" class="advancedControlManageResponse positionAbsolute">
+    <div class="advancedControlManageResponseBody">
+        <bt-standard-response cb="manageResponseCB"></bt-standard-response>
+    </div>
+</div>
+<div class="showadvancedoptions" ng-class="{'read-only-wrap':advancedDisplayMode === 'VIEW'}">
+     <form name="streamAdvancedForm" class="wf-form displayTable" novalidate>
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'manage_interruptions'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn displayNone">
+                    <button class="titleBTN">button</button>
+                </div>
+                <div class="titleDropdown displayNone">
+    
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                            <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow displayNone">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    
+        <fieldset class="row">
+            <div class="col-xs-12 radioDiv form-group pointerEventNone noPadding mb-0" ng-hide="newStreamData.type=='universalbot'">
+            <div  class="col-xs-12 noPadding">
+                 <p class="radioTitle mb-10"> {{'Interruptions_label'| i18nString}}</p>
+             </div>
+             <!--<p class="faqInterruptionsInfoText">Choose whether interruptions should be allowed while another intent is in progress and define how these interruptions should be executed.
+            </p>-->
+                <div class="col-xs-12 radioDiv radioSection noPadding">
+                    <div class="radioInnerDiv">
+                        <label for="developerNode2">
+                            <input value='developer' type="radio"  ng-model="newStreamData.interruptOptions.type.option" ng-click="onToggeleChange()" name="developerNode" id="developerNode2"/><span class="opt-title"> {{'Allow_interruptions_label'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <div class="col-xs-12 radioDiv marginLeft10 mt-5 mb-0" ng-show='newStreamData.interruptOptions.type.option === "developer"'>
+                        
+                        <!-- Hold & Resume options  -->
+                        <div class='holdResumeInnerContainer'>
+
+                            <!-- Hold & Resume ends -->
+
+                            <!-- Hold options -->
+                            <div ng-hide="newStreamData.interruptOptions.type.option==='endUser'" class="linkedTaskLabel darkColor"> {{'Interruption_and_hold_label'| i18nString}}</div>
+                            <div ng-hide="newStreamData.interruptOptions.type.option==='endUser'" class="col-xs-12 radioDiv radioSection noPadding marginBottom10">
+                                <div class="radioInnerDiv height">
+                                    <label for="holdCurrTaskNode2">
+                                        <input value='holdCurrTask' type="radio"  ng-model="newStreamData.interruptOptions.holdUxOptions.option" name="holdCurrTaskNode" id="holdCurrTaskNode2"/><span class="opt-title"> {{'Hold_the_curr_label'| i18nString}}</span> 
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="discardCurrTaskNode2">
+                                        <input value='discardCurrTask' type="radio"  ng-model="newStreamData.interruptOptions.holdUxOptions.option" name="discardCurrTaskNode" id="discardCurrTaskNode2"/><span class="opt-title"> {{'Discard_the_curr_label'| i18nString}}</span><span class="manageResponse" ng-click="openManageResponse('discardCurrentTask', $event)"> {{'manageResponse'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                 <div class="radioInnerDiv">
+                                    <label for="switchToNewSettingsPanl" class='noMarginBottom'>
+                                        <input value='discardCurrTaskNoNotify' type="radio"  ng-model="newStreamData.interruptOptions.holdUxOptions.option" name="switchToNewSettingsPanl" id="switchToNewSettingsPanl"/><span class="opt-title"> {{'Switch_to_new_task_label'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="continueCurrTaskNode2">
+                                        <input value='continueCurrTask' type="radio"  ng-model="newStreamData.interruptOptions.holdUxOptions.option" name="continueCurrTaskNode" id="continueCurrTaskNode2"/><span class="opt-title"> {{'Conti_the_curr_label'| i18nString}}</span><span class="manageResponse" ng-click="openManageResponse('continueCurrentTask', $event)"> {{'manageResponse'| i18nString}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Hold options ends -->
+
+                            <!-- Resume options -->
+                            <div ng-if="newStreamData.interruptOptions.holdUxOptions.option === 'holdCurrTask' || newStreamData.interruptOptions.type.option==='endUser'" class="animateOptions">
+                                <div class="linkedTaskLabel darkColor"> {{'resume_option'| i18nString}}</div>
+                                <div class="col-xs-12 radioDiv radioSection noPadding ">
+                                    <div class="radioInnerDiv">
+                                        <label for="confFromUserNode2">
+                                            <input value='confFromUser' type="radio"  ng-model="newStreamData.interruptOptions.resumeUxOptions.option" name="confFromUserNode" id="confFromUserNode2"/><span class="opt-title"> {{'allinterruptions_conffromuser'| i18nString}}</span> <span class="manageResponse" ng-click="openManageResponse('getConfirmatonWithUser', $event)"> {{'manageResponse'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="radioInnerDiv">
+                                        <label for="notifyUserNode2">
+                                            <input value='notifyUser' type="radio"  ng-model="newStreamData.interruptOptions.resumeUxOptions.option" name="notifyUserNode" id="notifyUserNode2"/><span class="opt-title"> {{'allinterruptions_notifyuser'| i18nString}}</span><span class="manageResponse" ng-click="openManageResponse('notifyUserWithMessage', $event)"> {{'manageResponse'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="radioInnerDiv">
+                                        <label for="noConfFromUserNode2">
+                                            <input value='noConfFromUser' type="radio"  ng-model="newStreamData.interruptOptions.resumeUxOptions.option" name="noConfFromUserNode" id="noConfFromUserNode2"/><span class="opt-title"> {{'allinterruptions_noconffromuser'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="checkbox checkbox-primary styledCSS alwaysResume" ng-click="toggleResumeoptions()">
+                                    <input  type="checkbox" id="checkboxIDNode2" ng-model="newStreamData.interruptOptions.resumeUxOptions.neverNotify">
+                                    <label for="checkboxIDNode"  class="alwaysResume"> {{'always_resume_hold_task'| i18nString}} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Resume options ends -->
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="doNotAllowHoldResume2">
+                            <input value='doNotAllowHoldResume' ng-click="onToggeleChange()" type="radio"  ng-model="newStreamData.interruptOptions.type.option" name="doNotAllowHoldResume2" id="doNotAllowHoldResume2"/><span class="opt-title"> {{'allinterruptions_false'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="endUserNode2">
+                            <input value='endUser' type="radio"  ng-click="onToggeleChange()" ng-model="newStreamData.interruptOptions.type.option" name="endUserNode" id="endUserNode2"/><span class="opt-title"> {{'allinterruptions_endusers'| i18nString}}</span><span class="manageResponse" ng-click="openManageResponse('allowEndUser', $event)"> {{'manageResponse'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div ng-if="newStreamData.interruptOptions.type.option === 'endUser'" class="animateOptions col-xs-12 marginLeft10 marginTop10">
+                                <div class="linkedTaskLabel darkColor marginBottom">{{'resume_option'| i18nString}}</div>
+                                <div class="col-xs-12 radioDiv radioSection noPadding ">
+                                    <div class="radioInnerDiv">
+                                        <label for="confFromUserNodeEU">
+                                            <input value='confFromUser' type="radio"  ng-model="newStreamData.interruptOptions.resumeUxOptions.option" name="confFromUserNodeEU" id="confFromUserNodeEU"/><span class="opt-title">{{'allinterruptions_conffromuser'| i18nString}}</span> <span class="manageResponse" ng-click="openManageResponse('getConfirmatonWithUser', $event)"> {{'manageResponse'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="radioInnerDiv">
+                                        <label for="notifyUserNodeEU">
+                                            <input value='notifyUser' type="radio"  ng-model="newStreamData.interruptOptions.resumeUxOptions.option" name="notifyUserNodeEU" id="notifyUserNodeEU"/><span class="opt-title"> {{'allinterruptions_notifyuser'| i18nString}}</span><span class="manageResponse" ng-click="openManageResponse('notifyUserWithMessage', $event)"> {{'manageResponse'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="radioInnerDiv">
+                                        <label for="noConfFromUserNodeEU">
+                                            <input value='noConfFromUser' type="radio"  ng-model="newStreamData.interruptOptions.resumeUxOptions.option" name="noConfFromUserNodeEU" id="noConfFromUserNodeEU"/><span class="opt-title"> {{'allinterruptions_noconffromuser'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="checkbox checkbox-primary styledCSS " ng-click="toggleResumeoptions()">
+                                    <input  type="checkbox" id="checkboxIDNode2" ng-model="newStreamData.interruptOptions.resumeUxOptions.neverNotify">
+                                    <label for="checkboxIDNode" class="alwaysResume"> {{'always_resume_hold_task'| i18nString}}</label>
+                                </div>
+                    </div>
+                    
+                    <div class="col-xs-12 noPadding mt-15">
+                        <label class="required-field linkedTaskLabel noPadding holdQuantityLabel"> {{'Onhold_quality_label'| i18nString}}</label>
+                        <p class="customScriptDescription"> {{'Onhold_quality_desc'| i18nString}}</p>
+                        <div class="kr-sg-dropdowns w-200px">
+                            <div class="dropdown dropdown-open">
+                                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{newStreamData.interruptOptions.numTasksToHold || ('choose_an_option' | i18nString)}}</button>                                            
+                                <ul class="dropdown-menu content-menu">
+                                  <div class="position-relative" perfect-scroll dynamic-height dynaoffset="-360">
+                                    <li ng-repeat='count in onHoldQuality' ng-click="newStreamData.interruptOptions.numTasksToHold = count"><a >{{count}}</a></li>
+                                  </div>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="hintDiv col-xs-12 align-items-center width735"> 
+                            <div class="icon">
+                                <i class="bulbIconLayer btx-bulb"></i>
+                            </div> 
+                            <div class="description">
+                                {{'Pro_tip_more_nested_label'| i18nString}}
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+         
+        </fieldset>
+        <div class="col-xs-12 radioDiv form-group pointerEventNone noPadding faqInterruptions" ng-hide="newStreamData.type=='universalbot'">
+            <div  class="col-xs-12 noPadding radioDiv">
+                <p class="radioTitle"> {{'Interruption_behavior_faq_label'| i18nString}}</p>
+            </div>
+            <p class='faqInterruptionsInfoText'> {{'Interruption_behavior_faq_desc'| i18nString}} </p>
+            <div class="col-xs-12 radioDiv radioSection noPadding">
+                <div class="radioInnerDiv">
+                    <label for="respondAndResumeFaq">
+                        <input value='respondAndResume' type="radio"  ng-model="newStreamData.interruptOptions.faqBehaviour" ng-click="onToggeleChange()" name="respondAndResumeFaqs" id="respondAndResumeFaq"/><span class="opt-title"> {{'Interruption_behavior_respond_faq_label'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div class="radioInnerDiv">
+                    <label for="useHoldResumeForFaq">
+                        <input value='useHoldResume' ng-click="onToggeleChange()" type="radio"  ng-model="newStreamData.interruptOptions.faqBehaviour" name="useHoldResumeForFaqs" id="useHoldResumeForFaq"/><span class="opt-title"> {{'Interruption_behavior_execute_faq_label'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div class="help-hint-data mb-0" ng-if="newStreamData.interruptOptions.faqBehaviour == 'useHoldResume'">
+                    <div class="icon-block">
+                        <i class="btx-bulb"></i>
+                    </div>
+                    <div class="text-block">
+                        <span ng-bind-html="'hold_resume_protip'| i18nString:({link:$root.helpLinks.RAND_311})"></span>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </div>
+        <div class="col-xs-12 radioDiv form-group pointerEventNone noPadding faqInterruptions" ng-hide="newStreamData.type=='universalbot'">
+            <div  class="col-xs-12 noPadding radioDiv">
+                <p class="radioTitle"> {{'Behaviour_for_ambiguos_label'| i18nString}}</p>
+            </div>
+            <p class='faqInterruptionsInfoText'> {{'Behaviour_for_ambiguos_desc'| i18nString}} </p>
+            <div class="col-xs-12 radioDiv radioSection noPadding">
+                <div class="radioInnerDiv">
+                    <label for="newStreamData.ambiguousIntents.yes">
+                        <input ng-value='true' type="radio"  ng-model="newStreamData.interruptOptions.ambiguousIntents" name="newStreamData.ambiguousIntents" id="newStreamData.ambiguousIntents.yes"/><span class="opt-title"> {{'Present_ambiguous_label'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div class="radioInnerDiv">
+                    <label for="newStreamData.ambiguousIntents.no">
+                        <input ng-value='false' type="radio"  ng-model="newStreamData.interruptOptions.ambiguousIntents" name="newStreamData.ambiguousIntents" id="newStreamData.ambiguousIntents.no"/><span class="opt-title"> {{'donot_Present_ambiguous_label'| i18nString}}</span> 
+                    </label>
+                </div>               
+
+                <div class="help-hint-data mb-0" ng-if="newStreamData.interruptOptions.ambiguousIntents">
+                    <div class="icon-block">
+                        <i class="btx-bulb"></i>
+                    </div>
+                    <div class="text-block">
+                        <span ng-bind-html="'hold_resume_settings_protip'| i18nString:({link:$root.helpLinks.RAND_313})"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="col-xs-12 radioDiv form-group pointerEventNone noPadding mb-0">
+            <div  class="col-xs-12 noPadding radioDiv">
+                 <p class="radioTitle"> {{'Interruption_behaviour_smalltalk_label'| i18nString}}</p>
+             </div>
+             <p class='faqInterruptionsInfoText'>{{'Interruption_behaviour_smalltalk_desc'| i18nString}} </p>
+                <div class="col-xs-12 radioDiv radioSection noPadding">
+                    <div class="radioInnerDiv">
+                        <label for="respondAndResumeSmallTalk">
+                            <input value='respondAndResume' type="radio"  ng-model="newStreamData.interruptOptions.smallTalkBehaviour" ng-click="onToggeleChangeSmallTalk()" name="respondAndResumeSmallTalk" id="respondAndResumeSmallTalk"/><span class="opt-title"> {{'Respond_to_smalltalk_label'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="useHoldResumeForSmallTalk">
+                            <input value='useHoldResume' ng-click="onToggeleChangeSmallTalk()" type="radio"  ng-model="newStreamData.interruptOptions.smallTalkBehaviour" name="useHoldResumeForSmallTalk" id="useHoldResumeForSmallTalk"/><span class="opt-title"> {{'Execute_to_smalltalk_label'| i18nString}}</span> 
+                        </label>
+                    </div>                  
+
+                    <div class="help-hint-data mb-0" ng-if="newStreamData.interruptOptions.smallTalkBehaviour == 'useHoldResume'">
+                        <div class="icon-block">
+                            <i class="btx-bulb"></i>
+                        </div>
+                        <div class="text-block">
+                            <span ng-bind-html="'some_hold_resume'| i18nString:({link:$root.helpLinks.RAND_312})"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </form>
+
+</div>
+<div class="modal modalSlide fade right advancedControlManageResponse" data-backdrop="static"  role="dialog">
+    <div class="modal-dialog advancedControlManageResponseBody" dynamic-height dynaoffset="0">
+        
+    </div>
+</div>

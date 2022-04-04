@@ -1,0 +1,1547 @@
+<div class="ml-threshold" ng-class="{'read-only-div':displayMode==='VIEW'}">
+  <div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'mlThresholds_label'| i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent displayNone">
+            <input  placeholder="Search">
+            <i class="btx-search"></i>
+            <i class="btx-close displayNone"></i>
+        </div>
+        <div class="creationButton borderBtn displayNone">
+            <button class="titleBTN">button</button>
+        </div>
+        <div class="titleDropdown displayNone">
+
+            <div class="dropdown">
+                <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Dropdown name
+                    <i class="btx-carrot-up"></i>
+                </a>
+                    <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+   </ul>
+            </div>
+        </div>
+        <div class="titleOverflow displayNone">
+            <div class="dropdown">
+                <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                    <i class="btx-overflow"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+   </ul>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="SMtrainDiv ml-threshold-train" ng-if="trainShow">
+    <div class="helphint col-xs-12 marginB20T0">
+        <div class="col-xs-1 bulbicon">
+            <span><i class="btx-bulb" ng-src='{{bulbIcon}}'></i></span>
+        </div>
+        <div class="col-xs-12 textDiv"><span class="name">{{'threshold_configuration_protip'| i18nString}}</span>
+        </div>
+        <div class="trainUtteraceBtn col-xs-1">
+            <button type="button" class="pull-right btn btn-sm btn-outline trainBtn" ng-click="trainBot();"> {{'train'| i18nString}}</button>
+        </div>
+    </div>
+</div>
+<div ng-if="showTrainSavingDiv" class="col-xs-12 MLSavingProgressDiv ml-threshold-saving">
+    <div class="row saveRow">
+        <div class="col-xs-8 intentTraining"><span class="tip paddingRight10"> {{'bot_training'| i18nString}}</span>
+          <span class="trainIcon fa" ng-class="{'btx-billing-check':trainStatus.success,'btx-info':trainStatus.failed,'fa-spinner fa-spin':trainStatus.saving}" title="{{trainTitle}}"></span>
+        </div>
+        <div class="col-xs-4 text-right"><i ng-click="closeTrainSaveDiv()" class="btx-close"></i>
+        </div>
+    </div>
+</div>
+<div ng-if="showKgTrainingDiv" class="col-xs-12 MLSavingProgressDiv ml-threshold-saving">
+    <div class="row saveRow">
+        <div class="col-xs-8 intentTraining"><span class="tip paddingRight10">{{'knowledge_graph_training'| i18nString}}</span>
+          <i class="trainIcon fa" ng-class="{'btx-billing-check':kgTrainStatus.success,'btx-info':kgTrainStatus.failed,'fa-spinner fa-spin':kgTrainStatus.saving}" title="{{trainTitle}}"></i>
+        </div>
+        <div class="col-xs-4 text-right"><i ng-click="closeKgTrainDiv()" class="btx-close"></i>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <label class="thresholdsLabel">Thresholds & Configurations</label> -->
+  <div class="panel-group threshold-page" ng-hide="constants.hideThresholds" >
+    <div class="panel panel-default">
+      <a data-toggle="collapse" href="#fundamentalMeaningThresholds" class="headerThresholds collapsed fundamentalMeaning">
+        <div class="panel-heading">
+          <h4 class="panel-title"><i class="fa_chevron_right btx-carrot-right"></i>{{'Fundamental_Meaning_Model_label'| i18nString}}<i ng-click="redirectToLink('FM_MODEL_THRESHOLD_HELP', $event)" class="marginLeft5 helpIcon btx-help"></i>
+            <span class="settings">{{fmSettingsCount > 1 ? fmSettingsCount +  settings_label : fmSettingsCount+ setting_label}}</span>
+          </h4>
+          <p class="smallDesc"> {{'Fundamental_Meaning_Model_desc'| i18nString}}</p>
+        </div>
+      </a>
+      <div id="fundamentalMeaningThresholds" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="thresholdContainer">        
+            <div class="col-xs-12 noPadding">             
+              <div class="fmContainer">
+                    <div class="protip-info" ng-show="currLang.langVal === 'de' || currLang.langVal === 'fr' || currLang.langVal === 'it' || currLang.langVal === 'ru'">
+                      <div class="bulb-icon">
+                        <i class="btx-bulb"></i>
+                      </div>
+                      <div class="info-tip">{{'fm_protip'| i18nString}}</div>
+                      <div class="close-tip">
+                        <i class="btx-close"></i>
+                      </div>
+                    </div>
+                    <div class="protip-info" ng-hide="currLang.langVal === 'en' || currLang.langVal === 'de' || currLang.langVal === 'es' || currLang.langVal === 'fr'">
+                      <div class="bulb-icon">
+                        <i class="btx-bulb"></i>
+                      </div>
+                      <div class="info-tip">{{'fm_no_configurations_protip'| i18nString:({langName:currLang.langName})}}</div>
+                      <div class="close-tip">
+                        <i class="btx-close"></i>
+                      </div>
+                    </div>
+                    <ng-container ng-show="currLang.langVal === 'en' || currLang.langVal === 'de' || currLang.langVal === 'es' || currLang.langVal === 'fr'">
+                      <div class="col-xs-12 labelling noPadding">
+                        <p class="descTitle"> {{'Intent_Detection_using_Task_Name_label'| i18nString}}</p>
+                        <p class="description"> {{'Intent_Detection_using_Task_Name_desc'| i18nString}}
+                          <i class="helpIcon marginLeft5 cursor-pointer btx-help tooltip-default-behaviour w-200" tooltip-placement="top" tooltip="{{FMPopover}}"></i>
+                        </p>               
+                      </div>
+
+                      <toggle-switch ng-model="intentDetect.value" ng-change="intentDetectChange()" class="pull-left thresholdProtip"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+                      </toggle-switch>
+                      
+                      <div class="protip-info width735" ng-show="!intentDetect.value">
+                        <div class="bulb-icon">
+                          <i class="btx-bulb"></i>
+                        </div>
+                        <div class="info-tip">{{'intent_protip'| i18nString}}</div>
+                        <div class="close-tip">
+                          <i class="btx-close"></i>
+                        </div>
+                      </div>
+                    </ng-container>
+
+
+                    <ng-container ng-show="currLang.langVal === 'en' || currLang.langVal === 'de' || currLang.langVal === 'es' || currLang.langVal === 'fr'">
+                      <!-- FM Threshold -->
+                      <div class="col-xs-12 labelling noPadding" ng-show="selectedStream.type !== 'universalbot'" ng-class="{'read-only':displayMode === 'VIEW'}">
+                        <div class="descTitle">{{'fm_threshold_label' | i18nString}}</div>
+                        <p class="description">{{'fm_threshold_desc' | i18nString}}</p>                        
+                      </div>
+
+                      <toggle-switch ng-show="selectedStream.type !== 'universalbot'" ng-class="{'read-only':displayMode === 'VIEW'}" ng-model="intentDetect.isFMThreshold" ng-change="fmThresholdChange()" class="pull-left">
+                      </toggle-switch>
+                      
+                      <!-- FM Threshold ranker -->
+                      <div class="col-xs-12 noPadding" ng-show="intentDetect.isFMThreshold && selectedStream.type !== 'universalbot'">
+                        <div class="description mb-10 mt-0">{{'fm_threshold_ranker_desc' | i18nString}}</div>
+                        <div class="thresholdDir">
+                          <div class="col-xs-12 single-slider noPadding mb-10" id="fmThreshold-slider" ng-mouseover="showReset('.reset8','#slider8')" ng-mouseleave="hideReset('.reset8')">
+                              <a class="resetButton reset8 pull-right hide" ng-click="resetDefaultVal('#slider11')">{{'reset_btn_label'| i18nString}}</a>
+                              <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">20%</span></div>
+                              <span id="slider11" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="20" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="panel-group threshold-page">
+    <div class="panel panel-default">
+        <a data-toggle="collapse" href="#knowledgeCollectionThresholds" class="headerThresholds collapsed knowledgeCollection">
+          <div class="panel-heading">
+            <h4 class="panel-title"><i class="fa_chevron_right btx-carrot-right"></i>{{'thresholds_Knowledge_Graph_label'| i18nString}}<i ng-click="redirectToLink('KG_MODEL_THRESHOLD_HELP', $event)" class="marginLeft5 helpIcon btx-help"></i>
+              <span class="settings">{{currLang.langVal === 'en'?'10':'8'}} {{'settings'| i18nString}}</span>
+            </h4>
+            <p class="smallDesc"> {{'thresholds_Knowledge_Graph_desc'| i18nString}}</p>
+          </div>
+        </a>
+        <div id="knowledgeCollectionThresholds" class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="thresholdContainer" ng-show='autoCorrectLangs.indexOf(currLang.langVal) > -1'>
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle" tooltip-placement="right">{{'Thresholds_autocorrection_label'| i18nString}}</div>
+                <div class="description">{{'Thresholds_autocorrection_enable_label'| i18nString}}</div>              
+              </div>
+
+              <toggle-switch ng-model="kgCollection.autoCorrect" ng-change="showAutoCorrectModal($event)" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+              </toggle-switch>
+
+              <div class="thresholdDir ng-hide">
+                <div class="col-xs-12 single-slider noPadding" id="auto-correct-slider" ng-mouseover="showReset('.reset9','#slider9')" ng-mouseleave="hideReset('.reset9')">
+                    <a class="resetButton reset9 pull-right hide" ng-click="resetDefaultVal('#slider9')"> {{'reset_btn_label'| i18nString}}</a>
+                    <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">50%</span></div>
+                    <span id="slider9" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="50" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="thresholdContainer">
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle" tooltip-placement="right">{{'Bot_synonyms_label'| i18nString}} <i class="helpIcon btx-help" tooltip-placement="right" tooltip=" {{'synonyms_concepts'| i18nString}}"></i></div>
+                <div class="description">{{'Thresholds_bot_synonyms_desc'| i18nString}}</div>              
+              </div>
+
+              <toggle-switch ng-model="kgCollection.useBotSynonyms" ng-change="showKgSynonymModal($event)" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+              </toggle-switch>
+            </div>
+
+            <div class="thresholdContainer" ng-if="currLang.langVal === 'en' && selectedStream.type !== 'universalbot'">              
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle" tooltip-placement="right">{{'lematization' | i18nString }}</div>
+                  <div class="description">{{'lematization_desc' | i18nString }}</div>              
+                </div>
+
+                <toggle-switch ng-model="kgCollection.enPatternLemma" ng-change="toggleLemPattern()" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+                </toggle-switch>
+            </div>
+
+            <div class="thresholdContainer" ng-hide="constants.hideThresholds">
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle">{{'Thresholds_path_coverage_label'| i18nString}}</div>
+                <div class="description">{{'Thresholds_path_coverage_desc'| i18nString}}</div>              
+              </div>
+       
+              <div class="thresholdDir">
+                <div class="col-xs-12 single-slider noPadding mb-10" id="path-slider" ng-mouseover="showReset('.reset8','#slider8')" ng-mouseleave="hideReset('.reset8')">
+                    <a class="resetButton reset8 pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+                    <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">100%</span></div>
+                    <span id="slider8" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="100" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="thresholdContainer triple-slider-thresh" ng-mouseleave="hideReset('.resetdual')" ng-mouseover="showReset('.resetdual','#dual-slider')" ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">     
+                <div class="col-xs-12 labelling noPadding mb-15">
+                  <div class="descTitle">{{'Thresholds_minimum_def_label'| i18nString}}</div>
+                  <div class="description">{{'Thresholds_minimum_def_desc'| i18nString}}</div>              
+                </div>
+          
+                <span class='pull-left triple-slider-0'>0</span>
+                <div id='triple-slider' class='col-xs-12' ng-mouseup='tripleSliderChanged($event)'></div>
+                <span class='triple-slider-100'>100%</span>
+
+                <a class="resetButton resetdual pull-right hide resetTripleSlid" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+
+                <div class="thresholdDir">
+                  <div class="col-xs-12 dual-slider noPadding ng-hide" ng-mouseover="showReset('.resetdual','#dual-slider')" ng-mouseleave="hideReset('.resetdual')">
+                      <a class="resetButton resetdual pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+                      <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">100%</span></div>
+                      <span id="dual-slider" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="100" data-slider-step="1"  ticks-tooltip="false" data-slider-value="[60,80]"></span>
+                  </div>
+                  <div class="col-xs-12 noPadding"><span class="circle cb-1"></span><span class="iconDesc"> {{'Knowledge_grey_desc'| i18nString}}</span></div>
+                  <div class="col-xs-12 noPadding"><span class="circle cb-2"></span><span class="iconDesc"> {{'Knowledge_orange_desc'| i18nString}}</span></div>
+                  <div class="col-xs-12 noPadding"><span class="circle cb-3"></span><span class="iconDesc"> {{'Knowledge_ash_desc'| i18nString}}</span></div>
+                  <div class="col-xs-12 noPadding"><span class="circle cb-4"></span><span class="iconDesc"> {{'Knowledge_green_desc'| i18nString}}</span></div>
+                </div>
+            </div>
+
+            <div class="thresholdContainer" ng-hide="constants.hideThresholds">             
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle">{{'KG_Suggestions_Count_label'| i18nString}}</div>
+                <div class="description">{{'KG_Suggestions_Count_desc'| i18nString}}</div>              
+              </div>
+              
+              <div class="thresholdDir">
+                <div class="col-xs-12 single-slider noPadding" id="suggestionKG-slider" ng-mouseover="showReset('.reset6','#slider6')" ng-mouseleave="hideReset('.reset6')">
+                    <a class="resetButton reset6 pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+                    <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">5</span></div>
+                    <span id="slider6" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="5" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="thresholdContainer" ng-hide="constants.hideThresholds">           
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle">{{'Proximity_of_Suggest_label'| i18nString}}</div>
+                <div class="description">{{'Proximity_of_Suggest_desc'| i18nString}}</div>              
+              </div>
+
+              <div class="thresholdDir">
+                <div class="col-xs-12 single-slider noPadding" id="matchProx-slider" ng-mouseover="showReset('.reset7','#slider7')" ng-mouseleave="hideReset('.reset7')">
+                    <a class="resetButton reset7 pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+                    <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">50%</span></div>
+                    <span id="slider7" class="sliderContainerKC width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="50" data-slider-step="5"  ticks-tooltip="false" data-slider-value="0"></span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="thresholdContainer">
+              <div class="col-xs-12 noPadding form-group mb-10">                
+                  <div class="col-xs-12 labelling noPadding mb-15">
+                    <div class="descTitle">{{'Manage_Long_Respons_label'| i18nString}}</div>
+                    <div class="description">{{'Manage_Long_Respons_desc'| i18nString}}</div>              
+                  </div>
+
+                  <div class="col-xs-12 labelling noPadding radioDiv radioSection">
+                      <div class="radioInnerDiv">
+                          <label for="noReadMore">
+                              <input value='false' type="radio" data-ng-value="false"  ng-model="faqLong.readMore" name="noreadmore" id="noReadMore" ng-click="updateFaqLongResponse()" />
+                              <span class="span-title">{{'Do_not_show_label'| i18nString}}</span> 
+                          </label>
+                      </div>
+                      <div class="radioInnerDiv">
+                          <label for="readMore">
+                              <input value='true' type="radio" data-ng-value="true"  ng-model="faqLong.readMore" name="readmore" id="readMore" ng-click="updateFaqLongResponse()" />
+                              <span class="span-title"> {{'Show_more_label'| i18nString}}
+                              </span> 
+                          </label>
+                          <div ng-show="faqLong.readMore">
+                            <form name="customUrlForm">
+                              <div class="checkbox checkbox-primary styledCSS alwaysResume marginleft20 paddingLeft5 noMarginTop">
+                                  <input type="checkbox" id="customUrlCheck" ng-checked = "faqLong.useCustomReadMoreURL" ng-model="faqLong.useCustomReadMoreURL" ng-click="toggleCheck()">
+                                  <label for="customUrlCheck" class="alwaysResume"> {{'Use_custom_label'| i18nString}} <i class="manageLongResponse displayInline btx-help" data-toggle="popover" data-placement="top" ng-click="preventEvent($event)"></i>
+                                  </label>
+                                  <div class="row custom marginleft20 paddingLeft5 paddingTop10" ng-show="faqLong.useCustomReadMoreURL">
+                                    <div class="tableRow">
+                                      <div class="tableCell">
+                                        <input type="text" class="form-control" placeholder="{{'enter_custom_url'| i18nString}}" ng-model="faqLong.customReadMoreURL" ng-required="true">
+                                      </div>
+                                      <div class="tableCell paddingLeft15 alignBtn">
+                                        <button class="btn btn-sm btn-primary" ng-disabled="customUrlForm.$invalid" ng-click="updateFaqLongResponse()"> {{'update'| i18nString}}</button>
+                                      </div>
+                                    </div>                                      
+                                  </div>
+                              </div>
+                            </form>                            
+                        </div>
+                      </div>         
+                    </div>
+              </div>
+            </div>
+
+            <div class="thresholdContainer"  ng-show='showSearchInAns'>
+                <div class="col-xs-12 noPadding form-group m-0">
+                  <div class="col-xs-12 labelling noPadding">
+                    <div class="descTitle">{{'Search_in_Answer_label'| i18nString}}</div>
+                    <div class="description">{{'Search_in_Answer_desc'| i18nString}}</div>              
+                  </div>
+
+                  <div class="faq-search-enable-data">
+
+                    <toggle-switch ng-model="faqSearch.enabled" ng-change="showKgModal()" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+                    </toggle-switch>
+                    <div ng-show="faqSearch.enabled" class="kr-sg-checkbox">
+                      <input id="portableAnswer" ng-model="faqSearch.notifyUser" ng-checked="faqSearch.notifyUser" ng-click="updateFaqSearch()" class="checkbox-custom" type="checkbox">
+                      <label for="portableAnswer" class="checkbox-custom-label">{{'inform_end_user_probable_answer'| i18nString}}</label>
+                      <a href="javascript:void(0)" class="manageFont" ng-click="openManageResponse('probableSearch',$event)"> {{'manageResponse'| i18nString}}</a>
+                    </div>
+                  </div>                  
+
+                  <div class="col-xs-12 labelling noPadding radioDiv radioSection mb-10 search-in-answer" ng-show="faqSearch.enabled">
+                    <div class="radioInnerDiv mb-10">
+                      <label for="completeResponse">
+                          <input type="radio" value="complete"  ng-model="faqSearch.responseType" name="complete" id="completeResponse" ng-click="updateFaqSearch()" />
+                          <span class="span-title p-0">{{'show_complete_response'| i18nString}}
+                            <p class="opt-title marginleft20 paddingLeft5">{{'display_complete_response_asscociated_with_crre_res'| i18nString}}</p>
+                          </span> 
+                      </label>
+                    </div>
+                    <div class="radioInnerDiv mb-10">
+                      <label for="paragraph">
+                          <input type="radio" value="relevant"  ng-model="faqSearch.responseType" name="relevant" id="paragraph" ng-click="updateFaqSearch()" />
+                          <span class="span-title p-0">{{'show_relevant_paragraph'| i18nString}}
+                            <p class="opt-title marginleft20 paddingLeft5">{{'display_paragraph_matched_with_user_utterence'| i18nString}}</p>
+                          </span> 
+                      </label>
+                    </div>
+                    <div class="radioInnerDiv mb-10">
+                      <label for="paragrapReadMore">
+                          <input type="radio" value="relevantWithReadMore" ng-model="faqSearch.responseType" name="readMore" id="paragrapReadMore" ng-click="updateFaqSearch()" />
+                          <span class="span-title p-0">{{'show_relevant_paragraph_with_readmore_link'| i18nString}}<p class="opt-title marginleft20 paddingLeft5 noMarginBottom">{{'display_paragraph_matched_with_user_utterence_with_readmore_link'| i18nString}}</p></span> 
+                      </label>
+                      <div ng-show="faqSearch.responseType === 'relevantWithReadMore'">
+                        <form name="faqSearchForm">
+                          <div class="checkbox custom checkbox-primary styledCSS alwaysResume marginleft20 paddingLeft5 noMarginTop">
+                            <div>
+                                  <input type="checkbox" id="faqSearchCustomUrl" ng-model="faqSearch.useCustomReadMoreURL" ng-checked="faqSearch.useCustomReadMoreURL" ng-click="toggleCheckSearch()">
+                                  <label for="faqSearchCustomUrl" class="alwaysResume">{{'use_custom_url_for_readmore_link'| i18nString}}
+                                    <span class="faqSearchLink displayInline" data-toggle="popover" data-placement="top" ng-click="preventEvent($event)"><i class="helpIcon helpIcon"></i></span></label>
+                                  <div class="row custom marginleft20 paddingLeft5 paddingTop10" ng-show="faqSearch.useCustomReadMoreURL">
+                                      <div class="tableRow">
+                                        <div class="tableCell">
+                                            <input type="text" class="form-control" placeholder="{{'enter_custom_url'| i18nString}}" ng-model="faqSearch.customReadMoreURL" ng-required="true">
+                                          </div>
+                                          <div class="tableCell paddingLeft15 alignBtn">
+                                            <button class="btn btn-sm btn-primary" ng-disabled="faqSearchForm.$invalid" ng-click="updateFaqSearch()">  {{'update'| i18nString}}</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>            
+                  </div>
+                </div>
+            </div>
+
+            <div class="clear-fix col-xs-12 noPadding">                
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle">{{'Qualify_Contextual_Paths_label'| i18nString}}</div>
+                  <div class="description">{{'Qualify_Contextual_Paths_desc'| i18nString}}</div>              
+                </div>
+                <toggle-switch ng-model='contextObj.qualifyContextualPaths' yes-no="true" ng-change="qualifyContextualPaths()"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}"></toggle-switch>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+   <bt-standard-response class="manageResponseIndexDiv" ng-if="showStandardResponses" cb="manageResponseCB"></bt-standard-response>
+
+
+  <div class="panel-group threshold-page" ng-hide="constants.hideThresholds" ng-class="{'read-only-div':displayMode==='VIEW'}">
+    <div class="panel panel-default">
+      <a data-toggle="collapse" href="#machineLearningThresholds" class="headerThresholds collapsed machinelearning">
+        <div class="panel-heading">
+          <h4 class="panel-title"><i class="fa_chevron_right btx-carrot-right"></i>{{'machine_learning'| i18nString}}<i ng-click="redirectToLink('ML_MODEL_THRESHOLD_HELP', $event)" class="marginLeft5  btx-help"></i><span class="settings">{{mlSettingsCount > 1 ? mlSettingsCount +  settings_label : mlSettingsCount+ setting_label}}</span>
+            <span class="ml-savingStatus" ng-if="refreshStatus2.length">
+              <i class="btx-return refreshSpin" ng-show="refreshStatus2 === 'refresh-spin'"></i>
+              <i class="btx-close" ng-show="refreshStatus2 === 'times'"></i>
+              <i class="btx-check" ng-show="refreshStatus2 === 'check'"></i>              
+            </span>
+          </h4>
+          <p class="smallDesc"> {{'Thresholds_machine_learn_desc'| i18nString}}</p>
+        </div>
+      </a>
+      <div id="machineLearningThresholds" class="panel-collapse collapse">
+        <div class="panel-body">
+            <!-- DEFAULT INTENT MODEL & DIALOG INTENT MODEL: TYPE 2, 3 -->
+            <ng-container ng-if="multipIntentModels.configurationValue">
+              <!-- DEFAULT INTENT MODEL CONFIG -->
+              <div class="defaultIntentModel col-xs-12 noPadding">
+                <div class="col-xs-12 labelling noPadding">
+                    <label> {{'bot_level_intent_model_config_label' | i18nString}}</label>
+                    <p class="mb-10"> {{'bot_level_intent_model_config_desc' | i18nString}}</p>
+                </div>   
+                <div class="table-data">
+                  <div class="t-header col-xs-12">
+                      <div class="col-xs-2 title">{{'network_type' | i18nString}}</div>
+                      <div class="col-xs-2 title">{{'threshold_label'| i18nString }}</div>
+                      <div class="col-xs-6 title">{{'definitive_score'| i18nString}}</div>
+                      <div class="col-xs-2 title"></div>
+                  </div>
+                  <div class="t-body" ng-click="customConfigurations(multipIntentModels.defaultIntents, 'default')">                    
+                      <div class="col-xs-2 title">{{ (multipIntentModels.defaultIntents.networkType || 'Standard') || '---'}}</div>
+                      <div class="col-xs-2 title">{{ multipIntentModels.defaultIntents.minThreshold || '---'}}</div>
+                      <div class="col-xs-6 title">{{ multipIntentModels.defaultIntents.exactMatchThreshold + '%' || '---'}}</div>
+                      <div class="col-xs-2 title active-status">
+                          <div class="configure" title="{{'configure' | i18nString}}">{{'configure' | i18nString}}</div>
+                      </div>
+                  </div>
+                </div>      
+              </div>
+              <!-- DIALOG INTENT MODELS CONFIG -->
+              <div class="dialogIntentModel col-xs-12 noPadding">
+                <div class="col-xs-10 labelling noPadding">
+                    <label> {{'dialog_intent_model_config_label' | i18nString}}</label>
+                    <p class="mb-10"> {{'dialog_intent_model_config_desc'| i18nString}}</p>
+                </div>   
+                <div class="col-xs-2 noPadding addNew">
+                  <button class="kr-sg-button-primary btn_md" ng-click="customConfigurations('', 'new')" ng-disabled="displayMode === 'VIEW'">{{'add_new' | i18nString}}</button>
+                </div>
+                <div class="table-data">
+                  <div class="t-header col-xs-12">
+                      <div class="col-xs-2 title">{{'dialogs' | i18nString}}</div>
+                      <div class="col-xs-2 title">{{'group_name_small' | i18nString }}</div>
+                      <div class="col-xs-2 title">{{'network_type' | i18nString}}</div>
+                      <div class="col-xs-2 title">{{'threshold_label'| i18nString }}</div>
+                      <div class="col-xs-2 title">{{'definitive_score'| i18nString}}</div>
+                      <div class="col-xs-2 title"></div>
+                  </div>
+                  <ng-container ng-if="multipIntentModels.dialogIntents.length">
+                    <div class="t-body" ng-repeat="cell in multipIntentModels.dialogIntents track by $index" ng-click="customConfigurations(cell, 'update')">   
+                      <div class="col-xs-2 title">
+                        <ng-container  ng-if="cell.dialogIntents.length"><div class="dialogs" ng-repeat="intent in cell.dialogIntents | slice:0:2"><span class="dialog-name">{{intent.name || '---'}}</span><span ng-if="cell.dialogIntents.length > 2 && $last" class="dialog-count">+{{(cell.dialogIntents.length - 2)}}</span></div></ng-container>
+                        <ng-container  ng-if="!cell.dialogIntents.length">{{'---'}}</ng-container>
+                      </div>                 
+                      <div class="col-xs-2 title">{{cell.name || '---'}}</div>
+                      <div class="col-xs-2 title">{{(cell.network || 'Standard') || '---'}}</div>
+                      <div class="col-xs-2 title">{{cell.minThreshold  || '---'}}</div>
+                      <div class="col-xs-2 title">{{cell.exactMatchThreshold + '%' || '---'}}</div>
+                      <div class="col-xs-2 title active-status">
+                        <div class="configure" title="{{'configure' | i18nString}}">{{'configure' | i18nString}}</div>
+                        <div class="delete-row" ng-hide="displayMode === 'VIEW'"><img ng-src="{{trashIcon}}"  title="{{'Delete'}}" ng-click="$event.stopPropagation();openDeleteConfirm(cell, $index)"></div>
+                        <div class="copy" title="{{'Clone'}}" ng-hide="displayMode === 'VIEW'"><img  ng-src="{{assetsBase}}debugConsoleIcons/copyJson-gray.svg" ng-click="$event.stopPropagation();customConfigurations(cell, 'clone')"></div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container ng-if="!multipIntentModels.dialogIntents.length">
+                      <div class="col-xs-12 noData">
+                        {{'no_data_available_label' | i18nString}}
+                      </div>
+                  </ng-container>
+                </div>      
+              </div>
+            </ng-container>
+            <!-- NETWORK TYPE TYPE: 1 -->
+            <ng-container ng-if="!multipIntentModels.configurationValue">
+              <!-- NETWORK TYPE -->
+              <div class="networkType mb-15"  ng-show="checkNetworkTypeConfig('networkType')" ng-class="{'read-only':displayMode === 'VIEW'}">                
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle">{{'network_type' | i18nString}} 
+                    <span ng-if="(nluLanguage === 'ge')" class="networktype-wc" tooltip-placement="top" tooltip="{{'network_type_tooltip' | i18nString}}"><i class="btx-warning" ></i></span>
+                  </div>
+                  <div class="description mb-5">{{'network_type_desc' | i18nString}}</div>              
+                </div>
+                <div class="kr-sg-dropdowns w-100" >                 
+                  <div class="dropdown dropdown-open" ng-class="{'disable-input-freeze': (nluLanguage === 'ge')}">
+                      <button class="dropdown-toggle dropdown-input" data-toggle="dropdown" ng-class="{'disable-input': (nluLanguage === 'ge')}">{{networkTypeList.value?networkTypeList.value:networkTypeList.defaultValue}}</button>                                            
+                      <ul class="dropdown-menu content-menu h-auto" perfect-scroll dynamic-height dynaoffset="-360" height-property="height">                                              
+                        <li ng-repeat="type in networkTypeList.range">
+                          <a href="#" ng-click="addNetworkTypeConfig(networkTypeList,type)">{{type}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                </div>
+              </div>
+              <!-- ML THRESHOLD -->
+              <div class="thresholdContainer" ng-show="checkNetworkTypeConfig('mlThreshold')">
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle">{{'ml_Threshold_label'| i18nString}}</div>
+                  <div class="description mb-0">{{'ml_Threshold_des'| i18nString}}</div>              
+                </div>             
+                <div class="thresholdDir">
+                    <div class="col-xs-12 single-slider noPadding" id="mlThreshold-slider" ng-mouseover="showReset('.reset3','#slider3')" ng-mouseleave="hideReset('.reset3')">
+                        <a class="resetButton reset3 pull-right hide" ng-click="resetDefaultVal()">Reset</a>
+                        <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">1</span></div>
+                        <span id="slider3" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="1" data-slider-step="0.05"  ticks-tooltip="false" data-slider-value="0"></span>
+                    </div>
+                </div>
+              </div>
+              <!-- ML DEFINITIVE SCORE -->
+              <div class="thresholdContainer" ng-show="checkNetworkTypeConfig('mlDefinitiveScore')">
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle">{{'Ml_definitivescore_label'| i18nString}}</div>
+                  <div class="description">{{'Ml_definitivescore_desc'| i18nString}}</div>              
+                </div>               
+                <div class="thresholdDir">
+                  <div class="col-xs-12 single-slider noPadding" id="defIntent-slider" ng-mouseover="showReset('.reset4','#slider4')" ng-mouseleave="hideReset('.reset4')">
+                      <a class="resetButton reset4 pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+                      <div class="countThreshold"><span class="pull-left">80%</span><span class="pull-right">100%</span></div>
+                      <span id="slider4" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="80" data-slider-tooltip="hide" data-slider-max="100" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                  </div>
+                </div>
+              </div>
+              <!-- BOT SYNONYMS -->
+              <div class="thresholdContainer mb-0">
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle">{{'Bot_synonyms_label'| i18nString}}</div>
+                  <div class="description">{{'Thresholds_bot_synonyms_ml_desc'| i18nString}}</div>              
+                </div>
+                
+                <toggle-switch ng-model="intentParams.useSynonyms" ng-change="showModal()" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+                </toggle-switch>                            
+              </div>
+              <!-- STOP WORDS -->
+              <div class="thresholdContainer mb-0" ng-show="checkNetworkTypeConfig('stopWords')">
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle">{{'Thresholds_stop_words_label'| i18nString}}</div>
+                  <div class="description">{{'Thresholds_stop_words_desc'| i18nString}} <span class="bthelpLinksTextcolor pointer-hand" ng-click="manageStopWords('#manageStopWords')">  {{'manage'| i18nString}}</span></div>              
+                </div>
+
+                <toggle-switch ng-model="intentParams.useStopwords" ng-change="enableDisableStopWords()" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+                </toggle-switch>
+
+     
+                <!-- <div class='row'>
+                  <div class='toggle-synonym pull-left contextual-path-toggle'>
+                      <span class='toggle-no' ng-click="enableDisableStopWords()" ng-class="{'toggleActive':!intentParams.useStopwords , 'toggleInactive' : intentParams.useStopwords}"> {{'Disable'| i18nString}}</span>
+                      <div class='toggleSwitch' ng-click="enableDisableStopWords()">
+                        <toggle-switch ng-model='intentParams.useStopwords'></toggle-switch>
+                      </div>
+                    <span class='toggle-yes' ng-click="enableDisableStopWords()" ng-class="{'toggleActive':intentParams.useStopwords , 'toggleInactive': !intentParams.useStopwords}">{{'Enable'| i18nString}}</span>
+                  </div>
+                </div> -->
+              </div>
+              <!-- FEATURE EXTRACTION -->
+              <div class="featureContainer m-0" ng-show="checkNetworkTypeConfig('featureExtraction')">               
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle">Feature Extraction <span class="featureExtraction"><i class="questionInfo btx-help" ng-click="redirectToLink('FEATURE_EXTRACTION',$event)"></i></span></div>
+                  <div class="description">Choose the approach for generating the word sequences to be used in the training model.</div>              
+                </div>
+                <div class="thresholdDir">                                              
+                  <div class="group-radiobutton noPadding" ng-class="{'read-only':displayMode === 'VIEW'}">                        
+                      <div class="kr-sg-radiobutton">
+                          <input id="ngram" ng-change="saveGram('n_gram')" ng-model="intentParams.features" name="ngram" id="ngram" class="radio-custom" type="radio" value="n_gram">
+                          <label for="ngram" class="radio-custom-label">n-gram</label>
+                      </div>
+                      <div class="kr-sg-radiobutton">
+                          <input id="skip-gram" value="skip_gram" ng-change="saveGram('skip_gram')" ng-model="intentParams.features" name="skip-gram" class="radio-custom" type="radio">
+                          <label for="skip-gram" class="radio-custom-label">skip-gram</label>
+                      </div>
+                  </div>            
+                </div>
+              </div>
+          
+              <div class="thresholdContainer mb-15" ng-show="intentParams.type==='SGD_V2'">                   
+                <div class="col-xs-12 labelling noPadding mb-15">
+                  <div class="descTitle">{{'ml_upgrade'| i18nString}}</div>
+                  <div class="description">{{'improved_ml_model_available'| i18nString}}</div>              
+                </div>
+                <div class='row upgrade'>
+                    <button type="button" ng-click="upgradeML('V3')" class="kr-sg-button-primary btn_lg upgradeML"> {{'upgrade_now'| i18nString}}</button><i class="bthelpLinksTextcolor pointer-hand" ng-click="redirectToLink('ML_MODEL_THRESHOLD_HELP', $event)">{{'ml_threshold_whats_new'| i18nString}}</i>
+                </div>
+              </div>
+              <!-- SEQUENCE LENGTH, NER MODEL, ENTITY PLACEHOLDER -->
+              <div ng-hide="intentParams.type==='SGD_V2'" class="intentParams">
+                  <div class="thresholdContainer" ng-show="intentParams.features === 'n_gram' && checkNetworkTypeConfig('featureExtraction')">                      
+                      <div class="col-xs-12 labelling noPadding">
+                        <div class="descTitle">{{'N_gram_seq_label'| i18nString}}</div>
+                        <div class="description">{{'N_gram_seq_desc'| i18nString}}</div>              
+                      </div>
+                      <div class="thresholdDir">
+                          <div class="col-xs-12 single-slider noPadding" id="nGram-slider" ng-mouseover="showReset('.resetNgram','#nGramSlider')" ng-mouseleave="hideReset('.resetNgram')">
+                              <a class="resetButton resetNgram pull-right hide" ng-click="resetNgram()">{{'reset_btn_label'| i18nString}}</a>
+                              <div class="countThreshold"><span class="pull-left">{{intentParams.minngram}}</span><span class="pull-right">{{intentParams.maxngram}}</span></div>
+                              <span id="nGramSlider" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-tooltip="hide" data-slider-max="4" data-slider-step="1"  ticks-tooltip="false" data-slider-value="1"></span>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="thresholdContainer" ng-show="intentParams.features === 'skip_gram' && checkNetworkTypeConfig('featureExtraction')">                     
+                      <div class="col-xs-12 labelling noPadding">
+                        <div class="descTitle">{{'sequence_length' | i18nString}}</div>
+                        <div class="description">{{'sequence_desc' | i18nString}}</div>              
+                      </div>
+                      <div class="thresholdDir">
+                          <div class="col-xs-12 single-slider noPadding" id="skipgramseq-slider">
+                              <div class="countThreshold"><span class="pull-left">2</span><span class="pull-right">4</span></div>
+                              <span id="skipGramSeq" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="2" data-slider-tooltip="hide" data-slider-max="4" data-slider-step="1"  ticks-tooltip="false" data-slider-value="1"></span>
+                          </div>
+                      </div>                  
+
+                      <div class="col-xs-12 labelling noPadding">
+                        <div class="descTitle">{{'maximum_skip_distance' | i18nString}}</div>
+                        <div class="description">{{'maximum_skip_desc' | i18nString}}</div>              
+                      </div>
+
+                      <div class="thresholdDir">
+                          <div class="col-xs-12 single-slider noPadding" id="skipgramdis-slider">
+                              <div class="countThreshold"><span class="pull-left">1</span><span class="pull-right">3</span></div>
+                              <span id="skipGramMax" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-tooltip="hide" data-slider-max="3" data-slider-step="1"  ticks-tooltip="false" data-slider-value="1"></span>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- NER MODEL -->
+                  <div class="thresholdContainer" ng-show="checkNetworkTypeConfig('netModel')">               
+                    <div class="col-xs-12 labelling noPadding">
+                      <div class="descTitle">{{'NER_Model_label'| i18nString}}</div>
+                      <div class="description">{{'NER_Model_desc'| i18nString}}</div>              
+                    </div>
+                    <div class="thresholdDir">                                        
+                        <div class="group-radiobutton noPadding" ng-class="{'read-only':displayMode === 'VIEW'}">                        
+                          <div class="kr-sg-radiobutton">
+                              <input id="conRandomFld" name="conRandomFld" ng-change="savenerParams('corenlp')" ng-model="payload.nerParams.type" class="radio-custom" type="radio" value="corenlp">
+                              <label for="conRandomFld" class="radio-custom-label">{{'Conditional_random_label'| i18nString}}</label>
+                          </div>
+                          <div class="kr-sg-radiobutton">
+                              <input value='spacy' ng-change="savenerParams('spacy')" ng-model="payload.nerParams.type" name="spacy"  id="spacyfldCM" class="radio-custom" type="radio">
+                              <label for="spacyfldCM" class="radio-custom-label">{{'Deep_neural_ntwk_label'| i18nString}}</label>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <!-- ENTITY PLACEHOLDER -->
+                  <div class="thresholdContainer placeholders" ng-show="checkNetworkTypeConfig('entityPlaceHolders')">                      
+                      <div class="col-xs-12 labelling noPadding">
+                        <div class="descTitle">{{'Entity_place_holder_label'| i18nString}}</div>
+                        <div class="description">{{'Entity_place_holder_desc'| i18nString}}</div>              
+                      </div>
+                      <toggle-switch ng-model="intentParams.usePlaceholders" ng-change="enableDisablePlaceholders()" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+                      </toggle-switch>
+                  </div>
+                  <!-- UPGRADE SWITCH-->
+                  <div class="col-xs-12 upgrade-switch-btn">
+                    <div class="pull-right">
+                      <span class="switch-color" ng-click="upgradeML('SGD_V2')"> {{'switch_label'| i18nString}} </span>  
+                      {{'to_older_version_label'| i18nString}}
+                    </div>
+                  </div>
+              </div>
+            </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <div class="panel-group threshold-page">
+    <div class="panel panel-default">
+      <a data-toggle="collapse" href="#rankingAndResolverEngine" class="headerThresholds collapsed rankingResolverEngine">
+        <div class="panel-heading">
+          <h4 class="panel-title"><i class="fa_chevron_right btx-carrot-right"></i>{{'ranking_resolver_engine'| i18nString}}<i ng-click="redirectToLink('RR_MODEL_THRESHOLD_HELP', $event)" class="marginLeft5 helpIcon btx-help"></i>
+            <span class="settings">{{RRSettingsCount > 1 ? RRSettingsCount +  settings_label : RRSettingsCount+ setting_label}}</span></h4>
+          <p class="smallDesc">{{'configure_ranking'| i18nString}}</p>
+        </div>
+      </a>
+      <div id="rankingAndResolverEngine" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="thresholdContainer">
+
+            <ng-container>
+              <!-- Prefer Definitive Matches -->           
+
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle">{{'prefer_definitive_matches_label' | i18nString}}</div>
+                <div class="description">{{preferDefinitiveDesc | limitTo:preferDefinitiveDescLimit}} <a href="" ng-hide="preferDefinitiveDescLimit > 100" ng-click="preferDefinitiveShowMore()">{{'read_more_label' | i18nString}}</a></div>              
+              </div>
+
+              <toggle-switch ng-model="rankResolveEngine.isPreferDefinitiveMatch" ng-change="RREngineChange('isPreferDefinitiveMatch')" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+              </toggle-switch>              
+
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle">{{'rescoring_intents_label' | i18nString}}</div>
+                <div class="description">{{'rescoring_intents_desc' | i18nString}}<a href="javascript:void(0)" class="knowMoreLink" ng-click="redirectToLink('RESCORING_INTENTS_HELP', $event)"> {{'knowMore' | i18nString}}</a></div>              
+              </div>
+
+              <toggle-switch ng-model="rankResolveEngine.intentRescoring" ng-change="RREngineChange('intentRescoring')" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+              </toggle-switch>
+            </ng-container>
+            
+            <ng-container ng-show="rankResolveEngine.intentRescoring">            
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle">{{'Proximity_of_Probable_Matches_label'| i18nString}}</div>
+                <div class="description">{{'Proximity_of_Probable_Matches_desc'| i18nString}}</div>              
+              </div>
+
+              <div class="thresholdDir">
+                <div class="col-xs-12 single-slider noPadding" id="proxMatch-slider" ng-mouseover="showReset('.reset2','#slider2')" ng-mouseleave="hideReset('.reset2')">
+                    <a class="resetButton reset2 pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+                    <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">20%</span></div>
+                    <span id="slider2" class="sliderContainerFM width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="20" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                </div>
+              </div>
+            </ng-container>
+
+            <div class="dependencyParser" ng-show="currLang.langVal === 'de' || currLang.langVal === 'fr' || currLang.langVal === 'it' || currLang.langVal === 'ru'">            
+              <div class="col-xs-12 labelling noPadding">
+                <div class="descTitle">{{'dependency_parsing_model' | i18nString}} <i class="btx-help marginLeft5 helpIcon"  data-toggle="popover" data-trigger="hover" data-content="{{dependencyDesc}}"></i></div>
+                <div class="description">{{'dependency_parsing_desc' | i18nString}}</div>              
+              </div>
+              
+              <toggle-switch ng-click="showEnableModal($event)" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+              </toggle-switch>
+
+              <!-- <div class="row">
+                  <div class="pull-left marginTop10 marginBottom toggle-switch-parser">
+                    <span class="toggle-no" ng-class="{'toggleActive':!rankResolveEngine.useDependencyParser , 'toggleInactive' : rankResolveEngine.useDependencyParser}">{{'Disable'| i18nString}}</span>
+                        <div class='toggleSwitch' ng-click="showEnableModal($event)">
+                            <span ng-show="!rankResolveEngine.useDependencyParser"><img ng-src="{{assetsBase}}images/left-menu-img/unselectedCheck.svg"  class=""></span>
+                            <span  ng-show="rankResolveEngine.useDependencyParser"><img ng-src="{{assetsBase}}images/toggle-1.png"  class=""></span>
+                        </div>
+                    <span class="toggle-yes"  ng-class="{'toggleActive':rankResolveEngine.useDependencyParser , 'toggleInactive' : !rankResolveEngine.useDependencyParser}"> {{'Enable'| i18nString}}</span>
+                  </div>
+              </div>  -->
+
+
+              <div ng-show="rankResolveEngine.useDependencyParser">                               
+                <div class="col-xs-12 labelling noPadding">
+                  <div class="descTitle">{{ 'minimum_matchScore' | i18nString}}</div>
+                  <div class="description">{{ 'minimum_matchScore_desc' | i18nString}}</div>              
+                </div>
+                <div class="thresholdDir marginTop10">
+                  <div class="col-xs-12 single-slider noPadding" id="minMatchScore-slider" ng-mouseover="showReset('.resetMatchScore','#matchScore-slider')" ng-mouseleave="hideReset('.resetMatchScore')">
+                    <a class="resetButton resetMatchScore pull-right hide" ng-click="resetDefaultVal('#matchScore-slider')">{{'reset_btn_label'| i18nString}}</a>
+                    <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">1.0</span></div>
+                    <span id="matchScore-slider" class="sliderContainerFM width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="1" data-slider-step="0.1"  ticks-tooltip="false" data-slider-value="0"> </span>
+                  </div>
+                </div>
+
+
+                <div class="col-xs-12 labelling noPadding configurations">
+                  <div class="descTitle">{{ 'advanced_Configuration' | i18nString}}</div>
+                  <div class="description">{{ 'advanced_Configuration_desc' | i18nString}}<span><a href="javascript:void(0)" ng-click="redirectToLink('RANK_CONFIGURATION')" class="configLink">(?)</a></span></div>              
+                  <div class="customizeBtn mt-10">
+                    <button class="btn" ng-click="editConfigurations()">{{ 'customize' | i18nString}}</button>
+                  </div>
+                </div>
+              </div>
+         
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="panel-group threshold-page">
+    <div class="panel panel-default">
+       <a data-toggle="collapse" href="#advNlpConfig" class="headerThresholds collapsed advConfigurations">
+      <div class="panel-heading">
+                <h4 class="panel-title"><i class="fa_chevron_right btx-carrot-right"></i>{{'adv_nlpconfig_engine'| i18nString}}<i ng-click="redirectToLink('ADV_NLP_CONFIG', $event)" class="marginLeft5 helpIcon btx-help"></i><span class="savingStatus" ng-if="refreshStatus.length">
+                   <img ng-src="{{refreshIcon}}" class="refreshSpin"  ng-show="refreshStatus === 'refresh-spin'">
+                    <img ng-src="{{closeDarkIcon}}" ng-show="refreshStatus === 'times'">
+                    <img ng-src="{{checkGreenIcon}}" ng-show="refreshStatus === 'check'">
+                </span>
+                <span class="settings" ng-if="totalConfigCount && totalConfigCount > 0">{{totalConfigCount > 1 ? totalConfigCount +  settings_label : totalConfigCount+ setting_label }}</span>
+        </h4>
+        <p class="smallDesc">{{'configure_advnlp'| i18nString}}</p>
+      </div>
+    </a>
+    <div id="advNlpConfig" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="emptyStateContainer" ng-if="!savedConfigurations.length && showEmptyConfig">
+            <div class="emptyState">
+                <div class="emptyImage">
+                  <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                </div>  
+                <div class="mainTitle">{{'empty_nlpconfig_msg' | i18nString}}</div>
+                <div class="emptyStateDesc">{{'nlpconfig_desc' | i18nString}}</div>
+                <button class="kr-sg-button-primary btn_md" ng-click="createConfiguration()" ng-hide="displayMode === 'VIEW'">{{'add_new' | i18nString}}</button>
+                <button class="marginLeft10 kr-sg-button-secondary btn_md" target="_blank" ng-click="redirectToLink('ADV_NLP_CONFIG', $event)">{{'learn_more_label' | i18nString}}</button>
+            </div>
+        </div>
+        <div class="col-xs-12 configContainer noPadding" ng-show="!showEmptyConfig">   
+            <div class="row" ng-class="{'read-only':displayMode === 'VIEW'}" ng-init="parentIndex = $index" ng-repeat="config in savedConfigurations track by $index" >
+              <div class="col-xs-5 configdropdown configuration-with-tags" ng-show="!config.isCustom">
+                 <div class="kr-sg-dropdowns">
+                  <div class="kr-sg-input-inline-search dropdown dropdown-open line-height-0">
+                      <button class="dropdown-toggle dropdown-input" slide-bottom-ml data-toggle="dropdown"><span class="selected-data" title="{{config.configurationName}}">{{config.configurationName}}</span></button><div class="tags" ng-class=config.class>{{config.nlpEngine}} Engine</div>
+                       <div class="dropdown-menu outer-container p-0" onclick="event.stopPropagation();">
+                            <ul class="content-menu ml-menu" perfect-scroll dynamic-height dynaoffset="-350">
+                                  <li class="custom-text" ng-click="addCustom()"><a href="javascript:void(0)" title="{{'add_custom' | i18nString}}">{{'add_custom' | i18nString}}</a></li>
+                                  <li ng-repeat="configuration in uiConfiguration track by $index" ng-click="updateConfigs(config,configuration)">
+                                    <a href="javascript:void(0)" title="{{configuration.configurationName}}">{{configuration.configurationName}}</a><span ng-class="configuration.class">{{configuration.nlpEngine}} Engine</span>
+                                  </li>
+                            </ul>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-xs-5 mb-10" ng-if="config.isCustom">
+                <form name="customKeyFom{{$index}}" novalidate>
+                <div class="kr-sg-input-text">                
+                      <input type="text" ng-class="{'input-text error':(config.invalidPattern && customKeyFom{{$index}}.customKey.$dirty)}" focus-me="true" placeholder="Custom configuration" class="input-text" name="customKey" ng-model="config.configurationKeyName" ng-required="true" name="customKey" ng-keyup="addCustomKey($event,config)">
+                     <!--  <div class="error-msg" ng-show="invalidCustomKey && customKeyFom{{$index}}.customKey.$error.required && customKeyFom{{$index}}.customKey.$dirty"><span class="error">Provide a valid configuration name</span></div>    -->
+                      <div class="error-msg" ng-show="config.invalidPattern && customKeyFom{{$index}}.customKey.$dirty">
+                        <span class="error">This configuration cannot be set as the pre-requisites for this configuration are not available.  <a href="javascript:void(0)" class="knowMoreLink" ng-click="redirectToLink('ADV_NLP_CONFIG', $event)">{{'know_more' | i18nString }}</a></span>
+                      </div>             
+                </div>
+              </form>
+              </div>
+              <div class="col-xs-5 config-components mb-10" ng-show="config.uiComponent === 'toggle'">
+                <div class="box-content">
+                  <label class="kr-sg-toggle with-label">                                       
+                    <input type="checkbox" checked ng-click="proceedEditConfig(config)" ng-model="config.value">
+                    <div class="slider"> <span class="no">{{'disabled' | i18nString}}</span><span class="yes">{{'enabled' | i18nString}}</span></div>
+                  </label>
+              </div>
+            </div> 
+            <div class="col-xs-5 configdropdown mb-10" ng-show="config.uiComponent === 'dropdown'">
+                <div class="kr-sg-dropdowns">
+                  <div class="kr-sg-input-inline-search dropdown dropdown-open line-height-0">
+                      <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"><span class="selected-data">{{config.value}}</span></button>
+                            <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-360" height-property="height">
+                                  <li ng-repeat="input in config.range">
+                                    <a href="javascript:void(0)" ng-click="proceedEditConfig(config,'',input)">{{input}}</a>
+                                  </li>
+                            </ul>
+                    </div>
+                  </div>
+                 
+            </div> 
+            <div class="col-xs-5 configdropdown mb-10" ng-show="config.uiComponent === 'textarea'">
+                    <div class="kr-sg-input-text-area">
+                                <textarea placeholder="Placeholder text" ng-model="config.value" class="input-text"></textarea>
+                    </div>
+            </div>
+            <div class="col-xs-5 config-components mb-10" ng-show="config.uiComponent === 'slider'">
+              <div class="config-slider" id="{{config.configurationKeyName}}Slider">
+               <div class="countThreshold"><span class="pull-left">{{config.range[0]}}</span><span class="pull-right">{{config.range[1]}}</span></div>
+              <span id="{{config.configurationKeyName}}" class="sliderContainerKC custom-configuration width-250"  data-handle="round" data-slider-id='{{config.configurationKeyName}}Custom' type="text" data-slider-min="{{config.range[0]}}" data-slider-tooltip="hide" data-slider-max="{{config.range[1]}}" data-slider-step="{{config.interval}}"  ticks-tooltip="false" data-slider-value="0"></span>
+            </div>
+            </div>
+              <div class="col-xs-5 mb-10" ng-show="config.isCustom && (!config.invalidPattern && !config.invalidCustomKey)">
+                <form name="customFormValue{{$index}}">
+                   <div class="kr-sg-input-text">                
+                      <input type="text" ng-class="{'input-text error': config.invalidCustomValue && customFormValue{{$index}}.customValue.$error.required }" placeholder="Configuration value" class="input-text" ng-model="config.value" name="customValue" ng-required="true" ng-keyup="addCustomValue($event,config)">
+                      <div class="error-msg" ng-show="config.invalidCustomValue && customFormValue{{$index}}.customValue.$error.required"><span class="error" ng-show="config.configurationKeyName">Provide a valid value for the {{config.configurationKeyName}} configurations</span>
+                        <span class="error" ng-show="!config.configurationKeyName">Provide a valid value for the  configurations</span></div>                
+                    </div>
+                </form>
+               
+            </div>
+            <div class="col-xs-2 config-delete" ng-click="deleteConfiguration($index,config)">
+              <span class="savingStatus{{$index}}"></span>
+              <img ng-src="{{trashIcon}}" class="trashIcon">
+            </div>
+          </div>
+            <div class="row" ng-hide="displayMode === 'VIEW' || (invalidPattern || invalidCustomValue)">
+                <div class="col-xs-5 configdropdown mb-10" ng-class="{'input-text error': parentRelationError}">                
+                    <div class="kr-sg-dropdowns">
+                      <div class="kr-sg-input-inline-search dropdown dropdown-open line-height-0" >
+                          <button class="dropdown-toggle dropdown-input search-with-dropdown" slide-bottom-ml data-toggle="dropdown">{{'select_configuration' | i18nString}}</button>    
+                          <input type="text" placeholder="Select a configuration" class="input-search dropdown-toggle dropdown-input" ng-model="search.configText" data-toggle="dropdown">
+                          <img ng-src="{{searchIcon}}" class="search-icon"> 
+                          <div class="dropdown-menu outer-container p-0" onclick="event.stopPropagation();">                       
+                            <ul class="content-menu ml-menu" perfect-scroll dynamic-height dynaoffset="-350">
+                              <li class="custom-text" ng-click="addCustom()"><a href="javascript:void(0)" title="{{'add_custom' | i18nString}}">{{'add_custom' | i18nString}}</a></li>
+                              <li ng-click="addConfiguration(configuration,$index)" ng-repeat="configuration in uiConfiguration | filter:{'configurationName':search.configText} track by $index">
+                                <a href="javascript:void(0)" title="{{configuration.configurationName}}">{{configuration.configurationName}}</a><span ng-class="(configuration && configuration.class) ? configuration.class: 'tags'" class="tags">{{configuration.nlpEngine}} Engine</span>
+                              </li>
+                            </ul>
+                        </div>
+                      </div>                        
+                  </div>
+                   <div class="error-msg" ng-if="parentRelationError">
+                        <span class="error">{{'configuration_cannot' | i18nString}}  <a href="javascript:void(0)" class="knowMoreLink" ng-click="redirectToLink('ADV_NLP_CONFIG', $event)">{{'knowMore' | i18nString}}</a></span>
+                  </div>      
+              </div> 
+          </div>                                                          
+        </div>
+      </div>
+   </div>
+    </div>
+  </div>
+   
+
+
+<div id="warningModal" class="modal fade kr-sg-modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> {{'confirm_proceed'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p ng-show="intentParams.useSynonyms"> {{'inclusion_of_bot_synonyms_for_intent'| i18nString}}</p>
+        <p ng-show="!intentParams.useSynonyms"> {{'exclusion_of_bot_synonyms_for_intent'| i18nString}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" ng-click='enableDisableSynonym()'>{{'proceed'| i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeModal()'> {{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="warningKgSynonymModal" class="modal fade kr-sg-modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> {{'confirm_proceed'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p ng-show='!kgCollection.useBotSynonyms'> {{'disable_settings'| i18nString}}</p>
+        <p ng-show="kgCollection.useBotSynonyms"> {{'enable_settings'| i18nString}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" ng-click='proceedKgSynonyms()'>{{'proceed'| i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeKgSynonymModal()'>{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="warningKgModal" class="modal fade kr-sg-modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> {{'confirm_proceed'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p ng-show="faqSearch.enabled"> {{'enabling_this_option_allow_kg_graph'| i18nString}}</p>
+        <p ng-show="!faqSearch.enabled"> {{'knowledge_graph_will_no_longer'| i18nString}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn " ng-click='proceedFaqSearch()'>{{'proceed'| i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeKgModal()'>{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="warningAutoCorrectModal" class="modal fade kr-sg-modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> {{'confirm_proceed'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p ng-show='kgCollection.autoCorrect'> {{'enabling_this_option_allow_kg_to_spell_correct'| i18nString}}</p>
+        <p ng-show='!kgCollection.autoCorrect'> {{'kg_graph_will_no_longer_spell_correct'| i18nString}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn " ng-click='proceedAutoCorrectModal()'>{{'proceed'| i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeAutoCorrectModal()'>{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="enableModal" class="modal fade kr-sg-modal" role="dialog">
+  <div class="modal-dialog width460">
+     <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{{ 'are_you_sure_label' | i18nString}}</h4>
+        </div>
+        <div class="modal-body">
+            <p class="desc">{{ 'enable_modal_desc' | i18nString}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" ng-click='enableDependency()'>{{ 'enable_name' | i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeEnableModal()'>{{'no' | i18nString}}</button>
+        </div>
+     </div>
+  </div>
+</div>
+<div id="restoreModal" class="modal fade kr-sg-modal" role="dialog">
+    <div class="modal-dialog width460">
+     <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{{ 'are_you_sure_label' | i18nString}}</h4>
+        </div>
+        <div class="modal-body">
+            <p class="desc">{{'restore_modal_desc' | i18nString}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" ng-click='proceedConfiguration()'>{{'proceed'| i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeRestoreModal()'>{{'cancel'| i18nString}}</button>
+        </div>
+     </div>
+  </div>
+</div>
+ <div class="modal fade kr-sg-modal" id="deleteConfig" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">                                 
+                <h4 class="modal-title">{{'delete_configuration' | i18nString}}</h4>
+              </div>
+              <div class="modal-body">
+                <p>{{'delete_configuration_desc' | i18nString}} </p>
+              </div>
+              <div class="modal-footer">                               
+                <button class="kr-sg-button-primary btn_md" ng-click="proceedDeleteConfig(currentIndex,currentConfiguration)">{{'proceed'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeDeleteConfig()">{{'cancel'| i18nString}}</button>
+              </div>
+            </div>
+          </div>
+</div>
+ <div class="modal fade kr-sg-modal" id="editConfig" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">                                 
+                <h4 class="modal-title">{{'change_configuration' | i18nString}}</h4>
+              </div>
+              <div class="modal-body">
+                <p>{{'change_configuration_desc' | i18nString}}</p>
+              </div>
+              <div class="modal-footer">                               
+                <button class="kr-sg-button-primary btn_md" ng-click="proceedEditConfig(currentConfiguration,previousConfiguration)">{{'proceed'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeEditConfigCustom(currentConfiguration)">{{'cancel'| i18nString}}</button>
+              </div>
+            </div>
+          </div>
+</div>
+<!-- Enable multi intents confirm dialog -->
+<div class="modal fade kr-sg-modal" id="enableMultiIntents" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">                                 
+        <h4 class="modal-title">{{'confirm_proceed' | i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{'enable_multiintents_confirm_text' | i18nString}} <a href="https://developer.kore.ai/docs/bots/nlp/advanced-nlp-configurations/#Multiple_Intent_Model" target="_blank">{{'read_more_label' | i18nString}}</a></p>
+      </div>
+      <div class="modal-footer">                               
+        <button class="kr-sg-button-primary btn_md" ng-click="confirmMultiIntent()">{{'Bt_chnl_kore_enable_label' | i18nString}}</button>
+        <button class="kr-sg-button-secondary btn_md" ng-click="closeModalMultiIntents('enable', currentConfiguration)">{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Disable multi intents confirm dialog -->
+<div class="modal fade kr-sg-modal" id="disableMultiIntents" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">                                 
+        <h4 class="modal-title">{{'confirm_proceed' | i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{'disable_multiintents_confirm_text' | i18nString }} <a href="https://developer.kore.ai/docs/bots/nlp/advanced-nlp-configurations/#Multiple_Intent_Model" target="_blank">{{'read_more_label' | i18nString}}</a></p>
+      </div>
+      <div class="modal-footer">                               
+        <button class="kr-sg-button-danger btn_md" ng-click="confirmMultiIntent()">{{'Bt_chnl_kore_disable_label'| i18nString }}</button>
+        <button class="kr-sg-button-secondary btn_md" ng-click="closeModalMultiIntents('disable', currentConfiguration)">{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete collection config in intents -->
+<div class="modal fade kr-sg-modal" id="deleteMultiIntents" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">                                 
+        <h4 class="modal-title">{{'confirm_proceed' | i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{'delete_multiintents_confirm_text' | i18nString}} </p>
+      </div>
+      <div class="modal-footer">                               
+        <button class="kr-sg-button-danger btn_md" ng-click="deleteDialogIntentModel()">{{'delete' | i18nString}}</button>
+        <button class="kr-sg-button-secondary btn_md" ng-click="closeModalMultiIntents()">{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Configuration cannot be deleted -->
+<div class="modal fade kr-sg-modal" id="configCannotDel" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">                                 
+        <h4 class="modal-title">{{'config_cannot_be_deleted_label' | i18nString }}</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{'config_cannot_be_deleted_text' | i18nString }} </p>
+      </div>
+      <div class="modal-footer">                               
+        <button class="kr-sg-button-primary btn_md" ng-click="closeModalMultiIntents()">{{'ok' | i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<bot-modal-slider id="editConfigurations">
+  <div class="modalSliderContainer  width700">
+    <div class="modalHeader">
+        <div class="closeBtn"  ng-click="closeEditConfig()">
+             <img  class="closeCross" ng-src={{closeArrow}}>
+         </div>
+         <div class="title">{{ displayMode === 'VIEW'?viewConfiguration:editConfiguration}}<span ng-click="redirectToLink('RANK_CONFIGURATION',$event)"><i  class="questionInfo btx-help"></i></span></div>
+         <p class="desc">{{'edit_configuration_desc' | i18nString}}</p>
+    </div>
+    <div class="modalBody" ng-class="{'view':displayMode === 'VIEW'}" height-property="height" dynamic-height dynaoffset="-170">
+       <div class="hintDiv">
+         <span class="icon"><i class="fa fa-warning"></i></span>
+         <span class="description">
+           <p class="noMargin">{{'validation_desc' | i18nString}}</p>
+          <!--  <a href="#" class="knowMore" ng-click="redirectToLink('RANK_CONFIGURATION',$event)">Know More</a> -->
+         </span>
+       </div>
+       <div class="col-xs-12 noPadding marginTop10 jsonEditor">
+            <div class="col-xs-12 noPadding restore" ng-hide="hideRestore || displayMode === 'VIEW'">
+              <a href="#" ng-click="compareJson()">{{'restore_default' | i18nString}}</a>
+          </div>
+          <div ng-jsoneditor class="json_editor" ng-change="showRestore()" ng-model="rankResolveEngine.rankingParameters" name="configuration" options="options" callback="configCB"></div>
+       </div>
+    </div>
+    <div class="modalFooter">
+      <button class="btn " ng-disabled="displayMode === 'VIEW'" ng-click="updateConfig()">{{'save'| i18nString}}</button>
+      <button class="btn closeCancel" ng-click="closeEditConfig()">{{'cancel'| i18nString}}</button>
+    </div>
+  </div>
+  
+  
+</bot-modal-slider>
+<!-- CUSTOM CONFIGURATION - MULTI INTENTS -->
+<bot-modal-slider id="customConfigurations">
+  <div class="modalSliderContainer width800">
+      <div class="modalHeader col-xs-12">
+        <h4 class="modal-title"><i class="btx-close"  ng-click="closeCustomConfigurations()"></i>{{ multipIntentModels.customConfigText }}</h4>
+      </div>
+      <div class="modalBody m-body-sec customConfig" perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+        <div class="createnew-config" ng-if="multipIntentModels.formType !== 'default'">
+          <div class="kr-sg-dropdowns w-100 mb-16">
+              <div class="label-text">{{'group_name_small' | i18nString}}</div>
+              <div class="description">{{'group_name_text' | i18nString}}</div>
+              <div class="kr-sg-input-text">
+                  <input type="text" ng-model="multipIntentModels.name" placeholder="{{'enter_name' | i18nString}}" maxlength="200" class="input-text" id="ColNameInput" ng-disabled="displayMode === 'VIEW'">
+              </div>
+          </div>   
+          <div class="kr-sg-dropdowns w-100 mb-16" ng-class="{'read-only':displayMode === 'VIEW'}">
+            <div class="label-text">{{'dialog_intent_models_label' | i18nString}}</div>
+            <div class="description">{{'dialog_intent_models_text' | i18nString}}</div>
+            <div class="noPadding">
+
+              <!-- <tag-input placeholder="{{'type_enter_add'| i18nString}}" autocomplete='getDialogIntents' taglist='multipIntentModels.dialogIntentsList' callback="callback"></tag-input> -->
+              <div class="kr-sg-dropdowns dialogDropdown customDrop">
+                <div class="dropdown dropdown-open">
+                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown" ng-class="{'read-only':displayMode === 'VIEW'}">
+                      <ng-container ng-if="multipIntentModels.dialogIntentsList.length">
+                        <span class="multi-selected-items" ng-repeat="intent in multipIntentModels.dialogIntentsList">
+                            <span class="length-count">{{intent.name}}</span>
+                            <span class="cross-icon" ng-click="delDialogIntent(intent,$index)"><img src="{{assetsBase}}/icons/close.svg"></span>
+                        </span>
+                      </ng-container><div class="select-intent">Select Intent</div></button>   
+                    <ul class="dropdown-menu content-menu h-auto" perfect-scroll dynamic-height dynaoffset="-360" height-property="height">                                              
+                      <li class="search-box" ng-if="getDialogIntents.length">
+                        <input type="text" placeholder="Search Intent" class="seach-input" ng-model="dialogSearch.configText" focus-me="true" stop-propagation >
+                      </li>
+                      <li  ng-repeat="intent in getDialogIntents | filter:{'name':dialogSearch.configText}  track by $index" >
+                        <a class="dialog-name" ng-click="addDialogIntent(intent,$index)" ng-if="intent.defaultName" stop-propagation>{{intent.name}}<span class="type" ng-if="!intent.isFollowUp"> (Dialog)</span><span class="type" ng-if="intent.isFollowUp"> (Sub-dialog)</span> <span class="default">{{identifyDefaultDialog(intent)}}</span></a>
+                      </li>
+                      <li class="noDialog" ng-if="!getDialogIntents.length">{{'no_data_available_label' | i18nString}}</li>
+                  </div>
+              </div>
+            </div>
+          </div>   
+        </div>
+        <!-- ML CONFIG -->
+        <div class="ml-config mlThreshold mb-20">
+          <div class="noPadding">
+              <label> {{'ml_configurations_label' |i18nString}}</label>
+              <p class="description">{{'ml_configurations_desc' | i18nString}}</p>
+          </div>
+          <div class="ml-container threshold-page">
+            <!-- NETWORK TYPE -->
+            <div class="networkType" ng-class="{'read-only':displayMode === 'VIEW'}">
+              <div class="kr-sg-dropdowns w-100" >
+                <div class="label-text">{{'network_type' | i18nString}}
+                  <span ng-if="(nluLanguage === 'ge')" class="networktype-wc2" tooltip-placement="top" tooltip="{{'network_type_tooltip' | i18nString}}"><i class="btx-warning" ></i></span>
+                </div>
+                <div class="smallDesc">{{'network_type_desc' | i18nString}}</div>
+                <div class="dropdown dropdown-open" ng-class="{'disable-input-freeze': (nluLanguage === 'ge')}">
+                    <button class="dropdown-toggle dropdown-input before-show" data-toggle="dropdown" ng-class="{'disable-input': (nluLanguage === 'ge')}">{{networkTypeList.value?networkTypeList.value:networkTypeList.defaultValue}}</button>                                            
+                    <ul class="dropdown-menu content-menu h-auto" perfect-scroll dynamic-height dynaoffset="-360" height-property="height">                                              
+                      <li ng-repeat="type in networkTypeList.range">
+                        <a href="#" ng-click="addNetworkTypeConfig(networkTypeList,type)">{{type}}</a>
+                      </li>
+                    </ul>
+                  </div>
+              </div>
+            </div>
+            <!-- ML THRESHOLD -->
+            <div class="thresholdContainer" >
+              <div class="col-xs-12 labelling noPadding">
+                  <label class="wrap" tooltip-placement="right"> {{'ml_Threshold_label'| i18nString}}</label>
+                  <p> {{'ml_Threshold_des'| i18nString}} </p>
+              </div>
+              <div class="thresholdDir">
+                  <div class="col-xs-12 single-slider noPadding" id="mlThreshold-sliderCM" ng-mouseover="showReset('.reset3','#slider3CM')" ng-mouseleave="hideReset('.reset3')">
+                      <a class="resetButton reset3 pull-right hide" ng-click="resetDefaultVal()">Reset</a>
+                      <div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">1</span></div>
+                      <span id="slider3CM" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="1" data-slider-step="0.05"  ticks-tooltip="false" data-slider-value="0"></span>
+                  </div>
+              </div>
+            </div>
+            <!-- ML DEFINITIVE SCORE -->
+            <div class="thresholdContainer" >
+              <div class="col-xs-12 labelling noPadding">
+                  <label class="wrap" tooltip-placement="right"> {{'Ml_definitivescore_label'| i18nString}}</label>
+                  <p> {{'Ml_definitivescore_desc'| i18nString}}</p>
+              </div>
+              <div class="thresholdDir">
+                <div class="col-xs-12 single-slider noPadding" id="defIntent-sliderCM" ng-mouseover="showReset('.reset4','#slider4CM')" ng-mouseleave="hideReset('.reset4')">
+                    <a class="resetButton reset4 pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+                    <div class="countThreshold"><span class="pull-left">80%</span><span class="pull-right">100%</span></div>
+                    <span id="slider4CM" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="80" data-slider-tooltip="hide" data-slider-max="100" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                </div>
+              </div>
+            </div>
+            <!-- BOT SYNONYMS -->
+            <div class="botSynonyms" ng-class="{'read-only':displayMode === 'VIEW'}">
+              <div class="col-xs-12 labelling noPadding">
+                  <label class="wrap"> {{'Bot_synonyms_label'| i18nString}}</label>
+                  <p>{{'Thresholds_bot_synonyms_ml_desc'| i18nString}}</p>
+              </div>
+
+              <toggle-switch ng-model="multipIntentModels.intentParams.useSynonyms" ng-change="showModal()" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+              </toggle-switch>                             
+            </div>
+            <!-- STOP WORDS -->
+            <div class="botSynonyms" ng-show="checkNetworkTypeConfig('stopWords')" ng-class="{'read-only':displayMode === 'VIEW'}">               
+              <div class="col-xs-12 labelling noPadding">
+                  <label class="wrap"> {{'Thresholds_stop_words_label'| i18nString}}</label>
+                  <p class="description">{{'Thresholds_stop_words_desc'| i18nString}} <span class="bthelpLinksTextcolor pointer-hand" ng-click="manageStopWords('#manageStopWords')">  {{'manage'| i18nString}}</span></p>
+              </div>
+
+              <toggle-switch ng-model="multipIntentModels.intentParams.useStopwords" ng-change="enableDisableStopWords()" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+              </toggle-switch>
+            </div>
+            <!-- FEATURE EXTRACTION -->
+            <div class="featureContainer" ng-show="checkNetworkTypeConfig('featureExtraction')">
+              <div class="col-xs-12 labelling noPadding mb-15">
+                  <label class="wrap"> Feature Extraction <i class="questionInfo btx-help" ng-click="redirectToLink('FEATURE_EXTRACTION',$event)"></i></label>
+                  <p class="description">Choose the approach for generating the word sequences to be used in the training model.</p>
+              </div>
+                            
+              <div class="group-radiobutton col-xs-12 noPadding" ng-class="{'read-only':displayMode === 'VIEW'}">                        
+                  <div class="kr-sg-radiobutton">
+                      <input id="ngramCM" ng-change="saveGram('n_gramCM')" ng-model="multipIntentModels.intentParams.features" name="ngramCM" class="radio-custom" type="radio" value="n_gram">
+                      <label for="ngramCM" class="radio-custom-label">n-gram</label>
+                  </div>
+                  <div class="kr-sg-radiobutton">
+                      <input id="skip-gramCM" value='skip_gram' ng-change="saveGram('skip_gramCM')" ng-model="multipIntentModels.intentParams.features" name="skip-gramCM" class="radio-custom" type="radio">
+                      <label for="skip-gramCM" class="radio-custom-label">skip-gram</label>
+                  </div>
+              </div>  
+            </div>
+
+              <div ng-show="intentParams.type==='SGD_V2'">                   
+                  <div class="thresholdContainer">
+                  <div class="col-xs-12 labelling noPadding mb-10">
+                      <label class="wrap">{{'ml_upgrade'| i18nString}}</label>
+                      <p class="description">{{'improved_ml_model_available'| i18nString}}</p>
+                  </div>
+                    <div class='row upgrade'>
+                        <button type="button" ng-click="upgradeML('V3')" class="kr-sg-button-primary btn_lg upgradeML"> {{'upgrade_now'| i18nString}}</button><i class="bthelpLinksTextcolor pointer-hand" ng-click="redirectToLink('ML_MODEL_THRESHOLD_HELP', $event)">{{'ml_threshold_whats_new'| i18nString}}</i>
+                    </div>
+                  </div>
+              </div>
+              <!-- SEQUENCE LENGTH, NER MODEL, ENTITY PLACEHOLDER -->
+              <div ng-hide="multipIntentModels.intentParams.type==='SGD_V2'" class="intentParams">
+                <div class="thresholdContainer mt-16" ng-show="multipIntentModels.intentParams.features === 'n_gram' && checkNetworkTypeConfig('n_gram')">
+                  <div class="col-xs-12 labelling noPadding">
+                      <label class="wrap" tooltip-placement="right">{{'N_gram_seq_label'| i18nString}}</label>
+                      <p> {{'N_gram_seq_desc'| i18nString}}</p>
+                  </div>
+                    <div class="thresholdDir">
+                        <div class="col-xs-12 single-slider noPadding" id="nGram-sliderCM" ng-mouseover="showReset('.resetNgram','#nGramSliderCM')" ng-mouseleave="hideReset('.resetNgram')">
+                            <a class="resetButton resetNgram pull-right hide" ng-click="resetNgram()">{{'reset_btn_label'| i18nString}}</a>
+                            <div class="countThreshold"><span class="pull-left">{{multipIntentModels.intentParams.minngram}}</span><span class="pull-right">{{multipIntentModels.intentParams.maxngram}}</span></div>
+                            <span id="nGramSliderCM" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="{{multipIntentModels.intentParams.minngram}}" data-slider-tooltip="hide" data-slider-max="{{multipIntentModels.intentParams.maxngram}}" data-slider-step="1"  ticks-tooltip="false" data-slider-value="1"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="thresholdContainer mt-16" ng-show="multipIntentModels.intentParams.features === 'skip_gram'">
+                  <div class="col-xs-12 labelling noPadding">
+                      <label class="wrap" tooltip-placement="right">{{'sequence_length' | i18nString}}</label>
+                      <p>{{'sequence_desc' | i18nString}}</p>
+                  </div>
+                    <div class="thresholdDir">
+                        <div class="col-xs-12 single-slider noPadding" id="skipgramseq-sliderCM">
+                            <div class="countThreshold"><span class="pull-left">2</span><span class="pull-right">4</span></div>
+                            <span id="skipGramSeqCM" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="2" data-slider-tooltip="hide" data-slider-max="4" data-slider-step="1"  ticks-tooltip="false" data-slider-value="1"></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 labelling noPadding">
+                      <label class="wrap" tooltip-placement="right">{{'maximum_skip_distance' | i18nString}}</label>
+                      <p>{{'maximum_skip_desc' | i18nString}}</p>
+                      </div>
+                    <div class="thresholdDir">
+                        <div class="col-xs-12 single-slider noPadding" id="skipgramdis-sliderCM">
+                            <div class="countThreshold"><span class="pull-left">1</span><span class="pull-right">3</span></div>
+                            <span id="skipGramMaxCM" class="sliderContainerML width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-tooltip="hide" data-slider-max="3" data-slider-step="1"  ticks-tooltip="false" data-slider-value="1"></span>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <!-- NER MODEL -->
+              <div class="thresholdContainer mt-16" ng-show="checkNetworkTypeConfig('entityPlaceHolders')">
+                  <div class="col-xs-12 labelling noPadding mb-15">
+                      <label class="wrap" tooltip-placement="right">{{'NER_Model_label'| i18nString}}</label>
+                      <p class="description mb-0"> {{'NER_Model_desc'| i18nString}}</p>
+                  </div>
+                  <div class="group-radiobutton noPadding mb-15" ng-class="{'read-only':displayMode === 'VIEW'}">                        
+                      <div class="kr-sg-radiobutton">
+                          <input id="conRandomFldCM" ng-model="multipIntentModels.nerParams.type" name="conRandomFldCM" class="radio-custom" type="radio" value="corenlp">
+                          <label for="conRandomFldCM" class="radio-custom-label">{{'Conditional_random_label'| i18nString}}</label>
+                      </div>
+                      <div class="kr-sg-radiobutton">
+                          <input id="spacyfldCM" value='spacy' ng-model="multipIntentModels.nerParams.type" name="spacyfldCM" class="radio-custom" type="radio">
+                          <label for="spacyfldCM" class="radio-custom-label">{{'Deep_neural_ntwk_label'| i18nString}}</label>
+                      </div>
+                  </div>
+              </div>
+              <!-- ENTITY PLACEHOLDER -->
+              <div class="botSynonyms" ng-show="checkNetworkTypeConfig('stopWords')" ng-class="{'read-only':displayMode === 'VIEW'}">                
+                  <div class="col-xs-12 labelling noPadding">
+                      <label class="wrap"> {{'Entity_place_holder_label'| i18nString}}</label>
+                      <p class="description">{{'Entity_place_holder_desc'| i18nString}}</p>
+                  </div>
+
+                  <toggle-switch ng-model="multipIntentModels.intentParams.usePlaceholders" ng-change="enableDisablePlaceholders()" class="pull-left"  ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+                  </toggle-switch>
+              </div>
+          </div>
+        </div>
+        <!-- ADVANCED ML CONFIG -->
+        <div class="advcd-ml-config mlThreshold">
+          <div class="noPadding">
+              <label> {{'advanced_ml_config_label'| i18nString}}</label>
+              <p class="description">{{'advanced_ml_config_desc'| i18nString}}</p>
+          </div>
+          <div class="advc-ml-container">
+              <!-- EMPTY STATE SCREEN -->
+              <div class="emptyStateContainer" ng-if="!savedConfigurationsCM.length && showEmptyConfigCM">
+                <div class="emptyState">
+                    <div class="emptyImage">
+                        <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                    </div>  
+                    <span class="mainTitle">{{'empty_nlpconfig_msg' | i18nString}}</span>
+                    <div class="emptyStateDesc">{{'nlpconfig_desc' | i18nString}}</div>
+                    <div class="generateBtn">
+                        <button class="btn btnSolidBlue" ng-click="createConfiguration()" ng-hide="displayMode === 'VIEW'">{{'add_new' | i18nString}}</button>
+                        <button class="btn" target="_blank" ng-click="redirectToLink('ADV_NLP_CONFIG', $event)">{{'learn_more_label' | i18nString}}</button>
+                    </div>
+                </div>
+            </div>
+              <div class="configContainer noPadding" ng-show="!showEmptyConfigCM">   
+                  <div class="row" ng-class="{'read-only':displayMode === 'VIEW'}" ng-repeat="config in savedConfigurationsCM track by config.configurationKeyName" >
+                    <div class="col-xs-5 configdropdown configuration-with-tags" ng-show="!config.isCustom">
+                      <div class="kr-sg-dropdowns">
+                        <div class="kr-sg-input-inline-search dropdown dropdown-open line-height-0">
+                            <button class="dropdown-toggle dropdown-input before-show" data-toggle="dropdown"><span class="selected-data">{{config.configurationName}}</span></button><div class="tags" ng-class=config.class>{{config.nlpEngine}} Engine</div>
+                                  <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-360" height-property="height">
+                                        <li class="custom-text" ng-click="addCustomCM()"><a href="#">{{'add_custom' | i18nString}}</a></li>
+                                        <ng-container ng-repeat="configuration in uiConfiguration track by $index">
+                                          <li ng-if="configuration.multipleModels" ng-click="updateConfigsCB(config,configuration)">
+                                              <a href="#">{{configuration.configurationName}}</a><span ng-class="configuration.class">{{configuration.nlpEngine}} Engine</span>
+                                          </li>
+                                        </ng-container>
+                                  </ul>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-5 mb-10" ng-if="config.isCustom">
+                      <form name="customKeyFom{{$index}}" novalidate>
+                      <div class="kr-sg-input-text">                
+                            <input type="text" ng-class="{'input-text error':(config.invalidPattern && customKeyFom{{$index}}.customKey.$dirty)}" focus-me="true" placeholder="Custom configuration" class="input-text" name="customKey" ng-model="config.configurationKeyName" ng-required="true" name="customKey" ng-keyup="addCustomKey($event,config)">
+                          <!--  <div class="error-msg" ng-show="invalidCustomKey && customKeyFom{{$index}}.customKey.$error.required && customKeyFom{{$index}}.customKey.$dirty"><span class="error">Provide a valid configuration name</span></div>    -->
+                            <div class="error-msg" ng-show="config.invalidPattern && customKeyFom{{$index}}.customKey.$dirty">
+                              <span class="error">This configuration cannot be set as the pre-requisites for this configuration are not available.  <a href="javascript:void(0)" class="knowMoreLink" ng-click="redirectToLink('ADV_NLP_CONFIG', $event)">{{'know_more' | i18nString }}</a></span>
+                            </div>             
+                      </div>
+                    </form>
+                    </div>
+                    <div class="col-xs-5 config-components mb-10" ng-show="config.uiComponent === 'toggle'">
+                      <div class="box-content">
+                        <label class="kr-sg-toggle with-label">                                       
+                          <input type="checkbox" checked ng-model="config.value" ng-click="proceedEditConfigCM(config)">
+                          <div class="slider"> <span class="no">{{'disabled' | i18nString}}</span><span class="yes">{{'enabled' | i18nString}}</span></div>
+                        </label>
+                    </div>
+                  </div> 
+                  <div class="col-xs-5 configdropdown mb-10" ng-show="config.uiComponent === 'dropdown'">
+                      <div class="kr-sg-dropdowns">
+                        <div class="kr-sg-input-inline-search dropdown dropdown-open line-height-0">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"><span class="selected-data">{{config.value}}</span></button>
+                                  <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-360" height-property="height">
+                                        <li ng-repeat="input in config.range">
+                                          <a href="#" ng-click="proceedEditConfigCM(config,'',input)">{{input}}</a>
+                                        </li>
+                                  </ul>
+                          </div>
+                        </div>
+                      
+                  </div> 
+                  <div class="col-xs-5 configdropdown mb-10" ng-show="config.uiComponent === 'textarea'">
+                          <div class="kr-sg-input-text-area">
+                                      <textarea placeholder="Placeholder text" ng-model="config.value" class="input-text"></textarea>
+                          </div>
+                  </div>
+                  <div class="col-xs-5 config-components mb-10" ng-show="config.uiComponent === 'slider'">
+                    <div class="config-slider" id="{{config.configurationKeyName}}SliderCM">
+                    <div class="countThreshold"><span class="pull-left">{{config.range[0]}}</span><span class="pull-right">{{config.range[1]}}</span></div>
+                    <span id="{{config.configurationKeyName}}CM" class="sliderContainerKC custom-configuration width-250"  data-handle="round" data-slider-id='{{config.configurationKeyName}}Custom' type="text" data-slider-min="{{config.range[0]}}" data-slider-tooltip="hide" data-slider-max="{{config.range[1]}}" data-slider-step="{{config.interval}}"  ticks-tooltip="false" data-slider-value="0"></span>
+                  </div>
+                  </div>
+                  <div class="col-xs-5 mb-10" ng-show="config.isCustom && (!config.invalidPattern && !config.invalidCustomKey)">
+                      <form name="customFormValue{{$index}}">
+                        <div class="kr-sg-input-text">                
+                            <input type="text" ng-class="{'input-text error': config.invalidCustomValue && customFormValue{{$index}}.customValue.$error.required }" placeholder="Configuration value" class="input-text" ng-model="config.value" name="customValue" ng-required="true" ng-keyup="addCustomValue($event,config)">
+                            <div class="error-msg" ng-show="config.invalidCustomValue && customFormValue{{$index}}.customValue.$error.required"><span class="error" ng-show="config.configurationKeyName">Provide a valid value for the {{config.configurationKeyName}} configurations</span>
+                              <span class="error" ng-show="!config.configurationKeyName">Provide a valid value for the  configurations</span></div>                
+                          </div>
+                      </form>
+                    
+                  </div>
+                  <div class="col-xs-2 config-delete" ng-click="deleteConfiguration($index,config)">
+                    <span class="savingStatus{{$index}}"></span>
+                    <img ng-src="{{trashIcon}}" class="trashIcon">
+                  </div>
+                </div>
+                  <div class="row" ng-hide="displayMode === 'VIEW' || (invalidPattern || invalidCustomValue)">
+                      <div class="col-xs-5 configdropdown mb-10" ng-class="{'input-text error': parentRelationError}">                
+                          <div class="kr-sg-dropdowns">
+                            <div class="kr-sg-input-inline-search dropdown dropdown-open line-height-0">
+                                <button class="dropdown-toggle dropdown-input search-with-dropdown" data-toggle="dropdown">{{'select_configuration' | i18nString}}</button>    
+                                <input type="text" placeholder="Select a configuration" class="input-search dropdown-toggle dropdown-input" ng-model="search.configText" data-toggle="dropdown">
+                                <img ng-src="{{searchIcon}}" class="search-icon">                                                           
+                                <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-360" height-property="height">
+                                  <li class="custom-text" ng-click="addCustomCM()"><a href="#">{{'add_custom' | i18nString}}</a></li>
+                                  <ng-container ng-repeat="configuration in uiConfiguration | filter:{'configurationName':search.configText} | configFilter: {'list': savedConfigurationsCM} track by $index" > 
+                                    <li  ng-if="configuration.multipleModels" ng-click="addConfigurationCM(configuration,$index)">
+                                        <a href="#" title="{{configuration.configurationName}}">{{configuration.configurationName}}</a><span ng-class="configuration.class || 'tags'">{{configuration.nlpEngine}} Engine</span>
+                                    </li>
+                                  </ng-container>
+                                </ul>
+                            </div>                        
+                        </div>
+                        <div class="error-msg" ng-if="parentRelationError">
+                              <span class="error">{{'configuration_cannot' | i18nString}}  <a href="#" class="knowMoreLink" ng-click="redirectToLink('ADV_NLP_CONFIG', $event)">{{'knowMore' | i18nString}}</a></span>
+                        </div>      
+                    </div> 
+                </div>                                                          
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modalFooter">
+          <button class="kr-sg-button-primary btn_md marginRight10 minWidth90" ng-click="updateCustomModel()" ng-disabled="displayMode === 'VIEW' || !isCustomFormValid()">{{'save'| i18nString}}</button>
+          <button class="kr-sg-button-secondary btn_md minWidth90" ng-click="closeCustomConfigurations()">{{'cancel'| i18nString}}</button>
+      </div>
+  </div>
+</bot-modal-slider>
+<!-- STOP WORDS -->
+<bot-modal-slider id="manageStopWords">
+  <div class="modalSliderContainer width700" ng-init="knowledgeTasksList()">
+
+<!--Header Starts Here -->
+     <div class="modalHeader">
+         <h4 class="modal-title" id="gridSystemModalLabel"><i  class="btx-close" ng-click="closeManageStopWordsModalSlider()"></i> {{'manage_stopwords'| i18nString}}</h4>         
+     </div>
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+     <div class="modalBody stopWordsBody" perfect-scroll dynamic-height dynaoffset="-110" height-property="height"> 
+      <div class="searchComponent mb-10 pull-right">
+        <input placeholder="Search" tabindex="1" class="stopWordsSearchInput" type="text"  ng-keyup='activateWordSearch(searchWord.search)' ng-model="searchWord.search">
+        <i class="btx-search"></i>
+        <i class="btx-close displayNone"></i>
+      </div>
+       <div class="col-xs-12 wf-form " ng-if='showStopwordsModal && !searchWord.search && !lodingStopWords'>
+       <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder=" " use-strings="true" ng-model="mlthreshold.stopWords"></tags-input>
+       
+       </div>
+         <div class="col-xs-12 wf-form " ng-if='searchWord.search && !lodingStopWords'>
+             <div class='searchWordsdiv'><span  ng-repeat="word in fiteredwords =(mlthreshold.stopWords  | filter:searchWord.search) track by $index" class='customWordtags'>{{word}}<i ng-click="deleteStopWordInSearch(word)" class='fa fa-times marginLeft5'></i></span> <span ng-if="!fiteredwords.length">No words found</span></div>
+       </div>
+         <div class="col-xs-12 wf-form text-center paddingTop20" ng-if='lodingStopWords'>
+             <div class='loadingWordsDiv'><span> {{'loading_stopwords'| i18nString}}</span></div>
+       </div>
+         <!-- <div class="col-xs-12" ng-if='searchWord.search=="" && !lodingStopWords'>
+         
+         
+        </div> -->
+     </div>
+<!-- Body Ends Here -->
+<div class="modalFooter stopWordsFooter" ng-if='searchWord.search=="" && !lodingStopWords'>
+       <button type="submit" class="btn" ng-click="editStopWords()">{{'save'| i18nString}}</button>
+       <button type="reset" ng-click="closeManageStopWordsModalSlider()" class="btn closeCancel">  {{'cancel'| i18nString}} </button>
+       <span class="pull-right resetBtn pointer-hand" ng-click="resetDefaultStopWords()"><i ng-src="{{refreshIcon}}" class="refreshIcon btx-return"></i>{{'reset_default'| i18nString}}</span>
+</div>
+  </div>
+</bot-modal-slider>
+</div>
+
+
+

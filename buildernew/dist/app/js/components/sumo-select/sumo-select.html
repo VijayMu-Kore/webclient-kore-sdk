@@ -1,0 +1,3 @@
+<select name="name" ng-disabled="disabled" multiple ng-model="value">
+	<option ng-repeat="option in options track by $index" value="{{option[valueKey]}}">{{channelFilter(option[titleKey])}}</option>
+</select>

@@ -1,0 +1,424 @@
+
+<div class="languageSettingsdropdown dropdown pull-right trainingProgress" ng-mouseover="progressHoverEnter($event)">
+   <button class="btn dropdown-toggle tooltip-default-behaviour text-white-space" type="button" id="progressDockDrop" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="true" ng-click="progressDockNotification()" tooltip-placement="bottom" tooltip="{{'status_docker'| i18nString}}">
+      <i class="btx-instance-property" ng-show="!dataIsInProgress"></i>
+      <span class="onProgress" ng-show="dataIsInProgress"><span class="blinkingDot"></span></span>
+   </button>
+   <ul class="dropdown-menu progressDropdown" aria-labelledby="progressDockDrop" ng-show="progressDockData.length">
+      <div ng-click= "stopPropagation($event)" ng-show="progressDockDataCopy.length" class="col-xs-12 clearProcess">
+         <a class="clearALL" ng-click="clearAllprogressDockAllNotifications($event)">{{'clear_caps'| i18nString}} 
+             <!-- <img width="10" height="10" ng-src="{{progressClose}}" class="progressClose" /> -->
+         </a>
+       </div>
+         <form class="progressForm">
+             <div class="scrollDivProgressDock" perfect-scroll>
+                 <div class="col-xs-12 progressTrainingDiv" id="{{data._id}}" ng-click= "stopPropagation($event)" ng-show="getDockVisibility(data)" ng-repeat = "data in progressDockData track by $index">
+                     <div class="col-xs-6 left">
+                         <p class="titleProgress">{{getDockType(data.jobType, data)}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'IMPORT') && (data.percentageComplete < '100') && (data.status === 'IN_PROGRESS')" >{{'importing'| i18nString}} </p>
+                          <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType === 'ONTOLOGY_REPORT') && (data.percentageComplete < '100') && (data.status === 'IN_PROGRESS')">{{'inspecting'| i18nString}} ...</p>
+                         <p class="statusProgress" ng-show="(data.action === 'IMPORT') && (data.percentageComplete == '100') && (data.status === 'SUCCESS')" >{{'import_completed'| i18nString}}</p>              
+                         <p class="statusProgress" ng-show="(data.action === 'CLUSTERING') && (data.status === 'IN_PROGRESS') && (data.jobType === 'RG_UTTERANCES')">{{'regrouping_progress'| i18nString}}</p> 
+                         <p class="statusProgress" ng-show="(data.action === 'CLUSTERING') && (data.status === 'SUCCESS') && (data.jobType === 'RG_UTTERANCES')">{{'regrouping_completed'| i18nString}}</p> 
+                         <p class="statusProgress" ng-show="(data.action === 'CLUSTERING') && (data.status === 'FAILURE') && (data.jobType === 'RG_UTTERANCES')">{{'regrouping_has_failed'| i18nString}}</p> 
+                         <p class="statusProgress" ng-show="(data.action === 'KFOLD_TRAIN') && (data.status === 'IN_PROGRESS') && (data.jobType === 'ML_KFOLD')">{{'kfold_progress'| i18nString}}</p> 
+                         <p class="statusProgress" ng-show="(data.action === 'KFOLD_TRAIN') && (data.status === 'SUCCESS') && (data.jobType === 'ML_KFOLD')">{{'kfold_completed'| i18nString}}</p> 
+                         <p class="statusProgress" ng-show="(data.action === 'KFOLD_TRAIN') && (data.status === 'FAILURE') && (data.jobType === 'ML_KFOLD')">{{'kfold_failed'| i18nString}}</p> 
+                         <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS') && (data.jobType === 'BOT')">{{'exporting'| i18nString}} </p>                        
+                         <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS') && (data.jobType !== 'EXPORT_VERSION') && (data.jobType !== 'BOT')">{{'exporting_data'| i18nString:({dyn:data.fileType})}} </p>
+                          <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS') && (data.jobType === 'EXPORT_VERSION') ">{{'export_version_progress' | i18nString}} </p>
+                         <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete == '100') && (data.status === 'SUCCESS')&& (data.jobType === 'BOT') " >{{'export_completed'| i18nString}}</p>                        
+                         <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete == '100') && (data.status === 'SUCCESS') && (data.jobType !== 'EXPORT_VERSION') && (data.jobType !== 'BOT') " >{{'export_data'| i18nString:({dyn:data.fileType})}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete == '100')  && (data.status === 'SUCCESS') && (data.jobType === 'EXPORT_VERSION') ">{{'export_version_completed' | i18nString}} </p>
+                         <p class="statusProgress" ng-show="(data.action === 'TRAIN') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS')" >{{'training_caps'| i18nString}} </p>
+                         <p class="statusProgress" ng-show="(data.action === 'TRAIN') && ((data.percentageComplete == '100') || (data.status === 'SUCCESS'))" >{{'training_completed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType !== 'ONTOLOGY_REPORT' && data.jobType !== 'CONVERSATION_TESTING' && data.jobType !== 'PUBLISH_BOT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS')" >{{'running'| i18nString}} </p>
+                         <p class="statusProgress textEllipsis" tooltip-placement = "bottom" tooltip="{{'batch_completed'| i18nString}}" ng-show="(data.action === 'RUN' && data.jobType !== 'ONTOLOGY_REPORT' && data.jobType !== 'CONVERSATION_TESTING' && data.jobType !== 'PUBLISH_BOT') && ((data.percentageComplete == '100') || (data.status === 'SUCCESS'))" >{{'batch_completed'| i18nString}}</p>
+                         <p class="statusProgress textEllipsis" tooltip-placement = "bottom" tooltip="{{'conversTestingComplete'| i18nString}}" ng-show="(data.action === 'RUN' && data.jobType === 'CONVERSATION_TESTING') && ((data.percentageComplete == '100') && (data.status === 'SUCCESS'))" >{{'conversTestingComplete'| i18nString}}</p>
+                         <p class="statusProgress textEllipsis ontologyAnalysis" ng-show="(data.action === 'RUN' && data.jobType === 'ONTOLOGY_REPORT') && (
+                         data.status === 'SUCCESS')" >{{'kg_completed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'IMPORT') && (data.status === 'FAILURE')" >{{'import_failed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.status === 'FAILURE') && data.jobType !== 'EXPORT_VERSION'" >{{'export_failed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.status === 'FAILURE') && data.jobType == 'EXPORT_VERSION'" >{{'export_version_failed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'TRAIN') && (data.status === 'FAILURE')" >{{'training_failed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType !== 'ONTOLOGY_REPORT' && data.jobType !== 'CONVERSATION_TESTING' && data.jobType !== 'PUBLISH_BOT') && (data.status === 'FAILURE')" >{{'running_failed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType === 'CONVERSATION_TESTING') && (data.status === 'FAILURE')" >{{'conversTestingFailed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType === 'ONTOLOGY_REPORT') && (data.status === 'FAILURE')" > {{'kg_inspections_failed'| i18nString}}</p>
+                          <p class="statusProgress" ng-show="(data.action === 'VERSIONING' && data.jobType === 'CREATE_VERSION') && (data.status === 'SUCCESS')" > {{'bot_version_completed'| i18nString}}</p>
+                          <p class="statusProgress" ng-show="(data.action === 'VERSIONING' && data.jobType === 'CREATE_VERSION') && (data.status === 'IN_PROGRESS')" > {{'bot_version_completed'| i18nString}}</p>
+                          <p class="statusProgress" ng-show="(data.action === 'VERSIONING' && data.jobType === 'CREATE_VERSION') && (data.status === 'FAILURE')" > {{'bot_version_failed'| i18nString}}</p>
+                          <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType === 'CONVERSATION_TESTING') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS')" >{{data.store && data.store.testCaseName ? data.store.testCaseName: '---'}} </p>
+                          
+                          <p class="statusProgress textEllipsis" tooltip-placement = "bottom" tooltip="{{'publishing_completed'| i18nString}}" ng-show="(data.action === 'RUN' && data.jobType === 'PUBLISH_BOT') && ((data.percentageComplete == '100') && (data.status === 'SUCCESS'))" > {{'publishing_completed'| i18nString}}</p>
+                          <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType === 'PUBLISH_BOT') && (data.status === 'FAILURE')" >  {{'publishing_failed'| i18nString}}</p>
+                          <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType === 'PUBLISH_BOT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS')" >{{'publishing_ingprogress' | i18nString}} </p>
+
+                          <p class="statusProgress" ng-show="(data.action === 'QUERY') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS')" >{{'running'| i18nString}} </p>
+                          <p class="statusProgress" ng-show="(data.action === 'QUERY') && (data.percentageComplete == '100') && (data.status === 'SUCCESS')" >{{'success'| i18nString}}</p>      
+                          <p class="statusProgress" ng-show="(data.action === 'QUERY') && (data.status === 'FAILURE')">{{'failed'| i18nString}}</p>
+
+                         <img ng-src="{{progressClockIcon}}" ng-class = "{'batchTestingClass':(data.action === 'RUN') && (data.status === 'SUCCESS')}" class="progressClockIcon"  tooltip-placement = "top" tooltip="{{data.lMod | date:'MM-dd-yyyy , hh:mm a'}}">
+                     </div>
+                     <div class="col-xs-6 right" ng-show="data.status === 'IN_PROGRESS' || data.status === 'QUEUED'">
+                         <div class="c100 p{{data.percentageComplete | number : 0}} small">
+                             <span>{{data.percentageComplete | number:0}}<span class="percentageIcon">%</span></span>
+                             <div class="slice">
+                                 <div class="bar"></div>
+                                 <div class="fill"></div>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-xs-6 right" ng-show="data.status === 'FAILURE'">
+                        <span ng-show ="(data.action === 'RUN' && data.jobType === 'PUBLISH_BOT') && (data.status === 'FAILURE')" class="viewStatus" ng-click = "viewStatus(data.jobType, data)" title="{{'view'| i18nString}}">{{'view'| i18nString}}</span>
+                         <img width="30" height="30" ng-src="{{progressFailed}}" class="progressFailed" />
+                         <span ng-click="clearProgressDockNotifications(data)" ng-show="data.status === 'FAILURE' || data.status === 'FAILED'"><img width="10" height="10" ng-src="{{progressClose}}" class="progressClose" /></span>
+                     </div>            
+                     <div class="col-xs-6 right" ng-show="data.status === 'SUCCESS'">
+                         <span ng-show ="data.fileId && data.action === 'EXPORT' && data.percentageComplete == '100'" class="downloadExportFile" ng-click = "downloadFile(data,$index,$event)" title="{{'download'| i18nString}}">{{'download'| i18nString}}</span>
+                         <span ng-show ="((data.action === 'KFOLD_TRAIN') && (data.status === 'SUCCESS') && (data.jobType === 'ML_KFOLD'))" class="downloadKfoldExportFile" ng-click = "exportKfoldData(data,$index,$event)">{{'download'| i18nString}}</span>
+                         <span ng-show ="(data.action === 'RUN' && data.jobType === 'PUBLISH_BOT') && (data.status === 'SUCCESS')" class="viewStatus" ng-click = "viewStatus(data.jobType, data)" title="{{'view'| i18nString}}">{{'view'| i18nString}}</span>
+                         <a href = "{{hrefURL}}" id ="index{{$index}}" ng-show="data.action === 'EXPORT'" target = "_self" download></a>
+                         <span class="openFile" ng-show="(data.jobType === 'ONTOLOGY_REPORT' && data.status === 'SUCCESS')" ng-click="openAnalysisReport()">{{'open_label'| i18nString}}
+                         </span>
+                         <img width="30" height="30" ng-src="{{progressSucess}}" class="progressSucess" />
+                         <span ng-click="clearProgressDockNotifications(data)" ng-show="(data.status === 'SUCCESS')"><img width="10" height="10" ng-src="{{progressClose}}" class="progressClose" /></span>
+                         
+                     </div>
+                 </div>
+                 <div class="row nlpTraining" ng-show = "dataTrain">
+                     <p class="trainingTitle">{{'nlp_status'| i18nString}}</p>
+                     <p class="timeStamp" ng-show="!failedJobs.length">{{'last_trained'| i18nString}}</p>
+                     <div class="col-xs-12 noPadding">
+                         <div class="col-xs-6">
+                              <p class="configurTitle">{{'published'| i18nString}}</p>
+                         </div>
+                        <div class="col-xs-6">
+                             <p class="configurTitle">{{'configured'| i18nString}}</p>
+                        </div>
+                     </div>
+                     <div class="col-xs-12 noPadding" ng-show="failedJobs.length">
+                            <div class="col-xs-12 noPadding" ng-show="mlTrainJobsPublished.length || mlTrainJobsConfigured.length">
+                               <div class="col-xs-6" ng-show="mlTrainJobsPublished.length">
+                                  <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                  <img ng-show ="mlTrainJobsPublished[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                  <p ng-show ="mlTrainJobsPublished[0].status === 'SUCCESS'" class="timeStamp" >{{'last_trained'| i18nString}}<br/>
+                                     {{mlTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                                  <p ng-show ="mlTrainJobsPublished[0].status === 'FAILURE'" class="timeStamp" >{{'failed_on'| i18nString}}<br/>
+                                     {{mlTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                               </div>
+                               <div class="col-xs-6" ng-show="!mlTrainJobsPublished.length">
+                                  <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                  <p>--</p>
+                               </div>
+ 
+                               <div class="col-xs-6" ng-show="mlTrainJobsConfigured.length">
+                                  <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                  <img ng-show ="mlTrainJobsConfigured[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                  <p ng-show ="mlTrainJobsConfigured[0].status === 'SUCCESS'" class="timeStamp" >{{'last_trained'| i18nString}}<br/>
+                                     {{mlTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                                  <p ng-show ="mlTrainJobsConfigured[0].status === 'FAILURE'" class="timeStamp" >{{'failed_on'| i18nString}}<br/>
+                                     {{mlTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                               </div>
+                                <div class="col-xs-6" ng-show="!mlTrainJobsConfigured.length">
+                                  <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                  <p>--</p>
+                               </div>
+                            </div>
+                            <div class="col-xs-12 noPadding" ng-show="kgTrainJobsPublished.length || kgTrainJobsConfigured.length">
+                               <div class="col-xs-6"  ng-show="kgTrainJobsPublished.length">
+                                  <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                  <img ng-show ="kgTrainJobsPublished[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                  <p ng-show ="kgTrainJobsPublished[0].status === 'SUCCESS'" class="timeStamp" >{{'last_trained'| i18nString}}<br/>
+                                     {{kgTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                                  <p ng-show ="kgTrainJobsPublished[0].status === 'FAILURE'" class="timeStamp" >{{'failed_on'| i18nString}}<br/>
+                                     {{kgTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                               </div>
+                               <div class="col-xs-6" ng-show="!kgTrainJobsPublished.length">
+                                   <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                   <p>--</p>
+                               </div>
+                               <div class="col-xs-6" ng-show="kgTrainJobsConfigured.length">
+                                  <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                  <img ng-show ="kgTrainJobsConfigured[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                  <p ng-show ="kgTrainJobsConfigured[0].status === 'SUCCESS'" class="timeStamp" >{{'last_trained'| i18nString}}<br/>
+                                     {{kgTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                                  <p ng-show ="kgTrainJobsConfigured[0].status === 'FAILURE'" class="timeStamp" >{{'failed_on'| i18nString}}<br/>
+                                     {{kgTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                               </div>
+                                <div class="col-xs-6" ng-show="!kgTrainJobsConfigured.length">
+                                   <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                   <p>--</p>
+                               </div>
+                            </div>
+                     </div>
+                      <div class="col-xs-12 noPadding" ng-show="!failedJobs.length">
+                            <div class="col-xs-12 noPadding" ng-show="mlTrainJobsPublished.length || mlTrainJobsConfigured.length">
+                               <div class="col-xs-6" ng-show="mlTrainJobsPublished.length">
+                                  <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                  <img ng-show ="mlTrainJobsPublished[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                  <p ng-show ="mlTrainJobsPublished[0].status === 'SUCCESS'" class="timeStamp" >{{mlTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                               </div>
+                               <div class="col-xs-6" ng-show="!mlTrainJobsPublished.length">
+                                    <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                    <p>--</p>
+                               </div>
+                               <div class="col-xs-6" ng-show="mlTrainJobsConfigured.length">
+                                  <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                  <img ng-show ="mlTrainJobsConfigured[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                  <p ng-show ="mlTrainJobsConfigured[0].status === 'SUCCESS'" class="timeStamp" >{{mlTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}</p>
+                               </div>
+                               <div class="col-xs-6" ng-show="!mlTrainJobsConfigured.length">
+                                    <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                    <p>--</p>
+                               </div>
+                            </div>
+                            <div class="col-xs-12 noPadding" ng-show="kgTrainJobsPublished.length || kgTrainJobsConfigured.length">
+                               <div class="col-xs-6" ng-show="kgTrainJobsPublished.length">
+                                  <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                  <img ng-show ="kgTrainJobsPublished[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                  <p ng-show ="kgTrainJobsPublished[0].status === 'SUCCESS'" class="timeStamp" >{{kgTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                               </div>
+                               <div class="col-xs-6" ng-show="!kgTrainJobsPublished.length">
+                                   <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                   <p>--</p>
+                               </div>
+                               <div class="col-xs-6" ng-show="kgTrainJobsConfigured.length">
+                                  <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                  <img ng-show ="kgTrainJobsConfigured[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                  <p ng-show ="kgTrainJobsConfigured[0].status === 'SUCCESS'" class="timeStamp" >{{kgTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                  </p>
+                               </div>
+                               <div class="col-xs-6" ng-show="!kgTrainJobsConfigured.length">
+                                   <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                   <p>--</p>
+                               </div>
+                            </div>
+                     </div>
+                 </div>
+             </div>
+         </form> 
+   </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div ng-mouseover="progressHoverEnter($event)" class="dropdown trainingProgress" ng-if='false'>
+    <button class="btn btn-primary dropdown-toggle progressBtn tooltip-default-behaviour text-white-space" type="button" data-toggle="dropdown" ng-click="progressDockNotification()" tooltip-placement="bottom" tooltip="{{'status_docker'| i18nString}}">
+      <span class="progressDefaultIcons">
+        <img width="18" height="18" ng-src="{{grayCircle}}" class="grayCircle" />
+        <img width="18" height="18" ng-src="{{whiteCircle}}" class="whiteCircle" />
+      </span>
+      <span class="progressTitle">{{'status_tracker'| i18nString}}</span>
+    </button>
+    <div class="dropdown-menu progressDropdown" ng-show="progressDockData.length">
+
+      <div ng-click= "stopPropagation($event)" ng-show="progressDockDataCopy.length" class="col-xs-12 clearProcess">
+        <a class="clearALL" ng-click="clearAllprogressDockAllNotifications($event)">{{'clear_caps'| i18nString}} 
+            <!-- <img width="10" height="10" ng-src="{{progressClose}}" class="progressClose" /> -->
+        </a>
+      </div>
+        <form class="progressForm">
+            <div class="scrollDivProgressDock" perfect-scroll>
+                <div class="col-xs-12 progressTrainingDiv" id="{{data._id}}" ng-click= "stopPropagation($event)" ng-show="getDockVisibility(data)" ng-repeat = "data in progressDockData track by $index">
+                    <div class="col-xs-6 left">
+                        <p class="titleProgress">{{getDockType(data.jobType)}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'IMPORT') && (data.percentageComplete < '100') && (data.status === 'IN_PROGRESS')" >{{'importing'| i18nString}} </p>
+                         <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType === 'ONTOLOGY_REPORT') && (data.percentageComplete < '100') && (data.status === 'IN_PROGRESS')">{{'inspecting'| i18nString}} ...</p>
+                        <p class="statusProgress" ng-show="(data.action === 'IMPORT') && (data.percentageComplete == '100') && (data.status === 'SUCCESS')" >{{'import_completed'| i18nString}}</p>              
+                        <p class="statusProgress" ng-show="(data.action === 'CLUSTERING') && (data.status === 'IN_PROGRESS') && (data.jobType === 'RG_UTTERANCES')">{{'regrouping_progress'| i18nString}}</p> 
+                        <p class="statusProgress" ng-show="(data.action === 'CLUSTERING') && (data.status === 'SUCCESS') && (data.jobType === 'RG_UTTERANCES')">{{'regrouping_completed'| i18nString}}</p> 
+                        <p class="statusProgress" ng-show="(data.action === 'CLUSTERING') && (data.status === 'FAILURE') && (data.jobType === 'RG_UTTERANCES')">{{'regrouping_has_failed'| i18nString}}</p> 
+                        <p class="statusProgress" ng-show="(data.action === 'KFOLD_TRAIN') && (data.status === 'IN_PROGRESS') && (data.jobType === 'ML_KFOLD')">{{'kfold_progress'| i18nString}}</p> 
+                        <p class="statusProgress" ng-show="(data.action === 'KFOLD_TRAIN') && (data.status === 'SUCCESS') && (data.jobType === 'ML_KFOLD')">{{'kfold_completed'| i18nString}}</p> 
+                        <p class="statusProgress" ng-show="(data.action === 'KFOLD_TRAIN') && (data.status === 'FAILURE') && (data.jobType === 'ML_KFOLD')">{{'kfold_failed'| i18nString}}</p> 
+                        <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS') && (data.jobType === 'BOT')">{{'exporting'| i18nString}} </p>                        
+                        <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS') && (data.jobType !== 'EXPORT_VERSION') && (data.jobType !== 'BOT')">{{'exporting_data'| i18nString:({dyn:data.fileType})}} </p>
+                         <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS') && (data.jobType === 'EXPORT_VERSION') ">{{'export_version_progress' | i18nString}} </p>
+                        <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete == '100') && (data.status === 'SUCCESS')&& (data.jobType === 'BOT') " >{{'export_completed'| i18nString}}</p>                        
+                        <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete == '100') && (data.status === 'SUCCESS') && (data.jobType !== 'EXPORT_VERSION') && (data.jobType !== 'BOT') " >{{'export_data'| i18nString:({dyn:data.fileType})}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.percentageComplete == '100')  && (data.status === 'SUCCESS') && (data.jobType === 'EXPORT_VERSION') ">{{'export_version_completed' | i18nString}} </p>
+                        <p class="statusProgress" ng-show="(data.action === 'TRAIN') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS')" >{{'training_caps'| i18nString}} </p>
+                        <p class="statusProgress" ng-show="(data.action === 'TRAIN') && ((data.percentageComplete == '100') || (data.status === 'SUCCESS'))" >{{'training_completed'| i18nString}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType !== 'ONTOLOGY_REPORT') && (data.percentageComplete < '100')  && (data.status === 'IN_PROGRESS')" >{{'running'| i18nString}} </p>
+                        <p class="statusProgress textEllipsis" tooltip-placement = "bottom" tooltip="{{'batch_completed'| i18nString}}" ng-show="(data.action === 'RUN' && data.jobType !== 'ONTOLOGY_REPORT') && ((data.percentageComplete == '100') || (data.status === 'SUCCESS'))" >{{'batch_completed'| i18nString}}</p>
+                        <p class="statusProgress textEllipsis ontologyAnalysis" ng-show="(data.action === 'RUN' && data.jobType === 'ONTOLOGY_REPORT') && (
+                        data.status === 'SUCCESS')" >{{'kg_completed'| i18nString}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'IMPORT') && (data.status === 'FAILURE')" >{{'import_failed'| i18nString}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.status === 'FAILURE') && data.jobType !== 'EXPORT_VERSION'" >{{'export_failed'| i18nString}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'EXPORT') && (data.status === 'FAILURE') && data.jobType == 'EXPORT_VERSION'" >{{'export_version_failed'| i18nString}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'TRAIN') && (data.status === 'FAILURE')" >{{'training_failed'| i18nString}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType !== 'ONTOLOGY_REPORT') && (data.status === 'FAILURE')" >{{'running_failed'| i18nString}}</p>
+                        <p class="statusProgress" ng-show="(data.action === 'RUN' && data.jobType === 'ONTOLOGY_REPORT') && (data.status === 'FAILURE')" > {{'kg_inspections_failed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'VERSIONING' && data.jobType === 'CREATE_VERSION') && (data.status === 'SUCCESS')" > {{'bot_version_completed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'VERSIONING' && data.jobType === 'CREATE_VERSION') && (data.status === 'IN_PROGRESS')" > {{'bot_version_completed'| i18nString}}</p>
+                         <p class="statusProgress" ng-show="(data.action === 'VERSIONING' && data.jobType === 'CREATE_VERSION') && (data.status === 'FAILURE')" > {{'bot_version_failed'| i18nString}}</p>
+
+                        <img ng-src="{{progressClockIcon}}" ng-class = "{'batchTestingClass':(data.action === 'RUN') && (data.status === 'SUCCESS')}" class="progressClockIcon"  tooltip-placement = "top" tooltip="{{data.lMod | date:'MM-dd-yyyy , hh:mm a'}}">
+                    </div>
+                    <div class="col-xs-6 right" ng-show="data.status === 'IN_PROGRESS' || data.status === 'QUEUED'">
+                        <div class="c100 p{{data.percentageComplete | number : 0}} small">
+                            <span>{{data.percentageComplete | number:0}}<span class="percentageIcon">%</span></span>
+                            <div class="slice">
+                                <div class="bar"></div>
+                                <div class="fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 right" ng-show="data.status === 'FAILURE'">
+                        <img width="30" height="30" ng-src="{{progressFailed}}" class="progressFailed" />
+                        <span ng-click="clearProgressDockNotifications(data)" ng-show="data.status === 'FAILURE' || data.status === 'FAILED'"><img width="10" height="10" ng-src="{{progressClose}}" class="progressClose" /></span>
+                    </div>            
+                    <div class="col-xs-6 right" ng-show="data.status === 'SUCCESS'">
+                        <span ng-show ="data.fileId && data.action === 'EXPORT' && data.percentageComplete == '100'" class="downloadExportFile" ng-click = "downloadFile(data,$index,$event)" title="{{'download'| i18nString}}">{{'download'| i18nString}}</span>
+                        <span ng-show ="((data.action === 'KFOLD_TRAIN') && (data.status === 'SUCCESS') && (data.jobType === 'ML_KFOLD'))" class="downloadKfoldExportFile" ng-click = "exportKfoldData(data,$index,$event)">{{'download'| i18nString}}</span>
+                        <a href = "{{hrefURL}}" id ="index{{$index}}" ng-show="data.action === 'EXPORT'" target = "_self" download></a>
+                        <span class="openFile" ng-show="(data.jobType === 'ONTOLOGY_REPORT' && data.status === 'SUCCESS')" ng-click="openAnalysisReport()">{{'open_label'| i18nString}}
+                        </span>
+                        <img width="30" height="30" ng-src="{{progressSucess}}" class="progressSucess" />
+                        <span ng-click="clearProgressDockNotifications(data)" ng-show="(data.status === 'SUCCESS')"><img width="10" height="10" ng-src="{{progressClose}}" class="progressClose" /></span>
+                        
+                    </div>
+                </div>
+                <div class="row nlpTraining" ng-show = "dataTrain">
+                    <p class="trainingTitle">{{'nlp_status'| i18nString}}</p>
+                    <p class="timeStamp" ng-show="!failedJobs.length">{{'last_trained'| i18nString}}</p>
+                    <div class="col-xs-12 noPadding">
+                        <div class="col-xs-6">
+                             <p class="configurTitle">{{'published'| i18nString}}</p>
+                        </div>
+                       <div class="col-xs-6">
+                            <p class="configurTitle">{{'configured'| i18nString}}</p>
+                       </div>
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-show="failedJobs.length">
+                           <div class="col-xs-12 noPadding" ng-show="mlTrainJobsPublished.length || mlTrainJobsConfigured.length">
+                              <div class="col-xs-6" ng-show="mlTrainJobsPublished.length">
+                                 <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                 <img ng-show ="mlTrainJobsPublished[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                 <p ng-show ="mlTrainJobsPublished[0].status === 'SUCCESS'" class="timeStamp" >{{'last_trained'| i18nString}}<br/>
+                                    {{mlTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                                 <p ng-show ="mlTrainJobsPublished[0].status === 'FAILURE'" class="timeStamp" >{{'failed_on'| i18nString}}<br/>
+                                    {{mlTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                              </div>
+                              <div class="col-xs-6" ng-show="!mlTrainJobsPublished.length">
+                                 <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                 <p>--</p>
+                              </div>
+
+                              <div class="col-xs-6" ng-show="mlTrainJobsConfigured.length">
+                                 <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                 <img ng-show ="mlTrainJobsConfigured[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                 <p ng-show ="mlTrainJobsConfigured[0].status === 'SUCCESS'" class="timeStamp" >{{'last_trained'| i18nString}}<br/>
+                                    {{mlTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                                 <p ng-show ="mlTrainJobsConfigured[0].status === 'FAILURE'" class="timeStamp" >{{'failed_on'| i18nString}}<br/>
+                                    {{mlTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                              </div>
+                               <div class="col-xs-6" ng-show="!mlTrainJobsConfigured.length">
+                                 <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                 <p>--</p>
+                              </div>
+                           </div>
+                           <div class="col-xs-12 noPadding" ng-show="kgTrainJobsPublished.length || kgTrainJobsConfigured.length">
+                              <div class="col-xs-6"  ng-show="kgTrainJobsPublished.length">
+                                 <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                 <img ng-show ="kgTrainJobsPublished[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                 <p ng-show ="kgTrainJobsPublished[0].status === 'SUCCESS'" class="timeStamp" >{{'last_trained'| i18nString}}<br/>
+                                    {{kgTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                                 <p ng-show ="kgTrainJobsPublished[0].status === 'FAILURE'" class="timeStamp" >{{'failed_on'| i18nString}}<br/>
+                                    {{kgTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                              </div>
+                              <div class="col-xs-6" ng-show="!kgTrainJobsPublished.length">
+                                  <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                  <p>--</p>
+                              </div>
+                              <div class="col-xs-6" ng-show="kgTrainJobsConfigured.length">
+                                 <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                 <img ng-show ="kgTrainJobsConfigured[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                 <p ng-show ="kgTrainJobsConfigured[0].status === 'SUCCESS'" class="timeStamp" >{{'last_trained'| i18nString}}<br/>
+                                    {{kgTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                                 <p ng-show ="kgTrainJobsConfigured[0].status === 'FAILURE'" class="timeStamp" >{{'failed_on'| i18nString}}<br/>
+                                    {{kgTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                              </div>
+                               <div class="col-xs-6" ng-show="!kgTrainJobsConfigured.length">
+                                  <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                  <p>--</p>
+                              </div>
+                           </div>
+                    </div>
+                     <div class="col-xs-12 noPadding" ng-show="!failedJobs.length">
+                           <div class="col-xs-12 noPadding" ng-show="mlTrainJobsPublished.length || mlTrainJobsConfigured.length">
+                              <div class="col-xs-6" ng-show="mlTrainJobsPublished.length">
+                                 <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                 <img ng-show ="mlTrainJobsPublished[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                 <p ng-show ="mlTrainJobsPublished[0].status === 'SUCCESS'" class="timeStamp" >{{mlTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                              </div>
+                              <div class="col-xs-6" ng-show="!mlTrainJobsPublished.length">
+                                   <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                   <p>--</p>
+                              </div>
+                              <div class="col-xs-6" ng-show="mlTrainJobsConfigured.length">
+                                 <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                 <img ng-show ="mlTrainJobsConfigured[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                 <p ng-show ="mlTrainJobsConfigured[0].status === 'SUCCESS'" class="timeStamp" >{{mlTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}</p>
+                              </div>
+                              <div class="col-xs-6" ng-show="!mlTrainJobsConfigured.length">
+                                   <p class="engine">{{'ml_engine'| i18nString}} </p>
+                                   <p>--</p>
+                              </div>
+                           </div>
+                           <div class="col-xs-12 noPadding" ng-show="kgTrainJobsPublished.length || kgTrainJobsConfigured.length">
+                              <div class="col-xs-6" ng-show="kgTrainJobsPublished.length">
+                                 <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                 <img ng-show ="kgTrainJobsPublished[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                 <p ng-show ="kgTrainJobsPublished[0].status === 'SUCCESS'" class="timeStamp" >{{kgTrainJobsPublished[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                              </div>
+                              <div class="col-xs-6" ng-show="!kgTrainJobsPublished.length">
+                                  <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                  <p>--</p>
+                              </div>
+                              <div class="col-xs-6" ng-show="kgTrainJobsConfigured.length">
+                                 <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                 <img ng-show ="kgTrainJobsConfigured[0].status === 'IN_PROGRESS'" ng-src="{{reloadIcon}}" class="trainingProgressIcon">
+                                 <p ng-show ="kgTrainJobsConfigured[0].status === 'SUCCESS'" class="timeStamp" >{{kgTrainJobsConfigured[0].lMod | date:'MM-dd-yyyy , hh:mm a'}}
+                                 </p>
+                              </div>
+                              <div class="col-xs-6" ng-show="!kgTrainJobsConfigured.length">
+                                  <p class="engine">{{'kg_engine'| i18nString}} </p>
+                                  <p>--</p>
+                              </div>
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </form> 
+    </div>
+</div>

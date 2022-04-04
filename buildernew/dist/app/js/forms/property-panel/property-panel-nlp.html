@@ -1,0 +1,571 @@
+<!--entity start-->
+<div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'entity' && !groupNode" class="entityDivContainer machineLearningLevel">
+    <!-- pattern div for composite entity -->
+    <div ng-show="nodeInfo.nodeInfo.entityType == 'composite'" class="composit">
+        <div class="connectionRules suggestPattern">
+            <span class="tabLabel"> {{'composite_patterns'| i18nString:({dialogNodeInstance:nodeInfo.dialogNodeInstance.name})}}</span>
+            
+            <i ng-src="{{helpIcon}}" ng-show="nodeInfo.nodeInfo.entityType == 'composite' && !(nodeInfo.nodeInfo.patterns && nodeInfo.nodeInfo.patterns.length)" class="helpIcon btx-help" tooltip-placement="bottom" tooltip="{{'patterns_tooltip'| i18nString}}"></i>
+            <i class="entityCompositePatterns" aria-hidden="true"></i>
+        </div>
+        <!-- <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.patternsDescription, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p> -->
+        <p class="entityHeaderText"> {{'composite_patterns_desc'| i18nString}}</p>
+        <form name="AddCompositeFieldPatternForm">
+            <div ui-sortable="compositePattensSorting" ng-model="props.compositePattern" class="bgColorDiv">
+                <div class="pattern compositePattern" ng-repeat="(i,compositePattern) in props.compositePattern track by $index">
+                    <span class="sortBar cursorMove sortBarOuter item1">
+                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                    </span>
+                    <span>
+                        <input ng-if="nodeInfo.nodeInfo.entityType !== 'composite'" class="form-control patternInput" type="text"
+                                maxlength="2048"
+                                ng-model="pattern" placeholder=" {{'patterns_place'| i18nString}}"
+                                ng-keypress="savePattern($event, $index, pattern, AddCompositeFieldPatternForm['fieldPattern' + $index])"
+                                ng-blur="savePattern($event, $index, pattern, AddCompositeFieldPatternForm['fieldPattern' + $index])"
+                                ng-pattern='validateFieldPattern'
+                                name="fieldPattern{{$index}}"
+                                >
+    
+                        <input ng-if="nodeInfo.nodeInfo.entityType == 'composite'" class="compositePattenInput patternInput" type="text"
+                                maxlength="2048"
+                                ng-model="props.compositePattern[i]" 
+                                ng-model-options="{debounce: 200}"
+                                placeholder=" {{'compositepattern'| i18nString}}"
+                                ng-keypress="saveCompositePattern($event, $index, props.compositePattern[i], AddCompositeFieldPatternForm['fieldPattern' + $index])"
+                                ng-blur="saveCompositePattern($event, $index, props.compositePattern[i], AddCompositeFieldPatternForm['fieldPattern' + $index])"
+                                ng-pattern='validateCompositeFieldPattern'
+                                name="fieldPattern{{$index}}" bot-mentions at-mentions="atMentionsData"
+                                >
+                        <span class="fa fa-minus-circle closePattern compositePattenClose" ng-click="removeCompositePattern($index, true)"></span>
+                    </span>
+                    <div error-alert ng-show="AddCompositeFieldPatternForm['fieldPattern' + $index].$error.pattern && nodeInfo.nodeInfo.entityType == 'composite'" class="text-danger"> {{'composite_patterns_name'| i18nString}}</div>
+                </div>
+            </div>
+        </form>
+        <span class="add-pattern" ng-click="addCompositePattern()">{{_constants_.propertyPanel.addPattern}}</span>
+        <!-- <p class="entityBottomText">{{_constants_.propertyPanel.entityBotton}}</p> -->
+    </div>
+    <!-- end of patterns div for composite entity -->
+    <!-- property panel synonyms div -->
+    <div>
+        <div class="connectionRules suggestSynonym">
+            <span class="tabLabel">{{'suggested_synonyms'| i18nString:({dialogNodeInstance:nodeInfo.dialogNodeInstance.name})}}</span>
+            <span class="synNotapplicable pull-right" ng-show="!(currentLanguage == 'en' || currentLanguage == 'fr' || currentLanguage == 'de' || currentLanguage == 'es')" tooltip-placement="bottom" tooltip="{{'synonyms_lang'| i18nString:({currentLanguage:languageList[currentLanguage]})}}">{{'not_applicable'| i18nString}}</span>
+            <!-- <span class="synNotapplicable pull-right" ng-show="nodeInfo.nodeInfo.entityType == 'composite'" tooltip-placement="top" tooltip="synonyms are not applicable for composite entity.">Not Applicable</span> -->
+            <i class="entitySynonym" aria-hidden="true"></i>
+        </div>
+        <div ng-class="{'synCompositePointer':!(currentLanguage == 'en' || currentLanguage == 'fr' || currentLanguage == 'de' || currentLanguage == 'es') }">
+            <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.synonymDescription, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+            <tags-input add-on-comma="false"  ng-class="{'isReadOnly':readonly}" class="paddingLeftRight15" replace-spaces-with-dashes="false" min-length="0" max-length="128"  use-strings="true" placeholder="{{'type_and_enter_placeholder'| i18nString}}" on-tag-added="saveEntitySynonyms()" on-tag-removed="saveEntitySynonyms()" ng-model="props.synonyms"></tags-input>
+            <p class="synonyms-help-hint">{{'enter_addsynonyms'| i18nString}}</p>
+        </div>
+    </div>
+    <!--End property panel synonyms div -->
+    <!--property panel Pattern div -->
+    <div class="btPatternsModal">
+        <div class="connectionRules suggestPattern">
+            <span class="tabLabel">{{'suggested_patterns'| i18nString:({dialogNodeInstance:nodeInfo.dialogNodeInstance.name})}}</span>
+            <!-- <div class="synNotapplicable pull-right" ng-show="nodeInfo.nodeInfo.entityType == 'composite'" tooltip-placement="top" tooltip="Patterns are not applicable for composite entity.">Not Applicable</div> -->
+            <!-- <i ng-show="nodeInfo.nodeInfo.entityType == 'composite' && !(nodeInfo.nodeInfo.patterns && nodeInfo.nodeInfo.patterns.length)" class="fa fa-exclamation-circle notify-icon error-color" title="Composite entity requires at least one pattern to be defined."></i> -->
+            <span class="synSearch callclear" search-expand>
+                <input ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput form-control" ng-model="gSearchCb.search" ng-keyup="searchPatterns(value,$index)" placeholder="{{'search_here'| i18nString}}">
+                <span class="searchBar fa btx-search" ng-click="onSearchClose($event,value,$index)"></span>
+           </span>
+        </div>
+        <div class="pattern-manage">
+            <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.patternsDescription, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+            <form name="AddFieldPatternForm" ng-class="{'isReadOnly':readonly}">
+                <div class="pattern" ng-repeat="pattern in ob.referencePatterns track by $index">
+                    <span class="inputContainer">
+                        <input ng-show="true || nodeInfo.nodeInfo.entityType !== 'composite'" class="form-control patternInput" type="text"
+                               maxlength="2048"
+                               ng-model="pattern" placeholder="{{_constants_.propertyPanel.defaultAddPattern}}"
+                               ng-keypress="savePattern($event, $index, pattern, AddFieldPatternForm['fieldPattern' + $index])" ng-focus="showPatternSaveTip($index)" ng-blur="showPatternSaveTip($index)"
+                               ng-pattern='validateFieldPattern'
+                               name="fieldPattern{{$index}}"
+                               >
+                               <p class="patternSaveTip" ng-class="['patternSaveTip' + $index]" ng-show="AddFieldPatternForm['fieldPattern' +$index].$valid && AddFieldPatternForm['fieldPattern' +$index].$dirty">{{'press_save'| i18nString}}</p>
+
+                        <input ng-if="false && nodeInfo.nodeInfo.entityType == 'composite'" class="form-control patternInput" type="text"
+                               maxlength="2048"
+                               ng-model="compositePattern" placeholder="{{_constants_.propertyPanel.defaultAddPattern}}"
+                               ng-keypress="saveCompositePattern($event, $index, compositePattern, AddFieldPatternForm['fieldPattern' + $index])"
+                               ng-blur="saveCompositePattern($event, $index, compositePattern, AddFieldPatternForm['fieldPattern' + $index])"
+                               name="fieldPattern{{$index}}" bot-mentions at-mentions="atMentionsData"
+                               >
+                               <i class="entityPatterns spinnerTop"  ng-class="['entityPatterns' + $index]" aria-hidden="true"></i>
+                               <span class="trashDiv">
+                                   <!-- <img ng-src="{{trashIcon}}" class="trashIcon" ng-click="removePattern($index, true)"> -->
+                                   <i class="btx-delete-1" ng-click="removePattern($index, true)"></i>
+                                </span>
+                        
+                    </span>
+                    <div error-alert ng-show="AddFieldPatternForm['fieldPattern' + $index].$error.pattern" class="text-danger">{{'patterns_name'| i18nString}}</div>
+                </div>
+                <div class="alertMessage">
+                    <div ng-if="ob.referencePatterns && !ob.referencePatterns.length && !searching">
+                     <div class="col-xs-12 text-center">
+                         <div class="alert alert-sm alert-warning ">
+                            {{'no_patterns'| i18nString}}
+                         </div>
+                     </div>
+                    </div>
+                    <div class="col-xs-12 text-center" ng-show="ob.referencePatterns && !ob.referencePatterns.length && searching">
+                     <div class="alert alert-sm alert-warning">
+                        {{'no_match'| i18nString}}
+                     </div>
+                    </div>
+                 </div>
+            </form>
+            <span class="add-pattern patternCss"  ng-show="AddFieldPatternForm.$valid && showAddPattern"  ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogEntity','patterns')">{{_constants_.propertyPanel.addPattern}}</span>
+            <p class="entityBottomText">{{_constants_.propertyPanel.entityBotton}} <a target='_blank' href='https://developer.kore.ai/docs/bots/nlp/fundamental-meaning/#managing-patterns'>{{'more'| i18nString}}</a>
+            </p>
+            <div class="modal fade pattern-modal fullwidth-dialog height-width-100 taskCreateOrEditModal" id="pattern-modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog height-width-100 modal-lg">
+                    <div class="modal-content  pattern-modal-content height-width-100">
+                       <bt-pattern cb="propertyPanelPatternCB"></bt-pattern>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="manageContextStatus manageContextStatusEntity" ng-class="{'isReadOnly':readonly}" ng-if="callBy!='manageComponents'">
+            <div class="connectionRules">
+                <span class="tabLabel"> {{'manage_context'| i18nString}}</span>
+                <i class="manageContextStatusSav" aria-hidden="true"></i>
+            </div>
+            <div class="manageContextConditions">
+                    <p class="contextOutputHeader">
+                        {{'context_output_name'| i18nString}}
+                    </p>
+                    <p class="contextOutputInfo">
+                        {{'context_output_desc'| i18nString}} 
+                    </p>
+                    <tags-input add-on-comma="false" class="paddingLeftRight15" replace-spaces-with-dashes="false" min-length="0"
+                        max-length="128" use-strings="true" placeholder=" {{'type_and_enter_placeholder'| i18nString}}" on-tag-added="saveIntentOrEntityContextTags()"
+                        on-tag-removed="saveIntentOrEntityContextTags()" ng-model="manageContext.contextTags"></tags-input>
+                    <!-- <p class="synonyms-help-hint">[Press [Enter] to add Context]</p> -->
+            </div>
+            <div class="checkbox checkbox-primary styledCSS  col-xs-12">
+                    <input  type="checkbox" id="entityContxtOutputAutoEmit" ng-click="saveIntentOrEntityContextTags()" ng-model="manageContext.autoEmitEntityValues">
+                    <label for="entityContxtOutputAutoEmit" class="autoEmitInfo"> {{'auto_emit'| i18nString}}</label>
+                </div>
+        </div>
+
+</div>
+<!--entity end start -->
+
+
+<!--intent start-->
+
+<div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'intent' && (headingsList.showNLPProperty.isOpen || groupNode)" class="intentDivContainer btPatternsModal" ng-init="checkMLSyncStatus()">
+  <div ng-if="!groupNode">
+    <div ng-hide="stream.type === 'universalbot'" class="clear-fix machineLearningLevel positionRelative adjust-loading-spinner">
+
+        <div class="connectionRules">
+            <span class="tabLabel">{{'machine_learning'| i18nString}}</span>
+            <i class="machineLearningLevelSave" aria-hidden="true"></i>
+            <span class="synSearch callclear" search-expand>
+                <input ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput form-control" ng-model="utteranceSearch.utteranceSearchQuery" ng-keyup="searchUtterance($event)" placeholder="{{'search_here'| i18nString}}">
+                <span class="searchBar fa btx-search"></span>
+            </span>
+            <span ng-hide="(nlpPermission !== 'FULL' || readonly)" class="trainUtterace">
+                <span ng-show = "!saveInprogress && showTrainBtn" ng-class="{'isReadOnly':readonly}" ng-click="trainBot()" class="pull-right trainBtn">{{'train'| i18nString}}</span>
+                <span class = "pull-right" ng-show="saveInprogress">{{'training_progress'| i18nString}} </span>
+            </span>
+        </div>
+        <div ng-show="loadingUtterances" class="content-loading topZero">
+            <span class="spinner-text"> 
+                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                <span class="spinner-text-content">{{'loading_utterances'| i18nString}}</span>
+            </span>
+        </div>
+        <div ng-show="!loadingUtterances">
+        <p class="machineLearningText">{{_constants_.propertyPanel.machineLearningTip}}</p>
+        <div ng-repeat="utterance in nodeInfo.nodeInfo.utterances" ng-class="{'isReadOnly':readonly}" ng-show="!utterance.isAutoAdded" class="editSynonymDiv">
+            <div class="utteranceDataBoxDiv" ng-if="utterance.taskId">
+                <textarea ng-disabled="nlpPermission !== 'FULL' || readonly" maxlength="2048" class="form-control utteranceDataBox" ng-focus="showUtteranceSaveTip($index)" ng-blur="showUtteranceSaveTip($index)"
+                          ng-keydown="auto_grow($event, utterance, $index)" type="text" ng-model="utterance.sentence" auto-grow-textarea default-grown="true"
+                          context-typeahead></textarea>
+                <span class="deleteUtterance"><i class="utteranceSaveSpin" ng-class="['utteranceSaveSpin' + $index]" aria-hidden="true"></i></span>
+                <span ng-hide="(nlpPermission !== 'FULL' || readonly)" ng-class="['deleteUtterance deleteUtteranceIcon' + $index]"><i ng-click="deleteUtterance(utterance, $index)" class="btx-delete-1"></i></span>
+            </div>
+            <p class="utteranceSaveTip" ng-class="['utteranceSaveTip' + $index]">{{'press_save'| i18nString}}</p>
+           
+        </div>
+         <span class="manageTrainingBlock" ng-show="nodeInfo.nodeInfo.utterances.length" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','utterances')">{{'manage_training' | i18nString}}</span>
+        <div class="alertMessage">
+            <div ng-show="!nodeInfo.nodeInfo.utterances.length && !searching" ng-class="{'isReadOnly':readonly}">
+              <p class="utteranceMessage">{{'no_utterance'| i18nString}}</p>
+              <p  class="noUtterances" ng-hide="nlpPermission !== 'FULL' || readonly" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','utterances')">+ {{'add_utterances_label' | i18nString}}</p> 
+           </div>
+            <div class="col-xs-12 text-center" ng-show="nodeInfo.nodeInfo.utterances.length==0 && searching">
+                <div class="alert alert-sm alert-warning">
+                    <p class="utteranceMessage">{{'no_utterance_match'| i18nString}}</p>
+                    <p  class="noUtterances" ng-hide="nlpPermission !== 'FULL' || readonly" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','utterances')">+  {{'add_utterances_label' | i18nString}}</p> 
+                </div>
+             </div>
+        </div>
+         <!-- <div class="editSynonymDiv" ng-class="{'isReadOnly':readonly}">
+            <div class="utteranceDataBoxDiv">
+                <textarea maxlength="2048" class="form-control utteranceDataBox utteranceDataBoxDefault" placeholder="{{'add_utterance'| i18nString}}"
+                          ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip" ng-blur="showUtteraceDefaultTip = false" ng-keydown="auto_grow($event, newUtterance, - 1)"
+                          type="text" ng-model="newUtterance.sentence" auto-grow-textarea default-grown="true" context-typeahead></textarea>
+                <span class="deleteUtterance"><i class="utteranceSaveSpin defaultUtteranceSaveIcon" aria-hidden="true"></i></span>
+            </div>
+            <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+        </div> -->
+        <div class="utterancePagination">
+            <pagination rotate="false" num-pages="utterancePaginatinoOptions.numberOfPages" ng-change="utterancePageChanged(utterancePaginatinoOptions.currentPage, false)"
+                        max-size="utterancePaginatinoOptions.maxSize" ng-show="totalUtterancesCount > 10" class="pagination-sm" total-items="totalUtterancesCount"
+                        items-per-page="utterancePaginatinoOptions.itemsPerPage" ng-model="utterancePaginatinoOptions.currentPage"></pagination>
+        </div>
+       
+        <span class="add-utterances hide" ng-click="addUtterances()">{{isEmptyUttrences()?addUtterance:editUtterance}}</span>
+    </div>
+    </div>
+   
+
+    <div ng-if="stream.type !== 'universalbot'" class="clear-fix pattern-manage">
+        <div class="connectionRules">
+            <span class="tabLabel">{{'pattern_name'| i18nString}} </span>
+               <span class="synSearch callclear" search-expand>
+                   <input ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput form-control" ng-model="gSearchCb.search" ng-keyup="searchPatterns(value,$index)" placeholder="{{'search_here'| i18nString}}">
+                   <span class="searchBar fa btx-search" ng-click="onSearchClose($event,value,$index)"></span>
+              </span>
+        </div>
+        <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.patternsDescription, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        <form name="AddTaskPatternForm" ng-class="{'isReadOnly':readonly}">
+            <div class="pattern"  ng-repeat="pattern in ob.referencePatterns track by $index">
+                <span class="inputContainer">
+                    <input ng-disabled="nlpPermission !== 'FULL'" maxlength="2048" class="form-control patternInput" type="text" ng-model="pattern" placeholder="{{_constants_.propertyPanel.defaultAddPattern}}"
+                           ng-keypress="savePattern($event, $index, pattern, AddTaskPatternForm['taskPattern' + $index])" ng-focus="showPatternSaveTip($index)" ng-blur="showPatternSaveTip($index)"
+                           name="taskPattern{{$index}}" ng-required="true"
+                           > 
+                           <p class="patternSaveTip" ng-class="['patternSaveTip' + $index]" ng-show="AddTaskPatternForm['taskPattern' +$index].$valid && AddTaskPatternForm['taskPattern' +$index].$dirty">{{'press_save'| i18nString}}</p>
+                           <i class="entityPatterns spinnerTop" ng-class="['entityPatterns' + $index]" aria-hidden="true"></i> 
+                           <span  ng-hide="(nlpPermission !== 'FULL' || readonly)" class="trashDiv">
+                               <!-- <img ng-src="{{trashIcon}}" class="trashIcon" ng-click="removePattern($index, true)">  -->
+                               <i class="btx-delete-1"  ng-click="removePattern($index, true)"></i>
+                            </span>
+                           
+                </span>
+                <!-- <div error-alert ng-show="AddTaskPatternForm['taskPattern' + $index].$error.pattern" class="text-danger">asterisk is not allowed</div> -->
+            </div>
+             <div class="alertMessage">
+               <div ng-if="ob.referencePatterns && !ob.referencePatterns.length && !searchingPattern">
+                <div class="col-xs-12 text-center">
+                    <div class="alert alert-sm alert-warning">
+                        <p class="noRecordMsg">{{'no_patterns'| i18nString}}</p>
+                         <p class="noRecords"  ng-hide="(nlpPermission !== 'FULL' || readonly)" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','patterns')">+  {{'add_pattern_label' | i18nString}}</p> 
+                    </div>
+                </div>
+               </div>
+               <div class="col-xs-12 text-center" ng-show=" ob.referencePatterns && !ob.referencePatterns.length && searchingPattern">
+                <div class="alert alert-sm alert-warning">
+                    <p class="noRecordMsg">{{'no_match'| i18nString}}</p>
+                     <p class="noRecords"  ng-hide="(nlpPermission !== 'FULL' || readonly)" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','patterns')">+  {{'add_pattern_label' | i18nString}}</p> 
+                </div>
+               </div>
+            </div>
+        </form>
+        <span class="add-pattern patternCss" ng-class="{'isReadOnly':readonly}"  ng-show="nlpPermission == 'FULL' && !readonly && AddTaskPatternForm.$valid && showAddPattern && ob.referencePatterns && ob.referencePatterns.length" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','patterns')">{{_constants_.propertyPanel.addPattern}}</span>
+        <p class="entityBottomText">{{_constants_.propertyPanel.intentBotton}} <a target='_blank' href='https://developer.kore.ai/docs/bots/bot-builder/optimizing-bots/managing-patterns/'>{{'more'| i18nString}}</a>
+        </p>
+        <div class="modal fade pattern-modal fullwidth-dialog height-width-100 taskCreateOrEditModal" id="pattern-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog height-width-100 modal-lg">
+                <div class="modal-content  pattern-modal-content height-width-100">
+                   <bt-pattern cb="propertyPanelPatternCB"></bt-pattern>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-hide="stream.type === 'universalbot'" class="clear-fix bot-synonyms intentTraitRulesSection">
+            <div class="connectionRules">
+                <span class="tabLabel"> {{'rules'| i18nString}}</span>
+                <i class="intentBotSynonymsTraits" aria-hidden="true"></i>
+            </div>
+            <p class="entityHeaderText"> {{'intent_identification'| i18nString}}</p>
+            <div class="alertMessage" ng-class="{'isReadOnly':readonly}">
+                    <div ng-if="traitRules.traitMappings && !traitRules.traitMappings.length">
+                        <div class="col-xs-12 text-center">
+                             <div class="alert alert-sm alert-warning ">
+                                <p class="noRecordMsg">{{'no_rules_defined' | i18nString}}</p>
+                                 <p class="noRecords" ng-hide="(nlpPermission !== 'FULL' || readonly)" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','rules')">+  {{'add_rules' | i18nString}}</p> 
+                             </div>
+                        </div>
+                    </div>
+             
+            </div>
+            <div class="paddingRightLeft15 traitRule" ng-class="{'isReadOnly':readonly}">
+                <div class="traitRuleContainer"   ng-init="parentIndex=$index" ng-show="traitRules.traitMappings.length > 0" ng-repeat="rules in traitRules.traitMappings track by $index">
+                    <div class="traitRuleContainerInner alignCenterpadding d-flex" >
+                        <!-- <span class="eachRuleDiv" ng-repeat="rule in rules track by $index">
+                        <span class="traitName">{{rule.traitName}} <img ng-src="{{closeIconDark}}" class="closeIconDark" ng-click="deleteAndRule(parentIndex,$index,rules)"></span>
+                        <span class="traitAnd">(AND)</span>
+                        </span>
+                        <span class="traitRuleInputInner">
+                            <input type="text" id="addTrait_{{parentIndex}}" ng-focus="bindAuioComplete(parentIndex)" ng-blur="unBindAutoComplete()" autcomplete="false" class="form-control" placeholder="{{'type_enter'| i18nString}} to add" ng-keyup="addTraitAndCondition($event,parentIndex,rules)">
+                        </span> -->
+                        <tags-input ng-disabled="nlpPermission !== 'FULL'"  id="addTraitRulesPropertyPannel{{parentIndex}}" ng-model="traitRules.traitMappings[$index]" parent-modal='traits' do-not-allow-any-special-characters='true' placeholder=" {{'type_and_enter_placeholder'| i18nString}}" custom-err-msg= "{{'word_included'| i18nString}}" replaceSpacesWithDashes="false" add-from-autocomplete-only='false' add-on-comma="false" allow-leftover-text = 'false' replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_select'| i18nString}}" use-strings="true" on-tag-added="addTraitAndCondition()" on-tag-removed="addTraitAndCondition()">
+                            <auto-complete source="loadTags($query)" min-length='1' select-first-match='false' id="autocompleteTrait{{$index}}" auto-complete-id="autocompleteTrait{{$index}}"></auto-complete>
+                        </tags-input>
+                        <span class="trashDiv"><i class="btx-delete-1" ng-hide="(nlpPermission !== 'FULL' || readonly)" ng-src="{{minusCircle}}" ng-click="deleteOrRule(parentIndex)"></i></span>
+                        <!-- <img ng-hide="(nlpPermission !== 'FULL' || readonly)" ng-src="{{minusCircle}}" class="minusCircle" ng-click="deleteOrRule(parentIndex)"> -->
+                    </div>
+                    <div>
+                        <img ng-src="{{orIcon}}" class="orIcon">
+                    </div>
+                </div>
+                <div ng-show="traitRules.traitMappings.length > 0 && dummyTraitOrCondition.length > 0"  ng-repeat="dummyCondition in dummyTraitOrCondition track by $index">
+                    <div class="col-xs-12 traitRuleInput">
+                        <tags-input ng-disabled="nlpPermission !== 'FULL'" ng-model="dummyTraitOrCondition[$index]" do-not-allow-any-special-characters='true' parent-modal='traits'
+                            placeholder="{{'type_and_enter_placeholder'| i18nString}}" add-from-autocomplete-only='false' add-on-comma="false"
+                            allow-leftover-text='false' replace-spaces-with-dashes="false" min-length="0" max-length="128"
+                            placeholder="{{'type_select'| i18nString}}" use-strings="true" on-tag-added="addTraitDummyAndCondition($index)">
+                            <auto-complete source="loadTags($query)" min-length='1' select-first-match='false'></auto-complete>
+                        </tags-input>
+                    </div>
+                    <div ng-if="dummyTraitOrCondition.length-1 !== $index">
+                        <img ng-src="{{orIcon}}" class="orIcon">
+                    </div>
+                </div>
+                <!-- <div class="col-xs-12 addOR">
+                    <span class="add-pattern" ng-click="addOrDummy()"> {{'add_or'| i18nString}}</span>
+                    
+                </div> -->
+            <div class="col-xs-12 addRules noPadding" ng-show="traitRules.traitMappings && traitRules.traitMappings.length">
+                     <span class="add-pattern noMargin" ng-hide="(nlpPermission !== 'FULL' || readonly)" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','rules')"> + {{'add_rules' | i18nString}} </span>
+                </div>
+            </div>
+
+    </div>
+     <div ng-hide="stream.type === 'universalbot'" class="clear-fix bot-synonyms">
+        <div class="connectionRules">
+            <span class="tabLabel">{{'Bot_synonyms_label'| i18nString}}</span>
+            <i ng-src="{{helpIcon}}" class="helpIcon btx-help" tooltip-placement="top" tooltip="{{'bot_synonyms_tooltip'| i18nString}}"></i>
+            <i class="entityBotSynonyms" aria-hidden="true"></i>
+        </div>
+        <p class="entityHeaderText">{{_constants_.getNewMessage(_constants_.propertyPanel.synonymDescription, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+        <div class="paddingRightLeft15" ng-class="{'isReadOnly':readonly}" ng-if="canShowBotSynonymsForKey(key)" ng-repeat="(key, synonyms) in props.botSynonyms">
+
+            <span>
+                <label class="displayBlock synonym-key-label">{{key}}</label>
+                <tags-input ng-disabled="nlpPermission !== 'FULL'" class=""  add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128"  use-strings="true" placeholder="{{'type_enter'| i18nString}}" on-tag-added="saveBotSynonms(key)" on-tag-removed="saveBotSynonms(key)" ng-model="props.botSynonyms[key]"></tags-input>
+                <span style="position: absolute;" ng-class="{true:'fa fa - minus - circle delete - synonym',false:'fa fa - minus - circle delete - synonym inactive'}[readonly ? false : true]" ng-click="deleteBotSynonym(key)"></span>
+            </span>
+        </div>
+        <div ng-hide="isEmpty(props.botSynonyms)" class="testSynYet">{{'no_synonyms'| i18nString}}</div>
+        <span ng-hide="(nlpPermission !== 'FULL' || readonly)" class="add-pattern" ng-click="addBotSynonyms()">{{'add_synonyms'| i18nString}} </span>
+        <p class="entityBottomText ng-binding"></p>
+    </div>
+
+    <div class="manageContextStatus dialogNlp">
+        <div class="connectionRules">
+            <span class="tabLabel">{{'manage_context'| i18nString}}</span>
+            <i ng-src="{{helpIcon}}" class="helpIcon btx-help" tooltip-placement="top" tooltip="{{'use_context'| i18nString}}"></i>
+            <i class="manageContextStatusSav" aria-hidden="true"></i>
+        </div>
+        <div class="manageContextConditions"  ng-class="{'isReadOnly':readonly}">
+            <p class="pre-conditionsHeader">
+                {{'intent_preconditions_name'| i18nString}}
+            </p>
+            <p class="pre-conditionsInfo">
+                {{'pre_condition_info'| i18nString}} 
+            </p>
+            <tags-input id='intentContextPreCondition' add-on-comma="false" class="tagOrCondition" add-on-blur='false' replace-spaces-with-dashes="false" min-length="0" max-length="128" use-strings="true" placeholder="{{'type_and_enter_placeholder'| i18nString}}" on-tag-added="saveIntentPreConditions()" on-tag-removed="saveIntentPreConditions()" ng-model="manageContext.preConditions"></tags-input>
+            <!-- <p class="synonyms-help-hint">[Press [Enter] to add synonyms]</p> -->
+        </div>
+        <div class="manageContextConditions" ng-class="{'isReadOnly':readonly}" ng-if="callBy!='manageComponents'">
+                <p class="contextOutputHeader">
+                    {{'context_output_name'| i18nString}}
+                </p>
+                <p class="contextOutputInfo">
+                    {{'intent_initiate'| i18nString}} 
+                </p>
+            <tags-input id='intentContextOutput'  add-on-comma="false"  add-on-blur='false' replace-spaces-with-dashes="false" min-length="0" max-length="128" use-strings="true" placeholder="{{'type_and_enter_placeholder'| i18nString}}" on-tag-added="saveIntentOrEntityContextTags()" on-tag-removed="saveIntentOrEntityContextTags()" ng-model="manageContext.contextTags"></tags-input>
+                <!-- <p class="synonyms-help-hint">[Press [Enter] to add synonyms]</p> -->
+        </div>
+    </div>
+  </div>
+    <div  ng-if="groupNode" class="groupNodeContainer">
+        <div class="groupTraining">
+            <div class="groupHeading">{{'nl_training' | i18nString}}</div>
+            <div class="groupBody">
+                <p class="groupTrainingDesc">{{'group_node_Training_title' | i18nString}}</p>
+                <div class="mlPatteransRulesDiv">
+                    <div class="mlPatteransRules" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','utterances')">
+                        <span class="mlName">{{'machine_learning'| i18nString}}</span>
+                        <div class="countAdd" >
+                            <span ng-if='nodeInfo.nodeInfo.utterances.length' class="mlCount">{{nodeInfo.nodeInfo.utterances.length}} {{'Utterances' | i18nString}}</span>
+                            <span ng-if='!nodeInfo.nodeInfo.utterances.length' class="mlAdd" >+ {{'add' | i18nString}}</span>
+                        </div>
+                    </div>
+                    <div class="mlPatteransRules" ng-hide="(nlpPermission !== 'FULL' || readonly)" ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','patterns')">
+                        <span class="mlName">{{'pattern_name' | i18nString}}</span>
+                        <div class="countAdd">
+                            <span class="mlCount" ng-if='(ob.referencePatterns && ob.referencePatterns.length)'>{{ob.referencePatterns.length}} {{'pattern_name' | i18nString}}</span>
+                            <span class="mlAdd"  ng-if='!(ob.referencePatterns && ob.referencePatterns.length)' >+ {{'add' | i18nString}}</span>
+                        </div>
+                    </div>
+
+                    <div class="mlPatteransRules" ng-hide="(nlpPermission !== 'FULL' || readonly)"  ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','rules')">
+                        <span class="mlName">{{'rules'| i18nString}}</span>
+                        <div class="countAdd">
+                            <span class="mlCount" ng-if='traitRules.traitMappings.length'>{{traitRules.traitMappings.length}} {{'rules'| i18nString}}</span>
+                            <span class="mlAdd" ng-if='!traitRules.traitMappings.length' ng-click="openManageTraining($event,nodeInfo.nodeInfo,'DialogIntent','rules')">+ {{'add' | i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="intentPreconditions manageContextStatus dialogNlp  marginTop10">
+                    <div class='manageContextConditions noPadding' ng-class="{'pointer-none':readonly}">
+                        <p class="ipTitle">{{'intent_preconditions_name'| i18nString}}</p>
+                        <p class="ipDesc">{{'group_node_intent_detction_desc' | i18nString}}</p>
+                        <tags-input  id='intentContextPreCondition' add-on-comma="false" class="tagOrCondition" add-on-blur='false' replace-spaces-with-dashes="false" min-length="0" max-length="128" use-strings="true" placeholder="{{'type_and_enter_placeholder'| i18nString}}"   ng-model=" nodeInfo.dialogNodeInstance.preConditions"></tags-input>
+                    </div>
+                </div>
+            </div>
+         </div>
+         <div class="fulFillment">
+            <div class="groupHeading">{{'Fulfillment' | i18nString}}</div>
+            <div class="groupBody">
+                <p class="groupTrainingDesc">{{'fulfillment_desc' | i18nString}}</p>
+                <div class="intentPreconditions">
+                    <p class="ipTitle">{{'group_node_setvar_header' | i18nString}}</p>
+                    <p class="ipDesc">{{'group_node_setvar' | i18nString}}</p>
+                    <div class="inputDiv row groupIntentContextMap positionRelative" ng-repeat='context in  nodeInfo.dialogNodeInstance.contextMap track by $index'>
+                        <div class="col-xs-12 fulfillment-context-variables">
+                            <div class="col-xs-6 noPaddingLeft"><input type="text" ng-model='context.key' context-typeahead placeholder="Enter Key" class="input-text key" ng-keydown='editgroupIntentContextMap($event)'></div>
+                            <div class="col-xs-6 noPaddingRight" ng-class="{'pointer-none':readonly}">
+                                <input type="text" placeholder="Enter Key" context-typeahead ng-keydown='editgroupIntentContextMap($event ,key)' class="input-text value" ng-model='context.value'>
+                                <!-- <div class="pressEnter">Press [Enter] to add</div> -->
+                            </div>
+                            <div class='delete-var' ng-class="{'pointer-none':readonly}">
+                                <span class="trashDiv"><img ng-src="{{deleteIcon}}" class="trashIcon" ng-click="removegroupIntentContextMap(context.key)"></span>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="inputDiv row groupIntentContextMap positionRelative" ng-init="focusContent('newContextKeyInput')">
+                        <div class="col-xs-12 fulfillment-context-variables">
+                            <div class="col-xs-6 noPaddingLeft"><input type="text" id="newContextKeyInput" context-typeahead ng-model='nodeInfo.dialogNodeInstance.newContextKey' ng-keydown='addgroupIntentContextMap($event)' placeholder="Key" class="input-text key" ></div>
+                            <div class="col-xs-6 noPaddingRight" ng-class="{'pointer-none':readonly}">
+                                <input type="text" placeholder="Enter Value" context-typeahead class="input-text value" ng-model='nodeInfo.dialogNodeInstance.newContextValue' ng-keydown='addgroupIntentContextMap($event)'>
+                                <div class="pressEnter">{{'press_enter_and_add' | i18nString}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="intentPreconditions">
+                    <p class="ipTitle">{{'group_node_presentmsg' | i18nString}}</p>
+                    <p class="ipDesc">{{'group_node_presentmsg_desc' | i18nString}}</p>
+                    <div ng-if='(nodeInfo && nodeInfo.dialogNodeInstance.nodeOptions && nodeInfo.dialogNodeInstance.nodeOptions.message.length)' ng-class="{'pointer-none':readonly}">
+                        <div class="inputDiv row presentMessage" ng-repeat='prompt in groupIntnetMessagePrompts track by $index'>
+                            <span class="ovalSpan" ng-class="{'allText':(prompt.channel === 'default')}">
+                                <span ng-if="prompt.channel === 'default'" class="Oval-15"><span class="channelText">{{'All'| i18nString}}</span>
+                                    <div
+                                        class="property-panelIconTitle">{{'all_channels'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i>
+                                    </div>
+                                </span>
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel !== 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"><div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                                <span ng-if="prompt.channel !== 'default' && prompt.channel === 'skype' && prompt.channel !== 'wfacebook'" class="Oval-15 no-background"><span class="img fa fa-{{prompt.channel}} skypeIcon" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                    <div class="property-panelIconTitle">{{channelsConfig.channelsObject[prompt.channel].name}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                                </span>
+                                <span ng-if="prompt.channel === 'wfacebook'" class="Oval-15 no-background"><img class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></img><div ng-if="!prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Chat']}}<i class="fa  fa-caret-left leftArrow"></i></div><div ng-if="prompt.isMention" class="property-panelIconTitle">{{_constants_.iconsTooltips['Workplace For Groups']}}<i class="fa  fa-caret-left leftArrow"></i></div></span>
+                            </span>
+                            <input ng-if="prompt.type !=='uxmap'" type="text" placeholder="{{'type_enter'| i18nString}}" class="input-text" ng-model='prompt.text'>
+                            <div ng-if="prompt.type ==='uxmap'" ng-click="openManageGroupResponse($index,'message')" class="input-text javaScriptMsg">{{'js_msg'| i18nString}}</div>
+                            <div class="delete-p-message" ng-click="deleteGroupIntnetMessagePrompts($index)"><img ng-src="{{deleteIcon}}"></div>
+                        </div>
+                    </div>
+                     <div class="inputDiv row presentMessage" ng-class="{'pointer-none':readonly}">
+                        <span class="allText ovalSpan">{{'All'| i18nString}}</span>
+                        <input type="text" placeholder="{{'type_enter'| i18nString}}" class="input-text" ng-model='defaultMessageObj.text' ng-keyup="addNewGroupIntentMessage($event)">
+                     </div>
+                    <div class="addActions">
+                        <span ng-click="openManageGroupResponse(0,'ivrProperties')">{{'ivr_properties_normal' | i18nString}}</span>
+                        <span class="seperator">|</span>
+                        <span ng-click="openManageGroupResponse(0,'message')">{{'Manage_responses' | i18nString}}</span>
+                    </div>
+                </div>
+                <div class="intentPreconditions" ng-class="{'pointer-none':readonly}">
+                    <p class="ipTitle">{{'context_output_name' | i18nString}}</p>
+                    <p class="ipDesc">{{'define_Context_Tags' | i18nString}}</p>
+                    <tags-input id='groupintentContextOutput'  add-on-comma="false"  add-on-blur='false' replace-spaces-with-dashes="false" min-length="0" max-length="128" use-strings="true" placeholder="{{'type_and_enter_placeholder'| i18nString}}"  on-tag-removed="saveGroupIntentOrEntityContextTags()" ng-model="nodeInfo.dialogNodeInstance.nodeOptions.contextTags"></tags-input>
+                </div>
+            </div>
+         </div>
+         <div class="transitionFlow" ng-class="{'pointer-none':readonly}">
+            <div class="intentPreconditions">
+                <p class="ipTitle">{{'Transition_Flow' | i18nString}}</p>
+                <p class="ipDesc">{{'group_node_resume_intent' | i18nString}}</p>
+                <div class="kr-sg-radiobutton">
+                    <input id="radioJumpToNode" name="radio" class="radio-custom" type="radio" ng-model='nodeInfo.dialogNodeInstance.targetNode.type' value='jumpToSpecificNode'>
+                    <label for="radioJumpToNode" class="radio-custom-label">{{'group_node_jump_to' | i18nString}}
+                        <p class="inputDesc">{{'group_node_jump_to_desc' | i18nString}}</p>
+                        <div class="kr-sg-dropdowns w-100" ng-class="{'disabled':nodeInfo.dialogNodeInstance.targetNode.type === 'continueFromIdentifiedNode'}">
+                            <div class="dropup dropdown-open">
+                                <button ng-disabled="nodeInfo.dialogNodeInstance.targetNode.type === 'continueFromIdentifiedNode'" class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{nodeInfo.dialogNodeInstance.targetNode.node?(nodeObjList[nodeInfo.dialogNodeInstance.targetNode.node].name ||  nodeObjList[nodeInfo.dialogNodeInstance.targetNode.node].intent):'Choose an option'}}</button>                                            
+                                <ul class="dropdown-menu content-menu" perfect-scroll>
+                                  <li ng-if='!(groupNodeIntnets && groupNodeIntnets[node.uId])' ng-repeat ="(key,node) in nodeObjList| orderObjectBy : 'name'" ng-click="nodeInfo.dialogNodeInstance.targetNode.node = node.uId"><a>{{(node.intent || node.name) + getNodeCount(node)}}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </label>
+                </div> 
+                <div class="kr-sg-radiobutton">
+                    <input id="radioResumeDialog" name="radio" class="radio-custom" type="radio" ng-model='nodeInfo.dialogNodeInstance.targetNode.type' value='continueFromIdentifiedNode'>
+                    <label for="radioResumeDialog" class="radio-custom-label">{{'group_node_resume_dialog' | i18nString}}
+                        <p class="inputDesc">{{'group_node_resume_dialog_desc' | i18nString}}</p>
+                    </label>
+                </div> 
+            </div>
+        </div>
+        <div class="clear-fix pattern-manage">
+            <div class="modal fade pattern-modal fullwidth-dialog height-width-100 taskCreateOrEditModal" id="pattern-modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog height-width-100 modal-lg">
+                    <div class="modal-content  pattern-modal-content height-width-100">
+                       <bt-pattern cb="propertyPanelPatternCB" view-mode="nodeInfo.displayMode"></bt-pattern>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bt-utterances ml_Utterance">
+        <!-- <div class="modal fade utterance-model fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+            <div class="modal-dialog height-width-100 modal-lg">
+                <div class="modal-content utterances-modal-content height-width-100">
+                    <div class="summaryLoader animationIfLeave" ng-show="manageTrainingCB.loadingMLUtterances">
+                                <span class="spinner-text"> 
+                                    <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                    <span class="spinner-text-content">Loading Utterances</span>
+                                </span>
+                    </div>
+                   <ml-utterance-module ng-show="!manageTrainingCB.loadingMLUtterances" intent-data="nodeInfo.nodeInfo" cb="manageTrainingCB" view-mode="nodeInfo.displayMode" url="contentURL"></ml-utterance-module>
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+</div>
+<!--intent end-->
+
+<!--intent start-->
+<div ng-if="nodeInfo.dialogNodeInstance.type.toLowerCase() === 'script'" class="intentDivContainer">
+
+    
+    </div>
+    <!--intent end-->
+<bot-modal-slider class="utterance-model trainingFullModal  taskCreateOrEditModal botModalFade right" id="trainingFullModalDialog">
+                    <div class="modalSliderContainer width900">
+                            <div class="modalContent utterances-modal-content">
+                                <div class="summaryLoader animationIfLeave" ng-show="manageTrainingCB.loadingMLUtterances">
+                                    <span class="spinner-text"> 
+                                        <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                        <span class="spinner-text-content">{{'loading'| i18nString}} </span>
+                                    </span>
+                                </div>
+                              <ml-utterance-module ng-show="!manageTrainingCB.loadingMLUtterances" intent-data="nodeInfo.nodeInfo" cb="manageTrainingCB" view-mode="nlpPermission"></ml-utterance-module>
+                            </div>
+                    </div>
+</bot-modal-slider>

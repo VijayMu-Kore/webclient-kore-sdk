@@ -1,0 +1,19 @@
+<div class="modalHeader">
+            <h4 class="modal-title"><i  class="btx-close" ng-src={{backArrow}} ng-click="onCancel()" ></i>{{'new_bot'| i18nString}}</h4>
+</div>
+<div class="modalBody" perfect-scroll dynamic-height dynaoffset="-58" height-property="height">
+<div class="background-white">
+    <div class="taskTypeDiv" ng-show="contentType.show" ng-repeat="contentType in contentTypes" ng-click="selectMode(contentType.type, contentType)" ng-class="{'selected':modeObject.selectedMode === contentType.id,'noPointerEvents':false && (contentType.id === 'universalbot')}"> 
+      <span class="task-icon"><img ng-src="{{contentType.icon}}" /></span>
+      <div class="radio" for="{{contentType.id}}">
+        <input type="radio" name="rGroup" ng-model="modeObject.selectedMode" value="{{contentType.id}}" id="{{contentType.id}}" />
+        <div>
+          <p class="name">{{contentType.name}}</p>
+        </div>
+        <div>
+          <p class="description">{{contentType.description}}</p>
+        </div>
+      </div>
+    </div>
+</div>
+</div>

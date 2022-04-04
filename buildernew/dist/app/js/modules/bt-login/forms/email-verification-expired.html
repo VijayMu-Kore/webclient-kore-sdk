@@ -1,0 +1,16 @@
+<form novalidate name="forgotPassForm" class="login-form"  ng-class="{'forgetTitle': resetLinkSent}">
+    <div class="logoInCard">
+        <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+       </div>
+    <div class="loginDetails">
+        <p class="expLink">{{'verification_link_expired' | i18nString}}</p>
+        <p class="cardTitle">{{'email_verification_resend_desc' | i18nString}}  </p>
+        <!-- <p class="cardDesc"   data-ng-show="!resetLinkSent">The link in the email will only be valid for 48 hours. Be sure to also check your spam folder.</p> -->
+    </div>
+
+    <div class="button-group " data-ng-show="!resetLinkSent" >
+        <button ng-disabled="!forgotPassForm.$valid || (emailSent !== 'Resend email')" type="submit" class="btn btn-primary"  data-ng-click="resendEmail(true)">{{emailSent}}</button>
+        <!-- <button  type="button" class="btn btnNObg"  data-ng-click="openLinks('support',$event)">Contact us</button> -->
+    </div>
+
+</form>

@@ -1,0 +1,24 @@
+<bots-content-panel>
+	<div class="row">
+		<div class="col-xs-6 leftPanel" ng-class="{'alignCenter':!canCreateBot}">
+			<div class="container">
+				<img ng-src="{{welcome}}">
+				<h3>{{'no_bots_form_welcome_to_bot_builder'| i18nString}}</h3>
+				<button class="btn btn-primary watchVideoBtn" ng-click="fullModalCallback.openFullPageModal(null,'openVediosPage')">{{'watch_video'| i18nString}}</button>
+			</div>	
+		</div>
+
+		<div class="col-xs-6 rightPanel" ng-show="canCreateBot">
+			<div class="container text-center " ng-click="selectMode(contentType.type, contentType)" ng-repeat="contentType in contentTypes" ng-click="">
+				<div class="iconDiv"><img ng-src="{{contentType.icon}}" class="bitmap {{contentType.class}}"></div>
+				<div class="descriptionDiv">
+					<h1>{{contentType.name}}</h1>      
+    				<p>{{contentType.description}}</p>
+    			</div>
+  			</div>
+		</div>
+	</div>
+</bots-content-panel>
+<bt-fullpage-modal bot-type="botType" initialize-create-bot="initializeCreateBot" callback="fullModalCallback" step="step">
+
+	</bt-fullpage-madal>

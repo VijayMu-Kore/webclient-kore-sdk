@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>info-white</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="info-white" fill-rule="nonzero">
+            <polygon id="Path" fill-opacity="0" fill="#D8D8D8" points="0 0 16 0 16 16 0 16"></polygon>
+            <path d="M8,0.889 C11.927,0.889 15.111,4.073 15.111,8 C15.111,11.927 11.927,15.111 8,15.111 C4.073,15.111 0.889,11.927 0.889,8 C0.889,4.073 4.073,0.889 8,0.889 Z M8,1.942 C4.654,1.942 1.942,4.654 1.942,8 C1.942,11.346 4.654,14.058 8,14.058 C11.346,14.058 14.058,11.346 14.058,8 C14.058,4.654 11.346,1.942 8,1.942 Z M8,6.917 C8.275,6.917 8.5,7.127 8.525,7.396 L8.527,7.444 L8.527,11.369 C8.527,11.66 8.291,11.896 8,11.896 C7.725,11.896 7.5,11.686 7.475,11.417 L7.473,11.369 L7.473,7.444 C7.473,7.153 7.709,6.917 8,6.917 L8,6.917 Z M8,4.444 C8.357,4.444 8.646,4.734 8.646,5.091 C8.646,5.448 8.357,5.737 8,5.737 C7.643,5.737 7.354,5.447 7.354,5.091 C7.354,4.734 7.643,4.444 8,4.444 Z" id="Shape" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

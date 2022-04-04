@@ -1,0 +1,1300 @@
+<script type="text/ng-template" id="manage-apps.html">
+    <div class="app-creation-form">
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle" id="gridSystemModalLabel">{{'manage_app'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent ">
+                    <input type="text" class="focusNameSearch" ng-model="search.nameSearchQuery" placeholder="{{'search_app' | i18nString}}">
+                    <i class="btx-search"></i>
+                    <i class="btx-close" ng-click="clearSearch();" ng-class="{displayNone: !search.nameSearchQuery.length}"></i>
+                </div>
+                <div class="creationButton">
+                     <button class="titleBTN" ng-class="{'publishedMode':streamState == 'published'}" ng-click="creatingNewApp()">{{'new_app'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+        
+
+
+        <div class="modalBody app-creation-form-body" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+                <div class="heading-names col-lg-12 col-md-12 col-sm-12 col-xs-12">                    
+                    <div class="tableHeaderTitle noPadding col-lg-2 col-md-2 col-sm-2 col-xs-3" title="APP {{'bot_name'| i18nString}}">APP {{'bot_name'| i18nString}}</div>
+                    <div class="tableHeaderTitle noPadding col-lg-4 col-md-4 col-sm-4 col-xs-3" title="{{'App_usage'| i18nString}}">{{'App_usage'| i18nString}}</div>
+                    <div class="tableHeaderTitle noPadding col-lg-3 col-md-3 col-sm-3 col-xs-3" title="{{'last_updated_on'| i18nString}}">{{'last_updated_on'| i18nString}}</div>
+                    <div class="tableHeaderTitle noPadding col-lg-3 col-md-3 col-sm-3 col-xs-3" title="{{'last_updated_by'| i18nString}}">{{'last_updated_by'| i18nString}}</div>
+                    <div class="tableHeaderTitle noPadding text-uppercase"></div>
+                </div>
+                <div class="accordionDiv"  ng-repeat="app in manageApps | filter:{appName:search.nameSearchQuery} track by $index">
+                    <div ng-init='registerEvent(app)' id="{{app.clientId}}"  class="header accordion-titles title col-lg-12">
+                        <div class="appName col-lg-2 col-md-2 col-sm-2 col-xs-3 noPadding" ng-model="app.appName" title="{{app.appName}}">{{app.appName}}</div>
+                        <div class="appName col-lg-4 col-md-4 col-sm-4 col-xs-3 noPadding" title="{{app.appUsage}}">{{app.appUsage || "---"}}</div>
+                        <div class="appName col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding" title="{{app.lastModifiedOn}}">{{app.lastModifiedOn || "---" }}</div>
+                        <div class="appName col-lg-2 col-md-2 col-sm-2 col-xs-3 noPadding"
+                         title="{{app.lastModifiedByName}}">{{(app.lastModifiedBy.firstName +" "+ app.lastModifiedBy.lastName) || "---"}}</div>
+                        <div class="error-color apiScopesDelete noPadding fa" ng-click="deleteAppName($index,app,$event)">
+                            <img ng-src="{{trashIcon}}" style="vertical-align: top;">
+                        </div>
+                    </div>
+                    <div class="accBody col-xs-12">
+                        <i class="btx-delete-1 pull-right error-color apiScopesDelete" ng-click="deleteAppName($index,app,$event)"></i>
+                        <div class="appCreationData appCreationAPIScopes">
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding">
+                                    <label>{{'botName'| i18nString}}</label>
+                                    <div class="pull-right clientIdCopy" data-clipboard-target="#{{callFrom}}BOTNAME{{$index}}">{{'copy'| i18nString}} </div>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="width100percent">
+                                        <input type="text" id="{{callFrom}}BOTNAME{{$index}}" class="form-control clientColor" ng-model="stream.name" ng-readonly="true" name="clientID">
+                                    </div>
+                                    <div ng-show="isSafari"><span class="pull-right clientIdCopy">{{'press_c'| i18nString}}<span></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding">
+                                    <label>{{'Bot_id'| i18nString}}</label>
+                                    <div class="pull-right clientIdCopy" data-clipboard-target="#{{callFrom}}BOTID{{$index}}">{{'copy'| i18nString}} </div>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="width100percent">
+                                        <input type="text" id="{{callFrom}}BOTID{{$index}}" class="form-control clientColor" ng-model="stream._id" ng-readonly="true" name="clientID">
+                                    </div>
+                                    <div ng-show="isSafari"><span class="pull-right clientIdCopy">{{'press_c'| i18nString}}<span></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding">
+                                    <label>{{'client_id'| i18nString}}</label>
+                                    <div class="pull-right clientIdCopy" data-clipboard-target="#{{callFrom}}APPS{{$index}}">{{'copy'| i18nString}} </div>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="width100percent">
+                                        <input type="text" id="{{callFrom}}APPS{{$index}}" class="form-control clientColor" ng-model="app.clientId" ng-readonly="true" name="clientID">
+                                    </div>
+                                    <div ng-show="isSafari"><span class="pull-right clientIdCopy">{{'press_c'| i18nString}}<span></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 row noPadding">
+                                <div class="col-xs-12 noPadding">
+                                    <label>{{'client_secret'| i18nString}}</label>
+                                    <div class="pull-right clientSecretCopy" ng-click = "clientSecretCopy()" data-clipboard-target="#CLIENT_SECRETSlider{{callFrom}}CopyAPPS{{$index}}">{{'copy'| i18nString}}</div>
+                                    <span class="pull-right resetCopyDevider">|</span>
+                                    <div class="pull-right clientSecretReset" ng-click="resetClientIdManageApps(app,$index)"><i class="btx-return resetIcon"></i>{{'reset'| i18nString}}</div>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="width100percent">
+                                        <input type="password" id="CLIENT_SECRETSlider{{callFrom}}APPS{{$index}}" value="dsfasdfasdfasf" class="form-control clientColor" ng-model="app.clientSecret" ng-readonly="true" name="clientSecret">
+                                        <input type="text" id="CLIENT_SECRETSlider{{callFrom}}CopyAPPS{{$index}}" value="dsfasdfasdfasf" class="form-control clientColor display" ng-model="app.clientSecret" ng-readonly="true" name="clientSecret">
+                                        <i ng-click="showOrHideCSKeyManageApps($event,$index)" ng-show="hidePassword"class="btx-password clientSecretEye"></i>
+                                        <i ng-click="showOrHideCSKeyManageApps($event,$index)" ng-show="!hidePassword" class="fa fa-eye-slash clientSecretEye"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 row noPadding jweEnforce">
+                                <div class="jtiEnforce">
+                                    <div class="kr-sg-checkbox noPadding">
+                                        <input id="checkbox1-{{$index}}" class="checkbox-custom" type="checkbox" ng-model="jweEnforce.jtiEnforced[$index]" ng-change="enableJtiEnforce(app, 'jti', $index)">
+                                        <label for="checkbox1-{{$index}}" class="checkbox-custom-label">{{'enforce_jti_label' | i18nString}}</label>
+                                    </div> 
+                                    <span class="tooltip-hover margin-left5" tooltip-placement="right" tooltip="{{'jti_tooltip_text' | i18nString}}"> <img ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"></span>
+                                </div>
+                                <div class="jwtEncrip">
+                                    <div class="kr-sg-checkbox noPadding">
+                                        <input id="checkbox2-{{$index}}" class="checkbox-custom" type="checkbox" ng-model="jweEnforce.jweEnforced[$index]" ng-change="enableJtiEnforce(app, 'jwe', $index)">
+                                        <label for="checkbox2-{{$index}}" class="checkbox-custom-label">{{'enforce_jwe_label' | i18nString}}</label>
+                                    </div> 
+                                    <span class="tooltip-hover margin-left5" tooltip-placement="right" tooltip="{{'jwe_tooltip_text' | i18nString}}"> <img ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"></span>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 JSONDiv textalignEnd">
+                                <span class="">{{'json_JWE_link'| i18nString}}</span><span data-toggle="modal" data-target="#JWTToken" class="JSONText">{{'here'| i18nString}}</span>
+                            </div>
+                            <div class="col-xs-12 JSONDiv textalignEnd">
+                                <span class="">{{'you_can_use'| i18nString}} <a href='#' ng-click="redirectToLink('JWT')">{{'jwt_tool'| i18nString}}</a> {{'available_on_the'| i18nString}} <a ng-click='redirectToLink()'>{{'constants.iconsTooltips_kore'| i18nString}}</a>{{'developer_portal'| i18nString}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</script>
+<div class="summaryLoader animationIfLeave" ng-if="loadingApps && callFrom==='apps'">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">  {{'loading_apps'| i18nString}}</span>
+    </span>
+</div>
+<div class="appCreationForm app-creation-form">
+    <!-- SDK Subscriptions newStreamData.purpose==='employee' && newStreamData.profileRequired == 'true'--> 
+    <div ng-if="streamId && !contentLoading" ng-hide="hideUi" class="col-xs-12  sdksubscriptonform noPadding">
+        <ng-form name="sdk.sdkConfForm" class="wf-form" novalidate>
+            <div class="col-xs-12" ng-if="!callback.isFromSettings">
+                <label class="required-field"  tooltip-placement="right" tooltip="{{'bot_contact_details'| i18nString}}">{{'constants.sdkconf'| i18nString}} </label>
+            </div>
+            <div class="col-xs-12" ng-if="sdkConf.noSDKConf && !callback.isFromSettings">
+                <div><button class="btn btn-primary" ng-click="callback.openAppModal()">{{'app_subscribe'| i18nString}}</button></div>
+            </div>
+            <div class="col-xs-12"  ng-if="sdkConf.noSDKConf && callback.isFromSettings">
+                <div class="emptyStateContainer" ng-show="callback.apps.length <= 0">
+                    <div class="emptyState">
+                        <div class="emptyImage">
+                            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                        </div>  
+                        <span class="mainTitle">{{'no_sdk_config'| i18nString}}</span>
+                        <div class="emptyStateDesc">{{'sdk_configuration'| i18nString}}</div>
+                        <div class="generateBtn">
+                            <!-- <button class="btn btnSolidBlue" >Add</button> -->
+                            <button class="btn learnmoreBTN"><a target="_blank" ng-href="{{$root.helpLinks.BOT_SDKCONF_HELP}}" >{{'learn_more'| i18nString}}</a></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-warning alert-xs text-center" role="alert" ng-show="false">
+                    {{'loading_sdk_config'| i18nString}}...
+                </div>
+            </div>
+
+            <!-- !sdkConf.noSDKConf || callback.apps.length <= 0 -->
+            <div class="col-xs-12 noPadding" ng-if="!sdkConf.noSDKConf || callback.apps.length > 0 || true">
+                <div class="col-xs-12 form-group noPadding" ng-if="!loadingApps" ng-class="{'screenFreeze':checkBotState()}">
+                    <div class="col-xs-12 noPadding"><label class="required-field">{{'app_Name'| i18nString}}</label></div>
+                    <div class="col-xs-12 noPadding">
+                        <div class="col-xs-11 appNameInput">
+
+                            <select id="select2" ui-select2="selectConfig" ng-if = "callFrom !== 'webMobileSDK'" data-placeholder="{{'choose'| i18nString}}" name="appName" class="form-control" ng-model="sdkConf.appName"  ng-change="selectApp">
+                                <option value=""></option>
+                                <option value="createApp">{{'create_app'| i18nString}}</option>
+                                <optgroup label="{{'select_app'| i18nString}}">
+                                    <option ng-repeat="app in apps | filter :{ 'algorithm' : 'HS256' }" ng-selected="{{app.clientId === selectedAppView.clientId}}" value="{{app.clientId}}" >{{app.appName}}</option>
+                                    <option ng-if="!sdkConf.noSDKConf" value="none">{{'none_label'| i18nString}}</option>
+                                </optgroup>
+                            </select>
+                            
+                            <select id="select2" ui-select2="selectConfig" ng-if = "callFrom === 'webMobileSDK'"  data-placeholder="{{'choose'| i18nString}}" name="appName" class="form-control" ng-model="sdkConf.appName"  ng-change="selectApp">
+                                <option value=""></option>
+                                <option value="createApp">{{'create_app'| i18nString}}</option>
+                                <optgroup label="{{'select_app'| i18nString}}" >
+                                    <option ng-repeat="app in apps" ng-selected="{{app.clientId === stream.appPreferences.rtmAppId}}" value="{{app.clientId}}" >{{app.appName}}</option>
+                                    <option ng-if="!sdkConf.noSDKConf" value="none">{{'none_label'| i18nString}}</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-xs-1 appCreateBtn">
+                            <!--<button class="btn btn-sm btn-primary text-info edit-app-btn" ng-disabled="noneSelected" ng-class="{'disabled':noneSelected}" ng-click="editApp(true)"> Edit </button>-->
+                            <span class="btnSpan btn_add"><button class="btn btn-sm btn-primary text-info add-app-btn add_btn_app" ng-click="openNewAppModal()">{{'add'| i18nString}}</button>   </span>
+                        </div>
+                   </div>
+                    <div class="col-xs-12" ng-show="sdk.sdkConfForm.appName.$dirty">
+                        <div error-alert ng-show="sdk.sdkConfForm.appName.$error.required" class="text-danger form-error-text"> {{'app_name_req'| i18nString}} </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="!noneSelected">
+                    <div class="edit-appDetailsDiv">
+                        <div class="col-xs-12 row form-group noPadding" ng-if="!noneSelected">
+                            <div class="col-xs-12" ng-class="{'screenFreeze':checkBotState()}">
+                                <label>{{'bot_name_caps'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <input type="text" id="BOT_NAME{{callFrom}}" class="form-control" ng-model="botName" ng-readonly="true" name="botName" ng-class="{'screenFreeze':checkBotState()}">
+                                    <div class="input-group-addon pointer-hand" data-clipboard-target="#BOT_NAME{{callFrom}}"> {{'copy'| i18nString}} </div>
+                                </div>
+                                <div ng-show="isSafari"><span class="pull-right">{{'press_c'| i18nString}}<span></div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding" ng-if="!noneSelected">
+                            <div class="col-xs-12" ng-class="{'screenFreeze':checkBotState()}">
+                                <label>{{'bot_id_caps'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <input type="text" id="BOT_ID{{callFrom}}" class="form-control" ng-model="streamId" ng-readonly="true" name="botId" ng-class="{'screenFreeze':checkBotState()}">
+                                    <div class="input-group-addon pointer-hand" data-clipboard-target="#BOT_ID{{callFrom}}">{{'copy'| i18nString}}  </div>
+                                </div>
+                                <div ng-show="isSafari"><span class="pull-right">{{'press_c'| i18nString}}<span></div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding" ng-if="!noneSelected && sdkConf.algorithm === 'HS256'">
+                            <div class="col-xs-12" ng-class="{'screenFreeze':checkBotState()}">
+                                <label>{{'client_id_caps'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <input type="text" id="CLIENT_ID{{callFrom}}" class="form-control" ng-model="sdkConf.clientID" ng-readonly="true" name="clientID" ng-class="{'screenFreeze':checkBotState()}">
+                                    <div class="input-group-addon pointer-hand" data-clipboard-target="#CLIENT_ID{{callFrom}}"> {{'copy'| i18nString}} </div>
+                                </div>
+                                <div ng-show="isSafari"><span class="pull-right">{{'press_c'| i18nString}}<span></div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding" ng-if="!noneSelected && sdkConf.algorithm === 'HS256'">
+                            <div class="col-xs-12" ng-class="{'screenFreeze':checkBotState()}">
+                                <label>{{'client_secret_caps'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <input type="password" id="CLIENT_SECRET{{callFrom}}" value="dsfasdfasdfasf" class="form-control" ng-model="sdkConf.clientSecret" ng-readonly="true" name="clientSecret" ng-class="{'screenFreeze':checkBotState()}">
+                                    <div class="input-group-addon pointer-hand" ng-click="showOrHideCSKey($event)" >{{'view'| i18nString}}</div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 JSONDiv" ng-if="!noneSelected && callFrom === 'webMobileSDK'">
+                                <span class="">{{'json_JWE_link'| i18nString}}</span><span data-toggle="modal" data-target="#JWTToken" class="JSONText">{{'here'| i18nString}}</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding" ng-if="!noneSelected && sdkConf.algorithm === 'RS256'">
+                            <div class="col-xs-12" ng-class="{'screenFreeze':checkBotState()}">
+                                <label>{{'public_key'| i18nString}} </label>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <input type="text" id="CLIENT_ID{{callFrom}}" class="form-control" ng-model="sdkConf.publicKey" ng-readonly="true" name="clientID" ng-class="{'screenFreeze':checkBotState()}">
+                                    <div class="input-group-addon pointer-hand" data-clipboard-target="#CLIENT_ID{{callFrom}}"> {{'copy'| i18nString}} </div>
+                                </div>
+                                <div ng-show="isSafari"><span class="pull-right">{{'press_c'| i18nString}}<span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPadding marginTop15" ng-if="!noneSelected && callFrom !== 'webMobileSDK'" ng-class="{'screenFreeze':checkBotState()}">
+                    <div class="col-xs-12 noPadding"><label class="required-field">{{'constants.flowtasks_callbackURL'| i18nString}}</label></div>
+                    <div class="col-xs-12 noPadding">
+                        <input type="url" ng-model="sdkConf.cbUrl" name="cbUrl" class="form-control" required placeholder="{{'callback_url_small'| i18nString}}">
+                    </div>
+                    <div class="col-xs-12" ng-show="sdk.sdkConfForm.cbUrl.$dirty">
+                        <div error-alert ng-show="sdk.sdkConfForm.cbUrl.$error.required" class="text-danger form-error-text">{{'callback_req'| i18nString}} </div>
+                        <div error-alert ng-show="sdk.sdkConfForm.cbUrl.$dirty && sdk.sdkConfForm.cbUrl.$error.url" class="text-danger"> {{'callback_url_invalid'| i18nString}}</div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="!noneSelected && callFrom !== 'webMobileSDK'"> 
+                       <!-- HINT PROTIP STARTS HERE -->
+                    <div class="hintDiv mt-10 width735">
+                      <span class="icon"> <i class="btx-bulb"></i></span>
+                      <span class="description" ng-bind-html="$root.getSanitizedText($root.lableData.bb538)"></span>
+                    </div>
+                    <!-- HINT PROTIP ENDS HERE -->
+                    <!-- <div class="col-xs-12 marginBottom20 helphint-border">
+                        <span><img class="layer" ng-src='{{bulbIcon}}'></span>
+                        <span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb538)"></span>
+                    </div> -->
+                </div>
+                <div class="col-xs-12 noPadding radioDiv" ng-if="!noneSelected && callFrom == 'agentTransfer'" ng-class="{'screenFreeze':checkBotState()}">
+                    <div class="col-xs-12 noPadding">
+                        <label>{{'pii_data'| i18nString}}</label>
+                    </div>
+                    <p class="secondaryColor">{{'agent_botkit'| i18nString}}</p>
+                    <div>
+                        <label for="sdkPiiMasking.no">
+                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="piiMasking.PIIMaskingDisabledForAgentTransfer" id="sdkPiiMasking.no" name="sdkPiiMasking" ><span class="opt-title">{{'mask_data'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="sdkPiiMasking.yes">
+                            <input ng-value='true'  type="radio"   ng-model="piiMasking.PIIMaskingDisabledForAgentTransfer" id="sdkPiiMasking.yes" name="sdkPiiMasking"><span class="opt-title">{{'mask_nodata'| i18nString}}</span>
+                        </label>
+                    </div>  
+                    <div class="no-connectors-msg" ng-show="props.connectorEnabled && connectors.length <= 0">{{'no_active_conn'| i18nString}}</div>
+                </div>
+                <div class="col-xs-12 noPadding form-group marginTop10" ng-if="!noneSelected && callFrom === 'botkitSDk'" ng-class="{'screenFreeze':checkBotState()}">
+                    <div class="col-xs-12 noPadding">
+                        <label class="required-field" > {{'events_caps'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 noPadding radioDiv sdkConfigSet">
+                        <div class="col-xs-12 noPadding">
+                            <div class='row1'>
+                                <div ng-repeat="event in sdkConf.events" class="sdkSetblock">
+                                    <div class="checkbox checkbox-primary" ng-class="{'hide':stream.type==='universalbot' && event.id==='onVariableUpdate'}">
+                                        <input class="styled" checked type="checkbox" id="{{event.id}}" name="sdkEvents" ng-model="event.checked" ng-required="isOptionsRequired()">
+                                        <label for="{{event.id}}" ></label>
+                                    </div>
+                                    <div class="sdkSetName" ng-class="{'hide':stream.type==='universalbot' && event.id==='onVariableUpdate'}">{{event.name}}</div>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="col-xs-12 eventsSelectedIndex" ng-show="sdk.sdkConfForm.sdkEvents.$dirty">
+                            <div error-alert ng-show="sdk.sdkConfForm.sdkEvents.$error.required" class="text-danger form-error-text"> {{'event_value'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding radioDiv" ng-if="!noneSelected && callFrom !== 'webMobileSDK'" ng-class="{'screenFreeze':checkBotState()}">
+                    <div class="col-xs-12 noPadding">
+                        <label>{{'access_connector'| i18nString}}</label>
+                    </div>
+                    <div>
+                        <label for="props.endPoint.connectorEnabled.no">
+                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="props.connectorEnabled" name="props.endPoint.connectorEnabled" id="props.endPoint.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="props.endPoint.connectorEnabled.yes">
+                            <input ng-value='true'  type="radio"   ng-model="props.connectorEnabled" name="props.endPoint.connectorEnabled" id="props.endPoint.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span>
+                        </label>
+                    </div>  
+                    <div class="no-connectors-msg" ng-show="props.connectorEnabled && connectors.length <= 0">{{'active_connectors'| i18nString}}</div>
+                </div>
+                <div ng-if="false" class="col-xs-12 saveSDKBtnDiv" ng-hide="callback.isFromSettings && true">
+                    <button type="button"  ng-click="callback.createAppCredentials(true)" class="pull-right btn btn-md btn-primary">{{'save'| i18nString}}</button>
+                </div>
+            </div>
+        </ng-form>
+    </div>
+    <div class="sdkcontentloading content-loading" ng-hide="hideUi" ng-if="contentLoading">
+        <span class="spinner-text">
+            <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+            <span class="spinner-text-content">  {{'loading_sdk_config'| i18nString}}</span>
+        </span>
+    </div>
+    <div class="col-xs-12 noPadding" ng-hide="hideUi" ng-if="callFrom !=='apps' && callFrom !== 'webMobileSDK' && callFrom === 'botkitSDk' && stream.type !== 'universalbot'">
+        <div class="helphint-border col-xs-12 marginB20T0 width735">
+            <div class="col-xs-1 bulbicon">
+                <span> <i class="btx-bulb"></i></span>
+            </div>
+            <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb536)"></span></div>
+        </div>
+    </div>
+    <div class="col-xs-12 noPadding" ng-hide="hideUi" ng-if="callFrom !=='apps' && callFrom !== 'webMobileSDK' && callFrom === 'agentTransfer' && stream.type !== 'universalbot'">
+        <div class="helphint-border col-xs-12 marginB20T0 width735">
+            <div class="col-xs-1 bulbicon">
+                <span> <i class="btx-bulb"></i></span>
+            </div>
+            <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb540)"></span></div>
+        </div>
+    </div>
+    <!-- End of SDK Subscriptions -->
+    <!-- Modal to add Sdk Configuration  && sdkConf.noSDKConf-->
+
+    <!-- NEW API SCOPE MAPPING STARTS HERE-->
+    <bot-modal-slider id="apiScopeMapping">
+        <div class="modalSliderContainer selectAppModal width700">
+            <div class="modalHeader">
+                <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="APIScopeMappingSliderClose()" ></i> {{'new_api'| i18nString}}</h4>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+                <div class="APIScopesBody">
+                    <span class="APIScopeHeading"> {{'app_label'| i18nString}}</span>
+                    <!-- <div class="ManageAppsHeading pull-right" ng-click="manageAppsSlider()"> {{'manage_app'| i18nString}}</div> -->
+                    <div class="appNameInput appNameAPIScopes marginTop10">
+                        <select id="select2" ui-select2="selectConfig"  data-placeholder="{{'select_app'| i18nString}}" name="appName" class="form-control" ng-model="sdkConf.appName">
+                            <option value=""></option>
+                            <option value="createApp" data-icon="btx-add" ng-class="{'publishedMode':streamState == 'published'}" class="creatAPP" ng-click = "creatingNewApp()">{{'create_app'| i18nString}}</option>
+                            <optgroup label="{{'select_app'| i18nString}}" >
+                                <option ng-repeat="app in apps | filter :{ 'algorithm' : 'HS256' }" ng-show="app.isVisible" value="{{app.clientId}}" >{{app.appName}}</option>
+                                <!-- <option ng-repeat="app in apps" ng-if="!(app.scope && app.scope[0].scopes.length && app.scope[0].bot === stream._id )" value="{{app.clientId}}" >{{app.appName}}</option> -->
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class= "appCreationData appCreationAPIScopes" ng-show="sdkConf.appName">
+                        <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12">
+                                <label> {{'client_id'| i18nString}}</label>
+                                <div class="pull-right clientIdCopy" data-clipboard-target="#{{callFrom}}API">  {{'copy'| i18nString}} </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="width100percent">
+                                    <input type="text" id="{{callFrom}}API" class="form-control clientColor" ng-model="sdkConf.clientID" ng-readonly="true" name="clientID">
+                                </div>
+                                <div ng-show="isSafari"><span class="pull-right clientIdCopy"> {{'press_c'| i18nString}}<span></div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12">
+                                <label> {{'client_secret'| i18nString}}</label>
+                                <div class="pull-right clientSecretCopy" ng-click = "clientSecretCopy()" data-clipboard-target="#CLIENT_SECRETSlider{{callFrom}}CopyAPI"> {{'copy'| i18nString}}</div>
+                                <span class="pull-right seperatorReset">|</span>
+                                <div class="pull-right clientSecretReset" ng-click="resetClientId()"><i class="btx-return resetIcon"></i> {{'reset'| i18nString}}</div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="width100percent">
+                                    <input type="password" id="CLIENT_SECRETSlider{{callFrom}}API{{$index}}" value="dsfasdfasdfasf" class="form-control clientColor" ng-model="sdkConf.clientSecret" ng-readonly="true" name="clientSecret">
+                                    <input type="text" id="CLIENT_SECRETSlider{{callFrom}}CopyAPI{{$index}}" value="dsfasdfasdfasf" class="form-control clientColor display" ng-model="sdkConf.clientSecret" ng-readonly="true" name="clientSecret">
+                                    <i ng-click="showOrHideCSKeyApps($event,$index)" ng-show="hidePassword"class="btx-password clientSecretEye"></i>
+                                    <i ng-click="showOrHideCSKeyApps($event,$index)" ng-show="!hidePassword" class="fa fa-eye-slash clientSecretEye"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scopesHeading">{{'scopes_label'| i18nString}}</div>
+                    <div class="col-xs-12 noPadding bottomBorder darkBottomBorder">
+                        <div class="col-xs-5 noPadding">
+                            <div class="tableHeaderTitle"><span class="name">{{'scopes'| i18nString}}</span></div>
+                        </div>
+                        <div class="col-xs-5 noPadding">
+                            <div class="tableHeaderTitle"><span class="name">{{'desc_label'| i18nString}}</span></div>
+                        </div>
+                        <div class="col-xs-2 noPadding"></div>
+                    </div>
+                    <div class="col-xs-12 paddingTopBottom10 " ng-init="api.selectedVal = ''" ng-repeat="api in APIScopes track by $index">
+                            <div ng-class="{'lightBottomBorder bottomBorder':!api.flag}" ng-show="!api.flag">
+                            <div class="col-xs-5 noPadding">
+                                {{api.displayName}}
+                            </div>
+                            <div class="col-xs-5 noPadding">
+                                {{api.description['en']}}
+                            </div>
+                            <div class="col-xs-2 noPadding text-right checkRadio">
+                                <div class="checkradioDivContainer">
+                                    <input id="radio{{$index}}" type="checkbox" name="radio{{$index}}" value="{{api.scope}}" ng-model="api.selectedVal" class="check">
+                                    <label for="radio{{$index}}">&nbsp;</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-xs-2 noPadding text-center">
+                            <i area-hidden="true" ng-class="{'fa fa-circle-thin':!contact.isAdded,'fa fa-check-circle':contact.isAdded}"></i>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="modalFooter">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary" ng-disabled = "disableAppScopeSave()" ng-click="processModalSave()">{{'save'| i18nString}}</button>
+                    <button type="rest" class="btn closeCancel" ng-click="APIScopeMappingSliderClose()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <!-- NEW API SCOPE MAPPING ENDS HERE-->
+
+    <!-- MANAGE APP SLIDER STARTS HERE -->
+    <bot-modal-slider id= "managingApps">
+        <div class="modalSliderContainer selectAppModal width700">
+
+        <div ng-if="callFrom!=='apps'" ng-include="'manage-apps.html'"></div>
+
+        </div>
+    </bot-modal-slider>
+    <!-- MANAGE APPS SLIDER ENDS HERE -->
+
+    <!-- NEW APP DEFINITION START HERE -->
+    <bot-modal-slider id="newAppDefinition">
+        <div class="modalSliderContainer selectAppModal width700">
+            <div class="modalHeader">
+                <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="appDefinitionDataSliderclose()"></i>{{'edit_app'| i18nString}}</h4>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+                <div class="APIScopesBody">
+                    <span class="APIScopeHeading">{{'app_label'| i18nString}}</span>
+                    <!-- <div class="ManageAppsHeading pull-right" ng-click="creatingNewApp()">Create New App</div> -->
+                    <div class="appNameInput appNameAPIScopes screenFreeze marginTop10 editScopesNone">
+                        <select id="select2" ui-select2="selectConfig"  data-placeholder="{{'select_app'| i18nString}}" name="appName" class="form-control" ng-model="sdkConf.appName"  ng-change="selectApp">
+                            <option value=""></option>
+                            <optgroup label="{{'select_app'| i18nString}}" >
+                                <option ng-repeat="app in apps" value="{{app.clientId}}" >{{app.appName}}</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class= "appCreationData appCreationAPIScopes" ng-show="sdkConf.appName">
+                        <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12 noPadding">
+                                <label>{{'botName'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <div class="width100percent">
+                                    <input type="text" id="BOT_NAME{{callFrom}}Definition" class="form-control clientColor" ng-model="botName" ng-readonly="true" name="botName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12 noPadding">
+                                <label>{{'Bot_id'| i18nString}}</label>
+                                <div class="pull-right clientIdCopy" data-clipboard-target="#BOT_ID{{callFrom}}Definition"> {{'copy'| i18nString}} </div>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <div class="width100percent">
+                                    <input type="text" id="BOT_ID{{callFrom}}Definition" class="form-control clientColor" ng-model="streamId" ng-readonly="true" name="botId">
+                                </div>
+                                <div ng-show="isSafari"><span class="pull-right">{{'press_c'| i18nString}}<span></div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12 noPadding">
+                                <label>{{'client_id'| i18nString}}</label>
+                                <div class="pull-right clientIdCopy" data-clipboard-target="#{{callFrom}}Definition"> {{'copy'| i18nString}} </div>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <div class="width100percent">
+                                    <input type="text" id="{{callFrom}}Definition" class="form-control clientColor" ng-model="sdkConf.clientID" ng-readonly="true" name="clientID">
+                                </div>
+                                <div ng-show="isSafari"><span class="pull-right clientIdCopy">{{'press_c'| i18nString}}<span></div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12 noPadding">
+                                <label>{{'client_secret'| i18nString}}</label>
+                                <div class="pull-right clientSecretCopy" ng-click = "clientSecretCopy()" data-clipboard-target="#CLIENT_SECRETSlider{{callFrom}}DefinitionCopy">{{'copy'| i18nString}}</div>
+                                <span class="pull-right">|</span>
+                                <div class="pull-right clientSecretReset" ng-click="resetClientId()"><i class="btx-return resetIcon"></i>{{'reset'| i18nString}}</div>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <div class="width100percent">
+                                    <input type="password" id="CLIENT_SECRETSlider{{callFrom}}Definition" value="dsfasdfasdfasf" class="form-control clientColor" ng-model="sdkConf.clientSecret" ng-readonly="true" name="clientSecret">
+                                    <input type="text" id="CLIENT_SECRETSlider{{callFrom}}DefinitionCopy" class="form-control clientColor display" ng-model="sdkConf.clientSecret" ng-readonly="true" name="clientSecret">
+                                    <i ng-click="showOrHideCSKeyNewAppsDefinition($event)" ng-show="hidePassword"class="btx-password clientSecretEye"></i>
+                                    <i ng-click="showOrHideCSKeyNewAppsDefinition($event)" ng-show="!hidePassword" class="fa fa-eye-slash clientSecretEye"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scopesHeading">{{'scopes_label'| i18nString}}</div>
+                    <div class="col-xs-12 noPadding bottomBorder darkBottomBorder">
+                        <div class="col-xs-5 noPadding">
+                            <div class="tableHeaderTitle"><span class="name">{{'scope'| i18nString}}</span></div>
+                        </div>
+                        <div class="col-xs-5 noPadding">
+                            <div class="tableHeaderTitle"><span class="name">{{'desc_label'| i18nString}}</span></div>
+                        </div>
+                        <div class="col-xs-2 noPadding"></div>
+                    </div>
+                    <div class="col-xs-12 paddingTopBottom10" ng-repeat="api in APIScopes track by $index">
+                        <div ng-class="{'lightBottomBorder bottomBorder':!api.flag}" ng-show="!api.flag">
+                            <div class="col-xs-5 noPadding">
+                                {{api.displayName}}
+                            </div>
+                            <div class="col-xs-5 noPadding">
+                                {{api.description['en']}}
+                            </div>
+                            <div class="col-xs-2 noPadding text-right checkRadio">
+                                <div class="checkradioDivContainer">
+                                <input id="radio{{$index}}" type="checkbox" name="radio{{$index}}" value="{{api.scope}}" ng-checked="api.selectedVal" ng-model="api.selectedVal" class="check">
+                                <label for="radio{{$index}}">&nbsp;</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modalFooter">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary" ng-disabled ="disableAppScopeSave()" ng-click="processModalSave()">{{'save'| i18nString}}</button>
+                    <button type="rest" class="btn closeCancel" ng-click="appDefinitionDataSliderclose()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <!-- NEW APP DEFINITION ENDS HERE -->
+
+    <!-- APP CREATION SLIDER MODAL STARTS HERE -->
+    <bot-modal-slider id= "createNewApp" ng-show="streamId">
+        <div class="modalSliderContainer selectAppModal width700">
+            <ng-form name="sdk.appCSForm" class="wf-form" novalidate>
+                <!--Header Starts Here -->
+                <div class="modalHeader">
+                    <!-- <span aria-hidden="true"><img ng-src="{{assetsBase}}settingsIcons/rightArrow.svg" ng-click="closeAppModal()" class="appSliderClose rightArrow"></span> -->
+                    <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="closeAppModal()" ></i>{{'create_client_app'| i18nString}}</h4>
+                </div>
+                <!-- Header Ends Here -->
+                <!-- Body Starts Here -->
+                <div class="modalBody wf-form" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+                    <div class="col-xs-12 noPadding" ng-show="sdkConf.appMode==='edit'">
+                        <div class="col-xs-12 form-group noPadding">
+                            <div class="col-xs-12 noPadding"><label class="required-field">{{'name'| i18nString}}</label></div>
+                            <div class="col-xs-12 noPadding">
+                                <input type="text" ng-model="sdkConfOnModal.appName" name="appName"  class="form-control" ng-minlength="1" maxlength="50" required placeholder="{{'app_Name'| i18nString}}">
+                            </div>
+                            <div class="col-xs-12" ng-show="sdk.appCSForm.appName.$dirty">
+                                <div error-alert ng-show="sdk.appCSForm.appName.$error.required" class="text-danger form-error-text"> {{'app_name_req'| i18nString}} </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-show="sdkConf.appMode==='create'">
+                        <div class="col-xs-12 form-group noPadding">
+                            <div class="col-xs-12 noPadding"><label class="required-field">{{'name'| i18nString}}</label></div>
+                            <div class="col-xs-12 noPadding">
+                                <input type="text" ng-model="sdkConfOnModal.appName" name="appName" ng-disabled="sdkConf.showModalFullSection" ng-focus="showProceedTip=true" ng-blur="showProceedTip=false" ng-keyup="createClientApp($event)" class="form-control inputName" ng-minlength="1" maxlength="50" required placeholder="{{'app_Name'| i18nString}}">
+                            </div>
+                            <div class="col-xs-12" ng-show="sdk.appCSForm.appName.$dirty">
+                                <div error-alert ng-show="sdk.appCSForm.appName.$error.required" class="text-danger form-error-text"> {{'app_name_req'| i18nString}} </div>
+                            </div>
+                            <div class="enterToProceed appCreate col-xs-12" ng-show="showProceedTip && callFrom !== 'webMobileSDK'">{{'enter_proceed'| i18nString}}</div>
+                        </div>
+                    </div>
+                    <div class= "appCreationData" ng-show="(sdkConf.showModalFullSection || sdkConf.appMode==='edit') && sdkConf.label.id === 'HS256'">
+                        <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12 noPadding">
+                                <label>{{'client_id'| i18nString}}</label>
+                                <div class="pull-right clientIdCopy" data-clipboard-target="#{{callFrom}}"> {{'copy'| i18nString}} </div>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <div class="width100percent">
+                                    <input type="text" id="{{callFrom}}" class="form-control clientColor" ng-model="sdkConf.clientID" ng-readonly="true" name="clientID">
+                                </div>
+                                <div ng-show="isSafari"><span class="pull-right clientIdCopy">{{'press_c'| i18nString}}<span></div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row form-group noPadding">
+                            <div class="col-xs-12 noPadding">
+                                <label>{{'client_secret'| i18nString}}</label>
+                                <div class="pull-right clientSecretCopy" ng-click = "clientSecretCopy()" data-clipboard-target="#CLIENT_SECRET2{{callFrom}}copy">{{'copy'| i18nString}}</div>
+                                <span class="pull-right">|</span>
+                                <div class="pull-right clientSecretReset" ng-click="resetClientId()"><i class="btx-return resetIcon"></i>{{'reset'| i18nString}}</div>
+                            </div>
+                            <div class="col-xs-12 noPadding">
+                                <div class="width100percent">
+                                    <input type="password" id="CLIENT_SECRET2{{callFrom}}" value="dsfasdfasdfasf" class="form-control clientColor" ng-model="sdkConf.clientSecret" ng-readonly="true" name="clientSecret">
+                                    <input type="text" id="CLIENT_SECRET2{{callFrom}}copy" value="dsfasdfasdfasf" class="form-control clientColor display" ng-model="sdkConf.clientSecret" ng-readonly="true" name="clientSecret">
+                                    <i ng-click="showOrHideCSKeyNewAppCreation($event)" ng-show="hidePassword"class="btx-password clientSecretEye"></i>
+                                    <i ng-click="showOrHideCSKeyNewAppCreation($event)" ng-show="!hidePassword" class="fa fa-eye-slash clientSecretEye"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="callFrom === 'webMobileSDK'">
+                        <div class="label-width"> 
+                            <label>{{'jwt_auth'| i18nString}}</label>
+                        </div>
+                        <select class="form-control" ng-options="item as item.label for item in algthms track by item.id" ng-model="sdkConf.label" required>
+                            <option value="">{{'select'| i18nString}}</option>
+                        </select>
+                        <textarea ng-show="sdkConf.label.id === 'RS256'" ng-model='sdkConf.publicKey' class="form-control marginTop15 public-key" rows="5" placeholder="{{'enter_public_key'| i18nString}}" id="publicKey" required ></textarea>
+                    </div>
+                    <div class="col-xs-12 noPadding jweEnforce marginTop15">
+                        <div class="jtiEnforce">
+                            <div class="kr-sg-checkbox noPadding">
+                                <input id="checkbox3" class="checkbox-custom" type="checkbox" ng-model="jweEnforce.isJtiEnforced">
+                                <label for="checkbox3" class="checkbox-custom-label">{{'enforce_jti_label' | i18nString}}</label>
+                            </div> 
+                            <span class="tooltip-hover margin-left5" tooltip-placement="right" tooltip="{{'jti_tooltip_text' | i18nString}}"> <img ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"></span>
+                        </div>
+                        <div class="jwtEncrip">
+                            <div class="kr-sg-checkbox noPadding">
+                                <input id="checkbox4" class="checkbox-custom" type="checkbox" ng-model="jweEnforce.isJweEnforced">
+                                <label for="checkbox4" class="checkbox-custom-label">{{'enforce_jwe_label' | i18nString}}</label>
+                            </div> 
+                            <span class="tooltip-hover margin-left5" tooltip-placement="right" tooltip="{{'jwe_tooltip_text' | i18nString}}"> <img ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Body Ends Here -->
+                <!-- Footer Ends here -->
+                <div class="modalFooter" ng-if="sdkConf.appMode === 'create' || sdkConf.appMode === 'edit'">
+                    <button type="submit" class="btn btn-primary" ng-disabled="!sdkConfOnModal.appName || sdkConfOnModal.appName === ''" ng-click="processModal(selectedAlg)">{{callback.appCreated?done:next}}</button>
+                    <button type="rest" class="btn closeCancel" ng-show="!sdkConf.showModalFullSection || !sdkConf.appMode==='edit'" ng-click="closeAppModal()">{{'cancel'| i18nString}}</button>
+                </div>
+            </ng-form>
+        </div>
+    </bot-modal-slider>
+    <!-- APP CREATION SLIDER MODAL ENDS HERE -->    
+
+    <!-- EVENTS SLIDER MODAL STARTS HERE -->
+    <bot-modal-slider id="eventManageSlider">
+        <div class="modalSliderContainer selectAppModal width810" ng-if="!isIvrEnabled && !welcomeMessagecbs.isAddResponseEnabled" ng-class="{'screenEventFreeze':checkBotState()}">
+            <div class="modalHeader">                
+                <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="eventManageClose($event)"></i>{{eventNameDisp}}</h4>
+            </div>
+
+            <div class="modalBody" ng-if="!isStreamLoading" ng-class="{'adjust-pad-ivr': globOpenedSlider == 'Telephony Welcome Event'}" perfect-scroll dynamic-height dynaoffset="-134" height-property="height">            
+                <div class="form-group" ng-hide='isRCS' ng-class="{'paddingLeftRight20': globOpenedSlider == 'Telephony Welcome Event'}">
+                   <label class="darkLabel required-field">{{'event_config'| i18nString}}</label>
+                   <p class='info-details' ng-if='eventCategory !== "TASK_FAILURE_EVENT"'>{{'proceed_event'| i18nString}}</p>
+                   <p class='info-details' ng-if='eventCategory === "TASK_FAILURE_EVENT"'>{{'bot_task_failure'| i18nString}}</p>
+                </div>
+                <div class="radioDiv mb-10" ng-hide='isRCS' ng-class="{'paddingLeftRight20 marginBottomN30': globOpenedSlider == 'Telephony Welcome Event'}">
+                  <div class='row d-flex align-items-center' ng-hide="isIntentEvents">
+                     <div class='pr-40' ng-if='stream.type !== "universalbot" || eventCategory !== "TASK_FAILURE_EVENT"'>
+                        <label for="initiate_task" ng-class="{'pointer-none': selectedState === 'published'}">
+                            <input type="radio" id="initiate_task" ng-model='eventConfig.proceed' value='initiate_task' ng-change='saveEnaDis("initiate_task")' name="eventConf">
+                            <span class="opt-title">{{'trigger_dialog'| i18nString}}</span> 
+                        </label>
+                     </div>
+                     <div class='pr-40' ng-hide="globOpenedSlider == 'Telephony Welcome Event'">
+                        <label for="run_script" ng-class="{'pointer-none': selectedState === 'published'}">
+                            <input type="radio" id="run_script" ng-model='eventConfig.proceed' value='run_script' ng-change='saveEnaDis("run_script")' name="eventConf">
+                            <span class="opt-title">{{'run_script'| i18nString}}</span> 
+                        </label>
+                     </div>
+                     <div class='pr-40' ng-hide="globOpenedSlider == 'Telephony Welcome Event'">
+                        <label for="show_mess" ng-class="{'pointer-none': selectedState === 'published'}">
+                            <input type="radio" id="show_mess" ng-model='eventConfig.proceed' value='show_mess' ng-change='saveEnaDis("show_mess")' name="eventConf">
+                            <span class="opt-title">{{'show_msg'| i18nString}}</span> 
+                        </label>
+                     </div>
+                     <div class='pr-40' ng-show="globOpenedSlider == 'Telephony Welcome Event'">
+                        <label for="ivr_settings" ng-class="{'pointer-none': selectedState === 'published'}">
+                            <input type="radio" id="ivr_settings" ng-model='eventConfig.proceed' value='ivr_settings' ng-change='saveEnaDis("ivr_settings")' name="eventConf">
+                            <span class="opt-title">{{'use_voice_call'| i18nString}}</span> 
+                        </label>
+                     </div>
+
+                  </div>
+                  <div class='row align-items-center' ng-show="isIntentEvents && stream.type !== 'universalbot'">
+                    <div class='pr-40' ng-if='stream.type !== "universalbot" || eventCategory !== "TASK_FAILURE_EVENT"'>
+                       <label for="show_standard" ng-class="{'pointer-none': selectedState === 'published'}">
+                           <input type="radio" id="show_standard" ng-model='eventConfig.proceed' value='show_standard' ng-change='saveEnaDis("show_standard")' name="show_standard">
+                           <span class="opt-title">Show a standard message from the standard responses.</span> 
+                           <span class="manageResponse" ng-click="openManageResponse('intentNotFound', $event)"> Manage response</span>
+                       </label>
+                    </div>
+                    <div class='pr-40' ng-hide="globOpenedSlider == 'Telephony Welcome Event'">
+                       <label for="initiate_task" ng-class="{'pointer-none': selectedState === 'published'}">
+                           <input type="radio" id="initiate_task" ng-model='eventConfig.proceed' value='initiate_task' ng-change='saveEnaDis("initiate_task")' name="initiate_task">
+                           <span class="opt-title">Automatically run a dialog task</span> 
+                       </label>
+                    </div>
+
+                 </div>
+                 <bt-standard-response ng-if="showStandardResponses" class="manageResponseIndexDiv" cb="manageResponseCB"></bt-standard-response>
+                </div>
+                <div ng-if='eventConfig.proceed === "initiate_task"'>
+                    <div class="form-group" ng-class="{'paddingLeftRight20': globOpenedSlider == 'Telephony Welcome Event'}">
+                    <div class="kr-sg-dropdowns clear-fix" ng-show="stream.type === 'universalbot'" ng-class="{'screenFreeze':(streamState=='published')}">
+                        <div class="label-text">Select Bot</div>
+                      <div class="dropdown dropdown-open zIndexAuto" clear-search>
+                          <button class="dropdown-toggle dropdown-input"  slide-bottom data-toggle="dropdown"><span class="selected-data" ng-show="selectedLinkedBot.type !== 'universalbot'">{{selectedLinkedBot.botName?selectedLinkedBot.botName:'Select Bot'}}</span>
+                            <span class="selected-data" ng-show="selectedLinkedBot.type === 'universalbot'">{{selectedLinkedBot.name?selectedLinkedBot.name:'Select Bot'}}</span>
+                            <span class="master-bot" ng-show="selectedLinkedBot.type === 'universalbot'">Universal Bot</span></button>
+                                <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-325" >
+                                      <li >
+                                         <!-- <input type="text" ng-click="$event.stopPropagation()" ng-model="search.searchBot" placeholder="{{'search'| i18nString}}" class="seach-input"> -->
+                                         <div class="searchComponent">
+                                            <input type="text" ng-click="$event.stopPropagation()" ng-model="search.searchBot" placeholder="{{'search'| i18nString}}" class="">
+                                            <i class="btx-search"></i>
+                                            <i class="btx-close displayNone"></i>
+                                        </div>
+                                        </li>
+                                      <li class="masterBot" ng-click="getTasksUb(stream)"><a class="lineHeight40">{{stream.name}} <span class="ubBot">Universal Bot</span></a></li>
+                                      <li ng-repeat="linkedBot in totalLinkedBots | filter:{'botName':search.searchBot} track by $index" ng-click="getLinkedBotTasks(linkedBot)"><a href="#">{{linkedBot.botName}}</a>
+                                      </li>
+                                </ul>
+                        </div>
+                    </div>
+                        <div class="kr-sg-dropdowns marginTop10" ng-show="(selectedLinkedBot.botName || selectedLinkedBot.name) && stream.type === 'universalbot'"  ng-class="{'screenFreeze':(streamState=='published')}">
+                        <div class="label-text">Select Task</div>
+                          <div class="dropdown dropdown-open" clear-search>
+                              <button class="dropdown-toggle dropdown-input" placeholder="Select Task" slide-bottom data-toggle="dropdown"><span class="selected-data" ng-show="(selectedLinkedBot.type === 'universalbot' && dialogsName.length) || (selectedLinkedBot.type !== 'universalbot' && tasks.length)">{{currentTask.name?currentTask.name:'Select Task'}}</span><span class="selected-data" ng-show="(selectedLinkedBot.type === 'universalbot' && !dialogsName.length) || (selectedLinkedBot.type !== 'universalbot' && !tasks.length)">No Tasks</span>
+                                <span class="default-dialog" ng-show="selectedLinkedBot.type === 'universalbot'">Default Dialog</span></button>
+                                    <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-320"  ng-show="selectedLinkedBot.type !== 'universalbot' && tasks.length">
+                                         <li >
+                                            <!-- <input type="text" ng-click="$event.stopPropagation()" ng-model="search.searchBot" placeholder="{{'search'| i18nString}}" class="seach-input"> -->
+                                            <div class="searchComponent">
+                                                <input type="text" ng-click="$event.stopPropagation()" ng-model="search.searchTask" placeholder="{{'search'| i18nString}}" class="">
+                                                <i class="btx-search"></i>
+                                                <i class="btx-close displayNone"></i>
+                                            </div>
+                                        </li>
+                                        <li ng-repeat="task in tasks | filter:{'name':search.searchTask} track by $index" ng-click="selectValChange();selectTask(task,selectedLinkedBot)"><a href="#">{{task.name}}</a>
+                                        </li>
+                                    </ul>
+                                     <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-320" ng-show="selectedLinkedBot.type === 'universalbot'">
+                                          <li ng-repeat="nameD in dialogsName"  ng-click="selectValChange();selectTask(nameD,selectedLinkedBot)"><a href="#">{{nameD.name}}</a>
+                                          </li>
+                                    </ul>
+                            </div>
+                    </div>
+                    </div>
+                    <div class="form-group" ng-class="{'paddingLeftRight20': globOpenedSlider == 'Telephony Welcome Event'}" ng-if="stream.type !== 'universalbot'">
+                    <select ng-model="selected.dialog" ng-change="selectValChange()" ng-class="{'screenFreeze':checkBotState()}" class="ng-pristine ng-valid ng-not-empty ng-touched" style="">
+                            <option value="" disabled selected>{{'select_task_name'| i18nString}}</option>
+                            <option ng-repeat="nameD in dialogsName track by $index" value="{{nameD.name}}">{{nameD.name}}</option>
+                        </select>
+                    </div>
+                    <div ng-if="eventCategory === 'WELCOME_EVENT'">
+                        <div class="hintDiv ng-hide width735" ng-if="isIvrTwilioEnabled">
+                           <span class="icon">
+                              <i class="btx-bulb"></i>
+                           </span>
+                           <span class="description text-left">
+                            {{'welcome_protip'| i18nString}}  
+                           </span>
+                        </div>
+                        <div class="form-group">
+                           <label class="darkLabel required-field">{{'manage_first_msg'| i18nString}}</label>
+                           <p class='info-details opt-sub-title'>{{'res_first_msg'| i18nString}}</p>
+                        </div>
+                        <div class="radioDiv mb-15" ng-class="{'pointer-none': selectedState === 'published'}">
+                          <div>
+                            <label class="unBoldLabel">{{'greetings_smalltalk'| i18nString}}</label>
+                             <div>
+                                <label for="greetings_0">
+                                    <input type="radio" id="greetings_0" ng-model='greetings.sel' ng-change='changeSaveEnabledTask()' value='greetings_0' name="greetings">
+                                    <span class="opt-title">{{'res_greetings'| i18nString}}</span> 
+                                </label>
+                             </div>
+                             <div>
+                                <label for="greetings_1">
+                                    <input type="radio" id="greetings_1" ng-model='greetings.sel' ng-change='changeSaveEnabledTask()'  value='greetings_1' name="greetings">
+                                    <span class="opt-title">{{'discard_msg'| i18nString}}</span> 
+                                </label>
+                             </div>
+                          </div>
+                        </div>
+                        <div class="radioDiv mb-15" ng-class="{'pointer-none': selectedState === 'published'}">
+                          <div>
+                            <label class="unBoldLabel">{{'faq'| i18nString}}</label>
+                             <div>
+                                <label for="faq_0">
+                                    <input type="radio" id="faq_0" ng-model='faq.sel' ng-change='changeSaveEnabledTask()'  value='faq_0' name="faq">
+                                    <span class="opt-title">{{'res_faq'| i18nString}}</span> 
+                                </label>
+                             </div>
+                             <div>
+                                <label for="faq_1">
+                                    <input type="radio" id="faq_1" ng-model='faq.sel' ng-change='changeSaveEnabledTask()'  value='faq_1' name="faq">
+                                    <span class="opt-title">{{'discard_msg'| i18nString}}</span> 
+                                </label>
+                             </div>
+                          </div>
+                        </div>
+                        <div class="radioDiv mb-15" ng-class="{'pointer-none': selectedState === 'published'}">
+                          <div>
+                            <label class="unBoldLabel">{{'task'| i18nString}}</label>
+                             <div>
+                                <label for="task_0">
+                                    <input type="radio" id="task_0" ng-model='task.sel' ng-change='changeSaveEnabledTask()'  value='task_0' name="task">
+                                    <span class="opt-title">{{'initiate_user_task'| i18nString}}</span> 
+                                </label>
+                             </div>
+                             <div>
+                                <label for="task_1">
+                                    <input type="radio" id="task_1" ng-model='task.sel' ng-change='changeSaveEnabledTask()'  value='task_1' name="task">
+                                    <span class="opt-title"><span class="marginLeftIE">{{'initiate_welcome_event'| i18nString}}</span> </span> 
+                                </label>
+                             </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="hintDiv" ng-if='eventCategory === "TASK_FAILURE_EVENT"'>
+                       <span class="icon">
+                        <i class="btx-bulb"></i>
+                       </span>
+                       <span class="description text-left">
+                        {{'default_behave'| i18nString}}  
+                       </span>
+                    </div>
+                </div>
+                <div ng-if='eventConfig.proceed === "run_script"'>
+                    <div class="col-xs-12 noPaddingLeft mb-15">
+                        <div id="ux-script-editor-dialog" acify ng-model="inp.scriptText" callback="codeCallback"></div>
+                    </div>
+                    <div class="hintDiv mt-10 width735" ng-if='eventCategory !== "TASK_FAILURE_EVENT" && eventCategory !== "CONVERSATION_END"'>
+                       <span class="icon">
+                        <i class="btx-bulb"></i>
+                       </span>
+                       <span class="description text-left">
+                        {{'event_config_desc'| i18nString}}
+                       </span>
+                    </div>
+                    <div class="hintDiv mt-10 width735" ng-if='eventCategory === "TASK_FAILURE_EVENT"'>
+                       <span class="icon">
+                        <i class="btx-bulb"></i>
+                       </span>
+                       <span class="description text-left">
+                        {{'default_behave'| i18nString}}  
+                       </span>
+                    </div>
+                </div>
+                <div ng-if='eventConfig.proceed === "show_mess"'>
+                    <div class='row form-group' ng-class="{'pointer-none': selectedState === 'published'}">                       
+                        <button class="kr-sg-button-secondary btn_lg mr-10" ng-click="selectMessage(message);editIVRSettings(message)" ng-if="stream.ivrSettings && stream.ivrSettings.enable" ng-show="eventCategory === 'WELCOME_EVENT' || eventCategory === 'TASK_FAILURE_EVENT'"><i class="btx-add"></i>{{welcomeIVRTemp.welcomeIvrOptions?('edit_voice_call_properties'| i18nString):('add_voice_call_properties'| i18nString)}}</button>
+                        <button class="kr-sg-button-secondary btn_lg" ng-click="editResponse(-1)"><i class="btx-add"></i>{{'Add_response'| i18nString}}</button>                        
+                    </div>  
+
+                   
+                    <div class="margin-adjust-20">
+                        <div class="welcomeMessageDiv" ng-repeat="prompt in responseObj track by $index">
+                            <div class="msgDiv">
+                                <span class="imgDivCircle">
+                                    <span ng-if="prompt.channel==='default'" class="Oval-15 default" tooltip-placement="right" tooltip="{{'all_channels'| i18nString}}">
+                                        <span class="channelText">{{'all'| i18nString}}</span>
+                                    </span>
+                                    <span ng-if="prompt.channel!=='default' && prompt.channel!=='skype' && prompt.channel!=='wfacebook' && prompt.channel !== 'googleactions'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{channelsConfig.channelsObject[prompt.channel].name}}">
+                                        <img class="img fa fa-{{prompt.channel}}"  ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true">
+                                    </span>
+                                    <span ng-if="prompt.channel === 'googleactions'" class="Oval-15 no-background">
+                                        <img class="img" ng-src="{{assetsBase}}images/google-home.svg">
+                                        <div class="property-panelIconTitle">{{'Google_asstnt'| i18nString}}<i class="fa fa-caret-left leftArrow"></i></div>
+                                    </span>
+                                    <span ng-if="prompt.channel!=='default' && prompt.channel==='skype' && prompt.channel!=='wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{channelsConfig.channelsObject[prompt.channel].name}}">
+                                        <span class="img fa fa-{{prompt.channel}}" ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                    </span>
+                                    <span ng-if="prompt.channel==='wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{prompt.isMention?_constants_.iconsTooltips['Workplace For Groups']:_constants_.iconsTooltips['Workplace For Chat']}}">
+                                        <img class="img fa fa-{{prompt.channel}}"  ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true">
+                                    </span>
+                                </span>
+                                <span class="msgDecription">{{prompt.type=='uxmap'?'Javascript Message':decodeJS(prompt.text)}}</span>
+                                <span class="delete btx-delete-1" ng-class="{'pointer-none': selectedState === 'published'}" ng-click="deleteMessage(prompt,$index)"></span>
+                                <span class="edit btx-pencil" ng-click="editResponse($index)"></span>
+                            </div>
+                        </div>
+                    </div>
+                                        
+                    <div class="hintDiv mt-10 width735" ng-if='eventCategory === "TASK_FAILURE_EVENT"'>
+                       <span class="icon">
+                        <i class="btx-bulb"></i>
+                       </span>
+                       <span class="description text-left">
+                        {{'default_behave'| i18nString}}  
+                       </span>
+                    </div>
+                    <div ng-if="eventCategory === 'WELCOME_EVENT'">
+                        <div class="form-group">
+                           <label class="darkLabel required-field"> {{'manage_first_msg'| i18nString}}</label>
+                           <p class='info-details opt-sub-title'> {{'res_first_msg'| i18nString}}</p>
+                        </div>
+
+                        <div class="radioDiv mb-15">
+                          <div>
+                            <div class="radion-heading-title-main">{{'greetings_smalltalk'| i18nString}} </div>
+                             <div>
+                                <label for="sMgreetings_0" class="m-0">
+                                    <input type="radio" id="sMgreetings_0" ng-model='sMgreetings.sel' ng-change='changeSaveEnabled()' value='sMgreetings_0' name="sMgreetings">
+                                    <span class="opt-title"> {{'res_display_greetings'| i18nString}}</span> 
+                                </label>
+                             </div>
+                             <div>
+                                <label for="sMgreetings_1" class="m-0">
+                                    <input type="radio" id="sMgreetings_1" ng-model='sMgreetings.sel' ng-change='changeSaveEnabled()' value='sMgreetings_1' name="sMgreetings">
+                                    <span class="opt-title"> {{'res_discard_greetings'| i18nString}}</span> 
+                                </label>
+                             </div>
+                          </div>
+                        </div>
+                        <div class="radioDiv mb-15">
+                          <div>
+                            <div class="radion-heading-title-main">{{'faq'| i18nString}}</div>
+                             <div>
+                                <label for="sMfaq_0" class="m-0">
+                                    <input type="radio" id="sMfaq_0" ng-model='sMfaq.sel' ng-change='changeSaveEnabled()' value='sMfaq_0' name="sMfaq">
+                                    <span class="opt-title"> {{'res_faq_display'| i18nString}}</span> 
+                                </label>
+                             </div>
+                             <div>
+                                <label for="sMfaq_1" class="m-0">
+                                    <input type="radio" id="sMfaq_1" ng-model='sMfaq.sel' ng-change='changeSaveEnabled()' value='sMfaq_1' name="sMfaq">
+                                    <span class="opt-title"> {{'res_faq_discard'| i18nString}}</span> 
+                                </label>
+                             </div>
+                          </div>
+                        </div>
+                        <div class="radioDiv mb-15">
+                          <div>
+                            <div class="radion-heading-title-main">{{'task'| i18nString}} </div>
+                             <div>
+                                <label for="sMtask_0" class="m-0">
+                                    <input type="radio" id="sMtask_0" ng-model='sMtask.sel' ng-change='changeSaveEnabled()' value='sMtask_0' name="sMtask">
+                                    <span class="opt-title"> {{'display_welcome'| i18nString}}</span> 
+                                </label>
+                             </div>
+                             <div>
+                                <label for="sMtask_1" class="m-0">
+                                    <input type="radio" id="sMtask_1" ng-model='sMtask.sel' ng-change='changeSaveEnabled()' value='sMtask_1' name="sMtask">
+                                    <span class="opt-title"> {{'discard_welcome'| i18nString}}</span> 
+                                </label>
+                             </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="eventConfig.proceed === 'ivr_settings'" class='events-ivr-section'>
+                    <div class="hintDiv marginleft20 marginRight20 marginBottomn20 ng-hide width735">
+                       <span class="icon">
+                        <i class="btx-bulb"></i>
+                       </span>
+                       <span class="description text-left">
+                            Some of the Voice Call Properties may not be applicable for certain channels. 
+                            <a href="https://developer.kore.ai/docs/bots/advanced-topics/event-based-bot-actions/" target="_blank">Know more</a>
+                       </span>
+                    </div>
+                    <div ng-class="{'screenFreeze':checkBotState()}" ng-include="tmpltPrePath+'/js/forms/property-panel/ivr-settings.html'"></div>
+                </div>
+            </div>
+            <div class="modalBody please-wait-wrap" ng-if="isStreamLoading">
+                <div class="please-wait">
+                    <i class="fa fa-spinner fa-circle-o-notch"></i>
+                    <span class="wait-text">Please Wait!</span>
+                </div>
+            </div>
+
+            <div class="modalFooter zIndex">
+               <div ng-show="openSliderCallFrom !== 'fromEdit'">
+                  <button type="button" ng-disabled = "selectedState === 'published' || isSaveDisabled" class="btn btn-default pull-left" ng-click='preSaveButton()'>{{'save_enable'| i18nString}}</button>
+                </div>
+                <div ng-show="openSliderCallFrom === 'fromEdit'">
+                  <button type="button" ng-disabled = "selectedState === 'published' || isSaveDisabled" class="btn btn-default pull-left" ng-click='eventSaveButton()'>{{'save'| i18nString}}</button>
+                </div>
+                <!-- <div>
+                    <button class="btn closeCancel" ng-click="eventManageClose($event)">Cancel</button>
+                </div> -->
+            </div>
+        </div>
+        <div class="modalSliderContainer width700 welcomeMessageContainer welcomeMessageModal  form-group" ng-if='welcomeMessagecbs.isAddResponseEnabled'>
+            <bt-welcome-message cb="welcomeMessagecbs"></bt-welcome-message>
+        </div>
+        <div class="modalSliderContainer width700" ng-if='isIvrEnabled && !welcomeMessagecbs.isAddResponseEnabled'>
+
+            <!--Header Starts Here -->
+            <div class="modalHeader d-flex">
+        
+                <h4 class="modal-title">{{'ivr_properties_normal'| i18nString}} <i class="btx-close" ng-click="closeIVRSettings()"></i></h4>
+            </div>
+            <!-- Header Starts Here -->
+
+            <!-- Body Starts Here -->
+            <div class="modalBody add-message" perfect-scroll dynamic-height dynaoffset="-124" height-property="height">
+                <ivr-settings ng-if="editIVR" ivr-options="ivrOptions" bridge="ivrBridge" callback='cb'></ivr-settings>
+            </div>
+            <!-- Body Ends Here -->
+
+            <!-- Footer Starts Here -->
+            <div class="modalFooter">
+                <div class="col-xs-12">
+                        <button type="button" class="btn" ng-click="saveIVRSettings()">{{'save'| i18nString}}</button>
+                        <button type="button" class="btn closeCancel" ng-click="closeIVRSettings()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+            <!-- Footer Ends Here -->
+        </div>
+     <div class="modal fade vxml-prop-modal" id="vxml-add" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog vxml-dialog">
+            <div class="modal-content">
+                <div class="modalHeader vxmlHeader">
+                     <h4 class="modal-title vxml-title" id="gridSystemModalLabel">{{'new_call_cont_param'| i18nString}}</h4>
+                </div>
+                <form name="vxmlform">
+                    <div class="modalBody vxml-body" height-property="height">
+                        <div class="newVariable">
+                            <div class="col-xs-12  paddingTop10">
+                                <div class="required-field name"><label class="vxml-font">{{'param_name'| i18nString}}</label></div>
+                                <div><textarea class="form-control autoGrowTA required-field vxml-textarea" name="propertyname" type="text" ng-model="vprop.name" auto-grow-textarea default-grown="true" placeholder="{{'place_param'| i18nString}}" ng-required="true"></textarea></div>
+                            </div>
+                            <div class="col-xs-12 paddingTop10">
+                                <div class="required-field name"><label class="vxml-font">{{'value'| i18nString}}</label></div>
+                                <div><textarea class="form-control autoGrowTA required-field vxml-textarea" name="propertyvalue" type="text" ng-model="vprop.value" auto-grow-textarea default-grown="true" placeholder="{{'Vprop_value_placehol'| i18nString}}" ng-required="true"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="modalFooter vxml-footer">
+                    <div class="col-xs-12">
+                        <button class="btn saveSubmit" ng-click="addProperty(vprop)" ng-disabled="vxmlform.$invalid" class="btn">{{'confirm'| i18nString}}</button>
+                        <button ng-click="closeNodeVxmlProp()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</bot-modal-slider>
+ <!-- EVENTS SLIDER MODAL ENDS HERE -->
+
+
+    <!-- SENTIMENT BASED EVENT -->
+    <bot-modal-slider id="sentimentEvent">
+        <div class="modalSliderContainer width700" ng-init="getTaskList()">
+            <div class="modalHeader">
+                <h4 class="modal-title tableRow">
+                    <i class="btx-close" ng-click="cancelSentimentBased()"></i>
+                    <div class="miHeadBar">
+                        <p class="miTaskNameHeader">{{'add_sentiment'| i18nString}}</p>
+                        <p class="shortDesc">{{'build_sentiment'| i18nString}}</p>
+                    </div>                     
+                </h4>
+            </div>
+             <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-135" height-property="height">
+                <form name="sentimentForm">
+                <div class="sentiBody">
+                    <div class="col-xs-12 noPadding">
+                        <label class="sentiHeading">{{'event_name'| i18nString}}</label>
+                        <div class="paddingTop10">
+                        <input type="text" class="form-control" name="eventname" ng-model="events.eventname" ng-required="true">
+                       </div>
+                    </div>
+                    <div class="col-xs-12 padding15 radioDiv">
+                        <label class="sentiHeading">{{'event_trigger'| i18nString}}</label>
+                            <div class="paddingTop10">
+                                <div class="radioInnerDiv">
+                                     <label for="onTaskCompletion" class="event">
+                                     <input value="ontaskcompletion" ng-model="events.trigger" type="radio" name="ontaskcompletion" id="onTaskCompletion" />
+                                     <span class="opt-title">{{'on_task'| i18nString}}</span>
+                                    </label>
+                                 </div>
+                                 <div class="radioInnerDiv">
+                                     <label for="afterEveryMessage" class="event paddingLeft15">
+                                     <input value="aftereverymessage" ng-model="events.trigger" type="radio" name="aftereverymessage" id="afterEveryMessage" />
+                                     <span class="opt-title">{{'after_every_msg'| i18nString}}</span>
+                                    </label>
+                                 </div>
+                            </div>
+                    </div>
+                    <div class="col-xs-12 padding15 emotionConfiguration">
+                         <label class="sentiHeading">{{'emotion_config'| i18nString}}
+                            <i class="fa fa-question-circle pull-right helpIcon"></i></label>
+                         <p class="shortDesc">{{'one_emotions'| i18nString}}</p>
+                         <div class="col-xs-12" ng-if="events.emotions.length > 0">
+                             <div class="col-xs-6">
+                                <p class="shortDesc">{{'select_options'| i18nString}}</p>  
+                             </div>
+                             <div class="col-xs-6">
+                                <p class="shortDesc">{{'range'| i18nString}}</p>  
+                             </div>
+                         </div>
+
+                         <div class="emotionBody" ng-show="emotions.length > 0" ng-repeat="emotion in emotions track by $index">
+                            <div class="col-xs-12 paddingTop10 emotiontag">
+                                <div class="col-xs-6">
+                                    <select name="emotion" class="form-control" ng-model="emotion.type" ng-change="selectEmotionConfig(emotion.type,$index)">
+                                        <option value="" selected>{{'choose_option'| i18nString}}</option>
+                                        <option value="{{emotionTag.type}}" ng-hide="emotionTag.added" ng-repeat="emotionTag in emotionList">{{emotionTag.type}}</option>
+                                    </select>   
+                                </div> 
+                                <div class="col-xs-5 paddingTop5">
+                                   <div class="col-xs-12 dual-slider noPadding" ng-class="['slider-'+$index]" ng-mouseleave="selectRange($index)">
+                                    <div class="countThreshold">
+                                        <span class="pull-left">-3</span>
+                                        <span class="pull-right">3</span>
+                                    </div>
+                                     <span id="dual-slider{{$index}}"  class="width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="-3" data-slider-tooltip="hide" data-slider-max="3" data-slider-step="1"  ticks-tooltip="false" data-slider-value="[-3,3]"></span>
+                                    
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 pull-right">
+                                    <i class="btx-delete-1 deleteicon" ng-click="deleteEmotion($index,emotion.type)"></i>
+                                </div>
+                            </div>                         
+                         </div>
+                        <div class="col-xs-12 noPadding">
+                            <a ng-click="addEmotion(emotions.length)" class="addEmotion">{{'add_emotion'| i18nString}}</a>
+                        </div>
+                         
+
+                    </div>
+                 
+                        
+                    <div class="col-xs-12 padding15 emotionConfiguration radioDiv" ng-class="{'disabled':events.emotions.length == 0}">
+                            <label class="sentiHeading">{{'event_config'| i18nString}}</label>
+                             <p class="shortDesc">{{'proceed_event'| i18nString}}</p>
+                             <div>
+                                <div class="radioInnerDiv">
+                                     <label for="initiateTask" class="event">
+                                     <input value="initiatetask" ng-model="events.emotionconfiguration" type="radio" name="initiatetask" id="initiateTask" />
+                                     <span class="opt-title">{{'trigger_dialog'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                     <label for="runScript" class="event paddingLeft15">
+                                     <input value="runscript" ng-model="events.emotionconfiguration" type="radio" ng-click="runScript($event)" name="runscript" id="runScript" />
+                                     <span class="opt-title">{{'run_script'| i18nString}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row paddingTop10" ng-show="events.emotionconfiguration === 'initiatetask'">
+                                <select placeholder="{{'task_name_label'| i18nString}}" name="evntslist" ng-model="events.taskname" ng-options=" task._id as task.name for task in dialogTasks">
+                                    <option value="">{{'task_name_label'| i18nString}}</option>
+                                </select>                                
+                            </div>
+
+                    </div>
+                     <div ng-show="events.emotionconfiguration === 'runscript'" class="textbox-jseditor jseditor">
+                        <div id="runscript" class="jseditor-acify runscript top10" acify callback='jsPromptCB' ng-model="prompt.value"></div>
+                    </div>
+                    <div class="col-xs-12 padding15">
+                        <button class="btn btn-primary appBtn" ng-disabled="(!(sentimentForm.$valid) || !(emotions.length))" ng-click="sentimentEventSubmit(events)">{{'save'| i18nString}}</button>
+                    </div>
+                   </div>
+               </form>
+             
+             
+                  
+                </div>
+            </div>
+    </bot-modal-slider>
+
+    <!-- End of modal to add sdk Configuraion -->
+</div>
+<div class="appCreationForm app-creation-form" ng-show="callFrom && callFrom ==='apps'">
+<div class="appsManagement">
+    <div class="row btnSearchTitle" ng-show="!apps.length">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">{{'manage_app'| i18nString}}</p>
+        </div>
+      </div>
+      
+ <!-- <div class="NoAppScopes" ng-show="!apps.length">
+        <div class="noAppScopesImage"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+        <p class="noscopesLine"> {{'no_apps'| i18nString}}</p>
+        <div class="NewScopeBtn"><button class="btn btn-sm btn-primary text-info add-app-btn"
+                ng-click="creatingNewApp()"> {{'new_app'| i18nString}} </button></div>
+  </div> -->
+  <div class="emptyStateContainer" ng-show="!apps.length">
+    <div class="emptyState">
+        <div class="emptyImage">
+            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+        </div> 
+        <span class="mainTitle">{{'create_new_app'| i18nString}}</span> 
+        <span class="mainTitle font-small">{{'empty_state_desc'| i18nString}}</span>
+        <!-- <div class="emptyStateDesc">{{'new_app'| i18nString}}</div> -->
+        <div class="generateBtn">
+            <button class="btn btnSolidBlue" ng-class="{'publishedMode':streamState == 'published'}" ng-click="creatingNewApp()">{{'create_app'| i18nString}}</button>
+            <!-- <button class="btn" target="_blank" >learn more</button> -->
+        </div>
+    </div>
+</div>
+<div ng-show="apps.length" ng-include = "'manage-apps.html'"></div>
+</div>
+</div>
+
+<div id="task-fail-confirm" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'confirm_proceed'| i18nString}}</h4>
+      </div>
+      <div class="modal-body save-enable-task-failure">
+        <div class='form-group'>
+            <p>{{'disable_event_config'| i18nString}}.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click='eventSaveButton()'>{{'confirm'| i18nString}}</button>
+        <button type="button" class="btn btn-default btn-cancel" ng-click="taskFailClose()">{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="JWTToken" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{{'jwe_key'| i18nString}}</h4>
+        </div>
+        <div class="modal-body">
+          <div class='csCode' id= "copyJWT">
+<pre>
+{
+        e:{{JWEPublicKey.e}}
+        kid:{{JWEPublicKey.kid}}
+        kty:{{JWEPublicKey.kty}}
+        n:{{JWEPublicKey.n}}
+}
+</pre>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" ng-click="copyJWTToken('copyJWT')">{{'copy'| i18nString}}</button>
+          <button type="button" data-dismiss="modal" class="btn closeCancel">{{'close'| i18nString}}</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<node-level-voice-channels-all-sliders ng-if="allVoiceChannelsSlider" cb="events_voice_channels_all_cb" nodeInfo="nodeInfo"></node-level-voice-channels-all-sliders>
+
+<bot-modal-slider id='ivrEventLevel'>
+    <div class="modalSliderContainer width700">
+        <div class="modalHeader channelModalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                <i class="btx-close"  ng-click="closeBotLevelIvr()"></i>{{'Ivr_settings_modal_title'| i18nString}}
+            </h4>
+        </div>
+        <div class="modalBody alertFieldFormScroll" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+            <div class="col-xs-12">
+                <bt-ivr-settings stream-id="{{streamId}}" callback="callback"></bt-ivr-settings>
+            </div>
+        </div>
+        <div class="modalFooter">
+            <div class="col-xs-12 zIndex">
+                <button ng-click="saveIvrStream()" class="btn btn-xs saveBtn">{{'save'| i18nString}}</button>
+                <button class="btn closeCancel" ng-click="closeBotLevelIvr()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</bot-modal-slider>

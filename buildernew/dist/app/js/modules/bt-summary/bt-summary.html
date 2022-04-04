@@ -1,0 +1,971 @@
+<div class="hintDiv col-xs-12 showGenericLanguageProtip " ng-show="((rightPanel.innerRightPanel.view === 'languageManagement') ||(rightPanel.innerRightPanel.view === 'storyboard')||(rightPanel.innerRightPanel.view === 'botSummary')) && showGenericProtip">
+    <div class="icon">
+    <i class="btx-warning"></i>
+    </div>
+    <div class="description">
+        There is a change in the Generic Language feature. Please map the Generic Language to one of the regular languages.  
+    </div>
+    <div class="hintActions">
+        <span>Learn More</span>
+        <span ng-click="openLanguageGenericModal()">Add Language</span>
+    </div>
+</div>
+<div class="hintDiv col-xs-12 showGenericProtip " ng-show="((rightPanel.innerRightPanel.view === 'languageManagement') ||(rightPanel.innerRightPanel.view === 'storyboard')||(rightPanel.innerRightPanel.view === 'botSummary')) && inputTranslation && !showGenericProtip">
+    <div class="icon">
+    <i class="btx-warning"></i>
+    </div>
+    <div class="description">
+        Input Translation is no longer supported as an independent feature. Please enable all the required languages and choose input translation where required. 
+        
+    </div>
+    <div class="hintActions"><span ng-click="openLanguageSlider()">Configure</span></div>
+</div>
+
+<div class="summaryLoader animationIfLeave" ng-if="fetchingSummary">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">  {{'fetching_summary'| i18nString}}</span>
+    </span>
+</div>
+<div class="summaryLoader" ng-if="apiFailed">
+    <span class="spinner-text"> 
+        <!-- <i class="fa fa-circle-o-notch fa-spin-fast"></i>  -->
+        <span class="spinner-text-content"> {{'summary_apifailed'| i18nString}}</span>
+    </span>
+</div>
+<!-- <div class="kr-sg-multi-line-notification-link depricationNotification" ng-show="stream.sbStreamId || stream.type === 'solution'">
+       <div class="main-heading">{{'important_note' | i18nString }}</div>
+       <div class="tost-text">{{'deprecated_smartbot' | i18nString }}</div>                                   
+       <div class="know-link" ng-click="redirectToLink('DEPRECATED_SMARTBOTS' , $event)"><a class="">{{'knowMore' | i18nString}}</a></div>
+</div> -->
+<div class="row summaryPageContainer" ng-init="checkForUniVersion()" dynamic-height dynaoffset="(inputTranslation || showGenericProtip)?-120:-60" perfect-scroll height-property="height">
+<div class="btsHeader">
+    <div class="summaryHeadingNew" ng-class="{'pad-390': selectedStream.type === 'default' && selectedAccount.accountType === 1 && ((license && license.planName) || (supportPlan && supportPlan.planName)) && selectedStream.visibility.namespace !== 'private'}">
+        <div class="btDetalsDiv">
+            <div class="logoDiv">
+                <img class="logo" ng-src="{{summary.botInfo.icon}}" class="bitmap" onerror='handleimgLoad(this)'>
+            </div>
+            <div class="botDetails">
+                <h2 class="btName">{{summary.botInfo.name}}</h2>
+                <p class="btDesc" title="{{summary.botInfo.description}}">{{summary.botInfo.description}}</p>
+                <div class="btTimeLanguage">
+                    <div class="btTime"><span class="btTitle">{{'created_on'| i18nString}}:</span> {{summary.created}}</div>
+                    <div class="btLanguage">
+                        <span class="btTitle">{{'available_in'| i18nString}} :</span>
+                        <span ng-repeat="lan in enabledLans = ( languages | filter:{enabled:true}) track by $index" ng-if="lan.enabled && ($index < showlanguageCount)"><span ng-if="$index">, </span>{{lan.name}}</span>
+                        <span class="moreLanguages ng-binding ng-scope" ng-if="enabledLans.length > showlanguageCount" ng-click="showAllLang()">+ {{enabledLans.length-showlanguageCount}} more</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="billing-elipse-section">
+            <!-- <div class="billing" ng-if="selectedStream.type === 'default' && selectedAccount.accountType === 1 && ((license && license.planName) || (supportPlan && supportPlan.planName)) && selectedStream.visibility.namespace !== 'private' && !selectedStream.isDeflect" ng-class="{'noStandardPlan': license && !license.planName, 'noSupportPlan': supportPlan && !supportPlan.planName}">
+                <div class="enterprise-plan">
+                    <div class="st-en-titles" ng-class="{'free-pann-type':license.billingType === 'free'}" ng-click="openPlanUsage('plan')" ng-if="license && license.planName">
+                        <div class="title">{{(license.planName | uppercase) || '---'}}</div>
+                        <div class="plan-type">{{'usage_plan' | i18nString}}</div>
+                    </div>
+                    <div class="st-en-titles" ng-if="license && !license.planName">
+                        <div class="title">{{'No'}}</div>
+                        <div class="plan-type">{{'usage_plan' | i18nString}}</div>
+                    </div>
+                    <div class="info-plans">
+                        <div class="info-title" ng-if="license.billingType === 'paid'">{{'remaning_credits' | i18nString}}</div>
+                        <div class="info-title" ng-if="license.billingType === 'free'">{{'remaning_sessions' | i18nString}}</div>
+                        <div class="info-count" ng-if="license.billingType === 'paid'">${{(((license.baseAllowedCredits + license.extraCredits) - license.creditsUsed) | localString) || 0}}</div>
+                        <div class="info-count" ng-if="license.billingType === 'free'">{{(((license.baseAllowedSessions + license.extraSessions) - license.sessionsUsed) | localString)}} of {{((license.baseAllowedSessions + license.extraSessions) | localString)}}</div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="billing"  ng-if="selectedStream.type === 'default' && selectedAccount.accountType === 1 && (license && license.planName) && selectedStream.visibility.namespace !== 'private' && !selectedStream.isDeflect" ng-class="{'free-plan-type': license.billingType === 'free', 'paid-plan-type': license.billingType === 'paid', 'standard': license.planId === 'medium', 'enterprise': license.planId === 'large', 'free': license.planId === 'free'}">
+                <div class="billing-section-data">
+                    <div class="type-data">
+                        <span class="plan">{{'plan' | i18nString}}</span>
+                        <span class="plan-type">{{(license.planName) || '---'}}</span>
+
+                        <div class="warning-data" ng-if="notificationEnabled && planValidationDetails && license.planId !== 'large' && selectedStream.visibility.namespace !== 'private' && planValHeaders && planValHeaders.planName && !selectedStream.isDeflect">
+                            <span class="warning-tooltip-data">
+                                <i class="btx-warning"></i>
+                                <div class="warning-bottom-toltip-data">
+                                    <div class="main-hading" ng-if="license">{{'plan_not_applicable_exceed_details_desc' | i18nString}}</div>
+                                    <div class="col-xs-12 noPadding" perfect-scroll dynamic-height dynaoffset="-450">
+                                        <div class="data-text" ng-repeat="item in planValidationDetails.exceededData[planValHeaders.id] track  by $index">
+                                            <div class="info-title"><ng-container ng-if="item.exceeded !== false && item.exceeded !== true">{{item.exceeded}}</ng-container> {{item.componentName}} exceeded</div>
+                                            <div class="exceed-data">Allowed: <ng-container> {{ (item.allowed !== false && item.allowed !== true) ? item.allowed: ''}} {{(item.allowed === false || item.allowed === true) ? 'No': ''}} </ng-container> {{item.componentName || item.key}}</div>
+                                        </div>
+                                    </div>
+                                    <button class="upgrade-to-standard" ng-click="openPlanUsage('plan')">
+                                        <i class="btx-move-up"></i>
+                                        <span>{{'upgrade_plan' | i18nString}}</span>
+                                        <!-- Upgrade to {{planValHeaders.planName || '---'}} Plan -->
+                                    </button>
+                                </div>
+                            </span>
+                            <span class="warning-info">{{'few_params_are_execeed' | i18nString}}</span>
+                        </div>
+                    </div>
+                    <div class="count-data-upgrade">
+                        <div class="left-data">
+                            <div class="price-amount" ng-class="{'standard': license.planId === 'medium', 'enterprise': license.planId === 'large', 'free': license.planId === 'free'}">
+                                <ng-container ng-if="license.planId === 'medium'">
+                                    ${{((license.totalCredits) | localString: 'sessions')}}
+                                </ng-container>
+                                <ng-container ng-if="(license.planId === 'large')">
+                                    ${{((license.totalCredits) | localString: 'sessions')}}
+                                </ng-container>
+                                <ng-container ng-if="(license.planId === 'free')">
+                                    {{((license.totalRequests) | localString: 'sessions')}}
+                                </ng-container>
+                            </div>
+                            <div class="sessions-remaining">
+                                <ng-container ng-if="(license.planId === 'large')">
+                                    {{'session_remaning' | i18nString}} in {{license.endDate | date: 'MMMM'}}
+                                </ng-container>
+                                <ng-container ng-if="(license.planId === 'free')">
+                                    {{'Requests Remaining'}} in {{license.endDate | date: 'MMMM'}}
+                                </ng-container>
+                                <ng-container ng-if="license.planId === 'medium'">
+                                    {{'credits_remaining' | i18nString}}
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="right-data">
+                            <div title="{{'upgrade_plan' | i18nString}}" class="upgrade-reload-btn" ng-if="(license.planId === 'free') || (planValidationDetails && planValidationDetails.exceededData[license.planId])" ng-click="openPlanUsage('plan')">
+                                <i class="btx-move-up"></i>
+                                <span>{{'upgrade_plan' | i18nString}}</span>
+                            </div>
+                            <div title="{{'reload_label' | i18nString}}" class="upgrade-reload-btn" ng-if="(license.planId === 'medium') && !(planValidationDetails && planValidationDetails.exceededData[license.planId])" ng-click="openPlanUsage('reload')">
+                                <i class="btx-currency"></i>
+                                <span>{{'reload_label' | i18nString}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <img class="enterprise-bg-img" ng-if="license.planId === 'large'" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI1IiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEyNSAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIG9wYWNpdHk9IjAuMiI+CjxjaXJjbGUgY3g9IjY3IiBjeT0iNjIiIHI9IjY2IiBzdHJva2U9InVybCgjcGFpbnQwX2xpbmVhcl8xMTQxNl8yMjU2NCkiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNNjYuODA1MSAyNS40NDY1QzY3LjI1OTggMjQuNDcwMSA2OC42NTQ3IDI0LjQ3MDEgNjkuMTA5NCAyNS40NDY1TDc5LjA1ODcgNDYuODEwM0M3OS41MzU4IDQ3LjgzNDcgODAuNTA5MSA0OC41MzkgODEuNjMwOCA0OC42NzQ1TDEwNS4wODEgNTEuNTA4NkMxMDYuMTU3IDUxLjYzODcgMTA2LjU4IDUyLjk1OCAxMDUuNzkzIDUzLjY4NzNMODguNDkyMyA2OS43MjQ5Qzg3LjY2MzUgNzAuNDkzMyA4Ny4yOTA5IDcxLjYzNTMgODcuNTA4OSA3Mi43NDQ0TDkyLjA1MjMgOTUuODU5N0M5Mi4yNTg0IDk2LjkwODMgOTEuMTM3OCA5Ny43MzI4IDkwLjE4NzcgOTcuMjA1N0w2OS41NDU5IDg1Ljc1MzdDNjguNTU4IDg1LjIwNTcgNjcuMzU2NSA4NS4yMDU3IDY2LjM2ODUgODUuNzUzN0w0NS43MjY3IDk3LjIwNTdDNDQuNzc2NyA5Ny43MzI4IDQzLjY1NiA5Ni45MDgzIDQzLjg2MjEgOTUuODU5N0w0OC40MDU1IDcyLjc0NDRDNDguNjIzNSA3MS42MzUzIDQ4LjI1MSA3MC40OTMzIDQ3LjQyMjEgNjkuNzI0OUwzMC4xMjEzIDUzLjY4NzNDMjkuMzM0NSA1Mi45NTggMjkuNzU3NyA1MS42Mzg3IDMwLjgzMzggNTEuNTA4Nkw1NC4yODM2IDQ4LjY3NDVDNTUuNDA1MyA0OC41MzkgNTYuMzc4NiA0Ny44MzQ3IDU2Ljg1NTcgNDYuODEwM0w2Ni44MDUxIDI1LjQ0NjVaIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJ1cmwoI3BhaW50MV9saW5lYXJfMTE0MTZfMjI1NjQpIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9nPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzExNDE2XzIyNTY0IiB4MT0iNjciIHkxPSItNSIgeDI9IjY3IiB5Mj0iMTI5IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM3MDI3RTUiIHN0b3Atb3BhY2l0eT0iMC41MSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3MDI3RTUiIHN0b3Atb3BhY2l0eT0iMCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MV9saW5lYXJfMTE0MTZfMjI1NjQiIHgxPSI2Ny45NTcyIiB5MT0iMjMuNzE0MiIgeDI9IjY3Ljk1NzIiIHkyPSI5OC4zNzE0IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM3MDI3RTUiIHN0b3Atb3BhY2l0eT0iMC41MSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3MDI3RTUiIHN0b3Atb3BhY2l0eT0iMCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=" />
+            </div>
+    
+            <div class="titleOverflow" ng-if="(summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO') || (botState!='published' && summary.botInfo.permissions.BOTBUILDER_BOT_IMPORT[0]!=='NO')">
+                <div class="dropdown">
+                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                        </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" ng-if="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'"  ng-click='exportBot()'>{{'export_bot' | i18nString}}</li>
+                        <li class="dropdown-item" ng-if="botState!='published' && summary.botInfo.permissions.BOTBUILDER_BOT_IMPORT[0]!=='NO'" ng-click='importBot()'>{{'import_bot' | i18nString}}</li>                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="row summaryBody">
+        <div class="grid" dynamic-height>
+            <div class="item halfWidthDiv linkedBotsDiv" ng-class="{'noContent':!summary.botInfo[botState].length}" id="tasks" ng-if="summary.botInfo.type=='universalbot'">
+                <div class="item-content">
+            <div class="item-header">
+                 <h6 ng-click="openLinkedBots()" class="heading"> <i class="btx-move"></i>{{'linked_bots'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                 <div  class="rightDiv hide"><span ng-if="summary.botInfo[botState].length && botState!=='published'" class="goToLink" ng-click="openLinkedBots()">{{'link_bots'| i18nString}}</span></div>
+            </div>
+            <div class="item-body" ng-if="summary.botInfo[botState].length">
+                <div class="row headerRow" >
+                    <div class="col-sm-4">{{'botName'| i18nString}}</div>
+                    <div class="col-sm-8">{{'Task_description'| i18nString}}</div>
+                    
+                </div>
+                <div ng-click="openTask(task)" class="row bodyRow" ng-if="$index < 3" ng-repeat="bot in summary.botInfo[botState] track  by $index">
+                    <div class="col-sm-4" title="{{bot.botName}}"><span class="linkBotIcon"> <img src="{{brokenImageSmall}}" class="logo" ng-src="{{bot.botIconUrl}}" onerror='handleimgLoad(this)'></span>{{bot.botName}}</div>
+                    <div class="col-sm-8" ><span title="{{task.description}}">{{bot.description || "---"}}</span></div>
+                </div>
+            </div>
+            <div class="item-body" ng-if="!summary.botInfo[botState].length">
+                <div class="noSummaryData">
+                    <p>{{'nosummary_data'| i18nString}} <a class="knowMoreLink" ng-click="redirectToLink('UNIVERSAL_BOT_LINKEDBOTS', $event)">{{'know_more'| i18nString}}</a></p>
+                    <div class="rightDiv"><button class="btn newBtn btnSolidBlue" ng-click="openLinkedBots()">{{'plus_linkbots'| i18nString}}</button></div>
+
+                </div>
+            </div>
+            <div class="item-footer" ng-if="summary.botInfo[botState].length>3 && summary.botInfo[botState].length" ng-click="openLinkedBots()">
+                <span ng-if="(summary.botInfo[botState].count-3) ===1">{{summary.botInfo[botState].length-3}} {{'more_bot'| i18nString}}</span>
+                <span ng-if="(summary.botInfo[botState].count-3) !==1">{{summary.botInfo[botState].length-3}} {{'more_bots'| i18nString}}</span>
+            </div>
+            </div>
+           </div>
+           <!-- PLANNING NOTIFICATIONS -->
+            <div class="item kr-notifications z-index2" ng-if="false && notificationEnabled && planValidationDetails && license.planId !== 'large' && selectedStream.visibility.namespace !== 'private' && planValHeaders && planValHeaders.planName && !selectedStream.isDeflect">
+                <div class="kr-sg-multi-line-notification warning-notification">
+                    <div class="bulb-icon"><i class="btx-bulb"></i></div>
+                    <div class="flex-data">
+                        <div class="tost-text" ng-if="license"> {{'plan_exceed_message' | i18nString:({planName: license.planName}) }}
+                            <!-- {{planValidationDetails.message || '---'}} -->
+                            <div class="kr-sg-dropdowns view-details">
+                                <div class="dropdown dropdown-open">
+                                    <div data-toggle="dropdown">{{'view_details'| i18nString}}</div>                                            
+                                    <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-370">
+                                        <div class="header">{{'follwing_plans_are_not_applicable' | i18nString}} :</div>
+                                        <div class="section">
+                                            <div class="title">{{planValHeaders.planName || '---'}}</div>
+                                            <ng-container ng-repeat="item in planValidationDetails.exceededData[planValHeaders.id] track  by $index">
+                                                <div class="text"><ng-container ng-if="item.exceeded !== false && item.exceeded !== true">{{item.exceeded}}</ng-container> {{item.componentName}} exceeded</div>
+                                                <div class="desc">Allowed: {{item.allowed}} {{item.componentName}}</div>
+                                            </ng-container>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="rightDiv"><a class="upgrade" ng-click="openPlanUsage('plan')">{{'upgrade_plan' | i18nString}}</a> <img class="info-icon" ng-click="closeNotification()" ng-src="{{assetsPath}}/assets/icons/close.svg"></div>     
+                    </div>                                           
+                </div>
+           </div>
+          <!-- PLANNING NOTIFICATIONS -->
+          
+            <!--TASKS STARTS HERE-->
+            <div class="item quaterWidthDiv tasksDiv" ng-class="{'noContent':!allTasksSummary.length,'zindex2':checkForDropDown()}" id="tasks" ng-if="summary.botInfo.type!=='universalbot'">
+                    <div class="item-content">
+                    <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]==='NO'">
+                        <div class="noAccessDetails">
+                            <p><i class="btx-lock"></i></p>
+                            <div class="accesNote">You do not have access to Tasks</div>
+                        </div>
+                    </div>
+                <div class="item-header">
+                    <h6 ng-click="openTasks()" class="heading"><i class="btx-move"></i>{{'tasks'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                    <div class="rightDiv" ng-if="allTasksSummary.length && summary.botInfo.type!=='universalbot' && botState!=='published'"> 
+                        <!-- <span class="searchDiv">
+                            <img ng-src="{{searchIconGreen}}" class="searchIconGreen" ng-click="searchGreen($event)">
+                            <input class="searchInput" placeholder="search">
+                        </span> -->
+                        <span ng-hide="(summary.botInfo.state==='setup') && selectedStream.sbStreamId" ng-if="summary.botInfo.permissions.BOTBUILDER_TASKS[0]=='FULL'" class="dropdown taskCreateList">
+                            <a class="actionLink dropdown-toggle" type="button" data-toggle="dropdown">{{'new_task'| i18nString}}</a>
+                            <ul class="dropdown-menu">
+                            <li><a ng-click="createTask('dialogTasks')">{{'dialog_task'| i18nString}}</a></li>
+                            <li><a ng-click="createTask('alertTasks')">{{'alert_task'| i18nString}}</a></li>
+                            <!-- <li><a ng-click="createTask('actionTasks')">{{'action_task'| i18nString}}</a></li>
+                            <li><a ng-click="createTask('informationTasks')">{{'info_task'| i18nString}}</a></li> -->
+                            </ul>
+                        </span>
+
+                    </div>
+                </div>
+                <div class="item-body" ng-if="allTasksSummary.length" ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'">
+                    <!-- <div class="row headerRow" >
+                        <div class="col-sm-4">{{'task_name_caps'| i18nString}}</div>
+                        <div class="col-sm-6">{{'Task_description'| i18nString}}</div>
+                        <div class="col-sm-2 noPaddingRight">{{'task_type'| i18nString}}</div>
+                    </div> -->
+                    <div ng-click="openTask(task)" class="row bodyRow" ng-hide="task.isDeleted && task.state === 'configured'" ng-repeat="task in allTasksSummary.slice(0,4) track  by $index">
+                        <div class="col-sm-6 leftColumn" ><span title="{{task.name}}">{{task.name}}</span></div>
+                        <!-- <div class="col-sm-6" ><span title="{{task.shortDesc}}">{{task.shortDesc || "---"}}</span></div> -->
+                        <div class="col-sm-6 rightColumn noPaddingRight" ><span title='{{task.isReport?information:getTaskType[task.type]}}' class="rightTag">{{task.isReport? information : getTaskType[task.type]}}</span></div>
+                    </div>
+                </div>
+                <div class="item-body" ng-if="!allTasksSummary.length" ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'">
+                    <div class="noSummaryData">
+                        <p>{{'alltasks_summary'| i18nString}} <a class="knowMoreLink" ng-click="redirectToLink('BOT_TASKS_HELP', $event)">{{'know_more'| i18nString}}</a></p>
+                        <div  class="rightDiv" ><button ng-hide="(summary.botInfo.state==='setup') && selectedStream.sbStreamId"  ng-if="botState!=='published' && summary.botInfo.permissions.BOTBUILDER_TASKS[0]=='FULL'" class="btn btnSolidBlue newBtn dropdown-toggle" type="button" data-toggle="dropdown">{{'new_task'| i18nString}}</button>
+                            <ul class="dropdown-menu">
+                            <li><a ng-click="createTask('dialogTasks')">{{'dialog_task'| i18nString}}</a></li>
+                            <li><a ng-click="createTask('alertTasks')">{{'alert_task'| i18nString}}</a></li>
+                            <!-- <li><a ng-click="createTask('actionTasks')">{{'action_task'| i18nString}}</a></li>
+                            <li><a ng-click="createTask('informationTasks')">{{'info_task'| i18nString}}</a></li> -->
+                            </ul></div>
+
+                    </div>
+                </div>
+                <div class="item-footer" ng-if="summary.alltasksInfo.tasks[botState].count>4 && allTasksSummary.length" ng-click="openTasks()" ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'">
+                   <span ng-if="(summary.alltasksInfo.tasks[botState].count - 4) === 1">{{summary.alltasksInfo.tasks[botState].count-4}} {{'more_task'| i18nString}}</span>
+                   <span ng-if="(summary.alltasksInfo.tasks[botState].count - 4) !== 1">{{summary.alltasksInfo.tasks[botState].count-4}} {{'more_tasks'| i18nString}}</span>
+                </div>
+                </div>
+            </div>
+            <!--TASKS ENDS HERE-->
+
+            <!--KNOWLEDGE COLLECTION STARTS HERE-->
+<!--             <div class="item quaterWidthDiv knowledgeCollectionDiv" id="knowledgeCollection" ng-class="{'noContent':!knowledgeSummary.length}" ng-if="summary.botInfo.type!=='universalbot' && summary.botInfo.permissions.BOTBUILDER_KNOWLEDGE_GRAPH[0]!=='NO'"> -->
+            <div class="item quaterWidthDiv knowledgeCollectionDiv" id="knowledgeCollection" ng-if="summary.botInfo.type!=='universalbot'">                
+                <div class="item-content">
+                    <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_KNOWLEDGE_GRAPH[0]==='NO'">
+                        <div class="noAccessDetails">
+                            <p><i class="btx-lock"></i></p>
+                            <div class="accesNote">You do not have access to Knowledge Graph</div>
+                        </div>
+                    </div>
+                    <div class="item-header">
+                        <h6 ng-click="openTask(null,'knowledgeTask')" class="heading"><i class="btx-move"></i>{{'knowledge_graph'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                        <div class="rightDiv" ng-if="knowledgeSummary.length"> 
+                        <!-- <span class="searchDiv">
+
+                            <img ng-src="{{searchIconGreen}}" class="searchIconGreen" ng-click="searchGreen($event)">
+                            <input class="searchInput" placeholder="search">
+                        </span> -->
+
+                        </div>
+                    </div>
+                    <div class="item-body" ng-if="kgTotalCount !== 0" ng-show="summary.botInfo.permissions.BOTBUILDER_KNOWLEDGE_GRAPH[0]!=='NO'">
+<!--                         <div class="row headerRow">
+                            <div class="col-sm-12">Questions</div>
+                        </div> -->
+                        <div class="row bodyRow kg-height" ng-repeat="faq in knowledgeSummary track by $index" ng-click="openTask(null,'knowledgeTask', faq.questionPayload.question)">
+                            <div class="col-sm-12 kg-height">
+                                <span class='count-kg'>{{faq.count}}</span>
+                                <span class='label-kg'>{{faq.label}}</span>
+                                <!-- <span title="{{faq.questionPayload.question}}">{{faq.questionPayload.question}}</span> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-body" ng-if="kgTotalCount == 0" ng-show="summary.botInfo.permissions.BOTBUILDER_KNOWLEDGE_GRAPH[0]!=='NO'">
+                        <div class="noSummaryData">
+                            <p>{{'kg_summary'| i18nString}} <a class="knowMoreLink" ng-click="redirectToLink('KNOWLEDGE_TASK_CREATE_HELP', $event)">{{'know_more'| i18nString}}</a></p>
+                        </div>
+                    </div>
+<!--                     <div class="item-footer" ng-if="summary.alltasksInfo.faqs[botState].count && summary.alltasksInfo.faqs[botState].count>5" ng-click="openTask(null,'knowledgeTask')">
+                    <span >{{summary.alltasksInfo.faqs[botState].count-5}} More Questions</span>
+                    </div> -->
+                </div>
+            </div>
+            <!--KNOWLEDGE COLLECTION ENDS HERE-->
+
+            <!--BILLING PLANS STARTS HERE-->
+            <div class="item quaterWidthDiv billingPlansDiv" id="billingPlans" ng-if="enterpriseLicenseType !== 'customer' && false">                
+                <div class="item-content" >
+                    <div class="item-header">
+                        <h6  class="heading">{{'Your Plan'}}</h6>
+                    </div>
+                    <div class="item-body">
+                        <ng-container ng-if="license && license.planName">
+                            <div class="name">
+                                Plan Name
+                            </div>
+                            <div class="value">
+                                {{license.planName || '---'}}
+                            </div>
+                            <ng-container ng-if="license.billingType === 'free'">
+                                <div class="name">
+                                    Available Free Sessions
+                                </div>
+                                <div class="value">
+                                    <span class="usedSessions">{{license.sessionsUsed}}</span> of <span class="baseAllowedSessions">{{license.baseAllowedSessions}}</span>
+                                </div>
+                            </ng-container>
+                            <!-- auto reload activate -->
+                            <ng-container ng-if="license.billingType === 'paid'">
+                                <div class="name">
+                                    Current Credits
+                                </div>
+                                <div class="value">
+                                    <span class="price">${{(license.creditsUsed | localString) || 0}}</span><span class="freeCredit"> ({{license.extraCredits || 0}} Free Credits)</span>
+                                </div>
+                                <div class="auto-reload-activated" ng-if="license.autoRechargeAmount">
+                                    <span class="icon">
+                                        <img class="beta-icon" ng-src="{{assetsPath}}/assets/icons/refresh-2.svg">
+                                    </span>
+                                    <span class="text">Auto-Reload Activated</span>
+                                    <span class="tooltip-custom"><img class="info-icon" ng-src="{{assetsPath}}/assets/icons/info.svg">
+                                        <span class="tooltiptext" ng-click="$event.stopPropagation()">
+                                            <div class="text">Minimum credit to be maintained</div>
+                                            <div class="price">${{license.autoRechargeThreshold}}</div>
+                                            <div class="text">Amount to be added</div>
+                                            <div class="price">${{license.autoRechargeAmount}}</div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </ng-container>
+                            <!-- auto reload activate -->
+                            <!-- reload plan -->
+                            <ng-container ng-if="license.threshold">
+                                <div class="name">
+                                    Status
+                                </div>
+                                <div class="value">
+                                    <span class="price">{{(license.billedSessions | localString) || 0}}</span> <span class="text"> Sessions Remaining</span>
+                                </div> 
+                                <div class="name">
+                                    <span class="date-text">Next Reset Date</span><span class="date"> {{license.nextRunAt | date}}</span>
+                                </div>
+                            </ng-container>
+                            <!-- reload plan -->
+                            <div class="action">
+                                <button class="kr-sg-button-primary btn_lg" ng-click="openPlanUsage('plan')">Reload</button>
+                            </div>
+                        </ng-container>
+                        <!-- Emtpy state -->
+                        <ng-container ng-if="license && !license.planName">
+                            <div class="noSummaryData">
+                                <div class="kr-sg-multi-line-notification error-notification">
+                                    <div class="tost-text">The bot is not yet deployed for your customers.</div>                                   
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- Emtpy state -->
+                    </div>
+                </div>
+            </div>
+            <!--BILLING PLANS ENDS HERE-->
+
+            <!--SMALL TALK STARTS HERE-->
+<!--             <div class="item quaterWidthDiv knowledgeCollectionDiv" id="knowledgeCollection" ng-class="{'noContent':!knowledgeSummary.length}" ng-if="summary.botInfo.type!=='universalbot' && summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'"> -->
+            <div class="item quaterWidthDiv" id="knowledgeCollection">
+               
+                <div class="item-content">
+                    <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]==='NO'">
+                        <div class="noAccessDetails">
+                            <p><i class="btx-lock"></i></p>
+                            <div class="accesNote">You do not have access to Small Talk</div>
+                        </div>
+                    </div>
+                    <div class="item-header">
+                        <h6 ng-click="selectComponent('botTasks','smallTalk')" class="heading"><i class="btx-move"></i>{{'small_talk'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                        <span class="rightDiv" ng-click='createSmallTalk()' ng-if="botState!=='published' && summary.botInfo.permissions.BOTBUILDER_TASKS[0] =='FULL'">
+                            <a>{{'new_group'| i18nString}}</a>
+                        </span>
+                    </div>
+                    <div class="item-body" ng-if="smallTalks.length" ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'">
+                        <div class="row bodyRow bodySmallTalk" ng-if="$index < 4"  ng-repeat="smallTalk in smallTalks track by $index" ng-click="openTask(null,'smallTalkGp', smallTalk)">
+                            <div class="col-sm-6 leftColumn" ><span title="{{smallTalk.groupName}}">{{smallTalk.groupName}}</span></div>
+                            <div class="col-sm-6 rightColumn noPaddingRight" ><span  class="rightTag">{{smallTalk.count || '0'}}</span></div>
+                        </div>
+                    </div>
+                    <div class="item-body" ng-if="!smallTalks.length" ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'">
+                        <div class="noSummaryData">
+                            <p>{{'smalltalk_summary'| i18nString}} <a class="knowMoreLink" ng-click="redirectToLink('SMALL_TALK_CREATE_HELP', $event)">{{'know_more'| i18nString}}</a></p>
+                        </div>
+                    </div>
+                    <div class="item-footer" ng-if="smallTalks.length>4" ng-click="selectComponent('botTasks','smallTalk')" ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'">
+                        <span ng-if="(smallTalks.length - 4) === 1">{{smallTalks.length -4}} {{'more_group'| i18nString}}</span>
+                        <span ng-if="(smallTalks.length - 4) !== 1">{{smallTalks.length - 4}} {{'more_groups'| i18nString}}</span>
+                    </div>
+
+                </div>
+            </div>
+            <!--SMALL TALK  ENDS HERE-->
+
+            <!--Digital Skills STARTS HERE-->
+            <div class="item  quaterWidthDiv naturalLanguageDiv" id="naturalLanguage">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access to Digital Skills</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 ng-click="(summary.botInfo.type==='universalbot') || (summary.botInfo.type==='solution')?openPanelsWidgets():openForms()" class="heading"><i class="btx-move"></i>{{'nav_tab_name_digitalSkills' | i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                    <div class="rightDiv" ng-if="summary.botInfo.nlMeta"> 
+                    </div>
+                </div>
+            <div class="item-body" ng-if="summary.botInfo.nlMeta" ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'">
+                <!-- <div class="row headerRow" >
+                    <div class="col-sm-12 title">Your Overall Model Score <span class="count">{{summary.botInfo.nlMeta.modelScore || "--"}}</span></div>
+                </div> -->
+                <div class="row bodyRow" ng-click="openForms()" ng-if="(summary.botInfo.type!=='universalbot') && summary.botInfo.type!=='solution'">
+                    <div class="col-sm-12 details"><span class="count">{{summary.alltasksInfo.forms[botState].count || 0}}</span> {{'digital_forms'| i18nString}}</div>
+                </div>
+
+                <div class="row bodyRow" ng-click="openPanelsWidgets()">
+                    <div class="col-sm-12 details" ng-class="{'padding28': (summary.botInfo.type=='universalbot') || (summary.botInfo.type=='solution')}"><span class="count">{{summary.alltasksInfo.panels[botState].count || 0}}</span> {{'panels'| i18nString}}</div>
+                </div>
+
+                <div class="row bodyRow" ng-click="openPanelsWidgets()">
+                    <div class="col-sm-12 details" ng-class="{'padding28': (summary.botInfo.type=='universalbot') || (summary.botInfo.type=='solution')}"><span class="count">{{summary.alltasksInfo.widgets[botState].count || 0}}</span> {{'widgets'| i18nString}}</div>
+                </div>
+
+                <!-- <div class="row bodyRow" ng-click="manageNL('synonyms')">
+                    <div class="col-sm-12 details"><span class="count">{{summary.botInfo.nlMeta.mlUtterances}}</span> Concept</div>
+                </div> -->
+            </div>
+            <div class="item-body" ng-if="!summary.botInfo.nlMeta" ng-show="summary.botInfo.permissions.BOTBUILDER_TASKS[0]!=='NO'">
+                <div class="noSummaryData">
+                    <p>{{'botinfo_summary'| i18nString}} <a class="knowMoreLink" ng-click='redirectToLink("MACHINE_LEARINING_HELP", $event)'>{{'know_more'| i18nString}}</a></p>
+                </div>
+            </div>
+                </div>
+            </div>
+            <!--Digital Skills ENDS HERE-->
+
+
+            <!--NATURAL LANGUAGE STARTS HERE-->
+            <div class="item  quaterWidthDiv naturalLanguageDiv" id="naturalLanguage" ng-if="summary.botInfo.type!=='universalbot'">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_NATURAL_LANGUAGE[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access to Natural Language</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 ng-click="manageNL('machineLearningUtterances')" class="heading"><i class="btx-move"></i>{{'natural_language'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                </div>
+            <div class="item-body" ng-if="summary.botInfo.nlMeta" ng-show="summary.botInfo.permissions.BOTBUILDER_NATURAL_LANGUAGE[0]!=='NO'">
+                <!-- <div class="row headerRow" >
+                    <div class="col-sm-12 title">Your Overall Model Score <span class="count">{{summary.botInfo.nlMeta.modelScore || "--"}}</span></div>
+                </div> -->
+                <div class="row bodyRow" ng-click="manageNL('machineLearningUtterances')">
+                    <div class="col-sm-12 details"><span class="count">{{summary.botInfo.nlMeta.mlUtterances || 0}}</span> {{'ml_utterance'| i18nString}}</div>
+                </div>
+
+                <div class="row bodyRow" ng-click="manageNL('machineLearningUtterances')">
+                    <div class="col-sm-12 details"><span class="count">{{summary.botInfo.nlMeta.patterns || 0}}</span> {{'pattern_name'| i18nString}}</div>
+                </div>
+
+                <div class="row bodyRow" ng-click="manageNL('machineLearningUtterances','botsynonyms')">
+                    <div class="col-sm-12 details"><span class="count">{{summary.botInfo.nlMeta.synonyms|| 0}}</span> {{'synonyms_name'| i18nString}}</div>
+                </div>
+
+                <!-- <div class="row bodyRow" ng-click="manageNL('synonyms')">
+                    <div class="col-sm-12 details"><span class="count">{{summary.botInfo.nlMeta.mlUtterances}}</span> Concept</div>
+                </div> -->
+            </div>
+            <div class="item-body" ng-if="!summary.botInfo.nlMeta" ng-show="summary.botInfo.permissions.BOTBUILDER_NATURAL_LANGUAGE[0]!=='NO'">
+                <div class="noSummaryData">
+                    <p>{{'botinfo_summary'| i18nString}} <a class="knowMoreLink" ng-click='redirectToLink("MACHINE_LEARINING_HELP", $event)'>{{'know_more'| i18nString}}</a></p>
+                </div>
+            </div>
+              </div>
+            </div>
+            <!--NATURAL LANGUAGE ENDS HERE-->
+
+
+            <!--CHANNELS STARTS HERE-->
+            <div class="item  quaterWidthDiv channelsDiv" id="channels" >
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_CHANNELS[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access to Channels</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 ng-click="manageChannels()" class="heading"><i class="btx-move"></i>{{'channels'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                </div>
+            <div class="item-body" ng-if="summary.botInfo.channels.length" ng-show="summary.botInfo.permissions.BOTBUILDER_CHANNELS[0]!=='NO'">
+                <div class="row bodyRow channel" ng-click="manageChannels(channel.type)" ng-if="$index < 3"  ng-repeat="channel in  summary.botInfo.channels | orderBy: 'displayName' track by $index">
+                    <img ng-src="{{channelsConfig.channelsObject[channel.type].icon}}" ng-if="channel.type!=='skype'" class="channelIcon">
+                    <span ng-if="channel.type=='skype'" class="fa channelSkypeIcon channelIcon fa-skype"></span>
+                    <span class="channelName">{{channel.displayName || channelsConfig.channelsObject[channel.type].name}}</span>
+                </div>
+            </div>
+            <div class="item-body" ng-if="!summary.botInfo.channels.length" ng-show="summary.botInfo.permissions.BOTBUILDER_CHANNELS[0]!=='NO'">
+                <div class="noSummaryData">
+                    <p>{{'channel_summary'| i18nString}} <a class="knowMoreLink" ng-click='redirectToLink("BOT_CHANNEL_HELP", $event)'>{{'know_more'| i18nString}}</a></p>
+                </div>
+            </div>
+            <div ng-click="manageChannels()" class="item-footer" ng-if="summary.botInfo.channels.length>3" ng-show="summary.botInfo.permissions.BOTBUILDER_CHANNELS[0]!=='NO'">
+             <span >{{summary.botInfo.channels.length-3}} {{'more_channels'| i18nString}} </span>
+                </div>
+                </div>
+            </div>
+            <!--CHANNELS ENDS HERE-->
+
+                <!--EVENTS STARTS HERE-->
+                <div class="item quaterWidthDiv eventsDiv" id="events" ng-class="{'noContent':!botEvents.length}" ng-if="(selectedStream.type === 'universalbot')">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access to Events</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 ng-click="manageEvents()" class="heading"><i class="btx-move"></i>{{'events'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                </div>
+                    <div class="item-body" ng-if="botEvents.length" ng-show="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]!=='NO'">
+                        <div class="row headerRow">
+                            <div class="col-sm-6">{{'event'| i18nString}}</div>
+                            <div class="col-sm-6 textAlignRightHead">{{'event_action'| i18nString}}</div>
+                        </div>
+                        <div class="row bodyRow" ng-if="$index < 3" ng-repeat="event in botEvents | orderBy: 'key'">
+                            <div title="{{botEventsKey[event.key]}}" class="col-sm-6 leftColumn">{{botEventsKey[event.key]}}</div>
+                            <div title="{{botEventsKey[event.action]}}" class="col-sm-6 textAlignRightBody rightColumn">{{botEventsKey[event.action] || "---"}}</div>
+                        </div>
+                    </div>
+                    <div class="item-body" ng-if="!botEvents.length" ng-show="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]!=='NO'">
+                        <div class=" noSummaryData">
+                            <p>{{'handler_summary'| i18nString}}  <a class="knowMoreLink"  ng-click='redirectToLink("EVENTS_MANAGEMENT", $event)'>{{'know_more'| i18nString}}</a></p>
+                        </div>
+                    </div>
+                    <div ng-click="manageEvents()" class="item-footer" ng-if="botEvents.length>3" ng-show="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]!=='NO'">
+                        <span >{{'see_all'| i18nString}} </span>
+                    </div>
+                </div>
+                </div>
+                <!--EVENTS ENDS HERE-->
+                
+            <!--Activity LOGS STARTS HERE-->
+            <div class="item halfWidthDiv changeLogsDiv" id="changeLogs" ng-class="{'noContent':!logs.length}">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access to Change Logs</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 class="heading" ng-click="manageChangeLogs()"><i class="btx-move"></i>{{'change_logs' | i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                </div>
+                <div class="item-body" ng-if="logs.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                    <!-- <div class="row headerRow">
+                        <div class="col-sm-3">{{'developer_name'| i18nString}}</div>
+                        <div class="col-sm-7">{{'changes'| i18nString}}</div>
+                        <div class="col-sm-2 paddingLeft10 noPaddingRight">{{'changelog_time'| i18nString}}</div>
+                    </div> -->
+                    <div class="row bodyRow"  ng-if="$index < 2" ng-repeat="log in logs track by $index">
+                        <div class="col-sm-12" >
+                            <div class="changeDesc" title="{{log.message}}">{{log.message}}</div>
+                            <div class="dateTime">
+                                <span title="{{log.username}}" class="nameAndImg"><img ng-src="{{devAvatar}}" class="devAvatar">{{log.username || log.userId}}</span>
+                                <span class="date">{{log.createdDate}} {{log.createdTime}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-body" ng-if="!logs.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                    <div class="noSummaryData">
+                        <p>{{'changelog_summary'| i18nString}} <a class="knowMoreLink" ng-click="redirectToLink('BOT_CHANGELOG_HELP', $event)">{{'know_more'| i18nString}}</a></p>
+                    </div>
+                </div>
+                <div ng-click="manageChangeLogs()" class="item-footer" ng-if="logs.length>2" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                    {{'see_all'| i18nString}}
+                </div>
+                </div>
+            </div>
+            <!--Activity LOGS ENDS HERE-->
+        
+            <!--TEAM STARTS HERE-->
+            <div class="item quaterWidthDiv developerDiv" id="developers" ng-class="{'noContent':!summary.botInfo.codevelopers.users.length}">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_DEVELOPERS[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">{{'donot_accessTeam'| i18nString}}</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 ng-click="manageDeveloperShare()" class="heading"><i class="btx-move"></i>{{'developerShare_nam'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+           
+                </div>
+                <div class="item-body" ng-if="summary.botInfo.codevelopers.users.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_DEVELOPERS[0]!=='NO'">
+                    <div class="row bodyRow" ng-if="$index < 3" ng-repeat="user in summary.botInfo.codevelopers.users | orderBy:'order' track by $index">
+                        <div class="col-sm-12 displayFlex">
+                            <img ng-src="{{devAvatar}}" class="devAvatar">
+                            <span class="channelName">{{user.firstName?(user.firstName+" "+user.lastName):user.emailId}}
+                                <div class="owner" title="{{user.roleInfo[0].role}}">{{user.roleInfo[0].role}}</div>
+                            </span>
+                        </div>
+ 
+                    </div>
+                </div>
+                <div class="item-body" ng-if="!summary.botInfo.codevelopers.users.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_DEVELOPERS[0]!=='NO'">
+                    <div class="noSummaryData">
+                        <p>{{'developer_summary'| i18nString}} <a class="knowMoreLink" ng-click='redirectToLink("BOT_SHARE_HELP", $event)'>{{'know_more'| i18nString}}</a></p>
+                        <div class="rightDiv"><button ng-click="manageDeveloperShare()" class="btn newBtn btnSolidBlue" ng-if="botState!=='published'" >{{'inivite_developer_summary'| i18nString}}</button></div>
+                    </div>
+                </div>
+                <div class="item-footer" ng-click="manageDeveloperShare()" ng-if="summary.botInfo.codevelopers.users.length>3" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_DEVELOPERS[0]!=='NO'">
+                    <span>{{summary.botInfo.codevelopers.users.length-3}} {{'more_developers'| i18nString}} </span>
+                </div>
+                </div>
+            </div>
+            <!--TEAM ENDS HERE-->
+            
+            <!--EVENTS STARTS HERE-->
+            <div class="item quaterWidthDiv eventsDiv" id="events" ng-class="{'noContent':!botEvents.length}" ng-if="(selectedStream.type !== 'universalbot')">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access to Events</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 ng-click="manageEvents()" class="heading"><i class="btx-move"></i>{{'events'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                </div>
+                      <div class="item-body" ng-if="botEvents.length" ng-show="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]!=='NO'">
+                        <div class="row headerRow">
+                            <div class="col-sm-6">{{'event'| i18nString}}</div>
+                            <div class="col-sm-6 textAlignRightHead">{{'event_action'| i18nString}}</div>
+                        </div>
+                        <div class="row bodyRow" ng-if="$index < 3" ng-repeat="event in botEvents | orderBy: 'key'">
+                            <div title="{{botEventsKey[event.key]}}" class="col-sm-6 leftColumn">{{botEventsKey[event.key]}}</div>
+                            <div title="{{botEventsKey[event.action]}}" class="col-sm-6 textAlignRightBody rightColumn">{{botEventsKey[event.action] || "---"}}</div>
+                        </div>
+                    </div>
+                    <div class="item-body" ng-if="!botEvents.length" ng-show="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]!=='NO'">
+                        <div class=" noSummaryData">
+                            <p>{{'handler_summary'| i18nString}}  <a class="knowMoreLink"  ng-click='redirectToLink("EVENTS_MANAGEMENT", $event)'>{{'know_more'| i18nString}}</a></p>
+                        </div>
+                    </div>
+                    <div ng-click="manageEvents()" class="item-footer" ng-if="botEvents.length>3" ng-show="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]!=='NO'">
+                        <span >{{'see_all'| i18nString}} </span>
+                    </div>
+                </div>
+            </div>
+            <!--EVENTS ENDS HERE-->
+
+            <!--ENVIRONMENT VARIABLES STARTS HERE-->
+            <div class="item quaterWidthDiv botVariablesDiv" id="botVariables" ng-class="{'noContent':!summary.botInfo.botVariables.env.variables.length}">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access to Environment Variables </div>
+                            </div>
+                        </div>
+                    <div class="item-header">
+                        <h6 ng-click="manageBotVariables()" class="heading"><i class="btx-move"></i>{{'global_variable'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                        <!-- <div class="rightDiv"> 
+                                <a class="actionLink">Invite Developer</a>
+                        </div> -->
+                    </div>
+                    <div class="item-body" ng-if="summary.botInfo.botVariables.env.variables.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                            <div ng-if="summary.botInfo.botVariables.env.variables.length" class="row headerRow">
+                                <div class="col-sm-6">{{'variable_name'| i18nString}}</div>
+                                <div class="col-sm-6 textAlignRightHead">{{'group'| i18nString}}</div>
+                                    <!-- <div class="col-sm-4" ng-if="selectedStream.type === 'universalbot'">{{'propagate_value' | i18nString}}</div> -->
+                            </div>
+                            <div  class="row bodyRow" ng-if="$index<4" ng-repeat="variable in summary.botInfo.botVariables.env.variables | orderBy: 'key' track by $index">
+                                <div title="{{variable.key}}" class="col-sm-6 leftColumn">{{variable.key}}</div>
+                                <div title="{{variable.group}}" class="col-sm-6 textAlignRightBody rightColumn">{{variable.group}}</div>
+                                    <!-- <div class="col-sm-4" ng-if="selectedStream.type === 'universalbot'">{{variable.propagateValue?'Enable':'Disable'}}</div> -->
+                            </div>
+                            <!-- <span ng-if="summary.botInfo.botVariables.variables.length<6" class="goToLink">Go to b<i class="arrowGreen btx-arrow-next"></i></span> -->
+                    
+                    </div>
+                <div class="item-body" ng-if="!summary.botInfo.botVariables.env.variables.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                    <div class="noSummaryData">
+                        <p>{{'global_summary'| i18nString}} <a class="knowMoreLink" ng-click='redirectToLink("VARIABLE_MANAGEMENT_HELP", $event)'>{{'know_more'| i18nString}}</a></p>
+                    </div>
+                </div>
+                <div class="item-footer" ng-if="summary.botInfo.botVariables.env.count>4" ng-click="manageBotVariables()" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                        <span>{{summary.botInfo.botVariables.env.count-4}} {{(summary.botInfo.botVariables.env.count-4) === 1?'more_variable':'more_variables'| i18nString}} </span>
+                </div>
+                </div>
+                
+            </div>
+            <!--ENVIRONMENT  VARIABLES ENDS HERE-->
+             <!--CONTENT VARIABLES STARTS HERE-->
+            <div class="item quaterWidthDiv botVariablesDiv" id="botVariables" ng-class="{'noContent':!summary.botInfo.botVariables.locale.variables.length}" >
+            <div class="item-content">
+                <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]==='NO'">
+                    <div class="noAccessDetails">
+                        <p><i class="btx-lock"></i></p>
+                        <div class="accesNote">You do not have access to Content Variables </div>
+                    </div>
+                </div>
+            <div class="item-header">
+                <h6 ng-click="manageContentVariables()" class="heading"><i class="btx-move"></i>{{'content_variable'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                <!-- <div class="rightDiv"> 
+                        <a class="actionLink">Invite Developer</a>
+                </div> -->
+            </div>
+            <div class="item-body" ng-if="summary.botInfo.botVariables.locale.variables.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                    <div ng-if="summary.botInfo.botVariables.locale.variables.length" class="row headerRow">
+                        <div class="col-sm-6">{{'variable_name'| i18nString}}</div>
+                        <div class="col-sm-6 textAlignRightHead">{{'group'| i18nString}}</div>
+                        <!-- <div class="col-sm-4" ng-if="selectedStream.type === 'universalbot'">{{'propagate_value' | i18nString}}</div> -->
+
+                    </div>
+                    <div  class="row bodyRow" ng-if="$index<4" ng-repeat="variable in summary.botInfo.botVariables.locale.variables | orderBy: 'key' track by $index">
+                        <div title="{{variable.key}}" class="col-sm-6 leftColumn">{{variable.key}}</div>
+                        <div title="{{variable.group}}" class="col-sm-6 textAlignRightBody rightColumn">{{variable.group}}</div>
+                        <!-- <div class="col-sm-4" ng-if="selectedStream.type === 'universalbot'">{{variable.propagateValue?'Enable':'Disable'}}</div> -->
+                    </div>
+                    <!-- <span ng-if="summary.botInfo.botVariables.variables.length<6" class="goToLink">Go to b<i class="arrowGreen btx-arrow-next"></i></span> -->
+            
+            </div>
+        <div class="item-body" ng-if="!summary.botInfo.botVariables.locale.variables.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+            <div class="noSummaryData">
+                <p>{{'content_summary'| i18nString}} <a class="knowMoreLink" ng-click='redirectToLink("VARIABLE_MANAGEMENT_HELP", $event)'>{{'know_more'| i18nString}}</a></p>
+            </div>
+        </div>
+        <div class="item-footer" ng-if="summary.botInfo.botVariables.locale.count>4" ng-click="manageContentVariables()" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                <span>{{summary.botInfo.botVariables.locale.count-4}} {{(summary.botInfo.botVariables.locale.count-4) === 1?'more_variable':'more_variables'| i18nString}}</span>
+        </div>
+        </div>
+        <!--BOT VARIABLES ENDS HERE-->
+            </div>
+            <!--CONTENT VARIABLES STARTS HERE-->
+           
+            <!--HOLD & RESUME STARTS HERE-->
+            <div class="item halfWidthDiv holdNresumeDiv" ng-class="{'noContent':!summary.botInfo.interruptOptions.interruptsEnabled}" id="holdNResume" ng-if="summary.botInfo.type!=='universalbot'">
+                <div class="item-content">
+                    <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]==='NO'">
+                        <div class="noAccessDetails">
+                            <p><i class="btx-lock"></i></p>
+                            <div class="accesNote">You do not have access to Interruptions Behavior </div>
+                        </div>
+                    </div>
+            <div class="item-header">
+                <h6 ng-click="manageBotInterruption()" class="heading"><i class="btx-move"></i>{{'hold_resume'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6> 
+            </div>
+            <div class="item-body" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                <p ng-if="!summary.botInfo.interruptOptions.interruptsEnabled"><span class="heading">{{'hold_resume'| i18nString}} -</span>{{allInterruptOptions[summary.botInfo.interruptOptions.interruptsEnabled] ||  allinterruptions_error }}</p>
+                <p ng-if="summary.botInfo.interruptOptions.interruptsEnabled"><span class="heading">{{'hold_resume'| i18nString}} -</span> {{allInterruptOptions[summary.botInfo.interruptOptions.type.option]}}</p>
+                <p ng-show="summary.botInfo.interruptOptions.interruptsEnabled && summary.botInfo.interruptOptions.type.option==='developer'"><span class="heading">{{'hold_option'| i18nString}} -</span> {{allInterruptOptions[summary.botInfo.interruptOptions.holdUxOptions.option]}}</p>
+                <p ng-show="summary.botInfo.interruptOptions.interruptsEnabled && (((summary.botInfo.interruptOptions.type.option==='developer') && (summary.botInfo.interruptOptions.holdUxOptions.option === 'holdCurrTask')) || (summary.botInfo.interruptOptions.type.option==='endUser'))"><span class="heading">{{'resume_option'| i18nString}} -</span> {{allInterruptOptions[summary.botInfo.interruptOptions.resumeUxOptions.option]}}</p>
+                <!-- <p ng-show="summary.botInfo.interruptOptions.interruptsEnabled && ((summary.botInfo.interruptOptions.type.option==='developer' && summary.botInfo.interruptOptions.holdUxOptions.option==='holdCurrTask') || summary.botInfo.interruptOptions.type.option==='endUser')"><span class="heading">{{'resume_option'| i18nString}} -</span> {{allInterruptOptions[summary.botInfo.interruptOptions.resumeUxOptions.option]}}</p> -->
+            </div>
+            <div class="item-footer" ng-click="manageBotInterruption()" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                <span>{{'manage_interruptions'| i18nString}}</span>
+            </div>
+            </div>
+            <!-- <div ng-click="manageBotInterruption()" class="item-footer">
+                <span>{{'manage_interruptions' | i18nString}} </span>
+            </div> -->
+            </div>
+            <!--HOLD & RESUME ENDS HERE-->  
+           
+            <!--AUTHORIZATION PROFILE STARTS HERE-->
+            <div class="item quaterWidthDiv authorizationDiv" id="authorization" ng-class="{'noContent':!summary.botInfo.idpConfigurations.length}">
+                <div class="item-content">
+                    <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]==='NO'">
+                        <div class="noAccessDetails">
+                            <p><i class="btx-lock"></i></p>
+                            <div class="accesNote">You do not have access to Authorization Profiles</div>
+                        </div>
+                    </div>
+            <div class="item-header">
+                <h6 ng-click="manageAuthorizationProfile()" class="heading"><i class="btx-move"></i>{{'auth_profile'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+            </div>
+            <div class="item-body" ng-if="summary.botInfo.idpConfigurations.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                    <div class="row headerRow">
+                        <div class="col-sm-6 ">{{'name'| i18nString}}</div>
+                        <div class="col-sm-6 textAlignRightHead">{{'type'| i18nString}}</div>
+                    </div>
+                    <div class="row bodyRow" ng-if="$index < 4" ng-repeat="idp in summary.botInfo.idpConfigurations | orderBy: 'name' track by $index">
+                        <div title="{{idp.name}}" class="col-sm-6 leftColumn">{{idp.name}}</div>
+                        <div title="{{idp.sso_type}}" class="col-sm-6 rightColumn textAlignRightBody">{{idp.sso_type}}</div>
+                    </div>
+                    <!-- <span ng-if="summary.botInfo.idpConfigurations.length" ng-click="manageAuthorizationProfile()" class="goToLink">Go to b<i class="arrowGreen btx-arrow-next"></i></span> -->
+                </div>
+                <div class="item-body" ng-if="!summary.botInfo.idpConfigurations.length" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                    <div class="noSummaryData">
+                        <p>{{'auth_summary'| i18nString}} <a class="knowMoreLink" ng-click="redirectToLink('BOT_AUTHENTICATION_HELP', $event)">{{'know_more'| i18nString}}</a></p>
+                    </div>
+                </div>
+            <div  ng-click="manageAuthorizationProfile()" class="item-footer" ng-if="summary.botInfo.idpConfigurations.length>4" ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                <span ng-if="(summary.botInfo.idpConfigurations.length-4) !== 1">{{summary.botInfo.idpConfigurations.length-4}}{{'more_auth'| i18nString}} </span>
+                <span ng-if="(summary.botInfo.idpConfigurations.length-4) === 1">{{summary.botInfo.idpConfigurations.length-4}}{{'more_profile'| i18nString}} </span>
+            </div>
+            </div>
+            </div>
+            <!--AUTHORIZATION PROFILE ENDS HERE-->
+
+            <!--DEBUG LOGS STARTS HERE-->
+            <div class="item halfWidthDiv changeLogsDiv debugLogsDiv" id="changeLogs" ng-class="{'noContent':!summary.botInfo.debugLogs.length, 'noPaddingTop': summary.botInfo.type!=='universalbot'}">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_ANALYTICS[0]==='NO'">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access to Debug Logs</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 class="heading" ng-click="manageDebugLogs()"><i class="btx-move"></i>{{'debug_logs' | i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                </div>
+                <div class="item-body" ng-if="summary.botInfo.debugLogs.length"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_ANALYTICS[0]!=='NO'">
+                    <div class="row headerRow">
+                        <div class="col-sm-2 ">{{'last_run_date' | i18nString}}</div>
+                        <div class="col-sm-4">{{'log' | i18nString}}</div>
+                        <div class="col-sm-3">{{'task_name_label2' | i18nString}}</div>
+                        <div class="col-sm-3">{{'channel_name' | i18nString}}</div>
+                    </div>
+                    <div class="row bodyRow"  ng-if="$index < 3" ng-repeat="log in summary.botInfo.debugLogs track by $index">
+                        <div class="col-sm-2 dateTimeColomn">
+                            <span class="date">{{log.createdDate}}</span><br>
+                            <span class="time">{{log.createdTime}}</span>
+                        </div>
+                        <div class="col-sm-4 changeDesc noMargin"><span title="{{log.message}}">{{log.log}}</span></div>
+                        <div class="col-sm-3 min-height-32">{{log.taskName}}</div>
+                        <div class="col-sm-3 min-height-32">
+                            <span title="{{log.username}}">{{channelsConfig.channelsObject[log.channel].name || channel}}</span>
+                            </div>
+                    </div>
+                </div>
+                <div class="item-body" ng-if="!summary.botInfo.debugLogs.length"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_ANALYTICS[0]!=='NO'">
+                    <div class="noSummaryData">
+                        <p>{{'debuglog_summary'| i18nString}} <a class="knowMoreLink" ng-click="redirectToLink('BOT_CHAT_LOGS_HELP', $event)">{{'know_more'| i18nString}}</a></p>
+                    </div>
+                </div>
+                <div ng-click="manageDebugLogs()" class="item-footer" ng-if="summary.botInfo.debugLogs.length>3"  ng-show="summary.botInfo.permissions.BOTBUILDER_BOT_ANALYTICS[0]!=='NO'">
+                    {{'see_all'| i18nString}}
+                </div>
+                </div>
+            </div>
+            <!--DEBUG LOGS ENDS HERE-->
+            
+            <!--OTHERS STARTS HERE-->
+            <div class="item  quaterWidthDiv othersDiv" id="others">
+                    <div class="item-content">
+                        <div class="noAccess"  ng-show="(summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]==='NO') && (summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]==='NO')">
+                            <div class="noAccessDetails">
+                                <p><i class="btx-lock"></i></p>
+                                <div class="accesNote">You do not have access</div>
+                            </div>
+                        </div>
+                <div class="item-header">
+                    <h6 class="heading otherHeading"><i class="btx-move"></i>{{'others'| i18nString}}<i class="arrowGreen btx-arrow-next"></i></h6>
+                </div>
+                <div class="item-body">
+                    <div class="row bodyRow" ng-click="manageApiExtensions('botkitSDK')" ng-if="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]!=='NO'">
+                        <div class="col-sm-6 leftColumn">{{'bot_kit'| i18nString}}</div>
+                        <div class="col-sm-6 rightColumn textAlignRightBody" ng-class="{'notEnabled':!summary.botInfo.sdkSubscription.subscribedFor.length,'enable':summary.botInfo.sdkSubscription.subscribedFor.length}">{{summary.botInfo.sdkSubscription.subscribedFor.length ? enable_label: notEnable_label}}</div>
+                    </div>
+                    <div class="row bodyRow" ng-click="manageApiExtensions('agentTransfer')" ng-if="summary.botInfo.permissions.BOTBUILDER_EXTENSIONS[0]!=='NO'">
+                        <div class="col-sm-6 leftColumn">{{'agent_transfer'| i18nString}}</div>
+                        <div class="col-sm-6 rightColumn textAlignRightBody"  ng-class="{'notEnabled':!summary.botInfo.sdkSubscription.subscribedFor.length,'enable':summary.botInfo.sdkSubscription.subscribedFor.length}">{{summary.botInfo.sdkSubscription.subscribedFor.length ? enable_label: notEnable_label}}</div>
+                    </div>
+                    <div class="row bodyRow" ng-click="manageBotFunctions()" ng-if="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                        <div class="col-sm-6 leftColumn">{{'bot_functions'| i18nString}}</div>
+                        <div class="col-sm-6 rightColumn textAlignRightBody" ng-class="{'notEnabled':!summary.botInfo.botFunction.length,'enable':summary.botInfo.botFunction.length}">{{summary.botInfo.botFunction.length?enable_label:notEnable_label}}</div>
+                    </div>
+                    <div class="row bodyRow" ng-click="manageIvrOptions()"  ng-if="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                        <div class="col-sm-6 leftColumn">{{'ivr_settings'| i18nString}}</div>
+                        <div class="col-sm-6 rightColumn textAlignRightBody" ng-class="{'notEnabled':!summary.botInfo.ivrSettings.enable,'enable':summary.botInfo.ivrSettings.enable}">{{summary.botInfo.ivrSettings.enable? enable_label:notEnable_label}}</div>
+                    </div>
+                    <div class="row bodyRow" ng-click="managePiiSettings()" ng-if="summary.botInfo.permissions.BOTBUILDER_BOT_SETTINGS[0]!=='NO'">
+                        <div class="col-sm-6 leftColumn">{{'pii_settings'| i18nString}}</div>
+                        <div class="col-sm-6 rightColumn textAlignRightBody" ng-class="{'notEnabled':!summary.botInfo.enable_pii,'enable':summary.botInfo.enable_pii}">{{summary.botInfo.enable_pii?enable_label:notEnable_label }}</div>
+                    </div>
+                </div>
+             
+                </div>
+            </div>
+            <!--OTHERS LANGUAGE ENDS HERE-->
+
+
+       
+
+
+
+</div>
+  </div>
+</div>
+<div class="modal fade upgrade-uni-modal" tabindex="-1" role="dialog" id="upgradeUniModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" ng-show="upgradeUniversalIcon" perfect-scroll dynamic-height height-property="height" dynaoffset="-75">
+                 <img ng-src="{{upgradeUniversalIcon}}" class="upgradeImg">
+                 <h3 class="header">{{'introducing_universalBot'| i18nString}}</h3>
+                 <p class="desc" ng-bind-html="'universalBot_desc_universal'| i18nString:({link:universalLink})"></p>
+                 <ul class="steps">
+                     <li>Train the Universal Bot to identify the linked bots by providing Training Utterances or Invocation Names. <b>The Universal Bot will route the user utterances only to the identified linked bots.</b></li>
+                     <li>
+                         Mark relevant linked bots as Fallback Bots. <b>The utterances are routed to the Fallback bots when no other linked bots are qualified from the training provided.</b> A maximum of five linked bots can be marked as Fallback bots. 
+                     </li>
+                     <li>
+                         Review the linked bot identification flow from the Utterance Testing module.
+                     </li>
+                 </ul>
+                <div class="text-center" ng-show="upgradeUniProgress">
+                    <button class="btn btn-primary marginRight15" ng-click="upgradeUni()">{{upgradeUniProgress === 'pending'?( 'upgrading' | i18nString ) : ('upgrade' | i18nString ) }}<span class="loaderIcon" ng-show="upgradeUniProgress === 'pending'" ng-class="{'paddingLeft10':upgradeUniProgress}"><i class="fa fa-spinner fa-spin" ng-show="upgradeUniProgress === 'pending'"></i></span></button>
+                    <button class="btn btn-default btnclose" ng-click="closeUpgradeUniModal()">{{'close'| i18nString}}</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<plan-usage cb='planSelectionCb' id="managePlanSelectionSlider" ng-if="planSelectionCb.plansSlider"></plan-usage>

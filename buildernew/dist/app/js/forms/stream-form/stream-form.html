@@ -1,0 +1,546 @@
+<status-loader></status-loader>
+<div ng-show="loadingStreamForm && !dropdownView" class="summaryLoader">
+    Loading..
+</div>
+<div ng-if="dropdownView" class="createModalBody dropdownContainer">
+  <section class="widget">
+    <div class="scrollContainer">
+      <form name="streamForm" class="wf-form" novalidate>
+        <!-- Bot Name div -->
+        <div class="col-xs-12 form-group noPadding" ng-if="streamForm" ng-init="getStreams(streamForm)">
+          <div class="col-xs-12 noPadding">
+            <label class="required-field"> {{(views.product === 'PA')?'App name':('name' | i18nString)}} <i  tooltip-placement="right" tooltip="{{'botNameHint'| i18nString}}" class="btx-help opacity5 marginLeft5"></i></label>
+          </div>
+          <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'"> {{streamObject.name}} </div>
+          <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+            <input type="text" ng-model="streamObject.name" id= "arabicInput" name="name" ng-model-options="{ allowInvalid: true}" ng-disabled="streamObject.isInMarket" ng-focus="showBotNameHint = true" ng-blur="hideNote()" class="form-control alert-input" ng-minlength="1" maxlength="50" required ng-pattern="validateBotName" placeholder="{{(views && (views.product === 'PA'))?'give_your_app_a_name':'give_your_bot_a_name'| i18nString}}" ng-disabled="streamObject.isInMarket" autocomplete="off" ng-keyup="$event.keyCode == 13 ||$event.keyCode ==8 || onInputKeyupBotName($event)">
+            <div  ng-show="streamForm.name.$dirty">
+              <div error-alert  ng-show="streamForm.name.$error.required" class="text-danger form-error-text"> {{'Generalform_name_error'| i18nString}} </div>
+              <div error-alert ng-show="streamForm.name.$error.minlength" class="text-danger form-error-text">{{'Generalform_name_invalid'| i18nString}} </div>
+              <div error-alert ng-show="streamForm.name.$error.pattern" class="text-danger form-error-text"> {{'Generalform_name_pattern'| i18nString}}</div>
+              <div class="charactersLength" ng-show="streamObject.name.length > 0">{{(50 - streamObject.name.length) + charRemaining }}</div>
+            </div>
+            <div error-alert ng-show="duplicateStreamName" class="text-danger form-error-text"> {{'duplicateStreamName_error'| i18nString}} </div>
+          </div>
+        </div>
+        <!-- Bot Name div ends -->
+
+        <!-- Icon Div -->
+
+        <div class="col-xs-12 noPadding">
+          <label class="required-field padding24" > {{(views.product === 'PA')?"App Icon": "Icon"}}</label>
+        </div>
+        
+        <div class="iconupLoadDiv col-xs-12 noPadding form-group">
+          <div class="freeIcons">
+            <div class="imgDiv defaultBotIconsSmall" ng-repeat="boticon in defaultBotIconsSmall" ng-click="selectNewDefaultBotIcon(boticon,true)" ng-class="{'selected':selectedIcon.id=== boticon.id}">
+             <img class="avatar"  ng-src="{{boticon.path}}"/>
+             <i class="btx-ok"></i>
+            </div>
+            <div class="iconUploadDD" >  
+              <div class="dropdown">
+                <div type="button" data-toggle="dropdown">
+                  <div class="addNewIcon" ng-if="!customStreamData.uploadedIcon">
+                    <span  class="icon-btx-add"><i class="btx-add"></i></span>
+                    <span class="addText">Add</span>
+                  </div>
+                  <div class="upLoadedIcon"  ng-if="customStreamData.uploadedIcon" ng-class="{'selected':selectedIcon.id=== 'custom'}">
+                    <img  ng-click="$event.stopPropagation();confirmUploadOfNewIcon();"class="avatar"  ng-src="{{customStreamData.uploadedIcon}}"/>
+                    <span class="editIcon"><i class="btx-pencil"></i></span>
+                  </div>
+                </div>
+                <div class="dropdown-menu iconMenu" ng-click="$event.stopPropagation()">
+                  <i class="btx-close" ng-click="closeDropdown()"></i>
+                <div class="customIcons">
+                  <div ng-if="customStreamData.iconUploading" class="textCenter">
+                    <p class="progressUpload">Uploading Image</p>
+                      <i class="btx-spinner"></i>
+                    <!-- <div class="import-progress-bar">
+                      <div class="inside-progress-bar" ng-style="{width : (10 + '%') }"></div>
+                    </div> -->
+                  </div>
+                  <div class="hintDiv" ng-if="!customStreamData.uploadedIcon && !customStreamData.iconUploading"> 
+                    <div class="icon">
+                        <i class="bulbIconLayer btx-bulb"></i>
+                    </div> 
+                    <div class="description">
+                       <div><strong>Note</strong></div>
+                       <ul>
+                         <li>Image should be in PNG format only </li>
+                         <li>File upload is limited to 80kb.</li>
+                         <li class="noPadding">Images should not exceed 40x40 pixels.</li>
+                       </ul>
+                    </div> 
+                  </div>
+                <div class="uploadButtonDiv"  ng-if="!customStreamData.iconUploading && !customStreamData.uploadedIcon">
+                  <input class="form-control uploadInput" type="file" file-model="customStreamData.iconFile" id="customStreamData" name="iconFile" required ng-disabled="customStreamData.iconUploading || customStreamData.icon.fileId " on-file-change="loadStreamIcon"/>
+                  <button class="uploadBTN">Upload Image</button>
+                </div>
+                <div class="iconUploadinput" ng-if="!customStreamData.iconUploading && customStreamData.uploadedIcon">
+                  <div class="uploadedImage">
+                    <img class="avatar"  ng-src="{{customStreamData.uploadedIcon}}"/>
+                  </div>
+                  <div class="resetIcon" ng-click="resetIconUpload()"><span><i class="btx-reset-icon" ></i> Reset</span></div>
+                </div>
+                </div>
+                </div>
+            </div>
+            </div>
+         </div>
+        </div>
+
+        <!-- Icon Div ends-->
+        <div ng-if="botType === 'importbot'" class="exportDir">
+          <bt-import-bot callback="userImportCallback" import-type="views.product" import-from="'newBotImport'" enter-prise="streamObject.purposeisRequired"></bt-import-bot>
+        </div>
+        <!-- language div -->
+        <div ng-show="botType!=='importbot'" ng-if="views.product !== 'PA'"><language-selector language="language" update-language="updateLanguage"></language-selector></div>
+         <!-- language div ends-->
+         <div class="modalFooter">
+          <button ng-if="botType==='importbot' && (views.product !== 'PA')" class="btn" ng-class='{"pendingUploads":!userImportCallback.isFormValid()}' ng-disabled="!isImportValid()" ng-click="userImportCallback.importNewBot()">{{'import'| i18nString}}</button>
+          <button ng-if="botType==='importbot' && (views.product === 'PA')" class="btn" ng-class='{"pendingUploads":!userImportCallback.isFormValid()}' ng-disabled="!isImportValid()" ng-click="importNewProcessApp()">{{'import'| i18nString}}</button>
+          <button  ng-if="botType!=='importbot'" class="btn" ng-disabled="!isFormValid()" ng-click="createStream(isFormValid(), streamForm, $event)">{{(isWorkProgress)?'creating':'create_label' | i18nString}}</button>
+          <button  class="btn closeCancel" ng-click="onCancel()" >{{'cancel'| i18nString}}</button>
+         </div>
+      </form>
+    </div>
+  </section>
+</div>
+<div ng-if="!dropdownView">
+  <div class="modalHeader">
+    <h4 class="modal-title"><i aria-hidden="true" class="btx-close" ng-click="onCancel()"></i>{{botType==='importbot' ? importBot : createNewBot }}</h4>
+ </div>
+ 
+ 
+ <div class="modalBody createModalBody" >
+   <section class="widget">
+     <div class="scrollContainer" perfect-scroll dynamic-height dynaoffset="(botType==='importbot' || true)?-120:-290" height-property="height">
+ 
+       <form name="streamForm" class="wf-form" novalidate>
+         <fieldset class="row"  ng-init="getStreams(streamForm)">
+           <div ng-if="streamForm">
+               <div class="col-xs-12 form-group noPadding">
+                 <!-- Dropdown for bot Image  -->
+             
+                 <div class="col-xs-12 noPadding">
+                   <label class="required-field"> {{'botName'| i18nString}} <i  tooltip-placement="right" tooltip="{{'botNameHint'| i18nString}}" class="btx-help opacity5 marginLeft5"></i></label>
+                 </div>
+                 <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'"> {{streamObject.name}} </div>
+                 <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                   <input type="text" ng-model="streamObject.name" id= "arabicInput" name="name" ng-model-options="{ allowInvalid: true}" ng-disabled="streamObject.isInMarket" ng-focus="showBotNameHint = true" ng-blur="hideNote()" class="form-control alert-input" ng-minlength="1" maxlength="50" required ng-pattern="validateBotName" placeholder="{{'give_your_bot_a_name'| i18nString}}" ng-disabled="streamObject.isInMarket" autocomplete="off" ng-keyup="$event.keyCode == 13 ||$event.keyCode ==8 || onInputKeyupBotName($event)">
+                   <div  ng-show="streamForm.name.$dirty">
+                     <div error-alert  ng-show="streamForm.name.$error.required" class="text-danger form-error-text"> {{'Generalform_name_error'| i18nString}} </div>
+                     <div error-alert ng-show="streamForm.name.$error.minlength" class="text-danger form-error-text">{{'Generalform_name_invalid'| i18nString}} </div>
+                     <div error-alert ng-show="streamForm.name.$error.pattern" class="text-danger form-error-text"> {{'Generalform_name_pattern'| i18nString}}</div>
+                     <div class="charactersLength" ng-show="streamObject.name.length > 0">{{(50 - streamObject.name.length) + charRemaining }}</div>
+                   </div>
+                   <div error-alert ng-show="duplicateStreamName" class="text-danger form-error-text"> {{'duplicateStreamName_error'| i18nString}} </div>
+                   <!-- <div class="botNameHintDiv"> 
+                     <span class="task-icon"><i class="btx-bulb"></i></span> <span class="fs13 botNameHint">{{'botNameHint'| i18nString}}</span> 
+                   </div> -->
+                   <!-- <div class="hintDiv" ng-show="showBotNameHint" >
+                     <span class="icon"><i class="layer btx-bulb"></i></span>
+                     <span class="description" >{{'botNameHint'| i18nString}}</span>
+                  </div> -->
+                 </div>
+     
+               </div>
+               
+               <div class="col-xs-12 noPadding ">
+                 <label class="required-field" > {{'icon'| i18nString}} </label>
+               </div>
+               <div class="iconupLoadDiv col-xs-12 noPadding form-group">
+                 <div class="freeIcons">
+                   <div class="imgDiv" ng-repeat="boticon in defaultBotIcons" ng-click="selectNewDefaultBotIcon(boticon,true)" ng-class="{'selected':selectedIcon.id=== boticon.id}">
+                    <img class="avatar"  ng-src="{{boticon.path}}"/>
+                   </div>
+                   <div class="iconUploadDD" >  
+                     <div class="dropdown">
+                       <div type="button" data-toggle="dropdown">
+                         <div class="addNewIcon" ng-if="!customStreamData.uploadedIcon">
+                           <span  class="icon-btx-add"><i class="btx-add"></i></span>
+                         </div>
+                         <div class="upLoadedIcon"  ng-if="customStreamData.uploadedIcon" ng-class="{'selected':selectedIcon.id=== 'custom'}">
+                           <img  ng-click="$event.stopPropagation();confirmUploadOfNewIcon(true);"class="avatar"  ng-src="{{customStreamData.uploadedIcon}}"/>
+                           <span class="editIcon"><i class="btx-pencil"></i></span>
+                         </div>
+                       </div>
+                       <div class="dropdown-menu iconMenu" ng-click="$event.stopPropagation()">
+                         <i class="btx-close" ng-click="closeDropdown()"></i>
+                       <div class="customIcons">
+                         <div ng-if="customStreamData.iconUploading" class="textCenter">
+                           <p class="progressUpload">Uploading Image</p>
+                             <i class="btx-spinner"></i>
+                           <!-- <div class="import-progress-bar">
+                             <div class="inside-progress-bar" ng-style="{width : (10 + '%') }"></div>
+                           </div> -->
+                         </div>
+                         <div class="hintDiv" ng-if="!customStreamData.uploadedIcon && !customStreamData.iconUploading"> 
+                           <div class="icon">
+                               <i class="bulbIconLayer btx-bulb"></i>
+                           </div> 
+                           <div class="description">
+                              <div><strong>Note</strong></div>
+                              <ul>
+                                <li>Image should be in PNG format only </li>
+                                <li>File upload is limited to 80kb.</li>
+                                <li class="noPadding">Images should not exceed 40x40 pixels.</li>
+                              </ul>
+                           </div> 
+                         </div>
+                       <div class="uploadButtonDiv"  ng-if="!customStreamData.iconUploading && !customStreamData.uploadedIcon">
+                         <input class="form-control uploadInput" type="file" file-model="customStreamData.iconFile" id="customStreamData" name="iconFile" required ng-disabled="customStreamData.iconUploading || customStreamData.icon.fileId " on-file-change="loadStreamIcon"/>
+                         <button class="uploadBTN">Upload Image</button>
+                       </div>
+                       <div class="iconUploadinput" ng-if="!customStreamData.iconUploading && customStreamData.uploadedIcon">
+                         <div class="uploadedImage">
+                           <img class="avatar"  ng-src="{{customStreamData.uploadedIcon}}"/>
+                         </div>
+                         <div class="resetIcon" ng-click="resetIconUpload()"><span><i class="btx-reset-icon" ></i> Reset</span></div>
+                       </div>
+                       </div>
+                       </div>
+                   </div>
+                   </div>
+                </div>
+               </div>
+               <div ng-hide="true" ng-if="streamObject.purpose === 'employee'" class="col-xs-12 form-group noPadding" ng-if="streamObject.profileRequired == 'true'">
+               <div class="col-xs-12 noPadding">
+                 <label class="required-field"  tooltip-placement="right" tooltip="{{'bot_contact_details'| i18nString}} ">{{'send_contact'| i18nString}}</label>
+               </div>
+               <div class="col-xs-12 radioDiv noPadding" ng-init="streamObject.sendVcf = streamObject.sendVcf || 'false'">
+                 <div>
+                   <label  for="streamvcfYes">
+                     <input type="radio" ng-model="streamObject.sendVcf" value="true"  name="sendVcf" id="streamvcfYes" required/>
+                     <span class="opt-title">{{'introduce_msg'| i18nString}}</span> </label>
+                 </div>
+                 <div>
+                   <label  for="streamvcfNo">
+                     <input type="radio" ng-model="streamObject.sendVcf" value="false" name="sendVcf" id="streamvcfNo" required/>
+                     <span class="opt-title">{{'send_no_contact'| i18nString}}</span> </label>
+                 </div>
+                 <div ng-show="streamForm.sendVcf.$dirty">
+                   <div error-alert ng-show="streamForm.sendVcf.$error.required" class="text-danger form-error-text"> {{'send_vcf_req'| i18nString}}  </div>
+                 </div>
+               </div>
+               </div>
+               <sdk-subscriptions ng-if="false" sdk-conf-on-modal="sdkConfOnModal" sdk-conf="sdkConf" callback="sdkCallback" stream-id = "streamId" new-stream-data="streamObject"></sdk-subscriptions>
+               <div class="col-xs-12 borderTopBottom ng-hide advancedoptdivStream" id="advancedoptdivStream"><span class="col-xs-12 noPadding" ng-click="showAdvancedOptions()">{{'advanced_settings'| i18nString}}<i class="fa  fa-chevron-right  pull-right fontSize13 iconArrow"></i>
+                 <p>{{'additional_Settings_for_bot'| i18nString}}</p>
+                 </span>
+                 <div ng-show="showadvancedoptions" class="showadvancedoptions ng-hide">
+                   <div class="col-xs-12 form-group  noPadding">
+                     <div class="col-xs-12  noPadding">
+                       <label  tooltip-placement="right" tooltip="{{'bot_information_tooltip'| i18nString}}"> {{'Tagline'| i18nString}} </label>
+                     </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'"> {{streamObject.tagline}} </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'">
+                       <input type="text" ng-model="streamObject.tagline" class="form-control" name="tagline" ng-minlength="1" maxlength="200" />
+                       <div ng-show="streamForm.tagline.$dirty">
+                         <div error-alert ng-show="streamForm.tagline.$error.required" class="text-danger form-error-text">{{'bot_tagline_req'| i18nString}} </div>
+                         <div class="pull-right" ng-if="streamObject.tagline.length > 0">{{(200 - streamObject.tagline.length) + charRemaining }}</div>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12 form-group  noPadding" ng-hide="false">
+                     <slash-commands-form parent-form="streamForm" ctx="commandCtx" of="stream" command="streamObject.command" class="advSettingsSlash"></slash-commands-form>
+                   </div>
+                   <div class="col-xs-12 form-group  noPadding">
+                     <div class="col-xs-12  noPadding labelling">
+                       <label tooltip-placement="right"> {{'welcome_msg'| i18nString}} </label>
+                                                
+                     </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'"> {{streamObject.userTaskListMsg}} </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'">
+                       <textarea rows="3" ng-model="streamObject.userTaskListMsg" class="form-control" name="userTaskListMsg" ng-minlength="1" maxlength="2048"></textarea>
+                       <div ng-show="streamForm.userTaskListMsg.$dirty">
+                         <div error-alert ng-show="streamForm.userTaskListMsg.$error.required" class="text-danger form-error-text">{{'welcome_message_req'| i18nString}} </div>
+                         <div class="pull-right" ng-if="streamObject.userTaskListMsg.length > 0">{{(2048 - streamObject.userTaskListMsg.length) + charRemaining }}</div>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12  noPadding form-group">
+                     <div class="col-xs-12  noPadding">
+                       <label  tooltip-placement="right" tooltip="">{{'homepage_link'| i18nString}}</label>
+                     </div>
+                     <div class="col-xs-10" ng-show="displayMode === 'view'"> {{streamObject.websiteUrl}} </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'"> 
+                       <!-- type="url" -->
+                       <input  class="form-control" url-validate type="url" name="websiteUrl" ng-model="streamObject.websiteUrl" id="url" placeholder="{{'enter_bots_website_url_placeholder'| i18nString}}">
+                       <div ng-show="streamForm.websiteUrl.$error.url">
+                         <div error-alert> <span>{{'please_provide_valid_url'| i18nString}}</span> </div>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12  noPadding form-group">
+                     <div class="col-xs-12  noPadding">
+                       <label  tooltip-placement="right" tooltip="{{'enter_youtube_link_tooltip'| i18nString}}">{{'bot_demo_link'| i18nString}} </label>
+                     </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'"> {{streamObject.demoYoutubeLink}} </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'">
+                       <input  class="form-control" type="text" name="demoYoutubeLink" ng-model="streamObject.demoYoutubeLink" ng-pattern="validateYoutubeURL"  placeholder="{{'enter_bot_demo_video_placeholdr'| i18nString}}">
+                       <div ng-show="streamForm.demoYoutubeLink.$dirty">
+                         <div error-alert ng-show="streamForm.demoYoutubeLink.$error.pattern" class="text-danger form-error-text">{{'please_enter_valid_youtube_url'| i18nString}} </div>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12  noPadding form-group">
+                     <div class="col-xs-12  noPadding">
+                       <label  tooltip-placement="right" tooltip="{{'enter_web_url_tooltip'| i18nString}}"> {{'link_to_help'| i18nString}}</label>
+                     </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'"> {{streamObject.botDocLink}} </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'"> 
+                       <!-- type="url" -->
+                       <input  class="form-control" url-validate type="url" name="botDocLink" ng-model="streamObject.botDocLink"  placeholder="{{'enter_support_documentation_link_placeholder'| i18nString}} ">
+                       <div ng-show="streamForm.botDocLink.$error.url">
+                         <div error-alert> <span>{{'please_provide_valid_url'| i18nString}}</span> </div>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12  noPadding form-group">
+                     <div class="col-xs-12  noPadding">
+                       <label  tooltip-placement="right" tooltip="This {{_constants_.label}} has subdomains (Tenancy links).">{{'subdomain_aka_tenancy_url'| i18nString}}</label>
+                     </div>
+                     <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'"> {{streamObject.hasTenant}} </div>
+                     <div class="col-xs-12  noPadding radioDiv">
+                       <div>
+                         <div>
+                           <label for="streamObject.hasTenant.no">
+                             <input ng-value='false' ng-checked="true" type="radio"  ng-model="streamObject.hasTenant" name="streamObject.hasTenant" id="streamObject.hasTenant.no" >
+                             <span class="opt-title">{{'tenancy_bot'| i18nString}}</span>
+                             </input>
+                           </label>
+                         </div>
+                         <div>
+                           <label for="streamObject.hasTenant.yes">
+                             <input ng-value='true'  type="radio"   ng-model="streamObject.hasTenant" name="streamObject.hasTenant" id="streamObject.hasTenant.yes">
+                             <span class="opt-title">{{'tenancy_auth'| i18nString}}</span>
+                             </input>
+                           </label>
+                         </div>
+                       
+ 
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12  noPadding form-group col-wrapper subFormgrayBG" ng-show="streamObject.hasTenant">
+                     <div class="col-xs-12  noPadding form-group col-wrapper">
+                       <label class="required-field" tooltip-placement="right" tooltip="{{'help_hint_tooltip'| i18nString}}"> {{'help_hint'| i18nString}}  </label>
+                       <input ng-show="displayMode !== 'view'" class="form-control" type="text" ng-model="streamObject.helpHint" placeholder="{{'provide_hint'| i18nString}}" ng-required="streamObject.hasTenant" id="tenantUrl" name="tenantUrl"/>
+                       <label ng-show="displayMode === 'view'" class="form-control">{{streamObject.helpHint}}</label>
+                       <div ng-show="streamForm.tenantUrl.$dirty">
+                         <div error-alert ng-show="streamForm.tenantUrl.$error.required" class="text-danger form-error-text"> {{'help_text'| i18nString}} </div>
+                       </div>
+                     </div>
+                     <div class="col-xs-12  noPadding form-group col-wrapper">
+                       <label class="required-field" tooltip-placement="right" tooltip="{{'url_tooltip'| i18nString}}"> {{'base_url'| i18nString}} </label>
+                       <input ng-show="displayMode !== 'view'" url-validate class="form-control" type="url" name="defaultUrl" ng-model="streamObject.defaultUrl" placeholder="https://{tenant}.yourorganization.com" ng-required="streamObject.hasTenant" id="tenantHelpText" class="tenentHelpText" />
+                       <label ng-show="displayMode === 'view'" class="form-control">{{streamObject.defaultUrl}}</label>
+                       <div ng-show="streamForm.defaultUrl.$dirty">
+                         <div ng-show="streamForm.defaultUrl.$error.url">
+                           <div error-alert> <span> {{'valid_url'| i18nString}} </span> </div>
+                         </div>
+                         <div error-alert ng-show="streamForm.defaultUrl.$error.required" class="text-danger form-error-text"> {{'tenant_url_req'| i18nString}} </div>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12 form-group noPadding">
+                     <div class="col-xs-12 labelling noPadding">
+                       <label tooltip-placement="right" tooltip="{{'search_keywords_will_help_tooltip'| i18nString}}">{{'search_keywords'| i18nString}}  </label>
+                     </div>
+                     <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'"> {{streamObject.keywords}} </div>
+                     <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                       <input type="text" class="form-control" ng-model="streamObject.keywords" id="keywords" placeholder="{{'enter_multiple_keywords_placeholder'| i18nString}}">
+                     </div>
+                   </div>
+                   <div class="col-xs-12 form-group noPadding" >
+                     <div class="col-xs-12 noPadding">
+                       <label  tooltip-placement="right" tooltip="{{'utterance_bot'| i18nString}}">{{'show_setup'| i18nString}}</label>
+                     </div>
+                     <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'"> {{streamObject.skipMakeEditLinks}} </div>
+                     <div class="col-xs-12 noPadding radioDiv" ng-init="streamObject.skipMakeEditLinks = streamObject.skipMakeEditLinks || false">
+                       <div>
+                         <div>
+                           <label for="streamObject.skipMakeEditLinks.yes">
+                             <input ng-value=false ng-checked="true" type="radio"  ng-model="streamObject.skipMakeEditLinks" name="streamObject.skipMakeEditLinks" id="streamObject.skipMakeEditLinks.yes" >
+                             <span class="opt-title">{{'show_utterance_user'| i18nString}}</span>
+                             </input>
+                           </label>
+                         </div>
+                         <div>
+                           <label for="streamObject.skipMakeEditLinks.no">
+                             <input ng-value=true  type="radio"   ng-model="streamObject.skipMakeEditLinks" name="streamObject.skipMakeEditLinks" id="streamObject.skipMakeEditLinks.no">
+                             <span class="opt-title">{{'no_task_perform'| i18nString}} </span>
+                             </input>
+                           </label>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12 form-group noPadding">
+                     <error-form inside-stream="errorInsideStream" error-for="stream" error="streamObject.errorCodes" class="introform"></error-form>
+                   </div>
+                 </div>
+               </div>
+               <div class="footer form-group noMargin ng-hide"  ng-if="displayMode !== 'view'">
+                 <div class="footerSub">
+                   <div class="form-ctrl-div pull-left">
+                     <button type="button" class="btn btn-default" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+                   </div>
+                   <div class="help-hint-link"> <a target="_blank" ng-show="editMode === 'new'"  ng-href="{{$root.helpLinks.NEW_BOT}}">{{'help_withpage_label'| i18nString}}</a> <a target="_blank" ng-show="editMode === 'edit'"  ng-href="{{$root.helpLinks.EDIT_BOT}}">{{'help_withpage_label'| i18nString}}</a> </div>
+                   <div class="pull-right form-ctrl-div">
+                     <button type="button" ng-click="onStreamFormCancel();" class="btn btn-default"> {{'cancel'| i18nString}} </button>
+                     <button type="button" ng-disabled="!streamForm.$dirty" ng-click="createStream(isFormValid(), streamForm, $event)"  class="btn btn-primary" ng-disabled="saveInProgress">
+                     <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress) ? savingBot : saveBot }}
+                     </button>
+                   </div>
+               </div>
+           </div>
+           </div>
+               <div ng-if="botType !== 'importbot'" class="col-xs-12 form-group noPadding noMargin">
+                   <div class="col-xs-12 labelling noPadding">
+                       <label class=""> {{'bot_type_label'| i18nString}} <i ng-src="{{helpIcon}}" ng-click="redirectToLinkStreamForm('BOTS_TYPES', $event)" class="cursor-pointer marginLeft5 btx-help opacity5"></i></label>
+                   </div>
+                   <div class="col-xs-12 form-group noPadding">
+                       <div class="field-type-dd">
+                           <div class="col-xs-12 uiselect2container langSelectContainer noPadding mb-10">                 
+                               <select ui-select2="selectConfig" ng-model="streamObject.type" class="form-btnDropdown width100percent">
+                                   <option ng-repeat="createType in botTypeObject" value="{{createType.type}}">{{createType.name}}</option>
+                               </select>
+                           </div>
+                       </div>
+ 
+                       <!-- <div class="hintDiv">
+                           <span class="icon"><i class="layer btx-bulb"></i></span>
+                           <span class="description" >{{'tream_form_enable_additional_languages'| i18nString}}</span>
+                       </div> -->
+                       <div class="hintDiv" ng-show="streamObject.type === 'solution'">
+                         <span class="icon">
+                           <i class="btx-bulb"></i>
+                         </span>
+                         <span class="description">{{'smart_bot_universal_desc' | i18nString}} 
+                           <a href="javascript:void(0)" class="link" ng-click="redirectToLinkStreamForm('SMART_UNIVERSAL_LINK',$event)">{{'know_more' | i18nString}}</a></span>
+                       </div>
+                   </div>
+               </div>
+               <div ng-show="botType!=='importbot'">
+                 <language-selector language="language" update-language="updateLanguage"></language-selector>
+                  <!-- ADVANCED OPTIONS -->
+                  <div class="advanced-options" ng-show="!dropdownView">
+               
+                    <div class="panel-group kr-sg-accordion advOptionsaccordion" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel">
+                          <div class="panel-heading" role="tab" id="multiLingualConfigurations">
+                            <h4 class="panel-title">
+                              <a role="button" class="accor-collapse collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAdvcdOpt" aria-expanded="true" aria-controls="collapseOne"><i class="btx-carrot-down"></i>Advanced Options</a>
+                            </h4>
+                          </div>
+                          <div id="collapseAdvcdOpt" class="panel-collapse collapse" role="tabpanel" aria-labelledby="multiLingualConfigurations">
+                            <div class="panel-body">
+                              <div class="kr-sg-dropdowns">
+                                <div class="label-text">{{'NLU Language'}} <i ng-click="redirectToLinkStreamForm('BOTS_TYPES', $event)" class="cursor-pointer btx-help opacity5"></i> </div>
+                                <div class="dropdown dropdown-open">
+                                  <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                                    {{getLanguageName(multiLingualConfigurations.nluLanguage)}}
+                                  </button>
+                                  <ul class="dropdown-menu content-menu">
+                                    <li class="search-box">
+                                      <input type="text" ng-model="searchNlp" placeholder="Search" class="seach-input"
+                                        ng-click="$event.stopPropagation();" autocomplete="off">
+                                    </li>
+                                    <div class="scroll-data position-relative" perfect-scroll dynamic-height dynaoffset="-415">
+                                      <ng-container ng-repeat="lang in nluSupportedLanguages | orderBy: 'name' | filter:searchNlp">
+                                        <li ng-click="setLanguageCode(lang.value)" title="{{lang.name}}">
+                                          <span class="name-channel" >{{lang.name}}</span>
+                                          <span class="check-icon pull-right" ng-if="multiLingualConfigurations.nluLanguage === lang.value"><i
+                                              class="btx-check"></i></span>
+                                        </li>
+                                      </ng-container>
+                                    </div>
+                                  </ul>
+                                </div>
+                              </div>
+                              <div class="hintDiv col-xs-12" ng-if="!(language.value === multiLingualConfigurations.nluLanguage)"> 
+                                <div class="icon">
+                                    <i class="bulbIconLayer btx-info"></i>
+                                </div> 
+                                <div class="description">
+                                  {{'nlulanguage_warning_desc' | i18nString}}
+                                </div> 
+                            </div>
+                      
+                              <div class="options" ng-class="{'disable-options':(language.value === multiLingualConfigurations.nluLanguage)}">
+                                <div class="option-check">
+                                  <div class="kr-sg-checkbox">
+                                      <input id="inputTranslation" ng-model="multiLingualConfigurations.inputTranslation" ng-disabled="((language.value === multiLingualConfigurations.nluLanguage) || (multiLingualConfigurations.nluLanguage === 'ge'))" class="checkbox-custom" type="checkbox">
+                                      <label for="inputTranslation" class="checkbox-custom-label">{{'input_translation_title' | i18nString}}</label>
+                                  </div> 
+                                  <div class="description">
+                                    {{'input_translation_desc'| i18nString}}
+                                  </div>
+                                </div>
+                                <div class="option-check">
+                                  <div class="kr-sg-checkbox">
+                                      <input id="responseTranslation" ng-model="multiLingualConfigurations.responseTranslation" ng-disabled="((language.value === multiLingualConfigurations.nluLanguage) && (multiLingualConfigurations.nluLanguage === 'ge'))" class="checkbox-custom" type="checkbox">
+                                      <label for="responseTranslation" class="checkbox-custom-label">{{'runtime_translation_title'| i18nString }}</label>
+                                  </div> 
+                                  <div class="description">
+                                    {{'runtime_translation_desc'| i18nString }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>                                                                     
+                    </div>
+                  </div>
+                  <!-- ADVANCED OPTIONS -->
+                </div>
+
+             <div ng-if="botType === 'importbot'">
+                 <bt-import-bot callback="userImportCallback" import-from="'newBotImport'" enter-prise="streamObject.purposeisRequired"></bt-import-bot>
+             </div>
+         </fieldset>
+       </form>
+     </div>
+  
+         <!-- <div class="storeInspiration" ng-if="botType !== 'importbot'">
+             <div class="storeDescriptor">
+               <label class="">{{'explore_store_title' | i18nString}}</label>
+               <p class="description">{{ 'explore_newstore_desc' | i18nString}}</p>
+               <button class="btn" ng-click="redirectToStore()">{{'explore_templates' | i18nString}}</button>
+             </div>           
+         </div> -->
+   </section>
+ </div>
+ <div class="modalFooter">
+   <button ng-if="botType!=='importbot'" class="btn" ng-disabled="!isFormValid()" ng-click="createStream(isFormValid(), streamForm, $event)">{{(isWorkProgress)?'creating':'create_label' | i18nString}}</button>
+   <button ng-if="botType==='importbot'" class="btn" ng-class='{"pendingUploads":!userImportCallback.isFormValid()}' ng-disabled="!isImportValid()" ng-click="userImportCallback.importNewBot()">{{'import'| i18nString}}</button>
+    <button  class="btn closeCancel" ng-click="onCancel()" >{{'cancel'| i18nString}}</button>
+ </div>
+ <!-- <div class="modalFooter position-relative">
+   <div class="btnsDiv">
+                   <button ng-show="botType!=='importbot'" class="btn" ng-disabled="!isFormValid()" ng-click="createStream(isFormValid(), streamForm, $event)">{{'create_label'| i18nString}}</button>
+ 
+                   <button ng-show="botType==='importbot'" class="btn" ng-disabled="!userImportCallback.isFormValid()" ng-click="userImportCallback.importNewBot()">{{'import'| i18nString}}</button>
+                   
+     </div>
+ </div> -->
+ </div>
+ <div class="modal fade kr-sg-modal" id="botDetailsConfirm" role="dialog" aria-hidden="false">
+                             <div class="modal-dialog">
+                               <div class="modal-content">
+                                 <div class="modal-header">                                 
+                                   <h4 class="modal-title">{{'bot_details' | i18nString}}</h4>
+                                 </div>
+                                 <div class="modal-body">
+                                   <p>{{'bot_details_desc' | i18nString}}</p>
+                                 </div>
+                                 <div class="modal-footer">                               
+                                   <button class="kr-sg-button-danger btn_md" ng-click="takeToStore()">{{'take_templates' | i18nString}}</button>
+                                   <button class="kr-sg-button-secondary btn_md" data-dismiss="modal">{{'stay_here' | i18nString}}</button>
+                                 </div>
+                               </div>
+                             </div>
+ </div>
+</div>

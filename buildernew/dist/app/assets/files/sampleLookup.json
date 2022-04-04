@@ -1,0 +1,12 @@
+[
+	{
+		"title":"United States",
+		"value":"US",
+		"synonyms":["united states", "USA","US","U.S.A","America"]
+ 	},
+	{
+		"title":"John F. Kennedy International Airport",
+		"value":"JFK",
+		"synonyms":["John F. Kennedy International Airport","New York International Airport","JFK"]
+	}
+]

@@ -1,0 +1,1809 @@
+<status-loader></status-loader>
+<div ng-if="conversationBuilder">
+    <bot-modal-slider id='ivrBotLevel'>
+        <div class="modalSliderContainer width700">
+            <div class="modalHeader channelModalHeader">
+                <h4 class="modal-title" id="gridSystemModalLabel">
+                        <i class="btx-close" ng-click="closeBotLevelIvr()"></i>
+                        {{'Ivr_settings_modal_title'| i18nString}}
+                    
+                </h4>
+             
+            </div>
+            <div class="modalBody alertFieldFormScroll" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+                <div class="col-xs-12" ng-class="{'isReadOnly':readonly || nodeInfo.nodeInfo.editLocked}">
+                    <bt-ivr-settings stream-id="{{streamId}}" callback="callback"></bt-ivr-settings>
+                </div>
+            </div>
+            <div class="modalFooter">
+                  <div class="col-xs-12 zIndex">
+                        <button ng-click="saveIvrStream()" ng-disabled="selectedStreamState === 'published'" class="btn btn-xs saveBtn">{{'save'| i18nString}}</button>
+                 </div>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <bt-standard-response class="manageResponseIndexDiv" ng-if="conversationBuilder && showStandardResponses" cb="conManageResponseCB"></bt-standard-response>
+    <node-level-voice-channels-all-sliders class="nodeLevelChannelSlider" ng-class="{'paddingLeftRight15':groupNode}" ng-if="isAllVoiceEnabled" cb="prop_panel_voice_channels_all_cb" nodeInfo="iframeNodeObj"></node-level-voice-channels-all-sliders>
+</div>
+<div class="form-container">
+    <div ng-if="loadDialog">
+        <auth-form ng-if="!conversationBuilder|| loadAuthForm" wf-type="serviceNode"
+                callback="authCB"
+                skip-save-confirm=true
+                >
+        </auth-form>
+        <bt-test-form ng-if="!conversationBuilder" class="serviceNodeTestChain" api="btTestFormApi" status="btTestStatus" ></bt-test-form>
+    </div>
+
+    <div class="pageFlow flowTaskForm expandedView" ng-class="{'isPropertyPanelOpen':isPropertyPanelOpened, 'isDebugConsolePanelOpen':isDebugConsolePanelOpened}">
+        <div class="topBar col-xs-12" ng-if="!(callBack && callBack.type === 'widgets') && !conversationBuilder">
+            <span class="pull-left closeBtn" id="dialogCloseAction" ng-hide="isFromKora" ng-click="exit()">
+                <!-- <span aria-hidden="true"><i class="fa fa-chevron-left"></i></span> -->
+                <i class="backArrowGray btx-carrot-left"></i>
+            </span>
+
+            <!-- <bt-modal-title ng-if="displayMode" taskname="{{flowtaskObj.name}}" fontclass="{{displayMode === 'edit' ? 'fa-pencil' : 'fa-eye'}}" bot="stream"></bt-modal-title> -->
+            <bt-modal-title ng-if="!displayMode" taskname="{{flowtaskObj.name}}" title="{{'create_dialog'| i18nString}}" bot="stream"></bt-modal-title>
+            <div ng-if="displayMode" class="btmodaltitlediv">
+              <span class="botinfosection">
+                <span class="botIcon"><img class="avatar" ng-src="{{stream.icon || genericImg}}"/></span>
+                <span class="bottasksection dialogTitle"><span class="botname" >{{stream.name}}</span>
+
+             
+                <div class="dropdown taskContainer">
+                  <div class="dropdown-toggle" type="button" data-toggle="dropdown"><span class="taskNameDropdown">{{flowtaskObj.name}}</span>
+                  <span class="caret"></span></div>
+                  <ul class="dropdown-menu" >
+                    <li ng-click="$event.preventDefault()" class="dropdownSearchInput" ng-show="dialogTaskList.length>5">
+                        <input type="text"  placeholder="{{'search_name'| i18nString}}" ng-click="$event.preventDefault()" ng-model="dialogNameFilter"><i class="fa fa-search"></i></li>
+                        <div class="tasksList" perfect-scroll>
+                            <li title="{{task.name}}" ng-repeat="task in dialogTasksByState | filter : { 'name' : dialogNameFilter } | orderBy : 'name'" value="{{task._id}}" ng-click="changeDialogTask(task._id)"><span class="taskName">{{task.name}}</span></li>
+                        </div>
+
+                  </ul>
+                </div>
+
+             <!--    <div class="taskContainer">
+                <select id="tasksSelect2" ui-select2="selectConfig"  ng-change="changeDialogTask(selectedDialogId)" ng-model="selectedDialogId" class="form-control btn-default noPadding btnDropdown width100percent" name="taskselect">
+                    <option title="{{task.name}}" ng-repeat="task in dialogTaskList track by task._id" value="{{task._id}}">{{task.name}}</option>
+                </select>
+                </div> -->
+                </span>
+              </span>
+                <span  ng-show="title" class="seperator">|</span><span class="modalActionSecton"><span class="modalAction" ng-show="title">{{title}}</span></span>
+            </div>
+            <div class="trainingBlock" ng-click="openManageTraining()">
+                <span class="training-relative">
+                    <img ng-src="{{trainingIcon}}">
+                </span>
+                <span class="training-relative">{{'nl_training'| i18nString}}</span>
+               
+            </div>
+            <notifier bridge="notifierBridge"></notifier>
+
+            <!--<p class="text-center title" ng-if="displayMode">{{displayMode === 'edit' ? 'Edit Dialog' : 'View Dialog'}} - {{flowtaskObj.name}}</p>
+            <p class="text-center title" ng-if="!displayMode">Create Dialog - {{flowtaskObj.name}}</p>-->
+
+            <button class="btn btn-primary pull-right btnClearTrace hide" ng-click="clearTracepath()" style="position: relative;top: -48px;right: 52px;">{{'clear_trace'| i18nString}}</button>
+                        
+            <div class="dropdown pull-right dialogMenu">
+                <a href="#" class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                    <!-- <i class="fa fa-ellipsis-v"></i>
+                    <img ng-src="{{ellipsisGray}}" class="ellipsisGray"> 
+                    <img ng-src="{{ellipsisWhite}}" class="ellipsisWhite">  -->
+                    <i class="btx-overflow"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="menuOption" ng-click="onmMenuOptionClicked($event)">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{_constants_.menuOptions.displayOpts}}</span>
+                                <!-- <i class="fa fa-caret-right "></i> -->
+                                <!-- <img ng-src="{{caretRightGray}}" class="moreOptions caretRightGray">
+                                <img ng-src="{{caretRightGreen}}" class="moreOptions caretRightGreen"> -->
+                                <i class="btx-carrot-right"></i>
+                            </div>
+                            <ul class="dropdown-menu pull-right">
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('showAll', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideType && displayOpts.hideNode && displayOpts.hideConn ? _constants_.menuOptions.resetNodeOpts : _constants_.menuOptions.hideNodeOpts}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideType', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideType ? _constants_.menuOptions.showNodeType : _constants_.menuOptions.hideNodeType}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideNode', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideNode ? _constants_.menuOptions.showNodeDetails : _constants_.menuOptions.hideNodeDetails}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideConn', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideConn ? _constants_.menuOptions.showConnDetails : _constants_.menuOptions.hideConnDetails}}</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menuOption" ng-click="onmMenuOptionClicked($event)">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{_constants_.menuOptions.zoomOpts}}</span>
+                                <!-- <i class="fa fa-caret-right moreOptions"></i> -->
+                                <!-- <img ng-src="{{caretRightGray}}" class="moreOptions caretRightGray"> -->
+                                <!-- <img ng-src="{{caretRightGreen}}" class="moreOptions caretRightGreen"> -->
+                                <i class="btx-carrot-right"></i>
+                            </div>
+                            <ul class="dropdown-menu pull-right">
+                                <li class="subMenuOptions" ng-click="zoomOptionClicked('fitToPage')">{{_constants_.menuOptions.fitToPage}}</li>
+                                <li class="subMenuOptions" ng-click="zoomOptionClicked('resetZoom')">{{_constants_.menuOptions.resetZoom}}</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" class="menuOption" ng-click="openDialogSettings()">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{'dialog_Settings'| i18nString}}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER || (stream.type === 'universalbot')" class="menuOption" ng-click="openDialogLinkedTask()">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{'manage_interruptions'| i18nString}}</span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- <li class="menuOption hasPadding" ng-if="displayMode !== 'view'" data-toggle="modal" ng-click="importModalSlider()" data-target="#flowtask_import">{{_constants_.menuOptions.import}}</li>
+
+                    <li class="menuOption hasPadding" ng-click="showExportDeprication()">{{_constants_.menuOptions.export}}</li> -->
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER || (stream.type === 'universalbot')" class="menuOption" ng-click="openAmendEntity()">
+                         <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{'manage_amend'| i18nString}}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" ng-if="allowNamespace" class="menuOption" ng-click="manageVarFlowTaskOpen()">
+                        <div class="dropdown">
+                           <div class="dropdown-toggle"  data-toggle="dropdown">
+                               <span class="menuName">{{'manage_var_namespace'| i18nString}}</span>
+                           </div>
+                       </div>
+                   </li>
+              
+                   <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" ng-if="migrationJourney && migrationJourney.showUpgrade && (stream.type !== 'universalbot')"  class="menuOption" ng-click="upgadeToNewDialog()">
+                    <div class="dropdown">
+                        <div class="dropdown-toggle betaUpgrade"  data-toggle="dropdown">
+                            <span class="menuName">{{'beta_upgrade'| i18nString}}</span>
+                            <!-- <div class="betaNew"><img src="{{brokenImageSmall}}"  ng-src="{{betaNew}}"></div> -->
+                        </div>
+                    </div>
+                   </li>
+
+                </ul>
+            </div>
+            <help-button  help-id="'dialogEditor'" class="pull-right"  tooltip-placement="bottom" tooltip="{{'help_main'| i18nString}}"></help-button>
+            <button class="btn btn-primary pull-right marginTop10" ng-show="isFromKora" ng-click="publishDialog()"><i ng-if="publishInProgress" class="fa fa-spinner fa-spin ng-scope"></i>{{publishInProgress?'Publishing':'Publish'}}</button>
+            <search-options class="pull-right" ng-if="objListSearch.length > 0" search-data="objListSearch" Search-callback="objSearchedInfo"></search-options>
+            <button class="kr-sg-buttonicon-primary btn_lg workbench-redirection" ng-show="fromWorkbench" ng-click="redirectWorkbench()"><img ng-src="{{arrowLeftWhiteIcon}}">{{'workbench_label'| i18nString}}</button>
+            <button class="modeBtn btn marginTop pull-right" ng-if="displayMode && displayMode !== 'edit'"><img ng-src="{{$root.viewTaskIcon}}" /><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+            <span class="dhelpLink" ng-if="false">
+                <a class="" target="_blank" ng-href="https://developer.kore.ai/docs/bots/bot-builder/defining-bot-tasks/dialog-tasks/"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+            </span>
+        </div>
+
+        <!--NEW HEADER-->
+        <div class="dialogHeader" ng-if="!(callBack && callBack.type === 'widgets') && conversationBuilder">
+            <!--HEADER LEFT-->
+            <div class="dialogHeaderLeft">
+                <span class="closeBtn" id="dialogCloseAction" ng-hide="isFromKora" ng-click="exit()">
+                    <!-- <span aria-hidden="true"><i class="fa fa-chevron-left"></i></span> -->
+                    <i class="backArrowGray btx-carrot-left"></i>
+                </span>
+    
+                <!-- <bt-modal-title ng-if="displayMode" taskname="{{flowtaskObj.name}}" fontclass="{{displayMode === 'edit' ? 'fa-pencil' : 'fa-eye'}}" bot="stream"></bt-modal-title> -->
+                <bt-modal-title ng-if="!displayMode" taskname="{{flowtaskObj.name}}" title="{{'create_dialog'| i18nString}}" bot="stream"></bt-modal-title>
+                <div ng-if="displayMode" class="btmodaltitlediv">
+                  <span class="botinfosection">
+                    <span class="botIcon"><img class="avatar" ng-src="{{stream.icon || genericImg}}"/></span>
+                    <span class="bottasksection dialogTitle"><span class="botname" >{{stream.name}}</span>
+    
+                 
+                    <div class="dropdown taskContainer">
+                      <div class="dropdown-toggle" type="button" data-toggle="dropdown"><span class="taskNameDropdown">{{flowtaskObj.name}}</span>
+                      <span class="caret"></span></div>
+                      <ul class="dropdown-menu" >
+                        <li ng-click="$event.preventDefault()" class="dropdownSearchInput" >
+                            <input ng-show="dialogTaskList.length>5" type="text"  placeholder="{{'search_name'| i18nString}}" ng-click="$event.preventDefault()" ng-model="dialogNameFilter"><i ng-show="dialogTaskList.length>5" class="fa fa-search"></i></li>
+                            <div class="tasksList" perfect-scroll>
+                                <li title="{{task.name}}" ng-repeat="task in dialogTasksByState | filter : { 'name' : dialogNameFilter } | orderBy : 'name'" value="{{task._id}}" ng-click="changeDialogTask(task._id)"><span class="taskName">{{task.name}}</span></li>
+                            </div>
+    
+                      </ul>
+                    </div>
+    
+                 <!--    <div class="taskContainer">
+                    <select id="tasksSelect2" ui-select2="selectConfig"  ng-change="changeDialogTask(selectedDialogId)" ng-model="selectedDialogId" class="form-control btn-default noPadding btnDropdown width100percent" name="taskselect">
+                        <option title="{{task.name}}" ng-repeat="task in dialogTaskList track by task._id" value="{{task._id}}">{{task.name}}</option>
+                    </select>
+                    </div> -->
+                    </span>
+                  </span>
+                    <span  ng-show="title" class="seperator">|</span><span class="modalActionSecton"><span class="modalAction" ng-show="title">{{title}}</span></span>
+                </div>
+                <!-- <div class="trainingBlock" ng-click="openManageTraining()">
+                    <span class="training-relative">
+                        <i class="btx-testing"></i>
+                    </span>
+                    <span class="training-relative">{{'nl_training'| i18nString}}</span>
+                   
+                </div> -->
+            </div>
+            <!--HEADER LEFT-->
+            <!--MIDDLE-->
+            <div class="dialogHeaderMiddle">
+                <div class="dialogTabs leftTabBorder" ng-click="switchConversationType('conversation')" ng-class="{'active':selectedDialogMode === 'conversation'}">
+                    <div class="stepsDot">1</div>
+                    <div class="detailsTab">
+                        <p class="titleTab" >{{'design'| i18nString}}</p>
+                        <p class="descTab">{{'design_conversation_flow'| i18nString}}</p>
+                    </div>
+                </div>
+                <div class="dialogTabs middleTabBorder" ng-click="switchConversationType('dialog')" ng-class="{'active':selectedDialogMode === 'dialog'}">
+                    <div class="stepsDot">2</div>
+                    <div class="detailsTab" >
+                        <p class="titleTab">{{'nav_tab_name_skills'| i18nString}}</p>
+                        <p class="descTab">{{'build_business_logic'| i18nString}}</p>
+                    </div>
+                </div>
+                <div class="dialogTabs rightTabBorder"  ng-click="switchConversationType('training')" ng-class="{'active':selectedDialogMode === 'training'}">
+                    <div class="stepsDot">3</div>
+                    <div class="detailsTab">
+                        <p class="titleTab">{{'train'| i18nString}}</p>
+                        <p class="descTab">{{'train_intent_entities'| i18nString}}</p>
+                    </div>
+                </div>
+            </div>
+            <!--MIDDLE-->
+             <!--HEADER RIGHT-->
+            <div class="dialogHeaderRight">
+
+                <!--<p class="text-center title" ng-if="displayMode">{{displayMode === 'edit' ? 'Edit Dialog' : 'View Dialog'}} - {{flowtaskObj.name}}</p>
+                <p class="text-center title" ng-if="!displayMode">Create Dialog - {{flowtaskObj.name}}</p>-->
+                <div ng-if="selectedDialogMode === 'conversation'"  class="dialogrightHeaderItems">
+                    <button class="modeBtn btn" ng-if="displayMode && displayMode !== 'edit'"><img ng-src="{{$root.viewTaskIcon}}" /><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+                    <button class="modeBtn clickAble btn" ng-click="openPreviewSlider()" tooltip-placement="bottom" tooltip="{{'preview_name'| i18nString}}"><i class="btx-password"></i></button>
+                    <div class="commentsDD " ng-click="openShareSlider()" tooltip-placement="bottom" tooltip="{{'share'| i18nString}}">
+                        <i class="btx-share"></i>
+                    </div>
+                    <div class="commentsDD " ng-click="refreshConversation()" tooltip-placement="bottom" tooltip="{{'refresh'| i18nString}}">
+                        <i class="btx-reset"></i>
+                    </div>
+                    <div class="commentsDD " ng-if="(flowtaskObj.state !== 'suspended') && (flowtaskObj.state !== 'published') && (accessRights === 'FULL')" ng-click="openConversationCommentsSlider()" tooltip-placement="bottom" tooltip="{{'comment_label'| i18nString}}">
+                        <i class="btx-comments"></i>
+                    </div>
+                    <help-button  help-id="'dialogEditor'" class="dialogEditor"  tooltip-placement="bottom" tooltip="{{'help_main'| i18nString}}"></help-button>
+                    <div class="dropdown  dialogMenu">
+                        <a href="#" class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li  ng-if="conversationBuilder" class="menuOption" ng-click="menuAction('dialogStoryEdit')">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{'edit'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li  ng-if="conversationBuilder" class="menuOption" ng-click="menuAction('dialogStoryClone')">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{'clone'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div ng-if="selectedDialogMode === 'dialog'" class="dialogrightHeaderItems">
+                    <button class="btn btn-primary btnClearTrace hide" ng-click="clearTracepath()" style="position: relative;top: -48px;right: 52px;">{{'clear_trace'| i18nString}}</button>
+                    <button class="btn btn-primary " ng-show="isFromKora" ng-click="publishDialog()"><i ng-if="publishInProgress" class="fa fa-spinner fa-spin ng-scope"></i>{{publishInProgress?'Publishing':'Publish'}}</button>
+                    <button class="kr-sg-buttonicon-primary btn_lg workbench-redirection" ng-show="fromWorkbench" ng-click="redirectWorkbench()"><img ng-src="{{arrowLeftWhiteIcon}}">{{'workbench_label'| i18nString}}</button>
+                    <button class="modeBtn btn" ng-if="displayMode && displayMode !== 'edit'"><img ng-src="{{$root.viewTaskIcon}}" /><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+                    <notifier bridge="notifierBridge" dialog-type="'new'"></notifier>
+                    <search-options class="search-options" ng-if="objListSearch.length > 0" search-data="objListSearch" Search-callback="objSearchedInfo"></search-options>
+                    <div class="commentsDD " ng-if="(flowtaskObj.state !== 'suspended') && (flowtaskObj.state !== 'published') && (accessRights === 'FULL')" ng-click="openCommentsSlider()" tooltip-placement="bottom" tooltip="{{'comment_label'| i18nString}}">
+                        <i class="btx-comments"></i>
+                    </div>
+                    <help-button  help-id="'dialogEditor'" class="dialogEditor" tooltip-placement="bottom" tooltip="{{'help_main'| i18nString}}"></help-button>
+                    <div class="dropdown  dialogMenu">
+                        <a href="#" class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="menuOption" ng-click="onmMenuOptionClicked($event)">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{_constants_.menuOptions.displayOpts}}</span>
+                                        <!-- <i class="fa fa-caret-right "></i> -->
+                                        <!-- <img ng-src="{{caretRightGray}}" class="moreOptions caretRightGray">
+                                        <img ng-src="{{caretRightGreen}}" class="moreOptions caretRightGreen"> -->
+                                        <i class="btx-carrot-right"></i>
+                                    </div>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li class="subMenuOptions" ng-click="displayOptionClicked('showAll', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideType && displayOpts.hideNode && displayOpts.hideConn ? _constants_.menuOptions.resetNodeOpts : _constants_.menuOptions.hideNodeOpts}}</li>
+                                        <li class="subMenuOptions" ng-click="displayOptionClicked('hideType', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideType ? _constants_.menuOptions.showNodeType : _constants_.menuOptions.hideNodeType}}</li>
+                                        <li class="subMenuOptions" ng-click="displayOptionClicked('hideNode', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideNode ? _constants_.menuOptions.showNodeDetails : _constants_.menuOptions.hideNodeDetails}}</li>
+                                        <li class="subMenuOptions" ng-click="displayOptionClicked('hideConn', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideConn ? _constants_.menuOptions.showConnDetails : _constants_.menuOptions.hideConnDetails}}</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="menuOption" ng-click="onmMenuOptionClicked($event)">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{_constants_.menuOptions.zoomOpts}}</span>
+                                        <!-- <i class="fa fa-caret-right moreOptions"></i> -->
+                                        <!-- <img ng-src="{{caretRightGray}}" class="moreOptions caretRightGray">
+                                        <img ng-src="{{caretRightGreen}}" class="moreOptions caretRightGreen"> -->
+                                        <i class="btx-carrot-right"></i>
+                                    </div>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li class="subMenuOptions" ng-click="zoomOptionClicked('fitToPage')">{{_constants_.menuOptions.fitToPage}}</li>
+                                        <li class="subMenuOptions" ng-click="zoomOptionClicked('resetZoom')">{{_constants_.menuOptions.resetZoom}}</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" ng-if="conversationBuilder" class="menuOption" ng-click="autoArrangeDialog()">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{'auto_arrange'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" class="menuOption" ng-click="openDialogSettings()">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{'dialog_Settings'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER  || (stream.type === 'universalbot')" class="menuOption" ng-click="openDialogLinkedTask()">
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{'manage_interruptions'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+        
+                            <!-- <li class="menuOption hasPadding" ng-if="displayMode !== 'view'" data-toggle="modal" ng-click="importModalSlider()" data-target="#flowtask_import">{{_constants_.menuOptions.import}}</li>
+        
+                            <li class="menuOption hasPadding" ng-click="showExportDeprication()">{{_constants_.menuOptions.export}}</li> -->
+                            <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER  || (stream.type === 'universalbot')" class="menuOption" ng-click="openAmendEntity()">
+                                 <div class="dropdown">
+                                    <div class="dropdown-toggle"  data-toggle="dropdown">
+                                        <span class="menuName">{{'manage_amend'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" ng-if="allowNamespace" class="menuOption" ng-click="manageVarFlowTaskOpen()">
+                                <div class="dropdown">
+                                   <div class="dropdown-toggle"  data-toggle="dropdown">
+                                       <span class="menuName">{{'manage_var_namespace'| i18nString}}</span>
+                                   </div>
+                               </div>
+                           </li>
+        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--HEADER RIGHT-->
+        </div>
+        <!--NEW HEADER-->
+
+        <div class="topBar col-xs-12" ng-if="callBack && callBack.type && callBack.type==='widgets'">
+            <span class="pull-left closeBtn" ng-click="exit()">
+                <span aria-hidden="true"><i class="btx-close"></i></span>
+            </span>
+            <bt-modal-title  taskname="{{flowtaskObj.name}}" bot="stream"></bt-modal-title>
+            <notifier bridge="notifierBridge" class="hide"></notifier>
+            <search-options class="pull-right" ng-if="objListSearch.length > 0" search-data="objListSearch" Search-callback="objSearchedInfo"></search-options>
+        </div>
+        <div class="subBar col-xs-12" ng-if="false" ng-class="{'hideSubBar': runBot.hideSubBar}">
+            <!--<search-options ng-if="objListSearch.length > 0" search-data="objListSearch" Search-callback="objSearchedInfo"></search-options>-->
+            <!--<div class="dropdown pull-right dialogMenu">
+                <a href="#" class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-ellipsis-v"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="menuOption" ng-click="onmMenuOptionClicked($event)">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{_constants_.menuOptions.displayOpts}}</span>
+                                <i class="fa fa-caret-right moreOptions"></i>
+                            </div>
+                            <ul class="dropdown-menu pull-right">
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('showAll', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideType && displayOpts.hideNode && displayOpts.hideConn ? _constants_.menuOptions.resetNodeOpts : _constants_.menuOptions.hideNodeOpts}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideType', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideType ? _constants_.menuOptions.showNodeType : _constants_.menuOptions.hideNodeType}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideNode', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideNode ? _constants_.menuOptions.showNodeDetails : _constants_.menuOptions.hideNodeDetails}}</li>
+                                <li class="subMenuOptions" ng-click="displayOptionClicked('hideConn', $event)"><i class="fa fa-refresh fa-spin displaySpinner"></i>{{displayOpts.hideConn ? _constants_.menuOptions.showConnDetails : _constants_.menuOptions.hideConnDetails}}</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menuOption" ng-click="onmMenuOptionClicked($event)">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{_constants_.menuOptions.zoomOpts}}</span>
+                                <i class="fa fa-caret-right moreOptions"></i>
+                            </div>
+                            <ul class="dropdown-menu pull-right">
+                                <li class="subMenuOptions" ng-click="zoomOptionClicked('fitToPage')">{{_constants_.menuOptions.fitToPage}}</li>
+                                <li class="subMenuOptions" ng-click="zoomOptionClicked('resetZoom')">{{_constants_.menuOptions.resetZoom}}</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" class="menuOption" ng-click="openDialogSettings()">
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">Dialog Settings</span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="menuOption hasPadding" ng-if="displayMode !== 'view'" data-toggle="modal" data-target="#flowtask_import">{{_constants_.menuOptions.import}}</li>
+                    <li class="menuOption hasPadding" ng-click="exportDialog()">{{_constants_.menuOptions.export}}</li>
+                </ul>
+            </div>-->
+            <div class="zoomInfo pull-right" ng-if='zoomScale !== 1' bt-tooltip='{{_constants_.zoomScaleTooltip}}'>
+                {{_constants_.getNewMessage(_constants_.zoomScaleInfo, ':zoomScale', zoomScalePer)}}
+            </div>
+        </div>
+        <div class="wf-form" ng-if="conversationBuilder" ng-class="{'upgradeBanner':showUpgradeBanner}">
+            <div class="dialigUpgradeBanner" ng-click="closeBanerHead()">
+                <img ng-src="{{upgradeIcon}}" class="upgradeIcon">{{'upgrade_newdialog_sucessfull' | i18nString}}
+            </div>
+            <iframe id="dialogIFrame" class="uiformsContainer iframeContainer" ng-class="{'paddingBottomFifty':(selectedDialogMode === 'dialog'), 'paddingBottom10':(selectedDialogMode === 'conversation')}"  frameBorder="0" ng-src="{{dialogUrl}}"></iframe>
+        </div>
+        <div name="flowTaskForm" class="wf-form" ng-submit="saveIntro(flowtaskForm.$valid, flowtaskForm)" novalidate>
+            <div class="runBotContainer">
+                <div class="runBotHeader">
+                    <span ng-show="showRunBotHeader">
+                        <span class="runBotHeading" ng-show="isConnecting">{{'connecting'| i18nString}}</span>
+                        <span class="runBotHeading"  ng-hide="isConnecting">{{selectedStreamName}}</span>
+                        <span class="onlineModeText" ng-if="showRunBotHeader">{{botConfiguration.enableTryoutMode?offline:online}}</span>
+                    </span>
+                    <i  ng-show="!showRunBotHeader" class="btx-carrot-left btnRefreshBotBack" ng-click="runBotConfiguration(false)"></i>
+                    <span ng-show="!showRunBotHeader">
+                        <span class="runBotHeading configuration">{{'run_config'| i18nString}}</span>
+                    </span>
+
+                    <div class="iconsActions">
+                            <span ng-click="toggleRecording($event)" class="conversationRecord">
+                                    <span class="whiteBorder" data-toggle="popover" data-placement="top"><span class="dot"></span></span>
+                                </span>
+                        <i class="bug-btn safaribug-btn btx-debug" ng-click="openDebugConsole()" title="Debug Log"></i>
+                        <i class="reload-btn safarireload-btn btx-return" ng-click="refreshBotData()" title="Reconnect"></i>
+                        <i class="btnConfiguration btx-settings" ng-click="runBotConfiguration(true)" title="Run Configuration"></i>
+                        <i class="safarireload-btn minimize-btn btx-minus" ng-click="minimizeRunBot()" title="Minimize"></i>
+
+                        <i class="close-btn btx-close" ng-click="closeRunBot()" title="Close"></i></div>
+                   
+                </div>
+                <div class="runBotBody"></div>
+                <div class="botConfigBody" ng-if="!showRunBotHeader" perfect-scroll dynamic-height dynaoffset="-50">
+                    <runbot-config bot-config="{{botConfiguration}}" update-config="dialogBotConfigDataUpdate"
+                                        class="runbotConfigDiv"
+                                        cb="runbotConfigCb"
+                                        ></runbot-config>
+                </div>
+            </div>
+            <fieldset class="dialogFieldset" ng-class="{'conversationBuilder':conversationBuilder}">
+                <div class="btn-default talkToBot btnRunBot pull-right" ng-show="runBot.show && !isChatWindowMinimized" ng-click="showBotScreen()" tooltip-placement="top" tooltip="{{'talk_to_bot'| i18nString}}">
+                    <!-- <div class="runbottitle" ng-if="!isChatWindowOpen()">Talk to bot <i class="fa  fa-caret-down downArrow"></i></div> -->
+                    <img class="chatIcon" ng-src="{{chatIcon}}">
+                </div>
+                <div class="dilogWindowChatIcon" ng-show="runBot.show && isChatWindowMinimized">
+                        <div class="minimizeTip">{{talk+stream.name}}</div>
+                        <div class="btn-default talkToBot btnRunBot pull-right"  ng-click="showBotScreen()">
+                                <img class="chatIcon" ng-src="{{chatIcon}}">
+                        </div>
+                </div>
+                <div class="headerBar">
+
+                    <div class="btn-default btnRunBot pull-right btn-sm" ng-show="runbot.show" ng-click="showBotScreen()">{{'run_bot'| i18nString}}</div>
+                    <div class="btn btn-primary btnClearTrace hide" ng-click="clearTracepath()">{{'clear_trace'| i18nString}}</div>
+                    <!--button type="button" ng-if="displayMode === 'edit'" class="btn btn-primary pull-right" ng-click="onFinishSetup('alert')">Finish</button-->
+                    <button class="btn btn-default pull-right btnExit btn-sm" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+                    <div class="btnExpandView">
+                        <i class="fa fa-expand expandFlowView" ng-click="expandFlowView()"></i>
+                        <i class="fa fa-compress collapseFlowView" ng-click="collapseFlowView()"></i>
+                    </div>
+                </div>
+                <div class="flowTaskDebugConsolePanel maximized" ng-show="isDebugConsolePanelOpened">
+                    <!-- <i class="fa fa-close closeDebugConsolePanel" ng-click="closeDebugConsolePanel()"></i> -->
+                    <img class="closeDebugConsolePanel" ng-src="{{assetsBase+'debugConsoleIcons/close.svg'}}"  ng-click="closeDebugConsolePanel()">
+                    <!-- debug console component component -->
+                    <debug-console-panel ng-if="isDebugConsolePanelOpened" debug-info="debugInfo" debug-raw="debugRaw" nl-trace-data="nlTraceData" debug-context="debugContext" is-resized="isDebugResized" class="flowTaskDebugConsolePanelDiv" from-dialog="true" call-back = 'debugLogCB'></debug-console-panel>
+                </div>
+                <div class="col-xs-12 form-group flowTaskBlock" ng-show="!conversationBuilder">                    
+                    <div class="flowTaskConnectionBlock" perfect-scroll ng-show="!conversationBuilder"><!--  'isFirstNode firstNodeColor': item.uId === firstNodeUId, -->
+                        <div class="connectionInfoPopover" ng-if="!conversationBuilder">
+                        
+                            <div class="dropdown pull-right addConnectionDropdown addConnectionDropdown-connection"  >
+                                <a href="#"  class="addConnectionBtn dropdown-toggle" data-toggle="dropdown" ng-style="{'border-color': tempConnection.color,'background-color': tempConnection.color}" ng-click="addInBetweenNode($event)">
+                                    <i title="Add node" class="fa fa-plus"></i>
+                                </a>
+                                    <ul ng-if="selectedConnection && selectedConnection.source"
+                                        ng-init="item=selectedConnection.source"
+                                        class="dropdown-menu commonEle"
+                                        data-id="item.uId" >
+                                    <li class="eleType" ng-hide="configurableElement.disbleAdd || configurableElement.type==='agentTransfer'" type="{{configurableElement.type}}" ng-repeat="configurableElement in configurableElements" ng-click="onNodeClicked($event, configurableElement.type,item)">
+                                        <div class="eleTypeDropdown dropdown">
+                                            <div class="eleTypeInfo dropdown-toggle"  data-toggle="dropdown">
+                                                <span class="eleName">{{configurableElement.shortDesc}}</span>
+                                                <i class="fa fa-angle-right  moreOptions"></i>
+                                            </div>
+                                            <ul ng-if="item.menuFocused && (selectedConfigurableElement === configurableElement.type)" class="dropdown-menu" data-id="item.uId">
+                                                <li class="nodeDescription dialogTask" style="cursor: pointer; padding: 10px 20px;" ng-if="configurableElement.type==='form' && !nodeObjListLoading && !formTasks.length && !fromSearch" >
+                                                    <span>{{'ui_forms_no_formnodes' | i18nString}}</span>
+                                                </li>
+                                                <li class="nodeDescription" style="cursor: pointer; padding: 10px 20px;" ng-if="configurableElement.type!=='form' && configurableElement.showCreate" ng-click="createEleForConn($event, configurableElement.type, item.uId, selectedConnection)">
+                                                    <span class="newNode">{{'new_configurable'| i18nString:({dyn:(configurableElement.name| lowercase)})}}</span>
+
+                                                    <!--    <i class="fa fa-question-circle" data-popover-trigger="mouseenter" popover-placement="bottom" popover-container="body" popover="{{configurableElement.description}}"></i> -->
+                                                    <!--  <i class="fa fa-plus-circle" ng-click="createEleForConn($event, configurableElement.type, item.uId, tempConnection.connId)"></i> -->
+
+                                                    <!-- <span ng-if="configurableElement.type === 'service'" class="newNode"> call</span> -->
+                                                    <i class="fa fa-question-circle" tooltip-placement="bottom" tooltip="{{configurableElement.description}}"></i>
+                                                    <span class="plusAdd">+</span>
+                                                    <span ng-if="saveNodeInProgress" class="node-create-loder ">
+                                                        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                                                    </span>
+                                                </li>
+                                                <li class="nodeDescription dialogTask" style="cursor: pointer; padding: 10px 20px;" ng-if="configurableElement.type!=='form' && !configurableElement.showCreate" >
+                                                    <!-- <span class="newNode">New {{configurableElement.name| lowercase}}</span> -->
+                                                    <!--    <i class="fa fa-question-circle" data-popover-trigger="mouseenter" popover-placement="bottom" popover-container="body" popover="{{configurableElement.description}}"></i> -->
+                                                    <!--  <i class="fa fa-plus-circle" ng-click="createEleForConn($event, configurableElement.type, item.uId, tempConnection.connId)"></i> -->
+                                                    <span>{{configurableElement.description}}</span>
+
+                                                </li>
+                                                <li ng-show="duplicateNodeObjList.length>5 || (configurableElement.type === 'form' && (duplicateNodeObjList.length + formTasks.length > 5  || formTasks.length>5))" class="entitySearch">
+                                                    <i class="fa fa-search searchIcon"></i>
+                                                    <div ng-if="(nodeObjList.length > 0) && (configurableElement.type === 'form')" class="dropdown formsDD">
+                                                        <img ng-src="{{formDropDown}}" class="dropdown-toggle" ng-click="formToggle();$event.preventDefault();$event.stopPropagation()" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                         
+                                                        <ul class="form-selection-rectangle formsDDMenu dropdown-menu" aria-labelledby="dropdownMenuButton">        
+                                                            <li class="list-head" >Select Type</li>
+                                                            <li ng-click="allForms()" id="all" class="list-style">All
+                                                                <img ng-if="showAllForms" class="form-tick" ng-src="{{formSelection}}" >
+                                                            </li>
+                                                            <li ng-click="uIFormsList()" id="uiform" class="list-style">
+                                                                <span class="entityName">{{'uiforms'| i18nString}}</span>
+                                                                <img ng-if="showUIForms" class="form-tick" ng-src="{{formSelection}}" >
+                                                            </li>
+                                                            <li ng-click="formNodesList()" id="formnode" class="list-style">
+                                                                <span class="entityName">{{'formsnodes'| i18nString}}</span>
+                                                                <img ng-if="showFormnode" class="form-tick" ng-src="{{formSelection}}" >
+                                                            </li>
+                                                        </ul>
+                                                        
+                                                    </div>
+                                                    <input type="text" ng-change="searchDialogs(configurableElement.type)"  ng-click="$event.preventDefault();$event.stopPropagation();" ng-keydown="disableEnter($event)" placeholder="{{'search_name'| i18nString}}" ng-model="search.name" />
+                                                </li>
+                                                <li ng-show="nodeObjList.length >0 || formTasks.length || noResults" class="contentContainer">
+                                                    <ul class="dropdown-menu1 exisiting-node-menu-item" perfect-scroll >
+                                                        <li class="nodesData li-header" ng-if="configurableElement.type==='form' && formTasks.length">
+                                                            <span ng-if="showAllForms" class="entityName">{{'uiforms'| i18nString}}</span>
+                                                        </li>
+                                                        <li class="nodesData" ng-if="noResults">No results found</li>
+                                                        <li title="{{nodeobj.name}}" ng-if="showUIFormsList" class="nodesData" ng-repeat="nodeobj in formTasks track by $index" ng-click="createEleForConn($event, configurableElement.type, item.uId, selectedConnection,nodeobj)" >
+                                                            <span class="entityName">{{nodeobj.name}}</span>
+                                                        </li>   
+                                                        <li class="nodesData li-header" ng-if="configurableElement.type==='form' && nodeObjList.length && showAllForms">
+                                                            <span class="entityName">{{'formsnodes'| i18nString}}</span>
+                                                        </li>
+                                                        <li title="{{nodeobj.name}}" ng-if="(showNodeOnUI(nodeobj) && nodeobj.type !== 'intent' && configurableElement.type !=='form') || (configurableElement.type==='form' && showFormNodesList)" class="nodesData" ng-repeat="nodeobj in nodeObjList track by $index" ng-click="createEleForConnDefault($event, configurableElement.type, item.uId, selectedConnection, nodeobj)">
+                                                            <span class="entityName">{{nodeobj.name}}</span>
+                                                            <span ng-if="nodeobj.type === 'entity'" class="nodeType">{{nodeobj.entityType| uppercase}}</span>
+                                                            <span ng-if="nodeobj.type === 'service'" class="nodeType">{{nodeobj.serviceType| uppercase}}</span>
+                                                        </li>
+                                                        <li title="{{nodeobj.name}}" class="nodesData" ng-repeat="nodeobj in nodeObjList track by $index" ng-if="showNodeOnUI(nodeobj) && nodeobj.type == 'intent'" ng-click="createEleForConnDefault($event, configurableElement.type, item.uId, selectedConnection, nodeobj)">
+                                                                <span class="entityName">{{nodeobj.intent || nodeobj.name}}</span>
+                                                        </li>                                                         
+                                                    </ul>
+                                                </li>
+                                                <li class="text-center" ng-hide="!nodeObjListLoading">
+                                                    <div>
+                                                        <span class="componentNodeCreator">
+                                                            <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                                                        </span>
+                                                        <!-- Loading {{configurableElement.name}} ... -->
+                                                    </div>
+                                                </li>
+                                                <!--  <li ng-if="configurableElement.showCreate"
+                                                     class="newNodeDescription"
+                                                     ng-click="createEleForConn($event, configurableElement.type, item.uId, tempConnection.connId)">
+                                                    New {{configurableElement.name| lowercase}}
+                                                     <span ng-if="configurableElement.type === 'service'"> call</span>
+                                                     <span ng-if="saveNodeInProgress" class="node-create-loder">
+                                                         <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                                                     </span>
+                                                 </li> -->
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="ui-widget-content draggableEle kr-node" ng-style="{{checkNodeColor(item.uId, item.type, item.flowTaskId)}}" ng-repeat="item in objList" ng-class="{'draggableHide':item.hide, 'nodeSelected': item.isSelected}" ng-if="!(groupNodeIntentsObj[item.uId]) && !conversationBuilder">
+                            <div class="warning-symbol tooltip" id="{{formsArray[item.componentId].formId}}" ng-If="formsArray[item.componentId]" > 
+                                <img class="warning-exclamation" ng-src="{{assetsBase+'icons/exclamationCircleWhite.svg'}}">  
+                                <div class="warning-dialog" >
+                            
+                                    <span class="warning-text">{{'dialog_warning_text'|i18nString}}
+                                    <br/><a ng-style="displayMode === 'view' && {'pointer-events':'none','opacity':'0.5'} " class="warning-link" data-toggle="modal" data-target="#regenerateModal" ng-click="regenerateDialog(item, formsArray[item.componentId])">{{'regenerate_link'|i18nString}}</a></span>
+                                
+                                    <div class="warning-arrow"></div>
+
+
+                                </div>
+                            </div>
+                            <ng-container ng-click="nodeClick($event,item.uId,item)">
+                                <div class="dragEleConn" data-id="{{item.uId}}" data-type="{{item.type}}">
+                                    <div class="nodeTypeName" ng-style="{{checkNodeTypeColor(item.type, item.flowTaskId)}}">
+                                        <span class="nodeTypeLbl">{{getNodeTypeName(item.type, item.flowTaskId)}}</span>
+                                        <i class="fa fa-caret-down nodeTypeLblArrow"></i>
+                                    </div>
+                                    <span class="configure" ng-click="onConfigure(item.uId)">
+                                        <i class="fa fa-gear"></i>
+                                    </span>
+                                    <span class="connectionPlug" ng-if="!(item.type==='agentTransfer')" ng-click="onConfigure(item.uId, 'connection')">
+                                        <i class="fa fa-plug"></i>
+                                    </span>
+                                    <span class="instancePropLink" ng-if="item.type==='entity' ||(item.type==='intent' && (item.flowTaskId && item.flowTaskId.length > 0)) " ng-click="onConfigure(item.uId, 'instanceProperties')">
+                                        <i class="fa fa-dot-circle-o"></i>
+                                    </span>
+                                    <span class="nodeMap" ng-click="tracePathClick(item.uId)">
+                                        <i class="fa fa-sitemap"></i>
+                                    </span>
+                                    <!-- remove this comment if hide dialog act node connections
+                                    <span class="addDummyConnection" ng-click="onAddNewDummyConnection(item.uId)" ng-if="displayMode !== 'view' && !(item.uId === firstNodeUId || item.type === 'dialogAct' || item.type === 'agentTransfer'|| (item.flowTaskId && item.flowTaskId.length > 0))">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </span> -->
+                                    <span class="addDummyConnection" ng-click="onAddNewDummyConnection(item.uId)" ng-if="displayMode !== 'view' && !(item.uId === firstNodeUId || item.type === 'dialogAct' || item.type === 'agentTransfer')">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </span>
+                                    <span class="objName" ng-bind-html="highlight(item.uId, item, searchText)"></span>
+                                    <div class="processName" ng-if="item.type == 'process'">
+                                        <span class="">{{getAppName(item)}}</span>
+                                    </div>
+                                    <span class="objDesc" ng-if="item.desc && item.desc.length > 0">{{item.desc}}</span>
+                                    <div class="objMessage" ng-if="getNodeMessages(item, true).length > 0">
+                                        <span class="type">{{item.entityType}}</span>
+                                        <span class="objMessageTxt">{{getNodeMessages(item, true)}}</span>
+                                        <i class="fa fa-caret-up objMessageArrow"></i>
+                                        <span class="objMessageFull">{{getNodeMessages(item, false)}}</span>
+                                    </div>
+                                    <div class="marginTop10">
+                                    <div class="connectionInfo" ng-if="item.type === 'entity' && item.nodeOptions.promptOptions === 'required' && item.nodeOptions.eventOptions.defaultMaxRetry.ref !== ''">
+                                        <span class="connCondition noPadding">{{getRetryMessage(item)}}</span>
+                                    </div>
+                                    <div class="connectionInfo" ng-class="{'isFirst': $index === 0}" ng-if="!displayOpts.hideConn || showCount(item)" ng-repeat="connect in item.connections">
+                                        <div class="colorBlock" ng-style="{'background-color': connect.color}">{{$index + 1}}</div>
+                                        <div class="connCondition" ng-class="{'isDummyConn': connect.targetId === ''}" title="{{getConnectionInfo($index, item, connect)}}">{{getConnectionInfo($index, item, connect)}}</div>
+                                        <div class="unconnected" ng-if="connect.targetId === ''">{{_constants_.flowtasks.unconnected}}</div>
+                                        <i class="fa fa-caret-up connTooltipArrow"></i>
+                                    </div>
+                                    </div>
+
+                                    <span class="remove" ng-click="onRemove(item.uId,item)"  ng-if="displayMode !== 'view'">
+                                        <i class="btx-delete-1 fa-trash"></i>
+                                    </span>
+                                </div>
+                                <div class="dummyConnections" ng-repeat="tempConnection in item.tempConnections" data-type="tempConnection.connId" ng-style="{top: tempConnection.top + 'px'}" ng-class="{'showBottom' : tempConnection.showBottom}" ng-if="tempConnection.targetId !== 'end' && displayMode !== 'view'" >
+                                    <div class="connectionLine" ng-style="{'color': tempConnection.color}"></div>
+                                    <div class="dropdown pull-right addConnectionDropdown">
+                                        <a href="#" class="addConnectionBtn dropdown-toggle" data-toggle="dropdown" ng-style="{'border-color': tempConnection.color,'background-color': tempConnection.color}" ng-click="moveEleToTop($event)">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                        <ul class="dropdown-menu commonEle" data-id="item.uId">
+                                            <li class="eleType" ng-hide="configurableElement.disbleAdd" type="{{configurableElement.type}}" ng-repeat="configurableElement in configurableElements" ng-click="onNodeClicked($event, configurableElement.type,item)">
+                                                <div class="eleTypeDropdown dropdown">
+                                                    <div class="eleTypeInfo dropdown-toggle"  data-toggle="dropdown">
+                                                        <span class="eleName">{{configurableElement.shortDesc}}</span>
+                                                        <i class="fa fa-angle-right  moreOptions"></i>
+                                                    </div>
+                                                    <ul ng-if="item.menuFocused && (selectedConfigurableElement === configurableElement.type)" class="dropdown-menu" data-id="item.uId">
+
+                                                        <li class="nodeDescription dialogTask" style="cursor: pointer; padding: 10px 20px;" ng-if="configurableElement.type==='form' && !nodeObjListLoading && !formTasks.length && !fromSearch" >
+                                                            <span>{{'ui_forms_no_formnodes' | i18nString}}</span>
+                                                        </li>
+                                                        <li class="nodeDescription" style="cursor: pointer; padding: 10px 20px;" ng-if="configurableElement.type!=='form' && configurableElement.showCreate" ng-click="createEleForConn($event, configurableElement.type, item.uId, tempConnection.connId)">
+                                                            <span class="newNode">{{'new_configurable'| i18nString:({dyn:(configurableElement.name| lowercase)})}}</span>
+                                                        <!--    <i class="fa fa-question-circle" data-popover-trigger="mouseenter" popover-placement="bottom" popover-container="body" popover="{{configurableElement.description}}"></i> -->
+                                                        <!--  <i class="fa fa-plus-circle" ng-click="createEleForConn($event, configurableElement.type, item.uId, tempConnection.connId)"></i> -->
+
+                                                            <!-- <span ng-if="configurableElement.type === 'service'" class="newNode"> call</span> -->
+                                                            <i class="fa fa-question-circle" tooltip-placement="bottom" tooltip="{{configurableElement.description}}"></i>
+                                                            <span class="plusAdd">+</span>
+                                                            <span ng-if="saveNodeInProgress" class="node-create-loder ">
+                                                                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                                                            </span>
+                                                        </li>
+                                                        <li class="nodeDescription dialogTask" style="cursor: pointer; padding: 10px 20px;" ng-if="!configurableElement.showCreate && (configurableElement.type!=='form')" >
+                                                            <!-- <span class="newNode">New {{configurableElement.name| lowercase}}</span> -->
+                                                        <!--    <i class="fa fa-question-circle" data-popover-trigger="mouseenter" popover-placement="bottom" popover-container="body" popover="{{configurableElement.description}}"></i> -->
+                                                        <!--  <i class="fa fa-plus-circle" ng-click="createEleForConn($event, configurableElement.type, item.uId, tempConnection.connId)"></i> -->
+                                                            <span>{{configurableElement.description}}</span>
+
+                                                        </li>
+                                                        <li ng-show="duplicateNodeObjList.length>5 || (configurableElement.type === 'form' && (duplicateNodeObjList.length + formTasks.length > 5  || formTasks.length>5))" class="entitySearch">
+                                                            <i class="fa fa-search searchIcon"></i>
+                                                            <div ng-if="(nodeObjList.length > 0) && (configurableElement.type === 'form')" class="dropdown formsDD">
+                                                                <img ng-src="{{formDropDown}}" class="dropdown-toggle" ng-click="formToggle();$event.preventDefault();$event.stopPropagation()" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                 
+                                                                <ul class="form-selection-rectangle formsDDMenu dropdown-menu" aria-labelledby="dropdownMenuButton">        
+                                                                    <li class="list-head" >Select Type</li>
+                                                                    <li ng-click="allForms()" id="all" class="list-style">All
+                                                                        <img ng-if="showAllForms" class="form-tick" ng-src="{{formSelection}}" >
+                                                                    </li>
+                                                                    <li ng-click="uIFormsList()" id="uiform" class="list-style">
+                                                                        <span class="entityName">{{'uiforms'| i18nString}}</span>
+                                                                        <img ng-if="showUIForms" class="form-tick" ng-src="{{formSelection}}" >
+                                                                    </li>
+                                                                    <li ng-click="formNodesList()" id="formnode" class="list-style">
+                                                                        <span class="entityName">{{'formsnodes'| i18nString}}</span>
+                                                                        <img ng-if="showFormnode" class="form-tick" ng-src="{{formSelection}}" >
+                                                                    </li>
+                                                                </ul>
+                                                                
+                                                            </div>
+                                                            <input type="text" ng-change="searchDialogs(configurableElement.type)"  ng-click="$event.preventDefault();$event.stopPropagation();" ng-keydown="disableEnter($event)" placeholder="{{'search_name'| i18nString}}" ng-model="search.name" />
+                                                        </li>
+                                                        <li ng-show="nodeObjList.length >0 || formTasks.length || noResults" class="contentContainer">
+                                                            <ul class="dropdown-menu1 exisiting-node-menu-item" perfect-scroll >
+                                                                <li class="nodesData li-header" ng-if="configurableElement.type==='form' && formTasks.length">
+                                                                    <!-- ng-class="{'form-below1': showAllForms && formToggleOpen, 'form-below2': !showAllForms && formToggleOpen }" -->
+                                                                    
+                                                                    <span ng-if="showAllForms" class="entityName">{{'uiforms'| i18nString}}</span>
+                                                                </li>
+                                                                <li class="nodesData" ng-if="noResults">No results found</li>
+                                                                <li title="{{nodeobj.name}}" ng-if="showUIFormsList" class="nodesData" ng-repeat="nodeobj in formTasks track by $index" ng-click="createEleForConn($event, configurableElement.type, item.uId, tempConnection.connId,nodeobj)" >
+                                                                    <span class="entityName">{{nodeobj.name}}</span>
+                                                                </li>   
+                                                                <li class="nodesData li-header" ng-if="configurableElement.type==='form' && nodeObjList.length && showAllForms">
+                                                                    <span class="entityName">{{'formsnodes'| i18nString}}</span>
+                                                                </li>
+                                                                <li title="{{nodeobj.name}}" ng-if="(showNodeOnUI(nodeobj) && nodeobj.type !== 'intent' && configurableElement.type !=='form') || (configurableElement.type==='form' && showFormNodesList)" class="nodesData" ng-repeat="nodeobj in nodeObjList track by $index" ng-click="createEleForConnDefault($event, configurableElement.type, item.uId, tempConnection.connId, nodeobj)">
+                                                                    <span class="entityName">{{nodeobj.name}}</span>
+                                                                    <span ng-if="nodeobj.type === 'entity'" class="nodeType">{{nodeobj.entityType| uppercase}}</span>
+                                                                    <span ng-if="nodeobj.type === 'service'" class="nodeType">{{nodeobj.serviceType| uppercase}}</span>
+                                                                </li>
+                                                                
+                                                                <li title="{{nodeobj.name}}" class="nodesData" ng-repeat="nodeobj in nodeObjList track by $index" ng-if="showNodeOnUI(nodeobj) && nodeobj.type == 'intent'" ng-click="createEleForConnDefault($event, configurableElement.type, item.uId, tempConnection.connId, nodeobj)">
+                                                                        <span class="entityName">{{nodeobj.intent || nodeobj.name}}</span>
+                                                                    </li>                                                         
+                                                            </ul>
+                                                        </li>
+                                                        <li class="text-center" ng-hide="!nodeObjListLoading">
+                                                            <div>
+                                                                <span class="componentNodeCreator">
+                                                                    <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                                                                </span>
+                                                                <!-- Loading {{configurableElement.name}} ... -->
+                                                            </div>
+                                                        </li>
+                                                    <!--  <li ng-if="configurableElement.showCreate"
+                                                            class="newNodeDescription"
+                                                            ng-click="createEleForConn($event, configurableElement.type, item.uId, tempConnection.connId)">
+                                                        New {{configurableElement.name| lowercase}}
+                                                            <span ng-if="configurableElement.type === 'service'"> call</span>
+                                                            <span ng-if="saveNodeInProgress" class="node-create-loder">
+                                                                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                                                            </span>
+                                                        </li> -->
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        
+                        <!-- Modal -->
+                        <div class="modal" style="background-color: transparent;" id="myModal" ng-if="!conversationBuilder">
+                            <div class="modal-dialog">
+                            
+                            <!-- Modal content-->
+                            <div class="modal-content myModal-content" >
+                                <div class="modal-header">
+                                
+                                <h4 class="modal-title" >{{'sure_msg'|i18nString}}</h4>
+                                </div>
+                                <div class="modal-body" >
+                                <p>{{'regeneration_dialog_warning'|i18nString }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn confirm" style="background: #ff001f !important;
+                                border: #ff001f !important;" ng-click="confirmRegenerateDialog()" >{{'confirm'|i18nString}}</button>
+                                <button type="button" class="btn closeMyModal" ng-click="closeModal()" >{{'close'|i18nString}}</button>
+                                </div>
+                            </div>
+                            
+                            </div>
+                        </div>
+                        <div class="groups-wrp groups-wrp-dummy" ng-if="!conversationBuilder">
+                            <div class="group" data-group-id="{{group._id}}" ng-repeat="group in groups">
+                                
+                            </div>
+                        </div>
+                        <div class="groups-wrp" ng-if="!conversationBuilder">
+                            <div class="group" data-group-id="{{group._id}}" ng-repeat="group in groups">
+                                <div class="group-name" ng-click="group.edit=true" ng-if="!group.edit">
+                                    {{group.name}}
+                                </div>
+                               <div class="pencilIcondiv" ng-if="!group.edit" ng-click="group.edit=true;editGroupNodeName(group)">
+                                <img  ng-src="{{pencilIcon}}"class="pencilIcon"/>
+                               </div>
+                        
+                                <input class="editbox" autocomplete="off" type="text" ng-show="group.edit" id="groupedit{{group._id}}" ng-model="group.name" ng-keydown="$event.keyCode === 13 && $parent.saveGroup(group)" autofocus>
+                                <div class="save" ng-if="group.edit" ng-click="$parent.saveGroup(group)"><img ng-src="{{checkTickIcon}}" class="checkTickIcon" /></i></div>
+                                
+                                <div class="edit-controls">
+                                    <div class="cancel"  ng-click="$parent.selectGroupNode(group)">
+                                    <span class="configure"> <i class="fa fa-gear"></i></span></div> 
+                                    <div class="cancel" ng-class="{'pointer-none':(displayMode === 'view')}"   ng-click="$parent.deleteGroup(group)"><img title="Remove Group" ng-src="{{trashIcon}}" class="trashIcon"/></div>                                    
+                                </div>
+
+                                
+                            </div>
+                        </div>
+
+                        <div class="dummyBlockForScroll" ng-if="!conversationBuilder"></div>
+                    </div>
+                    <div class="flowTaskPropertyPanel" ng-show="(selectedNode  || selectedGroup) && !conversationBuilder">
+                        <div ng-if="!conversationBuilder">
+                        <img ng-if="!isExpanded" class="propertyPanelExpand" ng-src="{{assetsBase+'propertyPanel/maximize.svg'}}" ng-click="toggleSize($event)">
+                        <img ng-if="isExpanded" class="propertyPanelCompress " ng-src="{{assetsBase+'propertyPanel/small.svg'}}" ng-click="toggleSize($event)">
+                        <img ng-if="!isMinimized" class="propertyPanelMin" ng-src="{{assetsBase+'propertyPanel/minimize.svg'}}" ng-click="toggleMinMax($event)">
+                        <img ng-if="isMinimized" class="propertyPanelMax" ng-src="{{assetsBase+'debugConsoleIcons/maximize.svg'}}" ng-click="toggleMinMax($event)">
+                        <img  class="propertyPanelcloseCross" ng-src="{{assetsBase+'propertyPanel/close.svg'}}" ng-click="propertyCb.closePropertyPannel();closeGroupNode()">
+                        <!-- <i class="fa fa-close closePropertyPanel" ng-click="propertyCb.closePropertyPannel()"></i> -->
+                        <!-- property component -->
+                        <property-panel ng-if="selectedNode && !selectedGroup"  node-info="selectedNode" node-obj="{{objList}}"
+                                        class="flowTaskPropertyPanelDiv"
+                                        edit-prompt="editPrompt"
+                                        edit-error="editError"
+                                        dialog-data="dialogData"
+                                        cb="propertyCb"
+                                        auth-cb="authCB"
+                                        bt-test-form-api="btTestFormApi"
+                                        bt-test-status="btTestStatus"
+                                        noti-refs='notiRefs'
+                                        run-bot='runBot'
+                                        dialog-entities='dialogEntities'
+                                        flowtask-api="flowtaskApi"
+                                        call-by="flowtaskForm",
+                                        process-apps="processApps"
+                                        group-node-intnets='groupNodeIntentsObj',
+                                        current-intent="currentIntent"
+                        ></property-panel>
+                        <div ng-if='selectedGroup'  class="flowTaskPropertyPanelDiv">
+                            <div class="property-panel-cntnr">
+                                <div class="property-panel-header headerBg">
+                                    <div class="property-panel-name"><span class="nodeTitle">{{selectedGroup.name}}</span></div>
+                                     <!-- <i ng-if="nodeInfo.nodeInfo.editLocked" ng-click="unlockDailogComponent(nodeInfo)" class="fa fa-lock dailogLocked " ng-class="{'disableEdit':editComponentLockInView,'screenFreeze':stream.state==='setup','screenFreeze':flowtaskObj.state==='published'}"></i> -->
+                                    <div class="property-panel nodeTypeName  groupBg {{nodeInfo.dialogNodeInstance.type.toLowerCase()}}">{{'Group' | uppercase}}</div>
+                                </div>
+                                <div class="selectgroupContainer" perfect-scroll dynamic-height dynaoffset="-132" height-property="height">
+                                    <div class="componentHeader">
+                                        <p class="headerTip noPadding"> {{'group_node_desc' | i18nString}} <a ng-click="redirectToLink('GROUP_NODE_PROPERTIES', $event)" class="knowMore">{{'know_more' | i18nString}}</a></p>
+                                   </div>
+                                    <div class="container">
+                                        <div class="tab-pane in active">
+                                             <!-- <span ng-if="!(selectedGroup.subIntents.length)" ng-click="createGroupNodeIntent($event)">create intent</span> -->
+                                            <div class="subIntentGroup">
+                                                    
+                                                <div class="groupTitle">{{'intent_scope' | i18nString}} <span class="addLink" ng-if="(selectedGroup.subIntents.length)" ng-class="{'pointer-none':(displayMode === 'view')}"  ng-click="openGroupIntentModalSlider($event)">+ {{'add_new' | i18nString}}</span></div>
+                                                <div class="emptyStateGroup"  ng-if="!(selectedGroup.subIntents.length)">
+                                                    <img ng-src="{{emptyIllustration}}">
+                                                    <p class="noTitle">{{'no_group_intents' | i18nString}}</p>
+                                                    <p class="noDesc">{{'no_group_intents_desc' | i18nString :({groupName:selectedGroup.name})}}</p>
+                                                    <ul class="noBullets">
+                                                        <li>{{'no_group_intents_bullet1' | i18nString}}</li>
+                                                        <li>{{'no_group_intents_bullet2' | i18nString}}</li>
+                                                        <li>{{'no_group_intents_bullet3' | i18nString}}</li>
+                                                        <li>{{'no_group_intents_bullet4' | i18nString}}</li>
+                                                    </ul>
+                                                    <div class="noButtonDiv"><button class="btn" ng-disabled="displayMode === 'view'" ng-click="openGroupIntentModalSlider($event)">{{'add_intent' | i18nString}}</button></div>
+                                                </div>
+                                                <div class="intentScopeTable"  ng-if="(selectedGroup.subIntents.length)">
+                                                    <p class="scopeDesc">{{'no_group_intents_desc' | i18nString :({groupName:selectedGroup.name})}}</p>
+                                                    <div class="scopeTable">
+                                                        <div class="row scopeTableHeader">
+                                                            <div class="intentName col-xs-4 scopeHeaderTitle">{{'intent_name' | i18nString}}</div>
+                                                            <div class="transitionFlow col-xs-6 scopeHeaderTitle">{{'Transition_Flow' | i18nString}}</div>
+                                                            <div class="col-x-2"></div>
+                                                        </div>
+                                                        <div class="row scopeTableBody" ng-repeat="intent in selectedGroup.subIntents"  ng-click="openGroupIntentModalSlider($event,intent)">
+                                                            <div class="intentName col-xs-4 scopeBodtText">{{intent.intent}}</div>
+                                                            <div class="transitionFlow col-xs-6 scopeBodtText" title="{{getGroupIntentTransitionFlow(intent)}}">
+                                                                <span>{{getGroupIntentTransitionFlow(intent)}}</span>
+                                                            </div>
+                                                            <div class="col-xs-2 scopeTrash" ng-class="{'pointer-none':(displayMode === 'view')}" ng-click='deleteGroupNodeIntent(intent, $event)'><img ng-src="{{trashRed}}"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div ng-if="!conversationBuilder">
+                        <bt-linked-task ng-if="openLInkedTaskSliderCB.open" cb="openLInkedTaskSliderCB"></bt-linked-task>
+                    </div>
+                </div>
+                <!--div class="col-xs-12 footer">
+                    <div class="footerSub">
+                        <div class="help-hint-link">
+                            <a ng-hide="((wfType === 'alert') || ((wfType === 'action')))" href="" >Help with this page</a>
+                            <a ng-if="(wfType === 'alert')" class="inline-link" target="_blank"  ng-href="{{$root.helpLinks.ALERTS_TASK_BASIC}}">Help with this page</a>
+                            <a ng-if="(wfType === 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_TASK_BASIC}}">Help with this page</a>
+                        </div>
+                    </div>
+                </div-->
+            </fieldset>
+            <div ng-if="!conversationBuilder" class="zoomCtrl-plus" ng-class="{'zoomCtrl-num':+zoomScalePer.slice(0, zoomScalePer.length-1) > 100}" ng-click="increaseZoom()">{{+zoomScalePer.slice(0, zoomScalePer.length-1) > 100 ? zoomScalePer : '+'}}</div>
+            <div ng-if="!conversationBuilder" class="zoomCtrl-minus" ng-class="{'zoomCtrl-num':+zoomScalePer.slice(0, zoomScalePer.length-1) < 100}" ng-click="reduceZoom()">{{+zoomScalePer.slice(0, zoomScalePer.length-1) < 100 ? zoomScalePer : '-'}}</div>
+            <div ng-if="!conversationBuilder" class="zoomCtrl-restore" ng-class="{'zoomCtrl-num':+zoomScalePer.slice(0, zoomScalePer.length-1) < 100}" ng-click="restoreZoom()">{{+zoomScalePer.slice(0, zoomScalePer.length-1) < 100 ? zoomScalePer : '-'}}</div>
+       </div>
+    </div>
+    <!-- <div class="upgradeBlock" ng-if="migrationJourney && migrationJourney.showUpgrade">
+        <i class="btx-close" class="btx-close" ng-click="closeUpgradePop()"></i>
+        <div class="upgradeBlock">
+            <div class="upgradeFlowImg"><img ng-src="{{upgradeFlow}}"></div>
+            <div class="upgradeContent">
+                <div class="upgradeTitle">{{'intro_text_conv_dialog_builder' | i18nString}}</div>
+                <div class="upgradeDec">{{'intro_text_conv_dialog_builder_desc' | i18nString}}</div>
+            </div>
+            <div class="upgradeFooter">
+                <button class="kr-sg-button-primary" ng-click="upgadeToNewDialog()">{{'upgrade' | i18nString}}</button>
+                <button class="kr-sg-button-ghost btn_md" ><span><a target="_blank" ng-href="{{$root.helpLinks.DIALOG_UPGRADE_TO_NEW_HELP}}" >{{'learn_more_label'| i18nString}}</a></span></button>
+            </div>
+        </div>
+    </div> -->
+    <div class="modal fade flowtask-dialog-modal"  data-backdrop="static" tabindex="-1" role="dialog" id="upgradeDialog">
+        <div class="modal-dialog">
+            <div class="modal-content myModal-content">
+                <div class="modal-header">
+                    <i class="btx-close" ng-hide="(migrationJourney.step =='upgradeSuccess') || (migrationJourney.step =='upgradeInProgress')" ng-click="closeupgadeToNewDialog()"></i>
+                </div>
+                <div class="modal-body">
+                   <div class="beta">
+                    <p class="betaTT">{{'conversation_builder_driven' | i18nString}}<span class="betaTag">Beta</span></p>
+                    <p class="betaDesc" ng-bind-html="upgrade_desc| i18nString"><span class="lMore"  ng-click="showLeadrnMore=!showLeadrnMore">Learn More</span></p>
+                    <div class="ddLearnMore" ng-if="showLeadrnMore">
+                          <p class="ddTitle">{{'its_complete_package' | i18nString}}</p>
+                          <p><img src="{{brokenImageSmall}}" onerror="handleimgLoad(this)"  ng-src="{{communication}}"  class="helpImg">{{'create_the_dialog' | i18nString}}</p>
+                          <p><img src="{{brokenImageSmall}}" onerror="handleimgLoad(this)"  ng-src="{{compare}}" class="helpImg">{{'create_the_way' | i18nString}}</p>
+                          <p class="noBTMmargin"><img  src="{{brokenImageSmall}}" onerror="handleimgLoad(this)" ng-src="{{peopleWorkingTogether}}"class="helpImg">{{'product_owner' | i18nString}}</p>
+                    </div>
+                   </div>
+                    <div class="upgradeFlow">
+                        <img ng-src="{{upgradeFlowBig}}" class="upgradeFlowIMG">
+                        <div class="content">
+                        <div class="mainContent">{{'create_backup_conv_dialog' | i18nString}} </div>
+                        <div class="description">{{'create_backup_conv_dialog_desc' | i18nString}} </div>
+                        </div>
+                        <div class="buttonContainer">
+                            <div ng-if="!migrationJourney.step">
+                                <button class="kr-sg-button-primary" ng-click="processUpgrade('backup')">{{'backup_upgrade_conv_dialog' | i18nString}}</button>
+                                <button class="kr-sg-button-secondary" ng-click="processUpgrade('upgrade')">{{'skip_upgrade_conv_dialog' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'createBotversion'" class="versionInput">
+                                <div class="kr-sg-input-text">
+                                    <input type="text" ng-model="migrationJourney.versionName" placeholder="Version Name" class="input-text">
+                                </div>
+                                <button class="kr-sg-button-primary" ng-click="processUpgrade('createVersion')">{{'create_version_conv_dialog' | i18nString}}</button>
+                            </div>
+                                <div ng-if="migrationJourney.step === 'versionInProgress'" class="progressBarDiv">
+                                <div class="versionUpgradeText">{{'version_inprogress_conv_dialog' |  i18nString}}</div>
+                                <div class="progress" style="height:20px">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{migrationJourney.percentageComplete || 0}}" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':(migrationJourney.percentageComplete || 0)}">
+                                    <span class="sr-only">{{migrationJourney.percentageComplete || 0}}% {{'complete' | i18nString}}</span>
+                                    </div>
+                                </div>
+                                <div class="upgradeText" class="upgradeText">{{'process_in_background_conv_dialog' | i18nString}}</div>
+                                <button class="kr-sg-button-secondary" ng-click="processUpgrade('close')">{{'go_to_dialog_tasks' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'versionSuccess'" class="progressBarDiv">
+                                <div ng-if="migrationJourney.versionName" class="sucessUpgrade"><img ng-src="{{successIcon}}" class="statusIcon">{{'version_success_conv_dialog' | i18nString}}</div>
+                                <div ng-if="migrationJourney.versionName" class="upgradeText">{{'upgrade_now_conv_dialog' | i18nString}}</div>
+                                <button class="kr-sg-button-primary" ng-click="processUpgrade('upgrade')">{{'upgrade' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'versionFailure'" class="progressBarDiv">
+                                <div ng-if="migrationJourney.versionName" class="sucessUpgrade"><img ng-src="{{failIcon}}" class="statusIcon">{{'oops_version_failed_conv_dialog' | i18nString}}</div>
+                                <div ng-if="migrationJourney.versionName" class="upgradeText">{{'version_not_created_conv_dialog' | i18nString}}</div>
+                                <button class="kr-sg-button-primary" ng-click="processUpgrade('backup')">{{'try_again_conv_dialog' | i18nString}}</button>
+                                <button class="kr-sg-button-secondary" ng-click="processUpgrade('upgrade')">{{'skip_upgrade_conv_dialog' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'upgradeInProgress'" class="progressBarDiv">
+                                <div class="sucessUpgrade">Upgrading Task ...</div>
+                                <div class="progress" style="height:20px">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{migrationJourney.upgradeProgress || 0}}" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':(migrationJourney.upgradeProgress || 0)}">
+                                    <span class="sr-only">{{migrationJourney.upgradeProgress || 0}}% {{'complete' | i18nString}}</span>
+                                    </div>
+                                </div>
+                                <div class="upgradeText">{{'process_in_background_conv_dialog' | i18nString}}</div>
+                                <button class="kr-sg-button-secondary">{{'go_to_dialog_tasks' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'upgradeSuccess'" class="progressBarDiv">
+                                <div class="sucessUpgrade"><img ng-src="{{successIcon}}" class="statusIcon">{{'upgrade_to_conv_dialog_success' | i18nString}}</div>
+                                <button class="kr-sg-button-primary" ng-click="getStarted()">{{'get_started' | i18nString}}</button>
+                                <!-- <button class="kr-sg-button-secondary" ng-click="processUpgrade('upgrade')">Skip & Upgrade</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Dialog Settings -->
+<bt-dialog-settings ng-if="initialLoading || (dialogSettingsCB.show && conversationBuilder)" class="dialogTask" cb="dialogSettingsCB"></bt-dialog-settings>
+    <!-- EXPORT MODAL -->
+    <div ng-if="!conversationBuilder">
+
+    <!-- Modal -->
+    <div class="modal fade flowtask-dialog-modal"  data-backdrop="static" tabindex="-1" role="dialog" id="regenerateModal">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content myModal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-title">{{'sure_msg'|i18nString}}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{'regeneration_dialog_warning'|i18nString }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn confirm" style="background: #ff001f !important;
+                                    border: #ff001f !important;"
+                        ng-click="confirmRegenerateDialog()">{{'confirm'|i18nString}}</button>
+                    <button type="button" class="btn closeMyModal"
+                        ng-click="closeRegenerateModal()">{{'close'|i18nString}}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Dialog Settings -->
+    <bt-dialog-settings ng-if="initialLoading || dialogSettingsCB.show" class="dialogTask" cb="dialogSettingsCB"></bt-dialog-settings>
+    <!-- EXPORT MODAL -->
+    <div class="modal fade flowtask-dialog-modal" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header exportHeader">
+                    <h4 class="modal-title">{{'confirm_proceed'| i18nString}}</h4>
+                </div>
+                <div class="modal-body export-dialog-modal-body">
+
+                            <div class="noteText col-xs-12">
+                                <span class="noteDesc">{{'hold_resume_export'| i18nString}}</span>
+                            </div>
+                </div>
+                <div class="modal-footer importFooter">
+                        <button type="button" class="btn btnSolidBlue dialogBtn" ng-click="startExportDialog()">{{'export'| i18nString}}</button>
+                        <button type="button" class="btn closeCancel dialogBtn" ng-click="canelExportDialog()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade taskCreateOverlayModal" id="flowtask_node_Begin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content height-width-100">
+
+                <!-- <div class="modal-header">
+                    <a class="btnBack positionAbsolute" aria-label="Close" ng-click="onNodeClose()"><span aria-hidden="true"><i class="fa fa-chevron-left"></i></span></a>
+                    <h4 class="modal-title intentTitleText">{{nodeObjLabels.name}}</h4>
+                    <button type="button" class="btn btn-primary btnSave dialogCreateBtn" ng-disabled="nodeObj.isInvalid || componentForm.$invalid" ng-click="onNodeSave()" disabled="disabled">Create</button>
+                </div> -->
+                <div class="modal-body overflow-hidden" ng-class="{'hasFormErrors' : nodeObj.isInvalid}">
+                    <form name="componentForm" novalidate>
+                    <div class="col-xs-6 col-xs-offset-3">
+                        <!-- Node Name -->
+                        <!-- <div class="col-xs-12 form-group noPadding" ng-if="nodeObj.name !== undefined">
+                            <div class="col-xs-12">
+                                <label class="required-field">{{nodeObjLabels.nameLabel}}</label>
+                                <label class="sublabel" ng-if="nodeObj.type === 'intent'">{{nodeObjLabels.nameSubLabel}}</label>
+                            </div>
+                            <div class="col-xs-12 hasError">
+                                <input class="form-control" ng-if="nodeObj.type !== 'intent'" input-note close-note="{{nodeObj.type === 'entity'?'false':'true'}}" note-description="nameDescription" name="flowTaskName" ng-model="nodeObj.name" value="{{nodeObj.name}}" ng-keyup="onInputKeyup($event, nodeObj.type)" placeholder="{{nodeObjLabels.namePlaceholder}}"/>
+                                <input class="form-control" ng-model-options="{ allowInvalid: true}" ng-if="nodeObj.type === 'intent'" ng-pattern="validateTaskName" input-note close-note="{{nodeObj.type === 'entity'?'false':'true'}}" note-description="nameDescription" name="flowTaskName" ng-model="nodeObj.name" value="{{nodeObj.name}}" ng-keyup="onInputKeyup($event, nodeObj.type)" placeholder="{{nodeObjLabels.namePlaceholder}}"/>
+                                <div ng-show="componentForm.flowTaskName.$error.pattern" class="alert alert-danger alert-xs ng-scope" role="alert" style="overflow:hidden;"><div><span><i class="fa fa-info-circle"></i>&nbsp;&nbsp;</span><span>Intent name should allow only alphanumerics characters</span></div></div>
+                                <br>
+                                <div class="showError">
+                                    <div>
+                                        <div error-alert>{{nodeObj.type}} name is required </div>
+                                    </div>
+                                </div>-->
+                                <!--<div class="inputNote fadeInDown"  ng-show="showNote">
+                                    <div class="col-xs-1 bulbicon">
+                                        <span>
+                                            <img class="layer" src="/assets/images/24x29-bulbicon.png">
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-11"><span class="name">The Intent name should ideally be 2 to 3 words max and be a +. 'Book flight', 'Get Weather', etc. Name the intent with the user's goal in mind. Ommit any connective words like 'the', 'a' 'an' etc.</span></div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <!-- Node Description -->
+                        <!-- <div class="col-xs-12 form-group noPadding description"  ng-if="nodeObj.desc !== undefined">
+                            <div class="col-xs-12">
+                                <label>{{_constants_.flowtasks.description}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <input class="form-control" name="flowTaskDesc" ng-model="nodeObj.desc" value="{{nodeObj.desc}}" placeholder="Description" ng-keyup="onCheckLength($event)"/>
+                            </div>
+                        </div> -->
+                        <!-- Node Type -->
+                        <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.nodeType !== undefined">
+                            <div class="col-xs-12">
+                                <label class="required-field">{{_constants_.flowtasks.nodeType}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <select class="form-control selectType" ng-model="nodeObj.nodeType" ng-change="checkCreateNodeFormDirty()" ng-options="item.value as item.title for item in _constants_.entityNlp|filter : {isDepricated : false}">
+                                    <option value="" disabled="disabled">{{'select_name'| i18nString}}</option>
+                                </select>
+                                <label ng-if='nodeObj.nodeType==="regex"' class="customEntityInfoMsg sublabel"> {{'custom_entity'| i18nString}}
+                                </label>
+                                <label ng-if='nodeObj.nodeType==="list_of_values"' class="customEntityInfoMsg sublabel">{{'list_items_enumerated'| i18nString}}  </label>
+                                <label ng-if='nodeObj.nodeType==="list_of_items_lookup"' class="customEntityInfoMsg sublabel">{{'list_items_lookup'| i18nString}} </label>
+                                <label ng-if='nodeObj.nodeType==="quantityv2"' class="customEntityInfoMsg sublabel"> {{'quantity_entity_desc'| i18nString}} </label>
+                            </div>
+
+                        </div>
+                        <!-- Node Sub-Type -->
+                        <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.nodeSubType !== undefined">
+                            <div class="col-xs-12">
+                                <label>{{_constants_.flowtasks.nodeSubType}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <select class="form-control selectType" ng-model="nodeObj.nodeSubType" ng-options="x for x in nodeSubTypeObjOptns"></select>
+                            </div>
+                        </div>
+                        <!-- Service Node Type -->
+                        <div class="col-xs-12 form-group noPadding" ng-if="nodeObj.serviceNodeType !== undefined">
+                            <div class="col-xs-12">
+                                <label class="required-field">{{_constants_.flowtasks.serviceType}}</label>
+                            </div>
+                            <!--<div class="col-xs-12">
+                                <select class="form-control selectType" ng-model="nodeObj.serviceNodeType" ng-change="updateServiceNodeType(nodeObj.serviceNodeType)">
+                                    <option value="custom">{{_constants_.flowtasks.serviceTypes.custom}}</option>
+                                    <option value="htmltoimage">{{_constants_.flowtasks.serviceTypes.htmlToImage}}</option>
+                                    <option value="urltoimage">{{_constants_.flowtasks.serviceTypes.urlToImage}}</option>
+                                </select>
+                            </div>-->
+                            <div class="col-xs-12 radioDiv" ng-init="nodeObj.serviceNodeType='custom'">
+                                <div ng-repeat="serviceNode in serviceNodeOptions" ng-init="nodeObj.serviceNodeType = 'custom'">
+                                    <label>
+                                        <input ng-value='serviceNode.value' type="radio"  ng-model="nodeObj.serviceNodeType" name="serviceNodeType" ng-change="updateServiceNodeType(nodeObj.serviceNodeType)" required><span class="opt-title">{{serviceNode.name}}</span> </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service Type -->
+                        <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.serviceType !== undefined">
+                            <div class="col-xs-12">
+                                <label class="required-field">{{_constants_.flowtasks.nodeType}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <select class="form-control selectType"  ng-change="checkCreateNodeFormDirty()" disabled="disabled">
+                                    <option value="">{{'web_service'| i18nString}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Service Node Type -->
+                        <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.serviceType !== undefined && nodeObj.serviceNodeType === 'custom'">
+                            <div class="col-xs-12">
+                                <label class="required-field">{{_constants_.flowtasks.nodeSubType}}</label>
+                            </div>
+                            <!--<div id="serviceSubType" class="col-xs-12 hasError">
+                                <select class="serviceNodeSubType form-control selectType"  ng-model="nodeObj.serviceType" ng-change="checkCreateNodeFormDirty()" ng-options="item.value as item.name for item in serviceTypeList">
+                                    <option value="" disabled="disabled">Choose a service sub-type</option>
+                                </select>
+                            </div>-->
+                            <div id="serviceSubType" class="col-xs-12 hasError radioDiv">
+                                <div ng-repeat="item in serviceTypeList" ng-init="nodeObj.serviceType = 'rest'">
+                                    <label>
+                                        <input class="serviceNodeSubType form-control selectType" ng-value='item.value' type="radio"  ng-model="nodeObj.serviceType" name="serviceSubType" ng-change="checkCreateNodeFormDirty()" required><span class="opt-title">{{item.name}}</span> </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Node Prompt -->
+                        <div class="col-xs-12 form-group noPadding"  ng-if="nodeObj.prompt !== undefined">
+                            <div class="col-xs-12">
+                                <label class="required-field" ng-if="nodeObj.type === 'message'">{{_constants_.flowtasks.message}}</label>
+                                <label class="required-field" ng-if="nodeObj.type !== 'message'">{{_constants_.flowtasks.promptMessage}}</label>
+                            </div>
+                            <div class="col-xs-12 hasError">
+                                <input class="form-control" name="flowTaskPrompt" ng-model="nodeObj.prompt" value="{{nodeObj.prompt}}" ng-keyup="onInputKeyup($event, nodeObj.type, 'prompt')"/>
+                                <!--<br>
+                                <div class="showError">
+                                    <div>
+                                        <div error-alert>Message is required </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <footer-info>
+                    <div ng-if="nodeObj.type === 'message'" ng-bind-html="$root.getSanitizedText($root.lableData.bb045)"></div>
+                    <div ng-if="nodeObj.type === 'entity'" ng-bind-html="$root.getSanitizedText($root.lableData.bb046)"></div>
+                    <div ng-if="nodeObj.type === 'service'" ng-bind-html="$root.getSanitizedText($root.lableData.bb047)"></div>
+                    <div ng-if="nodeObj.type === 'script'" ng-bind-html="$root.getSanitizedText($root.lableData.bb048)"></div>
+                    <div ng-if="nodeObj.type === 'SDKWebHook'" ng-bind-html="$root.getSanitizedText($root.lableData.bb049)"></div>
+                    <div ng-if="nodeObj.type === 'dialogAct'" ng-bind-html="$root.getSanitizedText($root.lableData.bb050)"></div>
+                    <!-- <div ng-if="nodeObj.type === 'intent'" ng-bind-html="$root.getSanitizedText($root.lableData.bb051)"></div> -->
+                </footer-info>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade prompts-modal"  ng-if="dialogMode === 'prompt'" id="userprompt_configure" tabindex="-1" role="dialog" aria-labelledby="userprompt" data-keyboard="false">
+        <user-prompt-form on-done="onDone"  dialog-data="dialogData" selected-node="selectedNode" messages-object="messagesObject" prompt-type='promptType' is-prompt="isPrompt" on-cancel-prompt="onPromptClose" display-mode="displayMode"></user-prompt-form>
+    </div>
+    <div class="modal fade prompts-modal" ng-if="dialogMode === 'error'" id="errorprompt_configure" role="dialog" aria-labelledby="errorprompt" data-keyboard="false">
+        <error-prompt-form on-done="onErrorPromptDone"  dialog-data="dialogData"  selected-node="selectedNode" errors-object="errorObject"  on-cancel-prompt="onErrorPromptClose" display-mode="displayMode"></error-prompt-form>
+    </div>
+
+    <div class="modal fade formExperience" id="formExperience" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-md textareaModal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <button type="button" class="close" ng-click="finishImporting()"  aria-label="Close">
+                        <span aria-hidden="true" ><i class="fa fa-close"></i></span>
+                    </button> -->
+                    <h4 class="modal-title">Form Experience</h4>
+                </div>
+                <div class="modal-body" perfect-scroll dynamic-height dynaoffset="-313" height-property="height">
+                    <div class="col-xs-12 experienceStepOne" ng-if="formExperience.step==='typeSelection'">
+                        <div class="col-xs-12 form-group noPadding">
+                            <p class="m-0">{{'selectformexp'| i18nString}}</p>
+                        </div>
+                        <div class="col-xs-12 radioDiv p-0">
+                            <div class="radioInnerDiv">
+                                <label for="onlyform">
+                                    <input value="onlyform" ng-model="formExperience.type" type="radio" name="formExperience.type"
+                                        id="onlyform">
+                                    <span class="opt-title">{{'onlyform'| i18nString}}
+                                        <div class="description p-0">{{'onlyform_desc'| i18nString}}</div>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv marginTop10">
+                                <label for="formandconversation">
+                                    <input value="formandconversation" ng-model="formExperience.type" type="radio" name="formExperience.type"
+                                        id="formandconversation">
+                                    <span class="opt-title">{{'formandconversation'| i18nString}}
+                                        <div class="description p-0">{{'formandconversation_desc'| i18nString}}</div>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 experienceTwo"  ng-if="formExperience.step==='channelSelection'">
+                            <div class="col-xs-12 form-group noPadding channelsDesc">
+                                <p>{{'form_channel_selection_desc'| i18nString}}</p>
+                            </div>
+                                <div class="col-xs-12  channel-search">
+                                    <input  type="text" class="form-control" placeholder="{{'search_channel'| i18nString}}" ng-model="formExperience.channelSearchKey" required>
+                                    <img ng-src="{{searchIconGray}}" class="searchIconGray">
+                                </div>
+                            <div class="channels-cntr">
+                                <div class="channel" ng-repeat="channel in formExperienceChannels |filter:formExperience.channelSearchKey" >
+                                        <label class="col-xs-12 channel-wrp check-container" title="{{channel.name}}" ng-click="chooseChannel(channel,createdChannels[channel.id || channel.type])">
+                                            <span class="channel-name transformCapitalize" ng-if="channel.gateway === 'twilio'">{{channel.name}}</span>
+                                            
+                                            <span class="channel-name transformCapitalize" 
+                                                ng-class="{'transformCapitalizeForKore': channel.name === 'Kore.ai'}" 
+                                                ng-if="channel.gateway !== 'twilio'">{{ channel.name}}</span>
+                                            <span class="icon-holder channelIcon">
+                                                <i ng-hide='channel.icon' class="fa channel-icon" ng-class="channel.class" aria-hidden="true"></i>
+                                                <img class="img" ng-src="{{channel.icon}}" ng-show='channel.icon' ng-class="channel.class" aria-hidden="true" />
+                                            </span>
+
+                                                <input type="checkbox" id="{{ channel.id}}">
+                                                <span class="checkmark"></span>   
+                                                <!-- <span class="betaClass" ng-if="channel.name == 'Twilio voice' || channel.name =='Amazon Alexa'">&nbsp;&nbsp; (BETA)</span> --></span>
+                                        </label>
+                                </div>
+                            </div>
+
+                        </div>
+                </div>
+                <div class="modal-footer form-group">
+                    <div class="" >
+                        <button type="button" class="btn btnSolidBlue" ng-if="formExperience.step==='typeSelection' && formExperience.type==='onlyform'"  ng-click="doneformExpSelection()">Done</button>
+                        <button type="button" class="btn btnSolidBlue" ng-if="formExperience.step==='typeSelection' && formExperience.type==='formandconversation'" ng-click="formExperience.step='channelSelection'">Next</button>
+                        <button type="button" class="btn btnSolidBlue" ng-if="formExperience.step==='channelSelection'"  ng-click="doneformExpSelection()">Done</button>
+                        <button type="button" class="btn closeCancel" ng-click="closeFormExpModal()" > Cancel </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!--
+    <div class="modal fade" id="flowtask_import" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-md textareaModal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="finishImporting()"  aria-label="Close">
+                        <span aria-hidden="true" ><i class="fa fa-close"></i></span>
+                    </button>
+                    <h4 class="modal-title">Import {{importModalTitle}}</h4>
+                </div>
+                <div class="modal-body dialogImport">
+                    <div class="col-xs-12">
+
+                        <div class="col-xs-12 form-group noPadding">
+                        <p>{{importDialogHeader}}</p>
+                        </div>
+                        <label class="required-field">Dialog backup file</label>
+                        <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view' && !doneImporting">
+                            <div class="input-group">
+                                <input name="importFile" type="text" class="form-control" placeholder="Upload a dialog file" readonly ng-model="importedDialogName" required>
+                                <div class="input-group-addon btn-file"> Choose File <input type="file" file-model="importDialog" id="importFile" name="importFile" required on-file-change="readDialog"/></div>
+                            </div>
+                            <div ng-show="fileExtensionError" class="text-danger form-error-text"> Only .json file extensions are supported. </div>
+                        </div>
+                        <div ng-show="displayMode !== 'view' && !doneImporting" class="helphint-border col-xs-12">
+                            <div class="col-xs-1 bulbicon">
+                                <span><img class="layer" src='{{bulbIcon}}'></span>
+                            </div>
+                            <div class="col-xs-11 textDiv"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb552)"></span></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-show="doneImporting">
+                        <div class="jsEditorPromptHeader">Import Results</div>
+                        <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="importResults" disabled></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer form-group">
+                    <div class="pull-right" ng-show="!doneImporting">
+                        <button type="button" class="btn closeCancel" ng-click="finishImporting()"> Cancel </button>
+                        <button type="button" class="btn" ng-disabled="fileExtensionError || !importDialog || fileEmptyError" ng-click="confirmImport()">Import</button>
+                    </div>
+                    <div class="pull-right" ng-show="doneImporting">
+                        <button type="button" class="btn btn-primary btnSave" ng-click="finishImporting()"> OK </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <bot-modal-slider id="showGroupNodeIntentSlider" class="groupNodeIntentSlider">
+        <div class="modalSliderContainer width700">
+            <div class="modalHeader">
+                <h4 class="modal-title"><i class="btx-close" ng-click="closeGroupIntentModalSlider()" ></i>
+                    <span ng-if='!editGroupNodeInstance'>{{'add_intent'| i18nString}}</span>
+                    <span ng-if='editGroupNodeInstance'>{{editGroupNodeInstance.intent}}</span>
+                </h4>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-105" height-property="height">
+                <!-- <div ng-if="(selectedGroup.subIntents.length)" class=""> -->
+                <div class="groupNodeTitleInput"  ng-if='!editGroupNodeInstance' ng-class="{'pointer-none':(displayMode === 'view')}">
+                        <div class="kr-sg-dropdowns w-100">
+                            <div class="groupIntentName">Intent Name</div>
+                            <div class="GroupIntentDesc">Choose an intent to be scoped as sub-intent for this Group node. Users can ask for this intent when the conversation is at any of the nodes in this group.</div>
+                            <div class="inuptBTN">
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{selectedNode.nodeInfo.intent?selectedNode.nodeInfo.intent:'Choose an Intent'}}</button>                                            
+                                    <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-420">
+                                        <li class="search-box">
+                                            <input type="text" placeholder="{{'search'| i18nString}}" ng-change="searchDialogs('intent')" class="seach-input" ng-click='$event.stopPropagation();' ng-keydown="disableEnter($event)" placeholder="{{'search_name'| i18nString}}" ng-model="search.name" >
+                                        </li>                                                
+                                        <li ng-repeat="intentItem in botIntents" ng-click="selectGroupIntent($event,intentItem)"><a>{{intentItem.name}}</a></li>
+                                    </ul>
+                                </div>
+                                <button class="btn" ng-click='createGroupNodeIntent($event)'>Create Intent</button>
+                            </div>
+                        </div>
+                </div>
+                <div class="groupNodeIntentLoader animationIfLeave" ng-if="loadingGroupNodeInstanceProperties">
+                    <span class="spinner-text"> 
+                        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+                        <span class="spinner-text-content">Loading....</span>
+                    </span>
+                </div>
+                <property-panel ng-if="selectedNode && selectedGroup"  node-info="selectedNode" node-obj="{{objList}}"
+                class="flowTaskPropertyPanelDiv"
+                edit-prompt="editPrompt"
+                edit-error="editError"
+                dialog-data="dialogData"
+                cb="propertyCb"
+                auth-cb="authCB"
+                bt-test-form-api="btTestFormApi"
+                bt-test-status="btTestStatus"
+                noti-refs='notiRefs'
+                run-bot='runBot'
+                dialog-entities='dialogEntities'
+                flowtask-api="flowtaskApi"
+                call-by="flowtaskForm",
+                group-node='true',
+                group-node-intnets='groupNodeIntentsObj'
+            ></property-panel>
+            </div>
+            <div class="modalFooter" ng-if="selectedNode">
+                        <button type="button" class="btn btnSolidBlue" ng-click='editGroupNodeIntent()' ng-disabled='((selectedNode.dialogNodeInstance.targetNode.type ==="jumpToSpecificNode") && !selectedNode.dialogNodeInstance.targetNode.node)'>{{'save'| i18nString}}</button>
+                        <button type="button" class="btn closeCancel" ng-click="closeGroupIntentModalSlider()"> {{'cancel'| i18nString}} </button>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <!-- Import dialog Slider -->
+    <bot-modal-slider id="showDialogImport" class="interuptions">
+        <div class="modalSliderContainer width500">
+
+            <div class="modalHeader paddingTop10">
+                <h4 class="modal-title tableRow">
+                    <img class="backArrow top10" ng-src="{{closeArrow}}" ng-click="finishImporting()">
+                    <div class="miHeadBar">
+                        <p class="miTaskNameHeader ng-binding importTitle">{{flowtaskObj.name}}</p>
+                        <p class="miTitleHeader">{{'import_dialog'| i18nString}}</p>
+                    </div>
+                </h4>
+
+
+            </div>
+            <div class="modalBody importModal" perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+                <div class="col-xs-12">
+                    <div class="row col-xs-12 botExportModal noPadding" ng-show="!doneImporting">
+                    <label class="importLabel">{{'import_options'| i18nString}}</label>
+                    <div class="col-xs-12 botImportNote">
+                        <div class="heading">
+                            <span class="headingNote">{{'important_note'| i18nString}}</span>
+                        </div>
+                        <div class="textDiv">
+                            <span class="name">{{'dialog_import_discontinued'| i18nString}}<a target="_blank" class="knowmore" ng-href="https://developer.kore.ai/docs/bots/bot-settings/bot-management/bot-management-2/#Steps_in_Importing_to_an_Existing_Bot">{{'know_more'| i18nString}}</a></span></div>
+                    </div>
+                <div class="col-xs-12 noPadding radioDiv marginT12" ng-init="bot.importType = 'fullImport'">
+                    <div class="radioInnerDiv marginTop10">
+                            <label for="dialog-full-import">
+                            <input value="fullImport" ng-model="bot.importType" type="radio" name="dialogtask-fullimport" id="dialog-full-import">
+                                <span class="opt-title">{{'full_import'| i18nString}}
+                                        <div class="description">{{'import_file_desc'| i18nString}}</div>
+                                </span>
+                            </label>
+                    </div>
+                    <div class="radioInnerDiv marginTop10">
+                        <label for="dialog-incremental-import">
+                            <input value="incrementalImport" ng-model="bot.importType" type="radio" name="dialogtask-incrementalimport" id="dialog-incremental-import">
+                            <span class="opt-title">{{'incremental_import'| i18nString}}
+                            <div class="description">{{'update_imported_file'| i18nString}}</div>
+                            </span>
+                        </label>
+                    </div>
+            </div>
+            </div>
+                <label class="required-field" ng-show="displayMode !== 'view' && !doneImporting">{{'dialog_backup'| i18nString}}</label>
+                    <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view' && !doneImporting">
+                        <div class="input-group">
+                            <input name="importFile" type="text" class="form-control" placeholder="{{'upload_dialog'| i18nString}}" readonly ng-model="importedDialogName" required>
+                            <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}} <input type="file" file-model="importObj.importDialog" id="importFile" name="importFile" ng-click="changeEvent($event)" required on-file-change="readDialog"/></div>
+                        </div>
+                        <div ng-show="fileExtensionError" class="text-danger form-error-text">{{'only_json_file'| i18nString}} </div>
+                    </div>
+                    <div ng-if="displayMode !== 'view' && !doneImporting" class="helphint-border col-xs-12">
+                        <div class="col-xs-1 bulbicon">
+                            <span><i class="btx-bulb"></i></span>
+                        </div>
+                        <div class="col-xs-11 textDiv"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb552)"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-12" ng-show="doneImporting">
+                    <div class="jsEditorPromptHeader">{{'import_results'| i18nString}}</div>
+                    <p class="importResultText">{{importResults}}</p>
+                </div>
+            </div>
+            <div class="modalFooter">
+                <div class="col-xs-12">
+                    <div class="pull-left" ng-show="!doneImporting">
+                        <button type="button" class="btn" ng-disabled="fileExtensionError || !importObj.importDialog || fileEmptyError" ng-click="confirmImport()">{{'import'| i18nString}}</button>
+                    <!--  <button type="button" class="btn closeCancel" ng-click="finishImporting()"> Cancel </button> -->
+                    </div>
+                    <div class="pull-left" ng-show="doneImporting">
+                        <button type="button" class="btn btn-primary btnSave" ng-click="finishImporting()"> {{'ok'| i18nString}} </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <!-- Intent Modal Slider -->
+    <bot-modal-slider id="showIntentSlider">
+        <div class="modalSliderContainer width500" ng-class="{'width700':selectedGroup}">
+            <div class="modalHeader">
+                <!-- <button type="button" class="close" ng-click="intentCancel()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button> -->
+                <h4 class="modal-title"><img class="closeCross" ng-src="{{closeArrow}}"  ng-click="intentCancel()" />{{'new_intent'| i18nString}}</h4>
+            </div>
+            <div class="modalBody marginTop15">
+                <div class="col-xs-12 form-group noPadding" ng-if="nodeObj.name !== undefined">
+                    <div class="col-xs-12 noPadding">
+                        <label class="required-field">{{nodeObjLabels.nameLabel}}</label>
+                        <label class="sublabel" ng-if="nodeObj.type === 'intent'">{{nodeObjLabels.nameSubLabel}}</label>
+                    </div>
+                    <div class="col-xs-12 hasError noPadding">
+                        <input class="form-control" ng-if="nodeObj.type !== 'intent'" input-note close-note="{{nodeObj.type === 'entity'?'false':'true'}}" note-description="nameDescription" name="flowTaskName" ng-model="nodeObj.name" value="{{nodeObj.name}}" ng-keyup="onInputKeyup($event, nodeObj.type)" placeholder="{{nodeObjLabels.namePlaceholder}}"/>
+                        <input class="form-control" ng-model-options="{ allowInvalid: true}" ng-if="nodeObj.type === 'intent'" ng-pattern="validateTaskName" input-note close-note="{{nodeObj.type === 'entity'?'false':'true'}}" note-description="nameDescription" name="flowTaskName" ng-model="nodeObj.name" value="{{nodeObj.name}}" ng-keyup="onInputKeyup($event, nodeObj.type)" placeholder="{{nodeObjLabels.namePlaceholder}}"/>
+                        <div ng-show="componentForm.flowTaskName.$error.pattern" class="alert alert-danger alert-xs ng-scope" role="alert" style="overflow:hidden;"><div><span><i class="fa fa-info-circle"></i>&nbsp;&nbsp;</span><span>{{'intent_name_allow'| i18nString}}</span></div></div>
+                    </div>
+                </div>
+                <!-- Node Description -->
+                <div class="col-xs-12 form-group noPadding description"  ng-if="nodeObj.desc !== undefined">
+                    <div class="col-xs-12 noPadding">
+                        <label>{{_constants_.flowtasks.description}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <input class="form-control" name="flowTaskDesc" ng-model="nodeObj.desc" value="{{nodeObj.desc}}" placeholder="{{'tooltip_desc'| i18nString}}" ng-keyup="onCheckLength($event)"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modalFooter">
+                <div class="col-xs-12">
+                    <!-- <button ng-click="createFilter()" ng-disabled="saving" class="btn btn-sm btn-primary text-info"> {{(saving)?' Applying...':'Apply'}}</button> -->
+                    <div class="pull-left" ng-show="!doneImporting">
+
+                        <button type="button" class="btn " ng-disabled="nodeObj.isInvalid || componentForm.$invalid" ng-click="onNodeSave()" disabled="disabled">{{'account_create'| i18nString}}</button>
+                        <button type="button" class="btn closeCancel" ng-click="intentCancel()"> {{'cancel'| i18nString}} </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </bot-modal-slider>
+    <bot-modal-slider class="interuptions" id="flowTaskmanageInteruptions">
+        <div class="modalSliderContainer width700" ng-if='showflowsinterrupts'>
+            <bt-manage-interuptions ng-if="sliderStep===1" class="animate-if form-kr backgroundWhite " cb="openManageInterruptions" step-update="stepUpdate" on-cancel="onInterruptsCancel"></bt-manage-interuptions>
+            <bt-linked-task ng-if="sliderStep===2" class="animate-if form-kr backgroundWhite linkedTasks" cb="openManageInterruptions" step-update="stepUpdate" on-cancel="onInterruptsCancel"></bt-linked-task>
+            <bt-add-interuption ng-if="sliderStep===3" class="animate-if form-kr backgroundWhite" cb="openManageInterruptions" step-update="stepUpdate" on-cancel="onInterruptsCancel"></bt-add-interuption>
+        </div>
+    </bot-modal-slider>
+    <bot-modal-slider class="interuptions" id="showAmendEntityDialog">
+        <div class="modalSliderContainer width700">
+            <div class="modalHeader paddingTop10">
+                <h4 class="modal-title tableRow">
+                    <!-- <img  class="closeCross top10" ng-src={{closeArrow}} ng-click="closeAmendSlider()"/> -->
+                    <i class="btx-close" ng-click="closeAmendSlider()"></i>                  
+                    <div class="miHeadBar">
+                        <div class="desc">{{amendEntity.flowtask.name}}</div>
+                        <div class="heading">{{'manage_amend'| i18nString}}</div>
+                    </div>
+                </h4>
+            </div>
+
+            <div class="modalBody amendEntity" perfect-scroll dynamic-height dynaoffset="-70" height-property="height" ng-class="{'screenFreeze':accessRights === 'VIEW' || viewMode}">
+                <div class="row col-xs-12 noPadding radioDiv radioSection">
+                    <div class="heading">{{'amend_behaviour'| i18nString}}</div>
+                    <div class="paddingTop10">
+                        <div class="radioInnerDiv">
+                        <label for="dialog-botLevel" class="noMarginBottom">
+                            <input value='bot' type="radio"  ng-model="amendEntity.flowtask.amendConfig.priority" name="amendNode" id="dialog-botLevel">
+                            <span class="opt-title">{{'bot_level_settings'| i18nString}}</span> 
+                        </label>
+                        <div class="entityDescription" ng-if="!amendEntity.streamData.amendConfig.enabled">
+                            <span class="descItalic">{{'amend_entities'| i18nString}}</span>
+                        </div> 
+                        <div class="entityDescription" ng-if="amendEntity.streamData.amendConfig.enabled">
+                            <span class="descItalic">{{'allow_amend_entities'| i18nString}}</span>{{amendEntityOptions[amendEntity.streamData.amendConfig.postAmend]}}
+                        </div> 
+                    </div>
+                    <div class="radioInnerDiv marginTop10">
+                            <label for="dialog-customize">
+                                <input value='task' type="radio"  ng-model="amendEntity.flowtask.amendConfig.priority" name="amendNode" id="dialog-customize" ng-change="setDefault()" />
+                                <span class="opt-title">{{'customize_task'| i18nString}}</span> 
+                            </label>
+                    </div>
+                    </div>
+                
+                <div ng-show="amendEntity.flowtask.amendConfig.priority === 'task'" class="marginLeft25">
+                        <div class="radioInnerDiv">
+                            <label for="dialog-notAllowAmend">
+                                <input value='false' type="radio"  ng-model="amendEntity.flowtask.amendConfig.enabled" data-ng-value="false" name="allowAmend" id="dialog-notAllowAmend">
+                                <span class="opt-title">{{'Donot_allow_amend_label'| i18nString}}</span> 
+                            </label>
+                        </div>
+                        <div class="radioInnerDiv">
+                            <label for="dialog-allowAmend">
+                                <input value='true' type="radio"  ng-model="amendEntity.flowtask.amendConfig.enabled" data-ng-value="true" id="dialog-allowAmend" ng-change="setDefaultPriority()"/>
+                                <span class="opt-title">{{'Allow_amend_label'| i18nString}}</span> 
+                            </label>
+                        </div>
+                        <div ng-show="amendEntity.flowtask.amendConfig.enabled" class="marginleft20 amendConfig">
+                            <div class="radioInnerDiv">
+                                <label for="dialog-amendedNode">
+                                    <input value='continueFromAmendedNode' type="radio"  ng-model="amendEntity.flowtask.amendConfig.postAmend" id="dialog-amendedNode">
+                                    <span class="opt-title">{{'re-execute_dialog'| i18nString}}
+                                        <div class="description pl-0">{{'dialog_resume'| i18nString}}</div>
+                                    </span> 
+                                </label>
+                            <div ng-show="amendEntity.flowtask.amendConfig.postAmend ===  'continueFromAmendedNode'">
+                                <div class="checkbox checkbox-primary styledCSS alwaysResume marginleft20 noMarginTop paddingLeft5">
+                                    <input type="checkbox" id="dialog-clearDownstreamEntities" ng-model="amendEntity.flowtask.amendConfig.clearDownstreamEntities" class="ng-pristine ng-untouched ng-valid">
+                                    <label for="dialog-clearDownstreamEntities" class="alwaysResume">{{'clear_downstream'| i18nString}}</label>
+                                </div>
+                                <div class="checkbox checkbox-primary styledCSS alwaysResume marginleft20 noMarginTop paddingLeft5">
+                                    <input type="checkbox" id="dialog-skipShownMessages" ng-model="amendEntity.flowtask.amendConfig.skipShownMessages" class="ng-pristine ng-untouched ng-valid">
+                                    <label for="dialog-skipShownMessages" class="alwaysResume">{{'skip_shownmessages'| i18nString}}</label>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="dialog-currentNode">
+                                    <input value='continueFromCurrentNode' type="radio"  ng-model="amendEntity.flowtask.amendConfig.postAmend" id="dialog-currentNode">
+                                    <span class="opt-title">{{'re_execute_currdialog'| i18nString}}
+                                        <div class="description pl-0">{{'amend_description'| i18nString}}</div>
+                                    </span> 
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="dialog-jumpNode">
+                                    <input value='jumpToSpecificNode' type="radio"  ng-model="amendEntity.flowtask.amendConfig.postAmend" id="dialog-jumpNode" ng-click="getComponents(amendEntity.flowtask)">
+                                    <span class="opt-title">{{'jump_specific_node'| i18nString}}
+                                        <div class="description pl-0">{{'resume_dialog'| i18nString}}</div>
+                                    </span> 
+                                </label>
+                                <div ng-if="amendEntity.flowtask.amendConfig.postAmend === 'jumpToSpecificNode'" class="marginLeft25">
+                                    <select id='entitySelection' ng-model='amendEntity.flowtask.amendConfig.refId'>
+                                            <option value="" disabled selected>{{'select_node'| i18nString}}</option>
+                                            <option ng-repeat="node in amendEntity.flowtask.nodes" value="{{node.nodeId}}">{{component[node.componentId].name + (nodeObjCount[node.componentId].count >1?"["+node.count+"]":"")}}</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="hiddenEntityAmend marginTop10">
+                                <label>{{'hidden_amend_input' | i18nString }}</label>
+                                <span class="opt-title">{{'hidden_amend_input_desc' | i18nString }}</span>
+                            </div>
+                            <toggle-switch ng-model="amendEntity.flowtask.amendConfig.allowHidden" class="amend-entity-toggle pull-left m-0">
+                            </toggle-switch>
+                        </div>
+
+                </div>
+                <button type="button" class="btn_lg kr-sg-button-primary mt-15" ng-click="saveAmendEntity(amendEntity.flowtask)" ng-disabled="(amendEntity.flowtask.amendConfig.postAmend === 'jumpToSpecificNode' && !amendEntity.flowtask.amendConfig.refId) || (accessRights === 'VIEW' || viewMode)">{{'save'| i18nString}}</button>
+            </div>
+            
+        </div></div>
+    
+
+    </bot-modal-slider>
+    <div id="depricationExportFlowModal" class="modal depricationExportModal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{'important_note'| i18nString}}</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="desc">{{'dialog_import_discontinued'| i18nString}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button class='btn-danger danger' ng-click='exportDialog()'>{{'proceed'| i18nString}}</button>
+                    <button class='btn-default default marginLeft10' ng-click='cancelExportDeprication()'>{{'cancel'| i18nString}}</button>
+                </div>
+                </div>
+            </div>
+    </div>
+    <div class="modal fade kr-sg-modal modal-create-intent" id="createGroupNodeIntentModal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">                                 
+            <h4 class="modal-title">{{'add_intent' | i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="kr-sg-input-text mb-10">
+                    <div class="label-text">{{'configurable_intent_name' | i18nString}}</div>
+                    <input type="text"  ng-model-options="{ allowInvalid: true}" ng-if="nodeObj.type === 'intent'" ng-pattern="validateTaskName" input-note close-note="{{nodeObj.type === 'entity'?'false':'true'}}" note-description="nameDescription" name="flowTaskName" ng-model="nodeObj.name" value="{{nodeObj.name}}" ng-keyup="onInputKeyup($event, nodeObj.type)" placeholder="{{nodeObjLabels.namePlaceholder}}" class="input-text">
+                </div>
+                <div class="kr-sg-input-text-area mb-10">
+                    <div class="label-text">{{_constants_.flowtasks.description}}</div>
+                    <textarea class="input-text" ng-model="nodeObj.desc" value="{{nodeObj.desc}}" placeholder="{{'tooltip_desc'| i18nString}}" ng-keyup="onCheckLength($event)"></textarea>
+                </div>    
+            </div>
+            <div class="modal-footer">     
+            <button class="kr-sg-button-primary btn_md" ng-disabled="nodeObj.isInvalid || !nodeObj.name || componentForm.$invalid" ng-click="onNodeSave()" disabled="disabled">{{'save'| i18nString}}</button>
+            <button class="kr-sg-button-secondary btn_md"  ng-click="intentCancel()">{{'cancel'| i18nString}} </button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade deleteNode" id="deleteNode">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <button type="button" class="bootbox-close-button close fa fa-times" ng-click="closeDeleteNodeModal()"></button> -->
+                    <h4 class="modal-title">{{'cannot_delete_title' | i18nString}}</h4>
+                </div>
+                <div class="modal-body" dynamic-height dynaoffset="-490" height-property="height" perfect-scroll>
+                    <div class="bootbox-body">{{'cannot_delete_node_behaviour' | i18nString}}
+                        <ul class="entityGroup" ng-repeat="entityName in _entityNames track by $index">
+                            <li class="entityList">{{$index + 1}} . {{entityName}}</li>
+                        </ul>
+                    </div>
+                    <div class="proceed">
+                        <p>{{'would_like_proceed' | i18nString }}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btnSolidBlue" ng-click="proceedDeleteNode(currentTypeId)">{{'ok' | i18nString }}</button>
+                    <button type="button" class="btn closeCancel" ng-click="closeDeleteNodeModal()">{{'cancel' | i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade kr-sg-modal" id="deleteNodeImport" role="dialog">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">                                 
+                                    <h4 class="modal-title">{{'undefined_transition' | i18nString }}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                    <p>{{'delete_node_import_info' | i18nString}}</p>
+                                    </div>
+                                    <div class="modal-footer">                               
+                                    <button class="kr-sg-button-primary btn_md" ng-click="resetToDefaultDialog()">{{'ok' | i18nString}}</button>                                  
+                                    </div>
+                                </div>
+                                </div>
+                            </div>  
+     
+</div>
+<manage-variable-namespace cb='manage_var_flowtask_form__cb' class="manage-variable" id="manageVarNamespaceFlowTaskForm" ng-if="manageVarFlowTaskFormEnable || initialLoading"></manage-variable-namespace> 
+    
+
+    <!-- Related to chat window modals -->
+    <div class="modal fade recordStop" id="recordStopFlow" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{'record_completed'| i18nString}}</h4>
+                </div>
+                <div class="modal-body">
+                        <!-- <p class="content">{{'record_success'| i18nString}} <span class="knowmore"><a target="_blank" class="knowmore" ng-href="https://github.com/Koredotcom/chatbot-test-runner">{{'know_more'| i18nString}}</a></span><br>{{'local_machine'| i18nString}}
+                        </p> -->
+                        <p class="content">{{"record_complted_desc" | i18nString}}
+                        </p>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button class="btn sbtnSolidBlue" ng-click="downloadChatJson()">{{'download'| i18nString}}</button>
+                    <button class="btn closeCancel" ng-click="closeDownloadModal()">{{'cancel'| i18nString}}</button> -->
+                    <button class="kr-sg-button-primary btn_md" ng-click="createTestCase()">{{'create_test_case' | i18nString}}</button>
+                    <button class="kr-sg-button-secondary btn_md" ng-click="discardDownloadModal()">{{'discard' | i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade recordProgress" id="recordInProgressFlow" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{'are_you_sure'| i18nString}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xs-12 padding10">
+                        <p>{{'conversation_record'| i18nString}}
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btnSolidBlue" id="confirm-close" ng-click="confirmCloseProgressModal()">{{'confirm'| i18nString}}</button>
+                    <button class="btn closeCancel" ng-click="closeInProgressModal()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="loadUtteranceModule" ng-class="{'conversationDesinerView':conversationBuilder}">
+        <bt-utterances cb="btUtteranceCb"></bt-utterances>
+    </div>
+ 
+   
+
+
+

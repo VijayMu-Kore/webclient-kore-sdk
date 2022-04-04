@@ -1,0 +1,55 @@
+<div class="inner-scroll" perfect-scroll dynamic-height dynaoffset = "-130" >
+<div class="channel-content widthseventy">
+<div class="col-xs-12  text-block">
+	<div class="help-block col-xs-12">
+		{{'bt_chnl_sms_desc'| i18nString}}
+	</div>
+</div>
+<div class="col-xs-12 noPadding">
+  <dynamic-form fields="schema.fields" bridge="form" hide-controls="true" on-cancel="noop()" on-save="noop(data)"></dynamic-form>
+  
+  <div class="col-xs-12 form-group radioDiv options-wrap">
+    
+            <div>
+                <label>{{'enable_chnl'| i18nString}}</label>
+            </div>
+
+                <div>
+                    <label for="sms.enable.no">
+                        <input ng-value="false" ng-checked="true" type="radio" ng-model="$parent.sms.enable" name="sms.enable" id="sms.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div>
+                    <label for="sms.enable.yes">
+                        <input ng-value="true" type="radio" ng-model="$parent.sms.enable" name="sms.enable" id="sms.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                    </label>
+                </div>
+</div>
+  
+  <div class="col-xs-12  note"> {{'bt_chnl_sms_note'| i18nString}} </div>
+</div>
+
+
+<div class="footer form-group modal-header noMargin" ng-if="displayMode!=='view'">
+  <div class="footerSub">
+    <div class="col-xs-3"><button ng-click="$parent.goToHome()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+        <div  class="col-xs-6 lineheight">
+    
+    <div class="form-ctrl-div pull-left hide">
+      <button class="btn btn-default" ng-click="$parent.goToHome()">{{'exit_label'| i18nString}}</button>
+    </div>
+    <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+    </div>
+      <div class="col-xs-3">
+    <div class="help-hint-link hide"> <a target="_blank"  ng-href="{{$root.helpLinks.ADD_CHANNEL_SMS}}" >{{'help_withpage_label'| i18nString}}</a> </div>
+    <div class="pull-right form-ctrl-div">
+      <button type="button" ng-click="saveSms()" class="btn btn-primary saveBtn">{{'save'| i18nString}}</button>
+    </div>
+    <span class="dhelpLink">
+                    <a class="" target="_blank" ng-href="{{$root.helpLinks.ADD_CHANNEL_SMS}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+             </span>
+             </div>
+  </div>
+    </div>
+    </div>
+     </div>

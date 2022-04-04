@@ -1,0 +1,102 @@
+<div class="form-group" ng-hide="hideBotCommand">
+  <div class="col-sm-12 noPadding">
+    <label tooltip-placement="right" tooltip="{{'Bt_chnl_kore_botcmd_desc'| i18nString}}">{{'Bt_chnl_kore_botcmd_label'| i18nString}}</label>
+  </div>
+    <div class="col-sm-12 noPadding">
+        <!--    <toggle-switch ng-model="parentForm._createSlash"></toggle-switch>-->
+        <div class="col-xs-12 radioDiv">
+            <div>
+                <label for="parentForm._createSlash.no">
+                    <input ng-value='false' ng-checked="true" type="radio"  ng-model="parentForm._createSlash" name="parentForm._createSlash" id="parentForm._createSlash.no"><span class="opt-title">{{'no'| i18nString}}</span> </input>
+                </label>
+            </div>
+            <div>
+                <label for="parentForm._createSlash.yes">
+                    <input ng-value='true' type="radio" ng-model="parentForm._createSlash" name="parentForm._createSlash" id="parentForm._createSlash.yes" ><span class="opt-title">{{'enable_kore'| i18nString}}</span> </input>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-container"  ng-if="parentForm._createSlash">
+  <div class="col-xs-12">
+    <div class="well well-sm overflow-hidden" >
+      <div class="form-group col-sm-12" ng-if="of === 'stream'">
+        <label class="required-field" tooltip-placement="right" tooltip="{{'start_process'| i18nString}}">{{'Bt_chnl_kore_botcmd_yes_cmdName_label'| i18nString}}</label>
+        <div class="col-sm-12 noPadding">
+          <input type="text" class="form-control" ng-model="command.name" name="slashCommandname" placeholder="{{'Bt_chnl_kore_botcmd_yes_cmdName_label'| i18nString}}" required>
+          <div ng-show="parentForm.slashCommandname.$dirty">
+              <div error-alert ng-show="parentForm.slashCommandname.$error.required" class="text-danger form-error-text">
+                {{'Bt_chnl_kore_botcmd_yes_cmdName_err'| i18nString}}
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12" ng-if="of === 'action'">
+        <label class="required-field" tooltip-placement="right" tooltip="{{'billing_command'| i18nString}}">{{'sub_command'| i18nString}}</label>
+        <div class="col-sm-12 noPadding">
+          <input type="text" class="form-control" ng-model="command.name" name="slashCommandname" placeholder="{{'sub_command'| i18nString}}" required>
+          <div ng-show="parentForm.slashCommandname.$dirty">
+              <div error-alert ng-show="parentForm.slashCommandname.$error.required" class="text-danger form-error-text">
+                {{'sub_command_name'| i18nString}} 
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12" ng-if="of==='stream'">
+        <label class="required-field" tooltip-placement="right" tooltip="{{'provide_bot'| i18nString}}">{{'help_main'| i18nString}}</label>
+        <div class="col-sm-12 noPadding">
+          <input type="text" class="form-control" ng-model="command.help" name="slashhelp" required placeholder="{{'Bt_chnl_kore_botcmd_yes_help_placeholder'| i18nString}}">
+          <div ng-show="parentForm.slashhelp.$dirty">
+              <div error-alert ng-show="parentForm.slashhelp.$error.required" class="text-danger form-error-text">
+                {{'Bt_chnl_kore_botcmd_yes_help_err'| i18nString}} 
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12" ng-if="of==='action'">
+        <label class="required-field" tooltip-placement="right" tooltip="{{'provide_sub'| i18nString}}">{{'help_main'| i18nString}}</label>
+        <div class="col-sm-12 noPadding">
+          <input type="text" class="form-control" ng-model="command.help" name="slashhelp" required placeholder="{{'sub_command_help'| i18nString}}">
+          <div ng-show="parentForm.slashhelp.$dirty">
+              <div error-alert ng-show="parentForm.slashhelp.$error.required" class="text-danger form-error-text">
+                {{'command_req'| i18nString}} 
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12">
+        <label class="required-field" tooltip-placement="right" tooltip="{{'sample_bot_command'| i18nString}}">{{'Bt_chnl_kore_botcmd_yes_example_cmnd_label'| i18nString}}</label>
+        <div class="col-sm-12 noPadding">
+          <input type="text" class="form-control" ng-model="command.sample" name="slashsample" required placeholder="{{'Bt_chnl_kore_botcmd_yes_example_cmnd_label'| i18nString}}">
+          <div ng-show="parentForm.slashsample.$dirty">
+              <div error-alert ng-show="parentForm.slashsample.$error.required" class="text-danger form-error-text">
+                {{'Bt_chnl_kore_botcmd_yes_example_cmnd_err'| i18nString}} 
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12">
+        <label class="required-field" tooltip-placement="right" tooltip="{{'bot_command_desc'| i18nString}}">{{'tooltip_desc'| i18nString}}</label>
+        <div class="col-sm-12 noPadding">
+          <input type="text" class="form-control" ng-model="command.description" name="slashdescription" required placeholder="{{'Bt_chnl_kore_botcmd_yes_descrip_placeholder'| i18nString}}">
+          <div ng-show="parentForm.slashdescription.$dirty">
+              <div error-alert ng-show="parentForm.slashdescription.$error.required" class="text-danger form-error-text">
+                {{'Bt_chnl_kore_botcmd_yes_descrip_err'| i18nString}}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="form-container" ng-if="!parentForm._createSlash && actionCommandLoading">
+  <div class="col-xs-12">
+    <div class="alert alert-xs alert-warning">
+      <div class="text-center">
+        <i class="fa fa-spinner fa-spin"></i>
+        <span>{{'loading'| i18nString}} </span>
+      </div>
+    </div>
+  </div>
+</div>

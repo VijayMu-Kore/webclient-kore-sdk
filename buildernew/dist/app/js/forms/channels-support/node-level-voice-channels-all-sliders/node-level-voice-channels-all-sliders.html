@@ -1,0 +1,46 @@
+<bot-modal-slider id="audioCodesChannel">
+    <!-- <div class="modalSliderContainer width700 welcomeMessageContainer welcomeMessageModal col-xs-12 form-group" ng-if='isAudioCodesPropPanelSlider'> -->
+    <div class="modalSliderContainer width700" ng-if="isAudioCodesSlider">
+        <div class="modalHeader channelModalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                <i class="btx-close" ng-click="closeAudioCodes()"></i>
+                Voice Call Properties
+            </h4>
+        </div>
+        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-120" height-property="height">
+            <channel-ivr-settings-supp cb="audio_codes_cb"></channel-ivr-settings-supp>
+        </div>
+        <div class="modalFooter">
+            <div class="col-xs-12 zIndex">
+                <button ng-click="saveAudioIVR()" ng-disabled="selectedStreamState === 'published'" class="btn btn-xs saveBtn">{{'save'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</bot-modal-slider>
+
+<bot-modal-slider id="twilioVoiceSettings">
+    <div class="modalSliderContainer width700" ng-if="isTwilioVoiceSlider">
+        <div class="modalHeader channelModalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                <i class="btx-close" ng-click="closeTwilioVoice()"></i>
+                Voice Call Properties
+            </h4>
+        </div>
+        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-130" height-property="height">
+            <channel-ivr-settings-supp cb="twilio_voice_cb"></channel-ivr-settings-supp>
+        </div>
+        <div class="modalFooter">
+            <button ng-click="saveTwilioIVR()" ng-disabled="selectedStreamState === 'published'" class="btn btn-xs saveBtn">{{'save'| i18nString}}</button>
+            <!-- <div class="col-xs-12 zIndex">
+                
+            </div> -->
+        </div>
+    </div>
+</bot-modal-slider>
+
+
+<bot-modal-slider id="btWelcomeMess" ng-if="showEnable">
+    <div class="modalSliderContainer width700 welcomeMessageContainer welcomeMessageModal  form-group" ng-if='welcomeMessagecbs.isAddResponseEnabled'>
+       <bt-welcome-message cb="welcomeMessagecbs"></bt-welcome-message>
+    </div>
+ </bot-modal-slider>

@@ -1,0 +1,166 @@
+
+<div class="form-container authForm" ng-class="{'read-only-wrap':displayMode==='VIEW'}" ng-if="!btcallback.onlyCreate">
+  <div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'auth_profile'| i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent displayNone">
+            <input  placeholder="Search">
+            <i class="btx-search"></i>
+            <i class="btx-close displayNone"></i>
+        </div>
+        <div class="creationButton borderBtn ">
+             <button class="btn btnSolidBlue" ng-click="showAuth()" ng-class="{'hide':showSolutionBotSetup}"> {{'add_label'| i18nString}}</button>
+        </div>
+        <div class="titleDropdown displayNone">
+            <div class="dropdown">
+                <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Dropdown name
+                    <i class="btx-carrot-up"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">Option One</li>
+                    <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+            </div>
+        </div>
+        <div class="titleOverflow displayNone">
+            <div class="dropdown">
+                <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                    <i class="btx-overflow"></i>
+                    </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">Option One</li>
+                    <li class="dropdown-item" >Option Two</li>                       
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+    <bt-test-form api="btTestFormApi" status="btTestStatus" ></bt-test-form>
+  <!-- Webhook -->
+  <div class="text-centre"  ng-if="alertType === 'webhook' || alertType === 'email'">
+    <p>{{'auth_mechanism'| i18nString}}</p>
+    <button type="button" class="btn btn-primary" ng-click="skipAuthRqObj()">{{'continue'| i18nString}}</button>
+  </div>
+
+  <!-- RSS, webservice, and action -->
+  <div class="row">
+      <!-- <div class="headerBar col-xs-12">
+                    <div class="pull-right btnContainer">
+                 
+            <button class="btn btn-xs addBtn pull-right"  ng-click="showAuth()" ng-class="{'hide':showSolutionBotSetup,'read-only-wrap':displayMode==='VIEW'}" > {{'add'| i18nString}} </button>
+            </div>
+                </div> -->
+    <form name="authForm" class="wf-form relclear" ng-submit="setAuth(authForm.$valid)" novalidate>
+      <fieldset>
+          <div class="emptyStateContainer width510" ng-if="(!isLoading) && !(authLists.length > 0)">
+            <div class="emptyState">
+                <div class="emptyImage">
+                    <img ng-src="{{emptyStateIcon_auth_profiles}}" class="emptyImg">           
+                </div>  
+                <span class="mainTitle">{{'no_bot_authorization'| i18nString}}</span>
+                <div class="emptyStateDesc">{{'empty_desc_auth_profiles'| i18nString}} <a target="_blank" ng-href="{{$root.helpLinks.BOT_AUTHENTICATION_HELP}}">{{'learn_more'| i18nString}}</a></div>                
+            </div>
+        </div>
+      
+          <div class="col-xs-12 form-group noPadding" ng-if="authLists.length>0">
+
+              <div class="panel-table-header">
+                  <div class="row">
+                      <div class="col-xs-3">{{'name_label_uppercase'| i18nString}}</div>
+                      <div class="col-xs-6">{{'sso_type_uppercase'| i18nString}}</div>
+                      <div class="col-xs-2">{{'settings_uppercase'| i18nString}}</div>
+                  </div>
+              </div>
+              <div class="panel-table-body">
+                  <div class="row" ng-repeat="authList in authLists">
+                      <div class="col-xs-3">{{authList.name}}</div>
+                      <div class="col-xs-6">{{authList.sso_type}}</div>
+                      <div class="col-xs-2 testChannel"  ng-class="{'read-only-wrap':displayMode==='VIEW'}"><span ng-click="testIdp(authList._id)" class="testBtnChannel">{{'test_label'| i18nString}}</span></div>
+                      <div class="col-xs-1 text-center authFieldClass">
+                          <div class="dropdown panel-dropdown">
+                              <i class="fa  btx-settings pointer-hand" data-toggle="dropdown"></i>
+                              <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                <li>
+                                  <a ng-show="knowledgeTask.state !== 'published' && displayMode === 'VIEW'" ng-click="authEdit(authList._id)"> {{'view'| i18nString}} </a>
+                              </li>
+                                  <li>
+                                      <a ng-show="knowledgeTask.state !== 'published' && displayMode !== 'VIEW'" ng-click="authEdit(authList._id)"> {{'edit'| i18nString}} </a>
+                                  </li>
+
+                                  <li>
+                                      <a ng-click="deleteIDP(authList._id)" ng-show="displayMode !== 'VIEW'" ng-class="{'read-only-wrap':displayMode==='VIEW'}"> {{'delete'| i18nString}} </a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+            <!-- DATA TABLE START HERE -->
+            <!-- <div class="kr-sg-data-table accordion-table" >
+                <section class="table-content" ng-repeat="authList in authLists track by $index">
+                    <div class="content-body collapsed-default collapsed" data-toggle="collapse" data-target="#accordion-table{{$index}}" >
+                        <div class="col-xs-3">{{authList.name}}</div>
+                        <div class="col-xs-6">{{authList.sso_type}}</div>
+                        <div class="col-xs-2"ng-class="{'read-only-wrap':displayMode==='VIEW'}"><span ng-click="testIdp(authList._id)" class="testBtnChannel">{{'test_label'| i18nString}}</span></div>
+                        <div class="col-xs-1 text-center authFieldClass">
+                            <div class="dropdown panel-dropdown">
+                                <i class="fa  btx-settings pointer-hand" data-toggle="dropdown"></i>
+                                <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                    <li>
+                                        <a ng-show="knowledgeTask.state !== 'published' && displayMode === 'VIEW'" ng-click="authEdit(authList._id)"> {{'view'| i18nString}} </a>
+                                    </li>
+                                    <li>
+                                        <a ng-show="knowledgeTask.state !== 'published' && displayMode !== 'VIEW'" ng-click="authEdit(authList._id)"> {{'edit'| i18nString}} </a>
+                                    </li>
+                                    <li>
+                                        <a ng-click="deleteIDP(authList._id)" ng-show="displayMode !== 'VIEW'" ng-class="{'read-only-wrap':displayMode==='VIEW'}"> {{'delete'| i18nString}} </a>
+                                    </li>
+                                  </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="accordion-table{{$index}}" class="collapse accordion-table" >
+                        <div class="emptyStateContainer" ng-if="!authList.tokens || authList.tokens === 0">
+                            <div class="emptyState">
+                                <span class="mainTitle">{{'No Saved Tokens'}}</span>
+                                <div class="emptyStateDesc">{{"Click on 'Test' to create sample authorization tokens"}} </div>                
+                            </div>
+                        </div>
+                        <div class="kr-sg-data-table" ng-if="authList.tokens > 0">
+                            <section class="table-content">
+                                <header class="table-header">
+                                    <div class="col-xs-3">Token Name</div>
+                                    <div class="col-xs-6">Created Date & Time</div>
+                                    <div class="col-xs-2"></div>
+                                </header>
+                                <div class="content-body" ng-repeat="token in authList.tokens track by $index">
+                                    <div class="col">{{token.name || '---'}}</div>
+                                    <div class="col">{{token.createdOn || '---'}}</div>
+                                    <div class="col">refresh and delete</div>
+                                </div>
+                            </section>                               
+                        </div>  
+                    </div>
+                </section>                               
+            </div>  -->
+            <!-- DATA TABLE ENDS HERE -->
+            
+
+          </div>
+
+
+        <div ng-include="tmpltPrePath+'templates/bt-streams/bot-authorization-modal.html'"></div>          
+        <!-- modal start -->
+        <!--<div ng-include="tmpltPrePath+'templates/bt-streams/auth-modal-template.html'"></div> -->
+        <!-- /.modal -->
+      </fieldset>
+    </form>
+  </div>
+</div>
+<div ng-if="btcallback.onlyCreate" ng-include="tmpltPrePath+'templates/bt-streams/bot-authorization-modal.html'"></div>
+
+

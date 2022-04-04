@@ -1,0 +1,28 @@
+<button type="button" ng-click="closeModal()" class="close workplaceModalClose" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+<!-- Add Bot Welcome -->
+<div class="add-bot modalTest">
+
+    <div class="image-header" perfect-scroll dynamic-height dynaoffset="-200">
+        <img ng-src="{{assetsBase}}images/webhook.png?v=1" class="imgWidth"/>
+        <p class="title text-justify marginBottom10">
+            {{'bt_add_to_ivr_desc1'| i18nString}}
+        </p>
+        <div class="col-xs-12 noPadding marginBottom10">
+            <div class="floatLeft">{{'webhook_APi_v1'| i18nString}}</div>
+            <div class="input-group">
+                <input type="text" id="webhookPostURL" class="form-control" ng-model="webhookURL" ng-readonly="true" name="appName">
+                <div class="input-group-addon pointer-hand" data-clipboard-target="#webhookPostURL"> {{'copy'| i18nString}} </div>  
+            </div> 
+            <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}<span></div>              
+        </div>
+        <div class="col-xs-12 noPadding marginBottom10">
+            <div class="floatLeft">{{'webhook_Api_v2'| i18nString}}</div>
+            <div class="input-group">
+                <input type="text" id="webhookPostURLV2" class="form-control" ng-model="webhookURLV2" ng-readonly="true" name="appName2">
+                <div class="input-group-addon pointer-hand" data-clipboard-target="#webhookPostURLV2"> {{'copy'| i18nString}} </div>  
+            </div> 
+            <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}<span></div>              
+        </div>
+        <div class="title text-justify noMargin" ng-bind-html ="'please_test_channel'| i18nString:({dyn:source.displayName})"></div>
+    </div>
+</div>

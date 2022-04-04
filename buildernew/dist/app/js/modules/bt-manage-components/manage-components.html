@@ -1,0 +1,243 @@
+
+<div class="topBar manageComponentClose col-xs-12" id="manageComponentsForDialog">
+    <div class="col-xs-12 row noPadding">
+       <span class="closeBtn pull-left" ng-click="closeManageComponentsModal()"><i  class="btx-carrot-left fa-chevron-left"></i></span>
+         <bt-modal-title taskname="Dialog Components" bot="stream"></bt-modal-title>
+        <div class="col-xs-10">
+            <!--<p class="text-center title manage-component-title">Dialog Components</p>-->
+        </div>
+<!--         <div class=""><span class="dhelpLink">
+                 <a class="" target="_blank" ng-href="https://developer.kore.ai/docs/bots/bot-builder/defining-bot-tasks/dialog-tasks/"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+             </span></div>-->
+         <help-button  help-id="'manageComponents'" class="pull-right" ></help-button>
+    </div>
+</div>
+<div class="modal-body synContainer-dg flowTaskForm manageComponents" ng-class="{'isPropertyPanelOpen':isPropertyPanelOpened}">
+    <fieldset class="dialogFieldset">
+    <div class="wf-form wf-form-manageComponents flowTaskConnectionBlock flowTaskBlock dg-cmpts-manage noPadding row col-xs-12" ng-hide="hideUi">
+        
+        <div class="col-xs-12 standard-response-header" dynamic-height dynaoffset="1">
+            <div class="col-xs-2 modal-tab-header"  perfect-scroll dynamic-height dynaoffset="-80" height-property="height">
+                <div class="modal-tabs modal-tabs-vertical" ng-if="(component.type !=='botAction')  || ((component.type ==='botAction')  && (stream.type !== 'solution') && (stream.type !== 'universalbot'))" ng-repeat ="component in componentsNames track by $index" ng-click="showType($index)" ng-class="{'modal-tabs-active {{component.type}}':component.active}">
+                    {{component.name}}
+                </div>
+            </div>
+            <div class="col-xs-10 bt-synonyms noPaddingRight">
+                <div class="col-xs-12 synonym-holder-border">
+                </div>
+                <div class="col-xs-12 noBorderTop manageComponentRightContainer"  perfect-scroll dynamic-height dynaoffset="-60" height-property="height">
+                    <div class="loc-spinner text-center manageComponentSpinner" ng-if="showLoading">
+                        <span>
+                            <i class="fa fa-circle-o-notch wf-spinner"></i>  {{'manage_components_fetching_dialog_components'| i18nString}}
+                        </span>
+                    </div>
+                    <div class="search-block manageComponents-searchDiv" ng-show="!showLoading">
+                        <span class="save-ctrl pull-right">
+                            <div class="workflows-container">
+                                <!-- <div class="searchComponents">
+                                    <img ng-if='!componentsSearchQuery' class="searchIcon" ng-src="{{searchIconGray}}">
+                                    <img ng-if='componentsSearchQuery' ng-click="clearSearch(componentsSearchQuery)" class="searchIcon" ng-src="{{faClose}}">
+                                    <input focus-it tabindex="1" type="text" class="form-control" ng-model="componentsSearchQuery" placeholder="{{'search_here'| i18nString}}">
+                                </div> -->
+                                <div class="searchComponent">
+                                    <input focus-it tabindex="1" type="text" class="form-control" ng-model="componentsSearchQuery" placeholder="{{'search_here'| i18nString}}">
+                                    <i class="btx-search"></i>
+                                    <i class="btx-close" ng-click="clearSearch();" ng-class="{displayNone: !componentsSearchQuery.length}"></i>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[0].active">
+                        <div class='nodeHeaderName'>{{'intent_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[0].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"><span>{</span>{{node.desc}}<span>}</span></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>  
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[1].active">
+                        <div class='nodeHeaderName'>{{'entity_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[1].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 nodeName textEllipsis">{{node.name}}</div>
+                                <div class="col-xs-3 nodeDesc textEllipsis"><span>{</span>{{node.entityType}}<span>}</span></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[2].active">
+                        <div class='nodeHeaderName'>{{'service_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[2].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"><span>{</span>{{node.serviceType}}<span>}</span></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[3].active">
+                        <div class='nodeHeaderName'>{{'script_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[3].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[4].active">
+                        <div class='nodeHeaderName'>{{'message_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[4].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                               <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[5].active">
+                        <div class='nodeHeaderName'>{{'confirmation_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[5].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[6].active">
+                        <div class='nodeHeaderName'>{{'webhook_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[6].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[7].active">
+                        <div class='nodeHeaderName'>{{'agent_transfer_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[7].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[8].active">
+                        <div class='nodeHeaderName'>{{'form_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[8].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[9].active">
+                        <div class='nodeHeaderName'>{{'logic_nodes'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type.toLowerCase() === componentsNames[9].type.toLowerCase())" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[10].active && (stream.type !== 'solution') && (stream.type !== 'universalbot')">
+                        <div class='nodeHeaderName'>{{'configurable_botAction_name'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type === componentsNames[10].type)" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!showLoading && componentsNames[11].active">
+                        <div class='nodeHeaderName'>{{'configurable_process_name'| i18nString}}</div>
+                        <div class="row form-group field-synonyms-list">
+                            <div class="row nodeRow" ng-repeat="node in filteredcomponents =(_nodes | filter:{'name':componentsSearchQuery}) | orderBy: 'name'" ng-if="(node.type === componentsNames[11].type)" ng-click="selectCurrentNode(node._id, '',node, $event)">
+                                <div class="col-xs-3 textEllipsis nodeName">{{node.name}}</div>
+                                <div class="col-xs-3 textEllipsis nodeDesc"></div>
+                                <div class="col-xs-5 nodesInvolved"><span class="textEllipsis tasksInvolvedDesc" ng-repeat="flowtask in node.flowtasksInvolved">{{flowtask}}{{$last ? '' : ',  '}}</span></div>
+                                <div class="col-xs-1" ng-show="taskAccess==='FULL'" ng-if="!node.editLocked"><i ng-if="node.status !== 'published'" ng-click="deleteComponent(node,$event)" class="btx-delete-1 deleteNode"></i></div>
+                                <div class="col-xs-1" ng-if="node.editLocked"><i ng-if="node.status !== 'published'" ng-class="{'screenFreeze':(stream.state==='setup') && stream.sbStreamId}" ng-click="unlockDailogComponent(node,$event)" class="btx-lock lockIcon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "noDataDiv"ng-show="_botComponents.length == 0">
+                        <span>{{'no_data_available_label'| i18nString}}</span>
+                    </div>
+                    <div class = "noDataDiv"ng-show="componentsSearchQuery && _botComponents.length && filteredcomponents.length == 0">
+                        <span>{{'no_search_data_available_label'| i18nString}}</span>
+                    </div>
+                </div>
+            </div>
+             <div class="flowTaskPropertyPanel increasePropertyPanelWidth">
+                    <img ng-if="!isExpanded" class="propertyPanelExpand" ng-src="{{assetsBase+'propertyPanel/maximize.svg'}}" ng-click="toggleSize($event)">
+                    <img ng-if="isExpanded" class="propertyPanelCompress " ng-src="{{assetsBase+'propertyPanel/small.svg'}}" ng-click="toggleSize($event)">
+                    <img ng-if="!isMinimized" class="propertyPanelMin" ng-src="{{assetsBase+'propertyPanel/minimize.svg'}}" ng-click="toggleMinMax($event)">
+                    <img ng-if="isMinimized" class="propertyPanelMax" ng-src="{{assetsBase+'debugConsoleIcons/maximize.svg'}}" ng-click="toggleMinMax($event)">
+                    <img  class="propertyPanelcloseCross" ng-src="{{assetsBase+'propertyPanel/close.svg'}}" ng-click="propertyCb.closePropertyPannel()">
+            <!-- <i class="fa fa-close closePropertyPanel" ng-click="propertyCb.closePropertyPannel()"></i> -->
+            <!-- property component -->
+            <property-panel ng-if="selectedNode"  node-info="selectedNode"  node-obj="{{objList}}"
+                            class="flowTaskPropertyPanelDiv manageComponentPanel" 
+                            edit-prompt="editPrompt" 
+                            edit-error="editError"
+                            dialog-data="dialogData"
+                            cb="propertyCb"
+                            auth-cb="authCB"
+                            bt-test-form-api="btTestFormApi"
+                            bt-test-status="btTestStatus"
+                            noti-refs='notiRefs'
+                            run-bot='runBot'
+                            dialog-entities='dialogEntities'
+                            flowtask-api="flowtaskApi"
+                            call-by="'manageComponents'"
+                            ></property-panel>
+        </div>
+        </div>
+       
+    </div>
+    </fieldset>
+</div>
+   <div class="modal fade zindex prompts-modal" ng-if="dialogMode === 'error'" id="errorprompt_configure" role="dialog" aria-labelledby="errorprompt">
+                <error-prompt-form on-done="onErrorPromptDone" errors-object="errorObject"  on-cancel-prompt="onErrorPromptClose" mode="'manageComponents'"></error-prompt-form> 
+            </div>
+<div class="modal fade zindex prompts-modal"  ng-if="dialogMode === 'prompt'" id="userprompt_configure" tabindex="-1" role="dialog" aria-labelledby="userprompt">
+                <user-prompt-form on-done="onDone" messages-object="messagesObject" is-prompt="isPrompt" on-cancel-prompt="onPromptClose" mode="'manageComponents'"></user-prompt-form> 
+            </div>
+<auth-form wf-type="serviceNode" 
+               callback="authCB"
+               skip-save-confirm=true
+               >
+    </auth-form>
+    <bt-test-form api="btTestFormApi" status="btTestStatus" ></bt-test-form>
+         

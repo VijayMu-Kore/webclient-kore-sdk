@@ -1,0 +1,466 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13 Jul, 2016, 5:47:11 PM
+    Author     : Rajasekhar
+*/
+
+/*TITLE: MODAL CSS*/
+@media (min-height: 700px) {
+  .report-frame .modal-body {
+    max-height: 370px !important;
+  }
+}
+@media (min-height: 800px) {
+  .report-frame .modal-body {
+    max-height: 470px !important;
+  }
+}
+@media (min-height: 900px) {
+  .report-frame .modal-body {
+    max-height: 570px !important;
+  }
+}
+/* .modal.modal-kr {
+  font-size: 16px;
+  overflow: overlay;
+  opacity: 1;
+  -webkit-transition: all 0.35s ease-in-out;
+  -moz-transition: all 0.35s ease-in-out;
+  -o-transition: all 0.35s ease-in-out;
+  transition: all 0.35s ease-in-out;
+}
+.modal.modal-kr.child-modal {
+  z-index: 1100;
+} */
+/*  */
+.report-frame .modal-header {
+
+  text-align: center;
+  height: 60px;
+    padding: 18px 30px;
+    border-bottom: none;
+    background: #fff;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0px 2px 4px rgb(32 33 36 / 20%);
+    text-align: left;
+    position: relative;
+    z-index: 1;
+}
+.report-frame .modal-header .modal-title {
+  font-size: 16px;
+  color: #202124;
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.report-frame .modal-header .close {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  color: #FFF;
+  opacity: 0.7;
+  margin: -2px 0;
+  display: none;
+}
+.report-frame .modal-header .close:hover {
+  opacity: 1;
+  color: #FFF;
+}
+.report-frame .modal-header .btnDone {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 14px;
+  opacity: 0;
+  z-index: 0;
+  //color: #aaa;
+  cursor: default;
+  font-weight: 600;
+  -webkit-transition: opacity 0.5s ease-in;
+  -moz-transition: opacity 0.5s ease-in;
+  -o-transition: opacity 0.5s ease-in;
+  transition: opacity 0.5s ease-in;
+  pointer-events: none;
+}
+.report-frame .modal-header .btnBack {
+  position: relative;
+  float: left;
+  font-size: 18px;
+  top: 5px;
+  left: -10px;
+  opacity: 0;
+  z-index: 0;
+  color: #AAA;
+  -webkit-transition: opacity 0.5s ease-in;
+  -moz-transition: opacity 0.5s ease-in;
+  -o-transition: opacity 0.5s ease-in;
+  transition: opacity 0.5s ease-in;
+  pointer-events: none;
+}
+.report-frame .modal-body {
+  min-height: 0;
+  background-color: #ffffff;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  max-height: 350px;
+  overflow-y: scroll;
+}
+.report-frame .modal-body .control-label {
+  text-align: left;
+  padding: 14px 0;
+  width: 50%;
+  color: #26344a;
+  font-size: 14px;
+  margin: 0;
+}
+.report-frame .modal-body .control-label-full {
+  text-align: left;
+  padding: 14px 0;
+  width: auto;
+  color: #26344a;
+  font-size: 14px;
+  margin: 0;
+}
+.report-frame .modal-body .form-group .form-group-info {
+  font-size: 14px;
+  color: #aaa;
+}
+.report-frame .modal-body .form-control {
+  background-color: #f9f9fb;
+}
+.report-frame .modal-body .form-group-block {
+  min-height: 50px;
+  border-bottom: 1px solid #eee;
+}
+.report-frame .modal-body .checkbox.icon-tick-v1 {
+  position: absolute;
+  right: 65px;
+  margin-top: -25px;
+}
+.report-frame .modal-body .checkbox.icon-tick-v1:before {
+  content: "";
+  cursor: pointer;
+  display: inline-block;
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  top: -8px;
+  margin-left: 0px;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background-color: #fff;
+  -moz-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+.report-frame .modal-body .checkbox.icon-tick-v1.checked:before {
+  border: 1px solid #007eff;
+  background-color: #007eff;
+  -moz-transition: border 0.15s ease-in-out, color0 0.15s ease-in-out;
+  -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+.report-frame .modal-body .checkbox.icon-tick-v1.checked:after {
+  display: inline-block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: -7px;
+  margin-left: 0px;
+  padding-left: 3px;
+  padding-top: 1px;
+  font-size: 11px;
+  color: #fff;
+  font-family: 'FontAwesome';
+  content: "\f00c";
+  cursor: pointer;
+}
+.report-frame .modal-body .radio:before, .report-frame .modal-body .radio:after {
+  margin-left: -2px;
+}
+.report-frame .modal-body .clickableEle {
+  cursor: pointer;
+}
+.report-frame .modal-body .clickableEle * {
+  cursor: pointer;
+}
+.report-frame .modal-footer {
+  opacity: 1;
+  max-height: 100px;
+  background-color: #f9f9fb;
+  padding: 20px 40px;
+  overflow: hidden;
+  -webkit-transition: all 0.6s ease-out;
+  -moz-transition: all 0.6s ease-out;
+  -o-transition: all 0.6s ease-out;
+  transition: all 0.6s ease-out;
+} 
+ .report-frame .modal-footer .btn {
+  min-width: 115px;
+  height: 40px;
+  padding: 6px 25px;
+  font-weight: 400;
+}
+.report-frame .formMain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.report-frame .formAnimate {
+  display: none;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  left: 100%;
+}
+.report-frame .prvForm, .report-frame .formToShow {
+  -webkit-transition: all 0.6s ease-in-out;
+  -moz-transition: all 0.6s ease-in-out;
+  -o-transition: all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
+}
+.report-frame.showForm .modal-header .btnDone {
+  color: #0D6EFD;
+  cursor: pointer;
+  pointer-events: all;
+}
+.report-frame.showForm .modal-header .btnDone {
+  z-index: 2;
+  opacity: 1;
+}
+.report-frame.showForm .modal-header .btnBack {
+  z-index: 2;
+  opacity: 1;
+  pointer-events: all;
+}
+.report-frame.showForm .modal-body {
+  border-radius: 0 0 5px 5px;
+}
+.report-frame.showForm .modal-footer:not(.modal-kr-footer-show) {
+  opacity: 0;
+  max-height: 0;
+  padding: 0 40px;
+  visibility: hidden;
+} 
+
+
+.report-frame .btn-primary{
+    background-color: #0D6EFD;
+    border-color: #0D6EFD;
+} 
+.report-frame .btn-primary:hover{
+    background-color: #0156d4;
+    border-color: #0156d4;
+}
+
+/* .modal.modal-kr.formSmall {
+  -webkit-transform: scale(0.5) !important;
+  -moz-transform: scale(0.5) !important;
+  transform: scale(0.5) !important;
+  opacity: 0 !important;
+}
+.modal.modal-kr.formSmaller {
+  -webkit-transform: scale(0.1) !important;
+  -moz-transform: scale(0.1) !important;
+  transform: scale(0.1) !important;
+  opacity: 0 !important;
+} */
+
+
+.radioDiv [type="radio"] {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+.radioDiv [type="radio"] + span {
+	display: block;
+	cursor: pointer;
+	float: left;
+}
+.radioDiv [type="radio"] + span:before {
+	content: '';
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.25em;
+	border-radius: 1em;
+	border: 0.125em solid #fff;
+	box-shadow: 0 0 0 0.1em #ddd;
+	margin-right: 0.75em;
+	transition: 0.5s ease all;
+}
+.radioDiv [type="radio"]:checked + span:before {
+	background: #0D6EFD;
+	box-shadow: 0 0 0 0.1em #0D6EFD;
+}
+.radioDiv [type="radio"]:focus + span:after {
+	font-size: 1.5em;
+	line-height: 1;
+	vertical-align: -0.125em;
+}
+.radioDiv label.radio-inline {
+	padding-left: 0;
+}
+.radioDiv .opt-title {
+	font-size: 16px;
+	text-transform: none;
+	font-weight: 400;
+}
+.radioDiv span.radioSpanPaddingRT {
+	margin-right: 20px;
+}
+.radioDiv.disabled span {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+
+.select-key{
+    position: absolute;
+    right: 0px;
+    top: -13px;
+}
+.edit-item{
+   // clear: both;
+}
+.resize-v{
+    resize: vertical;
+}
+
+
+.form-wrp{
+    // width: 500px;
+}
+.form-wrp .form-kr{
+    position: relative;
+    //float: left;
+    width: 100%;
+    margin: 0;
+}
+.form-wrp .form-kr .ifLink{
+    padding: 10px;
+    border: 1px solid #eee;
+}
+.no-columns-msg{
+    font-size: 20px;
+    font-weight: 300;
+    text-align: center;
+    color: #26344a;
+    padding-top: 10px;
+    padding-bottom: 15px;   
+}
+
+.container,.panel-body{
+    padding: 30px;
+}
+
+
+.animate-if.ng-enter, .animate-if.ng-leave {
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -ms-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+.animate-if.ng-enter{
+    //opacity:0;
+    left: 100%;
+    //background: red;
+}
+.animate-if.ng-enter.ng-enter-active {
+    //opacity:1;
+    left: 0;
+    //background: green;
+}
+.animate-if.ng-leave{
+    //opacity:1;
+    left: 0;
+}
+.animate-if.ng-leave.ng-leave-active {
+    //opacity:0;
+    left: 100%;
+}
+
+
+
+
+
+.animate-if-back.ng-enter, .animate-if-back.ng-leave {
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -ms-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+.animate-if-back.ng-enter{
+    opacity:0;
+    left: -100%;
+    //background: red;
+}
+.animate-if-back.ng-enter.ng-enter-active {
+    opacity:1;
+    left: 0;
+    //background: green;
+}
+.animate-if-back.ng-leave{
+    opacity:1;
+    left: 0;
+}
+.animate-if-back.ng-leave.ng-leave-active {
+    opacity:0;
+    left: -100%;
+}
+
+/* jQuery typeahead css */
+.ui-autocomplete.contextTypeaheadDropdown {
+  max-height: 211px;
+  overflow: auto;
+  z-index: 99999 !important;
+  width: 211px !important;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+  list-style-type: none;
+}
+.ui-autocomplete.contextTypeaheadDropdown .ui-menu-item {
+  list-style: none;
+  height: 30px;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 0 0 #d8d8d8;
+  
+  font-size: 14px;
+  font-weight: 600 !important;
+  letter-spacing: -0.1px;
+  color: #26344a !important;
+  line-height: 30px;
+  max-width: 192px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ui-autocomplete.contextTypeaheadDropdown .ui-state-focus, .ui-state-active, .ui-state-active:hover{
+  list-style: none;
+  height: 30px;
+  background-color: #0D6EFD !important;
+  box-shadow: 0 1px 0 0 #d8d8d8;
+  font-size: 14px;
+  font-weight: 600 !important;
+  letter-spacing: -0.1px;
+  color: #ffffff !important;
+  line-height: 30px;
+  border: #0D6EFD !important;
+  background: #0D6EFD !important;
+}

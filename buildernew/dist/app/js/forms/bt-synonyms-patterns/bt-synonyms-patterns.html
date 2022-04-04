@@ -1,0 +1,117 @@
+<div class="btsynonymspatternscontainer">
+
+
+
+
+
+    <div>
+        <div class="col-xs-12 labelling">
+            <label tooltip-placement="right" tooltip="">{{'synonyms_name'| i18nString}}</label>
+        </div>
+        <div class="col-xs-12">
+            <div class="col-xs-12">
+                <add-tags tags="identifiedTask.fieldSynonyms[entity.name.toLowerCase()]" ng-show="identifiedTask.taskType !== 'dialog'"></add-tags>
+                <add-tags entity-data="entity" update-synonyms="updateSynonyms(entityData)" tags="entity.synonyms" ng-show="identifiedTask.taskType == 'dialog'"></add-tags>
+                <span class="pull-right pressEnterToSave enterEscape" style="display:none">{{'press_save'| i18nString}}</span>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="marginTop10 dispalyTable">
+     <form name="AddFieldPatternForm" class="marginTop10">
+        <div class="col-xs-12 labelling backgroundwhite">
+            <label tooltip-placement="right" tooltip="">{{'pattern_name'| i18nString}}</label>
+            <div class="pull-right" ng-hide="newFieldPattern.show || true">
+                <a ng-click="showAddFieldPattern({title:entity.name})" class="fontBold">{{'add_pattern'| i18nString}}</a>
+
+            </div>
+            <div class="pull-right" ng-show="newFieldPattern.show && selectedField.key === field.key && false">
+                <button type="button" ng-click="hideAddFieldPattern()" class="btn btn-default btn-sm btn-outline"> {{'cancel'| i18nString}} </button>
+                <button type="button"  class="btn btn-primary btn-sm" ng-click="addFieldPattern(AddFieldPatternForm)"> {{'save'| i18nString}} </button>
+            </div>
+        </div>
+
+        <div ng-show="newFieldPattern.show && selectedField.key === field.key || true">
+
+
+
+            <div class="col-xs-12 form-group">
+                <div class="">
+                    <!-- <p> Create a new Authorization Name & Value pair </p> -->
+                    <div class="form-container col-xs-12 noPadding">
+
+                        <fieldset class="" >
+                            <div class="col-xs-12 form-group">
+
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" ng-focus="showHint = true" ng-blur="showHint = false" ng-keyup="$event.keyCode == 13 && addFieldPattern(AddFieldPatternForm, {title:entity.name}, entity)" class="form-control" placeholder="{{'pattern_use'| i18nString}}" ng-model="newFieldPattern.value" required ng-pattern='validateFieldPattern' name='fieldPattern'>
+                                    <div error-alert ng-show="AddFieldPatternForm.fieldPattern.$error.pattern" class="text-danger">{{'field_Patterns'| i18nString}}</div>
+                                    <div ng-show="addFieldPatternSaving" class="patternSave">{{'saving'| i18nString}}</div>
+                                </div>
+                                <span class="pull-right pressEnterToSave enterEscape" ng-show="showHint">{{'press_save'| i18nString}}</span>
+
+                            </div>
+
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="col-xs-12">
+            <div ng-mouseenter="pattern.showDelete=true" ng-mouseleave="pattern.showDelete=false" ng-show="(identifiedTask.fieldPatterns[entity.name] && identifiedTask.fieldPatterns[entity.name].length) || (identifiedTask.fieldPatterns[entity.name.toLowerCase()] && identifiedTask.fieldPatterns[entity.name.toLowerCase()].length) && identifiedTask.taskType !== 'dialog'" class="col-xs-12 entityPattern" ng-repeat="pattern in (identifiedTask.fieldPatterns[entity.name] || identifiedTask.fieldPatterns[entity.name.toLowerCase()]) | orderBy  : reverse : true" >
+                <div class="col-xs-5 noPadding">
+                    <label class="textEllipsis"><b>{{pattern.original}}</b></label>
+                </div>
+                <div class="col-xs-5">
+                    <div class="textEllipsis">{{pattern.value|formatTaskPattern}}</div>
+                </div>
+                <div class="col-xs-2 text-right">
+                    <a class="codeRed" ng-show="pattern.showDelete" ng-click="deleteFieldPattern(pattern, {title:entity.name})"><i class="fa fa-trash-o"></i></a>
+                </div>
+               <!--  <div class="row col-xs-12 noPadding">
+                    <div class="divider marginTopBottom"></div>
+                </div> -->
+            </div>
+
+            <div ng-show="entity.patterns && entity.patterns.length && identifiedTask.taskType == 'dialog'" ng-repeat="pattern in entity.patterns track by $index | orderBy  : reverse : true">
+                <div class="col-xs-12 entityPattern marginBottom10" >
+                <div class="col-xs-12 noPadding entityPatternClass hidingEntityPatterns{{$index}}" ng-if="selectedPattern!==('editingEntityPatterns'+$index)" ng-click = "clickEntityPattern($index,pattern,intent)" ng-mouseenter="pattern.showDelete=true" ng-mouseleave="pattern.showDelete=false">
+                    <div class="col-xs-5 noPadding">
+                        <label class="textEllipsis"><b>{{pattern.original}}</b></label>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="textEllipsis">{{pattern.value|formatTaskPattern}}</div>
+                    </div>
+                    <div class="col-xs-2 text-right" ng-show="pattern.showDelete">
+                        <i class="fa fa-pencil"></i>
+                        <i class="codeRed fa fa-trash-o"  ng-click="deleteFieldPattern(pattern, {title:entity.name}, entity, $index)"></i>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding inputEntityClass" ng-if="selectedPattern==('editingEntityPatterns'+$index)" id="tags">
+                    <input maxlength="2048" type="text" id="editingEntityPatterns{{$index}}" class="form-control background-field-white patternInput fieldPatternInput intentPatternInput{{$index}} overRideBorder" placeholder=" {{'type_and_enter_to_add_pattern'| i18nString}}" onkeypress="return this.value.length < 2048"
+                    ng-blur="removeEditMode($index)" ng-keydown="$event.keyCode == 13 && saveEntityPatternsObject(entity,'',$index,pattern)" ng-model="ePatterns.editEntityPattern">
+                </div>
+                </div>
+            </div>
+            <div ng-show="identifiedTask.taskType !== 'dialog'">
+            <div ng-hide="((identifiedTask.fieldPatterns[entity.name] && identifiedTask.fieldPatterns[entity.name].length)  || (identifiedTask.fieldPatterns[entity.name.toLowerCase()] && identifiedTask.fieldPatterns[entity.name.toLowerCase()].length))" class="col-xs-12 noPadding">
+                <h5 class="fontSize18 noPatternsTitle">{{'no_patterns'| i18nString}}</h5>
+            </div>
+            </div>
+            <div ng-show="identifiedTask.taskType == 'dialog'">
+            <div ng-hide="entity.patterns && entity.patterns.length" class="col-xs-12 noPadding noPatternsTitle">
+                <h5 class="fontSize18">{{'no_patterns'| i18nString}}</h5>
+            </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+</div>
+
+</div>

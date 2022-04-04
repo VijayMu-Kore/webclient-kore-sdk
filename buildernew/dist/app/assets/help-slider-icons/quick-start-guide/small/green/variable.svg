@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>variable</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="variable">
+            <polygon id="Path" fill="#EAF6EC" fill-rule="nonzero" points="0.25 0.75 17.75 0.75 17.75 17.25 0.25 17.25"></polygon>
+            <path d="M17.4998,1 L17.4998,17 L0.49982,17 L0.49982,1 L17.4998,1 Z M17.9998,0.5 L-0.000183,0.5 L-0.000183,17.5 L17.9998,17.5 L17.9998,0.5 Z" id="Shape" fill="#135423" fill-rule="nonzero"></path>
+            <polygon id="Path" fill="#93D3A2" fill-rule="nonzero" points="0.50018 1 17.5002 1 17.5002 3.5 0.50018 3.5"></polygon>
+            <path d="M7.39318,12.25 C8.45068,12.25 9.0002,11.2425 9.0002,10 M9.0002,10 C9.0002,8.7575 8.40468,7.75 7.39318,7.75 M9.0002,10 C9.0002,11.2425 9.5497,12.25 10.6072,12.25 M9.0002,10 C9.0002,8.7575 9.5957,7.75 10.6072,7.75 M13.2367,13.25 C13.5627,12.2735 13.7502,11.171 13.7502,10 C13.7502,8.829 13.5627,7.7265 13.2367,6.75 M4.76368,6.75 C4.43768,7.7265 4.25018,8.829 4.25018,10 C4.25018,11.171 4.43768,12.2735 4.76368,13.25" id="Shape" stroke="#135423" stroke-width="0.5" stroke-linecap="round"></path>
+        </g>
+    </g>
+</svg>

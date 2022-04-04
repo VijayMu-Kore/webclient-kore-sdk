@@ -1,0 +1,43 @@
+<div class="alerts-row linkedBots">
+  <div class="panel-default">
+
+      <div class="panel-table col-xs-12" ng-show="linkedBots.length > 0">
+        <div class="panel-table-body">
+          <div class="row alertTask" ng-hide="((botDetails.streamState=='published' && linkedBot.state !== 'published') || (botDetails.streamState === 'indevelopment' && linkedBot.isDeleted))" ng-repeat="linkedBot in linkedBots">
+            <div class="col-xs-7 paddingBTM" tooltip-append-to-body="true" title="{{linkedBot.botName}}" alt="{{linkedBot.botName}}"><img class="img" ng-src="{{linkedBot.botIconUrl}}" alt="{{linkedBot.botName}}">{{linkedBot.botName}}</div>
+            <div class="col-xs-4 paddingBTM deploymentStatus paddingTop25" ><span ng-class="{'published':linkedBot.state === 'published'}" class="status">{{(linkedBot.state === 'published' && linkedBot.parentId)? ('constants.states_awaitingApproval'| i18nString):(_constants_.states[linkedBot.state] || linkedBot.state)}}</span></div>
+
+           
+            <div class="col-xs-1 text-center paddingTop25" ng-show="linkedBot.state !== 'published'" ng-class="{'hide':showSolutionBotSetup}">
+              <div class="dropdown panel-dropdown">
+                <!-- <i class="fa fa-1 pointer-hand fa-cog"  data-toggle="dropdown"></i> -->
+                <img ng-src="{{gearHover}}" data-toggle="dropdown" class="gearHover">
+                <ul class="dropdown-menu panel-dropdown-menu" role="menu" >
+                  <li>
+                    <a ng-click="unlinkInfo(linkedBot)">{{'unlink'| i18nString}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div> 
+            <div class="col-xs-12 description" tooltip-append-to-body="true" title="{{linkedBot.description}}" alt="{{linkedBot.description}}">{{linkedBot.description}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="unlinkInfo" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header">
+                <h4 class="modal-title">{{'unlink_bot'| i18nString}}</h4>
+              </div>
+            <div class="modal-body">
+               <p class="desc">{{'unlink_description'| i18nString:({dyn:currentLinkBot.botName})}} </p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default proceed" ng-click='linkOrUnlinkBot(currentLinkBot)'>{{'proceed'| i18nString}}</button>
+                <button type="button" class="btn btn-default cancel" ng-click='closeUnlinkInfo()'>{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

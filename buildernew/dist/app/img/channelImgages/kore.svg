@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="43px" height="43px" viewBox="0 0 43 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>18A4C85F-581C-4F22-A543-71944F64702F</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <linearGradient x1="21.6511224%" y1="91.5393479%" x2="93.2545507%" y2="-7.5475582%" id="linearGradient-1">
+            <stop stop-color="#5BC7DA" offset="0%"></stop>
+            <stop stop-color="#59C3D7" offset="21.65%"></stop>
+            <stop stop-color="#50BCCE" offset="37.01%"></stop>
+            <stop stop-color="#3EB0C1" offset="50.41%"></stop>
+            <stop stop-color="#1AA1AF" offset="62.63%"></stop>
+            <stop stop-color="#099EAB" offset="65%"></stop>
+        </linearGradient>
+        <linearGradient x1="78.7025415%" y1="8.02186959%" x2="7.0989261%" y2="107.10932%" id="linearGradient-2">
+            <stop stop-color="#5BC7DA" offset="0.05772783%"></stop>
+            <stop stop-color="#59C3D7" offset="21.69%"></stop>
+            <stop stop-color="#50BCCE" offset="37.03%"></stop>
+            <stop stop-color="#3EB0C1" offset="50.42%"></stop>
+            <stop stop-color="#1AA1AF" offset="62.63%"></stop>
+            <stop stop-color="#099EAB" offset="65%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Kore">
+            <g id="logo">
+                <g id="Layer_1">
+                    <g id="Group">
+                        <path d="M41.968,14.878 C38.356,3.612 26.23,-2.58 14.878,1.032 C3.612,4.644 -2.58,16.77 1.032,28.122 C4.644,39.388 16.77,45.58 28.122,41.968 C39.388,38.356 45.58,26.23 41.968,14.878 Z M11.18,24.768 C9.374,19.092 12.47,12.986 18.146,11.18 C23.822,9.374 29.928,12.47 31.734,18.146 C33.54,23.822 30.444,29.928 24.768,31.734 C19.092,33.626 13.072,30.444 11.18,24.768 Z" id="Shape" fill="#099EAB"></path>
+                        <path d="M31.132,26.402 C25.628,37.066 8.17,39.818 1.032,28.036 C4.644,39.388 16.77,45.58 28.122,41.968 C39.388,38.356 45.58,26.23 41.968,14.878" id="Shape" fill="url(#linearGradient-1)"></path>
+                        <path d="M11.868,16.598 C17.372,5.934 34.83,3.182 41.968,14.964 C38.356,3.612 26.23,-2.58 14.878,1.032 C3.612,4.644 -2.58,16.77 1.032,28.122" id="Shape" fill="url(#linearGradient-2)"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

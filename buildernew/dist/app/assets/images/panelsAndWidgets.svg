@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="692px" height="98px" viewBox="0 0 692 98" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>panelsAndWidgets</title>
+    <desc>Created with Sketch.</desc>
+    <g id="panelsAndWidgets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g>
+            <path d="M4,27 L96,27 C98.209139,27 100,28.790861 100,31 L100,93 C100,95.209139 98.209139,97 96,97 L4,97 C1.790861,97 2.22044605e-16,95.209139 0,93 L0,31 C-2.22044605e-16,28.790861 1.790861,27 4,27 Z" id="Path" stroke="#B7BAC6" stroke-width="0.5" fill="#FFFFFF" fill-rule="nonzero"></path>
+            <g id="Group" transform="translate(32.000000, 54.000000)" fill="#333333" font-family="Lato-Regular, Lato" font-size="14" font-weight="normal">
+                <text id="Setup">
+                    <tspan x="0.255" y="14">Setup</tspan>
+                </text>
+            </g>
+            <g id="Group" transform="translate(29.000000, 0.000000)" fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11" font-weight="bold">
+                <text id="STEP-1">
+                    <tspan x="0.639" y="11">STEP 1</tspan>
+                </text>
+            </g>
+            <path d="M179,27 L271,27 C273.209139,27 275,28.790861 275,31 L275,93 C275,95.209139 273.209139,97 271,97 L179,97 C176.790861,97 175,95.209139 175,93 L175,31 C175,28.790861 176.790861,27 179,27 Z" id="Path" stroke="#B7BAC6" stroke-width="0.5" fill="#FFFFFF" fill-rule="nonzero"></path>
+            <g id="Group" transform="translate(194.000000, 54.000000)" fill="#333333" font-family="Lato-Regular, Lato" font-size="14" font-weight="normal">
+                <text id="Configure">
+                    <tspan x="0.473" y="14">Configure</tspan>
+                </text>
+            </g>
+            <g id="Group" transform="translate(204.000000, 0.000000)" fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11" font-weight="bold">
+                <text id="STEP-2">
+                    <tspan x="0.639" y="11">STEP 2</tspan>
+                </text>
+            </g>
+            <path d="M354,28 L446,28 C448.209139,28 450,29.790861 450,32 L450,94 C450,96.209139 448.209139,98 446,98 L354,98 C351.790861,98 350,96.209139 350,94 L350,32 C350,29.790861 351.790861,28 354,28 Z" id="Path" stroke="#B7BAC6" stroke-width="0.5" fill="#FFFFFF" fill-rule="nonzero"></path>
+            <g id="Group" transform="translate(371.000000, 43.000000)" fill="#333333" font-family="Lato-Regular, Lato" font-size="14" font-weight="normal">
+                <text id="Preview">
+                    <tspan x="3.919" y="14">Preview</tspan>
+                </text>
+                <text id="&amp;-Publish">
+                    <tspan x="0.132" y="38">&amp; Publish</tspan>
+                </text>
+            </g>
+            <g id="Group" transform="translate(379.000000, 0.000000)" fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11" font-weight="bold">
+                <text id="STEP-3">
+                    <tspan x="0.639" y="11">STEP 3</tspan>
+                </text>
+            </g>
+            <path d="M528,27 L688,27 C690.209139,27 692,28.790861 692,31 L692,52.999 C692,55.208139 690.209139,56.999 688,56.999 L528,56.999 C525.790861,56.999 524,55.208139 524,52.999 L524,31 C524,28.790861 525.790861,27 528,27 Z" id="Path" stroke="#B7BAC6" stroke-width="0.5" fill="#FFFFFF" fill-rule="nonzero"></path>
+            <g id="Group" transform="translate(550.000000, 35.000000)" fill="#26344A" font-family="Lato-Regular, Lato" font-size="12" font-weight="normal">
+                <text id="Host-with-Kore.ai-SDK">
+                    <tspan x="0" y="12">Host with Kore.ai SDK</tspan>
+                </text>
+            </g>
+            <g id="Group" transform="translate(587.000000, 0.000000)" fill="#8A959F" font-family="Lato-Bold, Lato" font-size="11" font-weight="bold">
+                <text id="STEP-4">
+                    <tspan x="0.639" y="11">STEP 4</tspan>
+                </text>
+            </g>
+            <path d="M529,67 L688,67 C690.209139,67 692,68.790861 692,71 L692,92.999 C692,95.208139 690.209139,96.999 688,96.999 L529,96.999 C526.790861,96.999 525,95.208139 525,92.999 L525,71 C525,68.790861 526.790861,67 529,67 Z" id="Path" stroke="#B7BAC6" stroke-width="0.5" fill="#FFFFFF" fill-rule="nonzero"></path>
+            <g id="Group" transform="translate(556.000000, 74.000000)" fill="#26344A" font-family="Lato-Regular, Lato" font-size="12" font-weight="normal">
+                <text id="Host-Independently">
+                    <tspan x="0.48" y="12">Host Independently</tspan>
+                </text>
+            </g>
+            <g id="Group" transform="translate(115.000000, 58.000000)">
+                <path d="M0,4 L44.519,4" id="Path" stroke="#BDC5C7" stroke-linecap="square"></path>
+                <polygon id="Path" fill="#787D8F" fill-rule="nonzero" points="44.237 0.462 48.957 4.228 44.237 7.994"></polygon>
+            </g>
+            <g id="Group" transform="translate(290.000000, 58.000000)">
+                <path d="M0,4 L44.519,4" id="Path" stroke="#BDC5C7" stroke-linecap="square"></path>
+                <polygon id="Path" fill="#787D8F" fill-rule="nonzero" points="44.237 0.462 48.957 4.228 44.237 7.994"></polygon>
+            </g>
+            <g id="Group" transform="translate(465.000000, 38.000000)">
+                <path d="M0,4 L44.519,4" id="Path" stroke="#BDC5C7" stroke-linecap="square"></path>
+                <polygon id="Path" fill="#787D8F" fill-rule="nonzero" points="44.237 0.462 48.957 4.228 44.237 7.994"></polygon>
+            </g>
+            <g id="Group" transform="translate(465.000000, 78.000000)">
+                <path d="M0,4 L44.519,4" id="Path" stroke="#BDC5C7" stroke-linecap="square"></path>
+                <polygon id="Path" fill="#787D8F" fill-rule="nonzero" points="44.237 0.462 48.957 4.228 44.237 7.994"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

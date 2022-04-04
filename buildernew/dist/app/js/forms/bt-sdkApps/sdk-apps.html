@@ -1,0 +1,506 @@
+
+    <!-- MANAGE APPS -->
+    <div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'manageApps'" ng-class="{'screenFreeze':checkBotState()}">
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'api_scopes_label'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn" ng-show="emptyAppScopes()">
+                     <button class="btn btn-xs btnSolidBlue" ng-click="sdkCallback.APIScopeMappingSlider()"> {{'new'| i18nString}} </button>
+                </div>
+                <div class="filtersDetails displayNone">
+                    <span class="filterListContainer">
+                        <span class="filterCat">Languages </span>
+                        <span class="filterClose">(1)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">Date Period </span>
+                        <span class="filterClose">(5 days)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <div class="dropdown moreDD">
+                        <a href="#" class="moreFilters" data-toggle="dropdown">
+                            +2 more
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">
+                                <span class="filterCat">Channels </span>
+                                <span class="filterClose">(4)</span>
+                                <i class="btx-close"></i>
+                            </li>
+                            <li class="dropdown-item" >
+                                <span class="filterCat">Tasks </span>
+                                <span class="filterClose">(3)</span>
+                                <i class="btx-close"></i>
+                            </li>                       
+                        </ul>
+                    </div>
+                    <span class="clearAllFilters">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                </div>
+          
+                <div class="btnActions displayNone">
+                    <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                </div>
+                <div class="titleDropdown displayNone">
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                         </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow displayNone">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="emptyStateContainer" ng-hide="emptyAppScopes()">
+            <div class="emptyState">
+                <div class="emptyImage">
+                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                </div>  
+                <span class="mainTitle">{{'create_new_api_scope'| i18nString}}</span>
+                <span class="mainTitle font-size-small">{{'api_scope_emptystate_desc'| i18nString}}</span>
+                <!-- <div class="emptyStateDesc">Description</div> -->
+                <div class="generateBtn">
+                    <!-- <button class="btn btnSolidBlue" >Add</button> -->
+                    <button class="btn btnSolidBlue" target="_blank" ng-click="sdkCallback.APIScopeMappingSlider()">{{'create_api_scope'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="SDKList" ng-show="emptyAppScopes()">
+            <div class="col-xs-12  darkBottomBorder paddingBottom10">
+                <div class="col-xs-5">
+                    {{'app'| i18nString}}
+                </div>
+                <div class="col-xs-5">
+                    {{'scopes'| i18nString}}
+                </div>
+            </div>
+        </div>
+        <div class="appScopesContainer">
+            <div class="col-xs-12  manageSDKList" ng-repeat="app in sdkCallback.apps|filter:{appName:nameSearchQuery}"
+                ng-if="canDisplayApp(app)">
+                <div class=col-xs-5><span class="appName">{{app.appName}}</span></div>
+                <div class=col-xs-5><span class="appName">{{getScopeDisplayNames(app)}}</span></div>
+                <div class=col-xs-2>
+                    <span class="fa fa-trash pull-right error-color apiScopesDelete"
+                        ng-click="sdkCallback.deleteScopes(app)"></span>
+                    <span class="fa fa-pencil pull-right apiScopesEdit"
+                        ng-click="sdkCallback.appDefinitionDataSlider(app,$index)"></span>
+                </div>
+            </div>
+        </div>
+        <div class="marginTop15">
+            <app-creation sdk-conf-on-modal="sdkConfOnModal" hide-Ui="true" sdk-conf="sdkConf" callback="sdkCallback"
+                call-from="'manageApps'"></app-creation>
+        </div>
+    </div>
+    <div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'apps'"
+        ng-class="{'viewSection':checkBotState()}">
+        <div class="">
+            <app-creation sdk-conf-on-modal="sdkConfOnModal" hide-Ui="true" sdk-conf="sdkConf" callback="sdkCallback"
+                call-from="'apps'"></app-creation>
+        </div>
+    </div>
+    <!-- End of MANAGE APPS -->
+    <div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'botkitSDK'">
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'bot_kit_sdk_label'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn displayNone">
+                    <button class="titleBTN">button</button>
+                </div>
+                <div class="titleDropdown displayNone">
+    
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                            <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow displayNone">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="sdkSteps">
+            <div class="eachStep">
+                <div class="stepTitle">{{'download_bot_kit'| i18nString}}</div>
+                <div class="stepDesc" ng-bind-html="'download_github'| i18nString:({link:'https://github.com/Koredotcom/BotKit'})"></div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'register_app'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_registerApp'| i18nString}}</div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'callback_url'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_defineCallbackURL'| i18nString}}</div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'select_events'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_selectEvents'| i18nString}}</div>
+            </div>
+            <div class="marginTop15">
+                <app-creation sdk-conf-on-modal="sdkConfOnModal" sdk-conf="sdkConf" callback="sdkCallback"
+                    call-from="'botkitSDk'"></app-creation>
+            </div>
+        </div>
+        <div class="buttonContainer" ng-class="{'screenFreeze':checkBotState()}">
+            <button class="btn btnSolidBlue text-info botKitSdkSave" ng-click="sdkCallback.createAppCredentials(true)" ng-disabled="sdkCallback.disableSaveBtn()"><i ng-show="sdkCallback.saveInprogress" class="fa fa-spinner fa-spin"></i>{{(sdkCallback.saveInprogress)?savingLabel:save}}</button>
+        </div>
+    </div>
+    <div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'agentTransfer'">
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'agent_transfer'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn displayNone">
+                    <button class="titleBTN">button</button>
+                </div>
+                <div class="titleDropdown displayNone">
+    
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                            <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow displayNone">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="sdkSteps">
+            <div class="eachStep" >
+                <div class="stepTitle">{{'download_bot_kit'| i18nString}}</div>
+                <div class="stepDesc" ng-bind-html="'download_github'| i18nString:({link:'https://github.com/Koredotcom/BotKit'})"></div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'register_app'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_registerApp'| i18nString}}</div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'callback_url'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_defineCallbackURL'| i18nString}}</div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'defineDialog_label'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_defineDialog'| i18nString}}</div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'integrateAgentSoft_label'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_integrateAgentSoft'| i18nString}}</div>
+            </div>
+            <div class="marginTop15">
+                <app-creation sdk-conf-on-modal="sdkConfOnModal" sdk-conf="sdkConf" callback="sdkCallback" call-from="'agentTransfer'"></app-creation>
+            </div>
+        </div>
+        <div class="buttonContainer" ng-class="{'screenFreeze':checkBotState()}">
+            <button class="btn btnSolidBlue text-info botKitSdkSave" ng-click="sdkCallback.createAppCredentials(true)" ng-disabled="sdkCallback.disableSaveBtn()"><i ng-show="sdkCallback.saveInprogress" class="fa fa-spinner fa-spin"></i>{{(sdkCallback.saveInprogress)?savingLabel:save}}</button>
+        </div>
+    </div>
+    <div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'webMobileSDK'">
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'web_sdk'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn displayNone">
+                    <button class="titleBTN">button</button>
+                </div>
+                <div class="titleDropdown displayNone">
+    
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                            <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow displayNone">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                        <li class="dropdown-item">Option One</li>
+                                        <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="sdkSteps">
+            <div class="eachStep" >
+                <div class="stepTitle">{{'download_websdk'| i18nString}}</div>
+                <div class="stepDesc" ng-bind-html="'websdk_github'| i18nString:({link:'https://github.com/Koredotcom/web-kore-sdk'})"></div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'register_app'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_registerApp'| i18nString}}</div>
+            </div>
+            <div class="eachStep marginTop15" ng-class="{'screenFreeze':checkBotState()}">
+                <div class="stepTitle">{{'enableChannel_label'| i18nString}}</div>
+                <div class="stepDesc">{{'constants.botKitSdk_enableChannel'| i18nString}}</div>
+            </div>
+            <div class="marginTop15">
+                <app-creation sdk-conf-on-modal="sdkConfOnModal" sdk-conf="sdkConf" callback="sdkCallback"
+                    call-from="'webMobileSDK'"></app-creation>
+            </div>
+        </div>
+        <div class="buttonContainer" ng-class="{'screenFreeze':checkBotState()}">
+            <button class="btn btnSolidBlue text-info" ng-disabled="sdkCallback.disableSaveBtn()" ng-click="sdkCallback.addAppToStream()"> <i ng-show="sdkCallback.saveInprogress" class="fa fa-spinner fa-spin"></i>{{(sdkCallback.saveInprogress)? savingLabel :save}}  </button>
+        </div>
+    </div>
+    <div ng-if="rightPanel.innerRightPanel.view === 'eventsManage'" class="animationIfEnter"
+        ng-class="{'read-only-wrap':accessRights === 'VIEW'}" id='eventsManageS'>
+        <div class="row btnSearchTitle">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'event_handlers'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn displayNone">
+                     <button class="btn btn-xs"> BTN Name</button>
+                </div>
+                <div class="filtersDetails displayNone">
+                    <span class="filterListContainer">
+                        <span class="filterCat">Languages </span>
+                        <span class="filterClose">(1)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">Date Period </span>
+                        <span class="filterClose">(5 days)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <div class="dropdown moreDD">
+                        <a href="#" class="moreFilters" data-toggle="dropdown">
+                            +2 more
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">
+                                <span class="filterCat">Channels </span>
+                                <span class="filterClose">(4)</span>
+                                <i class="btx-close"></i>
+                            </li>
+                            <li class="dropdown-item" >
+                                <span class="filterCat">Tasks </span>
+                                <span class="filterClose">(3)</span>
+                                <i class="btx-close"></i>
+                            </li>                       
+                        </ul>
+                    </div>
+                    <span class="clearAllFilters">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                </div>
+          
+                <div class="btnActions displayNone">
+                    <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                </div>
+                <div class="titleDropdown displayNone">
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                         </ul>
+                    </div>
+                </div>               
+            </div>
+          </div>
+          
+        <table class="table table-hover eventsManage" ng-if="isEventsAvail">
+            <tbody class="header-table">
+                <tr class='cursor-pointer no-hover'>
+                    <th ng-show='!searchInput' class='event_width'>{{'event'| i18nString}} 
+                        <i class='btx-search fa-search cursor-pointer' ng-click='searchClickHandle()'></i>
+                    </th>
+                    <th ng-show='searchInput' class='event_width'>
+                        <input class='eventSearch' ng-model='search.name'>
+                        <i class='btx-close' ng-click='searchInputBlur()'></i>
+                    </th>
+                    <th class='trigger_width'>{{'event_trigger'| i18nString}}</th>
+                    <th class="ieWidth">{{'actions'| i18nString}}</th>  
+                    <div class="kr-sg-dropdowns elipse-dropdown-info events-actions-dropdown" ng-if="stream.type !== 'universalbot' && allowNamespace">    
+                        <div class="dropdown dropdown-open">
+                            <button ng-click='deleteNIndexDD($event)' class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                                <i class="btx-overflow"></i>
+                            </button>                                            
+                            <ul class="dropdown-menu content-menu">                                                      
+                                <li ng-click="openManageVarSdk()"><a>{{'manage_var_namespace'| i18nString}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </tr>
+            </tbody>
+            <tbody class="table-body">
+                <th class="eventsHeading" ng-if="welcomeEvents.length">{{welcomeMessage}}</th>
+                <tr ng-repeat='event in welcomeEvents | filter:search:strict' id="{{event.id}}" class='cursor-pointer' ng-click='onEventDescClick(event.name, event.enabled, "welcome")'>
+                    <td class='event_width'>{{event.name}}</td>
+                    <td class='trigger_width'>{{event.trigger}}</td>
+                    <td class='toggleDiv toggleSwitch ieWidth eventsListData' ng-click='$event.stopPropagation()'>
+                        <toggle-switch class="single-label-no-margin" ng-if='!event.configured && event.name !== "Task Execution Failure"'
+                            ng-model='event.enabled' no-opt="true" ng-change="toggleClickHandler(event.name, event.enabled)"
+                            ng-class="{'pointer-none': selectedState === 'published'}"></toggle-switch>
+                        <span ng-if='event.configured && event.name !== "Task Execution Failure"' class='config-style'
+                            ng-click="onEventDescClick(event.name, event.enabled)">{{'configure'| i18nString}}</span>
+                        <span ng-if='!event.enabled && event.name === "Task Execution Failure"' class='config-style'
+                            ng-click="sdkCallback.openEventSlider(event.name,'fromConfigured')">{{'configure'| i18nString}}</span>
+                        <span tooltip-placement="top" tooltip="{{'event_not_enabled'| i18nString}}"
+                            ng-show='event.enabled && event.name === "Task Execution Failure"' class='task-fail-toggle'>
+                            <toggle-switch class="single-label-no-margin" ng-model='status.task_fail' no-opt="true"></toggle-switch>
+                        </span>
+                    </td>
+                </tr>
+                <th class="eventsHeading" ng-if="intentsEvents.length">{{intentMessage}}</th>
+                <tr ng-repeat='event in intentsEvents | filter:search:strict' class='cursor-pointer' ng-click='onEventDescClick(event.name, event.enabled, "intent")'>
+                    <td class='event_width'>{{event.name}}</td>
+                    <td class='trigger_width'>{{event.trigger}}</td>
+                    <td class='toggleDiv toggleSwitch ieWidth eventsListData' ng-click='$event.stopPropagation()'>
+                        <toggle-switch class="single-label-no-margin" ng-if='!event.configured && (event.name !== "Intent not Identified" && event.name !== "Ambiguous Intents Identified")'
+                            ng-model='event.enabled' no-opt="true" ng-change="toggleClickHandler(event.name, event.enabled)"
+                            ng-class="{'pointer-none': selectedState === 'published'}"></toggle-switch>
+                            <span ng-if='event.configured && (event.name !== "Intent not Identified" && event.name !== "Ambiguous Intents Identified")' class='config-style'
+                            ng-click="onEventDescClick(event.name, event.enabled)">{{'configure'| i18nString}}</span>
+                        <!-- <span ng-if='!event.enabled && event.name === "Task Execution Failure"' class='config-style'
+                            ng-click="sdkCallback.openEventSlider(event.name,'fromConfigured')">{{'configure'| i18nString}}</span> -->
+                        <span tooltip-placement="top" tooltip="{{'event_not_enabled'| i18nString}}"
+                        ng-show='event.enabled || (event.name === "Intent not Identified" || event.name === "Ambiguous Intents Identified")' class='task-fail-toggle'>
+                            <toggle-switch class="single-label-no-margin" ng-model='status.task_fail' no-opt="true"></toggle-switch>
+                        </span>
+                    </td>
+                </tr>
+                <th class="eventsHeading" ng-if="channelEvents.length">{{channelMessage}}</th>
+                <tr ng-repeat='event in channelEvents | filter:search:strict' class='cursor-pointer' ng-click='onEventDescClick(event.name, event.enabled, "channel")'>
+                    <td class='event_width'>{{event.name}}</td>
+                    <td class='trigger_width'>{{event.trigger}}</td>
+                    <td class='toggleDiv toggleSwitch ieWidth eventsListData' ng-click='$event.stopPropagation()'>
+                        <toggle-switch class="single-label-no-margin" ng-if='!event.configured && event.name !== "Task Execution Failure"'
+                            ng-model='event.enabled' no-opt="true" ng-change="toggleClickHandler(event.name, event.enabled)"
+                            ng-class="{'pointer-none': selectedState === 'published'}"></toggle-switch>
+                        <span ng-if='event.configured && event.name !== "Task Execution Failure"' class='config-style'
+                            ng-click="onEventDescClick(event.name, event.enabled)">{{'configure'| i18nString}}</span>
+                        <span ng-if='!event.enabled && event.name === "Task Execution Failure"' class='config-style'
+                            ng-click="sdkCallback.openEventSlider(event.name,'fromConfigured')">{{'configure'| i18nString}}</span>
+                        <span tooltip-placement="top" tooltip="{{'event_not_enabled'| i18nString}}"
+                            ng-show='event.enabled && event.name === "Task Execution Failure"' class='task-fail-toggle'>
+                            <toggle-switch class="single-label-no-margin" ng-model='status.task_fail' no-opt="true"></toggle-switch>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="emptyStateContainer" ng-hide="isEventsAvail">
+            <div class="emptyState">
+                <div class="emptyImage">
+                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                </div>  
+                <span class="mainTitle">{{'no_events_yet'| i18nString}}</span>
+                <!-- <div class="emptyStateDesc">Description</div>
+                <div class="generateBtn">
+                    <button class="btn btnSolidBlue" >Add</button>
+                    <button class="btn" target="_blank" >learn more</button>
+                </div> -->
+            </div>
+        </div>
+        <div class="marginTop15">
+            <app-creation callback="sdkCallback" hide-Ui="true"></app-creation>
+        </div>
+    </div>
+<manage-variable-namespace cb='manage_var_events__cb' class="manage-variable" id="manageVarNamespaceEventsForm" ng-if="manageVarEventsEnable"></manage-variable-namespace>

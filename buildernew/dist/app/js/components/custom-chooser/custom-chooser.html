@@ -1,0 +1,13 @@
+<div class="bt-streamchooser-container">
+	<!-- <div class="tabs">here goes the tabs</div> -->
+	<div class="search-box">
+		<input class="form-control typeahead-text" tabindex="1" type="text" value="" ng-model="typeaheadQuery" placeholder="{{'search'| i18nString}}"/>
+		<i class="fa fa-search"></i>
+	</div>
+	<div class="text-center" ng-if="loadingItems"><i class="fa fa-spinner fa-spin"></i></div>
+	<div class="form-control typeahead-list" ng-if="!loadingItems">
+		<!-- mode -->
+		<div class="list-item" tabindex="{{$index+2}}" ng-repeat="item in filteredItems = (items | filter:flowSearchFilter({'name':typeaheadQuery})) track by $index" ng-click="selectItem(item)"> {{item.name}} </div>
+		<div class="no-results" ng-if="!filteredItems.length"> {{'no_results_label'| i18nString}} </div>
+	</div>
+</div>

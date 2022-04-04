@@ -1,0 +1,145 @@
+<div class="col-xs-12 form-group noPadding" ng-class="{'read-only-wrap':advancedDisplayMode === 'VIEW'}">
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">{{'bot_functions'| i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            <div class="searchComponent displayNone">
+                <input  placeholder="Search">
+                <i class="btx-search"></i>
+                <i class="btx-close displayNone"></i>
+            </div>
+            <div class="creationButton borderBtn displayNone">
+                 <button class="btn" ng-click="addNewPii()"> {{'add_new'| i18nString}}</button>
+            </div>
+            <div class="titleDropdown displayNone">
+                <div class="dropdown">
+                    <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Dropdown name
+                        <i class="btx-carrot-up"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item" >Option Two</li>                       
+                     </ul>
+                </div>
+            </div>
+            <div class="titleOverflow displayNone">
+                <div class="dropdown">
+                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                        </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item" >Option Two</li>                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="col-xs-12 form-group noPadding pointerEventNone">
+                <div class="btFunctionTitle"> {{'custom_script'| i18nString}} </div>
+                <p class="customScriptDescription">{{'custom_script_desc'| i18nString}}</p>
+                <button type="button" ng-if = "!file.fileData.fileName " ng-disabled="advancedDisplayMode === 'VIEW'" ng-click = "importCustomScriptModal()" class="btn  btnSolidBlue"> {{'import'| i18nString}} </button>
+                <button ng-disabled="advancedDisplayMode === 'VIEW'" ng-if = "file.fileData.fileName" class="finalFile btn"><span ng-click = "deleteBotFunctions(file)" class="fa fa-close cursor-pointer fileNamedetails"></span>{{file.fileData.fileName}}</button>
+                <a ng-if = "file.fileData.fileName" target="_blank" download>
+                    <button  type="button" ng-click="downloadFile()" class="btn btnDownload" ng-disabled="advancedDisplayMode === 'VIEW'"> {{'download'| i18nString}} </button>
+                </a>
+                <button  ng-if = "file.fileData.fileName" type="button" ng-click = "importCustomScriptModal()" class="btn btnSolidBlue" ng-disabled="advancedDisplayMode === 'VIEW'"> {{'import_new'| i18nString}} </button>
+                <p class="fileImported" ng-if = "file.fileData.fileName">{{'imported_on'| i18nString}} {{getTime()}} {{getDate()}}. </p>
+            </div>
+            <div class="modal fade import-customScript-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content" ng-show="importStep == 1">
+                        <div class="modal-header bulkImport">
+                            <h4 class="modal-title">{{'import_custom_script'| i18nString}}</h4>
+                        </div>
+                        <div class="modal-body import-utterances-modal-body" perfect-scroll>
+                            <div class="col-xs-12">
+                                <div class="col-xs-12 form-group noPadding fileDropContainer">
+                                    <div class="imgCntr"><img class="" ng-src="{{dragDropIcon}}"></div>
+                                    <div class="dragdrophelp" ng-hide="fileName">
+                                        <div class="dragdroptitle">{{'drag_drop'| i18nString}}</div>
+                                        <div class="ortitle">{{'or'| i18nString}}</div>
+                                        <div class="browsetitle"><span class="browseBtn cursor-pointer">{{'browse'| i18nString}}</span></div>
+                                    </div>
+                                    <div class="uploadedUtteranceFile" ng-show="fileName"><span class="filename">{{fileName}}</span><span class="removefile"><i ng-click="removeFile()" class="fa fa-close"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer importFooter">
+                            <button type="button" ng-disabled="!fileName" class="btn btn-primary" ng-click="startImport()">{{'import'| i18nString}}</button>
+                            <button type="button" class="btn closeCancel" ng-click="onCancelCustomScript()">{{'cancel'| i18nString}}</button>
+                        </div>
+                    </div>
+                    <div class="modal-content" ng-if="importStep == 2">
+                        <div class="modal-header bulkImport">
+                            <h4 class="modal-title">{{'import_custom_script'| i18nString}}</h4>
+                        </div>
+                        <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                            <div class="col-xs-12">
+                                <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                                    <div class="text-center importimage">
+                                        <img class="" ng-src="{{wentWrongIcon}}">
+                                    </div>
+                                    <div class="importerror">
+                                        <div class="title">{{'some_thing_wrong_label'| i18nString}}</div>
+                                        <div class="errors" ng-repeat="error in errorMsg">
+                                            <div class="statementutterdiv col-xs-12">
+                                                <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                                                <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer form-group">
+                            <div ng-show="!doneImporting">
+                                <button type="button" class="btn" ng-click="goToStep(1)">{{'retry'| i18nString}}</button>
+                                <button type="button" class="btn closeCancel" ng-click="onCancelCustomScript()"> {{'cancel'| i18nString}} </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-content" ng-show="importStep == 3 && qafileuploading">
+                        <div class="modal-header bulkImport">
+                            <h4 class="modal-title">{{'import_custom_script'| i18nString}}</h4>
+                        </div>
+                        <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                            <div class="col-xs-12">
+                                <div class="imgCntr"><img class="layer" ng-src="{{importingIcon}}">
+                                    
+                                </div>
+                                <div class="importingText"><span class="processing">{{'importing'| i18nString}}</span></div>
+                                <div class="progressouter"><div class="progressinner" ng-style="{width : (totalProgress + '%') }"></div></div>
+                                <!-- <div class="processAnimationDiv col-xs-offset-1"></div> -->
+                            </div>
+                        </div>
+                        <div class="modal-footer form-group">
+                            <div  ng-show="!doneImporting">
+                                <!-- <button type="button" class="btn btn-default" ng-click="onCancelCustomScript()"> Cancel </button> -->
+                                <button type="button"  ng-disabled="disabled" class="btn btn-primary btnSave" ng-click="goToStep(1)">{{'done'| i18nString}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-content" ng-show="importStep == 4 && qafileuploading">
+                        <div class="modal-header bulkImport">
+                            <h4 class="modal-title">{{'import_custom_script'| i18nString}}</h4>
+                        </div>
+                        <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                            <div class="col-xs-12 form-group noPadding importsuccess">
+                                <div class="text-center importsuccessimage">
+                                    <img ng-src="{{importDoneIcon}}" />
+                                </div>
+                                <div class="importsuccessdiv">
+                                    <div class="title">{{'files_has_been_imported_sucessfully'| i18nString}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer form-group">
+                                <button type="button" class="btn" ng-click="onCancelCustomScript()">{{'done'| i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>

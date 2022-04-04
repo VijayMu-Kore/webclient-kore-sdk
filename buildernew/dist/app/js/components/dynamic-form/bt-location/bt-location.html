@@ -1,0 +1,41 @@
+<div class="row form-group">
+    <div class="col-xs-12 labelling">
+        <label ng-class="{'required-field':schema.isRequired}">{{schema.title}}</label>
+    </div>
+    <div class="col-xs-12">
+        <div class="geolocator">
+            <div class="input wrapper">
+                <input type="text" class="form-control pull-left" autocomplete="off" name="{{schema.key}}" placeholder="{{'pick_a_loaction_placeholder'| i18nString}}" ng-blur="toggleSuggestions()" ng-model="control.viewValue" ng-init="getCurrentLocation()" ng-focus="toggleSuggestions()" ng-change="toggleSuggestions()"/>
+                <button class="pull-right marginTop10 btn btn-sm btn-primary locationBTN" ng-click="searchLocation()"> 
+                    <i ng-if="searching" class="fa fa-spinner fa-spin"></i>&nbsp;{{ searching ? locatingLabel : locate}}
+                </button>
+            </div>
+            <div class="loc-spinner text-center" ng-if="locating && showSuggestions">
+                <span>
+                    <i class="fa fa-circle-o-notch wf-spinner"></i>  {{'loacting_you'| i18nString}}
+                </span>
+            </div>
+            <div ng-show="showSuggestions" ng-if="!locating">
+                <div class="no-results" ng-if="!locations.length && !locationSelected"> {{'no_locations_found'| i18nString}} </div>
+                <div class="locations" ng-if="locations.length">
+                    {{'choose_nearby_locations'| i18nString}}
+                    <div class="locs">
+                        <div class="loc" ng-repeat="location in locations track by $index" ng-click="pickLocation($index)" ng-if="!searching"> {{location.address}} </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="help-block">
+                {{schema.help}}
+            </div>
+        </div>
+        <div  class="row" ng-show="form[schema.key].$dirty">
+            <div error-alert ng-show="form[schema.key].$error.required" class="text-danger">
+                {{'dyn_value_required'| i18nString:({dyn:schema.title})}}
+            </div>
+        </div>
+    </div>
+</div>

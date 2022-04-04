@@ -1,0 +1,240 @@
+<div ng-if="showStandardResponses"><bt-standard-response cb="manageResponseCB"></bt-standard-response></div>
+<div ng-show="!showStandardResponses && (taskFailExecutionCB && !taskFailExecutionCB['isAddResponseEnabled']) && !isIvrEnabled" class="modal modalSlide fade right dialogSettingsForm" data-backdrop="static"  role="dialog">
+    <div class="modal-dialog dialogSettingsBody" ng-class="{'addPadding20':showStandardResponses}" dynamic-height dynaoffset="0">
+        <div>
+            <div class='dialogSettingsModal' >
+                <div class='dialogSettings'>
+                    <form name="dialogSettingsForm">
+                        <div class="dialogSettingsHeader">
+                            <span class="closeImgDiv"><i class="closeCross btx-close" ng-click='closeModalDialogSettings()'></i></span>
+                            <div class="taskName">{{configData.dialogObj.name}}</div>
+                            <div class="dialogSettings"> {{'dialog_Settings'| i18nString}}</div>
+<!--                            <a kr-show-help="dialogSettings">Help</a>-->
+                            <help-button  help-id="'dialogSettings'" class="pull-right" ></help-button> 
+                        </div>
+                        <div class="dialogSettingsInnerBody" perfect-scroll dynamic-height dynaoffset="-134" height-property="height">
+                            <div>
+                            <div class="inputContainer" ng-class="{'screenFreeze':cb.viewMode}">
+                                <div class="inputLabel" required>{{'intent_name'| i18nString}}</div>
+                                <div><input ng-keyup="onInputKeyup($event)" ng-model="settings.name"  name="name" required   type="text" class="form-control" placeholder=" {{'dialog_name_place'| i18nString}}"/></div>
+                            </div>
+
+                            <div class="inputContainer" ng-class="{'screenFreeze':cb.viewMode}">
+                                <div class="inputLabel" required>{{'constants.flowtasks_description'| i18nString}}</div>
+                                <div><input ng-model="settings.shortDesc"  name="description"   type="text" class="form-control" placeholder=" {{'dialog_place'| i18nString}}"/></div>
+                            </div>
+
+                            <div class="inputContainer" ng-hide="stream.type === 'universalbot'" ng-class="{'screenFreeze':cb.viewMode}">
+                                <div class="col-xs-12 form-group noPadding intentNodeTypeMargin noMargin">
+                                    <div class="col-xs-12 labelling noPadding">
+                                        <label class="inputLabel"> {{'keyvalueform_btnLabel'| i18nString}}</label>
+                                    </div>
+                                    <div class="col-xs-12 noPadding">
+                                        <div class="checkbox checkbox-primary styledCSS ">
+                                            <div class="selectedType-status "  ng-click="dilogTypeselect('followUp')">
+                                                <i area-hidden="true" ng-class="{'fa fa-square-o':!intentNodeType.isFollowUp,'fa fa-check-square':intentNodeType.isFollowUp}"></i><span class="dialogTypeTitle"> {{'sub_intent'| i18nString}}</span>
+                                            </div>
+                                            <div class="dilogTypeLabelDesc "> {{'sub_task_desc'| i18nString}}</div>
+                                        </div>
+                                        <div class="checkbox checkbox-primary styledCSS">
+                                            <div class="selectedType-status " ng-click="dilogTypeselect('hidden')">
+                                                <i area-hidden="true" ng-class="{'fa fa-square-o':!intentNodeType.isHidden,'fa fa-check-square ':intentNodeType.isHidden,'disableDilogType fa fa-check-square !important':intentNodeType.isFollowUp}"></i><span class="dialogTypeTitle "> {{'hide_help'| i18nString}}</span>
+                                            </div>
+                                            <div class="dilogTypeLabelDesc"> {{'bot_task_desc'| i18nString}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- priority -->
+                            <!-- Hold & Resume options  -->
+                            <!-- Resume options ends -->
+                            <!-- Follow-up task -->
+                            <div class="inputLabel" ng-class='{"paddingTop20": stream.type =="universalbot"}'>{{'follow_up_task'| i18nString}}</div>
+                            <div class="inputLabelNewDesc">{{'follow_up_desc'| i18nString}}</div>
+                            <div class="col-xs-12 radioDiv radioSection noPadding FollowUpRadio">
+                                <div class="radioInnerDiv">
+                                    <label for="followupYes{{callFrom}}">
+                                        <input ng-disabled="cb.viewMode" ng-value='true' type="radio"  ng-model="followupTaskOptions.isFollowUp" name="followupYes" id="followupYes{{callFrom}}" /><span class="opt-title">{{'follow_up_task_list'| i18nString}} <span class="manageResponse" ng-click="openManageResponse('folloowUpTaskProvided', $event)"> {{'manageResponse'| i18nString}}</span></span>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                    <label for="followupNo{{callFrom}}">
+                                        <input ng-disabled="cb.viewMode" ng-value='false' type="radio"  ng-model="followupTaskOptions.isFollowUp" name="followupNo" id="followupNo{{callFrom}}" /><span class="opt-title">{{'follow_up_connections'| i18nString}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Follow-up task ends-->
+                              <!-- Context Lifetime -->
+                            <div class="hide" ng-class="{'screenFreeze':cb.viewMode}">   <!-- remove hide class to show-->
+                                <div class="inputLabel">{{'context_lifetime'| i18nString}}</div>
+                                <div class="inputLabelNewDesc">{{'def_lifetime'| i18nString}}</div>
+                                <div class="col-xs-12 radioDiv radioSection noPadding">
+                                    <div class="radioInnerDiv">
+                                        <label for="contextLifeClose">
+                                            <input value='close' type="radio"  ng-model="settings.contextLifeTime.options" name="contextLifeClose" id="contextLifeClose" /><span class="opt-title">{{'close_context'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="radioInnerDiv">
+                                        <label for="contextLifeRetainlimit">
+                                            <input value='retainWithTimeLimit' type="radio" ng-click="setTimeIntervel()" ng-model="settings.contextLifeTime.options" name="contextLifeRetainlimit" id="contextLifeRetainlimit" /><span class="opt-title">{{'retain_context'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                    <div ng-if="settings.contextLifeTime.options == 'retainWithTimeLimit'" class="col-xs-10 margin-left-5 marginBottom10-imp">
+                                        <select ng-model="settings.contextLifeTime.minutes" class="col-xs-12 form-control">
+                                            <option ng-repeat="timeIntervel in timeIntervels" value="{{timeIntervel}}">{{timeIntervel + " Minutes"}}</option>
+                                        </select>
+                                    </div>
+                                     <div class="radioInnerDiv">
+                                        <label for="contextLifeRetainTillSection">
+                                            <input value='retainTillEndOfSection' type="radio"  ng-model="settings.contextLifeTime.options" name="contextLifeRetainTillSection" id="contextLifeRetainTillSection" /><span class="opt-title">{{'retain_context_session'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inputLabel paddingTop20" ng-if='isTaskFailEnabled()'> {{'task_failure'| i18nString}}</div>
+                            <div class="inputLabelNewDesc taskExFailDesc" ng-if='isTaskFailEnabled()'> {{'def_task_exec'| i18nString}}</div>
+                            <div class='toggleDiv toggleSwitch toggle-dialog-slider' ng-if='isTaskFailEnabled()'>
+                                <span ng-show='isTaskExecutionFail' class="pr-10"> {{'switch_default'| i18nString}}</span>
+                                <toggle-switch ng-model='isTaskExecutionFail' id='taskExecuteToggle' no-opt="true" ng-change="toggleTaskExecutionFail()"></toggle-switch><span ng-hide='isTaskExecutionFail'> {{'override_bot'| i18nString}}</span>
+                            </div>
+<div ng-show='isTaskExecutionFail'>
+    <div class="radioDiv row">
+      <div class='col-md-12 noPaddingLeft'>
+         <div class='col-md-4 noPaddingLeft' ng-if='stream.type !== "universalbot"'>
+            <label for="initiate_task">
+                <input type="radio" id="initiate_task" ng-model='eventConfig.proceed' value='initiate_task' name="eventConf" ng-change='scrollBottomDialog()'>
+                <span class="opt-title"> {{'trigger_dialog'| i18nString}}</span> 
+            </label>
+         </div>
+         <div class='col-md-4 noPadding'>
+            <label for="run_script">
+                <input type="radio" id="run_script" ng-model='eventConfig.proceed' value='run_script' name="eventConf" ng-change='scrollBottomDialog()'>
+                <span class="opt-title"> {{'run_script'| i18nString}}</span> 
+            </label>
+         </div>
+         <div class='col-md-4'>
+            <label for="show_mess">
+                <input type="radio" id="show_mess" ng-model='eventConfig.proceed' value='show_mess' name="eventConf" ng-change='scrollBottomDialog()'>
+                <span class="opt-title"> {{'show_msg'| i18nString}}</span> 
+            </label>
+         </div>
+      </div>
+    </div>
+    <div ng-if='eventConfig.proceed === "initiate_task"' >
+        <div class="form-group">
+            <select ng-model='selected.dialog' class='select-dialog'>
+                <option value="" disabled selected> {{'select_task_name'| i18nString}}</option>
+                <option ng-repeat="nameD in dialogsName" value="{{nameD.name}}">{{nameD.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div ng-if='eventConfig.proceed === "run_script"'>
+        <div class="col-xs-12 noPaddingLeft">
+            <div id="ux-script-editor-dialog" acify ng-model="inp.scriptText" callback="codeCallback"></div>
+        </div>
+    </div>
+    <div ng-if='eventConfig.proceed === "show_mess"'>
+        <div class='row form-group'>
+            <span ng-if="stream.ivrSettings && stream.ivrSettings.enable" ng-class="{'noMessages':welcomeMessages.length===0}" class='add-box cursor-pointer addResponseBtn' ng-click="editIVRSettings()"><i class="fa  fa-plus"></i>{{welcomeIVRTemp.ivrOptions? edit: add}}  {{'ivr_settings'| i18nString}}</span>
+            <span class='add-box cursor-pointer' ng-click="editResponse(-1)"><i class="fa  fa-plus"></i> {{'Add_response'| i18nString}}</span>
+        </div>   
+        <div class="welcomeMessageDiv" ng-repeat="prompt in responseObj track by $index">
+            <div class="msgDiv">
+                <span class="imgDivCircle">
+                    <span ng-if="prompt.channel==='default'" class="Oval-15 default"  tooltip-placement="right" tooltip="{{'all_channels'| i18nString}}"><span class="channelText"> {{'All'| i18nString}}</span></span>
+                    <span ng-if="prompt.channel!=='default' && prompt.channel!=='skype' && prompt.channel!=='wfacebook' && prompt.channel !== 'googleactions' && prompt.channel !== 'hangoutchat'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{_constants_.iconsTooltips[prompt.channel]}}"><img class="img fa fa-{{prompt.channel}}" ng-src="{{icons[prompt.channel]}}" aria-hidden="true"></span>
+                    <span ng-if="prompt.channel === 'googleactions'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/google-home.svg"><div class="property-panelIconTitle"> {{'Google_asstnt'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                    <span ng-if="prompt.channel === 'hangoutchat'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/hangoutchat.png"><div class="property-panelIconTitle"> {{'Hangouts'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                    <span ng-if="prompt.channel!=='default' && prompt.channel==='skype' && prompt.channel!=='wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{_constants_.iconsTooltips[prompt.channel]}}"><span class="img fa fa-{{prompt.channel}}" ng-src="{{icons[prompt.channel]}}" aria-hidden="true"></span> </span>
+                    <span ng-if="prompt.channel==='wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{prompt.isMention?_constants_.iconsTooltips['Workplace For Groups']:_constants_.iconsTooltips['Workplace For Chat']}}"><img class="img fa fa-{{prompt.channel}}" ng-src="{{icons[prompt.channel]}}" aria-hidden="true"></span>
+                </span>
+                <span class="msgDecription">{{prompt.type=='uxmap'?js_msg:decodeJS(prompt.text)}}</span>
+                <span class="delete fa fa-trash" ng-click="deleteMessage(prompt,$index)"></span>
+                <span class="edit fa fa-pencil" ng-click="editResponse($index)"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="dialogSettings-footer">
+                <button ng-class="{'screenFreeze':cb.viewMode}" type="button" class="btn btn-primary" ng-click='saveSettings()' ng-disabled="disableBtn()">
+                    <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> 
+                    <span>{{'save'| i18nString}}</span>
+                </button>
+                <button type="button" class="btn closeCancel" ng-click='closeModalDialogSettings()'>{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<bot-modal-slider id='addRespTaskFailExecution'>
+    <div class="modalSliderContainer width700 welcomeMessageContainer welcomeMessageModal  form-group" ng-if='taskFailExecutionCB.isAddResponseEnabled'>
+        <bt-welcome-message cb="taskFailExecutionCB"></bt-welcome-message>
+    </div>
+    <div class="modalSliderContainer width700" ng-if='isIvrEnabled && !taskFailExecutionCB.isAddResponseEnabled'>
+        <!--Header Starts Here -->
+        <div class="modalHeader">
+            <h4 class="modal-title">{{'ivr_settings'| i18nString}}</h4>
+            <span aria-hidden="true"><i class="fa fa-close" ng-click="closeIVRSettings()" ></i></span>
+        </div>
+        <!-- Header Starts Here -->
+
+        <!-- Body Starts Here -->
+        <div class="modalBody add-message" perfect-scroll dynamic-height dynaoffset="-130" height-property="height">
+            <ivr-settings ng-if="editIVR" ivr-options="ivrOptions" bridge="ivrBridge" callback='cb'></ivr-settings>
+        </div>
+        <!-- Body Ends Here -->
+
+        <!-- Footer Starts Here -->
+        <div class="modalFooter">
+            <div class="col-xs-12">
+                <span>
+                    <button type="button" class="btn" ng-click="saveIVRSettings()">{{'save'| i18nString}}</button>
+                </span>
+                <span> 
+                    <button type="button" class="btn closeCancel" ng-click="closeIVRSettings()">{{'cancel'| i18nString}}</button>
+                </span>
+            </div>
+        </div>
+        <!-- Footer Ends Here -->
+    </div>
+    <div class="modal fade vxml-prop-modal" id="vxml-add" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog vxml-dialog">
+            <div class="modal-content">
+                <div class="modalHeader vxmlHeader">
+                     <h4 class="modal-title vxml-title" id="gridSystemModalLabel">{{'new_call_cont_param'| i18nString}}</h4>
+                </div>
+                <form name="vxmlform">
+                    <div class="modalBody vxml-body" height-property="height">
+                        <div class="newVariable">
+                            <div class="col-xs-12  paddingTop10">
+                                <div class="required-field name"><label class="vxml-font">{{'param_name'| i18nString}}</label></div>
+                                <div><textarea class="form-control autoGrowTA required-field vxml-textarea" name="propertyname" type="text" ng-model="vprop.name" auto-grow-textarea default-grown="true" placeholder="{{'place_param'| i18nString}}" ng-required="true"></textarea></div>
+                            </div>
+                            <div class="col-xs-12 paddingTop10">
+                                <div class="required-field name"><label class="vxml-font">{{'value'| i18nString}}</label></div>
+                                <div><textarea class="form-control autoGrowTA required-field vxml-textarea" name="propertyvalue" type="text" ng-model="vprop.value" auto-grow-textarea default-grown="true" placeholder="{{'enter_value'| i18nString}}" ng-required="true"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="modalFooter vxml-footer">
+                    <div class="col-xs-12">
+                        <button class="btn saveSubmit" ng-click="addProperty(vprop)" ng-disabled="vxmlform.$invalid" class="btn">{{'confirm'| i18nString}}</button>
+                        <button ng-click="closeNodeVxmlProp()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+</bot-modal-slider>

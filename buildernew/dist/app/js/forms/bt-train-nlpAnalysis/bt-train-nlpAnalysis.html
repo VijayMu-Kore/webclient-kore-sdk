@@ -1,0 +1,137 @@
+<div class="loadingGraph" ng-show="loadingGraph"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="text">{{'loading'| i18nString}}</span></div>
+<div class="btTrainNlpAnalysis" ng-class="{'addOpacity':loadingGraph}">
+    <div class="dummyImage" ng-show="state === 'initial'">
+        <div class="dummyTitle">{{'nlp_caps'| i18nString}}</div>
+        <div class="dummyStates">
+            <div class="bar"></div>
+            <div class="bar left"></div>
+        </div>
+        <div class="line1"></div>
+        
+        <div class="line2"><div class="leftArrow"><img class="svg" ng-src="{{assetsBase}}images/testNtrain/leftArrow.svg"></div></div>
+        <div class="line3"></div>
+        
+        <div class="line2 increaseMarginTop"><div class="leftArrow"><img ng-src="{{assetsBase}}images/testNtrain/leftArrow.svg"></div></div>
+        <div class="line3"></div>
+        
+        <div class="line2 increaseMarginTop"><div class="leftArrow"><img ng-src="{{assetsBase}}images/testNtrain/leftArrow.svg"></div></div>
+        <div class="line3"></div>
+    </div>
+    <div ng-hide="state === 'initial'">
+        <div class="title" ng-show="cb.showTitle=='true'">{{'nlp_caps'| i18nString}}
+                <a class="jsonview" id="jsonView" ng-click="toggleView($event)">{{'json_view'| i18nString}}</a>
+           
+        </div>
+        <div class="panel-group toggleView collapse">
+          <!--   <div class="panel panel-default">  -->
+               
+              <div class="panel-collapse">
+                <div class="images">
+                    <img class="brightMode" ng-if="brightModeActive" ng-src="{{lightModeImage}}"  title="{{'dark_mode'| i18nString}}" ng-click="switchMode()">
+                     <img class="darkMode" ng-if="!brightModeActive" ng-src="{{darkModeImage}}"  title="{{'light_mode'| i18nString}}" ng-click="switchMode()">
+                    <img class="copyDebugObjGray" ng-src="{{copyImage}}"  title="Copy to clipboard" ng-mouseup="copyToClipboard($event)">
+                </div>
+               
+               
+                <div class="panel-body" height-property="height" dynamic-height ng-class="{'darkMode':!brightModeActive}">
+                    <div ng-jsoneditor  class="json_editor response_json_editor" ng-model="nlpData" options="options"></div>
+                </div>
+              </div>
+            <!-- </div> -->
+          </div>
+          <div class="nlContainer" ng-show="!active">
+               <div class="colorTitle">
+            <div class="child">
+                <span class="fa fa-circle green"></span><span class="text" title="{{'definitive_Match'| i18nString}}">{{'definitive_Match'| i18nString}}</span>
+            </div>
+            <div class="child">
+                <span class="fa fa-circle orange"></span><span class="text" title="{{'possible_match'| i18nString}}">{{'possible_match'| i18nString}}</span>
+            </div>
+        </div>
+
+        <!-- chart start here -->
+        <div class="intentTitle" ng-class="{'traitMatch':nlpData.traits.identified.length,'botScope':(nlpData.scopedBots && stream.type === 'universalbot' && stream.universalBotVersion === 2)}">
+            <span class="KGTitle" data-title="{{nlpData.input[0]}}">{{nlpData.input[0]||"no input"}}</span>
+                <div class="botScopeContainer" ng-show="(stream.type === 'universalbot' && stream.universalBotVersion === 2 && nlpData.scopedBots)">
+                        <div class="leftArrow"></div>
+                        <div class="scopeBot" ng-class="{'marginTop10':nlpData.scopedBots && nlpData.traits.identified.length}" ng-click="openBotScope('botScope')"><span class="count">{{nlpData.scopedBots.qualifiedBots.length ? nlpData.scopedBots.qualifiedBots.length > 1 ? nlpData.scopedBots.qualifiedBots.length + ' bots scoped ' : nlpData.scopedBots.qualifiedBots.length + ' bot scoped ' : 'No bots scoped' }}</span>
+                        </div>
+                </div>
+                <div class='traitMatchsCount'  ng-if="nlpData.traits.identified.length">
+                        <span class="traitTitle">{{'Traits_label'| i18nString}}</span>
+                        <span class="matchedTraitsContainer" ng-click="openClick('MathedTraits',$event,$index)" ng-if="$index < 2" ng-repeat="matchedTraits in nlpData.traits.identified track by $index"  tooltip-placement="bottom"  tooltip="{{matchedTraits.label}}"><span class="traitNames">{{matchedTraits.label}}</span></span>
+                        <span  ng-click="openClick('MathedTraits',$event)" ng-if="nlpData.traits.identified.length > 2" class="count">+{{nlpData.traits.identified.length-2}}</span>
+                    </div>
+        </div>
+
+        <div class="eachModel mlm">
+            <div class="leftArrow"><img ng-src="{{assetsBase}}images/testNtrain/leftArrow.svg"></div>
+            <div ng-show="!nlpData.ml.definitive && showLine()" class="rightAngleArrow1"><img ng-src="{{assetsBase}}images/testNtrain/rightAngleArrow.svg"></div>
+            <div ng-show="nlpData.ml.definitive" class="rightAngleArrow2"><img ng-src="{{assetsBase}}images/testNtrain/rightAngleArrow-2.svg"></div>
+            <div class="model" ng-click="openClick('ML',$event)">{{'machine_learning_Model'| i18nString}}</div>
+            <div ng-show="!nlpData.ml.possible && !nlpData.ml.definitive" class="possibleMatch nomatch">{{'no_Match'| i18nString}}</div>
+            <div class="possibleMatch definitive" title="{{match.task}}" ng-repeat="match in nlpData.ml.definitive">{{match.task}}</div>
+            <div class="possibleMatch" title="{{match.task}}" ng-repeat="match in nlpData.ml.possible">{{match.task}}</div>
+        </div>
+        <div class="eachModel fmm">
+            <div class="leftArrow"><img ng-src="{{assetsBase}}images/testNtrain/leftArrow.svg"></div>
+            <div ng-show="!nlpData.fm.definitive && showLine()" class="rightAngleArrow1"><img ng-src="{{assetsBase}}images/testNtrain/rightAngleArrow.svg"></div>
+            <div ng-show="nlpData.fm.definitive" class="rightAngleArrow2"><img ng-src="{{assetsBase}}images/testNtrain/rightAngleArrow-2.svg"></div>
+            <div class="model" ng-click="openClick('FM',$event)">{{'Fundamental_Meaning_Model_label'| i18nString}} </div>
+            <div ng-show="!nlpData.fm.possible && !nlpData.fm.definitive" class="possibleMatch nomatch">{{'no_Match'| i18nString}}</div>
+            <div class="possibleMatch definitive" title="{{match.task}}" ng-repeat="match in nlpData.fm.definitive">{{match.task}}</div>
+            <div class="possibleMatch" title="{{match.task}}" ng-repeat="match in nlpData.fm.possible">{{match.task}}</div>
+        </div>
+        <div class="eachModel kc" ng-class="{'noBorderNLP' : !nlpData.traits.definitive.length}">
+            <div class="leftArrow"><img ng-src="{{assetsBase}}images/testNtrain/leftArrow.svg"></div>
+            <div ng-show="!nlpData.faq.definitive && showLine()" class="rightAngleArrow1"><img ng-src="{{assetsBase}}images/testNtrain/rightAngleArrow.svg"></div>
+            <div ng-show="nlpData.faq.definitive" class="rightAngleArrow2"><img ng-src="{{assetsBase}}images/testNtrain/rightAngleArrow-2.svg"></div>
+            <div class="model" ng-click="openClick('FAQ',$event)">{{'knowledge_graph'| i18nString}}</div>
+            <div ng-show="!nlpData.faq.possible && !nlpData.faq.definitive" class="possibleMatch nomatch">{{'no_Match'| i18nString}}</div>
+            <div class="possibleMatch definitive" ng-if="match.primaryQuestion && (!match.linkedDialog || match.showfaqDialog === 'faq')" title="{{match.primaryQuestion}}" ng-repeat="match in nlpData.faq.definitive">{{match.primaryQuestion}}</div>
+            <div class="possibleMatch" ng-if="match.primaryQuestion && (!match.linkedDialog || match.showfaqDialog === 'faq')" title="{{match.primaryQuestion}}" ng-repeat="match in nlpData.faq.possible">{{match.primaryQuestion}}</div>
+            <div class="possibleMatch definitive" ng-if="!match.linkedDialog && !match.primaryQuestion" title="{{match.task}}" ng-repeat="match in nlpData.faq.definitive">{{match.task}}</div>
+            <div class="possibleMatch" ng-if="!match.linkedDialog && !match.primaryQuestion" title="{{match.task}}" ng-repeat="match in nlpData.faq.possible">{{match.task}}</div>
+            <div class="possibleMatch definitive" ng-if="match.linkedDialog && match.showfaqDialog === 'dialog'" title="{{match.linkedDialog}}" ng-repeat="match in nlpData.faq.definitive">{{match.linkedDialog}}</div>
+            <div class="possibleMatch" ng-if="match.linkedDialog && match.showfaqDialog === 'dialog'" title="{{match.linkedDialog}}" ng-repeat="match in nlpData.faq.possible">{{match.linkedDialog}}</div>
+        </div>
+        <div class="eachModel traitRules noBorderNLP" ng-show="showTraitsSection()">
+            <div class="leftArrow"><img ng-src="{{assetsBase}}images/testNtrain/leftArrow.svg"></div>
+            <div ng-show="!nlpData.traits.definitive.length && showLine()" class="rightAngleArrow1"><img ng-src="{{assetsBase}}images/testNtrain/rightAngleArrow.svg"></div>
+            <div ng-show="nlpData.traits.definitive.length" class="rightAngleArrow2"><img ng-src="{{assetsBase}}images/testNtrain/rightAngleArrow-2.svg"></div>
+            <div class="model" ng-click="openClick('Traits',$event)">{{'trait_rules_label'| i18nString}}</div>
+            <div ng-show="!nlpData.traits.definitive.length && !nlpData.traits.possible.length" class="possibleMatch nomatch">{{'no_Match'| i18nString}}</div>
+            <div class="possibleMatch definitive" title="{{match.task}}" ng-repeat="match in nlpData.traits.definitive">{{match.task}}</div>
+            <div class="possibleMatch" title="{{match.task}}" ng-repeat="match in nlpData.traits.possible">{{match.task}}</div>
+        </div>
+        <div class="eachModel RAR">
+            <div class="rightArrow"><img ng-src="{{assetsBase}}images/testNtrain/rightArrow.svg"></div>
+            <div class="model" ng-click="openClick('RAR',$event)">{{'ranking_resolver'| i18nString}}</div>
+            <div class="downArrow"><img ng-src="{{assetsBase}}images/testNtrain/downArrow.svg"></div>
+        </div>
+
+        <div class="winningIntent" ng-show="nlpData.finalResolver.winningIntent" ng-class="{'finalModelBorder':nlpData.finalResolver.winningIntent.length > 1}">
+            <!-- <div class="rightArrow" ng-class="{'extremeRight':nlpData.finalResolver.winningIntent.length>1}" ng-show="!showLine()"><img ng-src="{{assetsBase}}images/testNtrain/rightArrow.svg"></div> -->
+            <div class="finalModel" ng-class="{'disable':match.activityType === 'smalltalk'}" ng-click="openClick('winningIntent',$event)" ng-repeat="match in nlpData.finalResolver.winningIntent">
+                <span>
+                <img ng-src="{{smallTalkIcon}}" alt="Small Talk" ng-if="match.activityType === 'smalltalk'" title="Small Talk" class="smallTalkIcon">
+                <span title="{{match.primaryQuestion}}" ng-if="match.activityType === 'FAQ' && match.primaryQuestion && !match.linkedDialog">{{match.primaryQuestion}}</span>
+                <span title="{{match.matchedQuestion}}" ng-if="match.activityType === 'FAQ' && !match.primaryQuestion && !match.linkedDialog && match.matchedQuestion">{{match.matchedQuestion}}</span>
+                <span title="{{match.intent}}" ng-if="!match.primaryQuestion && !match.linkedDialog && match.intent">{{match.intent}}</span>
+                <span title="{{match.linkedDialog}}" ng-if="match.linkedDialog && match.showfaqDialog === 'dialog'">{{match.linkedDialog}}</span>
+             </span>
+            </div>
+            <div class="finalMsg" ng-show="nlpData.finalResolver.winningIntent.length>1 && match.activityType !== 'smallTalk'">{{finalMsg}}</div>
+        </div>
+        <div class="winningIntent" ng-show="nlpData && !nlpData.finalResolver">
+            <!-- <div class="rightArrow"><img ng-src="{{assetsBase}}images/testNtrain/rightArrow.svg"></div> -->
+            <div class="finalModel">{{'not_found'| i18nString}}</div>
+        </div>
+        <div class="bottomMargin20" ng-show="nlpData.finalResolver.winningIntent.length == 0">
+            <div class="finalModel">{{'not_found'| i18nString}}</div>
+        </div>
+          </div>
+       
+    </div>   
+</div> 
+        

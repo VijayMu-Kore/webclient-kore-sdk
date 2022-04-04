@@ -1,0 +1,296 @@
+<div class="summaryLoader animationIfLeave" ng-show="loadingPatterns">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">{{'loadingPatterns'| i18nString}}</span>
+    </span>
+</div>
+<div class="pattern-manage" ng-class="{'read-only-wrap':displayMode==='VIEW'}" ng-show="!loadingPatterns">
+    <status-loader></status-loader>
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">{{'Patterns_and_rules_label'| i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            <div class="searchComponent " ng-show="intentPatternsObject.length || entityPatternsObject.length " >
+                <input  placeholder="{{'search'| i18nString}}"  tabindex="1" type="text" class="patternSearch" ng-model="gSearchCb.search">
+                <i class="btx-search"></i>
+                <i class="btx-close" ng-click="clearSearch();" ng-class="{displayNone: !gSearchCb.search.length}"></i>
+            </div>
+    
+           
+        </div>
+    </div>
+
+    <div class="synContainer">
+        <button class="trainBtn" ng-click="trainIntents()" ng-show="showTrain" ng-disabled="trainStatus.saving" ng-click="trainIntents()"><span>{{trainStatus.saving? training : train}}</span></button>
+        <div class="synonyms-manage noPadding row col-xs-12" ng-hide="hideUi">
+            <div class="search-block noPadding" >
+                <div class="standard-response-header mainNav" > 
+                    <div class="modal-tab-header header-horizontal col-xs-7"> 
+                        <div class="modal-tabs" ng-class="{'modal-tabs-active':views.intentPatterns}" ng-click="showType('intentPatterns')"><a>{{'intents_label'| i18nString}}</a></div>
+                        <div class="modal-tabs" ng-class="{'modal-tabs-active':views.entityPatterns}" ng-click="showType('entityPatterns')"><a>{{'Entities_label'| i18nString}}</a></div>
+                        <div class="modal-tabs" ng-if="fieldPatternsLength.length" ng-class="{'modal-tabs-active':views.fieldPatterns}" ng-click="showType('fieldPatterns')"><a>{{'fields_label'| i18nString}}</a></div>
+                    </div>                             
+                    <div class="save-ctrl pull-right col-xs-5">
+                        <!-- <div class="publishButton">
+                            <button type="button" class="publish">publish</button>
+                        </div> -->
+
+                        <!-- Below search before global search  -->
+
+                        <!-- <div class="workflows-container">
+                            <div class="searchPattern">
+                                <input tabindex="1" type="text" class="patternSearch" ng-model="gSearchCb.search">
+                                <span class="patternSearchIcon pattSearch fa-search">
+                                    <img ng-src="{{searchIconGray}}" class="searchIconGray">
+                                    <img ng-src="{{searchClose}}" class="searchClose">
+                                </span>
+                            </div>
+                        </div> -->
+<!--                         <div class="workflows-container ng-hide">
+                            <div class="searchPattern searchExpand">
+                                <input tabindex="1" type="text" class="patternSearch" ng-model="gSearchCb.search">
+                                <span class="patternSearchIcon fa fa-remove"></span>
+                            </div>
+                        </div>     -->                    
+                    </div>
+                </div>  
+            </div>
+                    <div class="col-xs-12 standard-response-header noPadding">
+                        <div class="bt-patterns patternsScrollTop psScrollZindex" dynamic-height dynaoffset="-185" height-property="height" perfect-scroll>
+                            <div class="col-xs-12 synonym-holder-border">
+                                <div class="col-xs-7 padding10" ng-hide="true">
+                                    <span class="index-normal" ng-class="{'index-active':val.length}" ng-click="moveScrollToThis(key)" ng-repeat="(key,val) in indexObject">{{key}}</span>
+                                </div>
+                                <div class="col-xs-5 marginTopBt5 pull-right" ng-show="views.botsynonyms">
+                                    <button class="btn btn-primary pull-right add-btn btn-sm" ng-hide="showBotSynonymForm" ng-click="showBotSynonymForm = true">{{'add_label'| i18nString}}</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 noBorderTop noPaddingLeft">
+                                <!-- Start intent and task patterns -->
+                                <div class="row" id="intentPatternsDiv" ng-if="views.intentPatterns">
+                                    <div class="row col-xs-12 noPadding" ng-repeat="intent in intentPatternsObject | filter : gSearchCb.search track by $index">
+                                        <div ng-if="(intent.type === 'DialogIntent' || intent.type === 'intent') && filterToggleTask(intent)" class="col-xs-12 synonym-holder cursor-not-allowed noPadding synonym-holder-border intentPatterns traits" ng-class="{'intentParentDiv{{$index}}':$index>=0,'synonym-holder-border':$index !== object.length - 1}"> 
+                                            <div class="block-item">
+                                                    <div class="col-xs-12 synonym-item-label  noPadding">
+                                                        <div class="col-xs-2 intentPatternName  noPaddingLeft" title="{{intent.intent}}">{{intent.intent || intent.name}} <img ng-src="{{helpIcon}}" ng-show="intent.isHidden" class="helpIcon" tooltip-placement="right" tooltip="{{'pattern_module_tooltip_dialog_marked_as_hide_from_help'| i18nString}}"></div>    
+                                                        <!-- <div class="noPadding col-xs-10">
+                                                            <span class="tag-label hidePatternNames" ng-repeat="pattern in intent.patterns"><span class="marginRight10"></span><span class="intentPatternNameValue">({{constants.replaceSpecialChar(pattern.original)}})</span></span>
+                                                        </div> -->
+                                                        <div class="noPadding pull-right sextionSwitchContainer cursor-allowed">
+                                                            <span class="patternsSection patternNoCountColor" ng-if = "!(intent.patterns) || intent.patterns.length === 0" ng-class='{"active":selectIntentSection==("patterns"+intent._id)}' ng-click="onClickIntentindex(intent,$event,$index,'patterns',intent._id)"><span class="count" ng-class='{"active":selectIntentSection==("patterns"+intent._id)}'>+</span> {{'pattern_label'| i18nString}}</span>
+                                                            <span class="patternsSection" ng-if = "intent.patterns.length === 1" ng-class='{"active":selectIntentSection==("patterns"+intent._id)}' ng-click="onClickIntentindex(intent,$event,$index,'patterns',intent._id)"><span class="count">{{intent.patterns.length || 0}}</span> {{'pattern_label'| i18nString}}</span>
+                                                            <span class="patternsSection" ng-if = "intent.patterns.length > 1" ng-class='{"active":selectIntentSection==("patterns"+intent._id)}' ng-click="onClickIntentindex(intent,$event,$index,'patterns',intent._id)"><span class="count">{{intent.patterns.length || 0}}</span> {{'pattern_name'| i18nString}}</span>
+                                                            <span class="traitRulesSection patternNoCountColor" ng-if = "!(intent.traitRules) || (intent.traitRules.length === 0)" ng-class="{'active':selectIntentSection==('traits'+intent._id)}" ng-click="onClickIntentindex(intent,$event,$index,'traits',intent._id)"><span class="count" ng-class="{'active':selectIntentSection==('traits'+intent._id)}">+</span>{{'rules'| i18nString}}</span>
+                                                            <span class="traitRulesSection" ng-if = "intent.traitRules.length === 1" ng-class="{'active':selectIntentSection==('traits'+intent._id)}" ng-click="onClickIntentindex(intent,$event,$index,'traits',intent._id)"><span class="count">{{intent.traitRules.length || 0}}</span>{{'rule_label'| i18nString}}</span>
+                                                            <span class="traitRulesSection" ng-if = "intent.traitRules.length > 1" ng-class="{'active':selectIntentSection==('traits'+intent._id)}" ng-click="onClickIntentindex(intent,$event,$index,'traits',intent._id)"><span class="count">{{intent.traitRules.length || 0}}</span>{{'rules'| i18nString}}</span>                                                     
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <!-- <div ng-if="selectIntentSection==('patterns'+intent._id)" class="patternform" ng-class="{'patternformdiv':intent.patterns.length > 0 || filterToggle === 'indevelopment'}" ng-show="editIntentPatternId == intent._id">
+                                                <div class="col-xs-12 noPadding" id="tags" ng-if = "filterToggle == 'indevelopment'">
+                                                    <input maxlength="2048" type="text" class="form-control background-field-white patternInput fieldPatternInput intentPatternInput overRideBorder" placeholder=" {{'type_and_enter_to_add_pattern'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keydown="saveIntentPatternsObject($event,intent)" ng-model="iPatterns.newIntentPattern">
+                                                </div>
+                                                <div ui-sortable="sortableOptions1" ng-model="intent.patterns">
+                                                    <div class="col-xs-12 patterns-holder synonym-holder-border" ng-repeat="pattern in intent.patterns track by $index">
+                                                        <div class="col-xs-12 noPadding intentPatternClass hidingIntentPatterns{{$index}}" ng-click = "clickIntentPattern($index,pattern,intent)">
+                                                            <div class="col-xs-1 sortBar1 item1">
+                                                                <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                                                            </div>
+                                                            <div class="col-xs-9 noPadding">
+                                                                <label class="taskPatternOriginalName" ng-class="{'emoji-fontStyle': constants.isEmoji(constants.replaceSpecialChar(pattern.original))}">{{constants.replaceSpecialChar(pattern.original)}}</label>
+                                                            </div>
+                                                            <div ng-if = "filterToggle == 'indevelopment'" class="col-xs-2 text-right pull-right">
+                                                                <img ng-src="{{pencilIcon}}" class="fa fa-pencil">
+                                                                <img ng-src="{{trashIcon}}" class="codeRed fa fa-trash-o" ng-click="deleteComponentPattern(intent, pattern, $event)">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 noPadding inputIntentClass editingIntentPatterns{{$index}} hide" id="tags">
+                                                            <input maxlength="2048" type="text" class="form-control background-field-white patternInput fieldPatternInput intentPatternInput{{$index}} overRideBorder" placeholder=" {{'type_and_enter_to_add_pattern'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keyup="$event.keyCode== 13 && saveIntentPatternsObject($event,intent,'',$index)" ng-blur="removeEditMode($index)" ng-model="iPatterns.editIntentPattern">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        <!--     <div ng-if="selectIntentSection==('traits'+intent._id)" class="clear-fix bot-synonyms intentTraitRulesSection">
+                                                <div class="col-xs-12">
+                                                    <i class="intentBotSynonymsTraits" aria-hidden="true"></i>
+                                                    <p class="grayInfoText">{{'intent_identification'| i18nString}}</p>
+                                                </div>
+                                                <div class="paddingRightLeft15 traitRule"  >
+                                                    <div class="traitRuleContainer" ng-init="parentIndex=$index" ng-repeat="rules in traitRules.traitMappings  track by $index">
+                                                        <div class="traitRuleContainerInner" >
+                                                   
+                                                            <tags-input id="addTraitRulesPatterns{{$index}}" ng-model="traitRules.traitMappings[$index]" parent-modal='traits' do-not-allow-any-special-characters='true' placeholder=" {{'type_and_enter_placeholder'| i18nString}}" custom-err-msg= "'<word>' is already included in this rule." add-from-autocomplete-only='false' add-on-comma="false" allow-leftover-text = 'false' replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_select'| i18nString}}" use-strings="true" on-tag-added="addTraitAndCondition()" on-tag-removed="addTraitAndCondition()">
+                                                                <auto-complete source="loadTags($query)" min-length='1' select-first-match='false' id="autocompleteTrait{{$index}}" auto-complete-id="autocompleteTrait{{$index}}"></auto-complete>
+                                                            </tags-input>
+                                                            <img ng-src="{{minusCircle}}" class="minusCircle" ng-click="deleteOrRule(parentIndex)">
+                                                        </div>
+                                                        <div>
+                                                            <img ng-src="{{orIcon}}" class="orIcon">
+                                                        </div>
+                                                    </div>
+                                                    <div ng-repeat="dummyCondition in dummyTraitOrCondition track by $index">
+                                                        <div class="col-xs-12 traitRuleInput">
+                                                            <tags-input ng-model="dummyTraitOrCondition[$index]" do-not-allow-any-special-characters='true' parent-modal='traits'
+                                                                placeholder=" {{'type_and_enter_placeholder'| i18nString}}" add-from-autocomplete-only='false' add-on-comma="false"
+                                                                allow-leftover-text='false' replace-spaces-with-dashes="false" min-length="0" max-length="128"
+                                                                placeholder=" {{'type_select'| i18nString}}" use-strings="true" on-tag-added="addTraitDummyAndCondition($index)">
+                                                                <auto-complete source="loadTags($query)" min-length='1' select-first-match='false'></auto-complete>
+                                                            </tags-input>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div> -->
+                                        </div>
+                                        <div ng-if="intent.type === 'webservice' && filterToggleTask(intent)" class="taskPatterns" ng-class="{'tasksParentDiv{{$index}}':$index>=0,'synonym-holder-border':$index !== object.length - 1 }">
+                                            <div class="row" ng-click="onClickTaskindex(intent,$index)">
+                                                <div ng-if = "!task.isReport" class="col-xs-2  noPadding PtTitle" title="{{intent.name}}"><span class="taskPatternName">{{intent.name}}</span></div>
+                                                <div ng-if = "task.isReport" class="col-xs-2  noPadding PtTitle" title="{{intent.name}}"><span class="taskPatternName">{{intent.name}}</span></div>
+                                                <!-- <div class="col-xs-10 ">
+                                                    <span class="taskPatternNameValue" ng-repeat="pattern in intent.task_patterns"> {{constants.replaceSpecialChar(pattern.value)|formatTaskPattern}} </span>
+                                                </div> -->
+                                                <div class="noPadding pull-right sextionSwitchContainer">
+                                                    <span class="patternsSection patternNoCountColor" ng-if = "intent.task_patterns.length === 0" ng-class='{"active":clickedTaskIndex === $index}' ><span class="count">+</span class="patternNoCountColor"> {{'pattern_name'| i18nString}}</span>
+                                                    <span class="patternsSection" ng-if = "intent.task_patterns.length === 1" ng-class='{"active":clickedTaskIndex === $index}' ><span class="count">{{intent.task_patterns.length || 0}}</span> {{'pattern_name'| i18nString}}</span>
+                                                    <span class="patternsSection" ng-if = "intent.task_patterns.length > 1"  ng-class='{"active":clickedTaskIndex === $index}' ><span class="count">{{intent.task_patterns.length || 0}}</span> {{'pattern_name'| i18nString}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row" id="taskPatternsDiv" ng-show="views.taskPatterns">
+                                                <div class="col-xs-12">    
+                                                    <div class="row col-xs-12 noPadding" id="task{{key}}">
+                                                        <div class="ng-hide padding10">{{key}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div ng-if="views.intentPatterns && !intentPatternsObject.length">
+                                        <div class="col-xs-12 text-center">
+                                            <div class="alert alert-sm alert-warning">
+                                                {{'no_patterns_desc'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="emptyStateContainer" ng-if="views.intentPatterns && !intentPatternsObject.length">
+                                        <div class="emptyState">
+                                            <div class="emptyImage">
+                                                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                            </div>  
+                                            <span class="mainTitle">{{'no_patterns_desc'| i18nString}}</span>
+                                            <!-- <div class="emptyStateDesc">Description</div>
+                                            <div class="generateBtn">
+                                                <button class="btn btnSolidBlue" >Add</button>
+                                                <button class="btn" target="_blank" >learn more</button>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 text-center" ng-show="intentPatternsObject.length != 0 && (intentPatternsObject | filter : gSearchCb.search).length == 0 && views.intentPatterns">
+                                        <div class="alert alert-sm alert-warning">
+                                            {{'no_patterns_traits_available_desc'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End intent and task patterns -->
+                                
+                                <!-- field pattern --> 
+                                <div ng-if="views.fieldPatterns && filterToggleTask(task) && task.fields && task.fields.length" ng-click="onClickFieldindex(task,$index)" ng-repeat="task in allTasks | filter :gSearchCb.search track by $index" class="dispalyTable">                               
+                                    <div class="row marginB15T20">
+                                        <div ng-if = "!task.isReport" class="col-xs-2  noPadding PtTitle" title="{{task.name}}"><span class="taskPatternName">{{task.name}}</span><span class="taskType">({{task._id[0]== 'l' ? alert : action;}})</span></div>
+                                        <div ng-if = "task.isReport" class="col-xs-2  noPadding PtTitle" title="{{task.name}}"><span class="taskPatternName">{{task.name}}</span><span class="taskType">(information)</span></div>
+                                    </div>
+                                    <div class="row col-xs-12 noPadding" id="field{{key}}">
+                                        <div class="synonym-index-label ng-hide padding10">{{key}}</div>
+                                        <div class="col-xs-12 noPadding fieldPatterns-holder-border fieldPatterns" ng-repeat="fieldObject in task.fields" ng-class="{'fieldParentDiv{{$index}}':$index >=0,'synonym-holder-border':$index !== object.length - 1,'viewOpen':editFieldPatternId =='{{task._id}}{{fieldObject.fieldId}}'}" > 
+                                            <div class="block-item fieldPatterns-holder">
+                                                <div class="col-xs-12 noPadding" ng-click="editFieldPatternObject(task, fieldObject.title,$index,$event)">
+                                                    <div class="patterns-item-label noPadding  col-xs-1 patternsFieldLable" title="{{fieldObject.title}}">{{fieldObject.title}}</div>
+                                                    <span class="fieldPatternNameValue hidePatternNames" ng-repeat="pattern in task.fieldPatterns[fieldObject.title]"> ({{constants.replaceSpecialChar(pattern.original)}}) </span>
+                                                    <div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div ng-if="views.fieldPatterns && !isFieldPatternsAvailable(task)">
+                                    <div class="col-xs-12 text-center" ng-show="!taskFieldPatternsLoading && views.fieldPatterns">
+                                        <div class="alert alert-sm alert-warning">
+                                            There are no field patterns created for this bot.
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="col-xs-12 text-center" ng-show="allTasks.length != 0 && (allTasks | filter : gSearchCb.search).length == 0 && views.fieldPatterns">
+                                    <div class="alert alert-sm alert-warning">
+                                        {{'no_patterns_available_with_search_desc'| i18nString}}
+                                    </div>
+                                </div>
+                                <!-- end of field pattern -->  
+
+                                <!-- entity pattern -->  
+                                <div class="row" ng-if="views.entityPatterns">
+                                    <div class="row col-xs-12 noPadding" id="entity{{key}}"  ng-if="filterToggleTask(entity)"  ng-repeat="entity in entityPatternsObject | filter : gSearchCb.search">
+                                        <div class="synonym-index-label ng-hide padding10">{{key}}</div>
+                                        <div class="col-xs-12 synonym-holder noPadding synonym-holder-border entityPatterns" ng-class="{'entityParentDiv{{$index}}':$index>=0,'synonym-holder-border':$index !== object.length - 1,'viewOpen':editEntityPatternId =='{{entity._id}}' }"> 
+                                            <div class="block-item" ng-click="editEntityPatternObject(entity,$event);onClickEntityindex(entity._id,$index)">
+                                                <div>
+                                                    <div class="col-xs-12 synonym-item-label noPadding">
+                                                        <div class="col-xs-2 intentPatternName  noPaddingLeft" title="{{entity.name}}">{{entity.name}}</div>
+                                                        <div class="noPadding col-xs-10">
+                                                            <span class="tag-label hidePatternNames" ng-repeat="pattern in entity.patterns"><span class="marginRight10"></span><span class="intentPatternNameValue">({{constants.replaceSpecialChar(pattern.original)}}) </span></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="col-xs-12 text-center"  ng-show="!entityPatternsObject.length && views.entityPatterns">
+                                        <div class="alert alert-sm alert-warning">
+                                            {{'no_entity_patterns_defined_desc'| i18nString}}
+                                        </div>
+                                    </div>  -->
+                                    <div class="emptyStateContainer" ng-show="!entityPatternsObject.length && views.entityPatterns">
+                                        <div class="emptyState">
+                                            <div class="emptyImage">
+                                                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                            </div>  
+                                            <span class="mainTitle">{{'no_entity_patterns_defined_desc'| i18nString}}</span>
+                                            <!-- <div class="emptyStateDesc">Description</div>
+                                            <div class="generateBtn">
+                                                <button class="btn btnSolidBlue" >Add</button>
+                                                <button class="btn" target="_blank" >learn more</button>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 text-center" ng-show="entityPatternsObject.length!=0 &&(entityPatternsObject| filter : gSearchCb.search).length==0 && views.entityPatterns ">
+                                        <div class="alert alert-sm alert-warning">  
+                                            {{'no_entity_patterns_for_this_search_desc'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end of entity patterns -->
+                        </div>
+                    </div>
+            </div>   
+        </div>
+    </div>
+     <div class="modal fade pattern-modal fullwidth-dialog height-width-100 taskCreateOrEditModal" id="pattern-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog height-width-100 modal-lg">
+            
+            <div class="modal-content  pattern-modal-content height-width-100">
+                <div class="summaryLoader animationIfLeave" ng-show="patternsCB.loadingPatterns">
+                            <span class="spinner-text"> 
+                                <i class="fa fa-circle-o-notch fa-spin-fast" ></i> 
+                                <span class="spinner-text-content">{{'loadingPatterns'| i18nString}}</span>
+                            </span>
+                </div>
+               <bt-pattern ng-show="!patternsCB.loadingPatterns" selected-task="selectedTask" tasks="tasks" cb="patternsCB" view-mode="displayMode"></bt-pattern>
+            </div>
+        </div>
+    </div>  
+    <footer-info ng-if="updateFooterHeader()">
+        <div class="patternFooter" ng-bind-html="$root.getSanitizedText($root.lableData.bb007)"></div>
+    </footer-info>
+</div>   

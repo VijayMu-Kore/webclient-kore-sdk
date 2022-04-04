@@ -1,0 +1,1088 @@
+<div class="ivr-properties">
+    <div component-type="{{nodeInfo.dialogNodeInstance.type.toLowerCase()}}" class="entityDivContainer machineLearningLevel">
+        
+        <div ng-hide="isEventsPage">
+
+        <div class="instanceControl">{{'ivr_properties_normal'| i18nString}}</div>
+
+            <p class="node-connDiv paddingRightLeft15" ng-show="!isEnabled">
+                {{'ivr_not_enabled'| i18nString}}
+            </p>
+            <p class="node-connDiv paddingRightLeft15" ng-show="isEnabled">
+                {{'prompt_ivr'| i18nString}} 
+            </p>
+        </div>
+      <!--    <div class="entityHeaderTextDiv displayTable" ng-if="!isEnabled">
+            <span class="exclamation-triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+            <p class="headerTip ng-binding">IVR Channel is not active for your bot. To manage IVR settings, first enable the channel.</p>
+        </div> -->
+        <div class="enableBtn paddingLeft10">
+            <button class="btn btn-primary btnCreate dialog"  ng-class="{'enableIvr':!isEnabled,'disableIvr':isEnabled}" ng-click="showIvrModal()">{{!isEnabled ? enable:disable}}</button>
+        </div>
+        <div class="noPadding" ng-show="isEnabled">
+             <!-- <div class="col-xs-12 ivrDisabledDialog" ng-if="!isEnabled"></div> -->
+        <div class="nodeIvrLevel noPointerEvents">
+            <node-level-voice-channels-supp cb="voice_channels_node_cb" ng-hide="isEventsPage" ng-if="isTwilioEnabled || isAudioCodesEnabled || isIVRVoiceEnabled"></node-level-voice-channels-supp>
+        </div>
+        <div class="initial-promts">
+            <div class="connectionRules userPrompt" ng-if="nodeInfo.dialogNodeInstance">
+                <span class="tabLabel">{{nodeInfo.dialogNodeInstance.type.toLowerCase() === 'message'?ivrResponses:initialPrompts}}  </span><i class="savingIndicator"></i>
+            </div>
+            <div class="connectionRules userPrompt" ng-if="!nodeInfo.dialogNodeInstance">
+                <span class="tabLabel">{{'initial_prompts' | i18nString}}</span><i class="savingIndicator"></i>
+            </div>
+
+            <p class="node-connDiv paddingRightLeft15">
+                {{'initial_prompt'| i18nString}} 
+            </p>
+            <div ui-sortable="ivrPromptsSortableOptions" ng-model="nodeInfo.nodeInfo.ivrOptions.initialPrompts">
+                <div ng-repeat="prompts in nodeInfo.nodeInfo.ivrOptions.initialPrompts track by $index" class="editSynonymDiv outerPrompt" ng-class="{'noBacground':prompts.length==1,'multiple-prompts':prompts.length>1}">
+                    <div class="sortBar sortBarOuter item1">
+                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                    </div>
+                    <div ui-sortable="ivrPromptsSortableInnerOptions" ng-model="prompts" class="bgColorDiv">
+                        <div ng-repeat="prompt in prompts track by $index" class="editSynonymDiv">
+                            <div class="promptMessageDiv">
+                                <div ng-show="prompts.length>1" class="sortBar sortBarInner item1">
+                                    <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                                    <!-- <i class="fa fa-bars sortBar"></i> -->
+                                </div>
+                                <div class="dropdown panel-dropdown">
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'text'" data-toggle="dropdown">
+                                        <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                                        <!-- <i class="fa fa-text-height"></i> -->
+                                    </span>
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'js'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                                        <!-- <i class="fa fa-terminal"></i> -->
+                                    </span>
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'file'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                                        <!-- <i class="fa fa-volume-up"></i> -->
+                                    </span>
+                                    <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                        <li>
+                                            <a ng-click="prompt.type = 'text';saveIVROptions('.initial-promts .savingIndicator')">{{'text'| i18nString}}</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="prompt.type = 'file';saveIVROptions('.initial-promts .savingIndicator')">{{'audio'| i18nString}}</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="prompt.type = 'js';saveIVROptions('.initial-promts .savingIndicator')">{{'js'| i18nString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="promptDataBoxDiv">
+                                    <textarea ng-if="prompt.type !== 'js'" class="form-control ivrtimeout" ng-class="{'promptDataBoxFile':prompt.type == 'file','promptDataBox':prompt.type == 'text'}" ng-blur="checkForSaveRDelete(prompt,$parent.$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.initialPrompts, '.initial-promts .savingIndicator')" typutteranceDataBoxe="text" ng-model="prompt.value" auto-grow-textarea context-typeahead default-grown="true"></textarea>
+                                    <div ng-if="prompt.type === 'js'" class="textbox-jseditor">
+                                        <div id="initalPromptArrItem{{$parent.$parent.$index}}{{$index}}" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" prompt.value">
+                                        </div>
+                                        <div class='js-mask'>
+                                            <span class='info'>{{'js_content'| i18nString}}</span>
+                                            <span class="edit" ng-click="editIVRScript($event)">{{'edit'| i18nString}}</span>
+                                                <div ng-show="$index > 0">
+                                                <a title="Add prompt" ng-if="$index == prompts.length -1" ng-click="addSubPrompt($event,prompts,'.initial-promts .savingIndicator','Initial Prompt')" class="addLink">+</a>
+                                                </div>
+                                                <div ng-show="$index == 0">
+                                                    <a title="Add Subprompt" ng-if="$index == prompts.length -1" ng-click="addSubPrompt($event,prompts,'.initial-promts .savingIndicator','Initial Prompt')" class="addLink">+</a>
+                                                </div>
+                                          
+                                            
+                                            <span class='save' ng-click="checkForSaveRDelete(prompt,$parent.$parent.$parent.$parent.$index, $parent.$parent.$index, nodeInfo.nodeInfo.ivrOptions.initialPrompts, '.initial-promts .savingIndicator')">                                       
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a title=" {{'alt_text_audio'| i18nString}}" ng-show="prompt.type === 'file' && (prompt.alt ? (!(prompt.alt.length>0)):(true))" ng-click="addAltPrompt(prompt)" class="altLink">{{'alt'| i18nString}}</a>
+                                    <div ng-show="$index > 0">
+                                        <a title="Add prompt" ng-if="$index == prompts.length - 1" ng-click="addSubPrompt($event,prompts,'.initial-promts .savingIndicator','Initial Prompt')" class="addLink">+</a>
+                                    </div>
+                                    <div ng-show="$index == 0">
+                                        <a title="Add Subprompt" ng-if="$index == prompts.length - 1" ng-click="addSubPrompt($event,prompts,'.initial-promts .savingIndicator','Initial Prompt')" class="addLink">+</a>
+                                    </div>
+                                </div>
+                                <div ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deletePrompt($event,$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.initialPrompts, '.initial-promts .savingIndicator','Initial Prompt')" class="btx-delete-1 fa-trash-o"></i></div>
+                            </div>
+                            <div class="alt-prompt" id="alt-prompt" ng-if="prompt.type==='file'">
+                                <div class="promptMessageDiv" ng-repeat="prompt in prompt.alt track by $index">
+                                    <div ng-show="prompts.length>1" class="sortBar sortBarInner item1">
+                                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                                    </div>
+                                    <div class="dropdown panel-dropdown">
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'text'" data-toggle="dropdown">
+                                            <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                                            <!-- <i class="fa fa-text-height"></i> -->
+                                        </span>
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'js'" data-toggle="dropdown">
+                                            <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                                            <!-- <i class="fa fa-terminal"></i> -->
+                                        </span>
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'file'" data-toggle="dropdown">
+                                            <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                                            <!-- <i class="fa fa-volume-up"></i> -->
+                                        </span>
+                                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                            <li>
+                                                <a ng-click="prompt.type = 'text';saveIVROptions('.initial-promts .savingIndicator')">{{'text'| i18nString}}</a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="prompt.type = 'js';saveIVROptions('.initial-promts .savingIndicator')">{{'js'| i18nString}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="promptDataBoxDiv">
+                                        <textarea ng-if="prompt.type !== 'js'" class="form-control ivrtimeout" ng-class="{'promptDataBoxFile':prompt.type == 'file','promptDataBox':prompt.type == 'text'}" ng-blur="checkForSaveRDelete(prompt,$parent.$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.initialPrompts, '.initial-promts .savingIndicator',true)" typutteranceDataBoxe="text" ng-model="prompt.value" auto-grow-textarea context-typeahead default-grown="true" placeholder=" {{'alt_text_audio'| i18nString}}"></textarea>
+                                        <div ng-if="prompt.type === 'js'" class="textbox-jseditor">
+                                            <div id="initalPromptArrItem{{$parent.$parent.$parent.$parent.$index}}alt{{$parent.$parent.$index}}alt" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" prompt.value">
+                                            </div>
+                                            <div class='js-mask'>
+                                                <span class='info'>{{'js_content'| i18nString}}</span>
+                                                <span class="edit" ng-click="editIVRScript($event)">{{'edit'| i18nString}}</span>
+                                                <a ng-click="addSubPrompt($event,prompts,'.initial-promts .savingIndicator','Initial Prompt')" class="addLink">+</a>
+                                                <span class='save' ng-click="checkForSaveRDelete(prompt,$parent.$parent.$parent.$parent.$index, $parent.$parent.$index, nodeInfo.nodeInfo.ivrOptions.initialPrompts, '.initial-promts .savingIndicator',true)">                                       
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <a ng-click="addSubPrompt($event,prompts,'.initial-promts .savingIndicator','Initial Prompt')" class="addLink">+</a>
+                                    </div>
+                                    <i ng-click="deletealtPrompt($index,$parent.$index,prompts)" class="fa fa-trash-o pull-right deletealtPrompt"></i>
+                                    <div ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deletePrompt($event,$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.initialPrompts, '.initial-promts .savingIndicator','Initial Prompt')" class="btx-delete-1 fa-trash-o"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="editSynonymDiv">
+                <div class="promptMessageDiv ivr-propmpt">
+                    <div class="dropdown panel-dropdown">
+                        <span class="prompt-type-switch" ng-if="intialPrompt.type === 'text'" data-toggle="dropdown">
+                            <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                            <!-- <i class="fa fa-text-height"></i> -->
+                        </span>
+                        <span class="prompt-type-switch" ng-if="intialPrompt.type === 'js'" data-toggle="dropdown">
+                            <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                            <!-- <i class="fa fa-terminal"></i> -->
+                        </span>
+                        <span class="prompt-type-switch" ng-if="intialPrompt.type === 'file'" data-toggle="dropdown">
+                            <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                            <!-- <i class="fa fa-volume-up"></i> -->
+                        </span>
+                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                            <li>
+                                <a ng-click="intialPrompt.type = 'text'">{{'text'| i18nString}}</a>
+                            </li>
+                            <li>
+                                <a ng-click="intialPrompt.type = 'file'">{{'audio'| i18nString}}</a>
+                            </li>
+                            <li>
+                                <a ng-click="intialPrompt.type = 'js'">{{'js'| i18nString}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="promptDataBoxDiv textareaWidth">
+                        <textarea ng-if="intialPrompt.type !== 'js'" class="form-control promptDataBox promptDataBoxDefault ivrtimeout" placeholder="{{intialPrompt.type === 'text' ? addPlaintext:providiinglink}}" ng-model="intialPrompt.value" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip" ng-blur="showUtteraceDefaultTip = false" ng-keydown="addprompt($event,'Initial Prompt',intialPrompt, nodeInfo.nodeInfo.ivrOptions.initialPrompts, '.initial-promts .savingIndicator')" type="text" auto-grow-textarea context-typeahead default-grown="true">
+                        </textarea>
+                        <div ng-if="intialPrompt.type === 'js'" class="textbox-jseditor">
+                            <div id="intialPrompt" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" intialPrompt.value">
+                            </div>
+                            <div class='js-mask'>
+                                <span class='info' ng-click="editIVRScript($event)"></span>
+                                <span class="edit" ng-click="editIVRScript($event)">{{'def_js'| i18nString}}</span>
+                                <span class='save' ng-click="addprompt($event,'Initial Prompt',intialPrompt, nodeInfo.nodeInfo.ivrOptions.initialPrompts, '.initial-promts .savingIndicator',true)">                                       
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon" aria-hidden="true"></i></div>
+                </div>
+                <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+            </div>
+            <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div>
+        </div>
+        <div class="timeout-promts">
+            <div class="connectionRules userPrompt">
+                <span class="tabLabel">{{'timeout_prompts'| i18nString}}</span><i class="savingIndicator"></i>
+            </div>
+            <p class="node-connDiv paddingRightLeft15">
+                {{'prompt_period'| i18nString}}
+            </p>
+            <div ui-sortable="ivrPromptsSortableOptions" ng-model="nodeInfo.nodeInfo.ivrOptions.timeoutPrompts">
+                <div ng-repeat="prompts in nodeInfo.nodeInfo.ivrOptions.timeoutPrompts track by $index" class="editSynonymDiv outerPrompt" ng-class="{'noBacground':prompts.length==1,'multiple-prompts':prompts.length>1}">
+                    <div class="sortBar sortBarOuter item1">
+                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                    </div>
+                    <div ui-sortable="ivrPromptsSortableInnerOptions" ng-model="prompts" class="bgColorDiv">
+                        <div ng-repeat="prompt in prompts track by $index" class="editSynonymDiv">
+                            <div class="promptMessageDiv">
+                                <div ng-show="prompts.length>1" class="sortBar sortBarInner item1">
+                                    <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                                    <!-- <i class="fa fa-bars sortBar"></i> -->
+                                </div>
+                                <div class="dropdown panel-dropdown">
+                                    <span class="prompt-type-switch" ng-if="prompt.type==='text'" data-toggle="dropdown">
+                                        <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                                        <!-- <i class="fa fa-text-height"></i> -->
+                                    </span>
+                                    <span class="prompt-type-switch" ng-if="prompt.type==='js'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                                        <!-- <i class="fa fa-terminal"></i> -->
+                                    </span>
+                                    <span class="prompt-type-switch" ng-if="prompt.type==='file'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                                       
+                                        <!-- <i class="fa fa-volume-up"></i> -->
+                                    </span>
+                                    <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                        <li>
+                                            <a ng-click="prompt.type='text';saveIVROptions('.timeout-promts .savingIndicator')">{{'text'| i18nString}}</a>
+                                        </li>
+                                        <li>
+                                            <a title=" {{'alt_text_audio'| i18nString}}" ng-click="prompt.type='file';saveIVROptions('.timeout-promts .savingIndicator')">{{'audio'| i18nString}}</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="prompt.type='js';saveIVROptions('.timeout-promts .savingIndicator')">{{'js'| i18nString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="promptDataBoxDiv">
+                                    <textarea ng-if="prompt.type !== 'js'" class="form-control ivrtimeout" ng-class="{'promptDataBoxFile':prompt.type == 'file','promptDataBox':prompt.type == 'text'}" ng-blur="checkForSaveRDelete(prompt,$parent.$parent.$index,$index,nodeInfo.nodeInfo.ivrOptions.timeoutPrompts,'.timeout-promts .savingIndicator')" typutteranceDataBoxe="text" ng-model="prompt.value" auto-grow-textarea context-typeahead default-grown="true"></textarea>
+                                    <div ng-if="prompt.type === 'js'" class="textbox-jseditor">
+                                        <div id="timeoutPromptArrItem{{$parent.$parent.$index}}{{$index}}" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" prompt.value">
+                                        </div>
+                                        <div class='js-mask'>
+                                            <span class='info'>{{'js_content'| i18nString}}</span>
+                                            <span class="edit" ng-click="editIVRScript($event)">{{'edit'| i18nString}}</span>
+                                            <div ng-show="$index > 0">
+                                            <a title="Add prompt" ng-if="$index == prompts.length-1" ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Timeout Prompt')" class="addLink">+</a>
+                                            </div>
+                                              <div ng-show="$index == 0">
+                                            <a title="Add Subprompt" ng-if="$index == prompts.length-1" ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Timeout Prompt')" class="addLink">+</a>
+                                            </div>
+                                            <span class='save' ng-click="checkForSaveRDelete(prompt,$parent.$parent.$parent.$parent.$index, $parent.$parent.$index, nodeInfo.nodeInfo.ivrOptions.timeoutPrompts, '.timeout-promts .savingIndicator')">                                       
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a title=" {{'alt_text_audio'| i18nString}}" ng-show="prompt.type === 'file' && (prompt.alt ? (!(prompt.alt.length>0)):(true))" ng-click="addAltPrompt(prompt)" class="altLink">{{'alt'| i18nString}}</a>
+                                    <a title="Add prompt" ng-if="$index == prompts.length - 1" ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Timeout Prompt')" class="addLink">+</a>
+                                </div>
+                                <div ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deletePrompt($event,$parent.$index,$index, nodeInfo.nodeInfo.ivrOptions.timeoutPrompts,'.timeout-promts .savingIndicator','Timeout Prompt')" class="btx-delete-1 fa-trash-o"></i></div>
+                            </div>
+                            <div class="alt-prompt" id="alt-prompt" ng-if="prompt.type==='file'">
+                                <div class="promptMessageDiv" ng-repeat="prompt in prompt.alt track by $index">
+                                    <div ng-show="prompts.length>1" class="sortBar sortBarInner item1">
+                                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                                    </div>
+                                    <div class="dropdown panel-dropdown">
+                                        <span class="prompt-type-switch" ng-if="prompt.type==='text'" data-toggle="dropdown">
+                                            <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                                            <!-- <i class="fa fa-text-height"></i> -->
+                                        </span>
+                                        <span class="prompt-type-switch" ng-if="prompt.type==='js'" data-toggle="dropdown">
+                                            <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                                            <!-- <i class="fa fa-terminal"></i> -->
+                                        </span>
+                                        <span class="prompt-type-switch" ng-if="prompt.type==='file'" data-toggle="dropdown">
+                                            <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                                            <!-- <i class="fa fa-volume-up"></i> -->
+                                        </span>
+                                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                            <li>
+                                                <a ng-click="prompt.type='text';saveIVROptions('.timeout-promts .savingIndicator')"> {{'text'| i18nString}}</a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="prompt.type='js';saveIVROptions('.timeout-promts .savingIndicator')"> {{'js'| i18nString}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="promptDataBoxDiv">
+                                        <textarea ng-if="prompt.type !== 'js'" class="form-control ivrtimeout" ng-class="{'promptDataBoxFile':prompt.type == 'file','promptDataBox':prompt.type == 'text'}" ng-blur="checkForSaveRDelete(prompt,$parent.$parent.$index,$index,nodeInfo.nodeInfo.ivrOptions.timeoutPrompts,'.timeout-promts .savingIndicator',true)" typutteranceDataBoxe="text" ng-model="prompt.value" auto-grow-textarea context-typeahead default-grown="true" placeholder=" {{'alt_text_audio'| i18nString}}"></textarea>
+                                        <div ng-if="prompt.type === 'js'" class="textbox-jseditor">
+                                            <div id="timeoutPromptArrItem{{$parent.$parent.$parent.$parent.$index}}alt{{$parent.$parent.$index}}alt" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" prompt.value">
+                                            </div>
+                                            <div class='js-mask'>
+                                                <span class='info'>{{'js_content'| i18nString}}</span>
+                                                <span class="edit" ng-click="editIVRScript($event)">{{'edit'| i18nString}}</span>
+                                             
+                                                    <a ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Timeout Prompt')" class="addLink">+</a>
+                                           
+                                               
+                                                <span class='save' ng-click="checkForSaveRDelete(prompt,$parent.$parent.$parent.$parent.$index, $parent.$parent.$index, nodeInfo.nodeInfo.ivrOptions.timeoutPrompts, '.timeout-promts .savingIndicator',true)">                                       
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <a ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Timeout Prompt')" class="addLink">+</a>
+                                    </div>
+                                    <i ng-click="deletealtPrompt($index,$parent.$index,prompts)" class="fa fa-trash-o pull-right deletealtPrompt"></i>
+                                    <div ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deletePrompt($event,$parent.$index,$index, nodeInfo.nodeInfo.ivrOptions.timeoutPrompts,'.timeout-promts .savingIndicator','Timeout Prompt')" class="fa fa-trash-o"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="editSynonymDiv">
+                <div class="promptMessageDiv ivr-propmpt">
+                    <div class="dropdown panel-dropdown">
+                        <span class="prompt-type-switch" ng-if="timeoutPrompt.type==='text'" data-toggle="dropdown">
+                            <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                             <!-- <i class="fa fa-text-height"></i> -->
+                        </span>
+                        <span class="prompt-type-switch" ng-if="timeoutPrompt.type==='js'" data-toggle="dropdown">
+                            <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                            <!-- <i class="fa fa-terminal"></i> -->
+                        </span>
+                        <span class="prompt-type-switch" ng-if="timeoutPrompt.type==='file'" data-toggle="dropdown">
+                            <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                            <!-- <i class="fa fa-volume-up"></i> -->
+                        </span>
+                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                            <li>
+                                <a ng-click="timeoutPrompt.type='text'">{{'text'| i18nString}}</a>
+                            </li>
+                            <li>
+                                <a ng-click="timeoutPrompt.type='file'">{{'audio'| i18nString}}</a>
+                            </li>
+                            <li>
+                                <a ng-click="timeoutPrompt.type='js'">{{'js'| i18nString}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="promptDataBoxDiv textareaWidth">
+                        <textarea ng-if="timeoutPrompt.type !== 'js'" class="form-control promptDataBox promptDataBoxDefault ivrtimeout" placeholder="{{timeoutPrompt.type === 'text' ? addPlaintext:provideLink}}" ng-model="timeoutPrompt.value" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip" ng-blur="showUtteraceDefaultTip = false" ng-keydown="addprompt($event,'Timeout Prompt',timeoutPrompt,nodeInfo.nodeInfo.ivrOptions.timeoutPrompts,'.timeout-promts .savingIndicator')" type="text" auto-grow-textarea context-typeahead default-grown="true">
+                        </textarea>
+                        <div ng-if="timeoutPrompt.type === 'js'" class="textbox-jseditor">
+                            <div id="timeoutPrompt" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" timeoutPrompt.value">
+                            </div>
+                            <div class='js-mask'>
+                                <span class='info'></span>
+                                <span class="edit" ng-click="editIVRScript($event)">{{'def_js'| i18nString}}</span>
+                                <span class='save' ng-click="addprompt($event,'Timeout Prompt',timeoutPrompt, nodeInfo.nodeInfo.ivrOptions.timeoutPrompts, '.timeout-promts .savingIndicator',true)">                                       
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon" aria-hidden="true"></i></div>
+                </div>
+                <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+            </div>
+            <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div>
+        </div>
+        <div class="grammar" ng-if="!isTwilioVoiceWelcome">
+            <form name="IVRForm.Grammar">
+                <div class="connectionRules" id="grammar-label">
+                    <span class="tabLabel">{{'grammer'| i18nString}}</span>
+                    <i class="savingIndicator"></i>
+                    <a ng-click="addGrammar()" ng-class="nodeInfo.nodeInfo.ivrOptions.grammars.length === 0 ? 'centerGrammar': 'addGrammar'" class="grammerLignment">{{'add_grammer'| i18nString}}</a>
+                </div>
+                <p class="node-connDiv paddingRightLeft15" ng-show="nodeInfo.nodeInfo.ivrOptions.grammars.length > 0">
+                    {{'user_input_grammer'| i18nString}}
+                </p>
+                <div class="paddingRightLeft15 displayTableCell">
+                        
+                    <div class="grammar-item" ng-repeat="grammar in nodeInfo.nodeInfo.ivrOptions.grammars track by $index" >
+                        <div class="grammar-item-wrp col-xs-12">
+                            <a ng-click="deleteGrammar($index)" class="deleteGrammar"><i class="fa fa-minus-circle"></i></a>
+                            <select class="form-control channel-grammar marginBottom10" name="channelGrammar{{$index}}" ng-model="grammar.channel" ng-init="grammar.channel = !grammar.channel?'ivrVoice':grammar.channel"  ng-change="showConfirmDialog(grammar, '{{grammar.channel}}');showSaveCancel();"> <!-- showSaveCancel -->
+                                <option value="ivrVoice">IVR</option>
+                                <option value="twiliovoice">Twilio Voice</option>
+                                <option value="audiocodes">AudioCodes</option>
+                                <option value="" default disabled>Select a channel</option>
+                            </select>
+                            <div ng-if="grammar.channel == 'ivrVoice'">
+                                <div class="radioDiv">
+                                    <span class="radioInnerDiv">
+                                        <label for="speech{{$index}}">
+                                            <input value='speech' type="radio" ng-click="showSaveCancel();resetGrammarValue(grammar)" ng-model="grammar.inputMode" name="grammar{{$index}}" id="speech{{$index}}"><span>{{'speech'| i18nString}}</span> 
+                                    </label>
+                                    </span>
+                                    <span class="radioInnerDiv">
+                                        <label for="dtmf{{$index}}">
+                                            <input value='dtmf' type="radio"  ng-click="showSaveCancel();resetGrammarValue(grammar)" ng-model="grammar.inputMode" name="grammar{{$index}}" id="dtmf{{$index}}"><span>{{'dtmf'| i18nString}}</span> 
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="radioDiv noPadding" ng-if="grammar.channel == 'ivrVoice'">
+                                <select class="form-control" name="grammar{{$index}}" ng-model="grammar.type" ng-change="resetGrammarValue(grammar);showSaveCancel();">
+                                    <option value="disable" ng-if="stream.ivrSettings.enable_transcript || grammar.type === 'disable'">{{'default_label'| i18nString}}</option>
+                                    <option value="custom">{{'custom'| i18nString}}</option>
+                                    <option value="link">{{'link'| i18nString}}</option>
+                                </select>
+                                <div ng-if="grammar.type==='custom'" class="customCheck">
+                                    <textarea ng-model="grammar.value" placeholder="{{'vxml_place'| i18nString}}" name="grammarPattern{{$index}}" ng-focus="showSaveCancel()" ng-blur="showSaveCancel()" ng-required="true">
+                                    </textarea>
+                                     <div ng-show="IVRForm.Grammar['grammarPattern'+$index].$dirty">
+                                        <div error-alert  ng-show="IVRForm.Grammar['grammarPattern'+$index].$invalid" class="text-danger noPadding">{{'grammer_empty'| i18nString}}</div>
+                                    </div>
+                                </div>
+                                <div ng-if="grammar.type==='link'" class="linkCheck">
+                                    <textarea ng-model="grammar.value" placeholder="{{'provide_grammer_link'| i18nString}}" name="grammarPattern{{$index}}" ng-focus="showSaveCancel()" ng-blur="showSaveCancel()" ng-required="true">
+                                    </textarea>
+                                     <div ng-show="IVRForm.Grammar['grammarPattern'+$index].$dirty">
+                                        <div error-alert  ng-show="IVRForm.Grammar['grammarPattern'+$index].$invalid" class="text-danger noPadding">{{'grammer_link_empty'| i18nString}}</div>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="customCheck" ng-if="grammar.channel != 'ivrVoice'">
+                                <textarea ng-model="grammar.value" placeholder="Add multiple hints separated by comma" name="grammarPattern{{$index}}" ng-focus="showSaveCancel()" ng-blur="showSaveCancel()" ng-required="true">
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="hasUnsavedConnections" id="grammarSave" class="accordion-group-footer position-class" ng-class="{'hasUnsavedConnections':hasUnsavedConnections, 'top30': nodeInfo.nodeInfo.ivrOptions.grammars.length == 0}">
+                    <div class="footer-btns">
+                        <a ng-click="saveIVRGrammarOptions('.grammar .savingIndicator','Grammar','updated',IVRForm.Grammar)">{{'save_grammer'| i18nString}}</a>
+                        <a class="cancelChange" ng-click="cancelUnsavedGrammar(nodeInfo.nodeInfo.ivrOptions.grammars)">{{'cancel'| i18nString}}</a>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+        <div class="nomatch-promts">
+            <div class="connectionRules userPrompt">
+                <span class="tabLabel">{{'no_match_prompts'| i18nString}}</span><i class="savingIndicator"></i>
+            </div>
+            <p class="node-connDiv paddingRightLeft15">
+                {{'def_prompts'| i18nString}}
+            </p>
+            <div ui-sortable="ivrPromptsSortableOptions" ng-model="nodeInfo.nodeInfo.ivrOptions.nomatchPrompts">
+                <div ng-repeat="prompts in nodeInfo.nodeInfo.ivrOptions.nomatchPrompts track by $index" class="editSynonymDiv outerPrompt" ng-class="{'noBacground':prompts.length==1,'multiple-prompts':prompts.length>1}">
+                    <div class="sortBar sortBarOuter item1">
+                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                    </div>
+                    <div ui-sortable="ivrPromptsSortableInnerOptions" ng-model="prompts" class="bgColorDiv">
+                        <div ng-repeat="prompt in prompts track by $index" class="editSynonymDiv">
+                            <div class="promptMessageDiv">
+                                <div ng-show="prompts.length>1" class="sortBar sortBarInner item1">
+                                    <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                                    <!-- <i class="fa fa-bars sortBar"></i> -->
+                                </div>
+                                <div class="dropdown panel-dropdown">
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'text'" data-toggle="dropdown">
+                                        <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                                        <!-- <i class="fa fa-text-height"></i> -->
+                                    </span>
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'js'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                                        <!-- <i class="fa fa-terminal"></i> -->
+                                    </span>
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'file'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                                        <!-- <i class="fa fa-volume-up"></i> -->
+                                    </span>
+                                    <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                        <li>
+                                            <a ng-click="prompt.type = 'text';saveIVROptions('.nomatch-promts .savingIndicator')">{{'text'| i18nString}}</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="prompt.type = 'file';saveIVROptions('.nomatch-promts .savingIndicator')">{{'audio'| i18nString}}</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="prompt.type = 'js';saveIVROptions('.nomatch-promts .savingIndicator')">{{'js'| i18nString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="promptDataBoxDiv">
+                                    <textarea ng-if="prompt.type !== 'js'" class="form-control ivrtimeout" ng-class="{'promptDataBoxFile':prompt.type == 'file','promptDataBox':prompt.type == 'text'}" ng-blur="checkForSaveRDelete(prompt,$parent.$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.nomatchPrompts, '.nomatch-promts .savingIndicator')" typutteranceDataBoxe="text" ng-model="prompt.value" auto-grow-textarea context-typeahead default-grown="true"></textarea>
+                                    <div ng-if="prompt.type === 'js'" class="textbox-jseditor">
+                                        <div id="nomatchPromptArrItem{{$parent.$parent.$index}}{{$index}}" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" prompt.value">
+                                        </div>
+                                        <div class='js-mask'>
+                                            <span class='info'>{{'js_content'| i18nString}}</span>
+                                            <span class="edit" ng-click="editIVRScript($event)">{{'edit'| i18nString}}</span>
+                                             <div ng-show="$index > 0">
+                                            <a title="Add prompt" ng-if="$index == prompts.length-1" ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Nomatch Prompt')" class="addLink">+</a>
+                                            </div>
+                                              <div ng-show="$index == 0">
+                                            <a title="Add Subprompt" ng-if="$index == prompts.length-1" ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Nomatch Prompt')" class="addLink">+</a>
+                                            </div>
+                                            <span class='save' ng-click="checkForSaveRDelete(prompt,$parent.$parent.$parent.$parent.$index, $parent.$parent.$index, nodeInfo.nodeInfo.ivrOptions.nomatchPrompts, '.nomatch-promts .savingIndicator')">                                       
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a title=" {{'alt_text_audio'| i18nString}}" ng-show="prompt.type === 'file' && (prompt.alt ? (!(prompt.alt.length>0)):(true))" ng-click="addAltPrompt(prompt)" class="altLink">{{'alt'| i18nString}}</a>
+                                    <div ng-show="$index > 0">
+                                        <a title="Add prompt" ng-if="$index == prompts.length - 1" ng-click="addSubPrompt($event,prompts,'.nomatch-promts .savingIndicator','Nomatch Prompt')" class="addLink">+</a>
+                                    </div>
+                                    <div ng-show="$index == 0">
+                                        <a title="Add Subprompt" ng-if="$index == prompts.length - 1" ng-click="addSubPrompt($event,prompts,'.nomatch-promts .savingIndicator','Nomatch Prompt')" class="addLink">+</a>
+                                    </div>
+                                </div>
+                                <div ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deletePrompt($event,$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.nomatchPrompts, '.nomatch-promts .savingIndicator','Nomatch Prompt')" class="btx-delete-1 fa-trash-o"></i></div>
+                            </div>
+                            <div class="alt-prompt" id="alt-prompt" ng-if="prompt.type==='file'">
+                                <div class="promptMessageDiv" ng-repeat="prompt in prompt.alt track by $index">
+                                    <div ng-show="prompts.length>1" class="sortBar sortBarInner item1">
+                                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                                    </div>
+                                    <div class="dropdown panel-dropdown">
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'text'" data-toggle="dropdown">
+                                        <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                                        <!-- <i class="fa fa-text-height"></i> -->
+                                    </span>
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'js'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                                        <!-- <i class="fa fa-terminal"></i> -->
+                                    </span>
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'file'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                                        <!-- <i class="fa fa-volume-up"></i> -->
+                                    </span>
+                                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                            <li>
+                                                <a ng-click="prompt.type = 'text';saveIVROptions('.nomatch-promts .savingIndicator')">{{'text'| i18nString}}</a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="prompt.type = 'js';saveIVROptions('.nomatch-promts .savingIndicator')">{{'js'| i18nString}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="promptDataBoxDiv">
+                                        <textarea ng-if="prompt.type !== 'js'" class="form-control ivrtimeout" ng-class="{'promptDataBoxFile':prompt.type == 'file','promptDataBox':prompt.type == 'text'}" ng-blur="checkForSaveRDelete(prompt,$parent.$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.nomatchPrompts, '.nomatch-promts .savingIndicator',true)" typutteranceDataBoxe="text" ng-model="prompt.value" auto-grow-textarea context-typeahead default-grown="true" placeholder=" {{'alt_text_audio'| i18nString}}"></textarea>
+                                        <div ng-if="prompt.type === 'js'" class="textbox-jseditor">
+                                            <div id="nomatchPromptArrItem{{$parent.$parent.$parent.$parent.$index}}alt{{$parent.$parent.$index}}alt" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" prompt.value">
+                                            </div>
+                                            <div class='js-mask'>
+                                                <span class='info'>{{'js_content'| i18nString}}</span>
+                                                <span class="edit" ng-click="editIVRScript($event)">{{'edit'| i18nString}}</span>
+                                                <a ng-click="addSubPrompt($event,prompts,'.nomatch-promts .savingIndicator','Nomatch Prompt')" class="addLink">+</a>
+                                                <span class='save' ng-click="checkForSaveRDelete(prompt,$parent.$parent.$parent.$parent.$index, $parent.$parent.$index, nodeInfo.nodeInfo.ivrOptions.nomatchPrompts, '.nomatch-promts .savingIndicator',true)">                                       
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <a ng-click="addSubPrompt($event,prompts,'.nomatch-promts .savingIndicator','Nomatch Prompt')" class="addLink">+</a>
+                                    </div>
+                                    <i ng-click="deletealtPrompt($index,$parent.$index,prompts)" class="fa fa-trash-o pull-right deletealtPrompt"></i>
+                                    <div ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deletePrompt($event,$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.nomatchPrompts, '.nomatch-promts .savingIndicator','Nomatch Prompt')" class="fa fa-trash-o"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="editSynonymDiv">
+                <div class="promptMessageDiv ivr-propmpt">
+                    <div class="dropdown panel-dropdown">
+                        <span class="prompt-type-switch" ng-if="nomatchPrompt.type === 'text'" data-toggle="dropdown">
+                            <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                            <!-- <i class="fa fa-text-height"></i> -->
+                        </span>
+                        <span class="prompt-type-switch" ng-if="nomatchPrompt.type === 'js'" data-toggle="dropdown">
+                            <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                            <!-- <i class="fa fa-terminal"></i> -->
+                        </span>
+                        <span class="prompt-type-switch" ng-if="nomatchPrompt.type === 'file'" data-toggle="dropdown">
+                            <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                            <!-- <i class="fa fa-volume-up"></i> -->
+                        </span>
+                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                            <li>
+                                <a ng-click="nomatchPrompt.type = 'text'">{{'text'| i18nString}}</a>
+                            </li>
+                            <li>
+                                <a ng-click="nomatchPrompt.type = 'file'">{{'audio'| i18nString}}</a>
+                            </li>
+                            <li>
+                                <a ng-click="nomatchPrompt.type = 'js'"> {{'js'| i18nString}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="promptDataBoxDiv textareaWidth">
+                        <textarea ng-if="nomatchPrompt.type !== 'js'" class="form-control promptDataBox promptDataBoxDefault ivrtimeout" placeholder="{{nomatchPrompt.type === 'text' ? addPlaintext:provideLink}}" ng-model="nomatchPrompt.value" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip" ng-blur="showUtteraceDefaultTip = false" ng-keydown="addprompt($event,'Nomatch Prompt',nomatchPrompt, nodeInfo.nodeInfo.ivrOptions.nomatchPrompts, '.nomatch-promts .savingIndicator')" type="text" auto-grow-textarea context-typeahead default-grown="true">
+                        </textarea>
+                        <div ng-if="nomatchPrompt.type === 'js'" class="textbox-jseditor">
+                            <div id="nomatchPrompt" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" nomatchPrompt.value">
+                            </div>
+                            <div class='js-mask'>
+                                <span class='info'></span>
+                                <span class="edit" ng-click="editIVRScript($event)">{{'def_js'| i18nString}}</span>
+                                <span class='save' ng-click="addprompt($event,'Nomatch Prompt',nomatchPrompt, nodeInfo.nodeInfo.ivrOptions.nomatchPrompts, '.nomatch-promts .savingIndicator',true)">                                       
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon" aria-hidden="true"></i></div>
+                </div>
+                <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+            </div>
+            <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div>
+        </div>
+        <div class="error-promts">
+            <div class="connectionRules userPrompt">
+                <span class="tabLabel"> {{'error_prompts'| i18nString}}</span><i class="savingIndicator"></i>
+            </div>
+            <p class="node-connDiv paddingRightLeft15">
+                {{'def_error_prompts'| i18nString}}
+            </p>
+            <div ui-sortable="ivrPromptsSortableOptions" ng-model="nodeInfo.nodeInfo.ivrOptions.errorPrompts">
+                <div ng-repeat="prompts in nodeInfo.nodeInfo.ivrOptions.errorPrompts track by $index" class="editSynonymDiv outerPrompt" ng-class="{'noBacground':prompts.length==1,'multiple-prompts':prompts.length>1}">
+                    <div class="sortBar sortBarOuter item1">
+                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                    </div>
+                    <div ui-sortable="ivrPromptsSortableInnerOptions" ng-model="prompts" class="bgColorDiv">
+                        <div ng-repeat="prompt in prompts track by $index" class="editSynonymDiv">
+                            <div class="promptMessageDiv">
+                                <div ng-show="prompts.length>1" class="sortBar sortBarInner item1">
+                                    <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                                    <!-- <i class="fa fa-bars sortBar"></i> -->
+                                </div>
+                                <div class="dropdown panel-dropdown">
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'text'" data-toggle="dropdown">
+                                        <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                                        <!-- <i class="fa fa-text-height"></i> -->
+                                    </span>
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'js'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                                        <!-- <i class="fa fa-terminal"></i> -->
+                                    </span>
+                                    <span class="prompt-type-switch" ng-if="prompt.type === 'file'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                                        <!-- <i class="fa fa-volume-up"></i> -->
+                                    </span>
+                                    <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                        <li>
+                                            <a ng-click="prompt.type = 'text';saveIVROptions('.error-promts .savingIndicator')">{{'text'| i18nString}}</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="prompt.type = 'file';saveIVROptions('.error-promts .savingIndicator')">{{'audio'| i18nString}}</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="prompt.type = 'js';saveIVROptions('.error-promts .savingIndicator')">{{'js'| i18nString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="promptDataBoxDiv">
+                                    <textarea ng-if="prompt.type !== 'js'" class="form-control ivrtimeout" ng-class="{'promptDataBoxFile':prompt.type == 'file','promptDataBox':prompt.type == 'text'}" ng-blur="checkForSaveRDelete(prompt,$parent.$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.errorPrompts, '.error-promts .savingIndicator')" typutteranceDataBoxe="text" ng-model="prompt.value" auto-grow-textarea context-typeahead default-grown="true"></textarea>
+                                    <div ng-if="prompt.type === 'js'" class="textbox-jseditor">
+                                        <div id="errorPromptArrItem{{$parent.$parent.$index}}{{$index}}" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" prompt.value">
+                                        </div>
+                                        <div class='js-mask'>
+                                            <span class='info'>{{'js_content'| i18nString}}</span>
+                                            <span class="edit" ng-click="editIVRScript($event)">{{'edit'| i18nString}}</span>
+                                             <div ng-show="$index > 0">
+                                            <a title="Add prompt" ng-if="$index == prompts.length-1" ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Error Prompt')" class="addLink">+</a>
+                                            </div>
+                                              <div ng-show="$index == 0">
+                                            <a title="Add Subprompt" ng-if="$index == prompts.length-1" ng-click="addSubPrompt($event,prompts,'.timeout-promts .savingIndicator','Error Prompt')" class="addLink">+</a>
+                                            </div>
+                                            <span class='save' ng-click="checkForSaveRDelete(prompt,$parent.$parent.$parent.$parent.$index, $parent.$parent.$index, nodeInfo.nodeInfo.ivrOptions.errorPrompts, '.error-promts .savingIndicator')">                                       
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a title=" {{'alt_text_audio'| i18nString}}" ng-show="prompt.type === 'file' && (prompt.alt ? (!(prompt.alt.length>0)):(true))" ng-click="addAltPrompt(prompt)" class="altLink">{{'alt'| i18nString}}</a>
+                                    <div ng-show="$index > 0">
+                                        <a title="Add prompt" ng-if="$index == prompts.length - 1" ng-click="addSubPrompt($event,prompts,'.error-promts .savingIndicator','Error Prompt')" class="addLink">+</a>
+                                    </div>
+                                    <div ng-show="$index == 0">
+                                        <a title="Add Subprompt" ng-if="$index == prompts.length - 1" ng-click="addSubPrompt($event,prompts,'.error-promts .savingIndicator','Error Prompt')" class="addLink">+</a>
+                                    </div>
+                                </div>
+                                <div ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deletePrompt($event,$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.errorPrompts, '.error-promts .savingIndicator','Error Prompt')" class="btx-delete-1 fa-trash-o"></i></div>
+                            </div>
+                            <div class="alt-prompt" id="alt-prompt" ng-if="prompt.type==='file'">
+                                <div class="promptMessageDiv" ng-repeat="prompt in prompt.alt track by $index">
+                                    <div ng-show="prompts.length>1" class="sortBar sortBarInner item1">
+                                        <img class="ivrIcon" ng-src="{{ivrMove}}" />
+                                        <!-- <i class="fa fa-bars sortBar"></i> -->
+                                    </div>
+                                    <div class="dropdown panel-dropdown">
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'text'" data-toggle="dropdown">
+                                        <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                                        <!-- <i class="fa fa-text-height"></i> -->
+                                    </span>
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'js'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                                        <!-- <i class="fa fa-terminal"></i> -->
+                                    </span>
+                                        <span class="prompt-type-switch" ng-if="prompt.type === 'file'" data-toggle="dropdown">
+                                        <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                                        <!-- <i class="fa fa-volume-up"></i> -->
+                                    </span>
+                                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                            <li>
+                                                <a ng-click="prompt.type = 'text';saveIVROptions('.error-promts .savingIndicator')">{{'text'| i18nString}}</a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="prompt.type = 'js';saveIVROptions('.error-promts .savingIndicator')">{{'js'| i18nString}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="promptDataBoxDiv">
+                                        <textarea ng-if="prompt.type !== 'js'" class="form-control ivrtimeout" ng-class="{'promptDataBoxFile':prompt.type == 'file','promptDataBox':prompt.type == 'text'}" ng-blur="checkForSaveRDelete(prompt,$parent.$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.errorPrompts, '.error-promts .savingIndicator',true)" typutteranceDataBoxe="text" ng-model="prompt.value" auto-grow-textarea context-typeahead default-grown="true" placeholder=" {{'alt_text_audio'| i18nString}}"></textarea>
+                                        <div ng-if="prompt.type === 'js'" class="textbox-jseditor">
+                                            <div id="errorPromptArrItem{{$parent.$parent.$parent.$parent.$index}}alt{{$parent.$parent.$index}}alt" class="jseditor-acify" acify callback='jsPromptCB' ng-model=" prompt.value">
+                                            </div>
+                                            <div class='js-mask'>
+                                                <span class='info'>{{'js_content'| i18nString}}</span>
+                                                <span class="edit" ng-click="editIVRScript($event)">{{'edit'| i18nString}}</span>
+                                                <a ng-click="addSubPrompt($event,prompts,'.error-promts .savingIndicator','Error Prompt')" class="addLink">+</a>
+                                                <span class='save' ng-click="checkForSaveRDelete(prompt,$parent.$parent.$parent.$parent.$index, $parent.$parent.$index, nodeInfo.nodeInfo.ivrOptions.errorPrompts, '.error-promts .savingIndicator',true)">                                       
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <a ng-click="addSubPrompt($event,prompts,'.error-promts .savingIndicator','Error Prompt')" class="addLink">+</a>
+                                    </div>
+                                    <i ng-click="deletealtPrompt($index,$parent.$index,prompts)" class="fa fa-trash-o pull-right deletealtPrompt"></i>
+                                    <div ng-class="['deletePrompt deletePromptIcon' + $index]"><i ng-click="deletePrompt($event,$parent.$index, $index, nodeInfo.nodeInfo.ivrOptions.errorPrompts, '.error-promts .savingIndicator','Error Prompt')" class="fa fa-trash-o"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="editSynonymDiv">
+                <div class="promptMessageDiv ivr-propmpt">
+                    <div class="dropdown panel-dropdown">
+                        <span class="prompt-type-switch" ng-if="errorPrompt.type === 'text'" data-toggle="dropdown">
+                            <img  ng-mouseenter="ivrText = ivrTextBlack;" ng-mouseleave="ivrText = ivrTextGreen;"   class="ivrIcon" ng-src="{{ivrText}}"/>
+                            <!-- <i class="fa fa-text-height"></i> -->
+                        </span>
+                        <span class="prompt-type-switch" ng-if="errorPrompt.type === 'js'" data-toggle="dropdown">
+                            <img class="ivrIcon" ng-src="{{ivrJS}}"/>
+                            <!-- <i class="fa fa-terminal"></i> -->
+                        </span>
+                        <span class="prompt-type-switch" ng-if="errorPrompt.type === 'file'" data-toggle="dropdown">
+                            <img class="ivrIcon" ng-src="{{ivrAudio}}"/>
+                            <!-- <i class="fa fa-volume-up"></i> -->
+                        </span>
+                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                            <li>
+                                <a ng-click="errorPrompt.type = 'text'">{{'text'| i18nString}}</a>
+                            </li>
+                            <li>
+                                <a ng-click="errorPrompt.type = 'file'">{{'audio'| i18nString}}</a>
+                            </li>
+                            <li>
+                                <a ng-click="errorPrompt.type = 'js'"> {{'js'| i18nString}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="promptDataBoxDiv textareaWidth">
+                        <textarea ng-if="errorPrompt.type !== 'js'" class="form-control promptDataBox promptDataBoxDefault ivrtimeout" placeholder="{{errorPrompt.type === 'text' ? addPlaintext:provideLink}}" ng-model="errorPrompt.value" ng-focus="showUtteraceDefaultTip = !showUtteraceDefaultTip" ng-blur="showUtteraceDefaultTip = false" ng-keydown="addprompt($event,'Error Prompt',errorPrompt, nodeInfo.nodeInfo.ivrOptions.errorPrompts, '.error-promts .savingIndicator')" type="text" auto-grow-textarea context-typeahead default-grown="true">
+                        </textarea>
+                        <div ng-if="errorPrompt.type === 'js'" class="textbox-jseditor">
+                            <div id="errorPrompt" class="jseditor-acify" acify callback='jsPromptCB' ng-model="errorPrompt.value">
+                            </div>
+                            <div class='js-mask'>
+                                <span class='info'></span>
+                                <span class="edit" ng-click="editIVRScript($event)">{{'def_js'| i18nString}}</span>
+                                <span class='save' ng-click="addprompt($event,'Error Prompt',errorPrompt, nodeInfo.nodeInfo.ivrOptions.errorPrompts, '.error-promts .savingIndicator',true)">                                       
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deleteUtterance"><i class="utteranceSaveSpin defaultPromptSaveIcon" aria-hidden="true"></i></div>
+                </div>
+                <p class="utteranceSaveTip default" ng-show="showUtteraceDefaultTip">{{'press_save'| i18nString}}</p>
+            </div>
+            <div class="If-more-than-one-pro">{{_constants_.propertyPanel.entityPromptText}}</div>
+        </div>
+        <div class="advanced pointerEventsImp">
+            <accordion>
+                <accordion-group class="panel panel-default" ng-init="status={isOpen:nodeInfo.dialogNodeInstance.type.toLowerCase() === 'message'?true:false}" is-open="status.isOpen">
+                    <div class="accordion-group-wrp">
+                        <accordion-heading>
+                            <div data-prop-section-id="advanced">
+                                <div class="connectionRules" ng-class="{'advActive': status.isOpen}">
+                                    <span class="tabLabel"> {{'advanced_ctrl'| i18nString}}</span>
+                                    <i class="savingIndicator"></i>
+                                    <img class="ivrIcon" ng-show="!status.isOpen" ng-src="{{rightArrow}}" />
+                                    <img class="ivrIcon" ng-show="status.isOpen" ng-src="{{closeIcon}}" />
+                                    <!-- <i class="pull-right glyphicon" ng-class="{'fa fa-close': status.open, 'fa fa-chevron-right': !status.open}"></i> -->
+                                </div>
+                            </div>
+                        </accordion-heading>
+                        <div class="accordion-panel-body" ng-class="{'isReadOnly':readonly}">
+                            <div class="advanced-body">
+                                <div class="adv-item timeout">
+                                    <div class="adv-item-wrp">
+                                        <div class="fontsize10">
+                                            {{'timeout'| i18nString}}
+                                            <i class="savingIndicator"></i>
+                                        </div>
+                                        <p class="node-connDiv paddingRightLeft15 fontsize10">
+                                            {{'wait_time'| i18nString}} 
+                                        </p>
+                                        <select class="form-control select1 unsortable" ng-options="toInt(key) as value for (key,value) in ivrTimeouts" ng-model="nodeInfo.nodeInfo.ivrOptions.advance.timeout" ng-change="saveIVROptions('.timeout .savingIndicator')">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="adv-item retries">
+                                    <div class="adv-item-wrp">
+                                        <div class="fontsize10">
+                                            {{'no_retries'| i18nString}}
+                                            <i class="savingIndicator"></i>
+                                        </div>
+                                        <p class="node-connDiv paddingRightLeft15 fontsize10">
+                                            {{'max_retries'| i18nString}}
+                                        </p>
+                                        <select class="form-control select1 unsortable" ng-options="toInt(key) as value for (key,value) in ivrRetries" ng-model="nodeInfo.nodeInfo.ivrOptions.advance.retry_limit" ng-change="saveIVROptions('.retries .savingIndicator')">
+                                        </select>
+                                        <div class="maxNo" ng-show="nodeInfo.dialogNodeInstance.type === 'entity'">
+                                        <div class="fontsize10 paddingTop10"> {{'behaviour_retries'| i18nString}}<i class="behaviour_retires" style="position: relative;top: 0;" aria-hidden="true"></i></div>
+                                        
+                                        <p class="node-connDiv paddingRightLeft15 fontsize10"> {{'def_behaviour_retries'| i18nString}}
+                                             <span class="exclamation-triangle">
+                                                <i class="fa fa-exclamation-triangle" aria-hidden="true" tooltip-placement="top" tooltip="{{'call_termination_tooltip'| i18nString}}"></i>
+                                            </span> 
+                                        </p>
+                                               
+                                      
+                                        <div class="radioDiv">
+                                            <div class="radioInnerDiv">
+                                                <label for="calltermination">
+                                                    <input value='invokeCallTerminationHandler' type="radio" ng-click="saveIVRMaxNo(maxRetry)" ng-model="maxRetry.action" name="start" id="calltermination"><span> {{'invoke_handler'| i18nString}}</span> 
+                                                </label>
+                                            </div>
+                                            <div class="radioInnerDiv">
+                                                <label for="initiatedialog">
+                                                    <input value='executeTask' type="radio" ng-click="saveLocalIVRMaxNo()" ng-model="maxRetry.action" name="executeTask" id="initiatedialog"><span> {{'initiate_dialog'| i18nString}}</span>
+                                                </label>
+                                                <div class="col-xs-12 maxnoSelect paddingLeft25" ng-if="maxRetry.action === 'executeTask'">
+                                                    <select class="form-control marginBottom10" name="dialogs" placeholder="Select a dialog" ng-model="maxRetry.ref" ng-change="saveIVRMaxNoSubOptsChange(maxRetry)">
+                                                    <option value="" disabled selected> {{'select_dialog_name'| i18nString}}</option>
+                                                    <option value="{{dialogTask.refId}}" ng-repeat="dialogTask in dialogTaskList">{{dialogTask.name}}</option> 
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="radioInnerDiv displayTable">
+                                                <label for="specificnode">
+                                                    <input value='executeNode' type="radio"  ng-click="getNodes(nodeInfo.nodeInfo);saveLocalIVRMaxNo()" ng-model="maxRetry.action" name="executeNode" id="specificnode"><span> {{'jump_specific_node_task'| i18nString}}</span>
+                                                </label>
+                                                <div class="col-xs-12 maxnoSelect paddingLeft25" ng-if="maxRetry.action === 'executeNode'">
+                                                    <select class="form-control marginBottom10" name="node" ng-model="maxRetry.ref" ng-change="saveIVRMaxNoSubOptsChange(maxRetry)">
+                                                    <option value="" disabled selected> {{'select_a_node'| i18nString}}</option>
+                                                    <option value="{{nodes.uId}}" ng-repeat="nodes in nodeList">{{nodes.name}}</option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+
+                               <!--          <div ng-if="(nodeInfo.nodeInfo.entityType == 'list_of_items_lookup' || nodeInfo.nodeInfo.entityType == 'list_of_values') || (nodeInfo.nodeInfo.type == 'dialogAct') ">
+                                            <p class="node-connDiv paddingRightLeft15 fontsize10">
+                                                Do not invoke call termination and pass ‘MaxNoInput’ or ‘MaxNoMatch’ flag to Entity
+                                            </p>
+                                            <div class="toggleDiv">
+                                                <div class="floatLeft">No</div>
+                                                <toggle-switch ng-model="nodeInfo.nodeInfo.ivrOptions.advance.ignore_call_termination" ng-change="saveIVROptions('.retries .savingIndicator')" class="pull-left">
+                                                </toggle-switch>
+                                                <div class="instancePropToggleLabel">Yes</div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="adv-item bargein">
+                                    <div class="adv-item-wrp">
+                                        <div class="fontsize10">
+                                            {{'adv_item'| i18nString}}
+                                            <i class="savingIndicator"></i>
+                                        </div>
+                                        <p class="node-connDiv paddingRightLeft15 fontsize10">
+                                            {{'def_progress'| i18nString}}
+                                        </p>
+                                        <div class="row">
+                                            <toggle-switch ng-model="nodeInfo.nodeInfo.ivrOptions.advance.bargein" yes-no="true" ng-change="saveIVROptions('.bargein .savingIndicator')" class="ivr-toggle-swithch-modal pull-left m-0"></toggle-switch>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="adv-item extractionKey" ng-if="nodeInfo.dialogNodeInstance.nodeTypeName.toLowerCase() === 'entity' || nodeInfo.dialogNodeInstance.nodeTypeName.toLowerCase() === 'confirmation'">
+                                    <div class="adv-item-wrp">
+                                        <div class="fontsize10">
+                                            {{'IVR_Ext_Data_Key' | i18nString}}
+                                            <i class="savingIndicator"></i>
+                                        </div>
+                                        <p class="node-connDiv paddingRightLeft15 fontsize10">
+                                            {{'IVR_Ext_Data_Desc' | i18nString}}
+                                        </p>
+                                        <div class="toggleDiv">
+                                            <input type="text" class="form-control" ng-keyup="$event.keyCode == 13 ?saveIVROptions('.extractionKey .savingIndicator'): null" placeholder="{{'Enter_Ext_key' | i18nString}}" ng-model="nodeInfo.nodeInfo.ivrOptions.advance.extraction_key">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="adv-item vxml-props" ng-if="!isTwilioVoiceWelcome">
+                                    <div class="adv-item-wrp">
+                                        <div class="fontsize10 ">
+                                            {{'call_control_params'| i18nString}} 
+                                            <i class="savingIndicator"></i>
+                                            <span class="tooltip-hover" tooltip="{{ 'call_control_tooltip' | i18nString }}" tooltip-placement="top"><img ng-src="{{helpIcon}}" class="help-icon"></span>
+                                            <a ng-click="addNodeVxmlProp()" class="vxml-add"> {{'new'| i18nString}}</a>
+                                        </div>
+                                        <div class="node-connDiv fontsize10">
+                                            {{'call_control_desc' | i18nString}}
+                                        </div>
+                                        <div>
+                                            <!-- <div ng-if="vxmlGlobalKeys.length >= 0" class="node-connDiv fontsize10 marginLeftChange">
+                                                {{'override_vxml'| i18nString}}
+                                            </div> -->
+                                            <div class="row paddingTop5">
+                                                <div class="col-md-6 noPaddingLeft">
+                                                    <p class="node-connDiv paddingRightLeft15 fontsize10"> {{'name_label'| i18nString}}</p>
+                                                </div>
+                                                <div class="col-md-6 noPaddingLeft">
+                                                   <p class="node-connDiv paddingRightLeft15 fontsize10"> {{'value'| i18nString}}</p>
+                                                </div>
+                                            </div>
+                                          
+
+                                            
+                                            <div ng-repeat="vprop in nodeInfo.nodeInfo.ivrOptions.advance.properties track by $index">
+                                                <div class="VXMLProperties">
+                                                    <div class="row">
+                                                        <div class="col-md-6 noPaddingLeft" ng-if="!isEventsPage">
+                                                            <select ui-select2="vxmlselect2Opts" ng-model="vprop.name" ng-change="selectVXMLProp(vprop)" data-placeholder=" {{'select_param'| i18nString}}">
+                                                                <option value=""></option>
+                                                                <option ng-repeat="key in vxmlGlobalKeys" value="{{key}}">{{key}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 noPaddingLeft" ng-if="isEventsPage">
+                                                            <select ui-select2="vxmlselect2Opts" ng-model="vprop.name" ng-change="selectVXMLProp(vprop)" data-placeholder=" {{'select_param'| i18nString}}">
+                                                                <option value=""></option>
+                                                                <option ng-repeat="key in vxmlGlobalKeys track by $index" value="{{key}}">{{key}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 noPadding">
+                                                            <textarea ng-model="vprop.value" class="form-control" ng-keydown="editVXMLPrompt($event,'Call Control Parameter',vprop,nodeInfo.nodeInfo.ivrOptions.advance.properties,'.vxml-props .savingIndicator')">
+                                                            </textarea>
+                                                            <span ng-click="deleteVxmlPrompt($event, $index, nodeInfo.nodeInfo.ivrOptions.advance.properties, '.vxml-props .savingIndicator','Call Control Parameter')" class="deleteIcon"><i class="fa fa-trash-o"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+<!-- 
+                                            <div ng-repeat="vprop in nodeInfo.nodeInfo.ivrOptions.advance.properties">
+                                                <div class="VXMLProperties">
+                                                    <div class="row">
+                                                        <div class="col-md-6 noPaddingLeft">
+                                                            <select ui-select2="vxmlselect2Opts" ng-model="vprop.name" ng-change="selectVXMLProp(vprop)" data-placeholder="Select variable">
+                                                                <option value=""></option>
+                                                                <option ng-repeat="key in vxmlGlobalKeys track by $index" value="{{key}}">{{key}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 noPadding">
+                                                            <textarea ng-model="vprop.value" class="form-control" ng-keydown="editVXMLPrompt($event,'VXMLProperties',vprop,nodeInfo.nodeInfo.ivrOptions.advance.properties,'.vxml-props .savingIndicator')">
+                                                            </textarea>
+                                                            <span ng-click="deleteVxmlPrompt($event, $index, nodeInfo.nodeInfo.ivrOptions.advance.properties, '.vxml-props .savingIndicator','VXMLProperties')" class="deleteIcon"><i class="fa fa-trash-o"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+
+
+
+                                            <div class="row VXMLProperties">
+                                                <div class="col-md-6 noPaddingLeft" ng-if="!isEventsPage">
+                                                    <select ui-select2="vxmlselect2Opts" ng-model="vxmlProp.name" ng-change="selectVXMLProp(vxmlProp);addVxmlProp($event,'Call Control Parameter',vxmlProp,nodeInfo.nodeInfo.ivrOptions.advance.properties,'.vxml-props .savingIndicator',true)" data-placeholder=" {{'select_param'| i18nString}}">
+                                                        <option value=""></option>
+                                                        <option ng-repeat="key in vxmlGlobalKeys" value="{{key}}">{{key}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 noPaddingLeft" ng-if="isEventsPage">
+                                                    <select ui-select2="vxmlselect2Opts" ng-model="vxmlProp.name" ng-change="selectVXMLProp(vxmlProp);addVxmlProp($event,'Call Control Parameter',vxmlProp,nodeInfo.nodeInfo.ivrOptions.advance.properties,'.vxml-props .savingIndicator',true)" data-placeholder=" {{'select_param'| i18nString}}">
+                                                        <option value=""></option>
+                                                        <option ng-repeat="key in vxmlGlobalKeys track by $index" value="{{key}}">{{key}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 noPadding">
+                                                    <textarea ng-model="vxmlProp.value" class="form-control">
+                                                    </textarea>
+                                                </div>
+                                                <p class="utteranceSaveTip default">{{'press_save'| i18nString}}</p>
+                                            </div>
+
+
+
+
+
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="adv-item log" ng-if="!isTwilioVoiceWelcome">
+                                    <div class="adv-item-wrp pb-0">
+                                        <div class="fontsize10">
+                                            {{'log'| i18nString}} 
+                                            <i class="savingIndicator"></i>
+                                        </div>
+                                        <p class="node-connDiv paddingRightLeft15 fontsize10 mb-0">
+                                            {{'call_flow_logged'| i18nString}} 
+                                        </p>
+                                        <div class="row">
+                                            <toggle-switch yes-no="true" ng-model="nodeInfo.nodeInfo.ivrOptions.advance.enable_log" ng-change="saveIVROptions('.log .savingIndicator')" class="pull-left"></toggle-switch>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="adv-item recording" ng-if="!isTwilioVoiceWelcome">
+                                    <div class="adv-item-wrp">
+                                        <div class="fontsize10">
+                                            {{'recording'| i18nString}}
+                                            <i class="savingIndicator"></i>
+                                        </div>
+                                        <p class="node-connDiv paddingRightLeft15 fontsize10">
+                                            {{'state_rec'| i18nString}}
+                                        </p>
+                                        <div class="radioDiv">
+                                            <div class="radioInnerDiv">
+                                                <label for="start">
+                                                    <input value='start' type="radio" ng-click="saveIVROptions('.recording .savingIndicator')" ng-model="nodeInfo.nodeInfo.ivrOptions.advance.recording" name="recording" id="start" value="start"><span> {{'start_cap'| i18nString}}</span> 
+                                                </label>
+                                            </div>
+                                            <div class="radioInnerDiv">
+                                                <label for="pause">
+                                                    <input value='pause' type="radio" ng-click="saveIVROptions('.recording .savingIndicator')" ng-model="nodeInfo.nodeInfo.ivrOptions.advance.recording" name="recording" id="pause" value="pause"><span> {{'pause'| i18nString}}</span>
+                                                </label>
+                                            </div>
+                                            <div class="radioInnerDiv">
+                                                <label for="resume">
+                                                    <input value='resume' type="radio" ng-click="saveIVROptions('.recording .savingIndicator')" ng-model="nodeInfo.nodeInfo.ivrOptions.advance.recording" name="recording" id="resume" value="resume"><span> {{'resume'| i18nString}}</span>
+                                                </label>
+                                            </div>
+                                            <div class="radioInnerDiv">
+                                                <label for="stop">
+                                                    <input value='stop' type="radio" ng-click="saveIVROptions('.recording .savingIndicator')" ng-model="nodeInfo.nodeInfo.ivrOptions.advance.recording" name="recording" id="stop" value="stop"><span> {{'stop'| i18nString}}</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+        </div>
+       
+    </div>
+  
+</div>
+
+<div class="modal fade" id="confirmGrammarChannel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Confirm to Proceed</h4>
+        </div>
+        <div class="modal-body">
+            <p>Changing the Channel will reset the current definition. Would you like to proceed?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="kr-sg-button-primary btn_md proceed-btn">Proceed</button>
+            <button class="kr-sg-button-secondary btn_md cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

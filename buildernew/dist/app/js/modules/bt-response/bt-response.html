@@ -1,0 +1,46 @@
+<div class="bt-response-modal" >
+    <div class="modal-header">
+        <button type="button" ng-click="closeModal()"class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'bt_response_add_sample_response'| i18nString:({dyn:component.name})}}</h4>
+    </div>
+    <div class="modal-body" id="soapSample" ng-class="{'read-only':displayMode === 'view'}">
+        <form name='rqForm'> 
+            <div class="head">
+                    <div class="col-xs-12 noPadding">
+                        <label class="required-field">{{'name_label_uppercase'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <input class="form-control" id="_flowTaskName" name="flowTaskName" ng-model="name" ng-disabled="displayMode === 'view'" value="name" placeholder="{{'bt_response_give_a_name_placeholder'| i18nString}}"/>
+                    </div>
+                    <div class="col-xs-12 hide noPadding">
+                        <label class="required-field">{{'data_type_uppercase'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 hide noPadding">
+                        <select required name="method" class="btnDropdown whiteInput" ng-change="checkFormValid()" required ng-model="soap.datatype">
+                            <!--<option value="" disabled="disabled">Choose Response Type</option>-->
+                            <option ng-selected="true" value="JSON"> {{'json_label'| i18nString}} </option>
+                            <option value="RAW"> {{'raw_label'| i18nString}} </option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <div ng-jsoneditor class="json_editor response_json_editor" ng-model="soap.sample" options="options" name="sample" callback="sampleResCB" ></div>
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-disabled="displayMode === 'view'">
+                        <div class="checkbox checkbox-primary" ng-class="disableDefaultCheck?'addOpacity':''">
+                            <input class="styled" checked type="checkbox" ng-model="isDefault" name="isDefault" id="isDefault" ng-disabled="disableDefaultCheck">
+                            <label for="isDefault" >{{'bt_response_make_default_res'| i18nString}}</label>
+                        </div>
+                    </div>
+                 
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn"
+                ng-disabled="saveInProgress || checkFormValid() || displayMode === 'view'"
+                ng-click="saveResponse()">
+            <i ng-show="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)? saving : add }}</button>
+
+        <button type="submit" class="btn closeCancel" ng-click="closeModal()">{{'cancel'| i18nString}}</button>
+    </div>
+</div>

@@ -1,0 +1,253 @@
+  <div class="modal-header bt-modal-header setupSolBotHeader hide">
+    <div class="bt-modal-sub">
+      <div class="col-xs-6 noPadding">
+          <span class="pull-left closeBtn" ng-click="">
+                <span aria-hidden="true"><i class="fa fa-chevron-left"></i></span>
+            </span>
+          <bt-modal-title ng-if="!displayMode" taskname="install smart bot" bot="stream"></bt-modal-title>
+        </div>
+
+      <div class="col-xs-6 noPadding">
+        <div class="pull-right form-ctrl-div">
+         <button type="button" ng-click="navigate(enabledSections()[getActiveSectionIndex() + 1])" ng-show="canShowNext()" class="btn btn-primary" >{{'next'| i18nString}}</button>
+                    <button type="button" ng-disabled="botInstalling" ng-click="installSolBot()" ng-show="canShowFinish()" class="btn btn-primary" >
+                        <span ng-show="!botInstalling">{{'finish_label'| i18nString}}</span>
+                        <span ng-show="botInstalling">{{'installing'| i18nString}}</span>
+                    </button>
+                </div>
+        <!--<span class="dhelpLink">
+                    <a ng-if="sections[0].active" ng-href="{{helpLinks.SMARTBOT}}" target="_blank"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                    <a ng-if="sections[1].active" target="_blank" ng-href="{{helpLinks.ABOUTSMARTBOT}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                    <a ng-if="sections[2].active" target="_blank" ng-href="{{helpLinks.ABOUTSMARTBOT}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+             </span>-->
+      </div>
+    </div>
+      
+  </div>
+<div class="modalHeader">
+   <h4 class="modal-title"><i  class="btx-close"  ng-click="goToHome()" ></i>{{'bt_solution_install_configure_smart_bot'| i18nString}}</h4>
+</div>
+  <div class="modalBody setupSolBotBody" perfect-scroll dynamic-height dynaoffset="-60" height-property="height" >
+        <div class="row col-xs-12 noPadding">
+            <div class="col-xs-12 noPadding pageContainer ">
+                <div class="row top-bar selected-stream" >
+                    <div id="myTabs" class="step-progress-componentr">
+                        <ul class="nav nav-tabs tablist" role="tablist" >
+                            <li role="presentation" class="active step-progress-step" ng-class="{'active':sections[0].active}" ng-if="sections[0].enabled" ng-click="navigate(sections[0])">
+                                <a href="#Tasks" aria-controls="#" role="tab" data-toggle="tab">{{'bt_chnl_instruction'| i18nString}}</a>
+                            </li>
+                            <li role="presentation" class="step-progress-step"  ng-class="{'active':sections[1].active}" ng-if="sections[1].enabled" ng-click="navigate(sections[1])">
+                                <a href="#Tasks" aria-controls="#" role="tab" data-toggle="tab">{{'bot_settings'| i18nString}}</a>
+                            </li>
+                            <li role="presentation" class="step-progress-step" ng-if="sections[2].enabled"  ng-class="{'active':sections[2].active}" ng-click="navigate(sections[2])">
+                                <a href="#Tasks" aria-controls="#" role="tab" data-toggle="tab">{{'setup_bot_variables'| i18nString}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                
+                <div class="col-xs-12 noPadding centerDiv">
+                                            <br/>
+                                            <section class="widget col-xs-12 noPadding" ng-show="sections[0].active">
+                                                <div class="widget-body">
+                                                    <div class="col-xs-12 noPadding">
+                                                        <h3 class="noMargin">{{'install_instructions'| i18nString}}</h3>
+                                                        <div class="fontSize16" ng-show="stream.solutionBotSettings.configInstURL">
+                                                            <p class="help-hint-link" >{{'bt_solution_for_complete_installation_guide'| i18nString:({dyn:stream.originalName})}}<a target="_blank" href="{{stream.solutionBotSettings.configInstURL}}">click here</a></p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if='planeText'  role="tabpanel" class="instructions-pane tab-pane">
+                                                        <div dynamic-height dynaoffset="-190" height-property="height">
+                                                            <div ng-if='stream.solutionBotSettings.configInst' class="text-justify" ng-bind-html="constants.mdToHtmlHelpers.convertMDtoHTML(stream.solutionBotSettings.configInst)"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div  ng-show='!planeText' role="tabpanel" class="">
+                                                        <div class='pdfLoader' ng-show="showPdfLoading"><i class="fa fa-circle-o-notch fa-spin marginRight5" style="font-size:24px"> </i>{{'loading_pdf'| i18nString}}</div>
+                                                        <div dynamic-height dynaoffset="-190" height-property="height" class='pdfCont'  >
+                                                            <embed ng-src="{{stream.solutionBotSettings.configInstFileIdURL}}" width="100%" dynamic-height dynaoffset="-190" style="height:100%;position: relative;" class="embedBorder  visible displayBlock"/>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </section>
+                                            <section class="widget col-xs-12 noPadding" ng-show="sections[1].active">
+                                                <form name="aboutBotForm" class="wf-form" novalidate>
+                                                <div class="widget-body">
+
+                                                    <div class="col-xs-12 form-group noPadding">
+                                                        <div class="col-xs-12 noPadding">
+                                                            <label class=" " tooltip-placement="right" tooltip="">{{'botName'| i18nString}} </label>
+                                                        </div>
+                                                        <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'">
+                                                            {{aboutBotData.name}}
+                                                        </div>
+                                                        <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                                                            <input type="text" ng-model="aboutBotData.name" name="name" ng-disabled="aboutBotData.isInMarket" class="form-control" ng-minlength="1" maxlength="50" required ng-pattern="validateBotName" placeholder="{{'bt_solution_install_give_your_installed_botName_placeholder'| i18nString}}">
+                                                            <div  ng-show="aboutBotForm.name.$dirty">
+                                                                <div error-alert  ng-show="aboutBotForm.name.$error.required" class="text-danger form-error-text"> {{'Generalform_name_error'| i18nString}} </div>
+                                                                <div error-alert ng-show="aboutBotForm.name.$error.minlength" class="text-danger form-error-text"> {{'Generalform_name_invalid'| i18nString}}</div>
+                                                                <div error-alert ng-show="aboutBotForm.name.$error.pattern" class="text-danger form-error-text"> {{'Generalform_name_pattern'| i18nString}}</div>
+                                                                <div class="pull-right" ng-if="aboutBotData.name.length > 0">{{(50 - aboutBotData.name.length) + char_remaining}}</div>
+                                                            </div>
+                                                            <div error-alert ng-show="duplicateStreamName" class="text-danger form-error-text"> {{'duplicateStreamName_error'| i18nString}} </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-xs-12 form-group noPadding">
+                                                        <div class="col-xs-12 noPadding">
+                                                            <label class=" "  tooltip-placement="right" tooltip="">{{'tooltip_icon'| i18nString}} </label>
+                                                        </div>
+                                                        <div class="col-xs-12 radioDiv noPadding" ng-init="aboutBotData.iconType = aboutBotData.iconType || true">
+                                                            <div>
+                                                                <label  for="aboutBotData.iconType.yes">
+                                                                    <input type="radio" ng-model="aboutBotData.iconType" ng-value=true  name="aboutBotData.iconType" id="aboutBotData.iconType.yes" required/> <span class="opt-title">{{'generic_bot_icon'| i18nString}}</span>
+                                                                </label>  
+                                                            </div>
+                                                            <div>
+                                                                <label  for="aboutBotData.iconType.no">
+                                                                    <input type="radio" ng-model="aboutBotData.iconType" ng-value=false name="aboutBotData.iconType" id="aboutBotData.iconType.no" required/> <span class="opt-title">{{'custom_icon'| i18nString}}</span>
+                                                                </label>
+                                                            </div>
+                                                            <div ng-show="aboutBotForm.iconType.$dirty">
+                                                                <div error-alert ng-show="aboutBotForm.iconType.$error.required" class="text-danger form-error-text"> {{'icon_type_is_req'| i18nString}} </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>   
+
+
+
+
+                                                    <div class="col-xs-12 form-group noPadding" ng-if="aboutBotData.iconType === false">
+                                                        <div class="col-xs-12 noPadding">
+                                                            <label class=" " tooltip-placement="right" tooltip="{{'png_only_recommended'| i18nString}}">{{'select_icon'| i18nString}} </label>
+                                                        </div>
+                                                        <div class="col-xs-12 noPadding"  ng-show="displayMode === 'view'">
+                                                            <img class="img-thumbnail" width="70px" height="70px" ng-src="{{aboutBotData.icon.url}}"/>
+                                                        </div>
+                                                        <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                                                            <div class="input-group">
+                                                                <input name="iconFile" type="text" class="form-control" placeholder="{{'bt_solution_install_upload_icon'| i18nString}}" readonly ng-model="aboutBotData.icon.fileName" required>
+                                                                <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}} <i class="fa fa-spinner fa-spin" ng-show="iconUploading"></i><input type="file" file-model="aboutBotData.iconFile" id="sbots.iconFile" name="iconFile" required ng-disabled="iconUploading || aboutBotData.icon.fileId" on-file-change="uploadStreamIcon"/></div>
+                                                            </div>
+                                                            <div ng-show="aboutBotForm.iconFile.$dirty">
+                                                                <div error-alert ng-show="aboutBotForm.iconFile.$error.required" class="text-danger form-error-text"> {{'Icon_error'| i18nString}} </div>
+                                                            </div>
+                                                            <div ng-show="fileExtensionError" class="text-danger form-error-text"> {{'sup_Icon_form'| i18nString}} </div>
+                                                            <div ng-show="iconRequiredError" class="text-danger form-error-text"> {{'Icon_error'| i18nString}} </div>
+                                                            <div class="uploads" ng-show="aboutBotData.icon.fileName">
+                                                                <div class="alert alert-success alert-sm">
+                                                                    <span class="pointer-hand" ng-click="deleteStreamIcon()"><i class="btx-close"></i></span>
+                                                                    <span class="content"> {{aboutBotData.icon.fileName}} </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 form-group noPadding">
+                                                        <div class="col-xs-12 noPadding">
+                                                            <label class=" "  tooltip-placement="right" tooltip="">{{'update_preference'| i18nString}} </label>
+                                                        </div>
+                                                        <p class="grayInfoText ">{{'bot_def_updates'| i18nString}}</p>
+                                                        <div class="col-xs-12 radioDiv noPadding ">
+                                                            <div>
+                                                                <label  for="aboutBotData.inheritanceType.1">
+                                                                    <input type="radio" ng-model="aboutBotData.inheritanceType" ng-value="1"  name="aboutBotData.inheritanceType" id="aboutBotData.inheritanceType.1" required/> <span class="opt-title">{{'add_bot_updates'| i18nString}}</span>
+                                                                </label>  
+                                                            </div>
+                                                            <div>
+                                                                <label  for="aboutBotData.inheritanceType.2">
+                                                                    <input type="radio" ng-model="aboutBotData.inheritanceType" ng-value="2" name="aboutBotData.inheritanceType" id="aboutBotData.inheritanceType.2" required/> <span class="opt-title">{{'update_indevelop'| i18nString}}</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--<div class="col-xs-12 form-group noPadding">
+                                                        <div class="col-xs-12 labelling noPadding">
+                                                            <label class=" " tooltip-placement="right" tooltip="Do not use white/light colors."> Color </label>
+                                                        </div>
+                                                        <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'">
+                                                            {{aboutBotData.color}}
+                                                        </div>
+                                                        <div class="col-xs-5 noPadding" ng-show="displayMode !== 'view'">
+                                                            <input type="text" color-picker class="form-control" ng-model="aboutBotData.color" name="color" required>
+                                                            <input type="text" class="form-control colorCode" placeholder="Please select any color" ng-model="aboutBotData.color" name="streamColor" required>
+                                                            <div ng-show="aboutBotForm.color.$dirty">
+                                                                <div error-alert ng-show="aboutBotForm.color.$error.required" class="text-danger form-error-text"> Color information for the {{_constants_.label}} is required. </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>-->
+
+                                                </div>
+                                                </form>
+                                            </section>
+                                            <section class="widget col-xs-12 noPadding" ng-show="sections[2].active">
+                                                <form name="variablesForm" class="wf-form" novalidate>
+                                                    <div class="col-xs-12 noPadding">
+                                                        <div class="col-xs-4 noPadding">
+                                                            <label class=" " tooltip-placement="right" tooltip="">{{'variable_name'| i18nString}}</label>
+                                                        </div>
+                                                         <div class="col-xs-4 noPadding">
+                                                            <label class=" " tooltip-placement="right" tooltip="">{{'value'| i18nString}}</label>
+                                                        </div>
+                                                        <div class="col-xs-4 noPadding">
+                                                            <label class=" " tooltip-placement="right" tooltip="">{{'Note'| i18nString}}</label>
+                                                        </div>
+                                                    </div>   
+                                                <div  class="col-xs-12 noPadding" ng-repeat="variable in botVariables track by $index" ng-hide="variable.scope=='hidden'">
+                                                    <div class="col-xs-4 form-group noPadding">
+                                                        <div class="col-xs-12 noPadding ellipsisWidth200" title="{{variable.key}}">
+                                                            {{variable.key}}
+                                                        </div>
+<!--                                                        <div class="col-xs-12 noPadding" ng-show="variable.scope=='askToInstall'">
+                                                            <input type="text" name="idpname_{{$index}}" ng-model="variable.name" class="form-control"    placeholder="Please enter the variable name">
+                                                            <div  ng-show="variablesForm['idpname_{{$index}}'].$dirty">
+                                                                <div error-alert  ng-show="variablesForm['idpname_{{$index}}'].$error.required" class="text-danger form-error-text"> Variable Name is required. </div>
+                                                            </div>
+                                                        </div>-->
+                                                    </div>
+                                                    <div class="col-xs-4 form-group noPadding">
+<!--                                                        <div class="col-xs-12 noPadding" ng-show="variable.scope=='prePopulated'">
+                                                            {{variable.value}}
+                                                        </div>-->
+                                                        <div class="col-xs-8 noPadding" title="{{variable.value}}">
+                                                            <input  type="text" name="value{{$index}}" ng-model="variable.value" class="form-control"  required  placeholder="{{'pls_enter_value_placeholder'| i18nString}}">
+                                                            <div  ng-show="variablesForm['value{{$index}}'].$dirty">
+                                                                <div error-alert  ng-show="variablesForm['value{{$index}}'].$error.required" class="text-danger form-error-text">{{'variable_Value_is_required'| i18nString}} </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="variable.hint" class="col-xs-4 form-group noPadding">
+                                                        <div class="col-xs-12 noPadding ellipsisWidth200" title="{{variable.hint}}" >
+                                                            {{variable.hint}}
+                                                        </div>
+<!--                                                        <div class="col-xs-12 noPadding" ng-if="variable.scope=='askToInstall'">
+                                                            <input type="text" name="note{{$index}}" ng-model="variable.note" class="form-control"  required  placeholder="Please enter the note">
+                                                            <div  ng-show="variablesForm['note{{$index}}'].$dirty">
+                                                                <div error-alert  ng-show="variablesForm['note{{$index}}'].$error.required" class="text-danger form-error-text">note is required. </div>
+                                                            </div>
+                                                        </div>-->
+                                                    </div>
+                                                </div>
+                                                </form>
+                                            </section>
+
+                                        </div>
+            </div>
+        </div>
+</div>
+<div class="modalFooter">
+    <div class="col-xs-12">
+          <button type="button" ng-disabled="botInstalling" ng-click="installSolBot()" ng-show="canShowFinish()" class="btn btn-primary" >
+                        <span ng-show="!botInstalling">{{'done'| i18nString}}</span>
+                        <span ng-show="botInstalling">{{'installing'| i18nString}}</span>
+          </button>
+    </div>
+     <div class="col-xs-12">
+          <button type="button" ng-disable="disableNext" ng-click="next()" ng-show="!canShowFinish()" class="btn btn-primary" >
+                        <span ng-show="!botInstalling">{{'next'| i18nString}}</span>
+          </button>
+     </div>
+</div>

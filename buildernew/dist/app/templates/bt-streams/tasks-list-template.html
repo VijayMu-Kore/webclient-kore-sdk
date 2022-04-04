@@ -1,0 +1,37 @@
+
+
+
+<div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view !== 'defaultDialogUniversal'" ng-show="rightPanel.innerRightPanel.view == 'dialogTasks'" ng-include="tmpltPrePath+'templates/bt-streams/flowTasks-template.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'alertTasks'" ng-include="tmpltPrePath+'templates/bt-streams/alerts-template.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'informationTasks'" ng-include="tmpltPrePath+'templates/bt-streams/reports-template.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'actionTasks'" ng-include="tmpltPrePath+'templates/bt-streams/actions-template.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'knowledgeCollection'" ng-include="tmpltPrePath+'templates/bt-streams/knowledge-template.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'smallTalk'" ng-include="tmpltPrePath+'templates/bt-streams/small-talk.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'uiForms'" ng-include="tmpltPrePath+'templates/bt-streams/forms-template.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'linkedBots' && (stream.universalBotVersion === 1 || !stream['universalBotVersion'])" ng-include="tmpltPrePath+'templates/bt-streams/linked-bots-template.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'linkedBots' && stream.universalBotVersion === 2" ng-include="tmpltPrePath+'templates/bt-streams/linked-bots-template-v2.html'"></div>
+  <div class="animationIfEnter" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'flows'" ng-if="_constants_.config.KT && !showSolutionBotSetup" ng-include="tmpltPrePath+'templates/bt-streams/flows-template.html'"></div>
+</div>
+
+<div class="taskCreateOrEditModal modal fade version-form fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+          <div class="modal-dialog height-width-100">
+              <div class="modal-content utterances-modal-content height-width-100">
+                      <version-history ng-if="activeTask && showContent && dialogMode==='version'" active-task="activeTask"></version-history>
+                 
+                      <wf-logs  ng-if="activeTask && showContent && dialogMode==='logs'" active-task="activeTask"></wf-logs>
+                      <stream-form ng-if="dialogMode==='newBot'" stream-id="{{streamId}}" display-mode="edit" edit-mode="new" on-save="onStreamFormSave()"></stream-form>
+              </div>
+          </div>
+      </div>
+
+
+          <div class="btFullpageModal flowtask-create-form modal height-width-100 taskCreateOverlayModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog height-width-100">
+        <div class="modal-content utterances-modal-content height-width-100">
+            <div class="modal-body utterances-modal-body height-width-100 noPadding" ng-if="activeEntityFlow && showMapping" footer-mappingid=''>
+                <bt-wf-mapping active-entity ="activeEntityFlow" component="false" ></bt-wf-mapping>
+            </div>
+        </div>
+    </div>
+</div>

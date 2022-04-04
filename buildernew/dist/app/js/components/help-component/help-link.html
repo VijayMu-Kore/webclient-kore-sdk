@@ -1,0 +1,4 @@
+<a class="help" ng-if="!isFooterLink" ng-click="goToLink(helpLinkUrl, $event)"><i class="faquestion"><img ng-src="{{helpIcon}}"></i> {{'help_label'| i18nString}}</a>
+<div ng-if="isFooterLink" class="footerHelp text-center col-xs-12">
+	<a class="helpWithThisPage" target="_blank" ng-href="{{targettedHelpLink}}">{{'help_withpage_label'| i18nString}}</a>
+</div>

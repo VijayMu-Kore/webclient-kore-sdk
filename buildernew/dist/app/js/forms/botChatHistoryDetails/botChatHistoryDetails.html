@@ -1,0 +1,244 @@
+<div class="btUserProfileAnalysis">
+    <img ng-src="{{closeCross}}"  class="closeCross" ng-click="closePanel()">
+    <div class="fetchingDetails" ng-show="cb.loading">
+        <div>
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i><span>{{'loading'| i18nString}} </span>
+        </div>
+        </div>
+    <div class="" ng-show="!cb.loading">
+    <div class="profile" ng-if="(panelSlider.type == 'profile') || (cb.panelType == 'profile')">
+        <div class="mainProfilecomponent">
+            <div class="profileHeader">{{'user_profile'| i18nString}}</div>
+    
+
+           <div class="block_content">
+               <div class="secondary_text">{{'kore_user_id'| i18nString}}</div>
+               <div class="primary_text">{{koreUserId}}</div>
+           </div>
+           <div class="block_content">
+            <div class="secondary_text">{{'channel_data'| i18nString}}</div>
+            <div class="panel-group" id="accordionSec">
+                <div class="primary_text" ng-if="!userProfile.channelData.length">{{'None_label'| i18nString}}</div>
+                <div class="panel panel-default" ng-repeat="channelData in userProfile.channelData track by $index" 
+                ng-class="{'active': channelData.active}" href="#collapse0{{$index}}" ng-init="parentIndex = $index"
+                ng-click="collapseAccordion('#collapse0'+$index,$event,channelData,$index)">
+                  <div class="panel-heading">
+                    <div class="panel-title primary_text">
+                      <div ng-if="!channelData.displayName" data-parent="#accordionSec"  href="#collapse0{{$index}}" class="col-xs-12 collapse_tag collapsed">
+                        {{channelsConfig.channelsObject[channelData.channel].name | channelNameDisp}}
+                      </div>
+                      <div ng-if="channelData.displayName" data-parent="#accordionSec"  href="#collapse0{{$index}}" class="col-xs-12 collapse_tag collapsed">
+                        {{channelData.displayName}}
+                      </div>
+                  </div>
+                  </div>
+                  <div ng-show="channelData.active" id="collapse0{{$index}}" class="panel-collapse panel_collapse_data">
+                      <div class="panel-body channelId">
+                        ID: <span class="channel_data"> {{channelData.channelId}}</span>
+                      </div>
+                  </div>
+                </div>                              
+              </div> 
+           </div>
+           <div class="block_content">
+                <div class="secondary_text">{{'user_meta_tag'| i18nString}}<span class="userId userMetaTags" ng-show="userProfile.userMetaTags.count>0">( {{'total'| i18nString}} : {{userProfile.userMetaTags.count}} )</span></div>
+                <div class="data_sec">
+                    <span class="primary_text" ng-show="!(userProfile.userMetaTags.count > 0)">{{'None_label'| i18nString}}</span>
+                    <span class="recordTagsDiv" ng-repeat="tag in userProfile.userMetaTags.tags| limitTo: 10">  
+                        <span class="recordName">{{tag.name}}<span class="metaTag">{{tag.type}}</span>: {{tag.value}}</span>
+                    </span>
+                    <span class="see_utterances count" ng-if="userProfile.userMetaTags.tags.length > 10">+{{userProfile.userMetaTags.tags.length-10}}</span>
+                </div>
+            </div>
+            <div class="block_content">
+                <div class="secondary_text">{{'latest_interaction'| i18nString}}</div>
+                <div class="primary_text" ng-if="!userProfile.lastAccessTime">{{'None_label'| i18nString}}</div>
+                <div class="userDate">{{userProfile.lastAccessTime | date:'MM-dd-yyyy'}}</div>
+                <div class="userTime">{{userProfile.lastAccessTime | date:'hh:mm:ss a'}}</div>
+            </div>
+            <div class="block_content">
+                <div class="secondary_text">{{'total_conversation'| i18nString}}</div>
+                <div class="primary_text">{{userProfile.sessionCount}}</div>
+            </div>
+            <div class="block_content">
+                <div class="secondary_text">{{'total_conversation_session'| i18nString}}</div>
+                <div class="data_sec">
+                    <div class="primary_text" ng-if="userProfile.sessionCount30Days == 'None'">{{'None_label'| i18nString}}</div>
+                    <div class="show_session_data" ng-if="userProfile.sessionCount30Days !== 'None'">
+                        <div class="primary_text">{{userProfile.sessionCount30Days}}</div>
+                        <div class="secondary_text m-6">{{'intent_detection_rate'| i18nString}}</div>                        
+                        <div class="data_table_sec">
+                            <div class="header_block">
+                                <div class="title">{{'intents_requested'| i18nString}}</div>
+                                <div class="title">{{'intents_identified'| i18nString}}</div>
+                                <div class="title detectionRate">{{'detection_rate'| i18nString}}</div>
+                            </div>
+                            <div class="body_block">
+                                <div class="count_title">{{userProfile.intentDetectionRate.totalIntents}}</div>
+                                <div class="count_title">{{userProfile.intentDetectionRate.identifiedIntents}}</div>
+                                <div class="count_title detectionRate">{{userProfile.intentDetectionRate.detectionRate| number : 0}} %</div>
+                            </div>                            
+                        </div>
+                        <div class="secondary_text m-6">{{'goal_completion'| i18nString}}</div> 
+                        <div class="data_table_sec">
+                            <div class="header_block">
+                                <div class="title">{{'tasks_initiated'| i18nString}}</div>
+                                <div class="title">{{'tasks_completed'| i18nString}}</div>
+                                <div class="title detectionRate">{{'completion_rate'| i18nString}}</div>
+                            </div>
+                            <div class="body_block">
+                                <div class="count_title">{{userProfile.goalCompletionRate.tasksInitiated}}</div>
+                                <div class="count_title">{{userProfile.goalCompletionRate.tasksCompleted}}</div>
+                                <div class="count_title detectionRate">{{userProfile.goalCompletionRate.completionRate| number : 0}} %</div>
+                            </div>                            
+                        </div>                        
+                        <div class="secondary_text m-6" ng-if="recentFlowData.length > 0">{{'recent_conversation'| i18nString}}</div> 
+                        <div class="recentConversationFlow" ng-if="recentFlowData.length > 0" ng-repeat="recentData in recentFlowData">
+                            <span class="eachConversationData" ng-repeat="eachTask in recentData track by $index">
+                                <span class="eachtaskname" ng-class="{'success_task':eachTask.result == 'success', 'failure_task':eachTask.result == 'failure'}">{{eachTask.name}}</span>
+                                <span class="path_arrow" ng-show="$index!=((recentData.length)-1)">>></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>                     
+        </div>
+    </div>
+    <div class="conversation" ng-if="(panelSlider.type == 'conversation') || (cb.panelType == 'conversation')">
+        <div class="mainConversationcomponent">
+            <div class="profileHeader">{{'user_conversation_sessions'| i18nString}}
+                <div class="col-xs-8 noPadding tableDisplay">
+                    <div class="dateBtn sevendays" ng-class="{'selected':days===7}" ng-click="getDefaultFilters(7)">{{'seven_days'| i18nString}}
+                        </div>
+                    <div class="dateBtn" ng-class="{'selected':(days!==7) && days!==-1}"
+                        ng-click="getDefaultFilters(1)">{{'24_hours_label'| i18nString}} </div>
+                    <div class="dateBtn customdatepicker" type="text" name="daterange" ng-class="{'selected':days===-1}"
+                        ng-click="getDefaultFilters(-1)">{{'custom'| i18nString}}</div>
+                </div>
+            </div>
+
+            <div class="conversationSession">
+                <!-- DATA TABLE START HERE -->
+                <div class="desc-info-text">{{'sessions_start_end'| i18nString:({dyn:startDate,dyn1:endDate})}} </div>
+                <div class="kr-sg-data-table accordion-table">
+                    <div class="table-content">
+                        <div class="table-header col-lg-12 noPadding">
+                            <div class="col-lg-3 header-pad">
+                                <div class="header-title">{{'session_start'| i18nString}}<span class="sessionIcon"><img
+                                            ng-src="{{sortIcon}}" ng-click="sortTaskList('startDate')"></span></div>
+                            </div>
+                            <div class="col-lg-3 header-pad">
+                                <div class="header-title">{{'session_end'| i18nString}}<span class="sessionIcon"><img
+                                            ng-src="{{sortIcon}}" ng-click="sortTaskList('endDate')"></span></div>
+                            </div>
+                            <div class="col-lg-3 drop_down_sec">
+                                <div class="kr-sg-dropdowns w-100">
+                                    <div class="dropdown dropdown-open open">
+                                        <a class="dropdown-toggle dropdown-input" type="button"
+                                            data-toggle="dropdown">{{'channel'| i18nString}}<img ng-src="{{dropDownIcon}}"></a>
+                                        <ul class="dropdown-menu content-menu" ng-click="$event.stopPropagation()">
+                                            <div class="kr-sg-checkbox d-block">
+                                                <input id="checkbox_drpcheck6" class="checkbox-custom" type="checkbox"
+                                                    ng-model="checkbox.selected"
+                                                    ng-click="selectCheckbox('selectAll', $event)">
+                                                <label for="checkbox_drpcheck6" class="checkbox-custom-label">{{'select_all'| i18nString}}</label>
+                                            </div>
+                                            <div class="kr-sg-checkbox d-block"
+                                                ng-repeat="channel in duplicateConversationArray track by $index">
+                                                <input id="{{channel.key}}" class="checkbox-custom"
+                                                    ng-model="channel.selected" type="checkbox"
+                                                    ng-click="$event.stopPropagation();selectCheckbox(channel, $event)">
+                                                <label for="{{channel.key}}" class="checkbox-custom-label">
+                                                    {{channel.name}}</label>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 header-pad"></div>
+                        </div>
+           
+                    
+                        <div class="chat_user_conversation_session">                            
+                            <div class="panel-group" id="accordion">
+                              <div class="panel panel-default" ng-click="iscollapsed('#collapse'+$index,$event,conversationSession, $index)"  ng-repeat="conversationSession in conversationSessions  | orderBy:(orderType || '-sessionEndTime') track by $index" ng-show="conversationSession.sessionStartTime && conversationSession.sessionEndTime" ng-class="{'active': conversationSession.active}" ng-init="parentIndex = $index">
+                                <div class="panel-heading">
+                                  <div class="panel-title">
+                                    <div data-parent="#accordion"  href="#collapse{{$index}}" class="col-xs-12 collapse_tag collapsed">
+                                        <div class="col-xs-3 accordion_Sec">
+                                            <div class="date">{{conversationSession.sessionStartTime| date:'MM-dd-yyyy'}}</div>
+                                            <div class="time">{{conversationSession.sessionStartTime| date:'hh:mm:ss a'}}</div>
+                                        </div>
+                                        <div class="col-xs-3 accordion_Sec">
+                                            <div class="date">{{conversationSession.sessionEndTime| date:'MM-dd-yyyy'}}</div>
+                                            <div class="time">{{conversationSession.sessionEndTime| date:'hh:mm:ss a'}}</div>
+                                        </div>
+                                        <div class="col-xs-3 accordion_Sec">
+                                            <div class="date">{{channelsConfig.channelsObject[conversationSession.channel].name | channelNameDisp}}</div>                                            
+                                        </div>                                      
+                                        <div class="col-xs-3 accordion_Sec transferAgent" ng-if="conversationSession.transferToAgent==true && conversationSession.userDroppedOff==false">
+                                            <div class="transferAgentValue">{{'transfered_agent'| i18nString}}</div>
+                                        </div>
+                                        <div class="col-xs-3 accordion_Sec userDropOff"  ng-if="conversationSession.userDroppedOff==true && conversationSession.transferToAgent==false">
+                                            <div class="userDropOffValue">{{'user_dropped_off'| i18nString}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div id="collapse{{$index}}" ng-show="conversationSession.active" class="panel-collapse panel_collapse_data">
+                                    <div class="panel-body">
+                                        <div class="col-xs-12 panel_body_Sec">
+                                            <div class="col-xs-3 title">{{'total_success_tasks'| i18nString}}</div>
+                                            <div class="col-xs-3 content_data">{{conversationSession.successTasks}}</div>
+                                        </div>
+                                        <div class="col-xs-12 panel_body_Sec">
+                                            <div class="col-xs-3 title">{{'total_failed_tasks'| i18nString}}</div>
+                                            <div class="col-xs-9 content_data">{{conversationSession.failedTasks}}</div>
+                                        </div>
+                                        <div class="col-xs-12 panel_body_Sec">
+                                            <div class="col-xs-3 title">{{'intents_identified'| i18nString}}</div>
+                                            <div class="col-xs-9 content_data">{{conversationSession.intentFound}}</div>                                            
+                                        </div>                                      
+                                        <div class="col-xs-12 panel_body_Sec">
+                                            <div class="col-xs-3 title">{{'Intents_unidentified'| i18nString}}</div>
+                                            <div class="col-xs-5 content_data">{{conversationSession.intentNotFound}}</div>
+                                            <!-- <div class="col-xs-4 see_utterances">{{'see_utterance'| i18nString}}</div> -->
+                                        </div>
+                                        <div class="col-xs-12 panel_body_Sec">
+                                            <div class="col-xs-3 title">{{'session_meta_tags'| i18nString}}</div>
+                                            <div class="col-xs-9  total_content">
+                                            <div class="content_data">
+                                                <span class="noDataFound" ng-if="!(conversationSession.sessionMetaTags.length)">{{'None_label'| i18nString}} </span>
+                                                <span class="meta_tags" ng-repeat="sessionMetaTag in conversationSession.sessionMetaTags| limitTo: 2">{ {{sessionMetaTag.name}} : {{sessionMetaTag.value}} }</span>
+                                                <div class="see_utterances count" ng-if="conversationSession.availableSessionMetaTags > 0">+{{conversationSession.availableSessionMetaTags}}</div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 panel_body_Sec">
+                                            <div class="col-xs-3 title">{{'conversation_path'| i18nString}}</div>
+                                            <div class="col-xs-9  total_content">
+                                            <div class="content_data showMoreData">
+                                                <span class="noDataFound" ng-if="!(conversationSession.conversationPaths.length)">{{'None_label'| i18nString}} </span>
+                                                <span class="pathData"  ng-repeat="conversationPath in conversationSession.conversationPaths track by $index">{{conversationPath.name}}
+                                                    <span class="success_task" ng-show="conversationPath.result == 'success'"></span>
+                                                    <span class="failure_task" ng-show="(conversationPath.result == 'failure') || (conversationPath.result == 'failtask')"></span>
+                                                    <span class="path_arrow" ng-show="$index!= ((conversationSession.conversationPaths.length)-1)">>></span>
+                                                </span>
+                                                <div class="see_utterances" ng-if="conversationSession.showMoreButton" ng-click="showMore(conversationSession,$event)" >{{'see_more'| i18nString}}</div>
+                                                <div class="see_utterances" ng-if="conversationSession.showLessButton" ng-click="showLess(conversationSession,$event)">{{'see_less'| i18nString}}</div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>                              
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <!-- DATA TABLE ENDS HERE -->
+            </div>
+        </div>
+    </div> 
+</div>
+</div>

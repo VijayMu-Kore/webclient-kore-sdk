@@ -1,0 +1,210 @@
+<div ng-show="activeType !== 'botSummary'" ng-init="loaded()" class="right-panel"  ng-class="{'read-only-div':displayMode==='VIEW'}" >
+<!--Right panel with sub container starts here-->
+<div class="rightPanel subMenuLoadIcon" ng-if="!loadingAllTasks  && loadingSubMenu" ng-class="{'marginLeft355':activeType !== 'botTasks', 'marginLeft560':activeType == 'botTasks','analyzePanel paddingRightPanel':activeType == 'analyze','noPadding ':activeType == 'testTrain '}">
+    <div class="loadingText"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="innerText">{{switchingTo +((streamstate.toggleState==='published')? published : indevelopment)}}</span></div>
+</div>
+<div ng-if="activeType == 'training' && showUpgradeUniversal" class="animationIfEnter rightPanel upgradeUniversal">
+				<div ng-include="tmpltPrePath+'templates/bt-streams/upgrade-universal.html'"></div>
+</div>
+<div class="rightPanel subMenuLoadIcon" ng-if="!loadingAllTasks  && loadingPannel" ng-class="{'marginLeft355':activeType !== 'botTasks', 'marginLeft560':activeType == 'botTasks','analyzePanel paddingRightPanel':activeType == 'analyze','noPadding ':activeType == 'testTrain '}">
+    <div class="loadingText"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="innerText">{{'loading'| i18nString}}</span></div>
+</div>
+<div class="summaryLoader animationIfLeave fullRightContainrLoader" ng-if="loadingFullRightContainer">
+	<span class="spinner-text"> 
+		<i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+		<span class="spinner-text-content">  {{'loading'| i18nString}}</span>
+	</span>
+</div>
+	<div class="rightPanel animationIfEnter" ng-class="{'zIndexZero': loadingFullRightContainer,'marginLeft355':activeType !== 'botTasks', 'marginLeft560':activeType == 'botTasks'}" ng-show="!loadingAllTasks && subRightPanels[activeType] && !showUpgradeUniversal">
+			<!--Content panel  container starts here-->
+			<div ng-if="!loadingSubMenu && !loadingRightPanel && !loadingPannel" class="animationIfEnter innerRight col-xs-8" ng-class="{'innerRightWidthLg': activeType == 'botTasks'}">
+		        <div ng-show="!innerScrollItems[rightPanel.innerRightPanel.view]" ng-class="{'zIndexOne': rightPanel.innerRightPanel.view == 'exportBot'}" class="innerRightBody animationIfEnter" dynamic-height dynaoffset="canShowFooter() == true ? '-90' : '-50'" perfect-scroll height-property="height">
+					<div ng-show="!innerScrollItems[rightPanel.innerRightPanel.view]">
+						<div class="content-loading" ng-if="loadingDialogsTemplate">
+							<span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content">{{stream.type=='universalbot'?loadingBots:loadingDialogs}}</span>  </span>
+						 </div>      
+
+				<div  class="tasks-list-template" ng-if="!creationForm && parentOfSubMenu[activeType] == 'settings'" ng-include="tmpltPrePath+'templates/bt-streams/settings-template.html'"></div>
+				<div class="tasks-list-template"  ng-include="tmpltPrePath+'templates/bt-streams/tasks-list-template.html'" ng-show="activeType == 'botTasks' && !creationForm"></div>
+				<bot-tasks-creation-form ng-if="creationForm || taskType=='flows'"></bot-tasks-creation-form>
+				<div ng-if="!innerScrollItems[rightPanel.innerRightPanel.view] && !creationForm && parentOfSubMenu[activeType] == 'nl' && !showUpgradeUniversal" ng-include="tmpltPrePath+'templates/bt-streams/nlp-template.html'"></div>
+				<sdk-apps ng-if="!innerScrollItems[rightPanel.innerRightPanel.view] && !creationForm && (activeType=='agents' || (activeType=='defaultConversation' && rightPanel.innerRightPanel.view === 'eventsManage'))"></sdk-apps>
+					</div>
+				</div>
+				<div ng-show="innerScrollItems[rightPanel.innerRightPanel.view] && ((activeType == 'botTasks') || (activeType=='agents'))"  ng-class="{'zIndexOne': rightPanel.innerRightPanel.view == 'exportBot','widgetsRightPanelPadding':rightPanel.innerRightPanel.view=='widgets'}" class="innerRightBody animationIfEnter">
+					<div ng-if="innerScrollItems[rightPanel.innerRightPanel.view] && ((activeType == 'botTasks') || (activeType=='agents'))" >
+					 <div class="tasks-list-template" ng-show="!creationForm && activeType == 'botTasks'">
+						<div class="animationIfEnter panelsAndWidgets" onload="dialogTemplateLoadFlag()" ng-if="rightPanel.innerRightPanel.view == 'widgets'">
+							<bt-panels-widgets></bt-panels-widgets>
+							</div>
+					</div>
+					<sdk-apps ng-if="innerScrollItems[rightPanel.innerRightPanel.view] && ((activeType == 'botTasks') || (activeType=='agents')) && !creationForm && (activeType=='agents' || (activeType=='defaultConversation' && rightPanel.innerRightPanel.view === 'eventsManage'))"></sdk-apps>
+					</div>
+				</div>
+				<div class="innerRightBody" ng-if="parentOfSubMenu[activeType] == 'nl'  &&  innerScrollItems[rightPanel.innerRightPanel.view]" dynamic-height dynaoffset="canShowFooter() == true ? '-90' : '-50'" height-property="height">
+					<div class="tasks-list-template"  ng-if="!creationForm && activeType == 'botTasks'" ng-include="tmpltPrePath+'templates/bt-streams/tasks-list-template.html'"></div>
+					<div ng-if="!creationForm " ng-include="tmpltPrePath+'templates/bt-streams/nlp-template.html'"></div>
+                </div>
+                
+                <div class="innerRightFooter" ng-show="canShowFooter()">
+                    <div class="pull-left btnContainer">
+                        
+            <button class="btn btn-xs cancelBtn hide" ng-click="boc.hideOntologyQAForm()">{{'cancel'| i18nString}}</button>
+            <button ng-disabled="isEnabled() || callbacks.modeOfAccess === 'VIEW' || accessRights === 'VIEW' || amendEntityCb.accessRights === 'VIEW' || streamstate.toggleState=='published'" class="btn btn-xs saveBtn" ng-click="rightPanel.innerRightPanel.doAction($event)" > <i ng-if="callback.saveInprogress || rightPanel.innerRightPanel.saveInprogress" class="fa fa-spinner fa-spin"></i> {{(callback.saveInprogress || rightPanel.innerRightPanel.saveInprogress) ? savingLabel : save}} </button>
+            </div>
+                </div>
+			</div>
+
+			<!--Content panel  container ends here-->
+				<!--Sub panel  container starts here-->
+			<div class="innerLeft col-xs-4" dynamic-height dynaoffset="-50" perfect-scroll height-property="height" ng-class="{'menuWidthLg': activeType == 'botTasks','displayNone':showUpgradeUniversal}">
+				<div class="tailsContainer">
+				<div class="animationIfEnter blockMain {{innerMenu.id}}" ng-if="rightPanel.innerRightPanel.canShow(innerMenu.id) && activeType !== 'botTasks'" ng-class="{'selected':rightPanel.innerRightPanel.view==innerMenu.id, 'overflow-inherit':innerMenu.id == 'botVersion'}" ng-click="rightPanel.innerRightPanel.showView(innerMenu.id)" ng-repeat="innerMenu in rightPanel.innerLeftPanel[activeType]">
+                                    <div class="blockContent"><i class="fa fa-gear" ng-show="!innerMenu.icon"></i>
+                                    <span class="imgDiv"><img ng-src="{{innerMenu.icon}}" ng-show="innerMenu.icon"/></span>
+									<span class="name" title="{{innerMenu.id == 'developerShare' || innerMenu.id == 'synonyms' ? getMenuName(innerMenu.id) : innerMenu.name}}">{{innerMenu.id == 'developerShare' || innerMenu.id == 'synonyms' ? getMenuName(innerMenu.id) : innerMenu.name}}</span> <span class="tooltip-custom icon-beta"><img ng-src="{{rightPanel.innerRightPanel.view==innerMenu.id ? innerMenu.beta_icon_selected : innerMenu.beta_icon}}" ng-show="innerMenu.beta_icon" class="beta-icon"/><span class="tooltiptext" ng-click="$event.stopPropagation()" ng-bind-html="'beta_feature'| i18nString:({link:'https://developer.kore.ai/docs/bots/whats-new/kore-ai-beta-features/'})"></span></span>
+									<!-- <i ng-click="redirectToLink(innerMenu.helpLink, $event)" class="fa fa-question-circle pull-right helpIcon"></i> -->
+									<img ng-src="{{helpIcon}}" ng-click="redirectToLink(innerMenu.helpLink, $event)" class="pull-right helpIcon">
+									</div>
+					<p class="description">{{innerMenu.id === 'synonyms' && stream.type === 'universalbot'?getDescription(innerMenu.id):innerMenu.description}}</p>
+				</div>
+				<div class="blockMain {{innerMenu.id}}" ng-show="rightPanel.innerRightPanel.canShow(innerMenu.id) && activeType == 'botTasks'" ng-class="{'selected':rightPanel.innerRightPanel.view==innerMenu.id}" ng-click="rightPanel.innerRightPanel.showView(innerMenu.id)" ng-repeat="innerMenu in rightPanel.innerLeftPanel[activeType]">
+					<div class="blockContent">
+						<div class="taskIcon">
+							<img ng-src="{{rightPanel.innerRightPanel.view==innerMenu.id ? innerMenu.activeIcon : innerMenu.icon}}" />
+						</div>
+						<div class="info">
+							<p class="name" ng-class="{'ui-forms-name':innerMenu.id=='uiForms'}"><span title="{{innerMenu.name}}" class="title-name">{{innerMenu.name}}</span><span ng-if="innerMenu.id=='uiForms'" class="tooltip-custom beta-icon-uiforms"><img ng-src="{{rightPanel.innerRightPanel.view==innerMenu.id ? innerMenu.betaIconActivated : innerMenu.betaIcon}}"><span class="tooltiptext" ng-click="$event.stopPropagation()" ng-bind-html="'beta_feature'| i18nString:({link:'https://developer.kore.ai/docs/bots/whats-new/kore-ai-beta-features/'})"></span></span></p>
+							<div ng-hide="innerMenu.hideCount " ng-if="activeType == 'botTasks'" class="positionRelative">
+							<span class="taskCount"  ng-if="rightPanel.innerRightPanel.getCount(innerMenu.id) !== false && innerMenu.id!=='widgets'" ng-bind="rightPanel.innerRightPanel.getCount(innerMenu.id)"></span>
+
+							<span class="taskCount"  ng-if="stream.type!=='universalbot' && rightPanel.innerRightPanel.getCount(innerMenu.id) === false && (innerMenu.id!=='flows' && innerMenu.id!=='smallTalk' && innerMenu.id!=='widgets')">
+						    {{(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]? stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(innerMenu.id=='knowledgeCollection'?  questionsAnswers : (stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1)?  ('tasks'| i18nString) : ('task'| i18nString) ): (innerMenu.id=='knowledgeCollection')? noquestions : notasks)}}
+							</span>
+
+							<span class="taskCount"  ng-if="stream.type ==='universalbot' &&  rightPanel.innerRightPanel.getCount(innerMenu.id) === false && (innerMenu.id!=='flows' && innerMenu.id!=='smallTalk' && innerMenu.id!=='widgets')">
+								{{(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]? stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(innerMenu.id=='knowledgeCollection'?  questionsAnswers : (stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1)? bots : botInString ): (innerMenu.id=='knowledgeCollection')? noquestions : noBots)}}
+							</span>
+
+                            <span class="taskCount"  ng-if="rightPanel.innerRightPanel.getCount(innerMenu.id) === false && (innerMenu.id =='flows' && innerMenu.id !== 'smallTalk' && innerMenu.id!=='widgets')">
+					        	{{stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]?(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1? flows :  flow)): noFlows}}
+						    </span>
+						   
+						    <span class="taskCount"  ng-if="(innerMenu.id==='widgets')">
+							    <span>{{(stream._taskCounts['widgets'] && stream._taskCounts['widgets'][streamstate.toggleState]) ? (stream._taskCounts['widgets'][streamstate.toggleState] + ((stream._taskCounts['widgets'][streamstate.toggleState]>1)? widegets : widget )): noWidgets }}</span>
+							    <span>{{(stream._taskCounts['panels']  && stream._taskCounts['panels'][streamstate.toggleState])  ? (stream._taskCounts['panels'][streamstate.toggleState] + ((stream._taskCounts['panels'][streamstate.toggleState]>1)? panels : panel )): noPanels }}</span>
+						    </span>
+						   <span class="taskCount"  ng-if="rightPanel.innerRightPanel.getCount(innerMenu.id) === false && innerMenu.id =='uiForms'" >
+						        {{stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]?(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1? forms : form )): noForms}}
+					       </span>
+						    <span class="taskCount"  ng-if="rightPanel.innerRightPanel.getCount(innerMenu.id) === false && innerMenu.id =='smallTalk' && innerMenu.id!=='widgets'" >
+						        {{stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]?(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]+(stream._taskCounts[innerMenu.streamsKey][streamstate.toggleState]>1? groups : groupLabel )): noGroups}}
+					       </span>
+							<!--<span class="seperator" ng-show="innerMenu.id !== 'knowledgeCollection' && rightPanel.innerRightPanel.getCount(innerMenu.id).split(' Tasks')[0] > 0">|</span>--> 
+							<img class="actionName" ng-class="{'displayNone':((callbacks.modeOfAccess === 'VIEW') || (innerMenu.id === 'smallTalk') || (innerMenu.id === 'linkedBots') || (innerMenu.id === 'uiForms'))}" ng-if="!innerMenu.deprecated" ng-show="(streamstate.toggleState == 'indevelopment') && !showSolutionBotSetup && ((innerMenu.id == 'knowledgeCollection' && !knowledgeTasks.length) || (innerMenu.id !== 'knowledgeCollection')) && (innerMenu.id !== 'widgets')" ng-click="showForm($event, innerMenu.id)" ng-src="{{addIcon}}"/> 
+							<!-- + {{innerMenu.actionName}}</span>-->
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="dragBar"></div>
+			</div>
+			<!--Sub panel  container ends here-->
+		</div>
+		<!--Right panel with sub container ends here-->
+
+		<!--Right panel  container starts here without inner scroll-->
+		<div class="animationIfEnter rightPanel paddingRightPanel fullPageRightPanels" ng-class="{'adjust_padding_left_containment': activeType == 'containmentDashboard','adjust-left-padding-storyboard':activeType == 'storyboard'}" ng-if="!loadingSubMenu" ng-show="!loadingAllTasks && !subRightPanels[activeType] && !innerScrollItems[activeType]" dynamic-height dynaoffset="-50" perfect-scroll height-property="height">
+    <div class="animationIfEnter" ng-if="activeType=='botDashboard'">
+		<div>
+			<div  ng-include="tmpltPrePath+'templates/bt-streams/dashboard-template.html'"></div>
+		</div>
+     </div>
+                    
+                        <div class="full-height full-width animationIfEnter"  ng-if="activeType=='customDashboard'">
+                            <div class="full-height full-width">
+                                <bt-custom-dashboard ng-if="activeType == 'customDashboard'" ></bt-custom-dashboard>
+                            </div>
+						</div>      
+						<div class="full-height full-width animationIfEnter"  ng-if="activeType=='containmentDashboard'">
+                            <div class="full-height full-width">
+                                <bt-containment-dashboard ng-if="activeType == 'containmentDashboard'" ></bt-containment-dashboard>
+                            </div>
+                        </div>         
+						<div class="full-height full-width animationIfEnter" ng-if="activeType=='storyboard'">
+							<div class="full-height full-width">
+								<div class="summaryLoader animationIfLeave" ng-if="iframeLoding">
+								    <span class="spinner-text"> 
+								        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+								        <span class="spinner-text-content">  {{'loading'| i18nString}}</span>
+								    </span>
+								</div>
+								<bt-story-board ng-if="activeType == 'storyboard'"></bt-story-board>
+							</div>
+						</div>
+                    
+			<div class="animationIfEnter" ng-if="!loadingAllTasks && !subRightPanels[activeType] && !innerScrollItems[activeType] && activeType=='botTasks'"> <!-- need to verify and remove if we are not using this tasks section-->
+				<div>
+					<div ng-include="tmpltPrePath+'templates/bt-streams/tasks-list-template.html'"></div>
+				</div>
+			</div>
+
+			<!-- <div class="animationIfEnter" ng-if="activeType=='linkedBots'">
+				<div>
+                    <div ng-include="tmpltPrePath+'templates/bt-streams/linked-bots-template.html'" ng-if="stream.type =='universalbot'"></div>
+				</div>
+			</div> -->
+
+
+			<div class="animationIfEnter paddingTop20 paddingRight20"  ng-if="activeType=='channels'">
+				<div class="tasktitleheader">
+            <p>{{'Channels_title'| i18nString}}</p>
+        </div>
+				<div>
+					<bot-channels></bot-channels>
+				</div>
+			</div>
+
+		</div>
+		<!--Right panel  container ends here-->
+
+
+				<!--Right panel  container starts here with inner scroll'-->
+		<div class="animationIfEnter rightPanel paddingRightPanel" ng-class="{'analyzePanel':activeType == 'metrics','noPadding':(activeType == 'testTrain' || activeType == 'sessionFlow')}" ng-if="!loadingAllTasks && !subRightPanels[activeType] && innerScrollItems[activeType]  && !loadingSubMenu" dynamic-height dynaoffset="-50" height-property="height">
+
+			
+			<div class="animationIfEnter" ng-if="activeType== 'testTrain'">
+				<div>
+					<bt-train-bot></bt-train-bot>
+				</div>
+			</div> 
+
+			<div class="animationIfEnter" ng-if="activeType == 'sessionFlow'">
+				<div>
+					<bot-session-flow></bot-session-flow>
+				</div>
+			</div> 
+
+			<div class="animationIfEnter"  ng-if="activeType=='batchTesting'">
+					<div>
+						<batch-testing stream-id="{{stream._id}}"></batch-testing>
+					</div>
+			</div> 
+			<div class="animationIfEnter" ng-if="activeType=='publish'">
+				<div>
+				<div ng-if="stream.type === 'universalbot'" ng-include="tmpltPrePath+'templates/bt-streams/publish-template.html'"></div>
+				<bot-publish ng-if="stream.type !== 'universalbot'"></bot-publish>
+				</div>
+			</div>
+
+			<div  class="animationIfEnter"  ng-if="activeType=='metrics'">
+				<div>
+					<bt-analyze stream="stream" all-tasks="totalTasks" linked-bots="callbacks.linkedBots"></bt-analyze>
+				</div>
+			</div> 
+		</div>
+		<!--Right panel  container ends here -->
+</div> 
+
+<bt-summary  ng-if="activeType == 'botSummary'"></bt-summary>    

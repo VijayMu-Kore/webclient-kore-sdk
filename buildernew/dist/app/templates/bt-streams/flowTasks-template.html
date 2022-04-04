@@ -1,0 +1,273 @@
+<div ng-if="upgradeDialogCb.showDialogUpgrade">
+    <conversation-upgrade migration-journey="migrationJourney" call-back="upgradeDialogCb" flowtask-obj="selectedDialogForUpgrade"></conversation-upgrade>
+</div>
+<div class="flowTask-row"  ng-init="bulderReloaded()">
+    <div class="row btnSearchTitle" ng-if="(rightPanel.innerRightPanel.view !== 'storyboard')">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle" ng-if='(stream.type !== "universalbot")'> {{'ddval_dialog' | i18nString}}</p>
+            <p class="pageTitle" ng-if='(stream.type === "universalbot")'> {{'default_dialog' | i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            <div class="searchComponent" ng-show='dialogTasksByState.length > 0 && (!(stream.type === "universalbot"))'>
+                <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="searchObj.searchDialogQuery" ng-minlength="1"  placeholder=" {{'search_dialog'| i18nString}}">
+                <i ng-show="searchObj.searchDialogQuery === ''"  class="btx-search"></i>
+                <i  ng-class="{displayNone: !searchObj.searchDialogQuery.length}" ng-click="searchObj.searchDialogQuery=''" class="btx-close"></i>
+            </div>
+            <div class="creationButton" ng-show='dialogTasksByState.length > 0'>
+                <button class="btn" ng-if="dialogTasksByState.length > 0 && _constants_.config.showManageComponents" ng-click="fullModalCallback.openFullPageModal(1,'manageComponents')">{{'manage_components'| i18nString}}</button>
+                
+            </div>
+            <div class="creationButton" ng-show='(callbacks.modeOfAccess !== "VIEW") && (dialogTasksByState.length > 0 && (!(stream.type === "universalbot")))'><button class="btn btnSolidBlue" ng-click="showForm($event, 'dialogTasks')" ng-class="{'publishedMode':streamstate.toggleState == 'published'}">{{'create_dialog' | i18nString}}</button></div>
+            <div class="titleDropdown displayNone">
+
+                <div class="dropdown">
+                    <a class="viewModalBtn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{'validate_model' | i18nString}} 
+                        <i class="btx-carrot-up"></i>
+                    </a>
+                    <ul class="dropdown-menu viewML" aria-labelledby="dropdownMenuButton">
+                      <li class="dropdown-item modalsRun ml" ng-click="viewMlScore()">{{'view_ML_model' | i18nString}}</li>
+                      <li class="dropdown-item modalsRun kFold"  ng-click="viewKfold()">{{'K_fold_Cross_Validation' | i18nString}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-init="bulderReloaded()" class="text-center marginTop20percent" ng-show='(!dialogTasksByState.length > 0) && (dialogTasks.length > 0)'>{{'no_tasks'| i18nString}}</div>
+    <div class="panel-default">
+        <!-- PLAN INFO -->
+        <div class="hintDiv col-xs-12 marginBottom width735" ng-if="license && notificationEnabled">
+            <span class="icon"><i class="btx-info"></i></span>
+            <span class="description ng-binding">{{'basic_plan_notification_text' | i18nString}}</span>
+            <i class="btx-close" ng-click="closeNotification()" ></i>    
+        </div>
+        <!-- PLAN INFO -->
+        <div class="">
+            <!-- <div>
+                <span ng-show="dialogTasksByState.length > 0" class="synSearch dialogSearchBar callclear bt-pos-relative searchExpand">
+                    <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="searchObj.searchDialogQuery" ng-minlength="1"  placeholder=" {{'search_dialog'| i18nString}}">
+                    <img ng-show="searchObj.searchDialogQuery === ''" class="searchBar " ng-src="{{searchIconGray}}">
+                    <img ng-show="searchObj.searchDialogQuery !== ''" class="searchBar " ng-click="searchObj.searchDialogQuery=''" ng-src="{{faClose}}">
+                </span>
+            </div> -->
+            <div class="hintDiv col-xs-12 marginTop15 languageSettingsCode width735" ng-show="showProTipDefaultDialog && stream.type === 'universalbot'">
+                <span class="icon"><i class="btx-bulb"></i></span>
+                <span class="description ng-binding">The {{task_name}} task from {{linkedbot_name}} linked bot is being used as the default dialog for the universal bot instead of the dialog task present in this screen. This setting can be configured from the 'Intent not Identified' event.
+                     <a ng-click="navigateTo(null,'eventsManage','','storeSearchQuery')"> Manage Event </a></span>
+            </div>
+            <div class="panel-table col-xs-12 tableContainer p-b-70" ng-show="dialogTasksByState.length > 0">
+                <div class="panel-table-header">
+                    <div class="row tableHeaderRow">
+                        <div class="col-xs-3 title cursor-pointer" ng-class="{'defaultSort':defaultSortingName}" ng-click="sortTaskList('nameSort')">
+                            <i class="fa btx-sort marginRight5" ng-if="!defaultSortingName"></i>
+                            <i class="fa btx-sort-a marginRight5" ng-if="defaultSortingName && (orderType == '-name')"><span class="path1"></span><span class="path2"></span></i>
+                            <i class="fa btx-sort-d marginRight5" ng-if="defaultSortingName && (orderType == 'name')"><span class="path1"></span><span class="path2"></span></i>
+                            {{'bot_name'| i18nString}}</div>
+                        <div class="col-xs-3 title cursor-pointer" ng-class="{'defaultSort':defaultSortingDesc}" ng-click="sortTaskList('descSort')">
+                            <i class="fa btx-sort marginRight5" ng-if="!defaultSortingDesc"></i>
+                            <i class="fa btx-sort-a marginRight5" ng-if="defaultSortingDesc && (orderType == '-shortDesc')"><span class="path1"></span><span class="path2"></span></i>
+                            <i class="fa btx-sort-d marginRight5" ng-if="defaultSortingDesc && (orderType == 'shortDesc')"><span class="path1"></span><span class="path2"></span></i>
+                            {{'description_sample'| i18nString}}</div>
+                        <div class="col-xs-2 title cursor-pointer" ng-class="{'defaultSort':defaultSortingLast}" ng-click="sortTaskList('datesSort')">
+                            <i class="fa btx-sort marginRight5" ng-if="!defaultSortingLast"></i>
+                            <i class="fa btx-sort-a marginRight5" ng-if="defaultSortingLast && (orderType == '-lMod')"><span class="path1"></span><span class="path2"></span></i>
+                            <i class="fa btx-sort-d marginRight5" ng-if="defaultSortingLast && (orderType == 'lMod')"><span class="path1"></span><span class="path2"></span></i>
+                            {{'last_updated'| i18nString}}</div>
+                        <div class="col-xs-2 title cursor-pointer noPaddingLeft" ng-class="{'defaultSort':defaultSortingStatus}" ng-hide="showSolutionBotSetup" ng-click="sortTaskList('statusSort')">
+                            <i class="fa btx-sort marginRight5" ng-if="!defaultSortingStatus"></i>
+                            <i class="fa btx-sort-a marginRight5" ng-if="defaultSortingStatus && (orderType == '-state')"><span class="path1"></span><span class="path2"></span></i>
+                            <i class="fa btx-sort-d marginRight5" ng-if="defaultSortingStatus && (orderType == 'state')"><span class="path1"></span><span class="path2"></span></i>
+                            {{'bot_status'| i18nString}}</div>
+                        <!-- <div class="col-xs-1 title">VERSION</div> -->
+                        <div class="col-xs-2 title">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="panel-table-body tableBodyRow">
+                    <div class="text-center padding10" ng-show="searchObj.searchDialogQuery && filteredDialogTasksByState.length===0">{{'no_results'| i18nString}}</div>
+                    <div class="row flowTask bodyRow" ng-repeat="flowtask in filteredDialogTasksByState =(dialogTasksByState  | filter:{name:searchObj.searchDialogQuery}) | orderBy:(orderType || '-lMod') | slice:(currentPage-1)*50:currentPage*50">
+                        <div class="col-xs-3 contentDetails cursor-pointer" ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(flowtask,'flowtaskView'):editOrViewWorkflow(flowtask, 'dialog')">{{flowtask.name}}
+                            <p class="description" ng-if="flowtask.isHidden && !flowtask.isFollowUp">{{'hidden'| i18nString}}</p>
+                            <p class="description" ng-if="!flowtask.isHidden && !flowtask.isFollowUp"></p>
+                            <p class="description" ng-if="flowtask.isFollowUp">{{'sub_intent'| i18nString}}</p>
+                        </div>
+                        <div class="col-xs-3 contentDetails cursor-pointer tooltip-hover max-width-200 text_left" tooltip-placement="bottom-left" tooltip="{{flowtask.shortDesc}}" ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(flowtask,'flowtaskView'):editOrViewWorkflow(flowtask, 'dialog')">
+                            {{flowtask.shortDesc}}
+                        </div>
+             
+                          <div class="col-xs-2 contentDetails cursor-pointer" ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(flowtask,'flowtaskView'):editOrViewWorkflow(flowtask, 'dialog')">{{flowtask.lMod | date:'MM-dd-yyyy'}}
+                          </div>
+                        <div class="col-xs-2 contentDetails deploymentStatus cursor-pointer"  ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(flowtask,'flowtaskView'):editOrViewWorkflow(flowtask, 'dialog')" ng-class="{'hide':showSolutionBotSetup}">
+                           
+                             <span class="positionRelative">
+                            <span ng-class="{'published':flowtask.state === 'published'}" class="status">{{(flowtask.state === 'published' && flowtask.parentId)?(_constants_.states.awaitingApproval):(_constants_.states[flowtask.state] || flowtask.state)}}</span>
+                                    <bot-tooltip task="flowtask"  ng-if="!isSelectedLanguageApproved(flowtask) && (stream.supportedLanguages.length>1)"></bot-tooltip>
+                            </span>
+                         <!-- <span class="hiddenStatus" ng-if="flowtask.isHidden">Visibilty Scope : HIDDEN</span> -->
+                        </div>
+                        
+                        <!-- <div class="col-xs-1 contentDetails cursor-pointer"  ng-click="callbacks.modeOfAccess === 'VIEW'?viewWorkflow(flowtask,'flowtaskView'):editOrViewWorkflow(flowtask, 'dialog')">{{flowtask.version}}</div> -->
+                        <div class="col-xs-2 contentDetails" ng-class="{'hide':!showSolutionBotSetup}">
+                            <a class="sol-task-view" ng-click="viewWorkflow(flowtask,'flowtaskView')">{{'view'| i18nString}}</a>
+                        </div>
+                        <!--div class="col-xs-3"  ng-class="{'hide':showSolutionBotSetup}">
+                          {{(flowtask.state === 'published' && flowtask.parentId)? 'Awaiting Approval':(_constants_.states[flowtask.state] || flowtask.state)}}
+                        </div>
+                        <div class="col-xs-1">{{flowTask.version}}</div-->
+                        <div class="col-xs-2 contentDetails text-center hoverIcons" ng-class="{'hide': showSolutionBotSetup}">
+                            <i class="btx-upgrade-supportplan dialogUpgrade" ng-click="conversationUpgrade(flowtask)" ng-if="!flowtask.sceneRefId" tooltip-placement="bottom" tooltip="{{'upgrade_to_new_dialog' | i18nString}}"></i>
+                            <span class="editSpan"  ng-show="callbacks.modeOfAccess !== 'VIEW' && (flowtask.editable)" title="Edit"><i class="btx-pencil" ng-show="!(flowtask.state === 'published' || flowtask.state === 'suspended')" ng-click="editWorkflow(flowtask, 'flowtaskEdit')"></i></span>
+                            <span class="cloneSpan" ng-show="callbacks.modeOfAccess !== 'VIEW' && (!(stream.type === 'universalbot')) && (flowtask.editable)" title="Clone"><i class="btx-clone" ng-show="botDetails.streamState == 'indevelopment'" ng-click="openCloneDialogModel(flowtask)"></i></span>
+                            
+                            <!-- <span class="cloneSpan" role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW' && (!(stream.type === 'universalbot'))">
+                                <i class="btx-clone" ng-show="botDetails.streamState == 'indevelopment'" ng-click="openCloneDialogModel(flowtask)"></i>
+                            </span> -->
+                            
+                            <span class="deleteSpan" role="presentation" ng-show=" (flowtask.editable) && callbacks.modeOfAccess !== 'VIEW' && isEligibleToDelete(flowtask) && flowtask.state !== 'published' && flowtask.state !== 'suspended' && (!(stream.type === 'universalbot'))" title="Delete"><i class="btx-delete-1" ng-click="deleteWorkflow(flowtask, 'flowtask', $index)" role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW' && isEligibleToDelete(flowtask) && flowtask.state !== 'published' && flowtask.state !== 'suspended' && (!(stream.type === 'universalbot'))"></i></span>
+                            <div class="dropdown panel-dropdown settingsDD">
+                                <!-- <i class="fa fa-1 pointer-hand fa-cog" data-toggle="dropdown"></i> -->
+                               <!--  <i class="fa fa-1 pointer-hand" ng-class="{'fa-cog':flowtask.editable,'fa-lock':!flowtask.editable}" data-toggle="dropdown"></i> -->
+                               <span   ng-class="{'lock':!flowtask.editable}" data-toggle="dropdown"><i title="More" ng-if="(flowtask.editable)" class="btx-overflow"></i></span>
+                                <ul class="dropdown-menu panel-dropdown-menu" ng-show="flowtask.editable" role="menu" ng-class="{'publishedDropdown':flowtask.state === 'published'}">
+                                    <li role="presentation">
+                                       <a ng-click="viewWorkflow(flowtask,'flowtaskView')">{{'view'| i18nString}}</a>
+                                    </li>
+                                    <li ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                                        <a ng-show="getAvailability(flowtask.state,'upgrade') && !flowtask.child.length == 1 && botDetails.streamState==='indevelopment'"  ng-click="upgradeWorkflow(flowtask,'flowtask')"> {{'upgrade'| i18nString}} </a>
+                                    </li>
+                                    <!-- <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW'">
+                                        <a ng-show="!(flowtask.state === 'published' || flowtask.state === 'suspended')" ng-click="editWorkflow(flowtask, 'flowtaskEdit')"> {{'edit'| i18nString}} </a>< ng-show="flowtask.state !== 'published'"
+                                    </li> -->
+                                    <!-- <li class="deletLink" role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW' && isEligibleToDelete(flowtask) && flowtask.state !== 'published' && flowtask.state !== 'suspended' && (!(stream.type === 'universalbot'))">
+                                        <a ng-click="deleteWorkflow(flowtask, 'flowtask', $index)">{{'delete'| i18nString}}  </a>
+                                    </li> -->
+                                    <!-- <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW' && (!(stream.type === 'universalbot'))">
+                                        <a ng-show="botDetails.streamState == 'indevelopment'" ng-click="openCloneDialogModel(flowtask)">{{'clone'| i18nString}}  </a>
+                                    </li> -->
+                                    <li role="presentation" ng-show="isEligibleToDelete(flowtask) && flowtask.state === 'awaitingApproval'">
+                                        <a ng-click="recallWorkflow(flowtask, 'flowtask')">{{'recall'| i18nString}}  </a>
+                                    </li>
+                                    <li role="presentation" ng-show="isEligibleToDelete(flowtask) && flowtask.state === 'published' && flowtask.visibility.namespace==='public' && isWorkFlowAdmin()">
+                                        <a ng-click="unPublishWorkflow(flowtask, 'flowtask')"> {{'unpublish'| i18nString}} </a>
+                                    </li>
+                                    <li role="presentation" ng-show="flowtask.editable && !(flowtask.state === 'suspended')">
+                                        <a ng-click="openDialogSettings(flowtask)">{{'dialog_Settings'| i18nString}}</a>
+                                    </li>
+                                    <li role="presentation" ng-show="flowtask.editable && !(flowtask.state === 'suspended') && (!(stream.type === 'universalbot'))">
+                                        <a ng-click="openManageInterruptions(flowtask)">{{'manage_interruptions'| i18nString}}</a>
+                                    </li>
+                                    <!-- <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW' && (flowtask.editable && !(flowtask.state === 'published' || flowtask.state === 'suspended'))">
+                                        <a ng-if="displayMode !== 'view'"data-toggle="modal" ng-click="storeActiveFlowTask(flowtask)" data-target="#flowtask_imports">{{_constants_.menuOptions.import}}</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a ng-click="showExportDeprication(flowtask._id,flowtask)">{{'export'| i18nString}}</a>
+                                    </li> -->
+                                    <li role="presentation" ng-show="(!(stream.type === 'universalbot'))">
+                                        <a ng-click="amendEntityDialog(flowtask)">{{'manage_amend'| i18nString}}</a>
+                                    </li>
+                                    <li ng-if="allowNamespace">
+                                        <a ng-click="enableManageVariable(flowtask)">{{'manage_var_namespace'| i18nString}}</a>
+                                    </li>
+<!--                                    <li role="presentation">
+                                        <a ng-show="flowtask.state === 'published' || flowtask.state === 'configured'"  ng-click="viewActionLogs(flowtask)">View Logs</a>
+                                    </li>-->
+                                </ul>
+                                <ul class="dropdown-menu panel-dropdown-menu" ng-show="!flowtask.editable" role="menu" ng-class="{'publishedDropdown':flowtask.state === 'published'}">
+                                    <li role="presentation">
+                                       <a ng-click="viewWorkflow(flowtask,'flowtaskView')">{{'view'| i18nString}}</a>
+                                    </li>
+                                    <li role="presentation" ng-hide="callbacks.modeOfAccess === 'VIEW'">
+                                        <a ng-click="unlockTask(flowtask)"> {{'unlock'| i18nString}} </a><!-- ng-show="flowtask.state !== 'published'" -->
+                                    </li>
+                                    <li role="presentation" ng-show="callbacks.modeOfAccess !== 'VIEW' && (!(stream.type === 'universalbot'))">
+                                        <a ng-show="botDetails.streamState == 'indevelopment'" ng-click="openCloneDialogModel(flowtask)"> {{'clone'| i18nString}} </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <pagination  rotate="false" 
+                                 ng-show="filteredDialogTasksByState.length > 50"
+                                 class="pagination-sm pull-right" 
+                                 boundary-links="true" 
+                                 direction-links="false"
+                                 total-items="filteredDialogTasksByState.length" 
+                                 items-per-page="50" 
+                                 ng-model="currentPage"
+                                 ng-init="currentPage=1"
+                                 max-size="10"
+                                 first-text="<<"
+                                 last-text=">>"
+                                 >
+                    </pagination>
+                </div>
+            </div>
+            <div class="modal fade export-dialog-modal" data-backdrop="static" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header exportHeader">
+                                <h4 class="modal-title">{{'confirm_proceed'| i18nString}}</h4>
+                            </div>
+                            <div class="modal-body export-dialog-modal-body">
+                           
+                                        <div class="noteText col-xs-12">
+                                            <span class="noteDesc">{{'hold_resume_export'| i18nString}}</span>
+                                        </div>
+                            </div>
+                            <div class="modal-footer importFooter">
+                                    <button type="button" class="btn btn-primary dialogBtn" ng-click="startExportDialog()">{{'export'| i18nString}}</button>
+                                    <button type="button" class="btn closeCancel dialogBtn" ng-click="canelExportDialog()">{{'cancel'| i18nString}}</button>
+                                 </div>
+                        </div>
+                    </div>
+            </div>
+            <div id="depricationExportModal" class="modal depricationExportModal fade" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">{{'important_note'| i18nString}}</h4>
+              </div>
+              <div class="modal-body">
+                <p class="desc">{{'dialog_import_discontinued'| i18nString}}</p>
+              </div>
+              <div class="modal-footer">
+                <button class='btn-danger danger' ng-click='proceedExport()'>{{'proceed'| i18nString}}</button>
+                <button class='btn-default default marginLeft10' ng-click='cancelExportDeprication()'>{{'cancel'| i18nString}}</button>
+              </div>
+            </div>
+          </div>
+</div>
+            <bt-dialog-settings ng-if="flowtaskDialogSettingsCB.show" cb="flowtaskDialogSettingsCB"></bt-dialog-settings>
+            <div class="col-xs-12">
+                <!-- <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert" ng-show="dialogTasks.length == 0 && !loadingFlows">
+                    {{'no_dialog_tasks'| i18nString}}
+                    <p>  {{'dialog_desc'| i18nString}}</p>
+                    <p><a target="_blank" ng-href="{{$root.helpLinks.DIALOG_TASK_HELP}}" >{{'learn_more_label'| i18nString}}</a></p>
+                </div> -->
+                <div class="emptyStateContainer no_dialog_" role="alert" ng-show="dialogTasks.length == 0 && !loadingFlows">
+                    <div class="emptyState">
+                        <div class="emptyImage">
+                            <img ng-src="{{emptyStateIcon_dialog_empty}}" class="emptyImg">           
+                        </div>  
+                        <span class="mainTitle">{{'build_new_dialog'| i18nString}}</span>
+                        <div class="emptyStateDesc">{{'build_new_dialog_desc'| i18nString}} <a target="_blank" ng-href="{{$root.helpLinks.DIALOG_TASK_HELP}}" >{{'learn_more'| i18nString}}</a></div>
+                        <div class="generateBtn">
+                            <button class="addBTN mr-10" ng-show="callbacks.modeOfAccess !== 'VIEW'" ng-class="{'publishedMode':streamstate.toggleState == 'published'}" ng-click="showForm($event, 'dialogTasks')">{{'create_dialog_task' | i18nString}}</button>                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning alert-xs text-center" role="alert" ng-show="dialogTasks.length == 0 && loadingActions">
+                    {{'loading_dialogs'| i18nString}}...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<manage-variable-namespace cb='manage_var_cb' class="manage-variable" id="manageVarNamespace" ng-if="manageVarEnable"></manage-variable-namespace>
+
+
+<!-- Linked tasks -->
+<!--<div>
+    <bt-linked-task ng-if="openLInkedTaskSliderCB.open" cb="openLInkedTaskSliderCB"></bt-linked-task>
+</div>-->

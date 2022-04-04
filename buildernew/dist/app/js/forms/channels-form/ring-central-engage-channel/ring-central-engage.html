@@ -1,0 +1,183 @@
+<div class="modalSliderContainer width700">
+    <form name="rcEngageForm" class="mircosoft-forms-channel">
+    <div class="modalHeader channelModalHeader">
+        <h4 class="modal-title" id="gridSystemModalLabel">
+          <i class="btx-close" ng-click="goToHome()"></i>
+          {{'Ring_Central_Engage'| i18nString}}
+        </h4>
+ </div>
+    <div class="modalBody slack-channel-page inner-scroll channelInnerContent" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+      <div class="col-xs-12 step-progress-container">
+        <step-progress steps="steps" on-click="stepClick"></step-progress>
+    </div> 
+      <div ng-repeat="step in steps" ng-show="step.active" class="slcakChannels widthseventy col-xs-12">
+     
+      <div class="col-xs-12 noPadding" ng-show="steps[0].active">
+        <div class="col-xs-12 channel-content">
+          <div class="info noMargin">
+              <p>{{'Bt_chnl_ringCentralEngage_instruct_label'| i18nString}}</p>
+              
+              <div class="info">
+                  <p class="channelstep marginTop15">{{'Bt_chnl_ringCentralEngage_step1_count'| i18nString}}</p>
+                  <p>{{'Bt_chnl_ringCentralEngage_step1_desc'| i18nString}}</p>
+
+
+                  <p class="channelstep marginTop15">{{'Bt_chnl_ringCentralEngage_step2_count'| i18nString}}</p>
+
+                  <p>{{'Bt_chnl_ringCentralEngage_step2_desc1'| i18nString}} <span class="ringCentralEngageBold">{{'Bt_chnl_ringCentralEngage_step2_desc1_API_Access_Tokens' | i18nString}}</span></p>
+
+                  <img ng-src="{{assetsBase}}images/RingCentralEngage1.png" class="marginBottom10 width100percent" />
+
+                  <p>{{'Bt_chnl_ringCentralEngage_step2_desc2'| i18nString}}</p>
+                  <img ng-src="{{assetsBase}}images/RingCentralEngage2.png" class="marginBottom10 width100percent" />
+                  <img ng-src="{{assetsBase}}images/RingCentralEngage3.png" class="marginBottom10 width100percent" />
+                  <ol class="pad-top-bot-10">
+                    <li>{{'Bt_chnl_ringCentralEngage_step2_ol_1.1'| i18nString}}<span class="ringCentralEngageBold"> {{'Bt_chnl_ringCentralEngage_step3_ol_1.8'| i18nString}}</span>{{'Bt_chnl_ringCentralEngage_step2_ol_1.2'| i18nString}}</li>
+                    <li>{{'select'| i18nString}}<span class="ringCentralEngageBold">{{'Bt_chnl_ringCentralEngage_step2_ol_1.3'| i18nString}}</span> {{'Bt_chnl_ringCentralEngage_step2_ol_1.4'| i18nString}}</li>
+                    <li>{{'Click_capitpal'| i18nString}}<span class="ringCentralEngageBold">"{{'save'| i18nString}}"</span></li>
+                    <li>{{'Bt_chnl_ringCentralEngage_step2_ol_1.5'| i18nString}}<span class="ringCentralEngageBold"> {{'edit'| i18nString}}</span> {{'Bt_chnl_ringCentralEngage_step2_ol_1.6'| i18nString}}</li>
+                  </ol>
+                  <img ng-src="{{assetsBase}}images/RingCentralEngage4.png" class="marginBottom10 width100percent" />
+                  <ol start="5">
+                    <li>{{'Bt_chnl_ringCentralEngage_step2_ol_1.7'| i18nString}}<span class="ringCentralEngageBold"> {{'Bt_chnl_ringCentralEngage_step2_ol_1.8'| i18nString}}</span> {{'Bt_chnl_ringCentralEngage_step2_ol_1.9'| i18nString}}</li>
+                  </ol>
+                
+
+                  <p class="channelstep marginTop15">{{'Bt_chnl_ringCentralEngage_step3_count'| i18nString}}</p>
+                  <p>{{'Bt_chnl_ringCentralEngage_step3_count_1'| i18nString}} <span class="ringCentralEngageBold"> {{'Bt_chnl_ringCentralEngage_step3_count_2'| i18nString}}</span></p>
+
+                  <img ng-src="{{assetsBase}}images/RingCentralEngage5.png" class="marginBottom10 width100percent" />
+                  <p>{{'Bt_chnl_ringCentralEngage_step3_count_3'| i18nString}}</p>
+                  <img ng-src="{{assetsBase}}images/RingCentralEngage6.png" class="marginBottom10 width100percent" />
+                  <img ng-src="{{assetsBase}}images/RingCentralEngage7.png" class="marginBottom10 width100percent" />
+                  <ol class="pad-top-bot-10">
+                    <li>{{'Bt_chnl_ringCentralEngage_step3_ol_1.1'| i18nString}}<span class="ringCentralEngageBold"> {{'Bt_chnl_ringCentralEngage_step2_ol_1.8'| i18nString}}</span> {{'Bt_chnl_ringCentralEngage_step3_ol_1.2'| i18nString}} <span class="ringCentralEngageBold"> {{'Bt_chnl_ringCentralEngage_step3_ol_1.3'| i18nString}}</span></li>
+                    <li>{{'Bt_chnl_ringCentralEngage_step3_ol_1.4'| i18nString}}<span class="ringCentralEngageBold">{{'Bt_chnl_ringCentralEngage_step3_ol_1.5'| i18nString}}</span> {{'Bt_chnl_ringCentralEngage_step3_ol_1.6'| i18nString}}</li>
+                    <li>{{'Bt_chnl_ringCentralEngage_step3_ol_1.7'| i18nString}}<span class="ringCentralEngageBold">{{'Bt_chnl_ringCentralEngage_step3_ol_1.8'| i18nString}}</span> {{'Bt_chnl_ringCentralEngage_step3_ol_1.9'| i18nString}}</li>
+                    <li>
+                      {{'Verification_Token_will_be_generated_automatically' | i18nString}}
+                      <ol class="lower-alpha">
+                        <li>{{'Copy_the' | i18nString}} <span class="ringCentralEngageBold">{{'verification_token' | i18nString}}</span> {{'verification_token_desc' | i18nString}}</li>
+                      </ol>
+                    </li>
+                    <li>{{'Bt_chnl_ringCentralEngage_step3_ol_1.0'| i18nString}}<span class="ringCentralEngageBold"> {{'Bt_chnl_ringCentralEngage_step3_ol_1.1.1'| i18nString}}</span>{{'Bt_chnl_ringCentralEngage_step3_ol_1.1.2'| i18nString}}</li>
+                </ol>
+                <img ng-src="{{assetsBase}}images/RingCentralEngage8.png" class="marginBottom10 width100percent" />
+               <ol start="6">
+                <li>{{'Bt_chnl_ringCentralEngage_step3_ol_1.1.3'| i18nString}}</li>
+              </ol>
+                <p class="pad-top-bot" ng-bind-html="'ringCentralEngageReferTag'| i18nString:({link:'https://support.ringcentral.com/engagedigital/admin/configure-entry-points.html'})"></p>
+                <ol  start="7">
+                    <li>{{'select_7'| i18nString}}<span class="ringCentralEngageBold"> {{'Bt_chnl_ringCentralEngage_step3_ol_1.1.4'| i18nString}}</span>{{'Bt_chnl_ringCentralEngage_step3_ol_1.1.5'| i18nString}}<span class="ringCentralEngageBold"> {{'Bt_chnl_ringCentralEngage_step3_ol_1.1.6'| i18nString}}</span>{{'Bt_chnl_ringCentralEngage_step3_ol_1.1.7'| i18nString}}</li>
+                    <li>{{'Click_capitpal'| i18nString}} <span class="ringCentralEngageBold"> "{{'save'| i18nString}}"</span></li>
+                  </ol>
+                  <p><span class="ringCentralEngageBold">{{'note:'| i18nString}}</span> {{'note_desc_rce'| i18nString}} <span class="ringCentralEngageBold">{{'note_desc_rce_active'| i18nString}}</span> {{'note_desc_rce_desc' | i18nString}}</p>
+              </div>
+          </div>
+      </div>
+      
+         <div class="footer form-group noMargin hide">
+        <div class="footerSub">
+          <div class="form-ctrl-div pull-left">
+            <button class="btn btn-default" ng-click="$parent.goToHome()">{{'exit_label'| i18nString}}</button>
+          </div>
+          <div class="help-hint-link"> <a target="_blank"  ng-href="{{$root.helpLinks.ADD_CHANNEL_MS}}">{{'help_withpage_label'| i18nString}}</a> </div>
+          <div class="pull-right form-ctrl-div">
+            <button class="btn btn-primary nextBtn" ng-click="$parent.next(2)">{{'next'| i18nString}}</button>
+          </div>
+        </div>
+        </div>
+      </div>
+      
+      
+      <!--STEP 2-->
+      
+      <div class="col-xs-12 p-0" ng-show="steps[1].active">
+
+
+        <div class="col-xs-12 row form-group noPadding channel-content">
+           <div class="info">
+            <!-- <div class="heaing_label_text">{{'Bt_chnl_microsoft_config_appid_header'| i18nString}}</div> -->
+                <div class="col-xs-12 form-group noPadding">
+                  <div class="col-xs-12 noPadding">
+                    <label>{{'webhookurl_label'| i18nString}}</label>
+                  </div>
+                  <div class="col-xs-12 noPadding">
+                      <div class="input-group">
+                          <input type="text" id="ms_webhook_url{{step.step}}" class="form-control" ng-model="channel.webhook_url" ng-readonly="true" name="appName">
+                          <div class="input-group-addon pointer-hand" data-clipboard-target="#ms_webhook_url{{step.step}}"> {{'copy'| i18nString}} </div>  
+
+                      </div> 
+                      <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}<span></div>              
+                  </div>
+                </div>
+                <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                  <div class="col-xs-12 noPadding">
+                    <label class="required-field"> {{'Host_Url'| i18nString}}</label>
+                  </div>
+                  <div class="col-xs-12 noPadding">
+                    <input type="text" class="form-control" ng-model="channel.host_url" name="hostUrl" maxlength="512" required="">
+                    <div ng-show="rcEngageForm.senderId.$dirty">
+                      <div error-alert ng-show="rcEngageForm.senderId.$error.required" class="text-danger">
+                        {{'host_url_req'| i18nString}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <div class="col-xs-12 row form-group noPadding">
+                <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                    <div class="col-xs-12 noPadding">
+                      <label class="required-field"> {{'Bt_chnl_slack_config_verific_token_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                      <input type="text" class="form-control" ng-model="channel.verificationToken" name="senderId" maxlength="512" required="">
+                      <div ng-show="rcEngageForm.senderId.$dirty">
+                        <div error-alert ng-show="rcEngageForm.senderId.$error.required" class="text-danger">
+                          {{'VerificationToken_requited'| i18nString}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="col-xs-12 noPadding">
+                  <label class="required-field"> {{'Bt_chnl_ringCentralEngage_step2_ol_1.8'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                  <input type="text" class="form-control" ng-model="channel.access_token" name="clientID"  maxlength="512" required="">
+                  <div  ng-show="rcEngageForm.clientID.$dirty || clientIDRequired">
+                    <div error-alert ng-show="rcEngageForm.clientID.$error.required" class="text-danger">
+                      {{'AccessToken_required'| i18nString}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xs-12 form-group noPadding mb-10">
+                <div class="heaing_label_text">{{'enable_chnl'| i18nString}}</div>
+                <label class="noMargin">{{'Bt_chnl_rcEngage_config_enablechnl_desc'| i18nString}}</label>
+            </div>
+
+            <div class="col-xs-12 radioDiv noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                <div>
+                    <label for="channel.enable.no" >
+                        <input ng-value="false" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" ><span class="opt-title">{{'no'| i18nString}}</span> 
+                    </label>
+                </div>
+                <div>
+                    <label for="channel.enable.yes">
+                        <input ng-value="true"  type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                    </label>
+                </div>
+            </div>
+            </div>
+        </div>
+     
+      </div>
+    </div>
+    </div>
+    <div class="modalFooter">
+      <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+      <button type="button" class="btn" ng-click="save(rcEngageForm)" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+      <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+  </div>
+      </form>
+</div>

@@ -1,0 +1,7 @@
+<div ng-if = "wfType === 'alert' || wfType === 'action' || wfType === 'report'" class="taskNameHeader textEllipsis">{{displayMode==='edit' ? ('edit'| i18nString) : ('view'| i18nString)}} {{wfType === 'alert' ? ('alert'| i18nString) : (resource.isReport ? ('information_label'| i18nString) : ('action_label'| i18nString))}} - {{resource.name}}</div>
+<div ng-if = "wfType === 'knowledgeTask'" class="taskNameHeader textEllipsis">{{displayMode==='edit' ? ('edit'| i18nString) : ('view'| i18nString)}} {{'knowledge_task'| i18nString}} - {{taskEditInfo.name}}</div>
+<div ng-if = "wfType === 'channel'">
+	<!-- <span class="alert-action taskNameHeader textEllipsis">{{context || 'Enable channel'}}</span>  -->
+	   <bt-modal-title taskname="{{context || 'Enable channel'}}"  bot="stream"></bt-modal-title>
+</div>
+

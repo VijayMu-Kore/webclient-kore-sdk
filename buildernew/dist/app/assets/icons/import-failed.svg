@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="99" height="62" viewBox="0 0 99 62">
+    <g fill="none" fill-rule="evenodd" transform="translate(0 -3)">
+        <text fill="#26344A" font-family="FontAwesome" font-size="40" opacity=".15">
+            <tspan x=".571" y="56.4"></tspan>
+        </text>
+        <text fill="#26344A" font-family="FontAwesome" font-size="48" opacity=".1">
+            <tspan x="47.486" y="41"></tspan>
+        </text>
+        <circle cx="50.4" cy="43.2" r="20.8" fill="#FF001F" stroke="#FFF" stroke-width="1.6"/>
+        <text fill="#FFF" font-family="FontAwesome" font-size="16">
+            <tspan x="47.543" y="49.2"></tspan>
+        </text>
+    </g>
+</svg>

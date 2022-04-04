@@ -1,0 +1,140 @@
+        <div class="modalSliderContainer width900 bot-ontology-classes" ng-class="{'allowEdit':callback.isEditable(), 'disableEdit':!callback.isEditable()}">
+            <div class="modalHeader">
+                <h4 class="modal-title" id="gridSystemModalLabel"><img  class="backArrowSynonymsModal" ng-src={{closeArrow}} ng-click="ontologyClassModal.close()"/>{{'classes'| i18nString}}</h4>
+                <button class="btn btn-primary pull-right" ng-show="!showNewClassForm" ng-click="showNewClassForm = true;openAddClassForm()">{{'add_class'| i18nString}}</button>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-75" height-property="height">
+                                      <div class="col-xs-12 noPadding">
+                    <div class="addclasssection" ng-show="showNewClassForm">
+                    <div class="header col-xs-12">
+            <div class="col-xs-8 noPadding">
+                <h4 class="lineHeight30">{{'add_class'| i18nString}}</h4>
+            </div>
+            
+            
+            <div class="col-xs-4 lineHeight53 noPadding classBtns">
+                <button ng-disabled="saveInProgress" class="btn pull-right" ng-click="createClass()">
+                    <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{(saveInProgress)? savingLabel : save}}
+                    </button>
+                <button ng-disabled="saveInProgress" class="btn pull-right closeCancel" ng-click="showNewClassForm = false;emptyClassForm()">Cancel</button>
+            </div>
+            
+            </div>
+<form name="forms.ontologyClassForm" novalidate>
+                          <div class="col-xs-12 noPadding terms">
+
+                <div class="col-xs-4 noPadding">
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12">
+                            <label  tooltip-placement="right" tooltip=""> {{'class_name'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 noPaddingRight" ng-show="displayMode!=='view'">
+                            <input type="text" ng-model="newClassName" name="newClassName" ng-disabled="newStreamData.isInMarket" class="form-control newClassNameInput"
+                                ng-focus="showBotNameHint = true" ng-blur="showBotNameHint = false" ng-minlength="1" maxlength="50"
+                                required ng-pattern="validateBotName" placeholder="{{'enter_class_name'| i18nString}}">
+                                 <div  ng-show="forms.ontologyClassForm.newClassName.$dirty">
+                                <div error-alert  ng-show="forms.ontologyClassForm.newClassName.$error.required" class="text-danger form-error-text">{{'class_name_req'| i18nString}} </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-8">
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                            <label  tooltip-placement="right" tooltip=""> {{'utterences_label'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 noPaddingLeft noPaddingRight" ng-show="displayMode!=='view'">
+                            <add-tags tags="newUtterances" name="newUtterance" validate-mode="'utterance'" placeholder="placeholder" class="bgWhite"></add-tags>
+                             <div  ng-show="forms.ontologyClassForm.newUtterance.$dirty">
+                                <div error-alert  ng-show="newUtteranceRequired" class="text-danger form-error-text">{{'atleast_utterance_req'| i18nString}} </div>
+                        </div>
+                            <!--<input type="text" ng-model="newStreamData.name" name="name" ng-disabled="newStreamData.isInMarket" class="form-control"
+                                ng-focus="showBotNameHint = true" ng-blur="showBotNameHint = false" ng-minlength="1" maxlength="50"
+                                required ng-pattern="validateBotName" placeholder="Type and enter">-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+</form>
+</div>
+
+<div class="col-xs-12 noClassesContainer" ng-show="!ontologyClasses.classes.length">
+            <div class="noClassContent">
+                <div class="header">{{'no_classes'| i18nString}}</div>
+                <div class="info">
+                    {{'no_classes_available'| i18nString}}
+                </div>
+            </div>
+        </div>
+
+
+<div class="panel-table col-xs-12 BTtoolTip" ng-show="ontologyClasses.classes.length > 0">
+        <div class="panel-table-header">
+          <div class="row displayBlock checkboxWrap">
+            <div class="col-xs-2">{{'class_name_caps'| i18nString}}</div>
+            <div class="col-xs-5">{{'utterances'| i18nString}}</div>
+            <div class="col-xs-4">{{'terms'| i18nString}}</div>
+          </div>
+        </div>
+        <div class="panel-table-body panelTableBody">
+           <div class="row actionTask utterancerow checkboxWrap" ng-repeat="class in ontologyClasses.classes">
+
+              <div class="cursor-pointer col-xs-2 noPaddinSides">{{class.name}}</div>
+              <div class="cursor-pointer col-xs-5 noPaddinSides classutterances"><span class="marginLeft10" ng-repeat="input in class.utterances">"{{input}}"</span></div>
+              <div class="cursor-pointer col-xs-4 noPaddinSides classtags"><span ng-repeat="term in class.terms track by $index">{{$index !== 0 ? ', ' : ''}}{{term | replaceHtmlString}}</span></div>
+              <div class="cursor-pointer col-xs-1 utteranceoptions noPadding" ng-hide="ontologyClasses.editIndex == $index || class.editLocked"><span class="editfaq" ng-click="ontologyClasses.editIndex = $index;openEditClassForm(class)"><i class="fa fa-pencil"></i></span><span class="deletefaq" ng-click="deleteClass($index, class._id)"><i class="fa fa-trash codeRed"></i></span></div>
+              <div class="cursor-pointer col-xs-1 utteranceoptions noPadding" ng-hide="ontologyClasses.editIndex == $index || !class.editLocked"><span class="editfaq" title="Clone" ng-click="cloneClass(class)"><i class="fa fa-clone"></i></span></div>
+            <div class="clear-fix"  ng-if="ontologyClasses.editIndex == $index">
+                 <div class="addclasssection">
+                     <form name="forms.ontologyClassUpdateForm" novalidate>
+                          <div class="col-xs-12 noPadding terms">
+
+                <div class="col-xs-4 noPadding">
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12">
+                            <label  tooltip-placement="right" tooltip=""> {{'class_name'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 noPaddingRight" ng-show="displayMode!=='view'">
+                            <input type="text" ng-model="class.name" name="updateClassName" class="form-control"
+                                ng-focus="showBotNameHint = true" ng-blur="showBotNameHint = false" ng-minlength="1" maxlength="50"
+                                required ng-pattern="validateBotName" placeholder="{{'enter_class_name'| i18nString}}">
+                                <div  ng-show="forms.ontologyClassUpdateForm.updateClassName.$dirty">
+                                <div error-alert  ng-show="forms.ontologyClassUpdateForm.updateClassName.$error.required" class="text-danger form-error-text">{{'class_name_req'| i18nString}} </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-8 noPaddingRight">
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                            <label  tooltip-placement="right" tooltip=""> {{'utterences_label'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 noPaddingLeft noPaddingRight" ng-show="displayMode!=='view'">
+                            <add-tags tags="class.utterances" name="updateUtterance" validate-mode="'utterance'" placeholder="placeholder"></add-tags>
+                            <div  ng-show="forms.ontologyClassUpdateForm.updateUtterance.$dirty">
+                                <div error-alert  ng-show="forms.ontologyClassUpdateForm.updateUtterance.$error.required" class="text-danger form-error-text">{{'atleast_utterance_req'| i18nString}} </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+             <div class="header col-xs-12">
+                        <button ng-disabled="saveInProgress" class="btn pull-right" ng-click="updateClass(class._id)">
+                            <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{(saveInProgress)? updating : update}}
+                            </button>
+                        <button ng-disabled="saveInProgress" class="btn closeCancel pull-right aSA" ng-click="cancelClassUpdate()">{{'cancel'| i18nString}}</button>
+                     </div>
+</div>
+            </div>
+           </div>
+           <div class="col-xs-12 noPadding hide">
+              <bt-pagination limit="limit" total-items="totalItems" show-num-dropdown="true" get-page-data="getClasses(offset)"></bt-pagination>
+            </div>
+        </div>
+      </div>
+                </div>
+            </div>
+
+        </div>  

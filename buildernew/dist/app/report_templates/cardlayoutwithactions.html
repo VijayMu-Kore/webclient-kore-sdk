@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- Include any css library you want -->
+	<link rel="stylesheet" type="text/css" href="../css/vendor/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/vendor/font-awesome.min.css" />
+        <link rel="stylesheet" href="../css/report_templates.css"/>
+        <link rel="stylesheet" href="../css/vendor/jquery-ui.css" />
+        
+
+	<!-- These two files are mandatory -->
+	<script src="../lib/simple-xdm/iframe.js"></script>
+	<script src="../lib/simple-xdm/connector.js"></script>
+	<!-- End of two files -->
+
+	<!-- Include any libraries if you want -->
+        <script src="../lib/jquery.min.js"></script>
+        <script src="../lib/jquery-ui.js"></script>
+	<script src="../lib/angular.min.js"></script>
+        <script src="../lib/angular-animate.min.js"></script>
+	<style>
+
+		.bubble{
+			margin-left: 230px;
+		    margin-top: -32px;
+		}
+
+		.show{
+			display:inline-block;
+		}
+
+		.pointer-hand{
+			cursor:pointer;
+		}
+
+		.bubble-menu{
+			border: 1px solid lightgray;
+			padding-bottom: 6px;
+			padding-left: 6px;
+			padding-right: 6px;
+			border-radius: 15px;
+		}
+
+		.dropdown-menu{
+			left:inherit !important;
+			right:53px !important;
+			margin:12px 0px !important;
+		}
+
+		.dropdown-menu::after{
+		    content: ' ';
+		    position: absolute;
+		    border-left: 7px solid transparent;
+		    border-right: 7px solid transparent;
+		    border-bottom: 7px solid white;
+		    top: -6px;
+		    z-index:2;
+		    right: 3px;
+		}
+
+		.dropdown-menu::before{
+		    content: ' ';
+		    position: absolute;
+		    border-left: 7px solid transparent;
+		    border-right: 7px solid transparent;
+		    border-bottom: 7px solid #cccccc;
+		    top: -7px;
+		    right: 3px;
+		}
+
+		textarea{
+			resize: none;
+		}
+
+		body{
+			overflow-x: hidden !important;
+		}
+
+		.alert-xs{
+			padding:5px 5px;
+			margin-top: 10px;
+		}
+
+	</style>
+</head>
+<body ng-controller="appCtrl">
+
+	<div ng-include="'cardlayoutwithactions_partial.tmplt'">
+
+	</div>
+
+	
+
+
+	<script type="text/javascript">
+
+		angular.module('app',['ngAnimate'])
+		.controller('appCtrl',['$scope',
+			function($scope){
+
+				$scope.keys      = window.keys || [];
+				$scope.dataTypes = window.dataTypes;
+                                $scope.wfType = window.wfType;
+
+				$scope.columns   = [];
+				$scope.cardTitle = {};
+
+				$scope.column    = {};
+				$scope.showForm  = false;
+				var editIndex    = "no-value",isEdit;
+
+				function bindData(rData){
+                                        var data=angular.copy(rData);
+					var titleIndex=-1;
+					if(!data){
+						return;
+					}
+					$scope.columns = (data && data.config) || [];
+					$scope.columns.map(function(column,index){
+						if(column.meta && column.meta.displayAsHeader){
+							$scope.cardTitle.value = column.key;
+							titleIndex = index;
+							return;
+						}
+					});
+					if(titleIndex>-1){
+						$scope.columns.splice(titleIndex,1);
+					}
+				}
+
+				window.bindData=bindData;
+
+				if(_report_data){
+                                    window._report_data_copy = angular.copy(window._report_data);
+                                    bindData(window._report_data);                                        
+				}
+
+				$scope.setUpColumn = function(){
+					if($scope.column.isLink){
+						$scope.column.key = {};
+					}else{
+						$scope.column.key = '';
+					}
+				};
+
+				$scope.addColumn = function(index,form){
+					editIndex       = index+1;
+					$scope.showForm = true;
+					$scope.column   = {};
+					if(form){form.$submitted = false; }
+				};
+
+				$scope.editColumn = function(index,form){
+					if(form){form.$submitted = false; }
+					$scope.column = angular.copy($scope.columns[index]);
+					editIndex     = index;
+					isEdit        = true;
+					$scope.showForm = true;
+				};
+
+				$scope.removeColumn = function(index){
+					editIndex = 'no-value';
+					$scope.showForm = false;
+					if(!(index+'')){
+						$scope.columns.pop();
+					}else{
+						$scope.columns.splice(index,1);
+					}
+				};
+
+				$scope.assignValue = function(column){
+					column.key  = column._key;
+					column._key = '';
+				};
+
+				$scope.addKeyToHref = function(href){
+					href = href || '';
+					if(typeof $scope.column.key === 'object'){
+						$scope.column.key.href = $scope.column.key.href || '';
+						$scope.column.key.href += href;
+					}else{
+						$scope.column.key  = $scope.column.key || '';
+						$scope.column.key += href;
+					}
+				};
+
+				$scope.insertKey = function(key){
+					$scope.cardTitle.value  = $scope.cardTitle.value || '';
+					$scope.cardTitle.value += key;
+				};
+
+				$scope.addKeyToActionMapping = function addKeyToActionMapping(key){
+					key = key || '';
+					$scope.column.actionMapping  = $scope.column.actionMapping || '';
+					$scope.column.actionMapping += key;
+				};
+
+				$scope.saveColumn = function(isValid,form){
+
+					if(!isValid){
+                                                if(window.parent.NotificationService){
+                                                    window.parent.NotificationService.notify("Please fill in required fields", "error");
+                                                }
+						form.$submitted = true;
+						return false;
+					}
+
+					if(editIndex === 'no-value'){
+						return;
+					}
+
+					if(isEdit){
+						$scope.columns.splice(editIndex,1,angular.copy($scope.column));
+					}else{
+						$scope.columns.splice(editIndex+1,0,angular.copy($scope.column));
+					}
+
+					$scope.column   = {};
+					$scope.showForm = false;
+					form.$submitted = false;
+					isEdit          = false;
+				};
+
+				$scope.$watch('column.isLink',function(newVal,oldVal){
+					if(newVal && typeof $scope.column.key !== 'object'){
+						$scope.column.key = {};
+					}
+				});
+//                                $scope.$watch('column.isImage',function(newVal,oldVal){
+//					if(newVal){
+//						$scope.column.isHTML = false;
+//					}
+//				});
+//                                $scope.$watch('column.isHTML',function(newVal,oldVal){
+//					if(newVal){
+//						$scope.column.isImage = false;
+//					}
+//				});
+
+				$scope.cancel = function(form){
+					$scope.showForm = false;
+					editIndex       = 'no-value';
+					$scope.column   = {};
+					isEdit          = false;
+					if(form){form.$submitted = false; }
+				};
+                                
+                                $scope.saveTemplate = function(){
+					window.connector.saveTemplate(window._save_report_config(),function(){
+                                            window.connector.close();
+                                        });
+				};
+                                
+                                $scope.saveTemplateLocally = function(){
+					window.connector.saveTemplate(window._save_report_config(),function(){
+                                            window.connector.close();
+                                        },true);
+				};
+                                $scope.closeTemplateModal = function(){
+					window.connector.close();
+                                        if (window.bindData) {
+                                            window._report_data = angular.copy(window._report_data_copy);
+                                            window.bindData(window._report_data_copy);
+
+                                        }
+				};   
+
+				window._save_report_config = function(){
+
+					var columns    = angular.copy($scope.columns);
+
+					columns.push({
+							label:'Card Title',
+							key  : $scope.cardTitle.value
+							,meta:{
+								displayAsHeader:true
+							}
+						});
+
+					return {
+						config:angular.copy(columns)
+					}
+
+				};
+
+
+		}])
+
+		.directive('bubble',['$timeout',function($timeout){
+			return{
+				restrict:'EA',
+				link:function($scope,ele,attrs){
+					$timeout(function(){
+						angular.element(ele.children()[0]).on('click',function(evt){
+							evt.stopImmediatePropagation();
+							angular.element(ele.children()[1]).toggleClass('show');
+						});
+						angular.element(ele.children()[1]).find('li').on('click',function(evt){
+							evt.stopImmediatePropagation();
+							angular.element(ele.children()[1]).removeClass('show');
+						});
+						angular.element(document).on('click',function(){
+							angular.element(ele.children()[1]).removeClass('show');
+						});
+					});
+				}
+			}
+		}])
+
+		function bootstrap(){
+			if(!angular.element(document).scope()){
+				angular.element(document).ready(function(){
+					angular.bootstrap(document,['app']);
+				});
+			}
+		}
+
+		/**
+		 * Registering the listeners.
+		 */
+		connector.connect(bootstrap || registerlisteners);
+
+	</script>
+        <script src="../report_templates/iframe-context-typeahead.js"></script>
+</body>
+</html>

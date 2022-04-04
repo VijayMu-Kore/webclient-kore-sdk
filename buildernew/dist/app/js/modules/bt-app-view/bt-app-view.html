@@ -1,0 +1,75 @@
+<div class='viewAppModal'>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeModal()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{'view_app'| i18nString}}</h4>
+    </div>
+    <div class="modal-body container-fluid">
+
+
+        <div class="app-name option row">
+            <div class="col-sm-3">
+                {{'name'| i18nString}}
+            </div>
+            <div class="col-sm-9">
+                {{app.appName}}
+            </div>
+        </div>
+
+        <div class="scope-select option row">
+            <div class="col-sm-3">
+                {{'scopes_label'| i18nString}}
+            </div>
+            <div class="col-sm-9">
+                <div class='row1'>
+                    {{app.scope.join(',')}}
+                </div>
+            </div>
+        </div>
+
+        <div class="algorithm option row">
+            <div class="col-sm-3">
+                {{'algorithm'| i18nString}}
+            </div>
+            <div class="col-sm-9">
+
+               {{app.algorithm}}
+               
+            </div>
+        </div>
+        
+         <div  class="key option row"  ng-if="app.algorithm === 'RS256'" >
+            <div class="col-sm-3">
+                {{'public_key_label'| i18nString}}
+            </div>
+            <div class="col-sm-9">
+                <textarea class="form-control" readonly >{{app.key}}</textarea>
+                
+            </div>
+        </div>
+        
+
+        <div class="bots option row">
+            <div class="col-sm-3">
+                {{'constants.bots'| i18nString}}
+            </div>
+            <div class="col-sm-9">
+               {{_.pluck(app.bots,'name').join(', ')}}
+            </div>
+        </div>
+        
+        <div ng-if="app.pushNotifications && app.pushNotifications.enable" class="webhookUrl option row">
+            <div class="col-sm-3">
+                {{'push_notification_url'| i18nString}}
+            </div>
+            <div class="col-sm-9">
+               {{app.pushNotifications.webhookUrl}}
+            </div>
+        </div>
+
+    </div>     
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="closeModal()"> {{'ok_uppercase'| i18nString}}</button>
+    </div>
+</div>

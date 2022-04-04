@@ -1,0 +1,78 @@
+<div class="modal fade flowtask-dialog-modal"  data-backdrop="static" tabindex="-1" role="dialog" id="upgradeDialogToConversation">
+        <div class="modal-dialog">
+            <div class="modal-content myModal-content">
+                <div class="modal-header">
+                    <i class="btx-close" ng-hide="(migrationJourney.step =='upgradeSuccess') || (migrationJourney.step =='upgradeInProgress')" ng-click="closeupgadeToNewDialog()"></i>
+                </div>
+                <div class="modal-body">
+                   <div class="beta">
+                    <p class="betaTT">{{'conversation_builder_driven' | i18nString}}
+                        <!-- <span class="betaTag">Beta</span> -->
+                    </p>
+                    <p class="betaDesc" ng-bind-html="upgrade_desc| i18nString"><span class="lMore"  ng-click="showLeadrnMore=!showLeadrnMore">Learn More</span></p>
+                    <div class="ddLearnMore" ng-if="showLeadrnMore">
+                          <p class="ddTitle">{{'its_complete_package' | i18nString}}</p>
+                          <p><img src="{{brokenImageSmall}}" onerror="handleimgLoad(this)"  ng-src="{{communication}}"  class="helpImg">{{'create_the_dialog' | i18nString}}</p>
+                          <p><img src="{{brokenImageSmall}}" onerror="handleimgLoad(this)"  ng-src="{{compare}}" class="helpImg">{{'create_the_way' | i18nString}}</p>
+                          <p class="noBTMmargin"><img  src="{{brokenImageSmall}}" onerror="handleimgLoad(this)" ng-src="{{peopleWorkingTogether}}"class="helpImg">{{'product_owner' | i18nString}}</p>
+                    </div>
+                   </div>
+                    <div class="upgradeFlow">
+                        <img ng-src="{{upgradeFlowBig}}" class="upgradeFlowIMG">
+                        <div class="content">
+                        <div class="mainContent">{{'create_backup_conv_dialog' | i18nString}} </div>
+                        <div class="description">{{'create_backup_conv_dialog_desc' | i18nString}} </div>
+                        </div>
+                        <div class="buttonContainer">
+                            <div ng-if="!migrationJourney.step">
+                                <button class="kr-sg-button-primary" ng-click="processUpgrade('backup')">{{'backup_upgrade_conv_dialog' | i18nString}}</button>
+                                <button class="kr-sg-button-secondary" ng-click="processUpgrade('upgrade')">{{'skip_upgrade_conv_dialog' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'createBotversion'" class="versionInput">
+                                <div class="kr-sg-input-text">
+                                    <input type="text" ng-model="migrationJourney.versionName" placeholder="Version Name" class="input-text">
+                                </div>
+                                <button class="kr-sg-button-primary" ng-click="processUpgrade('createVersion')">{{'create_version_conv_dialog' | i18nString}}</button>
+                            </div>
+                                <div ng-if="migrationJourney.step === 'versionInProgress'" class="progressBarDiv">
+                                <div class="versionUpgradeText">{{'version_inprogress_conv_dialog' |  i18nString}}</div>
+                                <div class="progress" style="height:20px">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{migrationJourney.percentageComplete || 0}}" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':(migrationJourney.percentageComplete || 0)}">
+                                    <span class="sr-only">{{migrationJourney.percentageComplete || 0}}% {{'complete' | i18nString}}</span>
+                                    </div>
+                                </div>
+                                <div class="upgradeText" class="upgradeText">{{'process_in_background_conv_dialog' | i18nString}}</div>
+                                <button class="kr-sg-button-secondary" ng-click="processUpgrade('close')">{{'go_to_dialog_tasks' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'versionSuccess'" class="progressBarDiv">
+                                <div ng-if="migrationJourney.versionName" class="sucessUpgrade"><img ng-src="{{successIcon}}" class="statusIcon">{{'version_success_conv_dialog' | i18nString}}</div>
+                                <div ng-if="migrationJourney.versionName" class="upgradeText">{{'upgrade_now_conv_dialog' | i18nString}}</div>
+                                <button class="kr-sg-button-primary" ng-click="processUpgrade('upgrade')">{{'upgrade' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'versionFailure'" class="progressBarDiv">
+                                <div ng-if="migrationJourney.versionName" class="sucessUpgrade"><img ng-src="{{failIcon}}" class="statusIcon">{{'oops_version_failed_conv_dialog' | i18nString}}</div>
+                                <div ng-if="migrationJourney.versionName" class="upgradeText">{{'version_not_created_conv_dialog' | i18nString}}</div>
+                                <button class="kr-sg-button-primary" ng-click="processUpgrade('backup')">{{'try_again_conv_dialog' | i18nString}}</button>
+                                <button class="kr-sg-button-secondary" ng-click="processUpgrade('upgrade')">{{'skip_upgrade_conv_dialog' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'upgradeInProgress'" class="progressBarDiv">
+                                <div class="sucessUpgrade">Upgrading Task ...</div>
+                                <div class="progress" style="height:20px">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{migrationJourney.upgradeProgress || 0}}" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':(migrationJourney.upgradeProgress || 0)}">
+                                    <span class="sr-only">{{migrationJourney.upgradeProgress || 0}}% {{'complete' | i18nString}}</span>
+                                    </div>
+                                </div>
+                                <div class="upgradeText">{{'process_in_background_conv_dialog' | i18nString}}</div>
+                                <button class="kr-sg-button-secondary" ng-click="closeupgadeToNewDialog()">{{'go_to_dialog_tasks' | i18nString}}</button>
+                            </div>
+                            <div ng-if="migrationJourney.step === 'upgradeSuccess'" class="progressBarDiv">
+                                <div class="sucessUpgrade"><img ng-src="{{successIcon}}" class="statusIcon">{{'upgrade_to_conv_dialog_success' | i18nString}}</div>
+                                <button class="kr-sg-button-primary" ng-click="getStarted()">{{'get_started' | i18nString}}</button>
+                                <!-- <button class="kr-sg-button-secondary" ng-click="processUpgrade('upgrade')">Skip & Upgrade</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

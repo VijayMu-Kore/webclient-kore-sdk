@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title> Authentication </title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="">
+	<meta http-equiv="cache-control" content="no-cache" />
+
+	<script type="text/javascript">
+
+		var search = window.location.search,
+			hash = window.location.hash;
+
+		function onWindowLoad() {
+			if(window.opener && window.opener.OnChildLoad) {
+				window.opener.OnChildLoad && window.opener.OnChildLoad(window);
+			}
+			if (hash && hash !== '') {
+				var data = { hash: hash.replace('#', ''), search: search.replace('?', ''), windowObj: window };
+				localStorage.setItem('channelExternalAuthConfig', JSON.stringify({ "functionCall": { "onChildLoad": false, "externalAuthResponse": true }, "data": { "hash": hash.replace('#', ''), "search": search.replace('?', '') } }));
+				setTimeout(function() {
+					window.close();
+				}, 500)
+			} else {
+				localStorage.setItem('channelExternalAuthConfig', JSON.stringify({ "functionCall": { "onChildLoad": true, "externalAuthResponse": false }}));
+			}
+		}
+
+		function init(url) {
+			window.location.href = url;
+		}
+
+
+	</script>
+</head>
+
+<body onload="onWindowLoad()">
+</body>
+
+</html>

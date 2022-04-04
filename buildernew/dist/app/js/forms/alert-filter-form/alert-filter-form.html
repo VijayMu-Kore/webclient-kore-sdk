@@ -1,0 +1,307 @@
+   <bot-modal-slider id="alertFilterForm">
+        <div class="modalSliderContainer width700">
+            <div class="modalHeader">
+                <h4 class="modal-title" id="gridSystemModalLabel"><img class="closeCross" ng-src={{closeCross}} ng-click="cancelFilterForm()"/>{{'alert_filter'| i18nString}} </h4>
+                <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="cancelFilterForm()"></i></span> -->
+            </div>
+            <form name="forms.filterForm" class="wf-form" novalidate>
+            <div class="modalBody alertFilterScroll" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+                                                  <div ng-if="filterFrm">
+<div class="form-container">
+        <fieldset ng-disabled="view">
+            <div class="addAlertField">
+                <div class="reqstChainBox">
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12 labelling noPadding">
+                            <label class="required-field" tooltip-placement="right" tooltip="{{'name_tooltip'| i18nString}}">{{'name'| i18nString}}  </label>
+                        </div>
+                        <div class="col-xs-12 noPadding">
+                            <input type="text" id ="filterData" name="title" class="form-control" required ng-model="resData.name" placeholder="{{'placeholder_name'| i18nString}}">
+                            <div ng-if="forms.filterForm.title.$dirty">
+                                <div error-alert ng-if="forms.filterForm.title.$error.required">
+                                    {{'name_req'| i18nString}} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding" ng-class="{'screenFreeze':view}">
+                        <div class="col-xs-12 noPadding">
+                            <label class="required-field" tooltip-placement="right" tooltip="{{'field_tooltip'| i18nString}}">{{'field_Name'| i18nString}}  </label>
+                        </div>
+                        <div class="col-xs-8 noPadding">
+                            <input type="text" id ="_fieldName" name="fieldName" class="form-control" required ng-model="resData.fieldName" placeholder="{{'placeholder_fieldname'| i18nString}}">
+                            <div ng-if="forms.filterForm.fieldName.$dirty">
+                                <div error-alert ng-if="forms.filterForm.fieldName.$error.required">
+                                    {{'field_req'| i18nString}} 
+                                </div>
+                                <div error-alert ng-show="forms.filterForm.fieldName.$error.pattern" class="text-danger">{{'field_name_req'| i18nString}} </div>
+                            </div>                      
+                        </div>
+                        <div class="col-xs-4 fieldName" default-value="{{'select_field_name'| i18nString}}" data="sampleResponseKeys" on-selection="onKeySelect(data)" bt-select2></div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12 noPadding">
+                            <label class="required-field" tooltip-placement="right" tooltip="{{'textbox_tooltip'| i18nString}}"> {{'field_Type'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 noPadding">
+                            <select  ng-model="resData.fieldType" class="btnDropdown form-control" id="fieldType" name="fieldType" required ng-options="fieldtype.name for fieldtype in supportedfieldtypes">
+                                <option value=""> {{'select_field_type'| i18nString}} </option>
+                            </select>
+                            <div ng-if="forms.filterForm.fieldType.$dirty">
+                                <div error-alert ng-if="forms.filterForm.fieldType.$error.required">
+                                    {{'field_type_req'| i18nString}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'textarea'">
+                        <div class="col-xs-12 noPadding"><label tooltip-placement="right" tooltip="{{'textarea_tooltip'| i18nString}}">{{'placeholder_text'| i18nString}}</label></div>
+                        <div class="col-xs-12 noPadding">
+                            <input type="text" class="form-control" placeholder="{{'place_name'| i18nString}}" ng-model="resData.textplaceholder">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'textbox'">
+                        <div class="col-xs-12 noPadding"><label tooltip-placement="right" tooltip="{{'textarea_tooltip'| i18nString}}">{{'placeholder_text'| i18nString}}</label></div>
+                        <div class="col-xs-12 noPadding">
+                            <input type="text" class="form-control" placeholder="{{'place_name'| i18nString}}" ng-model="resData.textplaceholder">
+                        </div>
+                    </div>
+                    <div class="well well-sm overflow-hidden" ng-if="resData.fieldType.value === 'typeahead' || resData.fieldType.value === 'staticDropdown' || resData.fieldType.value === 'staticDropdownCB' || resData.fieldType.value === 'dynamicDropdown' || resData.fieldType.value === 'dynamicDropDownCB'">
+                        <div class="col-xs-12 noPadding">
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'staticDropdown' || resData.fieldType.value === 'staticDropdownCB'">
+                                <key-value-form payload-type="array"  form="keyvalueform" options="resData.staticDropDownFields"></key-value-form>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropdown'">
+                                <div class="col-xs-12 noPadding"><label class="required-field" tooltip-placement="right" tooltip="{{'dynamic_dropdown'| i18nString}}">{{'endpoint_url'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input  class="form-control" placeholder="https://integration.api.io/requestid" required ng-model="resData.dynamicDropdownURL">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropdown'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'content_type'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <select class="btnDropdown" required ng-model="resData.dynamicDropdownContentType" >
+                                        <option value="">{{'select_content_type'| i18nString}}</option>
+                                        <option ng-repeat="contenttype in contenttypes" value="{{contenttype.value}}">{{contenttype.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropdown'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'endpoint_method'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding" data="{{resData.dynamicDropDownMethod='GET'}}">
+                                    <input type="text"  class="form-control" ng-model="resData.dynamicDropDownMethod" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropdown'">
+                                <div class="col-xs-12 noPadding"><label tooltip-placement="right" tooltip="{{'jsonpath_tooltip'| i18nString}}">{{'response_path'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" placeholder="{{'url_response'| i18nString}}" ng-model="resData.dynamicDropdownPath">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropdown'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'label_key'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" required placeholder="{{'Label_key_placeholder'| i18nString}}" ng-model="resData.dynamicDropdownLabelKey">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropdown'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'value_key_name'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" required placeholder="{{'value_key_placeholder'| i18nString}}" ng-model="resData.dynamicDropdownValueKey">
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding"><label class="required-field" tooltip-placement="right" tooltip="{{'typehead_tooltip'| i18nString}}">{{'endpoint_url'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input  class="form-control" placeholder="{{'end_url'| i18nString}}" required ng-model="resData.dynamicDropdownURL">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-show="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding">
+                                    <div error-alert ng-if="forms.filterForm.__$invalid">
+                                        {{'endpoint_url_req'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'content_type'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <select class="btnDropdown" required ng-model="resData.dynamicDropdownContentType" >
+                                        <option value="">{{'select_content_type'| i18nString}}</option>
+                                        <option ng-repeat="contenttype in contenttypes" value="{{contenttype.value}}">{{contenttype.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-show="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding">
+                                    <div error-alert ng-if="forms.filterForm.__$invalid">
+                                        {{'content_type_req'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'endpoint_method'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding" data="{{resData.dynamicDropDownMethod='GET'}}">
+                                    <input type="text"  class="form-control" ng-model="resData.dynamicDropDownMethod" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-show="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12">
+                                    <div error-alert ng-if="forms.filterForm.__$invalid">
+                                        {{'endpoint_method_req'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding"><label tooltip-placement="right" tooltip="{{'jsonpath_tooltip'| i18nString}}">{{'response_path'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" placeholder="{{'url_response'| i18nString}}" ng-model="resData.dynamicDropdownPath">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-show="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding">
+                                    <div error-alert ng-if="forms.filterForm.__$invalid">
+                                        {{'res_req'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'option_key'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" required placeholder="{{'Label_key_placeholder'| i18nString}}" ng-model="resData.dynamicDropdownLabelKey">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-show="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12">
+                                    <div error-alert ng-if="forms.filterForm.__$invalid">
+                                        {{'option_key_req'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'value_key'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" required placeholder="{{'value_key_placeholder'| i18nString}}" ng-model="resData.dynamicDropdownValueKey">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-show="resData.fieldType.value === 'typeahead'">
+                                <div class="col-xs-12 noPadding">
+                                    <div error-alert ng-if="forms.filterForm.__$invalid">
+                                        {{'value_key_req'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropDownCB'">
+                                <div class="col-xs-12 noPadding"><label class="required-field" tooltip-placement="right" tooltip="{{'chechbox_tooltip'| i18nString}}">{{'endpoint_url'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input  class="form-control" placeholder="{{'end_url'| i18nString}}" required ng-model="resData.dynamicDropdownURL">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropDownCB'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'content_type'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <select class="btnDropdown" required ng-model="resData.dynamicDropdownContentType" >
+                                        <option value="">{{'select_content_type'| i18nString}}</option>
+                                        <option ng-repeat="contenttype in contenttypes" value="{{contenttype.value}}">{{contenttype.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropDownCB'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'endpoint_method'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding" data="{{resData.dynamicDropDownMethod='GET'}}">
+                                    <input type="text"  class="form-control" ng-model="resData.dynamicDropDownMethod" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropDownCB'">
+                                <div class="col-xs-12 noPadding"><label tooltip-placement="right" tooltip="{{'jsonpath_tooltip'| i18nString}}">{{'response_path'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" placeholder="{{'url_response'| i18nString}}" ng-model="resData.dynamicDropdownPath">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropDownCB'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'label_key'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" required placeholder="{{'Label_key_placeholder'| i18nString}}" ng-model="resData.dynamicDropdownLabelKey">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'dynamicDropDownCB'">
+                                <div class="col-xs-12 noPadding"><label class="required-field">{{'box_value'| i18nString}}</label></div>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" required placeholder="{{'value_key_placeholder'| i18nString}}" ng-model="resData.dynamicDropdownValueKey">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding">
+                        <div class="col-xs-12 noPadding">
+                            <label class="required-field" tooltip-placement="right" tooltip="{{'example_tooltip'| i18nString}}"> {{'data_type'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 noPadding">
+                            <select ng-model="resData.dataType" class="btnDropdown  form-control" id="dataType" name="dataType" required ng-options="datatype.name for datatype in supporteddatatypes">
+                                <option value=""> {{'select_data_type'| i18nString}} </option>
+                            </select>
+                            <div ng-if="forms.filterForm.dataType.$dirty">
+                                <div error-alert ng-if="forms.filterForm.dataType.$error.required">
+                                    {{'data_type_req'| i18nString}} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding" ng-class="{'screenFreeze':view}">
+                        <div class="col-xs-12 noPadding">
+                            <label class="required-field" tooltip-placement="right" tooltip="{{'filter_tooltip'| i18nString}}"> {{'operators'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12 noPadding">
+                            <sumo-select search=false name="supportedOperations" class="sumoSelect" ng-click="filterScroll()" required options="operations" value="resData.supportedOperations" placeholder="{{'select_operators'| i18nString}}"></sumo-select>
+                            <div ng-if="forms.filterForm.supportedOperations.$dirty">
+                                <div error-alert ng-if="forms.filterForm.supportedOperations.$error.required">
+                                    {{'operator_req'| i18nString}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group noPadding" ng-if="resData.fieldType.value === 'staticDropDown' || resData.fieldType.value === 'dynamicDropDown'">
+                            <div class="col-xs-12 noPadding" tooltip-placement="right" tooltip=" {{'staticdropdown_tooltip'| i18nString:({name:resData.fieldType.name})}}"><label>{{'searchable'| i18nString}}</label></div>
+                            <div class="col-xs-12 radioDiv noPadding">
+                              <div>
+                                  <label for="fieldData.isSearchable.no" ng-init="fieldData.isSearchable=false">
+                                      <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.isSearchable" name="fieldData.isSearchable" id="fieldData.isSearchable.no" ><span class="opt-title">{{'no'| i18nString}}</span> </input>
+                                  </label>
+                              </div>
+                              <div>
+                                  <label for="fieldData.isSearchable.yes">
+                                      <input ng-value='true'  type="radio"   ng-model="fieldData.isSearchable" name="fieldData.isSearchable" id="fieldData.isSearchable.yes"><span class="opt-title">{{'yes'| i18nString}}</span> </input>
+                                  </label>
+          
+          </div>
+        </div>
+                        </div>
+                 
+                </div>
+            </div>
+        </fieldset>
+
+</div>
+</div>
+            </div>
+            <div class="modalFooter">
+                <div class="col-xs-12">
+                    
+                        <button ng-class="{'screenFreeze':view}" type="submit" ng-click="setFilterObject(forms.filterForm.$valid ,true)" class="btn btn-primary" ng-disabled="saveInProgress"
+                         disabled="disabled">
+                            <i ng-show="bSave" class="fa fa-spinner fa-spin"></i>{{(bSave)?savingLabel:save}}
+                        </button>
+                        <button ng-class="{'screenFreeze':view}" type="submit" ng-click="setFilterObject(forms.filterForm.$valid ,false)" class="btn btn-primary" ng-disabled="saveInProgress" disabled="disabled">
+                            <i ng-show="bSaveExit" class="fa fa-spinner fa-spin"></i>{{(bSaveExit)?savingLabel:exit}}
+                        </button>
+                        <button type="reset" ng-click="cancelFilterForm()" class="btn closeCancel">{{'cancel'| i18nString}} </button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </bot-modal-slider> 

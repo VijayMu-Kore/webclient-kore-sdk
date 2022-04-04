@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 50</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="//-1-task-icons-copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-709.000000, -708.000000)" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Group-50" transform="translate(716.000000, 715.000000) scale(1, -1) rotate(-270.000000) translate(-716.000000, -715.000000) translate(710.000000, 709.000000)" stroke="#009EA9" stroke-width="1.5">
+            <path d="M0,8 L0,10 C0,10.7363797 0.596953667,11.3333333 1.33333333,11.3333333 L10.6666667,11.3333333 C11.4030463,11.3333333 12,10.7363797 12,10 L12,8" id="Shape"></path>
+            <polyline id="Shape" points="8.66666667 2.66666667 6 -1.13686838e-13 3.33333333 2.66666667"></polyline>
+            <path d="M6,-1.13686838e-13 L6,7.33333333" id="Shape"></path>
+        </g>
+    </g>
+</svg>

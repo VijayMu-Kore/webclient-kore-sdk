@@ -1,0 +1,36 @@
+<div class="st-table-container table-responsive">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th class="text-center" ng-repeat="col in cols">
+					{{col | camelcasebreakword}}
+				</th>
+				<th class="text-center" ng-if="showActionCtrls">{{'actions'| i18nString}}</th>
+			</tr>
+		</thead>
+		<tbody ng-model="tdata.rows">
+			<tr ng-repeat="row in rows" ng-model="row">
+	            <td ng-repeat="col in cols"> {{row[col]}} </td>
+	            <td align="right" class="cntrl_list btn-container" ng-if="showActionCtrls">
+	            	<div class="btn-group" role="group" aria-label="...">
+	                    <button type="button" class="btn btn-default no-padding" ng-show="$index != 0" ng-click="moveUp($index)">
+	                    	<i class="fa fa-chevron-circle-up"></i>
+	                    </button>
+		            	<button type="button" class="btn btn-default no-padding" ng-show="$index != rows.length-1" ng-click="moveDown($index)">
+		            		<i class="fa fa-chevron-circle-down"></i>
+		            	</button>
+	            	</div>
+	            </td>
+                <td align="right" class="cntrl_list btn-container" ng-if="showActionCtrls">
+                <div class="btn-group" role="group" aria-label="...">
+                 <button type="button" class="btn btn-default no-padding" ng-click="edit($index,row)"><i class="btx-pencil"></i></button>
+	            	  <button type="button" class="btn btn-default no-padding" ng-click="delete($index,row)"><i class="btx-delete-1"></i></button>
+                </div>
+                </td>
+                     <td align="right" class="cntrl_list btn-container" ng-if="!showActionCtrls && onView">
+	            	  <div type="button" class="textLinkBTN no-padding" ng-click="view($index,row)">{{'view'| i18nString}}</div>
+                </td>
+	        </tr>
+		</tbody>
+	</table>
+</div>

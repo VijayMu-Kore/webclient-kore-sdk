@@ -1,0 +1,534 @@
+<div class="instanceControl">{{'connections'| i18nString}}</div>
+<div ng-if="headingsList.showInstanceConnection.isOpen">
+    <div>
+        <p class="node-connDiv paddingRightLeft15">{{_constants_.getNewMessage(_constants_.propertyPanel.headerText, ":node_type", configurableElements[nodeInfo.dialogNodeInstance.type].name.toLowerCase())}}</p>
+    </div>
+    <div class="connectionRules">
+        <span class="tabLabel">{{_constants_.propertyPanel.connRules}}</span>
+        <i class="connectionRulesIcon"></i>
+        <i ng-if='hasTempConnections' class="cr-warning fa fa-exclamation-circle warning-color"></i>
+    </div>
+    <div class="behaviour-retries inline-block paddingRightLeft15 noBG" ng-show="nodeInfo.nodeInfo.type === 'entity' && nodeInfo.dialogNodeInstance.nodeOptions.promptOptions === 'required'">
+        <div class="grayBG connBlock">
+              <div class="kr-sg-dropdowns">
+                                    <div class="label-text">{{'behaviour_retries' | i18nString}}
+                                        <span class="tooltip-hover" tooltip="Define the transition behavior when user exceeds the allowed retries" tooltip-placement="top"><i class="help-icon btx-help"></i></span>
+                                    </div>
+                                    <p class="desc">{{'behaviour_retries_desc' | i18nString}}</p>
+                                    <div class="dropdown dropdown-open">
+                                            <button class="instanceEntity dropdown-toggle dropdown-input" data-toggle="dropdown" retry-action="{{defaultMaxRetry}}">{{default.defaultRetryValue}}</button>                           
+                                            <ul class="dropdown-menu content-menu width100" perfect-scroll dynamic-height dynaoffset="-325">
+                                              <li class="list" ng-click="saveDropdown($event,'endOfDialog','.connectionRulesIcon')"><a href="#">{{_constants_.flowtasks.end}}</a></li>
+                                               <!-- <li value="" class="list" ng-click="saveDropdown($event,'','.connectionRulesIcon')"><a href="javascript:void(0)">{{'not_connected' | i18nString}}</a></li> -->
+                                                <li value="{{node.uId}}" class="list" ng-click="saveDropdown($event,node,'.connectionRulesIcon')" ng-if="nodeInfo.dialogNodeInstance.uId !== node.uId && getIntentAllowed(node) && (nodeInfo.dialogInfo.firstNodeId !== node.uId) && !((groupNodeIntnets && groupNodeIntnets[node.uId]))" ng-repeat ="node in nodeObjList| orderObjectBy : 'name'"><a href="javascript:void(0)">{{(node.intent || node.name) + getNodeCount(node)}}</a></li>
+                                            </ul>
+                                    </div>
+                                </div>
+        </div>
+    </div>
+    
+    <div ui-sortable="conSortableOptions" class="sortableConnectionContainer paddingRightLeft15" ng-model="tempDialogNodeInstConnObj">
+        <div ng-repeat="connection in tempDialogNodeInstConnObj">
+            <div class="positionRelative cursorMove connectionBlock" 
+                 ng-class="{'unsortable':tempDialogNodeInstConnObj.length == 1}" 
+                 ng-if="!connection.isDefault && (nodeInfo.nodeInfo.type !== 'dialogAct' || (nodeInfo.nodeInfo.type === 'dialogAct' && connection.ifConditionPrefix !== 'dialogAct'))"
+                 class="paddingLeftRight15">
+                
+                <div class="sortBar" ng-class="{'conditionDiv' : $index === 0, 'elseIfConditionDiv' : $index > 0, 'intent': (isTargetIntent(connection) && connection.ifOperator === '') || connection.ifConditionPrefix === 'intent', 'isExists': (!isTargetIntent(connection) && connection.ifOperator === '')}">
+                    
+                    <div class="col-xs-2 noPadding">
+                        <span class="connColor dropdown" ng-style="{'background-color': connection.color}">
+                            <a class="dropdown" data-toggle="dropdown"></a>
+                            <ul class="dropdown-menu">
+                                <li class="defColors" ng-repeat="color in connDefColors" ng-style="{'background-color': color}" ng-click="changeConnColor(connection, color)"></li>
+                            </ul>
+                        </span>
+                        <span class="conditionLabel heading">{{$index > 0 ? elseif : if}}</span>
+                        <select ng-if="false" class="form-control select1 unsortable" ng-model="connection.ifConditionPrefix" ng-change="conditionPrefixChange(connection.connId)">
+                            <option ng-repeat="ifCondPrefix in ifCondPrefixList" value="{{ifCondPrefix.val}}">{{ifCondPrefix.name}}</option>
+                        </select>
+                    </div>
+
+                    <!--Start of if cond radio buttons -->
+
+                    <div class="col-xs-10 radioDiv width255 noPadding pull-right">
+                        <div ng-repeat="ifCondPrefix in ifCondPrefixList" class="col-xs-4 noPadding">
+                            <label for="connection.ifConditionPrefix.{{ifCondPrefix.val}}{{$parent.$index}}">
+                                <input ng-checked="connection.ifConditionPrefix == ifCondPrefix.val" type="radio" ng-model="connection.ifConditionPrefix" name="connection.ifConditionPrefix{{$parent.$index}}" id="connection.ifConditionPrefix.{{ifCondPrefix.val}}{{$parent.$index}}" class="ng-pristine ng-untouched ng-valid unsortable" value="{{ifCondPrefix.val}}" ng-change="conditionPrefixChange(connection.connId); checkFollowupIntentSettings(connection);">
+                                <span class="opt-title unsortable">{{ifCondPrefix.name}}</span> </label>
+                        </div>
+                    </div>
+                    
+                   
+                    <!--End of if cond radio buttons-->
+
+
+                    <div ng-if=" connection.ifConditionPrefix === 'context' && !connection.tests " class="dashedBorder">
+                        
+                        <div class="" style="clear: both; padding-left: 15px;">
+                            <span ng-click="deleteBlock(connection, $index)" class="fa fa-minus-circle dashedBorderStartPoint"></span>
+                            <select class="form-control select3 width100 unsortable" ng-model="connection.ifCondition" ng-show="connection.ifConditionPrefix === 'field'"
+                            ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                <option value=""> {{'select_name'| i18nString}}</option>
+                                <option ng-repeat="currEntity in nodeInfo.dialogInfo.currentEntities" value="{{currEntity.uId}}">{{currEntity.name + getNodeCount(currEntity)}}</option>
+                            </select>
+
+
+
+
+                            <select class="form-control select3 width100 unsortable"
+                                    ng-init="connection.intentType = connection.intentType?connection.intentType:'userinput'"
+                                    ng-model="connection.intentType" 
+                                    ng-show="connection.ifConditionPrefix === 'intent'"
+                                    ng-disabled="!((nodeInfo.nodeInfo.type === 'intent' && nodeInfo.dialogNodeInstance.flowTaskId) || nodeInfo.nodeInfo.type === 'message')"
+                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')"
+                                    >
+                                <option value="userinput" selected="true"> {{'user_input'| i18nString}}</option>
+                                <option value="followup"> {{'context_intents'| i18nString}}</option>
+                            </select>
+
+
+                            
+                            <div class="gotoDiv form-group clear-fix col-xs-12 noPadding noMargin"
+                                ng-show="connection.ifConditionPrefix === 'intent' && connection.intentType !== 'followup'">
+                                <div class="conditionLabel fadedLable bgColorblock col-xs-2 noPadding"> {{'equals'| i18nString}}</div>
+                                <div class="col-xs-10 noPadding">
+                                    <select class="form-control select3 width100 unsortable" 
+                                            ng-model="connection.ifCondition" 
+                                            ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                        <option value=""> {{'select_name'| i18nString}}</option>
+                                        <option ng-repeat="currIntent in nodeInfo.dialogInfo.currentIntents" value="{{currIntent.uId}}">{{currIntent.name}}</option>
+                                    </select>
+                                </div>
+                            </div> 
+                            <textarea  class="form-control input1 width100 autoGrowTA unsortable"
+                                type="text"
+                                ng-model="connection.ifCondition"
+                                ng-show="connection.ifConditionPrefix === 'context'"
+                                ng-keydown="autoGrowTextArea($event)"
+                                ng-keyup="checkContextVal($event);"
+                                ng-keypress="saveConnectionELSEIF($event)"
+                                ng-change="checkFollowupIntentSettings(connection);"
+                                placeholder=" {{'if_condition'| i18nString}}"
+                                auto-grow-textarea default-grown="true"
+                                context-typeahead custom-contexts="connectionCustomContext">
+                            </textarea>
+
+                            <select class="form-control select1 fullWidth unsortable moveRightCondition" 
+                                    ng-show="(connection.ifConditionPrefix === 'context' && hasFollowupIntentsText(connection.ifCondition))
+                                                || (connection.ifConditionPrefix === 'intent' && connection.intentType === 'followup')"
+                                    ng-model="connection.ifOperator"
+                                    ng-change="onChangeConnection(connection, 'ifOperator')">
+                                <option ng-repeat="ifOperator in ifOperatorsFollowupIntents" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                            </select>
+                            
+                            <select class="form-control select3 width100 unsortable"
+                                    ng-model="connection.value"
+                                    ng-show="(connection.ifOperator === 'cnt' || connection.ifOperator === 'ncnt') && ((connection.ifConditionPrefix === 'context' && hasFollowupIntentsText(connection.ifCondition)) || (connection.ifConditionPrefix === 'intent' && connection.intentType === 'followup'))"
+                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                <option value="">{{'select_name'| i18nString}}</option>
+                                <!--                                This list contains:
+                                                                    1.list of Intent and sub Intents except sub dialogs
+                                                                    2.List of dialog tasks-->
+                                <option ng-if="currIntent.type !== 'subDialog'" ng-repeat="currIntent in nodeInfo.dialogInfo.currentIntents" value="{{currIntent.refId}}">{{currIntent.name}}</option>
+                                <option ng-if="flowtaskObj._id !== dialog._id" ng-repeat="dialog in dialogTaskList" value="{{dialog.refId}}">{{dialog.name}}</option>
+                            </select>
+
+                            <!--                                <input ng-if="connection.ifConditionPrefix === 'intent'" class="form-control select1 fullWidth unsortable" value="matches" disabled="disabled"
+                                                            />-->
+                            <select ng-if="connection.ifConditionPrefix === 'field' || (connection.ifConditionPrefix === 'context' && !hasFollowupIntentsText(connection.ifCondition))" class="form-control select1 fullWidth unsortable moveRightCondition" ng-model="connection.ifOperator"
+                                    ng-change="onChangeConnection(connection, 'ifOperator')">
+                                <option ng-repeat="ifOperator in ifOperatorList" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                            </select>
+                            <input ng-show="(hideValues.indexOf(connection.ifOperator) == -1) && (connection.ifOperator != '' && connection.ifConditionPrefix === 'field' || (connection.ifConditionPrefix === 'context' && !hasFollowupIntentsText(connection.ifCondition)))" class="form-control input1 fullWidth unsortable moveRightCondition"
+                                type="text" ng-model="connection.value" placeholder="{{'value'| i18nString}}" ng-keypress="saveConnectionELSEIF($event)"
+                                />
+                        </div>
+                        <!-- and/or buttons -->
+                        <div>
+                            <div class="footer-btns andOrBTN" style="margin-top: 1%;">
+                                <span class="dummYBorderSpan"></span>
+                                <a ng-if="connection.conditionAnd" type="button" class="btn conditionAndBTN" ng-click="addCondition(connection, 'and')"> + AND</a>
+                                <a ng-if="connection.conditionOr" type="button"  class="btn conditionOrBTN" ng-click="addCondition(connection, 'or')"> + OR</a>
+                            </div>
+                        </div>
+                    </div>        
+
+                    <div ng-if="connection.ifConditionPrefix !== 'context'">
+                        <div class="">
+
+                            <select class="form-control select3 width100 unsortable" ng-model="connection.ifCondition" ng-show="connection.ifConditionPrefix === 'field'"
+                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                <option value=""> {{'select_name'| i18nString}}</option>
+                                <option ng-repeat="currEntity in nodeInfo.dialogInfo.currentEntities" value="{{currEntity.uId}}">{{currEntity.name + getNodeCount(currEntity)}}</option>
+                            </select>
+
+
+
+
+                            <select class="form-control select3 width100 unsortable"
+                                    ng-init="connection.intentType = connection.intentType?connection.intentType:'userinput'"
+                                    ng-model="connection.intentType" 
+                                    ng-show="connection.ifConditionPrefix === 'intent'"
+                                    ng-disabled="!((nodeInfo.nodeInfo.type === 'intent' && nodeInfo.dialogNodeInstance.flowTaskId) || nodeInfo.nodeInfo.type === 'message')"
+                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')"
+                                    >
+                                <option value="userinput" selected="true"> {{'user_input'| i18nString}}</option>
+                                <option value="followup"> {{'context_intents'| i18nString}}</option>
+                            </select>
+
+
+                            
+                            <div class="gotoDiv form-group clear-fix col-xs-12 noPadding noMargin"
+                                ng-show="connection.ifConditionPrefix === 'intent' && connection.intentType !== 'followup'">
+                                <div class="conditionLabel fadedLable bgColorblock col-xs-2 noPadding"> {{'equals'| i18nString}}</div>
+                                <div class="col-xs-10 noPadding">
+                                    <select class="form-control select3 width100 unsortable" 
+                                            ng-model="connection.ifCondition" 
+                                            ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                        <option value=""> {{'select_name'| i18nString}}</option>
+                                        <option ng-repeat="currIntent in nodeInfo.dialogInfo.currentIntents" value="{{currIntent.uId}}">{{currIntent.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <textarea class="form-control input1 width100 autoGrowTA unsortable"
+                                    type="text"
+                                    ng-model="connection.ifCondition"
+                                    ng-show="connection.ifConditionPrefix === 'context'"
+                                    ng-keydown="autoGrowTextArea($event)"
+                                    ng-keyup="checkContextVal($event);"
+                                    ng-keypress="saveConnectionELSEIF($event)"
+                                    ng-change="checkFollowupIntentSettings(connection);"
+                                    placeholder=" {{'if_condition'| i18nString}}"
+                                    auto-grow-textarea default-grown="true"
+                                    context-typeahead custom-contexts="connectionCustomContext">
+                            </textarea>
+
+                            <select class="form-control select1 fullWidth unsortable"
+                                    ng-show="(connection.ifConditionPrefix === 'context' && hasFollowupIntentsText(connection.ifCondition))
+                                                || (connection.ifConditionPrefix === 'intent' && connection.intentType === 'followup')"
+                                    ng-model="connection.ifOperator"
+                                    ng-change="onChangeConnection(connection, 'ifOperator')">
+                                <option ng-repeat="ifOperator in ifOperatorsFollowupIntents" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                            </select>
+
+                            <!-- <div class="accordion-group-footer animate-if" >
+                                <div class="footer-btns">
+                                    <a ng-click="cancelNodeInstanceConnections()"> +Add</a>
+                                    <a ng-click="saveNodeInstanceConnections($event)"> OR</a>
+                                </div>
+                            </div> -->
+                            
+                            <select class="form-control select3 width100 unsortable"
+                                    ng-model="connection.value"
+                                    ng-show="(connection.ifOperator === 'cnt' || connection.ifOperator === 'ncnt') && ((connection.ifConditionPrefix === 'context' && hasFollowupIntentsText(connection.ifCondition)) || (connection.ifConditionPrefix === 'intent' && connection.intentType === 'followup'))"
+                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                <option value="">{{'select_name'| i18nString}}</option>
+                                <!--                                This list contains:
+                                                                    1.list of Intent and sub Intents except sub dialogs
+                                                                    2.List of dialog tasks-->
+                                <option ng-if="currIntent.type !== 'subDialog'" ng-repeat="currIntent in nodeInfo.dialogInfo.currentIntents" value="{{currIntent.refId}}">{{currIntent.name}}</option>
+                                <option ng-if="flowtaskObj._id !== dialog._id" ng-repeat="dialog in dialogTaskList" value="{{dialog.refId}}">{{dialog.name}}</option>
+                            </select>
+
+                            <!--                                <input ng-if="connection.ifConditionPrefix === 'intent'" class="form-control select1 fullWidth unsortable" value="matches" disabled="disabled"
+                                                            />-->
+                            <select ng-if="connection.ifConditionPrefix === 'field' || (connection.ifConditionPrefix === 'context' && !hasFollowupIntentsText(connection.ifCondition))" class="form-control select1 fullWidth unsortable" ng-model="connection.ifOperator"
+                                    ng-change="onChangeConnection(connection, 'ifOperator')">
+                                <option ng-repeat="ifOperator in ifOperatorList" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                            </select>
+                            <input ng-show="(hideValues.indexOf(connection.ifOperator) === -1) && (connection.ifOperator != '' && connection.ifConditionPrefix === 'field' || (connection.ifConditionPrefix === 'context' && !hasFollowupIntentsText(connection.ifCondition)))" class="form-control input1 fullWidth unsortable"
+                                type="text" ng-model="connection.value" placeholder="{{'value'| i18nString}}" ng-keypress="saveConnectionELSEIF($event)"
+                                />
+                        </div>
+                    </div>
+                    
+                     <!-- new feature adding connections with internal ifs -->
+                     <div ng-if="connection.ifConditionPrefix === 'context' && connection.tests" class="dashedBorder"> 
+                        <div ng-repeat="test in connection.tests"  >
+                            <div class="footer-btns andOrBTN" ng-if="connection.tests.length>1" ng-show="!$first" >
+                                
+                                <a  ng-If="connection.conditionAnd" class="conditionOr" type="button" class="btn"> AND</a>
+                                <a  ng-If="connection.conditionOr" class="conditionOr" type="button" class="btn"> OR</a>
+                            </div>
+                            
+                           
+                            <div class="">
+                                <div style="clear: both; padding-left: 15px;">
+                                    <span ng-click="deleteBlock(connection, $index)" class="fa fa-minus-circle dashedBorderStartPoint"></span>      
+                                    <select class="form-control select3 width100 unsortable" ng-model="connection.ifCondition" ng-show="connection.ifConditionPrefix === 'field'"
+                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                        <option value=""> {{'select_name'| i18nString}}</option>
+                                        <option ng-repeat="currEntity in nodeInfo.dialogInfo.currentEntities" value="{{currEntity.uId}}">{{currEntity.name + getNodeCount(currEntity)}}</option>
+                                    </select>
+
+
+
+
+                                    <select class="form-control select3 width100 unsortable"
+                                            ng-init="connection.intentType = connection.intentType?connection.intentType:'userinput'"
+                                            ng-model="connection.intentType" 
+                                            ng-show="connection.ifConditionPrefix === 'intent'"
+                                            ng-disabled="!((nodeInfo.nodeInfo.type === 'intent' && nodeInfo.dialogNodeInstance.flowTaskId) || nodeInfo.nodeInfo.type === 'message')"
+                                            ng-change="onChangeConnection(connection, 'ifConditionPrefix')"
+                                            >
+                                        <option value="userinput" selected="true"> {{'user_input'| i18nString}}</option>
+                                        <option value="followup"> {{'context_intents'| i18nString}}</option>
+                                    </select>
+
+
+                                    
+                                    <div class="gotoDiv form-group clear-fix col-xs-12 noPadding noMargin"
+                                        ng-show="connection.ifConditionPrefix === 'intent' && connection.intentType !== 'followup'">
+                                        <div class="conditionLabel fadedLable bgColorblock col-xs-2 noPadding"> {{'equals'| i18nString}}</div>
+                                        <div class="col-xs-10 noPadding">
+                                            <select class="form-control select3 width100 unsortable" 
+                                                    ng-model="connection.ifCondition" 
+                                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                                <option value=""> {{'select_name'| i18nString}}</option>
+                                                <option ng-repeat="currIntent in nodeInfo.dialogInfo.currentIntents" value="{{currIntent.uId}}">{{currIntent.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>                  
+                                    
+                                    <textarea  class="form-control input1 width100 autoGrowTA unsortable"
+                                            type="text"
+                                            ng-model="test.context"
+                                            ng-show="connection.ifConditionPrefix === 'context'"
+                                            ng-keydown="autoGrowTextArea($event)" 
+                                            ng-keyup="checkContextVal($event);"
+                                            ng-keypress="saveConnectionELSEIF($event)"
+                                            ng-change="checkFollowupIntentSettings(connection);"
+                                            placeholder=" {{'if_condition'| i18nString}}"
+                                            auto-grow-textarea default-grown="true"
+                                            context-typeahead custom-contexts="connectionCustomContext">
+                                    </textarea>
+                                    
+        
+                                    <select class="form-control select1 fullWidth unsortable "
+                                            ng-show="(connection.ifConditionPrefix === 'context' && hasFollowupIntentsText(connection.ifCondition))
+                                                        || (connection.ifConditionPrefix === 'intent' && connection.intentType === 'followup')"
+                                            ng-model="test.op"
+                                            ng-change="onChangeConnection(connection, 'ifOperator')">
+                                        <option ng-repeat="ifOperator in ifOperatorsFollowupIntents" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                                    </select>
+
+                                    <select class="form-control select3 width100 unsortable "
+                                            ng-model="test.value"
+                                            ng-show="(test.op === 'cnt' || test.op === 'ncnt') && ((connection.ifConditionPrefix === 'context' && hasFollowupIntentsText(connection.ifCondition)) || (connection.ifConditionPrefix === 'intent' && connection.intentType === 'followup'))"
+                                            ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                        <option value="">{{'select_name'| i18nString}}</option>
+                                        <!--                                This list contains:
+                                                                            1.list of Intent and sub Intents except sub dialogs
+                                                                            2.List of dialog tasks-->
+                                        <option ng-if="currIntent.type !== 'subDialog'" ng-repeat="currIntent in nodeInfo.dialogInfo.currentIntents" value="{{currIntent.refId}}">{{currIntent.name}}</option>
+                                        <option ng-if="flowtaskObj._id !== dialog._id" ng-repeat="dialog in dialogTaskList" value="{{dialog.refId}}">{{dialog.name}}</option>
+                                    </select>
+            
+                                    <!--                                <input ng-if="connection.ifConditionPrefix === 'intent'" class="form-control select1 fullWidth unsortable" value="matches" disabled="disabled"
+                                                                    />-->
+                                    <select ng-if="connection.ifConditionPrefix === 'field' || (connection.ifConditionPrefix === 'context' && !hasFollowupIntentsText(connection.ifCondition))" class="form-control select1 fullWidth unsortable moveRightCondition" ng-model="test.op"
+                                            ng-change="onChangeConnection(connection, 'ifOperator')">
+                                        <option ng-repeat="ifOperator in ifOperatorList" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                                    </select>
+                                    <input ng-show="(hideValues.indexOf(test.op) === -1) && (test.op !== '') && (test.op != '' && connection.ifConditionPrefix === 'field' || (connection.ifConditionPrefix === 'context' && !hasFollowupIntentsText(connection.ifCondition)))" class="form-control input1 fullWidth unsortable moveRightCondition"
+                                        type="text" ng-model="test.value" placeholder="{{'value'| i18nString}}" ng-keypress="saveConnectionELSEIF($event)"/>
+                                </div>
+                            </div>
+                            
+                            
+                        
+                        </div>
+                        <!-- and/or buttons -->
+                        <div>
+                            <div class="footer-btns andOrBTN" >
+                                <span class="dummYBorderSpan"></span>
+                                <a ng-if="connection.conditionAnd" type="button"  class="btn conditionAndBTN" ng-click="addCondition(connection, 'and')"> +AND</a>
+                                <a ng-class="{'orSelected': connection.orSelected }" ng-if="connection.conditionOr" type="button" class="btn conditionOrBTN" ng-click="addCondition(connection, 'or')"> +OR</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gotoDiv form-group clear-fix col-xs-12 noPadding noMargin">
+                        
+
+
+                        
+                        
+                        <div style="margin-top: 10px; ">
+                            <div class="conditionLabel fadedLable bgColorblock col-xs-2 noPadding">{{'then_go_to'| i18nString}}</div>
+                            <div class="col-xs-10 noPadding">
+                                <select class="form-control select2 unsortable" ng-model="connection.targetId" ng-change="onChangeConnection(connection, 'goto')">
+                                    <option value="">{{_constants_.flowtasks.unconnected}}</option>
+                                    <option value="end">{{_constants_.flowtasks.end}}</option>
+                                    <!--                                        <option value="keepAlive">{{_constants_.flowtasks.keepAlive}}</option>-->
+                                    <option ng-if="nodeInfo.dialogNodeInstance.uId !== nodeObj.uId && getIntentAllowed(nodeObj) && (nodeInfo.dialogInfo.firstNodeId !== nodeObj.uId) && !((groupNodeIntnets && groupNodeIntnets[nodeObj.uId]))" ng-repeat="nodeObj in nodeObjList" value="{{nodeObj.uId}}">{{(nodeObj.intent || nodeObj.name) + getNodeCount(nodeObj)}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                   
+                    <div class="unsortable btx-delete-1" ng-class="{true:'fa-minus-circle closeConnection',false:'fa-minus-circle closeConnection intent'}[connection.ifOperator.toLowerCase() != 'exists']"
+                         ng-click="removeConnection(connection.connId)"></div>
+                </div>
+               
+            </div>
+            <div ng-if="!connection.isDefault && nodeInfo.nodeInfo.type === 'dialogAct'"
+                 class="positionRelative">
+
+
+                <!--                        <div  ng-if="connection.ifConditionPrefix==='context'" class="sortBar" ng-class="{'conditionDiv' : $index === 0, 'elseIfConditionDiv' : $index > 0, 'intent': (isTargetIntent(connection) && connection.ifOperator === '') || connection.ifConditionPrefix === 'intent', 'isExists': (!isTargetIntent(connection) && connection.ifOperator === '')}">
+                                            <div class="">
+                                                <div class="col-xs-5 noPadding marginBottom10-imp">
+                                                    <span class="connColor dropdown" ng-style="{'background-color': connection.color}">
+                                                        <a class="dropdown" data-toggle="dropdown"></a>
+                                                        <ul class="dropdown-menu">
+                                                            <li class="defColors" ng-repeat="color in connDefColors" ng-style="{'background-color': color}" ng-click="changeConnColor(connection, color)"></li>
+                                                        </ul>
+                                                    </span>
+                                                    <span class="conditionLabel heading">{{$index > 0 ? 'ELSE IF CONTEXT' : 'IF CONTEXT'}}</span>
+                                                    <select ng-if="false" class="form-control select1 unsortable" ng-model="connection.ifConditionPrefix" ng-change="conditionPrefixChange(connection.connId)">
+                                                        <option ng-repeat="ifCondPrefix in ifCondPrefixList" value="{{ifCondPrefix.val}}">{{ifCondPrefix.name}}</option>
+                                                    </select>
+                                                </div>
+            
+            
+            
+                                                <select class="form-control select3 width100 unsortable" ng-model="connection.ifCondition" ng-show="connection.ifConditionPrefix === 'field'"
+                                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                                    <option value="">-- Select --</option>
+                                                    <option ng-repeat="currEntity in nodeInfo.dialogInfo.currentEntities" value="{{currEntity.uId}}">{{currEntity.name}}</option>
+                                                </select>
+                                                <select class="form-control select3 width100 unsortable" ng-model="connection.ifCondition" ng-show="connection.ifConditionPrefix === 'intent'"
+                                                    ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                                    <option value="">-- Select --</option>
+                                                    <option ng-repeat="currIntent in nodeInfo.dialogInfo.currentIntents" value="{{currIntent.uId}}">{{currIntent.name}}</option>
+                                                </select>
+            
+                                                <textarea class="form-control input1 width100 autoGrowTA unsortable"
+                                                          type="text"
+                                                          ng-model="connection.ifCondition"
+                                                          ng-show="connection.ifConditionPrefix === 'context'"
+                                                          ng-keydown="autoGrowTextArea($event)"
+                                                          ng-keyup="checkContextVal($event);"
+                                                          ng-keypress="saveConnectionELSEIF($event)"
+                                                          ng-change="checkFollowupIntentSettings(connection);"
+                                                          placeholder="If Condition"
+                                                          auto-grow-textarea default-grown="true"
+                                                          context-typeahead custom-contexts="connectionCustomContext">
+                                                </textarea>
+            
+                                                <select class="form-control select1 fullWidth unsortable"
+                                                        ng-show="connection.ifConditionPrefix === 'context' && hasFollowupIntentsText(connection.ifCondition)"
+                                                        ng-model="connection.ifOperator"
+                                                        ng-change="onChangeConnection(connection, 'ifOperator')">
+                                                    <option ng-repeat="ifOperator in ifOperatorsFollowupIntents" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                                                </select>
+            
+                                                <select class="form-control select3 width100 unsortable"
+                                                        ng-model="connection.value"
+                                                        ng-show="connection.ifConditionPrefix === 'context' && hasFollowupIntentsText(connection.ifCondition)"
+                                                        ng-change="onChangeConnection(connection, 'ifConditionPrefix')">
+                                                    <option value="">-- Select --</option>
+                                                    <option ng-repeat="currIntent in nodeInfo.dialogInfo.currentIntents" value="{{currIntent.uId}}">{{currIntent.name}}</option>
+                                                </select>
+            
+                                                <input ng-if="connection.ifConditionPrefix === 'intent'" class="form-control select1 fullWidth unsortable" value="matches" disabled="disabled"
+                                                />
+                                                <select ng-if="connection.ifConditionPrefix === 'field' || (connection.ifConditionPrefix === 'context' && !hasFollowupIntentsText(connection.ifCondition))" class="form-control select1 fullWidth unsortable" ng-model="connection.ifOperator"
+                                                    ng-change="onChangeConnection(connection, 'ifOperator')">
+                                                    <option ng-repeat="ifOperator in ifOperatorList" value="{{ifOperator.val}}">{{ifOperator.name}}</option>
+                                                </select>
+                                                <input ng-show="connection.ifOperator != '' && connection.ifConditionPrefix === 'field' || (connection.ifConditionPrefix === 'context' && !hasFollowupIntentsText(connection.ifCondition))" class="form-control input1 fullWidth unsortable"
+                                                    type="text" ng-model="connection.value" placeholder="value" ng-keypress="saveConnectionELSEIF($event)"
+                                                />
+                                            </div>
+                                                <div class="gotoDiv form-group clear-fix col-xs-12 noPadding noMargin">
+                                                <div class="conditionLabel fadedLable bgColorblock col-xs-2 noPadding">Then go to</div>
+                                                <div class="col-xs-10 noPadding">
+                                                <select class="form-control select2 unsortable" ng-model="connection.targetId" ng-change="onChangeConnection(connection, 'goto')">
+                                                    <option value="">{{_constants_.flowtasks.unconnected}}</option>
+                                                    <option value="end">{{_constants_.flowtasks.end}}</option>
+                                                    <option ng-if="nodeInfo.dialogNodeInstance.uId !== nodeObj.uId && getIntentAllowed(nodeObj) && (nodeInfo.dialogInfo.firstNodeId !== nodeObj.uId)" ng-repeat="nodeObj in nodeObjList" value="{{nodeObj.uId}}">{{nodeObj.name}}</option>
+                                                </select>
+                                                </div>
+            
+                                            </div>
+                                            <div class="unsortable" ng-class="{true:'fa fa-minus-circle closeConnection',false:'fa fa-minus-circle closeConnection intent'}[connection.ifOperator.toLowerCase() != 'exists']"
+                                                ng-click="removeConnection(connection.connId)"></div>
+                                        </div>-->
+
+
+
+                <div ng-if="connection.ifConditionPrefix === 'dialogAct'"  class="dialogAct-connection" ng-class="{'conditionDiv dialogAct' : $index >= 0, 'elseIfConditionDiv' : $index > 1, 'intent': isTargetIntent(connection), 'isExists': (!isTargetIntent(connection) && connection.ifOperator === '')}">
+                    <div class="intentMatchText">
+                        <span class="connColor dropdown" ng-style="{'background-color': connection.color}">
+                            <a class="dropdown" data-toggle="dropdown"></a>
+                            <ul class="dropdown-menu">
+                                <li class="defColors" ng-repeat="color in connDefColors" ng-style="{'background-color': color}" ng-click="changeConnColor(connection, color)"></li>
+                            </ul>
+                        </span>
+
+                        <span ng-if="connection.ifCondition === 'yes'" class="conditionLabel heading" data-index="{{$index}}">{{$index > 0 ? affirmative_elseif:affirmative_if}}</span>
+                        <span ng-if="connection.ifCondition === 'no'"  class="conditionLabel heading" data-index="{{$index}}">{{$index > 0 ? negative_elsif : negative_if}}</span>
+                    </div>
+                    <div class="gotoDiv form-group clear-fix col-xs-12 noPadding noMargin">
+                        <div class="conditionLabel fadedLable bgColorblock col-xs-2 noPadding">{{'then_go_to'| i18nString}}</div>
+                        <div class="col-xs-10 noPadding">
+                            <select class="form-control select2 dialogActSelect unsortable" ng-model="connection.targetId" ng-change="onChangeConnection()">
+                                <option value="">{{_constants_.flowtasks.unconnected}}</option>
+                                <option value="end">{{_constants_.flowtasks.end}}</option>
+                                <!--                                        <option value="keepAlive">{{_constants_.flowtasks.keepAlive}}</option>-->
+                                <option ng-if="(nodeInfo.dialogNodeInstance.uId !== nodeObj.uId) && (nodeInfo.dialogInfo.firstNodeId !== nodeObj.uId) && !((groupNodeIntnets && groupNodeIntnets[nodeObj.uId]))" ng-repeat="nodeObj in nodeObjList" value="{{nodeObj.uId}}">{{(nodeObj.intent || nodeObj.name) + getNodeCount(nodeObj)}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ADD-ELSE-IF" ng-click="addElseIfBlock()" ng-if="!isFirstNode" ng-show="tempDialogNodeInstConnObj.length <= 1">{{_constants_.propertyPanel.addIf}}</div>
+    <div class="ADD-ELSE-IF" ng-click="addElseIfBlock()" ng-if="!isFirstNode" ng-show="tempDialogNodeInstConnObj.length > 1">{{_constants_.propertyPanel.addElse}}</div>
+
+    <div>
+        <div ng-hide="true" ng-repeat="connection in  filteredElse = (tempDialogNodeInstConnObj| filter:{isDefault:true})">
+            {{'dummy_div'| i18nString}}
+        </div>
+        <div class="ADD-ELSE-IF"  
+             ng-click="addElseIfBlock(null, true)"
+             ng-show="(!filteredElse.length && nodeInfo.nodeInfo.type === 'dialogAct')"
+             > {{'add_else'| i18nString}}</div>
+    </div>    
+
+
+    <div class="inline-block paddingRightLeft15 noBG">
+        <div ng-class="{'default-delete conditionDiv dialogAct' : (connection.isDefault && nodeInfo.nodeInfo.type === 'dialogAct')}"
+             ng-repeat="connection in tempDialogNodeInstConnObj" ng-if="connection.isDefault" class="grayBG connBlock">
+            <span class="connColor dropdown" ng-style="{'background-color': connection.color}">
+                <a class="dropdown" data-toggle="dropdown"></a>
+                <ul class="dropdown-menu">
+                    <li class="defColors" ng-repeat="color in connDefColors" ng-style="{'background-color': color}" ng-click="changeConnColor(connection, color)"></li>
+                </ul>
+            </span>
+            <span class="conditionLabel heading" ng-if="tempDialogNodeInstConnObj.length === 1"> {{'constants.propertyPanel_default'| i18nString}}</span>
+            <span class="conditionLabel heading" ng-if="tempDialogNodeInstConnObj.length > 1"> {{'else'| i18nString}}</span>
+            <select class="form-control connections-input3" ng-model="connection.targetId" ng-change="onDefaultChangeConnection(connection)">
+                <option value="">{{_constants_.flowtasks.unconnected}}</option>
+                <option value="end">{{_constants_.flowtasks.end}}</option>
+                <!--                                <option value="keepAlive">{{_constants_.flowtasks.keepAlive}}</option>-->
+                <option ng-if="nodeInfo.dialogNodeInstance.uId !== nodeObj.uId && getIntentAllowed(nodeObj) && (nodeInfo.dialogInfo.firstNodeId !== nodeObj.uId) && !((groupNodeIntnets && groupNodeIntnets[nodeObj.uId]))" ng-repeat="nodeObj in nodeObjList| orderObjectBy : 'name'" value="{{nodeObj.uId}}">{{(nodeObj.intent || nodeObj.name) + getNodeCount(nodeObj)}}</option>
+            </select>
+            <div ng-if="connection.isDefault && nodeInfo.nodeInfo.type === 'dialogAct'" ng-click="removeConnection(connection.connId)"
+                 class="fa fa-minus-circle closeConnection dialog"></div>
+        </div>
+    </div>
+    <p ng-if="!isFirstNode" class="node-connDiv paddingRightLeft15">{{_constants_.propertyPanel.bottomText}}</p>
+</div>
+<div class="accordion-group-footer animate-if" ng-if="hasUnsavedConnection" ng-class="{'hasUnsavedConnections': hasUnsavedConnection}">
+    <div class="footer-btns">
+        <a class="cancelChange" ng-click="cancelNodeInstanceConnections()"> {{'cancel'| i18nString}}</a>
+        <a ng-click="saveNodeInstanceConnections($event)"> {{'save'| i18nString}}</a>
+    </div>
+</div>

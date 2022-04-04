@@ -1,0 +1,1526 @@
+    <div class="knowledgeGraph" ng-class="{'read-only-wrap':knowledgeDisplayMode === 'VIEW'}">
+<div class="modal-header bt-modal-header modal_header_padding" ng-if="!(parentCb && (parentCb.selector==='storyboard'))">
+
+    <div class="col-xs-6 noPadding" ng-hide="isFromKora">
+        <span ng-hide="hideBackButton" ng-click="closeOntologyModalByClass()" type="button" class="closeBtn pull-left" data-dismiss="modal" aria-label="Close"><i class="arrowAngle btx-carrot-left"></i></span>
+        <bt-modal-title taskname="Knowledge Graph" fontclass="{{isEditable() ? 'btx-pencil' : 'fa-eye'}}" bot="stream"></bt-modal-title>
+    </div>
+    
+    <h4 class="kora-kg-name" ng-show="isFromKora">
+        {{stream.name.slice(0, stream.name.lastIndexOf(' ')+1)}}
+    </h4>
+
+    <div class="col-xs-6 rightOptions noPadding">
+        <div class="buttonDiv">
+            
+            <div class="dropdown pull-right ontologyMenu overFlowMenu">
+                <a href="#" class="dropdown-toggle top-elipse-btn"  data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                    </a>
+                <ul class="dropdown-menu">
+                    <li class="menuOption hasPadding ng-binding ng-scope" ng-show="isEditable()" ng-click="importOntology()">{{'import_kg'| i18nString}}</li>
+                    <li class="menuOption hasPadding ng-binding" ng-show="data[0].nodes.length > 0 || ontology.allQAS.length > 0" ng-click="onmMenuOptionClicked($event)" >
+                        <div class="dropdown">
+                            <div class="dropdown-toggle"  data-toggle="dropdown">
+                                <span class="menuName">{{'export_kg'| i18nString}}</span>
+                                <i class="fa btx-carrot-right moreOptions"></i>
+                            </div>
+                            <ul class="dropdown-menu pull-right">
+                                <li class="subMenuOptions" ng-click="callback.exportOntology('json')">{{'json_label'| i18nString}}</li>
+                                <li class="subMenuOptions" ng-click="callback.exportOntology('csv')">{{'csv_label'| i18nString}}</li>
+                            </ul>
+                        </div>
+                        </li>
+                    <!-- <li class="menuOption hasPadding ng-binding" ng-click="cb.ontologyClassModal.open()">Manage Classes</li> -->
+                    <li class="menuOption hasPadding ng-binding" ng-click="openManageTraits()">{{'manage_traits'| i18nString}}</li>
+                    <li class="menuOption hasPadding ng-binding" ng-click="manageGlobalSynonyms(null,null,null,false)">{{'manage_synonyms'| i18nString}}</li>
+                    <li class="menuOption hasPadding ng-binding" ng-click="manageStopWords()">{{'manage_stopwords'| i18nString}}</li>
+                    <li class="menuOption hasPadding" ng-click="openAutoGenerateModal()">{{'generate_graph'| i18nString}}</li>
+                    <li class="menuOption hasPadding" ng-if="allowNamespace" ng-click="manageVarNameBotOnto()">{{'manage_var_namespace'| i18nString}}</li>
+                    <!-- <li class="menuOption hasPadding ng-binding"><a class="helplink" href="{{$root.helpLinks.KNOWLEDGE_GRAPH}}" target="_blank"><img ng-src="{{helpIcon}}" class="helpIcon">Help</a></li> -->
+                </ul>
+            </div>
+            <button class="pull-right kr-sg-button-primary btn_lg ml-10"  ng-disabled="$root.ontologyTrainInProgress[knowledgeTask._id]" ng-click="trainBotOntology()">
+                <i ng-if="trainOntologyStatus === 'in_progress'" class="fa fa-spinner fa-spin"></i> {{trainOntologyStatus === 'in_progress'?training_label:train_label}}
+            </button>
+            <button class="pull-right kr-sg-button-primary btn_lg ml-10" ng-show='showPublish' ng-click="publishKgCollection()">{{'publish'| i18nString}}
+            </button>
+            <button class="pull-right kr-sg-button-secondary btn_lg ml-10" ng-hide='botDetails.streamState === "published"' ng-disabled="disableInspect" ng-click="knowledgeDisplayMode === 'VIEW'?ViewReport():inspectKg()"><img ng-src="{{inspectingIcon}}" ng-show="inspectStatus === 'inprogress'" ng-class="{'inspectingLoader':inspectStatus === 'inprogress'}"><span class="" ng-class="{'padding5':inspectStatus === 'inprogress'}">{{inspectStatus === 'inprogress'?Inspecting:Inspect}}</span>
+            </button>
+            <button class="viewOnly btn pull-right" ng-if="!isEditable()"><i class="btx-password"></i><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+            <help-button  help-id="'botOntology'" class="pull-right kg-onto-header-btn-help" ></help-button> 
+        </div>
+
+
+    </div>
+</div>
+</div>
+<div class="modal-body wf-form noPadding" ng-class="{'allowEdit':isEditable(), 'disableEdit':!isEditable(),'storyboard':(parentCb && (parentCb.selector==='storyboard'))}">
+
+      <div class="col-xs-12 noBorderTop fetchingFaqs" ng-show="loadingKnowledeGraph">
+                <div class="log-item">
+                    <div class="loaderAlert">
+                        <div class="alert alert-warning alert-xs text-center" role="alert">
+                            <i class="fa-spin fa fa-circle-o-notch"></i> {{'fetching_data'| i18nString}}
+                        </div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                </div>
+    </div>
+
+    <!-- Nested node template -->
+    <div class="col-xs-12 noPadding ontologyContainerDrag" ng-show="!loadingKnowledeGraph">
+        <div class="col-xs-4 termContainer noPadding" ng-show="!(parentCb && (parentCb.selector==='storyboard'))" ng-class="{'kora-kg-off': kgGraph.offClass && isFromKora, 'kora-kg-on': !kgGraph.offClass && isFromKora}" >
+            <script type="text/ng-template" id="nodes_renderer.html">
+                <div class='warn-icon tooltip-hover showIcon' ng-if="taxonomyObjectData.nodeObject[node.nodeId].isDupe && !isTermDisabled && taxonomyObjectData.nodeObject[node.nodeId].termIndex" data-placement="top" tooltip="{{ 'A term with the same name is already added to the parent [] term.' | nodeTT:node:this }}">
+                    <img ng-src="{{warnUserIcon}}" alt="">
+                </div>
+                <div ng-form name="forms.newTermForm" id='nodeEle_{{node.nodeId}}' class="tree-node ontologytreenode {{node.class}}" ng-class="{newterm:node.isNewNode, nochildnode: (!data[0].nodes.length && node.class), borderOrange: taxonomyObjectData.nodeObject[node.nodeId].isDupe && !isTermDisabled}" ui-tree-handle>
+                    <div class="tree-node-content">
+                       <!-- <span  ng-if="node.parent.length > 0" class="pull-left tree-handle dragTerm" ui-tree-handle>
+            <span class="dispalyNone" ng-click="removeNodeItem(this)">
+                <i class="fa btx-delete-1 btnDelete"></i>
+                </span>
+                        </span>-->
+                        <span class="termInfo termClck" ng-if="node.isNewNode" >
+                            <input class="nodeNameInput termname" maxlength="50" name="termname" ng-if="node.isNewNode" placeholder="{{'add_node'| i18nString}}" type="text" ng-model="node.label" /><!--ng-pattern="validateTermName" ng-model="node.label" -->
+                        </span>
+                        <span class="termInfo termClck" ng-if="!node.isNewNode" ng-click="getQASForThisTerm(this, true)">
+                            <div class="nodeNameInput textEllipsis" ng-if="!node.isNewNode" type="text" 
+                            ng-bind-html="node.label" ></div><!-- | highlight:pattern-->
+                            <!-- <span class="warnig-default-show tooltip-hover w-auto-tooltip" tooltip-placement="bottom" tooltip="Disabled" ng-show="!node.termStatus && node.termStatus !== undefined" data-nodrag > 
+                                <i class="btx-warning"></i>
+                            </span> -->
+                        </span>
+                        <span class="termOptions" ng-if="!node.isNewNode" ng-class="{'disablesYNEdit':isThisTermEditable(node)}">
+                            <span class="nodeBTN btn-xs dispalyNone plus tooltip-hover w-100" ng-class="{'noPointers': isAvoidAddSub}" data-nodrag ng-click="$event.stopPropagation();newSubItem(this)" style="margin-right: 8px;" tooltip-placement="bottom" tooltip="{{'add_child_node'| i18nString}}">
+                                <i class="btx-add fa-plus"></i>
+                            </span>
+                            <span class="nodeBTN btn-xs dispalyNone delete tooltip-hover w-100" ng-if="node.parent.length > 0" data-nodrag ng-click="delteNode(this)" tooltip-placement="bottom" tooltip="{{'delete_child_node'| i18nString}}">
+                                <i class="btx-delete-1 btnDelete"></i>
+                            </span>
+                            <span class="nodeBTN btn-xs dispalyNone cog tooltip-hover w-100" tooltip-placement="bottom" tooltip="{{'settings'| i18nString}}" data-nodrag ng-click="openSettingsPanel(this)" style="margin-right: 8px;">
+                                <i class="btx-settings fa-cog"></i>
+                            </span>
+                            <span class="nodeBTN btn-xs float lock" ng-if="checkLevel(node)" ng-class="{'screenFreeze':(((stream.state==='setup') && stream.sbStreamId) || !isEditable())}" data-nodrag ng-click="unlockTerm(node)" style="margin-right: 8px;">
+                                <i class="fa fa-lock"></i>
+                            </span>
+                            <div class="warnig-default-show-position">
+                                <span class="warnig-default-show tooltip-hover w-auto-tooltip" tooltip-placement="bottom" tooltip="Disabled" ng-show="!node.termStatus && node.termStatus !== undefined" data-nodrag > 
+                                    <i class="btx-warning"></i>
+                                </span>
+                                <span class="nodeBTN btn-xs float" ng-class="{hide:node.class,'lock':(!checkLevel(node) && stream.type == 'solution')}" ng-if="node.nodes.length" data-nodrag ng-click="toggleNode(this)" style="margin-right: 8px;float: right;width: auto !important;">
+                                    <i class="fa" ng-class="{'btx-carrot-down': (node.nodes.length && !collapsed && !node.class), 'btx-carrot-right': (node.nodes.length && collapsed && !node.class), 'fa-expand': (node.class && !expandAllNodes), 'fa-compress': (node.class && expandAllNodes)}"></i>
+                                </span>
+                            </div>
+                        </span>
+                        <span ng-show="node.termUsage == 'mandatory' || node.termUsage == 'organizer'" ng-class="{'mandatoryColor':node.termUsage == 'mandatory', 'organizerColor':node.termUsage == 'organizer'}">
+                            <img ng-src="{{$root[node.termUsage]}}"/>
+                        </span>
+                    </div>
+                </div>
+                <span ng-show="node.isNewNode && !isNewNodeSaveTriggered" class="typeenter">{{'type_and__enter_placeholder'| i18nString}}</span>
+                <span ng-show="node.isNewNode && isNewNodeSaveTriggered" class="typeenter"><i class="fa fa-refresh fa-spin"></i></span>
+                <span ng-show="node.showCheck" class="typeenter"><i class="fa fa-check"></i></span>
+                <span ng-show="node.isNewNode && forms.newTermForm.termname.$error.pattern" class="typeenter"><i class="fa fa-warning" data-popover-trigger="mouseenter" popover-placement="right" popover-container="body" popover="{{'term_name_allows'| i18nString}}"></i></span>
+                <ol  ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" ng-if="!(parentCb && (parentCb.selector==='storyboard'))">
+                    <li ng-if="!currentSearchIndex.length" class="marginleft20"><span class="batchLoadBtn" ng-if="node.nodeBatch.startIndex > 0" ng-class="{'pointer-none':batchLoader.previousBatchLoading}" ng-click="updateTreeBatch('startIndex',node)">{{'load_previous_node'| i18nString}}<i  ng-if="batchLoader.previousBatchLoading" class="fa fa-refresh fa-spin margin-left-5"></i> </span><span class="batchLoadBtn marginLeft10" ng-if="node.nodeBatch.startIndex > 0" ng-class="{'pointer-none':batchLoader.loadToRootNode}" ng-click="updateTreeBatch('rootNode',node)">{{'reset'| i18nString}}<i  ng-if="batchLoader.loadToRootNode" class="fa fa-refresh fa-spin margin-left-5"></i> </span></li>
+                    <li ng-if="($parent.node.nodeBatch.startIndex <= $index) &&  ($index < $parent.node.nodeBatch.endIndex) && !collapsed && !node.deleted"  ng-repeat="node in node.nodes"  data-expand-on-hover="true"  label="{{node.label}}" ng-class="{'noBorderBottom':node.nodes.length && !collapsed,'disablesNodeLevelEdit':node.editLocked}"
+                        class="ontologyuitreenode marginleft20" nodeID="{{node.nodeId}}" data-nodrag="{{node.isNewNode ? true : !node.parent.length ? true : false}}" nodeLabel="{{node.label}}" ui-tree-node
+                        data-scroll-container=".ontologyContainer" data-collapsed="node.defaultCollapse"  ng-include="'nodes_renderer.html'" usageterm = '{{node.termUsage}}'><!--checkCollapsed(this) -->
+                    </li>
+                    <li ng-if="!currentSearchIndex.length" class="marginleft20"><span class="batchLoadBtn" ng-if="node.nodeBatch.endIndex < node.nodes.length" ng-class="{'pointer-none':batchLoader.nextBatchLoading}" ng-click="updateTreeBatch('endIndex', node)">{{'load_more_nodes'| i18nString}}<i  ng-if="batchLoader.nextBatchLoading" class="fa fa-refresh fa-spin margin-left-5"></i> </span><span class="batchLoadBtn marginLeft10" ng-if="node.nodeBatch.endIndex < node.nodes.length" ng-class="{'pointer-none':batchLoader.loadToRootNode}" ng-click="updateTreeBatch('rootNode',node)">{{'reset'| i18nString}}<i  ng-if="batchLoader.loadToRootNode" class="fa fa-refresh fa-spin margin-left-5"></i> </span></li>
+                </ol>
+                <!--data-scroll-container=".ontologyContainer"-->
+            </script>
+
+
+            <div class="row backgroundGrey"  id="dragbar">
+                <div class="termSearch">
+                    <input id="termsearchid" focus-it tabindex="1" type="text" ng-keyup="highlightTermText($event)" class="form-control" ng-model="pattern" placeholder="{{'search_term'| i18nString}}">
+                    <span class="searchTxtCount">{{searchTextInfo}}</span>
+    <i class="fa btx-dropdown-up prevSearch" ng-show="(pattern && pattern.trim().length) && matchedTerms.length > 1" ng-class="{'disabled': currentNodeNum <= 0}" ng-click="prevSearch()"></i>
+    <i class="fa btx-dropdown-down nextSearch" ng-show="(pattern && pattern.trim().length) && matchedTerms.length > 1" ng-class="{'disabled': currentNodeNum >= searchDataTemp.length - 1}" ng-click="nextSearch()"></i>
+                <i class="btx-search searchicon" ng-show="!(pattern && pattern.trim().length)"></i>
+                <i class="btx-search clearsearch" ng-click="clearSearch()" ng-show="(pattern && pattern.trim().length)"></i>
+                </div>
+                <div ng-if="isKg.loading" class="loading-tree">
+                    Loading
+                </div>
+
+                <div ng-show="!isKg.loading" class="col-sm-12 noPadding ontologyContainer clt" dynamic-height dynaoffset="-105" height-property="height" perfect-scroll>
+                    <div ui-tree="treeOptions" id="tree-root" data-drag-delay="200" data-empty-placeholder-enabled=true data-dropzone-enabled=true>
+                        <ol ui-tree-nodes ng-model="data" class="noBorder marginleftn20">
+                            <li ng-repeat="node in data" label="{{node.label}}" class="ontologyuitreenode noPadding" ng-class="{'noBorder': $index == 0, 'noBorderBottom':node.nodes.length,'disablesNodeLevelEdit':node.editLocked}"
+                               nodeID="{{node.nodeId}}"  nodeLabel="{{node.label}}" ui-tree-node data-expand-on-hover="true" data-scroll-container=".ontologyContainer" data-collapsed="node.defaultCollapse" ng-if="!collapsed"
+                                 ng-include="'nodes_renderer.html'"></li>
+                        </ol>
+                        <!--data-scroll-container=".ontologyContainer"-->
+                    </div>
+                    <div class="onenodesuggestion" ng-if="!data[0].nodes.length || !showNodeSuggestions">
+                        <div class="suggestionheader"><h4>{{'knowledge_graph'| i18nString}}</h4></div>
+                        <p class="description ">{{'enable_kg'| i18nString}}
+                           <!-- <a href="" class="video"><i class="fa  fa-play-circle"></i>See video</a>-->
+                        </p>
+                        <p class="description" ng-if="isFromKora">{{'enable_semantics'| i18nString}}
+                        </p>
+                         <div class="tree-node ontologytreenode homeNode">
+
+                    <div class="tree-node-content">
+                       <!--<span class="pull-left tree-handle dragTerm">
+            <span class="">
+                <i class="fa  btx-delete-1-o btnDelete"></i>
+                </span>
+                        </span>-->
+                        <span class="termInfo" data-drag-delay="500">
+                        <div class="nodeNameInput textEllipsis" placeholder="{{'add_node'| i18nString}}" type="text" ></div>
+                        </span>
+                        <span class="termOptions">
+                
+            <span class="btn-xs plus" data-nodrag  style="margin-right: 8px;"><i
+        class="btx-add"></i></span>
+                        
+                        <span class="btn-xs cog" data-nodrag style="margin-right: 8px;"><i
+        class="btx-settings fa-cog"></i></span>
+                        <span class="btn-xs  float" data-nodrag style="margin-right: 8px;"><i
+        class="btx-carrot-down"></i></span>
+         <span class="btn-xs delete" data-nodrag  style="margin-right: 8px;"><i
+        class="btx-delete-1 btnDelete"></i></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="helppointers">
+                    <span class="collapsExpand">
+                        <hr><span class="step">1</span>
+                    </span>
+                    <span class="settings"><hr><span class="step">2</span></span>
+                    <span class="plus"><hr><span class="step">3</span></span>
+                    <span class="delete"><hr><span class="step">4</span></span>
+                </div>
+                <div class="optionhelp">
+                    <div class="helprow">
+                    <span class="step">1</span><span class="stepdesc">{{'expand_collapse'| i18nString}}</span>
+                    </div>
+                    <div class="helprow">
+                    <span class="step">2</span><span class="stepdesc">{{'modify_term'| i18nString}}</span>
+                    </div>
+                    <div class="helprow">
+                    <span class="step">3</span><span class="stepdesc">{{'add_term'| i18nString}}</span>
+                    </div>
+                    <div class="helprow">
+                    <span class="step">4</span><span class="stepdesc">{{'delete_term'| i18nString}}</span>
+                    </div>
+                </div>
+                <div class="learnmore"><a href="https://developer.kore.ai/docs/bots/bot-builder/defining-bot-tasks/knowledge-tasks/" target="_blank">{{'learn_more'| i18nString}}</a><span ng-click="closeNodeSuggestions()" class="closebtn"><i class="fa fa-close"></i>{{'close'| i18nString}}</span></div>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8 noPadding mainContainer overflow_hidden {{parentCb.selector}}" ng-class="{'kora-faq-on': kgGraph.offClass && isFromKora, 'kora-faq-off': !kgGraph.offClass && isFromKora}" dynamic-height dynaoffset="(parentCb && (parentCb.selector==='storyboard'))?-220:-56" height-property="height">
+            <div class="minWidth full-height">
+
+            <div class="breadcrumbcontainer" id="breadcrumbcontainer" ng-if="!(parentCb && (parentCb.selector==='storyboard'))">
+                <span class='cursor-pointer' ng-if="isFromKora" ng-click='kgGraph.offClass = !kgGraph.offClass'>
+                    <img ng-src="{{menuIcon}}" class="menuIcon">
+                </span>
+                <span ng-repeat="bcdata in breadCrumbData"><span class="arrow" ng-hide="$index == 0">></span><span ng-class="{'cursor-pointer':(!bcdata.class && bcdata.nodeId)}"
+                    class="{{bcdata.class}}" ng-click="!bcdata.class && bcdata.nodeId && getQASForThisTerm(bcdata.scope, true)">{{bcdata.nodeLabel | replaceHtmlString}}</span></span>
+            </div>
+
+
+            <!--Starting loader-->
+            <div class="col-xs-12 noBorderTop" ng-if="!faqsLoaded && faqsFromNode">
+                <div class="log-item">
+                    <div class="loaderAlert">
+                        <div class="alert alert-warning alert-xs text-center" role="alert">
+                            <i class="fa-spin fa fa-circle-o-notch"></i> {{'loading_q_a'| i18nString}}
+                        </div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                </div>
+            </div>
+            <!--End of Loader-->
+
+            <div class="header col-xs-12" ng-if="!(parentCb && (parentCb.selector==='storyboard'))" ng-show="showFAQs && faqsLoaded && (ontology.qas.length > 0 || selectedFilter.val == 'faqs' || selectedFilter.val == 'tasks' || checkFromSearch())">
+                <div class="col-xs-12 noPadding">
+                    <span class="questionSearch pull-left col-xs-6 noPadding">
+                        <i ng-if='!faqSearch.faqSearchQuery' class="searchIcon btx-search"></i>
+                        <i ng-if='faqSearch.faqSearchQuery' ng-click='searchFAQ()' class="searchIcon fa fa-close"></i>
+                        <input focus-it tabindex="1" type="text" ng-keyup="searchFAQ($event)" class="form-control" ng-model="faqSearch.faqSearchQuery" id='searchFAQTerm' placeholder="{{'search_faq'| i18nString}}">
+                    </span>
+                    <span class="pull-right qnaSearch col-xs-6 noPadding">
+                        <button class="btn borderBtn pull-right btn-height" ng-click="showOntologyQAForm()">{{'add_intent'| i18nString}}</button>
+                        <button class="btn borderBtn pull-right btn-height" ng-click="showKgExtractSlider()">{{'add_from_extract'| i18nString}}</button>
+                        <span class="includeExcludeIcons pull-right">
+                            <span class="eiicons includechilds selected" data-popover-trigger="mouseenter" popover-placement="bottom" popover="{{'include_q&a'| i18nString}}" ng-click="includeChildTermsQA()">
+                                <!-- <img ng-src="{{icIcon}}"/> -->
+                                <i class="btx-union"></i>
+                            </span>
+                            <span class="eiicons excludechilds" data-popover-trigger="mouseenter" popover-placement="bottom" popover="{{'exclude_q&a'| i18nString}}" ng-click="excludeChildTermsQA()">
+                                <!-- <img ng-src="{{ecIcon}}"/> -->
+                                <i class="btx-un-union"></i>
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+
+             <!-- NO question div start -->
+            <div class="col-xs-12 noQuestionsContainer"  perfect-scroll dynamic-height dynaoffset="-140" ng-show="faqsLoaded && !ontology.qas.length && selectedFilter.val == 'all'">
+                <!-- <div class="noQuestionsImage"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div> -->
+                <!-- <div class="noQuestionsContent" ng-if="!checkFromSearch()">
+                    <div class="header">{{'no_intents'| i18nString}}</div>
+                    <div class="info">
+                        {{'add_faq'| i18nString}} 
+                        <span ng-hide="totalFaqCount"><br>Import from a file or add manually.</span> 
+                    </div>
+                </div> -->
+                <div class="emptyStateContainer"  ng-if="!checkFromSearch()">
+                    <div class="emptyState">
+                        <div class="emptyImage">
+                            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                        </div>  
+                        <span class="mainTitle" >{{'no_intents'| i18nString}}</span>
+                        <div class="emptyStateDesc"> {{'add_faq'| i18nString}} </div>
+                        <!-- <div class="generateBtn">
+                            <button class="btn btnSolidBlue" >Add</button>
+                            <button class="btn" target="_blank" >learn more</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="noQuestionsContent" ng-if="checkFromSearch()">
+                    <div class="header">{{'no_results'| i18nString}}</div>
+                </div>
+                
+                <div class="noQuestionsBtn" ng-if="!checkFromSearch()">
+                    <button class="btn btn-xs btn-primary btn_overflow" title="{{'add_faqs'| i18nString}}" ng-click="showOntologyQAForm()">
+                        {{'add_faqs'| i18nString}} 
+                    </button>
+                    <button class="btn_overflow importFaq" title="{{'import_faqs'| i18nString}}" ng-show="(!ontology.selectedTerm.parent || !ontology.selectedTerm.parent.length) && showBulkImport" ng-click="importModal.openModal()">
+                        {{'import_faqs'| i18nString}} 
+                    </button>                    
+<!--                     <button class="btn btn-primary" ng-click="importModal.openModal()">
+                        Bulk Import
+                    </button> -->
+                    <button class="btn_overflow importFaq" title="{{'add_from_extract'| i18nString}}" ng-click="showKgExtractSlider()">
+                        {{'add_from_extract'| i18nString}} 
+                    </button>
+                  <!---- <button class="btn btn-xs btn-primary btn_overflow" title="{{'add_qa'| i18nString}}" ng-click="showOntologyQAForm()">
+                        {{'add_qa'| i18nString}} 
+                    </button>
+                    <button class="btn btn-xs btn-primary btn_overflow" title="{{'add_task'| i18nString}}" ng-click="showOntologyQAForm('tasks')">
+                        {{'add_task'| i18nString}}
+                    </button> -->
+                </div>
+            </div>
+            <!-- NO Questions div end -->
+            <!--<div class="header col-xs-12" ng-show="showBTS">
+                <div class="col-xs-10 lineHeight53">
+                    <span class="lineHeight30 settingsText">Settings</span>
+                    <span class="error-color errorspan" ng-show="ontology.selectedTerm.saveFail">Failed to save term. try again</span>
+                </div>
+
+
+                <div class="col-xs-2 lineHeight53">
+                    
+                    <button class="btn btn-xs btn-primary pull-right saveBTN" ng-disabled="saveInProgress" ng-click="saveTermSettings()">
+                        <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{(saveInProgress)?'Saving...':'Save'}}
+                        </button>
+                </div>
+
+            </div>-->
+            <div class="ui-widget-header tileParent" ng-show="false">
+                <div class="child1">
+                    <div class="child2">
+                        <div class="child3">
+                            <span class="pull-right countercircle">4</span>
+                            <span class="helperText">
+                                {{'q&a_example'| i18nString}} </span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="body clear-fix noPaddingRight" ng-class="{'termLocked': isTermLocked}" ng-if="showBTS">
+                <bot-ontology-term-settings boc="cb" is-term-disabled="isTermDisabled" is-term-locked="isTermLocked" level-one-node="clickedTermParent" save-in-progress="forms.saveInProgress" term-data="ontology.selectedTerm" knowledge-task="knowledgeTask" navigate-from="synonyms"></bot-ontology-term-settings>
+            </div> -->
+            <!-- <div class="body clear-fix qaformbody" ng-if="showQAForm">
+             <bot-ontology-qa  ng-if="showQAForm && ontologyfaqsStats.editIndex == -1" level-one-node="clickedTermParent" path-tags="faqTagsPath" boc="cb" node-id="activeNodeId" term-path="breadCrumbData" node-label="activeNodeLabel" demo-templates="demoTemplates" kt="knowledgeTask" total-faqs="ontology.qas" callback="callback"
+                    path="faqstats.path" faq-search-term="{{faqSearch.faqSearchQuery}}" select-type="selectedFilter.val" navigate-from="{{navigate.from}}"></bot-ontology-qa>
+                <bot-ontology-qa boc="cb" ng-if="ontologyfaqsStats.editIndex !== -1" level-one-node="clickedTermParent" path-tags="faqEditTagsPath" node-id="updatedQA.parent" faq-search-term="{{faqSearch.faqSearchQuery}}" node-label="activeNodeLabel" demo-templates="demoTemplates" term-path="breadCrumbData" kt="knowledgeTask"  total-faqs="ontology.qas" callback="callback"
+            faq-data="updatedQA" select-type="selectedFilter.val" navigate-from="{{navigate.from}}"></bot-ontology-qa>
+            </div> -->
+            <div class="body clear-fix" ng-if="showFAQs" >
+                <div class="panel-table col-xs-12 BTtoolTip" ng-if="!(!faqsLoaded && faqsFromNode)" ng-show="(ontology.qas.length > 0 || selectedFilter.val == 'faqs' || selectedFilter.val == 'tasks')">
+                    <div class="panel-table-header">
+                        <div class="row checkboxWrap">
+                            <div class="col-xs-1 paddingLeft15 noMargin checkbox checkbox-primary">
+                                <input class="styled" ng-model="ontology.allFAQsSelected" ng-change="toggleFAQSelection()" type="checkbox" name="allFAQs"
+                                    id="allFAQs">
+                                <label for="allFAQs"></label>
+                            </div>
+                            <div class="col-xs-4 dropdown cursor-pointer p-0">
+                                <span class='dropdown-toggle' data-toggle='dropdown'>{{'constants.flowtasks_intent'| i18nString}}<i class='fa btx-dropdown-down'></i></span>
+                                <ul class='dropdown-menu'>
+                                    <li ng-click='changeIntentFilter(ele)' ng-repeat='ele in intentFilter'>
+                                        <i class='btx-check' ng-class="{'visible': ele.state, 'no-visible': !ele.state}"></i>
+                                        {{ele.name}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-4 p-0">{{'bot_response'| i18nString}}</div>
+                            <div class="col-xs-2 leaftermheader p-0">{{'path'| i18nString}}</div>
+                            <div class="col-xs-1 delete-button cursor-pointer p-0" data-toggle='modal' data-target='#bulkDelete' ng-show='isFaqChecked()'>{{'delete_selected'| i18nString}}</div>
+                        </div>
+                    </div>
+                    <!-- <div ng-if='ontology.qas.length === 0 && !(!faqsLoaded && faqsFromNode)' class='no-intents-message'>
+                        <div class="noQuestionsImage">
+                            <img ng-src="{{iconContextPath}}/empty-illustration.png" />
+                        </div>
+                        <div class="noQuestionsContent">
+                            <div class="header">{{'no_intents_added'| i18nString}}</div>
+                        </div>
+                    </div> -->
+                    <div class="emptyStateContainer"  ng-if='ontology.qas.length === 0 && !(!faqsLoaded && faqsFromNode)'>
+                        <div class="emptyState">
+                            <div class="emptyImage">
+                                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                            </div>  
+                            <span class="mainTitle">{{'no_intents_added'| i18nString}}</span>
+                            <!-- <div class="emptyStateDesc">Description</div>
+                            <div class="generateBtn">
+                                <button class="btn btnSolidBlue" >Add</button>
+                                <button class="btn" target="_blank" >learn more</button>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="panel-table-body faqcollection faqsbody panelTableBody" id='faqsCollectectionBody' perfect-scroll dynamic-height dynaoffset="dyn.offset">
+                        <div class="row actionTask faqrow checkboxWrap" faqid="{{qa._id}}" ng-class="{'disableRow' : (dragInProgress && qa.selected), 'faqselected':qa.selected, 'fullrow': qa.fullView}" ng-repeat="qa in ontology.qas">
+                            <div class="col-xs-1 noMargin checkbox checkbox-primary faqCheckBox">
+                                <input ng-click="$event.stopPropagation();$event.stopImmediatePropagation()" class="styled" ng-model="qa.selected" type="checkbox" name="{{qa._id}}" id="{{qa._id}}">
+                                <label ng-click="$event.stopPropagation();$event.stopImmediatePropagation()" for="{{qa._id}}"></label>
+                                <i ng-show="qa.faqStatus === false" class="btx-warning tooltip-hover w-auto-tooltip" tooltip-placement="bottom" tooltip="Disabled"></i>
+                            </div>
+                            
+                            <div class="col-xs-4 noPaddinSides questiontext" ng-class="{'cursor-pointer':!qa.faqLinkedTo}">
+                                <!-- <span class="tooltip-custom alert-icon" ng-show="!qa.faqStatus">
+                                    <i class="btx-warning"></i>
+                                    <span class="tooltiptextalert disableTooltip" ng-click="$event.stopPropagation()">
+                                        Disabled
+                                    </span>
+                                </span> -->
+                                <div class='ellipsisview' ng-click='qa.fullView = !qa.fullView' ng-show="!qa.fullView">
+                                    {{qa.questionPayload.question | shortenEllipsisString}} 
+                                    <a class='ovalcountcircle' ng-show='qa.subQuestions.length != 0 && !checkFromSearch()' >
+                                        +{{qa.subQuestions.length}}
+                                    </a>
+                                </div>
+                                <span class="inlineTags" ng-show="!qa.fullView" ng-repeat="tag in qa.questionPayload.tagsPayload">
+                                    {{tag.tag | replaceHtmlString}}
+                                    <span class="{{tag.tagUsage}}">
+                                        <img ng-if="tag.tagUsage === 'mandatory'" ng-src="{{iconsTag.mandatory}}"/>
+                                        <img ng-if="tag.tagUsage === 'organizer'" ng-src="{{iconsTag.organizer}}"/>
+                                    </span>
+                                </span>
+                                <div class='ellipsisview' ng-click='qa.fullView = !qa.fullView' ng-show="qa.fullView"> 
+                                    {{qa.questionPayload.question | replaceHtmlString}}
+                                </div>
+                                <span class="inlineTags" ng-show="qa.fullView" ng-repeat="tag in qa.questionPayload.tagsPayload">
+                                    {{tag.tag | replaceHtmlString}}
+                                    <span class="{{tag.tagUsage}}">
+                                        <img ng-if="tag.tagUsage === 'mandatory'" ng-src="{{iconsTag.mandatory}}"/>
+                                        <img ng-if="tag.tagUsage === 'organizer'" ng-src="{{iconsTag.organizer}}"/>
+                                    </span>
+                                </span>
+                                <div ng-show="checkFromSearch() || qa.fullView" ng-repeat="subqa in qa.subQuestions"> 
+                                    <div class="expanDivPath">
+                                        <div class="fullview">{{subqa.question | replaceHtmlString}} </div>
+                                        <div class="inlineTags" ng-repeat="tag in subqa.tagsPayload">
+                                            {{tag.tag | replaceHtmlString}}
+                                            <span class="{{tag.tagUsage}}">
+                                                <img ng-if="tag.tagUsage === 'mandatory'" ng-src="{{iconsTag.mandatory}}"/>
+                                                <img ng-if="tag.tagUsage === 'organizer'" ng-src="{{iconsTag.organizer}}"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alternate-faq-wrap" ng-class="{'noEditAlternateQuestion':qa.faqLinkedTo}" ng-show="!qa.faqLinkedTo">
+                                    <span class="alternate-faq" ng-click="navigate.from='faq';$event.stopPropagation();ontologyfaqsStats.editIndex = $index;openEditFAQ($index, qa, this)">
+                                        <i class="btx-add" aria-hidden="true"></i>
+                                        {{'add_alternate_faq'| i18nString}}
+                                    </span>
+                                    <span class="alternate-faq leftPos" ng-click="navigate.from='synonyms';$event.stopPropagation();openSynonyms(this, qa)">
+                                        <i class="btx-add" aria-hidden="true"></i>
+                                        {{'add_synonyms_label'| i18nString}}
+                                    </span>
+                                </div>
+                                <div>
+                                <div class="linkedTag" ng-show="qa.faqLinkedTo">
+                                    <span class="linkedIcon btx-link"></span><span class="linkedValue">{{'linked_Label'| i18nString}}</span>
+                                </div>
+                                </div>
+                            </div>
+
+                            <!-- BOT RESPONSE START  -->
+                            
+                            <div class="col-xs-4 noPaddinSides responsetext positionRelative" ng-class="{'heightInherit': qa.fullView,'cursor-pointer':!qa.faqLinkedTo}">
+                                <div class="displayBlock ellipsisview scriptMessage withKGDialogTask" ng-show="qa.responseType=='dialog' && qa.dialogId"> 
+                                    <span class="runTaskAsKg ellipsisview" >{{getDialogNameByRefId(qa.dialogId)}}</span> 
+                                    <span class="taskResIcon btx-bot-tasks"></span>
+                                </div>
+                                <div class="displayBlock ellipsisview scriptMessage noTask" ng-show="qa.responseType=='dialog' && qa.dialogId==''"> 
+                                    <span class=" ellipsisview paddingLeft10">
+                                        {{'linked_task'| i18nString}} 
+                                    </span>
+                                    <span class="jsIcon">
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                    </span>
+                                </div>
+                                <div class="ellipsisview" ng-click='qa.fullView = !qa.fullView' ng-show="!checkFromSearch() && !qa.fullView && qa.answerPayload[0].type == 'basic'" >
+                                    {{qa.answerPayload[0].text  | shortenEllipsisString}}
+                                    <a class='ovalcountcircle' ng-show='qa.subAnswers.length'>
+                                        +{{qa.subAnswers.length}}
+                                    </a>
+                                </div>
+                                <div class="scriptMessage" ng-click='qa.fullView = !qa.fullView' ng-show="!checkFromSearch() && !qa.fullView && qa.answerPayload[0].type == 'uxmap'">
+                                    <span class="jsCount" ng-show="qa.subAnswers.length">+{{qa.subAnswers.length}}</span>
+                                    <span class="jsMessage">{{'js_msg'| i18nString}}</span>
+                                    <span class="jsIcon"><i class="fa fa-code"></i></span>
+                                </div>
+                                <div class="fullview" ng-click='qa.fullView = !qa.fullView' ng-show="(qa.fullView || checkFromSearch()) && qa.answerPayload[0].type == 'basic'"> 
+                                    {{qa.answerPayload[0].text | replaceHtmlString}} 
+                                </div>
+                                <div class="scriptMessage" ng-click='qa.fullView = !qa.fullView' ng-show="qa.answerPayload[0].type == 'uxmap' && (qa.fullView || checkFromSearch())">
+                                    <span class="jsCount hide">
+                                        {{getJSCount(qa)}}
+                                    </span>
+                                    <span class="jsMessage">
+                                        {{'js_msg'| i18nString}}
+                                    </span>
+                                    <span class="jsIcon">
+                                        <i class="fa fa-code"></i>
+                                    </span>
+                                </div>
+                                <div class="fullview" ng-show="(qa.fullView || checkFromSearch()) && subAns[0].type == 'basic'"
+                                    ng-repeat="subAns in qa.subAnswers track by $index"> 
+                                    {{subAns[0].text | replaceHtmlString}}
+                                </div>
+                                <div class="scriptMessage" ng-show="(qa.fullView || checkFromSearch()) && subAns[0].type == 'uxmap'" ng-repeat="subAns in qa.subAnswers track by $index">
+                                    <span class="jsCount hide">{{getJSCount(qa)}}</span>
+                                    <span class="jsMessage">{{'js_msg'| i18nString}}</span>
+                                    <span class="jsIcon"><i class="fa fa-code"></i></span>
+                                </div>
+
+                                <div class="alternate-faq" ng-show="!qa.faqLinkedTo" ng-class="{'noEditAlternateQuestion':qa.faqLinkedTo}" ng-click="navigate.from='response';$event.stopPropagation();ontologyfaqsStats.editIndex = $index;openEditFAQ($index, qa, this)">
+                                    <i class="btx-add" aria-hidden="true"></i>
+                                    {{'add_alternate_res'| i18nString}}
+                                </div>
+                            </div>
+
+                            <!-- BOT RESPONSE END -->
+
+                            <div class="cursor-pointer col-xs-2 noPaddinSides leaftermdata" ng-if="!(parentCb && (parentCb.selector==='storyboard'))" data-popover-trigger="mouseenter" popover-placement="left" popover="{{getFAQPath(qa.parent) | replaceHtmlString}}">{{(getTermLabelByID(qa.parent) | replaceHtmlString) || (qa.leafterm | replaceHtmlString)}}</div>
+                            <div class="cursor-pointer col-xs-2 noPaddinSides leaftermdata" ng-if="(parentCb && (parentCb.selector==='storyboard'))" data-popover-trigger="mouseenter" popover-placement="left" popover="{{getFAQPath(qa.parent) | replaceHtmlString}}">{{getFAQPath(qa.parent) | replaceHtmlString}}</div>
+                            <div class="cursor-pointer col-xs-1 faqoptions noPadding" ng-class="{'disablesNodeLevelEdit':getThisQaTermLockstate(qa) && (qa.parent!==data[0].nodeId)}"><span class="editfaq" ng-click="navigate.from='';$event.stopPropagation();ontologyfaqsStats.editIndex = $index;openEditFAQ($index, qa, this)" ng-class="{'nodeLockEditException':qa.editLocked}"><i ng-class="{'btx-pencil btx-pencil':isEditable(),'btx-password fa-eye':!isEditable()}"></i></span>
+                                <span class="deletefaq"  ng-click="$event.stopPropagation();removeFAQByID(qa)"><i class="fa btx-delete-1 codeRed"></i></span>
+                            </div>
+                            <!--<div class="clear-fix" ng-if="ontologyfaqsStats.editIndex === $index">
+                                <bot-ontology-qa boc="cb" path-tags="faqEditTagsPath" node-id="qa.parent" node-label="activeNodeLabel" ktid="knowledgeTask._id" faq-data="qa"></bot-ontology-qa>
+                            </div>-->
+                        </div>
+                        <div class='text-center marginB20T10 paddingBottom20' ng-if='faqPaginationFlag'>
+                            <span>{{'loading_more'| i18nString}}</span><br/><i class='fa fa-circle-o-notch fa-spin-fast marginRight10'></i>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- NO question div start when search and toggle parent and child -->
+<!--             <div class="col-xs-12 noQuestionsContainer" ng-show="!showQAForm && faqsLoaded && !ontology.qas.length && !showBTS && !faqsFromNode && selectedFilter == 'all'">
+                <div class="noQuestionsContent">
+                    <div class="header">No questions found</div>
+                    <div class="info">
+                        Looks like there are no questions added
+                    </div>
+                </div>
+            </div> -->
+            <!-- NO Questions div end when search and toggle parent and child -->
+
+            </div>
+            <div class="col-xs-12 noBorderTop fetchingFaqs linkingFaq" ng-show="isLoading">
+                <div class="log-item">
+                    <div class="loaderAlert">
+                        <div class="alert alert-xs text-center" role="alert">
+                            <i class="fa-spin fa fa-circle-o-notch"></i> {{'Switching_label'| i18nString}}
+                        </div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                </div>
+    </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="quicktip" ng-show="showquicktip && ontology.qas.length"><span class="icon"><i class="btx-bulb" ng-src="{{bulbIcon}}"></i></span><span class="text">{{'quick_tip'| i18nString}}</span><span class="close"><i ng-click="closeQuickTip()" class="fa fa-close"></i></span></div>
+</div>
+
+<bot-ontology-qa-import elem="ontology_qa_import" callback="cb" import-qa-modal="importModal" knowledge-task="knowledgeTask"></bot-ontology-qa-import>
+             <bot-modal-slider class="ontologyClassesModal" id="ontologyclasses">
+<bot-ontology-classes callback="cb" modal-slider="modalSlider" ontology-class-modal="cb.ontologyClassModal" knowledge-task="knowledgeTask"></bot-ontology-classes>
+             </bot-modal-slider>
+
+<bot-modal-slider class='kgExtractModal' id='kgExtractModalSlider'>
+    <div class="modalSliderContainer width900">
+        <div class="modalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                <i  class="btx-close"  ng-if='isKgExtractHist' ng-click="closeKgExtractModal()"></i>
+                <i  class="backArrowSynonymsModal rightArrow btx-arrow-back"  ng-if='!isKgExtractHist' ng-click="goToKgExtractHist()"></i><span class="sliderTitle">{{openedKgName || 'Extracts'}}</span>
+            </h4>
+        </div>
+        <div class="modalBody width900">
+            <div ng-if='isKgExtractHist' class="isKgExtractHist" perfect-scroll dynamic-height dynaoffset="-60" height-property="height">
+                <p class="selectText"  ng-if='knowledgeExtractList.length !== 0'>{{'select_extraction'| i18nString}}</p>
+                <div ng-repeat='kgListVal in knowledgeExtractList track by $index' class='col-xs-3 kgExtractTilesContainer' ng-class="{'spinLoader':kgListVal.status==='inProgress'}" ng-click='openKgExtractTwo(kgListVal)'>
+                    <!-- in the ng-class above when service implemented 'newKgAdded': kgListVal.fileId === newFileId -->
+                    <div class="kgExtractTiles">
+                        <div ng-if='kgListVal.fileName' class="sourceType {{kgListVal.fileName | extensionFilter}}">{{kgListVal.fileName | extensionFilter}}</div>
+                        <div ng-if='kgListVal.fileUrl' class="sourceType {{kgListVal.fileUrl | extensionFilter}}" >{{kgListVal.fileUrl | extensionFilter}}</div>
+                        <img ng-src="{{trashIcon}}" class="trashIcon" ng-click='delExtraction(kgListVal, $event)'>
+                        <div class="sourceName" title='{{kgListVal.name}}'>{{kgListVal.name || "-NA-"}} </div>
+                        <div ng-if='kgListVal.status === "failed"' class="failedDiv">
+                            <img ng-src='{{iconContextPath}}/exclamationCircleRed.png' class="failedIcon">
+                            <p>{{'failed'| i18nString}}</p>
+                        </div>
+                        <div class="quetionsCount"  ng-if='kgListVal.status!=="inProgress" && kgListVal.status !== "failed"'>
+                            <span class="count">{{kgListVal.qnaCount}}</span>{{'questions'| i18nString}} 
+                        </div>
+                        <div class="koreSpin" ng-if='kgListVal.status==="inProgress"'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    </div>
+                </div>
+                <div ng-if='knowledgeExtractList.length === 0'>
+                  <!-- <div class="col-xs-12 noQuestionsContainer text-center">
+                     <div class="noQuestionsImage"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+                     <div class="noQuestionsContent" ng-if="!checkFromSearch()">
+                        <div class="header">{{'no_extraction'| i18nString}}</div>
+                        <div class="info">
+                            {{'no_extraction_added'| i18nString}}
+                        </div>
+                     </div>
+                  </div> -->
+                  <div class="emptyStateContainer">
+                    <div class="emptyState">
+                        <div class="emptyImage">
+                            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                        </div>  
+                        <span class="mainTitle">{{'no_extraction'| i18nString}}</span>
+                        <div class="emptyStateDesc">{{'no_extraction_added'| i18nString}}</div>
+                        <!-- <div class="generateBtn">
+                            <button class="btn btnSolidBlue" >Add</button>
+                            <button class="btn" target="_blank" >learn more</button>
+                        </div> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div ng-show='!isKgExtractHist' class="isKgExtractHist">
+                <div class="col-xs-12  ontologyContainerDrag kg-onto-contain-drag noPadding"  ng-show="!loadingKnowledgeGraph">
+                   <div class='row noPadding'>
+                      <div class='col-xs-12 noPadding'>
+                         <div class='row headerFaq align-left'>
+                            <div class="childContainer col-xs-7">
+                               <ul class="nav nav-tabs" id="analyzeTabs">
+                                  <li class="active allQuestions" ng-click="updateCurrentTab('allQues')"><a data-toggle="tab">{{'all_questions'| i18nString}}</a></li>
+                                  <li ng-click="updateCurrentTab('addedQues')"><a data-toggle="tab">{{'added'| i18nString}}</a></li>
+                                  <li ng-click="updateCurrentTab('notAdded')"><a data-toggle="tab">{{'not_added'| i18nString}}</a></li>
+                               </ul>
+                            </div>
+                            <div class="col-xs-5 text-right">
+                                <textarea tabindex="1" class="synSearchInput onto-extract" type="text" ng-model="search.faq" ng-init="search.faq=''" ng-keydown='checkFaqSearchInp($event)' ng-keyup='shift.key = false'></textarea>
+                                <!-- <span class="fa fa-search searchJQSelector"></span> -->
+                                <span class='searchDiv'>
+                                    <span class="synSearch">
+                                        <span class="btx-search search-onto" ng-if='search.faq === ""'></span>
+                                        <span class="btx-close times-onto cursor-pointer" ng-if='search.faq !== ""' ng-click='search.faq=""'></span>
+                                    </span> 
+                                </span> 
+                            </div>
+                         </div>
+                         <div class="body faqcollection clear-fix">
+                            <div class="col-xs-12 noBorderTop" ng-show="loadingKnowledgeGraph">
+                               <div class="log-item">
+                                  <div class="loaderAlert">
+                                     <div class="alert alert-warning alert-xs text-center" role="alert">
+                                        <i class="fa-spin fa fa-circle-o-notch"></i> {{'fetching_data'| i18nString}}
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                            <div class="col-md-12 noPadding">
+                               <div class="panel panel-default panel-table BTtoolTip">
+                                  <div ng-show='isFaqEmpty' class='noFaqAvailable'>
+                                    <img ng-src="{{iconContextPath}}/emptyImgNew.svg"  class="emptyImg"/>
+                                    <p class="mainTitle">{{'no_faq_available'| i18nString}}</p>
+                                  </div>
+                                  <div class="panel-table-header" ng-hide='isFaqEmpty && faqsLoaded'>
+                                     <div class="row displayBlock checkboxWrap">
+                                        <div class="col-xs-1 noMargin checkbox checkbox-primary">
+                                           <input class="styled" ng-model="selectKgCheck.all" type="checkbox" name="selectAllKg" id="selectAllKg">
+                                           <label ng-click="selectAllQna()" for="selectAllKg"></label>
+                                        </div>
+                                        <div class="col-xs-4 faq-head cursor-pointer">
+                                           <span class='ques-head'>{{'user_question'| i18nString}}</span>
+                                        </div>
+                                        <div class="col-xs-4 faq-head">{{'bot_response'| i18nString}}</div>
+                                        <div class='col-xs-2 faq-head'>{{'bot_status'| i18nString}}</div>
+                                        <div class='col-xs-1'></div>
+                                     </div>
+                                  </div>
+                                  <div class="panel-table-body kgQnaBody kgFaqScroll panelTableBody"  ng-hide="extraction.qas.length===0" perfect-scroll dynamic-height dynaoffset="-200"  id='FaqKgList'>
+                                     <div class="row actionTask faqrow checkboxWrap qaCountSel" faqid="{{qa._id}}" ng-class="{'disableRow' : (dragInProgress && qa.selected), 'faqselected':qa.selected, 'fullrow': qa.fullView}" ng-repeat="qa in extraction.qas"  ng-click="isRespEllipsisKgExtract($event, qa) && showFullResponse(qa)" ng-if='current.tag === "allQues" || current.tag === "addedQues" && !qa.status || current.tag === "notAdded" && qa.status'>
+                                        <div class="col-xs-1 noMargin checkbox checkbox-primary qaFinder" qa-id='{{qa._id}}'>
+                                           <input class="styled faqCheckBox" ng-model="qa.selected" type="checkbox" name="{{qa._id}}" id="{{qa._id}}">
+                                           <label for="{{qa._id}}"></label>
+                                        </div>
+                                        <div class="cursor-pointer col-xs-4 questiontext ovalcountcircleHide qaFinder" qa-id='{{qa._id}}'>
+                                           <span class="ellipsisview" ng-show="!qa.fullView" style="max-height:75px;" 
+                                              data-ng-bind-html="(qa.question | shortenEllipsisString)" data-ellipsis more-count="{{qa.question.length}}" ng-if="!checkFromSearch()"></span>
+                                           <span class="fullview" ng-show="qa.fullView || checkFromSearch()" data-ng-bind-html="(qa.question | nextLineFilter)"></span>
+                                        </div>
+                                        <div class="cursor-pointer col-xs-4 responsetext ovalcountcircleHide qaFinder" qa-id='{{qa._id}}'>
+                                           <span class="ellipsisview" ng-show="!checkFromSearch() && !qa.fullView"  data-ng-bind-html="(qa.answer | shortenEllipsisString)" data-ellipsis more-count="{{qa.answer.length}}" ng-if="!checkFromSearch()"></span>
+                                           <span class="fullview" ng-show="(qa.fullView || checkFromSearch())" data-ng-bind-html="(qa.answer | nextLineFilter)"></span>
+                                        </div>
+                                        <div class='col-xs-2 noPaddingLeft' ng-class="{'disable-kg-faq': qa.status}" ng-show='statusEnabled'>
+                                           <span ng-if='qa.status'>{{'not_added'| i18nString}}</span>
+                                           <span ng-if='!qa.status'>{{'added'| i18nString}}</span>
+                                        </div>
+                                        <div class="cursor-pointer col-xs-1 faqoptions noPadding qaFinder" qa-id='{{qa._id}}'>
+                                            <span class="editfaq" ng-click='editKgQnA(qa)' ng-show='qa.status'>
+                                                <i class="fa btx-pencil"></i>
+                                            </span>
+                                           <span class="deletefaq" ng-click='deleteKgFAQ(qa)' ng-show='qa.status'>
+                                                <i class="fa btx-delete-1 codeRed"></i>
+                                            </span>
+                                        </div>
+                                        <div class="col-xs-12 editQnAForm" edit-id='{{qa._id}}'>
+                                           <div class='form-group'>
+                                              <textarea type='text' ng-model='editQnA.ques' class='inputQues form-control'></textarea>
+                                           </div>
+                                           <div class='form-group'>
+                                              <textarea type='text' ng-model='editQnA.ans' class='inputAns form-control'></textarea>
+                                           </div>
+                                           <div class='row text-right form-group noPadding'>
+                                              <button class='btn btn-primary' ng-click='saveEditQnA(qa)' ng-disabled='editQnA.ques.length === 0 || editQnA.ans.length === 0'>Save</button>
+                                              <button class='btn btn-primary btn-cancel' ng-click='cancelEditQnA(qa)'>{{'cancel'| i18nString}}</button>
+                                           </div>
+                                        </div>
+                                     </div>
+                                     <div class='text-center' ng-show='isMoreAvailable && countFaqRow'>
+                                        {{'loading_more'| i18nString}} <br />
+                                        <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+                                     </div>
+                                  </div>
+<!--                                   <div class="col-xs-12 noQuestionsContainer text-center" ng-show="extraction.qas.length === 0">
+                                     <div class="noQuestionsImage"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+                                     <div class="noQuestionsContent" ng-if="!checkFromSearch()">
+                                        <div class="header">No questions added yet</div>
+                                        <div class="info">
+                                           Looks like there are no questions added yet.
+                                        </div>
+                                     </div>
+                                     <div class="noQuestionsContent" ng-if="checkFromSearch()">
+                                        <div class="header">No search results found</div>
+                                     </div>
+                                  </div> -->
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+        <div class="modalFooter" ng-if='!isKgExtractHist'>
+            <div class="col-xs-12">
+                <button class='btn btn-primary' ng-click='addQnAExtractToKnowledge()'>{{'add_label'| i18nString}}</button>
+                <button class='btn closeCancel' ng-click='closeKgExtractModal()'>{{'close'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+
+ 
+
+</bot-modal-slider>
+
+<div id="warningKgSynonymModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">{{'confirm_proceed'| i18nString}}</h4>
+              </div>
+              <div class="modal-body">
+                <p ng-show='!botSynonym.toggleValue'>{{'disable_settings'| i18nString}}</p>
+                <p ng-show="botSynonym.toggleValue">{{'enable_settings'| i18nString}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn" ng-click='proceedKgSynonyms()'>{{'proceed'| i18nString}}</button>
+                <button type="button" class="btn closeCancel" ng-click='closeKgSynonymModal()'>{{'cancel'| i18nString}}</button>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <bot-modal-slider class="ontologySynsModal utterance-model" id="manageTraits">
+        <div class="modalSliderContainer width900" ng-class="{'disablesYNEdit':!isEditable() ||  nlPermision !== 'FULL'}">
+            <div class="modalHeader">
+                <h4 class="modal-title marginBottom10" id="gridSystemModalLabel"><i  class="btx-close top20"  ng-click="closeManageTraits()"></i>{{'manage_traits'| i18nString}}</h4>
+                <span aria-hidden="true" class="searchNewActionsSpan" ng-hide="!cb.allTraits.length"> 
+                        <!-- <span  class="traitsSearchContainer">
+                                <input type="text" class="fsynSearchInput" ng-model="traitsCb.search" ng-keyup="traitsCb.traitSearch(traitsCb.search)" ng-minlength="1" placeholder="{{'search_for_traits'| i18nString}}" >
+                                <i class="searchIconGray btx-search" ng-show="traitsCb.search === ''" ></i>
+                                <i class="closeIconDark btx-close" ng-show="traitsCb.search!==''" ng-click="traitsCb.search='';traitsCb.traitSearch('')"></i>
+                        </span> -->
+                   
+                </span>
+            </div>
+            <div  class="modalBody kt-synManagement nosynContent" >
+                <button type="button" class="btn btnSolidBlue pull-right marginLeft10" ng-class="{'pointer-none': knowledgeDisplayMode === 'VIEW'}" ng-show="traitsCb.traitGroups.length" ng-click="traitsCb.createNewTraits()">{{'new_trait'| i18nString}}</button>
+                <div class="searchComponent" ng-show="traitsCb.traitGroups.length">
+                    <input type="text" class="fsynSearchInput" ng-model="traitsCb.search" ng-keyup="traitsCb.traitSearch(traitsCb.search)" ng-minlength="1" placeholder="{{'search_for_traits'| i18nString}}">
+                    <i class="btx-search" ng-show="traitsCb.search === ''"></i>
+                    <i class="btx-close" ng-show="traitsCb.search!==''" ng-click="traitsCb.search='';traitsCb.traitSearch('')"></i>
+                </div>
+                <bt-traits ng-if="openTraits" class="animationIfEnter btTraits KGTraits" call-back="traitsCb"></bt-traits>
+            </div>
+        </div>
+    </bot-modal-slider>
+<div class="modal fade bt_import_modal" id="deleteNodeOption" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel">
+    <div class="modal-dialog watch-out modal-md textareaModal" role="document">
+        <div class="modal-content">
+            <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'watch_out'| i18nString}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 noPadding">
+                    <div class="col-xs-12 form-group noPadding">
+                       <div class="helpContent">
+                        {{'term_delete_associated'| i18nString}} 
+                        </div>
+                    </div>
+                    <form name="deleteType">
+                      <div class="col-xs-12 radioDiv noPadding radioDiv-custom">
+                        <div>
+                          <label class="posREl">
+                            <input type="radio" ng-model="delete.type" value="all">
+                            <span class="opt-title">
+                                <div class="posAbs">{{'delete_term_label'| i18nString:({label:delTerm.label})}}</div>
+                            </span>   
+                          </label>
+                        </div>
+                        <div>
+                          <label class="posREl mb-0">
+                            <input type="radio" ng-model="delete.type" value="onlyTerm">
+                            <span class="opt-title">
+                                <div class="posAbs">{{'delete_rootterm'| i18nString:({label:delTerm.label})}}</div>
+                            </span> 
+                          </label>
+                        </div>
+                      </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer form-group">
+                <button type="button" class="kr-sg-button-primary btn_lg mr-10"  ng-click="watchOutCnfm()">{{'confirm'| i18nString}}</button>
+                <button type="button" class="kr-sg-button-secondary btn_lg" ng-click="watchOutCancl()"> {{'cancel'| i18nString}} </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<bot-modal-slider id="manageStopWords">
+    <div class="modalSliderContainer width700">
+
+<!--Header Starts Here -->
+    <div class="modalHeader">
+      <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="closeManageStopWordsModalSlider()"></i>{{'manage_stopwords'| i18nString}}</h4>
+
+    </div>
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+    <div class="modalBody stopWordsBody" perfect-scroll dynamic-height dynaoffset="-110" height-property="height"> 
+      <div class="searchComponent marginBottom15">
+        <input  tabindex="1" class="stopWordsSearchInput" type="text"  ng-keyup='activateWordSearch(searchWord.search)' ng-model="searchWord.search">
+        <i class="btx-search"></i>
+        <i class="btx-close displayNone"></i>
+    </div>
+        <div class="col-xs-12 wf-form " ng-if='!searchWord.search && !lodingStopWords' ng-class="{'freeze-blck': curBot.state === 'view'}">
+            <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder=" " use-strings="true" ng-model="mlthreshold.stopWords"></tags-input>
+        </div>
+        <div class="col-xs-12 wf-form " ng-if='searchWord.search && !lodingStopWords'>
+            <div class='searchWordsdiv'>
+                <span ng-repeat="word in fiteredwords = (mlthreshold.stopWords | filter:searchWord.search) track by $index" class='customWordtags' ng-class="{'freeze-blck': curBot.state === 'view'}">{{word}}
+                    <i ng-click="deleteStopWordInSearch(word)" class='fa btx-close marginLeft5'></i>
+                </span> 
+                <span ng-if="!fiteredwords.length">{{'no_words_found'| i18nString}}</span>
+            </div>
+        </div>
+        <div class="col-xs-12 wf-form text-center paddingTop20" ng-if='lodingStopWords'>
+            <div class='loadingWordsDiv'>
+                <span>{{'loading_stopwords'| i18nString}}</span>
+            </div>
+        </div>
+        <!-- <div class="col-xs-12" ng-if='searchWord.search=="" && !lodingStopWords'>
+          
+          
+        </div> -->
+    </div>
+    <!-- Body Ends Here -->
+    <div class="modalFooter stopWordsFooter" ng-if='searchWord.search=="" && !lodingStopWords'>
+        <button type="submit" class="btn" ng-click="editStopWords()" ng-class='{"disabled": curBot.state == "view"}'> {{'save'| i18nString}}</button>
+        <button type="reset" ng-click="closeManageStopWordsModalSlider()" class="btn closeCancel"> {{'cancel'| i18nString}} </button>
+        <span class="pull-right resetBtn pointer-hand" ng-click="resetDefaultStopWords()" ng-class='{"freeze-blck": curBot.state == "view"}'>
+            <i class="refreshIcon btx-return"></i>{{'reset_default'| i18nString}}
+        </span>
+    </div>
+    </div>
+</bot-modal-slider>
+<bot-modal-slider id="analysis-report">
+        <div class="" ng-class="{'width1120':openPath}">
+        <div class="modalSliderContainer width610" ng-class="{'floatRight':openPath}">
+    
+            <div class="modalHeader inspectModal">
+                <button class="viewOnly btn pull-right viewBtn noMarginRight" ng-show="knowledgeDisplayMode === 'VIEW'"><i class="btx-password"></i><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+                <h4 class="modal-title tableRow">
+                     <i class="btx-close"  ng-click="closeReport()"></i>
+                    <div class="miHeadBar">
+                        <p>{{'report'| i18nString}}</p>
+                    </div> 
+
+                </h4>                                
+                <div class="inspecting" ng-show="inspectStatus === 'inprogress'">
+                     <button class="pull-right btn inspectKg"><img ng-src="{{inspectingIcon}}"  ng-class="{'inspectingLoader':inspectStatus === 'inprogress'}"><span class="padding5">{{'inspecting_label'| i18nString}}</span></button>
+                </div>
+            </div>
+    
+            <div class="modalBody"  perfect-scroll dynamic-height dynaoffset="-60" height-property="height" ng-show="inspectStatus === 'success'"> 
+               <div class="loadingContainer" ng-show="reRunStatus === 'inprogress'"><span class="loadingSpan"><img ng-src="{{loadingIcon}}" class="loading"><p>{{'inspecting'| i18nString}}</p></span></div>
+                <div class="col-xs-12 empty-state" ng-if="issueList.length === 0 || !issueList">
+                   <span class="description">{{'no_data_found'| i18nString}}</span>
+               </div>
+               <div class="export-options-rerun" ng-show="inspectStatus === 'success'">
+                    <div class="dateRange">
+                       <i class="btx-calendar-1"></i>{{reportDetails.timestamp | date:'MM-dd-yyyy , hh:mm a'}}
+                    </div>
+                    <div class="reRun" ng-class="{'pointerEventsNone':disabledRerun}" ng-hide="inspectStatus === 'inprogress' || knowledgeDisplayMode === 'VIEW'" ng-click="reRun()">
+                        <i class="btx-return"></i>{{'re_run'| i18nString}}
+                    </div>
+                    <div class="exportOntology" ng-class="{'pointerEventsNone':disableExport}" ng-click="exportOntologyReport()">
+                        <i class="btx-export"></i>{{'export'| i18nString}}
+                    </div>
+               </div>
+               <div class="analysisMainContainer" ng-if="issueList.length">
+                   <div class="analysisContainer">
+                       <div class="leftContainer">
+                               <div id="donut" data-donut="{{resultData}}"> </div>
+                              <div class="stepLabel">
+                                <div class="countSteps">{{reportDetails.succcessSteps}}/{{reportDetails.total}}</div>
+                                <p class="clearedSteps">{{'checks_cleared'| i18nString}}</p>
+                            </div>
+                       </div>
+                       <div class="rightContainer">
+                                 <div class="label">
+                                     <p>{{'errors'| i18nString}}</p>
+                                     <span ng-bind="reportDetails.errors?reportDetails.errors:0"></span>
+                                 </div>
+                                 <div class="label">
+                                      <p>{{'warnings'| i18nString}}</p>
+                                      <span ng-bind="reportDetails.issues?reportDetails.issues:0"></span>
+                                 </div>
+                                 <div class="label">
+                                     <p>{{'suggestions'| i18nString}}</p>
+                                     <span ng-bind="reportDetails.suggestions?reportDetails.suggestions:0"></span>
+                                 </div>
+                       </div>
+                   </div>
+               </div>
+                <div class="hintDiv kg_inspect_error_protip width735" ng-show="reportDetails.heavy_nodes">
+                    <span class="icon"><i class="btx-bulb" ng-src="{{bulbIcon}}"></i></span>                         
+                             <span class="description">                      
+                                <ul>
+                                    <li> {{'kg_details'| i18nString:({dyn:reportDetails.heavyNodesCount, dyn1: reportDetails.inspectHeavyNodeMinQuestions})}}</li>
+                                    <li> {{'kg_report_details'| i18nString:({dyn:reportDetails.heavyNodeMinQuestions})}}</li>
+                                </ul>
+                            </span>   
+                </div>
+               <div class="col-xs-12 tableContainer"  ng-if="issueList.length">
+                   <table class="table">
+                        <tr class="heading">
+                            <th class="title">{{'check_points'| i18nString}}</th>
+                            <th class="type title">{{'bot_type'| i18nString}}</th>
+                            <th class="title">{{'bot_count'| i18nString}}</th>
+                        </tr>
+                    <tr class="panel-table-body" ng-class="{'read-only':issueDetails.details.length === 0}"  ng-click="openPathInfo($event,issueDetails
+                    )" ng-if="issueList.length" ng-repeat="issueDetails in issueList">
+                        <td class="description issue" ng-if="issueDetails.type === 'suggestion'">
+                            <p ng-bind="issueDetails.issue">
+                             </p><span ng-show="issueDetails.count === 10"><img ng-src="{{exclamationGray}}" class="infoIcon" tooltip="{{'utterances_limit_10'| i18nString}}" tooltip-placement="right"></span>
+                        </td>
+                         <td class="description issue" ng-if="issueDetails.type === 'warning'">
+                            <p ng-bind="issueDetails.issue">
+                             </p><span ng-show="issueDetails.count === 50"><img ng-src="{{exclamationGray}}" class="infoIcon" tooltip="{{'utterances_limit_50'| i18nString}}" tooltip-placement="right"></span>
+                        </td>
+                        <td class="description issue" ng-if="issueDetails.type === 'error'">
+                            <p ng-bind="issueDetails.issue"></p>
+                        </td>
+                        <td class="description type">
+                            <p ng-show="issueDetails.type ===  'error'" ng-class="{'error':issueDetails.type ===  'error'}">{{'error'| i18nString}}</p>
+                            <p ng-show="issueDetails.type === 'suggestion'">{{'suggestion'| i18nString}}</p>
+                            <p ng-show="issueDetails.type === 'warning'">{{'warning'| i18nString}}</p>
+                        </td>
+                         <td class="description count">
+                             <p ng-bind="issueDetails.count"></p>
+                        </td>
+                    </tr>
+                   
+               </table>
+               
+              
+            </div>
+    
+        </div>
+        <div class="modalBody"  height-property="height" ng-if="inspectStatus === 'inprogress'">
+            <img ng-src="{{analysisEmptyReport}}" class="emptyStateReport">
+        </div>
+    </div>
+        <div class="modalSliderContainer pathInfo width500" ng-show="openPath">
+             <div class="modalHeader pathInfoHeader inspectModal">
+                <h4 class="modal-title tableRow d-inline-block">
+                     <i class="btx-close" ng-click="closePathInfo()"></i>
+                    <span ng-bind="pathDetails.issue" class="textOverFlowEllipsis"></span>
+                </h4>
+                 
+         
+             </div>
+             <div class="modalBody pathModal" height-property="height" perfect-scroll dynamic-height dynaoffset="-100">
+                <div class="hintDiv">
+                    <span class="icon"><i class="btx-bulb" ng-src="{{bulbIcon}}"></i></span>
+                    <span class="description">
+                            <p class="noMargin" ng-bind="pathDetails.suggestion"></p>
+                    </span>
+                </div>
+               <!--  <div class="pathData"  ng-repeat="details in pathDetails.details" ng-if="pathDetails.issue === 'Questions that match multiple paths'">
+                    <div class="path" ng-if="details.path.length" ng-repeat = "(key,value) in details.path track by $index">
+                        <span class="pathTitle">Path{{$index + 1}} :
+                        </span>
+                        <span class="pathDetail" ng-repeat="path in value track by $index">
+                            <span class="pathValue">{{path}}</span>
+                            <span ng-if="$index < value.length - 1" class="symbol">></span>
+                        </span>
+                    </div>
+                    <div class="path" ng-if="details.better_path.length">
+                        <span class="pathTitle">Suggested Path :</span>
+                        <span class="pathDetail" ng-repeat="path in details.better_path track by $index">
+                            <span class="pathValue">{{path}}</span>
+                            <span ng-if="$index < details.better_path.length - 1" class="symbol">></span>
+                        </span>
+                    </div>
+                    <div class="pathQuestion" ng-show="details.question">
+                        <span class="pathTitle">Question :</span>
+                        <span class="pathValue">{{details.question}}</span>
+                    </div> 
+                    <div class="pathQuestion" ng-show="details.alternateQuestion.length > 1" ng-repeat="alternate in details.alternateQuestion track by $index">
+                        <span class="pathTitle">Alternate Question {{$index + 1}} :</span>
+                        <span class="pathValue">{{alternate}}</span>
+                    </div>
+                     <div class="pathQuestion" ng-show="details.alternateQuestion.length === 1">
+                        <span class="pathTitle">Alternate Question :</span>
+                        <span class="pathValue">{{details.alternateQuestion[0]}}</span>
+                    </div>
+                </div> -->
+                <div class="pathData row" ng-repeat="details in pathDetails.details">
+                           <div class="path col-xs-12 noPaddingLeft noPaddingRight" ng-class="{'noBottomBorder':pathDetails.issue === 'Paths without any questions'}" ng-if="details.path.length">
+                                 <span class="pathTitle col-xs-4 noPaddingLeft noPaddingRight">{{'current_path'| i18nString}} :
+                                </span>
+                                <span class="col-xs-8 noPaddingRight">
+                                <span class="pathDetail" ng-repeat="path in details.path track by $index">
+                                    <span class="pathValue">{{path}}</span>
+                                    <span ng-if="$index < details.path.length - 1 && !details.tags.length" class="symbol">></span>
+                                    <span ng-if="$index < details.path.length  && details.tags.length" class="symbol">></span>
+                                </span>
+                                <span class="pathDetail" ng-repeat="tag in details.tags track by $index">
+                                    <span class="pathValue boldNew">{{tag}}</span>
+                                    <span ng-if="$index < details.tags.length - 1" class="symbol">></span>
+                                </span>
+                              </span>
+                            </div>
+                            
+                            <div class="path col-xs-12 noPaddingLeft noPaddingRight" ng-if="details.matched_paths.length" ng-repeat = "(key,value) in details.matched_paths track by $index">
+                                <span class="pathTitle col-xs-4 noPaddingLeft noPaddingRight">{{'matched_patterns'| i18nString}}{{$index + 1}} :
+                                </span>
+                                <span class="col-xs-8 noPaddingRight">
+                                    <span class="pathDetail" ng-repeat="path in value track by $index">
+                                    <span class="pathValue">{{path}}</span>
+                                    <span ng-if="$index < value.length - 1" class="symbol">></span>
+                                    </span>
+                                </span>
+                                
+                            </div>
+                            
+                            <div class="path col-xs-12 noPaddingLeft noPaddingRight" ng-if="details.new_nodes.length && details.path.length">
+                                <span class="pathTitle col-xs-4 noPaddingLeft noPaddingRight">{{'suggested_pattern'| i18nString}} : </span>
+                                <span class="pathDetail col-xs-8 noPaddingRight">
+                                <span ng-init="parentIndex = $index" ng-repeat="path in details.path track by $index">
+                                    <span class="pathValue">{{path}}</span>
+                                     <span ng-if="$index < details.path.length" class="symbol">></span>
+                                </span>
+                                 <span class="pathDetail" ng-repeat="node in details.new_nodes track by $index">
+                                    <span class="pathValue boldNew" data-toggle="tooltip" tooltip="New Term" tooltip-placement="top">{{node}}</span>
+                                    <span ng-if="$index < details.new_nodes.length - 1" class="symbol">></span>
+                                </span>
+                                </span>
+                               
+                            </div>
+                            
+                            <div class="path col-xs-12 noPaddingLeft noPaddingRight" ng-if="details.better_path.length">
+                                <span class="pathTitle col-xs-4 noPaddingLeft noPaddingRight">{{'suggested_pattern'| i18nString}} :</span>
+                                <span class="col-xs-8 noPaddingRight">
+                                     <span class="pathDetail" ng-repeat="path in details.better_path track by $index">
+                                    <span class="pathValue">{{path}}</span>
+                                    <span ng-if="$index < details.better_path.length - 1" class="symbol">></span>
+                                </span>
+                                </span>
+                               
+                            </div>
+                            <div class="pathQuestion col-xs-12 noPaddingLeft noPaddingRight" ng-show="details.question">
+                                <span class="pathTitle col-xs-4 noPaddingLeft noPaddingRight">{{'question'| i18nString}} :</span>
+                                <span class="pathValue col-xs-8 noPaddingRight">{{details.question}}</span>
+                            </div> 
+                            <div class="pathQuestion col-xs-12 noPaddingLeft noPaddingRight" ng-show="details.alternateQuestion.length > 1" ng-repeat="alternate in details.alternateQuestion track by $index">
+                                <span class="pathTitle col-xs-4 noPaddingLeft noPaddingRight">{{'alt_question'| i18nString}}{{$index + 1}} :</span>
+                                <span class="pathValue col-xs-8 noPaddingRight">{{alternate}}</span>
+                            </div>
+                             <div class="pathQuestion col-xs-12 noPaddingLeft noPaddingRight" ng-show="details.alternateQuestion.length === 1">
+                                <span class="pathTitle col-xs-4 noPaddingLeft noPaddingRight">{{'alt_question'| i18nString}} :</span>
+                                <span class="pathValue col-xs-8 noPaddingRight">{{details.alternateQuestion[0]}}</span>
+                            </div>
+                            
+                     
+                </div>
+          
+             </div>
+         </div>
+    </div>
+    </bot-modal-slider>
+<div class="modal fade" id="auto-generate" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="btx-close" ng-click="closeAutoGenerate()"></i>{{'generate_kg'| i18nString}}</h4>
+        </div>
+        <div class="modal-body autoGenerateOntology" perfect-scroll height-property="height" dynamic-height dynaoffset="-300">
+            <div class="col-xs-12 heading">
+                <p>{{'kore_kg_desc'| i18nString}}</p>
+            </div>
+            <div class="col-xs-12 description">
+                <hr class="dashBorder">
+                <ul class="">
+                    <li><a href="javascript:void(0)" class="link" ng-click="exportOntology('json')">{{'export'| i18nString}}</a> {{'json_format_kg'| i18nString}}</li>
+                    <li><a ng-href="{{kgGenerator}}" target="_blank" class="link">{{'download'| i18nString}}</a> {{'download_kg'| i18nString}}<a target="_blank" ng-href="{{kgGenerator}}" class="link">{{'koregithub'| i18nString}}</a> {{'page'| i18nString}}
+                    </li>
+                    <li>{{'initiate_graph'| i18nString}}
+                    </li>
+                    <li>{{'kg_json'| i18nString}}
+                    </li>
+                    <li>{{'import_outfile'| i18nString}}
+                    </li>
+                </ul>
+            </div>
+            <div class="hintDiv">
+                <span class="icon"><i class="btx-bulb" ng-src="{{bulbIcon}}"></i></span>
+                <span class="description">
+                            <p class="noMargin">{{'importing_kg'| i18nString}}</p>
+                        </span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn" ng-click="closeAutoGenerate()">{{'ok'| i18nString}}</button>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal" id='bulkDelete'>
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">{{'delete_faq'| i18nString}}</div>
+        </div>
+        <div class="modal-body">
+            {{'delete_faq_desc'| i18nString}}
+        </div>  
+        <div class="modal-footer noty_buttons">
+            <button class='btn btn-default' ng-click='delBulkOnto()'>{{'ok'| i18nString}}</button>
+            <button class='btn btn-danger' ng-click='hideDelModal()'>{{'cancel'| i18nString}}</button>
+        </div>
+    </div>
+</div>
+<div class="modal" id='deleteLinked'>
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">{{'confirm_proceed'| i18nString}}</div>
+            <i class="btx-close" ng-click="closeDeleteModal()"></i>
+        </div>
+        <div class="modal-body">
+            {{'faqTryingDeleteLinked'| i18nString}} 
+        </div>  
+        <div class="modal-footer noty_buttons">
+            <button class='btn btn-default text-danger' ng-click='removeFAQ()'>{{'proceed'| i18nString}}</button>
+            <button class='btn btn-danger' ng-click='closeDeleteModal()'>{{'cancel'| i18nString}}</button>
+        </div>
+    </div>
+</div>
+<div class="modal" id='deleteFaqLinked'>
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">{{'faqNotAvailable'| i18nString}}</div>
+            <i class="btx-close" ng-click="closeDeleteFaqModal()"></i>
+        </div>
+        <div class="modal-body">
+            {{'sourceFaqIntentAvaiable'| i18nString}}
+        </div>  
+        <div class="modal-footer noty_buttons">
+            <button class='btn btn-default text-danger' ng-click='removeFAQ()'>{{'delete'| i18nString}}</button>
+            <button class='btn btn-danger' ng-click='closeDeleteFaqModal()'>{{'cancel'| i18nString}}</button>
+        </div>
+    </div>
+</div>
+<div id="trainfaq"  class="modal fade " data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        
+        <div class="modal-content trainFaq">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'training_fail'| i18nString}}</h4>
+            </div>
+            <div class="modal-body" perfect-scroll>
+                <div>
+                    {{heavyNodesCount>1?(knowledgeError):(knowledgeErrorMsg)}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button type="button" class="btn btn-default exitBtn" ng-click="exportError(csvDownloadId)">{{'download_errors'| i18nString}}</button>
+                    <button type="button" class="btn closeCancel" ng-click="closeModal()">{{'close'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<manage-variable-namespace cb='manage_var_bot_onto_cb' class="manage-variable" id="manageVarNamespaceBotOnto" ng-if="manageVarBotOntoEnable"></manage-variable-namespace>
+
+
+<div class="modal fade warn-dup-sibling" data-backdrop="static" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header bulkImport">
+				<h4 class="modal-title">Add duplicate term</h4>
+			</div>
+			<div class="modal-body import-utterances-modal-body" perfect-scroll>
+				<div class="col-xs-12">
+					<div class="col-xs-12 form-group noPadding">
+						{{
+                            "Adding a duplicate child term to a parent term is not recommended. The parent term '" + pUpParent + "' already has a child term with the name '" + pUpChild + "'. You may consider renaming the current term or adding the relevant FAQs to the term that is already added."
+                        }}
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer importFooter">
+				<div>					
+					<button type="button" class="btn btn-primary createNode">Proceed</button>
+                    <button type="button" class="btn closeCancel" ng-click="cancelWarn()">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<bot-modal-slider class='qaAddEditSlider' id='kgQaAddEditSlider'>
+    <div class="modalSliderContainer width900">
+        <div class="modalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                <i  class="btx-close"  ng-if='isKgExtractHist' ng-click="showHideQACreateForm(false)"></i>
+                <i  class="backArrowSynonymsModal rightArrow btx-arrow-back"  ng-if='!isKgExtractHist' ng-click="goToKgExtractHist()"></i><span class="sliderTitle">{{(ontologyfaqsStats.editIndex !== -1)?"edit_intent":'add_intent' | i18nString}}</span>
+            </h4>
+        </div>
+        <div class="modalBody width900">
+            <div class="body clear-fix qaformbody knowledgeGraphSlider" ng-if="showQAForm">
+                <bot-ontology-qa  ng-class="{'disableEdit':!isEditable()}" ng-if="showQAForm && ontologyfaqsStats.editIndex == -1" level-one-node="clickedTermParent" path-tags="faqTagsPath" boc="cb" node-id="activeNodeId" term-path="breadCrumbData" node-label="activeNodeLabel" demo-templates="demoTemplates" kt="knowledgeTask" total-faqs="ontology.qas" callback="callback"
+                       path="faqstats.path" faq-search-term="{{faqSearch.faqSearchQuery}}" select-type="selectedFilter.val" navigate-from="{{navigate.from}}"></bot-ontology-qa>
+                   <bot-ontology-qa ng-class="{'disableEdit':!isEditable()}" boc="cb" ng-if="ontologyfaqsStats.editIndex !== -1" level-one-node="clickedTermParent" path-tags="faqEditTagsPath" node-id="updatedQA.parent" faq-search-term="{{faqSearch.faqSearchQuery}}" node-label="activeNodeLabel" demo-templates="demoTemplates" term-path="breadCrumbData" kt="knowledgeTask"  total-faqs="ontology.qas" callback="callback"
+               faq-data="updatedQA" select-type="selectedFilter.val" navigate-from="{{navigate.from}}"></bot-ontology-qa>
+               </div>
+        </div>
+    </div>
+</bot-modal-slider>
+<bot-modal-slider class="ontologySynsModal" id="ontologyGlobalSynonyms">
+        <div class="modalSliderContainer width900" ng-class="{'disablesYNEdit':!isEditable() ||  nlPermision !== 'FULL'}">
+            <div class="modalHeader">
+                <h4 class="modal-title" id="gridSystemModalLabel"><i  class="btx-close"  ng-click="closeManageSynonyms(manageKtSynonymForm)"></i>{{'manage_synonyms'| i18nString}}</h4>
+           </div>
+           <div class="modal-body">
+               <div class="botSynonymContainer">
+                   <label class="">{{'ddval_synonyms'| i18nString}}</label>
+                   <p class="description mb-0">{{'use_bot_synonyms'| i18nString}}</p>
+                    <div class='row'>
+                        <toggle-switch ng-model="botSynonym.toggleValue" ng-change="showKgSynonymModal($event)" class="pull-left synonym-addition">
+                        </toggle-switch>
+                 </div> 
+                </div>
+                <div class="graphSynonymContainer mt-0">
+                                <div class="col-xs-12 paddingLeft5">
+                                    <label>{{'graph_synonyms'| i18nString}}</label>
+                                    <p class="description">{{'graph_level_synonyms'| i18nString}}</p>
+                                    <!-- <div class="col-xs-4  noPadding classBtns">
+                                        <button type="button" class="btn addsynbtn pull-right" ng-click="saveManageKTaskSynonym(manageKtSynonymForm)">Save</button>
+                                        <button type="button" class="btn closeCancel pull-right noMarginRight" ng-click="showCreateSynonyms(false)"> Cancel </button>
+                                    </div> -->
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                   <form name="manageKtSynonymForm" novalidate>
+
+                                       <div class="col-xs-12 form-group globalSyndropdown">
+                                           <div class="col-xs-3">
+                                               <label  tooltip-placement="right" tooltip=""> {{'name_label'| i18nString}} </label>
+                                               <div class="inputText">
+                                               <input maxlength="128" autocomplete="false" type="text" class="form-control synAddKeyword backgroundwhite" name="keyword" placeholder="{{'enter_keyword'| i18nString}}" required
+                                                           ng-model="manageKtSynonym.keyword">
+                                                </div>
+                                              <div  ng-show="manageKtSynonymForm.keyword.$dirty">
+                                                        <div error-alert ng-show="manageKtSynonymForm.keyword.$error.required" class="text-danger"> {{'Word_error'| i18nString}} </div>
+                                                </div>
+                                           </div>
+                                           <div class="col-xs-8 paddingRight20">
+                                                <label  tooltip-placement="right" tooltip=""> {{'synonyms_name'| i18nString}} </label>
+                                                <div class="noPaddingLeft noPaddingRight" ng-show="displayMode!=='view'">
+                                                        <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_enter_add'| i18nString}}" use-strings="true"  ng-model="manageKtSynonym.synonyms"></tags-input>
+                                                </div>
+                                           </div>
+                                           <div class="col-xs-1 noPadding">
+                                                <label>&nbsp;</label>
+                                                <div class="addBtn">
+                                                    <button type="button" class="btn addsynbtn pull-right" ng-click="saveManageKTaskSynonym(manageKtSynonymForm)">{{'add'| i18nString}}</button>
+                                                </div>
+                                           </div>
+                                       </div>
+                                
+                                        <!-- <div class=" noPadding terms">
+                                            <div class="col-xs-12 form-group noPadding globalSyndropdown">
+                                                <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                                                    <label  tooltip-placement="right" tooltip=""> Name </label>
+                                                </div>
+                                                                                <div class="col-xs-12 noPadding"><input maxlength="128" autocomplete="false" type="text" class="form-control synAddKeyword backgroundwhite" name="keyword" placeholder="Enter keyword" required
+                                                           ng-model="manageKtSynonym.keyword"></div>
+                                                <div  ng-show="manageKtSynonymForm.keyword.$dirty">
+                                                        <div error-alert ng-show="manageKtSynonymForm.keyword.$error.required" class="text-danger col-xs-12"> Keyword value is required </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                                                <div class="col-xs-12 form-group noPadding">
+                                                    <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                                                        <label  tooltip-placement="right" tooltip=""> synonyms </label>
+                                                    </div>
+                                                    <div class="col-xs-12 noPaddingLeft noPaddingRight" ng-show="displayMode!=='view'">
+                                                        <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="'Type Synonym and [Enter]'" use-strings="true"  ng-model="manageKtSynonym.synonyms"></tags-input>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div> -->
+                                </form> 
+                                </div>
+                                
+                    <div class="kt-synManagement" ng-show="(synonymsCount || checkFromSynSearch())  && !editCB">
+                   <!--  <div class="hintDiv">
+                        <span class="icon"><img class="layer" ng-src='{{bulbIcon}}'></span>
+                        <span class="description" >The synonyms added to the words at the graph level will be used for the matched terms/tags across the graph.</span>
+                    </div> -->
+                        <div class="col-xs-12 bottomBorder solidBorderBottom">
+                                <div class="col-xs-3 padding10">
+                                    <div ng-show="!showNameSearch" class="headerTitle"><span class="name">{{'bot_name'| i18nString}}</span><span class="btx-search fa-search" ng-click="activateNameSearch(true)"></span></div>
+                                    <div ng-show="showNameSearch" class="searchVariable manageSearch">
+                                        <input focus-it tabindex="1" type="text" class="form-control focusNameSearch" ng-model="synonymkey.searchQuery" ng-keyup="searchSynonyms($event)" placeholder="{{'enter_search'| i18nString}}">
+                                        <span class="btx-close" ng-click="activateNameSearch(false)"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7 padding10">
+                                    <div ng-show="!showValueSearch" class="headerTitle"><span class="name">{{'synonyms'| i18nString}}</span></div>
+                                </div>
+                                <div class="col-xs-2 padding10"><div class="notes">&nbsp;</div></div>
+                        </div>
+                    </div>
+                        <div ng-if="!loadingSynonyms && synonymsCount && showCreateglobalSynonyms" id="globalSynonymSliderBody" class="modalBody kt-synManagement nosynContent" perfect-scroll dynamic-height  dynaoffset="-380" height-property="height">
+                            <div ng-if="loadingSynonyms" class='col-xs-12 loadingKtsyn text-center '><i class="fa fa-circle-o-notch fa-spin spinIcon"></i>{{'pleasewait'| i18nString}}</div>
+                                <div ng-if="!loadingSynonyms && synonymsCount" id="{{object.keyword}}{{$index}}" class="bottomBorder col-xs-12 noPadding editVariables" ng-init="parentIndex = $index" ng-repeat="object in ktSynonymObject track by $index">
+                                    <div ng-hide="editKtSynonymId =='{{object.keyword}}{{$index}}'" class="col-xs-12">
+                                        <div class="col-xs-3 padding15">
+                                            {{object.keyword}}
+                                        </div>
+                                        <div class="col-xs-7 padding15">
+                                            <div class="ellipsis"><span class="tag-label" ng-repeat="synonym in object.synonyms"><span class="seperate-with-tags">{{synonym}}</span></span></div>
+                                        </div>
+                                        <div class="col-xs-2 editVariableIcons">
+                                            <div class="variableTitle iconsDiv">
+                                                <span ng-click="changeEditKtSynonym(object,parentIndex)" class="fa btx-pencil disableSynEdit"></span><span class="fa btx-delete-1 disableSynEdito" ng-click="deletKtSynonym(synonym, $event,parentIndex,object)"></span><span class="fa fa-spin fa-refresh"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Edit variable block -->
+                                    <div ng-show="editKtSynonymId =='{{object.keyword}}{{$index}}'" class="col-xs-12 editVariableDiv">
+                                    <div class=" noPadding terms">
+                                        <div class="col-xs-3 inputText">
+                                                <label  tooltip-placement="right" tooltip="">{{'name_label'| i18nString}} </label>
+                                                 <div>
+                                                            <input maxlength="128" autocomplete="false" type="text" class="form-control synAddKeyword backgroundwhite synkeywordInput" name="keyword" placeholder="{{'enter_keyword'| i18nString}}" required ng-model="object.keyword">
+                                                    </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                <label  tooltip-placement="right" tooltip=""> {{'synonyms_name'| i18nString}} </label>
+                                                <div ng-show="displayMode!=='view'">
+                                                    <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="'{{'type_enter_add'| i18nString}}'" use-strings="true"  ng-model="object.synonyms"></tags-input>
+                                                </div>
+                                           
+                                        </div>
+                                        <div class="col-xs-3 classBtns">
+                                                <label>&nbsp;</label>
+                                                <div>
+                                                    <button type="button" class="btn"  ng-click="editKtSynonym(object)">{{'save'| i18nString}}</button>
+                                                    <button type="button" class="btn closeCancel" ng-click="cancelEditDiv()"> {{'cancel'| i18nString}} </button>
+                                                </div>
+                                        </div>
+
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class='text-center' ng-show='loadingPaginatedSynonyms'>
+                                    {{'loading_more'| i18nString}}  <br />
+                                    <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+                                </div>
+                         </div>
+                        <div ng-if="loadingSynonyms" class='col-xs-12 loadingKtsyn text-center '><i class="fa fa-circle-o-notch fa-spin spinIcon"></i>{{'pleasewait'| i18nString}}</div>
+                        <div ng-if="!loadingSynonyms && synonymsCount && !showCreateglobalSynonyms" id="globalSynonymSliderBody" class="modalBody kt-synManagement nosynContent" perfect-scroll dynamic-height dynaoffset="-380" height-property="height">
+                        <div id="{{object.keyword}}{{$index}}" class="bottomBorder col-xs-12 noPadding editVariables" ng-init="parentIndex = $index" ng-repeat="object in ktSynonymObject track by $index">
+                            <div ng-hide="editKtSynonymId =='{{object.keyword}}{{$index}}'" class="col-xs-12">
+                                <div class="col-xs-3 padding15">
+                                    {{object.keyword}}
+                                </div>
+                                <div class="col-xs-7 padding15">
+                                    <div class="ellipsis"><span class="tag-label" ng-repeat="synonym in object.synonyms"><span class="seperate-with-tags">{{synonym}}</span></span></div>
+                                </div>
+                                <div class="col-xs-2  editVariableIcons">
+                                    <div class="variableTitle iconsDiv">
+                                        <span ng-click="changeEditKtSynonym(object,parentIndex)" class="fa btx-pencil disableSynEdit"></span><span class="fa btx-delete-1 disableSynEdito" ng-click="deletKtSynonym(synonym, $event,parentIndex,object)"></span><span class="fa fa-spin fa-refresh"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- Edit variable block -->
+                            <div ng-show="editKtSynonymId =='{{object.keyword}}{{$index}}'" class="col-xs-12 editVariableDiv">
+                                      <div class=" noPadding terms">
+                                        <div class="col-xs-3 inputText">
+                                                <label  tooltip-placement="right" tooltip=""> {{'name_label'| i18nString}} </label>
+                                                 <div>
+                                                            <input maxlength="128" autocomplete="false" type="text" class="form-control synAddKeyword backgroundwhite synkeywordInput" name="keyword" placeholder="{{'enter_keyword'| i18nString}}" required ng-model="object.keyword">
+                                                    </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                <label  tooltip-placement="right" tooltip=""> {{'synonyms_name'| i18nString}} </label>
+                                                <div ng-show="displayMode!=='view'">
+                                                    <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="'{{'type_enter_add'| i18nString}}'" use-strings="true"  ng-model="object.synonyms"></tags-input>
+                                                </div>
+                                           
+                                        </div>
+                                        <div class="col-xs-3 classBtns">
+                                               <label>&nbsp;</label>
+                                                <div>
+                                                    <button type="button" class="btn"  ng-click="editKtSynonym(object)">{{'save'| i18nString}}</button>
+                                                    <button type="button" class="btn closeCancel" ng-click="cancelEditDiv()"> {{'cancel'| i18nString}} </button>
+                                                </div>
+                                        </div>
+
+                                    </div>
+                            </div>
+                    </div>
+                    <div class='text-center' ng-show='loadingPaginatedSynonyms'>
+                        {{'loading_more'| i18nString}} <br />
+                        <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+                    </div>
+            </div>
+            <div ng-if="!synonymsCount && !loadingSynonyms && !showCreateglobalSynonyms" id="globalSynonymSliderBody" class="modalBody kt-synManagement nosynContent" perfect-scroll dynamic-height height-property="height" dynaoffset="-350">
+                <div class="col-xs-12 noQuestionsContainer">
+                <!-- <div class="noQuestionsImage"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div> -->
+                <!-- <div class="noQuestionsContent" ng-if="!checkFromSynSearch()">
+                    <div class="header">{{'no_synonyms'| i18nString}}</div>
+                    <div class="info">
+                        {{'graph_level_synonyms'| i18nString}}<br>{{'synonyms_added_graph'| i18nString}}
+                    </div>
+                </div> -->
+                <div class="emptyStateContainer" ng-if="!checkFromSynSearch()">
+                    <div class="emptyState">
+                        <div class="emptyImage">
+                            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                        </div>  
+                        <span class="mainTitle">{{'no_synonyms'| i18nString}}</span>
+                        <div class="emptyStateDesc">{{'graph_level_synonyms'| i18nString}} {{'synonyms_added_graph'| i18nString}}</div>
+                        <!-- <div class="generateBtn">
+                            <button class="btn btnSolidBlue" >Add</button>
+                            <button class="btn" target="_blank" >learn more</button>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <div class="noQuestionsContent" ng-if="checkFromSynSearch()">
+                    <div class="header">{{'no_results'| i18nString}}</div>
+                </div> -->
+                <div class="emptyStateContainer" ng-if="checkFromSynSearch()">
+                    <div class="emptyState">
+                        <div class="emptyImage">
+                            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                        </div>  
+                        <span class="mainTitle">{{'no_results'| i18nString}}</span>
+                        <!-- <div class="emptyStateDesc">{{'graph_level_synonyms'| i18nString}}<br>{{'synonyms_added_graph'| i18nString}}</div> -->
+                        <!-- <div class="generateBtn">
+                            <button class="btn btnSolidBlue" >Add</button>
+                            <button class="btn" target="_blank" >learn more</button>
+                        </div> -->
+                    </div>
+                </div>
+              
+                <!-- <div class="noQuestionsBtn" ng-if="!checkFromSynSearch()">
+                    <button class="btn btn-primary addqabtn" ng-click="showCreateSynonyms(true)">Add</button>
+                </div> -->
+            </div>
+            </div>
+                </div>
+           </div>
+
+        </div>
+    </bot-modal-slider>
+
+<bot-modal-slider class='qaEditTermSlider' id='qaEditTermSlider' ng-class="{'disableEdit':!isEditable()}">
+    <div class="modalSliderContainer width900">
+        <div class="modalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                <i  class="btx-close"  ng-if='isKgExtractHist' ng-click="hideBotOntologyTermSettings()"></i>
+                <i  class="backArrowSynonymsModal rightArrow btx-arrow-back"  ng-if='!isKgExtractHist' ng-click="goToKgExtractHist()"></i><span class="sliderTitle">{{'setting' | i18nString}}</span>
+            </h4>
+        </div>
+        <div class="modalBody width900">
+            <div class="body clear-fix noPaddingRight" ng-class="{'termLocked': isTermLocked}" ng-if="showBTS">
+                <bot-ontology-term-settings boc="cb" is-term-disabled="isTermDisabled" is-term-locked="isTermLocked" level-one-node="clickedTermParent" save-in-progress="forms.saveInProgress" term-data="ontology.selectedTerm" knowledge-task="knowledgeTask" navigate-from="synonyms"></bot-ontology-term-settings>
+            </div>
+        </div>
+    </div>
+</bot-modal-slider>

@@ -1,0 +1,17 @@
+<div class="rich-editor-container">
+	<div class="keyword_highlight rich-editor" ng-class="{'border1px':testing, 'borderBottomRed':intentNotFound}" placeholder="{{placeholder}}" ng-disabled="isDisabled" contenteditable="{{!testing}}"></div>
+	<div ng-class="{'processAnimationDiv':testing, 'noAnimationDiv':!tesing}"></div>
+	<ul ng-show="!intentNotFound && intentVerified && !constants.config.hideMLEE" class="entityfielddropdown dropdown-menu" aria-labelledby="dropdownMenu1">
+		<!--<li><a href="#" class="rich_context-menu" ng-click="addPattern()">Add as Task Pattern</a></li>
+		<li><a href="#" class="rich_context-menu" ng-click="addFieldPattern()">Add as Field Pattern</a></li>
+		<li><a href="#" class="rich_context-menu" ng-click="addSynonym()">Add as Synonym</a></li>
+		<li><a href="#" class="rich_context-menu" ng-click="addFieldSynonym()">Add as Field Synonym</a></li>-->
+
+		<li class="entityHeader">
+			<span class="selectEntity">{{'select_entity'| i18nString}}</span>
+		</li>
+			<div class="scrollDiv" perfect-scroll>
+		<li class="entity" ng-repeat="entity in entityList"><a href="#" ng-style="{color:getColorBasedOnMap(entity)}" class="rich_context-menu {{getClassBasedOnMap(entity)}}" ng-click="mapEntityToWord(entity)">{{taskDetails.taskType == 'dialog' ?  entity.name : entity.title}}</a></li>
+	</div>
+	</ul>
+</div>

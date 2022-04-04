@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="124" height="81" viewBox="0 0 124 81">
+    <g fill="none" fill-rule="evenodd">
+        <text fill="#26344A" font-family="FontAwesome" font-size="50" opacity=".15">
+            <tspan x=".714" y="71"></tspan>
+        </text>
+        <text fill="#26344A" font-family="FontAwesome" font-size="60" opacity=".1">
+            <tspan x="59.357" y="51"></tspan>
+        </text>
+        <circle cx="63" cy="54" r="26" fill="#8A959F" stroke="#FFF" stroke-width="2"/>
+    </g>
+</svg>

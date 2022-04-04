@@ -1,0 +1,35 @@
+[
+	{
+		"name" :"Table",
+		"value":"tabular",
+		"link" :"report_templates/table.html"
+	},
+	{
+		"name" :"Fixed Column Table",
+		"value":"fixedcolumntable",
+		"link" :"report_templates/fixedcolumntable.html"
+	},
+	{
+		"name" :"Card Layout",
+		"value":"cardlayout",
+		"link" :"report_templates/cardlayout.html"
+	},
+	{
+		"name" :"Weather Info",
+		"value":"weatherinfo",
+		"link" :"report_templates/weatherinfo.html"
+	},{
+		"name" : "Card Layout With Actions",
+		"value" : "cardlayoutwithactions",
+		"link" :"report_templates/cardlayoutwithactions.html"
+	},{
+		"name" : "Card Layout with Group By",
+		"value" : "cardlayoutwithgroupby",
+		"link" :"report_templates/cardlayoutwithgroupby.html"
+	},
+	{
+		"name" : "Shopping Cart Layout With Actions",
+		"value" : "shoppinglayoutwithactions",
+		"link" :"report_templates/shoppinglayoutwithactions.html"
+	}
+]

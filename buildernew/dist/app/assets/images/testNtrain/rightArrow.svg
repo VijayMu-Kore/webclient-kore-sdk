@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="33px" viewBox="0 0 32 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 12</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="4.1-Test-and-Train" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1306.000000, -589.000000)">
+        <g id="Group-11" transform="translate(1012.000000, 146.000000)">
+            <g id="Group-12" transform="translate(294.000000, 443.000000)">
+                <path d="M31,27 C31,27 31,22.0791789 31,15.9985976 L31,11.0014024 C31,4.92549563 26.076468,0 20,0 L9,0" id="Path-2" stroke="#D2D4D6" stroke-width="2" transform="translate(20.000000, 13.500000) scale(1, -1) translate(-20.000000, -13.500000) "></path>
+                <polygon id="Triangle" fill="#D2D4D6" transform="translate(5.000000, 26.500000) scale(-1, -1) translate(-5.000000, -26.500000) " points="0 33 0 20 10 26.5"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

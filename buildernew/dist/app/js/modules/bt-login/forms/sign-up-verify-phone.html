@@ -1,0 +1,28 @@
+<form novalidate name="verifyPhoneForm" ng-submit="submitPhoneCode()" class="login-form">
+    <div class="logoInCard">
+        <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+       </div>
+    <!-- Code -->
+    <div class="form-group">
+        <div class="input-group">
+            <input required 
+                   ng-model="code" 
+                   name="code" 
+                   type="text" 
+                   class="form-control no-check" 
+                   autocomplete="off">
+                   <span class="movingingLabel">{{'enter_code'| i18nString}}</span>
+        </div>
+    </div>
+
+    <!-- Text Group -->
+    <p>{{'verification_code_sent'| i18nString}} <span class="cta-text">{{selectedCountryCode.value}} {{emailPhone}}</span>. {{'receive'| i18nString}}</p>
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <button data-ng-click="changeEmailPhone()" type="button" class="btn btn-default">{{'change_mobile'| i18nString}}</button>
+        <button data-ng-click="resendCode()" animate-on-change value="codeSent" type="button" class="btn btn-default">{{::codeSent}}</button>
+        <button ng-disabled="!verifyPhoneForm.$valid" type="submit" class="btn btn-primary">{{'verify'| i18nString}}</button>
+    </div>
+
+</form>

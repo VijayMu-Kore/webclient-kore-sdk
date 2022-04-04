@@ -1,0 +1,180 @@
+
+<div class="modalHeader">
+    <h4 class="modal-title ng-binding">
+        <i class="btx-close" ng-click="goToHome()"></i>       
+        Template setup / Basic configuration</h4>
+        <p class="sliderName">Name and icon</p>
+</div>
+<div class="modalBody setupSolBotBody" perfect-scroll dynamic-height dynaoffset="-140" height-property="height" >
+        <div class="row col-xs-12 noPadding">
+            <div class="col-xs-12 noPadding pageContainer ">
+                <div class="col-xs-12 noPadding centerDiv">
+                    <div class="widget-body" ng-show="sections[0].active">
+                        <div class="col-xs-12 noPadding">
+                            <h3 class="noMargin">{{'install_instructions'| i18nString}}</h3>
+                            <div class="fontSize16" ng-show="stream.solutionBotSettings.configInstURL">
+                                <p class="help-hint-link" >{{'bt_solution_for_complete_installation_guide'| i18nString:({dyn:stream.originalName})}} <a target="_blank" href="{{stream.solutionBotSettings.configInstURL}}">{{'click_here'| i18nString}}</a></p>
+                            </div>
+                        </div>
+                        <div ng-if='planeText && stream.solutionBotSettings.configInst'  role="tabpanel" class="instructions-pane tab-pane">
+                            <div dynamic-height dynaoffset="-190" height-property="height">
+                                <div ng-if='stream.solutionBotSettings.configInst' class="text-justify" ng-bind-html="constants.mdToHtmlHelpers.convertMDtoHTML(stream.solutionBotSettings.configInst)"></div>
+                            </div>
+                        </div>
+                        <div ng-show="stream.demoVideoLink.length">
+                            <!-- ng-show="stream.demoVideoLink.length" -->
+                            <!-- <div class="videoHeading">Introduction video</div> -->
+                            <!-- <div class='videoLink'><i class="fa fa-circle-o-notch fa-spin marginRight5" style="font-size:24px"> </i>Loading Video</div> -->
+                            <!-- <div dynamic-height dynaoffset="-190" height-property="height" class=''  > -->
+                                <!-- <iframe width="560" height="330" ng-src="{{demoVideoLink}}" frameborder="0" allowfullscreen></iframe> -->
+                                <!-- <embed type="video/webm" ng-src="{{demoVideoLink}}" width="100%" dynamic-height dynaoffset="-190" style="height:100%;position: relative;" class="embedBorder  visible displayBlock"/> -->
+                                <!-- <embed ng-src="https://player.vimeo.com/video/49583118" width="100%" dynamic-height dynaoffset="-190" style="height:100%;position: relative;" class="embedBorder  visible displayBlock"/> -->
+                                <!-- [src]="demoVideoLink | transformVimeo | safe" -->
+                            <!-- </div> -->
+                            <div class="rt-intro-video-block">
+                                <div class="rt-intro-video-heading">{{'introduction_video'| i18nString}}</div>
+                                <div class="rt-intro-video">
+                                    <embed ng-src="{{demoVideoLink}}" width="100%" dynamic-height dynaoffset="-190" style="height:100%;position: relative;" class="embedBorder visible displayBlock"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div  ng-show='!planeText' role="tabpanel" class="">
+                            <div class='pdfLoader' ng-show="showPdfLoading"><i class="fa fa-circle-o-notch fa-spin marginRight5" style="font-size:24px"> </i>{{'loading'| i18nString}}</div>
+                            <div dynamic-height dynaoffset="-190" height-property="height" class='pdfCont'  >
+                                <embed ng-src="{{stream.solutionBotSettings.configInstFileIdURL}}" width="100%" dynamic-height dynaoffset="-190" style="height:100%;position: relative;" class="embedBorder  visible displayBlock"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="sections[1].active">
+                        <form name="aboutBotForm" class="wf-form" novalidate>
+                        <div class="widget-body sbWidget">
+
+                            <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12 noPadding">
+                                    <label class=" " tooltip-placement="right" tooltip="">{{'botName'| i18nString}} </label>
+                                </div>
+                                <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'">
+                                    {{aboutBotData.name}}
+                                </div>
+                                <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                                    <input type="text" ng-model="aboutBotData.name" name="name" ng-disabled="aboutBotData.isInMarket" class="form-control" ng-minlength="1" maxlength="50" required ng-pattern="validateBotName" placeholder="{{'bt_solution_install_give_your_installed_botName_placeholder'| i18nString}}">
+                                    <div  ng-show="aboutBotForm.name.$dirty">
+                                        <div error-alert  ng-show="aboutBotForm.name.$error.required" class="text-danger form-error-text"> {{'Generalform_name_error'| i18nString}} </div>
+                                        <div error-alert ng-show="aboutBotForm.name.$error.minlength" class="text-danger form-error-text"> {{'Generalform_name_invalid'| i18nString}} </div>
+                                        <div error-alert ng-show="aboutBotForm.name.$error.pattern" class="text-danger form-error-text"> {{'Generalform_name_pattern'| i18nString}}</div>
+                                        <div class="pull-right" ng-if="aboutBotData.name.length > 0">{{(50 - aboutBotData.name.length) + ' '+char_remaining}}</div>
+                                    </div>
+                                    <div error-alert ng-show="duplicateStreamName" class="text-danger form-error-text"> {{'duplicateStreamName_error'| i18nString}} </div>
+                                </div>
+                            </div>
+                            <!-- Icon Div -->
+                            <div class="col-xs-12 noPadding">
+                                <label class="required-field padding24" > {{'icon'| i18nString}} </label>
+                            </div>
+                            <div class="iconupLoadDiv col-xs-12 noPadding form-group">
+                                <div class="freeIcons">
+                                <div class="imgDiv defaultBotIconsSmall" ng-repeat="boticon in defaultBotIcons" ng-click="selectNewDefaultBotIcon(boticon)" ng-class="{'selected':selectedIcon.id=== boticon.id}">
+                                <img class="avatar"  ng-src="{{boticon.path}}"/>
+                                <i class="btx-ok"></i>
+                                </div>
+                                <div class="iconUploadDD" >  
+                                    <div class="dropdown">
+                                    <div type="button" data-toggle="dropdown">
+                                        <div class="addNewIcon" ng-if="!customStreamData.uploadedIcon">
+                                        <span  class="icon-btx-add"><i class="btx-add"></i></span>
+                                        <span class="addText">Add</span>
+                                        </div>
+                                        <div class="upLoadedIcon"  ng-if="customStreamData.uploadedIcon" ng-class="{'selected':selectedIcon.id=== 'custom'}">
+                                        <img  ng-click="$event.stopPropagation();confirmUploadOfNewIcon();"class="avatar"  ng-src="{{customStreamData.uploadedIcon}}"/>
+                                        <span class="editIcon"><i class="btx-pencil"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-menu iconMenu" ng-click="$event.stopPropagation()">
+                                        <i class="btx-close" ng-click="closeDropdown()"></i>
+                                    <div class="customIcons">
+                                        <div ng-if="customStreamData.iconUploading" class="textCenter">
+                                        <p class="progressUpload">{{'botName'| i18nString}}Uploading Image</p>
+                                            <i class="btx-spinner"></i>
+                                        <!-- <div class="import-progress-bar">
+                                            <div class="inside-progress-bar" ng-style="{width : (10 + '%') }"></div>
+                                        </div> -->
+                                        </div>
+                                        <div class="hintDiv" ng-if="!customStreamData.uploadedIcon && !customStreamData.iconUploading"> 
+                                        <div class="icon">
+                                            <i class="bulbIconLayer btx-bulb"></i>
+                                        </div> 
+                                        <div class="description">
+                                            <div><strong>{{'note_label'| i18nString}}</strong></div>
+                                            <ul>
+                                            <li>{{'image_png_format'| i18nString}} </li>
+                                            <li>{{'file_upload_limited'| i18nString}}</li>
+                                            <li class="noPadding">{{'images_should_exceed'| i18nString}}</li>
+                                            </ul>
+                                        </div> 
+                                        </div>
+                                    <div class="uploadButtonDiv"  ng-if="!customStreamData.iconUploading && !customStreamData.uploadedIcon">
+                                        <input class="form-control uploadInput" type="file" file-model="customStreamData.iconFile" id="customStreamData" name="iconFile" required ng-disabled="customStreamData.iconUploading || customStreamData.icon.fileId " on-file-change="loadStreamIcon"/>
+                                        <button class="uploadBTN">{{'upload_image'| i18nString}}</button>
+                                    </div>
+                                    <div class="iconUploadinput" ng-if="!customStreamData.iconUploading && customStreamData.uploadedIcon">
+                                        <div class="uploadedImage">
+                                        <img class="avatar"  ng-src="{{customStreamData.uploadedIcon}}"/>
+                                        </div>
+                                        <div class="resetIcon" ng-click="resetIconUpload()"><span><i class="btx-reset-icon" ></i> {{'reset'| i18nString}}</span></div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <!-- Icon Div ends-->  
+                        </div>
+                        </form>
+                        <form name="variablesForm" class="wf-form " novalidate>
+                            <div class="configDiv">
+                                <p class="configText">Configuration</p>
+                                <p class="confiDesc">The following fields are used in defining the virtual assistant skills. <a>Learn more</a></p>
+                            </div>
+                            <div  ng-repeat="variable in botVariables track by $index" ng-hide="variable.scope=='hidden'">
+                                <div class="labelInput">
+                                    <label> {{variable.key}}</label>
+                                    <p class="inputDesc"> {{variable.hint}}</p>
+                                    <input type="text" ng-if="(sampleBotVariables[variable.key].meta.dataType !== 'dropDown') && (sampleBotVariables[variable.key].meta.dataType !== 'date')"  required  placeholder="{{'pls_enter_value_placeholder'| i18nString}}" ng-class="{'error':(variablesForm['value{{$index}}'].$dirty && variablesForm['value{{$index}}'].$error.required)}" class="input-text" name="value{{$index}}" ng-model="variable.value">
+                                    <input type="text" ng-if=" (sampleBotVariables[variable.key].meta.dataType === 'date')" id="dateInstalPicker{{$index}}" ng-init="initDate($index)" required  placeholder="{{'pls_enter_value_placeholder'| i18nString}}" ng-class="{'error':(variablesForm['value{{$index}}'].$dirty && variablesForm['value{{$index}}'].$error.required)}" class="input-text" name="value{{$index}}" ng-model="variable.value">
+                                    <div class="kr-sg-dropdowns" ng-if="sampleBotVariables[variable.key].meta.dataType === 'dropDown'">
+                                        <div class="dropdown dropdown-open open">
+                                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{variable.value || ('choose_option' |  i18nString)}}</button>
+                                            <ul class="dropdown-menu content-menu">
+                                              <li ng-click="variable.value = dropValue" ng-repeat="dropValue in sampleBotVariables[variable.key].meta.values"><a>{{dropValue}}</a></li>
+                                            </ul>
+                                          </div>
+                                    </div>
+                                    <div class="error-msg" ng-show="variablesForm['value{{$index}}'].$dirty && variablesForm['value{{$index}}'].$error.required">{{'variable_Value_is_required'| i18nString}}</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="modalFooter">
+    <div class="col-xs-12 noPadding" ng-show="sections[1].active">
+          <button type="button" ng-disabled="botInstalling" ng-click="installSampleBot()"  class="btn btn-primary" >
+                        <span ng-show="!botInstalling">{{'save'| i18nString}}</span>
+                        <span ng-show="botInstalling">{{'installing'| i18nString}}</span>
+                        
+          </button>
+          <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+          <a class="doThisLater" ng-click="goToHome()" ng-if="$scope.stream.state === 'setup'">Do this later  <i class="btx-carrot-right"></i></a>
+    </div>
+     <div class="col-xs-12 noPadding" ng-show="sections[0].active">
+          <button type="button" ng-disable="disableNext" ng-click="next()"  class="btn btn-primary" >
+                        <span ng-show="!botInstalling">Begin setup</span>
+                        <i class="btx-carrot-right"></i>
+          </button>
+          <button class="btn closeCancel" ng-if="options.openChat" ng-click="options.openChat()">Test Assistant</button>
+          <a class="doThisLater" ng-click="goToHome()" ng-if="options.initialSetup">Do this later  <i class="btx-carrot-right"></i></a>
+     </div>
+</div>

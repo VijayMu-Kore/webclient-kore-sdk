@@ -1,0 +1,695 @@
+<!--      <form name="botStoreSettingsForm" class="wf-form" novalidate>
+        <fieldset class="row">
+            <div class="col-xs-12 form-group noPadding" ng-if="false">
+                <div class="col-xs-12">
+                    <label class="required-field" > {{'large_banner'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row col-xs-12 radioDiv noPadding">
+                        <div>
+                            <label  for="bbimg">
+                                <input type="radio" ng-model="newStreamData.bbannerchoice" value="image" id="bbimg"> <span class="opt-title" tooltip-placement="right" tooltip=" {{'img_tooltip'| i18nString}}">{{'image'| i18nString}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label  for="bbcolor">
+                                <input type="radio" ng-model="newStreamData.bbannerchoice" value="color" id="bbcolor"> <span class="opt-title" tooltip-placement="right" tooltip="{{'bot_color'| i18nString}}">{{'use_color'| i18nString}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row col-xs-12 noPadding" ng-if="newStreamData.bbannerchoice == 'image'">
+                        <div class="input-group">
+                            <input type="text" name="bigBannerFile" class="form-control" placeholder="{{'large_banner_place'| i18nString}}" required readonly ng-model="newStreamData.bBanner.fileName">
+                            <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}} <i class="fa fa-spinner fa-spin" ng-show="bigBannerUploading"></i><input type="file" file-model="newStreamData.bigBannerFile" id="bigBannerFile" name="bigBannerFile" required ng-disabled="bigBannerUploading" on-file-change="uploadLargeStreamBanner"/></div>
+                        </div>
+                        <div ng-show="botStoreSettingsForm.bigBannerFile.$dirty">
+                            <div error-alert ng-show="botStoreSettingsForm.bigBannerFile.$error.required" class="text-danger form-error-text"> {{'Banner_error'| i18nString}} </div>
+                        </div>
+                        <div ng-show="bBfileExtensionError" class="text-danger form-error-text"> {{'png_file'| i18nString}} </div>
+                        <div ng-show="bBiconRequiredError" class="text-danger form-error-text"> {{'Icon_error'| i18nString}} </div>
+                        <div class="uploads" ng-show="newStreamData.bBanner.fileName">
+                            <div class="alert alert-success alert-sm">
+                                <span class="pointer-hand" ng-click="deleteStreamBBanner()"><i class="fa fa-times"></i></span>
+                                <span class="content"> {{newStreamData.bBanner.fileName}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding">
+                <div class="col-xs-12">
+                    <label class="required-field">{{'banner_label'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row col-xs-12 radioDiv noPadding">
+                        <div>
+                            <label  for="sbimg">
+                                <input type="radio" ng-model="newStreamData.sbannerchoice" value="image" id="sbimg"><span class="opt-title" tooltip-placement="right" tooltip="{{'png_file_recommended'| i18nString}}">{{'image'| i18nString}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label  for="sbcolor">
+                                <input type="radio" ng-model="newStreamData.sbannerchoice" value="color" id="sbcolor"><span class="opt-title"  tooltip-placement="right" tooltip="{{'bot_color'| i18nString}}">{{'use_color'| i18nString}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row col-xs-12 noPadding"  ng-if="newStreamData.sbannerchoice=='image'" >
+                        <div class="input-group">
+                            <input type="text" name="smBannerFile" class="form-control" placeholder="{{'small_banner_place'| i18nString}}" required readonly ng-model="newStreamData.sBanner.fileName">
+                            <div class="input-group-addon btn-file">{{'choose_file'| i18nString}}<i class="fa fa-spinner fa-spin" ng-show="smBannerUploading"></i> <input type="file" file-model="newStreamData.smBannerFile" id="smBannerFile" name="smBannerFile" required ng-disabled="smBannerUploading" on-file-change="uploadSmallStreamBanner"/></div>
+                        </div>
+                        <div ng-show="botStoreSettingsForm.smBannerFile.$dirty">
+                            <div error-alert ng-show="botStoreSettingsForm.smBannerFile.$error.required" class="text-danger form-error-text"> {{'Small_banner_error'| i18nString}}</div>
+                        </div>
+                        <div ng-show="bSfileExtensionError" class="text-danger form-error-text"> {{'png_file'| i18nString}} </div>
+                        <div ng-show="bSiconRequiredError" class="text-danger form-error-text">{{'Icon_error'| i18nString}} </div>
+                        <div class="uploads" ng-show="newStreamData.sBanner.fileName">
+                            <div class="alert alert-success alert-sm">
+                                <span class="pointer-hand" ng-click="deleteStreamSBanner()"><i class="fa fa-times"></i></span>
+                                <span class="content"> {{newStreamData.sBanner.fileName}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding">
+                <div class="col-xs-12">
+                    <label class="required-field" tooltip-placement="right" tooltip="{{'bot_store_select_category_marketplace_tooltip'| i18nString}}"> {{'category_name'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12" ng-show="displayMode === 'view'">
+                    {{newStreamData.category.name}}
+                </div>
+                <div class="col-xs-12" ng-show="displayMode !== 'view'">
+                    <select multiple class="full-width" ui-select2="categoryConfig" ng-model="newStreamData.categoryIds"  id="category" name="category" required>
+                        <option ng-repeat="category in categories" ng-if="!category.subCategories" value="{{category._id}}">{{category.name}}</option>
+                    </select>
+                    <div ng-show="botStoreSettingsForm.category.$dirty">
+                        <div error-alert ng-show="botStoreSettingsForm.category.$error.required" class="text-danger form-error-text">{{'bot_category_req'| i18nString}} </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="{{'bot_information_tooltip'| i18nString}}"> {{'Tagline'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.tagline}}
+                </div>
+                <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'">
+                    <input type="text" ng-model="newStreamData.tagline" class="form-control" name="tagline" ng-minlength="1" maxlength="200" />
+                    <div ng-show="botStoreSettingsForm.tagline.$dirty">
+                        <div error-alert ng-show="botStoreSettingsForm.tagline.$error.required" class="text-danger form-error-text">{{'bot_tagline_req'| i18nString}} </div>
+                        <div class="pull-right" ng-if="newStreamData.tagline.length > 0">{{(200-newStreamData.tagline.length)+ char_remaining}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="">{{'homepage_link'| i18nString}}</label>
+                </div>
+                <div class="col-xs-10" ng-show="displayMode === 'view'">
+                    {{newStreamData.websiteUrl}}
+                </div>
+                <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'">
+                    <input  class="form-control" url-validate type="url" name="websiteUrl" ng-model="newStreamData.websiteUrl" id="url" placeholder="{{'enter_bots_website_url_placeholder'| i18nString}}">
+                    <div ng-show="botStoreSettingsForm.websiteUrl.$error.url">
+                        <div error-alert>
+                            <span>{{'please_provide_valid_url'| i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="{{'enter_youtube_link_tooltip'| i18nString}}">{{'bot_demo_link'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.demoYoutubeLink}}
+                </div>
+                <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'">
+                    <input  class="form-control" type="text" name="demoYoutubeLink" ng-model="newStreamData.demoYoutubeLink" ng-pattern="validateYoutubeURL"  placeholder=" {{'enter_bot_demo_video_placeholdr'| i18nString}}">
+                    <div ng-show="botStoreSettingsForm.demoYoutubeLink.$dirty">
+                        <div error-alert ng-show="botStoreSettingsForm.demoYoutubeLink.$error.pattern" class="text-danger form-error-text">{{'please_enter_valid_youtube_url'| i18nString}} </div>
+                    </div>                   
+                </div>
+            </div>
+            <div class="col-xs-12  form-group">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="{{'enter_web_url_tooltip'| i18nString}}">{{'link_to_help'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.botDocLink}}
+                </div>
+                <div class="col-xs-12  noPadding" ng-show="displayMode !== 'view'">
+                    <input  class="form-control" url-validate type="url" name="botDocLink" ng-model="newStreamData.botDocLink"  placeholder="{{'enter_support_documentation_link_placeholder'| i18nString}}">
+                    <div ng-show="botStoreSettingsForm.botDocLink.$error.url">
+                        <div error-alert>
+                            <span>{{'please_provide_valid_url'| i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group">
+                <div class="col-xs-12 labelling noPadding">
+                    <label tooltip-placement="right" tooltip="{{'search_keywords_will_help_tooltip'| i18nString}}">{{'search_keywords'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.keywords}}
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                    <input type="text" class="form-control" ng-model="newStreamData.keywords" id="keywords" placeholder="{{'enter_multiple_keywords_placeholder'| i18nString}}">
+                </div>
+            </div>
+        </fieldset>
+     </form> -->
+
+<form name="botStoreSettingsForm" class="botStoreSettingsForm form-width-50" novalidate="true">
+     <div class="botStoreContainer">
+            <div class="title">{{'bot_store_settings' | i18nString}}</div>
+            <div class="kr-sg-input-text" id="nameTitle">
+                <div class="label-text">{{'bot_title' | i18nString}}</div>
+                <input type="text" id="_botName" placeholder="Enter your Bot’s Title" class="input-text" ng-minlength="1" maxlength="50" name="botTitle" ng-model="newStreamData.name" ng-pattern="validateBotName" ng-required="true">
+                <div ng-show="botStoreSettingsForm.botTitle.$dirty">
+                        <div error-alert  ng-show="botStoreSettingsForm.botTitle.$error.required" class="text-danger form-error-text">{{'bot_title_required' | i18nString}}</div>
+                        <div error-alert ng-show="botStoreSettingsForm.botTitle.$error.minlength" class="text-danger form-error-text"> {{'invalid_bot_title' | i18nString}} </div>
+                        <div error-alert ng-show="botStoreSettingsForm.botTitle.$error.pattern" class="text-danger form-error-text">{{'bot_allowed_desc' | i18nString}}</div>
+                       <div class="pull-right" ng-if="newStreamData.name.length > 0">{{(50-newStreamData.name.length)+ char_remaining}}</div>
+                </div>
+            </div>  
+            <div class="kr-sg-input-text-area">
+                <div class="label-text">{{'description_sample' | i18nString}}</div>
+                  <textarea placeholder="Describe your bot in couple of lines" class="input-text" ng-minlength="1" maxlength="2048" ng-required="true" name="botDescription" ng-model="newStreamData.description"></textarea>
+                  <div ng-show="botStoreSettingsForm.botDescription.$dirty">
+                        <div error-alert ng-show="botStoreSettingsForm.botDescription.$error.required" class="text-danger form-error-text">
+                            {{'bot_description_required' | i18nString}}
+                        </div>
+                         <div class="pull-right" ng-if="newStreamData.description.length > 0">{{(2048-newStreamData.description.length)+ char_remaining}}</div>
+                  </div>
+            </div>
+            <div class="kr-sg-input-text-area" id="overview">
+                <div class="label-text">{{'overview' | i18nString}}</div>
+                <div class="overview-container">
+                    <markdown-editor ng-model="newStreamData.overview" callback="storeEditorCB"></markdown-editor>
+                    <div error-alert ng-show="!newStreamData.overview.length && onSubmit" class="text-danger form-error-text">
+                            {{'overview_required' | i18nString}}
+                    </div>
+                </div>
+                 
+            </div>
+            <div class="kr-sg-dropdowns" id="domain">
+                <div class="label-text">{{'select_domain' | i18nString}}</div>
+                <div class="dropdown dropdown-open">
+                    <button class="dropdown-toggle dropdown-input" type="button" data-toggle="dropdown">{{selectedDomain.domain?selectedDomain.domain.name:'Choose an option'}}</button> 
+                    <input type="text" id="domain" name="selectedDomain" ng-model="newStreamData.domainId" ng-hide="true" ng-required="true">                                           
+                    <ul class="dropdown-menu content-menu" perfect-scroll  dynaoffset="-300">
+                      <li ng-click="selectDomain(category)" ng-repeat="category in categories"><a href="#">{{category.name}}</a></li>
+                    </ul>
+                  </div>
+                  <div error-alert ng-show="botStoreSettingsForm.selectedDomain.$dirty && botStoreSettingsForm.selectedDomain.$error.required" class="text-danger form-error-text">
+                            {{'domain_required' | i18nString}}
+                    </div>
+            </div>
+            <div class="kr-sg-dropdowns" id="complexity">
+                <div class="label-text">{{'level_complexity' | i18nString}}</div>
+                <div class="dropdown dropdown-open">
+                    <button class="dropdown-toggle dropdown-input" type="button" data-toggle="dropdown">{{complexity.name?complexity.name:'Choose an option'}}</button>
+                    <input name="complexity" ng-hide="true" ng-model="newStreamData.complexity" ng-required="true">                                      
+                    <ul class="dropdown-menu content-menu">
+                      <li ng-click="selectComplexity('Advanced')"><a href="javascript:void(0)">{{'advanced' | i18nString }}</a></li>
+                      <li ng-click="selectComplexity('Basic')"><a href="javascript:void(0)">{{'basic' | i18nString }}</a></li>
+                       <li ng-click="selectComplexity('Pro')"><a href="javascript:void(0)">{{'pro' | i18nString }}</a></li>
+                    </ul>
+                  </div>
+                  <div error-alert ng-show="botStoreSettingsForm.complexity.$dirty && botStoreSettingsForm.complexity.$error.required" class="text-danger form-error-text">
+                           {{'level_complexity_required' | i18nString}}
+                    </div>
+            </div>
+            <div class="kr-sg-dropdowns">
+                <div class="label-text">Visibility</div>
+                <div class="dropdown dropdown-open">
+                        <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{selectedVisibilty?selectedVisibilty.name:'Choose an Option'}}</button>
+                        <ul class="dropdown-menu content-menu">
+                              <li ng-click="setVisibility(visibility)" ng-repeat="visibility in visibilityOptions"><a href="#">{{visibility.name}}</a></li>
+                             
+                        </ul>
+                </div>
+            </div>
+            <!-- <div class="kr-sg-dropdowns">
+                <div class="label-text">Use case(s)</div>
+                  <tags-input min-length="0" max-length="128" placeholder="Select and add" 
+                    ng-model="context.useCases" add-on-comma="false" add-from-autocomplete-only = 'true' show-on-focus='true' replace-spaces-with-dashes="false">
+                            <auto-complete auto-complete-id="usecase{{$index}}"  id="usecase{{$index}}" min-length="0"  select-first-match='false' highlight-matched-text="false" source="useCases"></auto-complete>
+                    </tags-input>
+            </div>  -->
+            <div class="kr-sg-tags" id="features">
+                 <div class="label-text">{{'bot_features' | i18nString}}</div>
+                  <tags-input min-length="0" max-length="128" placeholder="Type & Press Enter" 
+                    ng-model="context.features" replace-spaces-with-dashes="false" add-on-comma="false" add-from-autocomplete-only = 'true' show-on-focus='true' >
+                            <auto-complete auto-complete-id="feature{{$index}}"  id="feature{{$index}}" min-length="0" select-first-match='false' max-results-to-show="{{botFeatures.length}}" highlight-matched-text="false" source="botFeatures"></auto-complete>
+                    </tags-input>
+                  <div error-alert ng-show="!context.features.length && onSubmit" class="text-danger form-error-text">
+                            {{'bot_features_required' | i18nString}}
+                    </div>
+            </div>
+            <div class="kr-sg-tags" id="products">
+                 <div class="label-text">{{'bot_products' | i18nString}}</div>
+
+                  <tags-input min-length="0" max-length="128" placeholder="Type & Press Enter" 
+                    ng-model="context.supportedProducts" replace-spaces-with-dashes="false" add-on-comma="false" add-from-autocomplete-only = 'true' show-on-focus='true' >
+                            <auto-complete auto-complete-id="product{{$index}}"  id="product{{$index}}" min-length="0" select-first-match='false'  highlight-matched-text="false" source="botProducts"></auto-complete>
+                    </tags-input>
+                  <div error-alert ng-show="!context.supportedProducts.length && onSubmit" class="text-danger form-error-text">
+                           {{'bot_products_required' | i18nString}}
+                    </div>
+                    <!-- <div class="dropdown dropdown-open">
+                        <button class="dropdown-toggle dropdown-input" type="button" data-toggle="dropdown">{{newStreamData.supportedProducts?newStreamData.supportedProducts[0]:'Choose an Option'}}</button>
+                         <input name="supportedProducts" ng-hide="true" ng-model="newStreamData.supportedProducts" ng-required="true">
+                        <ul class="dropdown-menu content-menu">
+                              <li ng-click="setProduct(product)" ng-hide="product === 'Process App'" ng-repeat="product in botProducts"><a href="#">{{product}}</a></li>
+                             
+                        </ul>
+                    </div>
+                    <div error-alert ng-show="botStoreSettingsForm.supportedProducts.$dirty && botStoreSettingsForm.supportedProducts.$error.required" class="text-danger form-error-text">
+                           {{'bot_products_required' | i18nString}}
+                    </div> -->
+            </div>
+
+            <div class="kr-sg-fileupload divider-pb-20" id="icon">
+                <div class="label-text">{{'bot_icon' | i18nString}}</div>
+                <div class="custom-file-icon">
+                    <div ng-show="!newStreamData.icon.iconName">
+                        <label class="custom-file-label m-0 font-weight-normal" for="botIcon">
+                            <span><img ng-src="{{uploadImgIcon}}" class="paddingRight5 pos-rel-top">{{'upload_bot_icon' | i18nString}}</span>
+                        </label>
+                        <input type="file" class="custom-file-input hide" id="botIcon" aria-describedby="inputGroupFileAddon01" file-model="icon" on-file-change="uploadBotIcon">
+                        <span ng-show="iconUploading"><i class="fa fa-spinner fa-spin"></i><span> {{'botIconUpload' | i18nString}}</span></span>
+                    </div>
+                    
+             
+                    <div class="uploadedImg" ng-show="newStreamData.icon.iconName">
+                        <div class="uploadSuccesMsg">
+                            <img ng-src="{{fileNameIndicatorIcon}}" class="fileNameIndicator">
+                            <p class="fileName">{{newStreamData.icon.iconName}}</p>
+                            <img ng-src="{{trashBlackIcon}}" class="trashIcon" ng-click="deleteBotIcon()">
+                        </div>
+                    </div>
+                </div>
+                 <div error-alert ng-show="!newStreamData.icon.iconName && onSubmit" class="text-danger form-error-text">
+                            {{'bot_icon_required' | i18nString}}
+                  </div>
+            </div>
+            <div class="kr-sg-fileupload divider-pb-20" id="icon">
+                <div class="label-text">Bot Thumbnail</div>
+                <div class="newBannerThumbnail">
+                    <div class="newBannerThumbnailImg">
+                       <img src="{{thumbnailMainIcon}}" ng-src="{{thumbnailMainIcon}}" />
+                       <div class="newBannerThumbnailBtn"><button class="kr-sg-button-secondary"
+                        ng-click="showThumbnailModal()">Change Thumbnail</button></div>
+                    </div>
+
+                 </div>
+                <!-- <div class= "thumbnailIcon">
+                    <img ng-src="{{fileNameIndicatorIcon}}" class="fileNameIndicator">
+                <div class="custom-file-icon thumbnailCustom">
+                    <div ng-show="!newStreamData.icon.iconName">
+                        <label class="custom-file-label m-0 font-weight-normal">
+                            <span ng-click="showThumbnailModal()"><img ng-src="{{uploadIndicatorIcon}}" class="paddingRight5 pos-rel-top"> Change Thumbnail </span>
+                        </label>
+                    </div>
+                </div>
+               </div> -->
+                 <!-- <div error-alert ng-show="!newStreamData.icon.iconName && onSubmit" class="text-danger form-error-text">
+                            {{'bot_icon_required' | i18nString}}
+                  </div> -->
+            </div>
+            <div class="group-radiobutton">
+                <div class="label-text">{{"Banner_Illustration" | i18nString}}<span class="optional">({{'optional' | i18nString}})</span></div>
+                <div>
+                    <div class="kr-sg-fileupload divider-pb-20" id="banner">
+                            <div class="custom-file-icon">
+                                <div ng-show="!newStreamData.botBanner.bannerFileName">
+                                    <label class="custom-file-label font-weight-normal" for="botBanner">
+                                    <span>
+                                       <img ng-src="{{uploadImgIcon}}" class="paddingRight5 pos-rel-top">Upload Image
+                                    </span>
+                                    </label>
+                                    <input type="file" class="custom-file-input hide" id="botBanner" aria-describedby="botBanner" file-model="botBanner" on-file-change="uploadBotBanner">
+                                    <span ng-show="botBannerUploading"><i class="fa fa-spinner fa-spin"></i><span> {{'imageUpload' | i18nString}}</span></span>
+                                 </div>
+                                <div class="uploadedImg" ng-show="newStreamData.botBanner.bannerFileName">
+                                    <div class="uploadSuccesMsg">
+                                        <img ng-src="{{fileNameIndicatorIcon}}" class="fileNameIndicator">
+                                        <p class="fileName">{{newStreamData.botBanner.bannerFileName}}</p>
+                                        <img ng-src="{{trashBlackIcon}}" class="trashIcon" ng-click="deleteBotBanner()">
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                           
+                            <!-- <div error-alert ng-show="!newStreamData.botBanner.bannerFileName && newStreamData.bannerGraphics === 'image' && onSubmit " class="text-danger form-error-text">
+                                        {{'bot_banner_required' | i18nString}}
+                             </div> -->
+                    </div>
+                </div>          
+            </div>
+            <div class="kr-sg-input-text">
+                <div class="label-text">{{'bot_multimedia' | i18nString}} <span class="optional"> ({{'optional' | i18nString}})</span></div>
+                <input type="text" placeholder="Enter Video link" class="input-text width80" name="videoLink" ng-model="videoLink" ng-pattern="/^(http|https)?:\/\/(www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)/">
+                <span class="addBtn" ng-class="{'disabled':multiMediaList.length >= 5}" ng-disabled="multiMediaList.length >= 5" ng-click="addMedia(botStoreSettingsForm,videoLink)">{{'add' | i18nString}}</span>
+                <div class="infoDesc">
+                    <img ng-src="{{infoBlueIcon}}">
+                    <p class="desc">E.g. https://vimeo.com/49583118. You can add upto 5 video links </p>
+                </div>
+                <div class="mediaList" ng-repeat="media in multiMediaList track by $index">
+                         <p class="fileName">{{media}}</p>
+                         <img ng-src="{{trashBlackIcon}}" class="trashIcon" ng-click="deleteMediaFile($index)">
+                </div>
+                <div error-alert class="text-danger form-error-text" ng-show="botStoreSettingsForm.videoLink.$error.pattern">{{'valid_vimeo' | i18nString}}</div>
+            </div>
+
+            <div class="group-radiobutton">
+                    <!-- <div class="label-text">{{'banner_graphics' | i18nString}}</div>
+                    <div class="kr-sg-radiobutton">
+                        <input id="bbcolor" value="color" name="radio" ng-model="newStreamData.bannerGraphics" class="radio-custom" type="radio">
+                        <label for="bbcolor" class="radio-custom-label">{{'use_color' | i18nString}}</label>
+                    </div>
+                    <div class="kr-sg-radiobutton">
+                        <input value="image" id="bbimg" name="radio" ng-model="newStreamData.bannerGraphics" class="radio-custom" type="radio">
+                        <label for="bbimg" class="radio-custom-label">{{'image' | i18nString}}</label>
+                    </div> -->
+                    
+
+                    <!-- <div ng-show="newStreamData.bannerGraphics === 'image'">
+                        <div class="kr-sg-fileupload divider-pb-20" id="banner">
+                            <div class="label-text">{{'bot_banner' | i18nString}}</div>
+                                <div class="custom-file-icon">
+                                    <div ng-show="!newStreamData.botBanner.bannerFileName">
+                                        <label class="custom-file-label font-weight-normal" for="botBanner">
+                                        <span>
+                                           <img ng-src="{{uploadImgIcon}}" class="paddingRight5 pos-rel-top">{{'upload_bot_banner' | i18nString}}
+                                        </span>
+                                        </label>
+                                        <input type="file" class="custom-file-input hide" id="botBanner" aria-describedby="botBanner" file-model="botBanner" on-file-change="uploadBotBanner">
+
+                                        <div class="infoDesc">
+                                            <img ng-src="{{infoBlueIcon}}">
+                                            <span><i class="bxpw-icon-info"></i></span>
+                                            <p class="desc">{{'image_dimension_desc' | i18nString}}</p>
+                                        </div>
+                                     </div>
+                                    <div class="uploadedImg" ng-show="newStreamData.botBanner.bannerFileName">
+                                        <div class="uploadSuccesMsg">
+                                            <img ng-src="{{fileNameIndicatorIcon}}" class="fileNameIndicator">
+                                            <p class="fileName">{{newStreamData.botBanner.bannerFileName}}</p>
+                                            <img ng-src="{{trashBlackIcon}}" class="trashIcon" ng-click="deleteBotBanner()">
+                                        </div>
+                                    </div>
+                                     
+                                </div>
+                               
+                                <div error-alert ng-show="!newStreamData.botBanner.bannerFileName && newStreamData.bannerGraphics === 'image' && onSubmit " class="text-danger form-error-text">
+                                            {{'bot_banner_required' | i18nString}}
+                                 </div>
+                    
+                        </div>
+                    </div> -->
+                    
+                    <!-- <div ng-show="newStreamData.bannerGraphics === 'color'">
+                        <div class="kr-sg-input-text paddingTop10 position-relative color_hex_code">
+                        <div class="label-text">Color Hex Code</div>
+                        <input type="text" color-picker class="input-text" ng-model="newStreamData.color" name="color" required>
+                        <input type="text" class="input-text colorCode" placeholder="{{'select_color'| i18nString}}" ng-model="newStreamData.color" name="streamColor" required>
+                        <div ng-show="botStoreSettingsForm.color.$dirty">
+                        <div error-alert ng-show="botStoreSettingsForm.color.$error.required" class="text-danger form-error-text"> {{'color_info'| i18nString}} </div>
+                        </div>
+                        </div>
+                    </div> -->
+                     <div class="kr-sg-checkbox marginTop10">
+                        <input id="checkbox-1" class="checkbox-custom" ng-model="newStreamData.promoteInStore" type="checkbox">
+                        <label for="checkbox-1" class="checkbox-custom-label">{{'promote_store' | i18nString}}</label>
+                    </div> 
+                   
+            </div>
+
+            <div class="kr-sg-dropdowns">
+                <div class="label-text">{{'bot_integration' | i18nString}} <span class="optional">({{'optional' | i18nString}})</span></div>
+                <div class="kr-sg-input-inline-search dropdown dropdown-open line-height-0 botIntegrations">
+                     <input type="text" placeholder="Search" class="input-search dropdown-toggle dropdown-input paddingLeft25" ng-model="search.configText" ng-keyup="searchIntegrationList(search.configText)" data-toggle="dropdown">
+                     <img ng-src="{{searchIcon}}" class="search-icon">
+                     <img ng-src="{{closeIcon}}" ng-show="search.configText.length" class="close-icon" ng-click="closeSearch()">
+                      <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="integrationListCopy.length?-460:-185">
+                        <ng-container ng-if="!integrationListCopy.length">
+                           <li class="">
+                            <span class="noRecords">
+                                <a href="javascript:void(0)" class="desc-norecord">{{'not_finding' | i18nString}}</a>
+                                <span class="add" ng-click="addIntegrationModal()">{{'add' | i18nString}}</span>
+                            </span> </li>
+                       </ng-container>
+                           <ng-container ng-if="integrationListCopy.length">
+                            <li class="custom-text integrationRecord"  ng-click="addToIntegration(integration)"  ng-repeat="integration in integrationListCopy">
+                                    <span class="integrationName"><a href="javascript:void(0)">{{integration.name}}</a></span>
+                                    <span class="integrationIcon"><img ng-src="{{integration.integrationFileIdURL}}"></span>
+                            </li>
+                            </ng-container>
+                                 
+                     </ul>
+              
+                </div>
+            </div>
+           <div class="savedIntegration col-md-12 col-xs-12 noPadding marginTop10" ng-if="newStreamData.integrations.length">
+                 <div class="channelName col-xs-6 col-md-6 noPadding" >{{'integration_name' | i18nString}}</div>
+                 <div class="icon iconColor col-xs-6 col-md-6 padding0" >{{'icon' | i18nString}}</div>
+                 <div class="integrationList col-xs-12" ng-repeat="integration in newStreamData.integrations track by $index">
+                     <div class="col-xs-6 col-md-6 channelName channelColor noPadding">{{integration.name}}</div>
+                     <div class="col-xs-6 col-md-6 icon noPadding"><img ng-src="{{integration.integrationFileIdURL}}" class="integrationIcon"></div>
+                      <img ng-src="{{trashBlackIcon}}" class="trashIcon" ng-click="deleteIntegration($index)">
+                 </div>
+             </div>
+
+            <div class="kr-sg-fileupload divider-pb-20 d-inline-block">
+                <div class="label-text">{{'specification_document' | i18nString}} <span class="optional">({{'optional' | i18nString}})</span></div>
+                <div class="custom-file-icon">
+                    <div ng-show="!newStreamData.specificationDocument.specDocumentInstFileName">
+                        <label class="custom-file-label font-weight-normal" for="specificationDocument">
+                            <span><img ng-src="{{uploadIndicatorIcon}}" class="paddingRight5 pos-rel-top">{{'upload_a_pdf' | i18nString }}</span>
+                        </label>
+                       <input type="file" class="custom-file-input hide" id="specificationDocument" aria-describedby="specificationDocument" file-model="specificationDocument" on-file-change="uploadSpecificationDocument">
+                       <span ng-show="specificdocumentUploading"><i class="fa fa-spinner fa-spin"></i><span> {{'fileUpload' | i18nString}}</span></span>
+                   </div>
+                       <div class="uploadedImg" ng-show="newStreamData.specificationDocument.specDocumentInstFileName">
+                            <div class="uploadSuccesMsg">
+                                <img ng-src="{{fileNameIndicatorIcon}}" class="fileNameIndicator">
+                                <p class="fileName">{{newStreamData.specificationDocument.specDocumentInstFileName}}</p>
+                                <img ng-src="{{trashBlackIcon}}" class="trashIcon" ng-click="deletespecificationDocument()">
+                            </div>
+                        </div>
+                    
+                </div>
+               
+                    
+            </div>
+
+             <div class="kr-sg-input-text">
+                <div class="label-text">{{'homepage_link' | i18nString}} <span class="optional">({{'optional' | i18nString}})</span></div>
+                <input type="text" name="pagelink" placeholder="Enter your Bot’s website URL" class="input-text" ng-model="newStreamData.homePageUrl" ng-pattern="/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/" >
+                 <div error-alert ng-show="botStoreSettingsForm.pagelink.$dirty &&  botStoreSettingsForm.pagelink.$error.pattern" class="text-danger form-error-text">
+                           {{'invalid_homepage_link' | i18nString}}
+                        </div>
+              
+            </div> 
+
+            <div class="kr-sg-input-text">
+                    <div class="label-text">{{'link_to_help' | i18nString}} <span class="optional">({{'optional' | i18nString}})</span></div>
+                     <input type="text" placeholder="Enter support documentation link" class="input-text" name="helpLink" ng-pattern="/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/"  ng-model="newStreamData.helpUrl">
+                     <div error-alert ng-show="botStoreSettingsForm.helpLink.$dirty &&  botStoreSettingsForm.helpLink.$error.pattern" class="text-danger form-error-text">
+                           {{'invalid_link_help' | i18nString}}
+                        </div>
+                    
+            </div>
+
+  
+
+              <div class="kr-sg-input-text divider-pb-20">
+                    <div class="label-text">{{'search_keywords' | i18nString}} <span class="optional">({{'optional' | i18nString}})</span></div>
+                     <input type="text" placeholder="Enter multiple keywords seperated with commas" class="input-text" name="search_keywords" ng-model="newStreamData.keywords" ng-pattern="/^([a-zA-Z0-9]+,?\s*)+$/">
+                     <div error-alert  ng-show="botStoreSettingsForm.search_keywords.$dirty && botStoreSettingsForm.search_keywords.$error.pattern" class="text-danger form-error-text">
+                            {{'invalid_search_keyword' | i18nString}}
+                     </div>
+            </div>
+
+            <div class="sample-bot-settings" id="configInst">
+                <div class="title">{{'sample_bot_settings' | i18nString}}</div>
+                  <!--  <div class="kr-sg-input-text-area">
+                        <div class="label-text">{{'sample_bot_desc_label' | i18nString}}</div>
+                          <textarea placeholder="Placeholder text" class="input-text" name="solutionBotSettings" ng-model="newStreamData.solutionBotSettings.botDesc" ng-required="true"></textarea>
+                            <div error-alert ng-show="botStoreSettingsForm.sampleBotSettings.$dirty && botStoreSettingsForm.solutionBotSettings.$error.required" class="text-danger form-error-text">
+                                {{'sample_bot_settings_required' | i18nString}}
+                            </div>
+                             <div class="pull-right" ng-if="newStreamData.solutionBotSettings.botDesc.length > 0">{{(2048-newStreamData.solutionBotSettings.botDesc.length)+ char_remaining}}</div>
+                    </div> -->
+
+                    <div class="kr-sg-fileupload">
+                        <div class="label-text">{{'configuration_instruction_doc' | i18nString}}</div>
+                        <div class="custom-file-icon">
+                            <div ng-show="!newStreamData.instructionsFile.configInstFileName">
+                                <label class="custom-file-label font-weight-normal" for="instructionDocument">
+                                    <span><img ng-src="{{uploadIndicatorIcon}}" class="paddingRight5 pos-rel-top">{{'upload_a_pdf' | i18nString}}</span>
+                                </label>
+                               <input type="file" class="custom-file-input hide" id="instructionDocument" aria-describedby="inputGroupFileAddon01" file-model="instructionsFile" on-file-change="instructionDocument" >
+                               <span ng-show="instructiondocumentUploading"><i class="fa fa-spinner fa-spin"></i><span> {{'fileUpload' | i18nString}}</span></span>
+                            </div>
+                            <div class="uploadedImg" ng-show="newStreamData.instructionsFile.configInstFileName">
+                                    <div class="uploadSuccesMsg">
+                                        <img ng-src="{{fileNameIndicatorIcon}}" class="fileNameIndicator">
+                                        <p class="fileName">{{newStreamData.instructionsFile.configInstFileName}}</p>
+                                        <img ng-src="{{trashBlackIcon}}" class="trashIcon" ng-click="deleteinstructionsFile()">
+                                    </div>
+                            </div>
+                           
+                    
+                        </div>
+                       <!--  <div error-alert ng-show="!newStreamData.instructionsFile.configInstFileName && onSubmit" class="text-danger form-error-text">
+                               {{'instruction_doc_required' | i18nString}}
+                        </div> -->
+                    </div>
+                    <div class="kr-sg-input-text">
+                        <div class="label-text">{{'configuration_instruction_url' | i18nString}}</div>
+                         <input type="text" name="configInstURL" placeholder="Enter your Configuration Instruction URL" class="input-text" ng-pattern="/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?/"  ng-model="newStreamData.solutionBotSettings.configInstURL">
+                         <div error-alert ng-show="botStoreSettingsForm.configInstURL.$dirty &&  botStoreSettingsForm.configInstURL.$error.pattern" class="text-danger form-error-text">
+                           {{'invalid_config_url' | i18nString}}
+                        </div>
+                    </div>
+                    <!-- <div class="form-savebtn-block">
+                        <button class="btn btn-xs">Save</button>
+                    </div> -->
+            </div>
+
+
+     </div>
+</form>
+<div class="modal fade" id="newIntegration" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">                                 
+          <div>
+            <h4 class="modal-title">{{'new_integration' | i18nString}}</h4>
+          </div>
+          <div>
+              <button type="button" class="close" ng-click="closeIntegrationModal()"><img class="close-icon" ng-src="{{closeIcon}}"></button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <form name="newIntegrationForm">
+              <div class="kr-sg-input-text">
+                  <div class="label-text-icon">{{'integration' | i18nString}}</div>
+                  <input name="integrationName" class="input-text" placeholder="Name" ng-model="newIntegration.name">
+              </div>
+              <div class="integrationIcon marginTop10">
+                  <label class="label-text-icon" for="integrationCopy">{{'integration_icon' | i18nString}}</label>
+                  <div class="integration-icon-label" ng-show="!newIntegration.integrationIcon.name">
+                      <label class="custom-file-label font-weight-normal"  for="integrationIcon">
+                                <span><img ng-src="{{uploadIndicatorIcon}}" class="paddingRight5 pos-rel-top">{{'assign_icon' | i18nString }}</span>
+                            </label>
+                           <input type="file" class="custom-file-input hide" id="integrationIcon" aria-describedby="inputGroupFileAddon01" file-model="newIntegration.integrationIcon" on-file-change="uploadIntegrationIcon">
+                  </div>
+                 <div class="uploadedImg" ng-show="newIntegration.integrationIcon.name">
+                        <div class="uploadSuccesMsg">
+                            <img ng-src="{{fileNameIndicatorIcon}}" class="fileNameIndicator">
+                            <p class="fileName">{{newIntegration.integrationIcon.name}}</p>
+                            <img ng-src="{{trashBlackIcon}}" class="trashIcon" ng-click="deleteIntegrationIcon()">
+                        </div>
+                </div>
+                <div class="infoDesc">
+                    <img ng-src="{{infoBlueIcon}}">
+                    <p class="desc">{{'image_dimension_integration_desc' | i18nString}}</p>
+                </div>
+              </div>
+             
+          </form>
+        </div>
+        <div class="modal-footer">                               
+          <button class="kr-sg-button-primary btn_md addbtn" ng-click="addToIntegrationList(newIntegration)">{{'add' | i18nString}}</button>
+          <button class="kr-sg-button-secondary btn_md cancelbtn" ng-click="closeIntegrationModal()">{{'cancel' | i18nString}}</button>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="thumbnailCustomIcons" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <div class="common-trigger-block">
+               <div class="common-trigger-nav-pills">
+                  <ul role="tablist" class="nav nav-pills">
+                     <li class="nav-item active"><a data-toggle="pill" href="#Icons" ng-click="switchThumbnailTabs('icons')" class="nav-link active">Icons</a>
+                     </li>
+                     <li class="nav-item"><a data-toggle="pill" href="#Upload" ng-click="switchThumbnailTabs('upload')" class="nav-link">Upload</a></li>
+                  </ul>
+               </div>
+            </div>
+         <i class="btx-close" ng-click="closeConfirmModal()"></i>
+      </div>
+      <div class="modal-body">
+        <div class="common-trigger-block">
+           <div class="tab-content">
+              <div id="Icons" class="tab-pane active">
+                 <div class="newBannerThumbnailList">
+                    <div class="newThumbnail" ng-repeat="image in imageUrl track by $index" ng-click="uploadThumbailIcon(image)" ng-class="{'thumbnailActive':image.active}">
+                       <img src="{{image.image}}" />
+                    </div>   
+                 </div>
+              </div>
+              <div id="Upload" class="tab-pane fade">
+                 <div class="customThumbnailUploadBlock">
+                    <div class="kr-sg-multi-line-notification warning" ng-show="showFileUploadThumbnail">
+                       <div class="bulb-icon pb-1"><span><i class="bxpw-icon-warn warning-icon-color"></i></span></div>
+                       <div class="tost-text pl-2">
+                          <ul class="p-0 pr-2">
+                             <li class="py-1">
+                                <div class="tost-text-hding">Note</div>
+                             </li>
+                             <li class="py-1">
+                                <div class="tost-text-para">File upload is limited to 500kb. Images should not exceed 250x250 pixels.</div>
+                             </li>
+                          </ul>
+                       </div>
+                    </div>
+                    <div class="uploadCustomThumbnailBtnBlock" ng-show="showFileUploadThumbnail">
+                       <!-- Upload image wrapper -->
+                       <div class="upload-btn-wrapper">
+                        <label class="custom-file-label m-0 font-weight-normal" for="botIcon1">
+                            <span>Upload Image</span>
+                        </label>
+                        <input type="file" class="custom-file-input hide" id="botIcon1" aria-describedby="inputGroupFileAddon01" file-model="thumbnailImage" on-file-change="uploadThumbailBotIcon">
+                          <!-- <button type="button" class="bx-pw-btnPrimary w-100 m-0" click="uploadBotIcon()">Upload Image</button> -->
+                          <div class="error-text pt-2 d-none" ng-if="showErrorThumbnail">Please Upload appropriate image size.</div>
+                        </div>
+                    </div>
+                    <!-- Upload image wrapper -->
+  
+                    <!-- Preview image wrapper -->
+                    <div class="customThumbnailPreviwBlock" ng-if="showResetOption">
+                       <div class="thumbnailPreview text-center">
+                          <img ng-src="{{profileImgLinkPrefix}}" id="imageThumbnail"/>
+                       </div>
+                       <div class="reset-btn-wrapper">
+                          <a class="bx-pw-href" ng-click="resetThumbnail()"><span class="reset-icon"><i class="fa fa-refresh"></i></span>Reset</a>
+                       </div>
+                    </div>
+                    <!-- Preview image wrapper -->
+                 </div>
+  
+  
+  
+  
+              </div>
+           </div>
+        </div>
+     </div>
+     <div class="modal-footer" ng-if="showThumbnailFooter">
+        <button type="button" class="btn kr-btn-primary deleteConfirm" ng-click="saveThumbnailValues(thumbnailImage)">{{saving?'Saving..':'Save'}}</button>
+        <button type="button" class="btn closeCancel" ng-click="closeConfirmModal()">Cancel</button>
+     </div>
+      </div>
+    </div>
+</div>

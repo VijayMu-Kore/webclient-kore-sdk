@@ -1,0 +1,68 @@
+<div  class='appsDetailContainer' ng-show="views.apps || true">
+    <div class='appsWrp'>
+        <div class="row divForm">
+            <div class="col-xs-12">
+                <div class="apps-header">
+                    <div class="header-wrp">
+                        <div class='main-header'>{{'apps_name'| i18nString}}</div>
+                        <div class='sub-header'>{{'create_manage'| i18nString}}</div>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-primary createAppBtn" ng-click="createApp()" >{{'create_app'| i18nString}}</button>
+                        <a target="_blank" class="createAppHelp"
+                        ng-href="{{$root.helpLinks.CREATE_APP}}" >
+                            <i class="fa fa-question-circle fa-lg help-link help-link-mapping"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="apps-content">
+                    <div class='loading-apps' ng-show="loadingApps && !apps">
+                        <i  class="fa fa-spinner fa-spin"/> {{'loading_apps'| i18nString}} 
+                    </div>
+                    <!-- <div class='loading-apps' ng-show="loadingApps && apps">
+                        <i  class="fa fa-spinner fa-spin"/> Refreshing Apps...
+                    </div>-->
+                    <div  ng-if="apps.length>0" class='apps-list'>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{'app_label'| i18nString}}</th>
+                                    <th class="disabledHead">{{'clientId_label'| i18nString}}</th>
+                                    <th class="disabledHead">{{'clientsecret_label'| i18nString}}</th>
+                                    <!-- <th class="disabledHead">Scopes</th>-->
+                                    <th class="disabledHead">{{'constants.bots'| i18nString}}</th>
+                                    <th class="disabledHead"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="app in apps">
+                                    <td>{{app.appName}}</td>
+                                    <td>{{app.clientId}}</td>
+                                    <td>{{app.clientSecret}}</td>
+                                    <!-- <td>{{app.scope.join(', ')}}</td>-->
+                                    <td>{{_.pluck(app.bots,'name').join(', ')}}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <span class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></span>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" ng-click="viewApp(app)">{{'view'| i18nString}}</a></li>
+                                                <li><a href="#" ng-click="editApp(app)">{{'edit'| i18nString}}</a></li>
+                                                <li><a href="#" ng-click="deleteApp(app)">{{'delete'| i18nString}}</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div  ng-if="apps.length<1" class='apps-empty'  >
+                        <div>{{'you_dont_have_any_apps_now'| i18nString}}</div>
+                        <div>{{'bt_chnl_rtm_chnl_create_app'| i18nString}} <a ng-click="createApp()">{{'create_app'| i18nString}}.</a></div>
+                        <div  ng-bind-html="'read_app_creation'| i18nString:({link:$root.helpLinks.CREATE_APP})">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

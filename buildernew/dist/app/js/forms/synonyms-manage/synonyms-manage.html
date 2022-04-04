@@ -1,0 +1,265 @@
+<div class="modal fade add-task-synonym full-height height-width-100" id="synonymModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" ng-click="cancelTaskSynonym()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'add_synonym_label'| i18nString}}</h4>
+      </div>
+      <div class="modal-body full-height height-width-100">
+        <form class="wf-form">
+          <div class="form-group row">
+            <label>{{'word_selected'| i18nString}}</label>
+            <input type="text" class="form-control" ng-disabled="synonym.pattern" placeholder="{{'word_selected'| i18nString}}" ng-model="synonym.pattern">
+          </div>
+          <div class="form-group row">
+            <label>{{'synoym_for'| i18nString}}</label>
+            <!-- typeahead="key as keyword.key for keyword in oldSynonyms | filter : { key : $viewValue}" -->
+            <input type="text" ng-model="synonym.intent" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="cancelTaskSynonym()">{{'cancel'| i18nString}}</button>
+        <button type="submit" class="btn btn-primary" ng-click="saveTaskSynonym()">{{'save'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade add-field-synonym" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" ng-click="cancelFieldSynonym()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'add_task_field_synonym'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <form class="wf-form">
+          <div class="form-group row">
+            <label>{{'word_selected'| i18nString}}</label>
+            <input type="text" class="form-control" ng-disabled="synonym.pattern" placeholder="{{'word_selected'| i18nString}}" ng-model="synonym.pattern">
+          </div>
+          <div class="form-group row">
+            <label>{{'task'| i18nString}}</label>
+            <select class="form-control" ng-model="synonym.intent" ng-disabled="synonym.forField">
+              <option value="">{{'select_task_name'| i18nString}}</option>
+              <option ng-repeat="task in tasks" value="{{task.name}}">{{task.name}}</option>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label>{{'task_field_label'| i18nString}}</label>
+            <select class="form-control" ng-model="synonym.field">
+              <option value="">{{'select_field_label'| i18nString}}</option>
+              <option ng-repeat="field in getSelectedTask(synonym.intent).fields" value="{{field.title}}">{{field.title}}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="cancelFieldSynonym()">{{'cancel'| i18nString}}</button>
+        <button type="submit" class="btn btn-primary" ng-click="saveFieldSynonym()">{{'save'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade manage-task-synonym" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" ng-click="cancelManageTaskSynonym()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'add_synonym_label'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <form name="manageTaskSynonymForm" class="wf-form">
+          <div class="form-group col-xs-12">
+            <label class="required-field"> <b>{{'keyword_label'| i18nString}}</b> </label>
+          </div>
+          <div class="form-group col-xs-12">
+            <input type="text" class="form-control" name="keyword" required
+              ng-model="manageSynonym.keyword"
+              placeholder="{{'bt_add_synonyms_keyword_placeholder'| i18nString}}"
+            >
+            <div  ng-show="manageTaskSynonymForm.keyword.$dirty">
+              <div error-alert ng-show="manageTaskSynonymForm.keyword.$error.required" class="text-danger"> {{'keyword_req'| i18nString}} </div>
+            </div>
+          </div>
+          <div class="form-group col-xs-12">
+            <label> <b>{{'Synonym_word'| i18nString}}</b> </label>
+          </div>
+          <div class="form-group col-xs-12">
+            <add-tags tags="manageSynonym.synonyms"></add-tags>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="cancelManageTaskSynonym(manageTaskSynonymForm)">{{'cancel'| i18nString}}</button>
+        <button type="submit" class="btn btn-primary" ng-click="saveManageTaskSynonym(manageTaskSynonymForm)">{{'save'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade manage-field-synonym" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" ng-click="cancelManageFieldSynonym()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'add_task_field_synonym'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <form name="manageFieldSynonymForm" class="wf-form">
+          <div class="form-group col-xs-12">
+            <label class="required-field"> <b>{{'task'| i18nString}}</b> </label>
+          </div>
+          <div class="form-group col-xs-12">
+            <select class="form-control" ng-model="manageFieldSynonym.task" name="task" required>
+              <option value="">{{'select_task_name'| i18nString}}</option>
+              <option ng-repeat="task in tasks" value="{{task.name}}">{{task.name}}</option>
+            </select>
+            <div  ng-show="manageFieldSynonymForm.task.$dirty">
+              <div error-alert ng-show="manageFieldSynonymForm.task.$error.required" class="text-danger"> {{'task_value_is_required'| i18nString}} </div>
+            </div>
+          </div>
+          <div class="form-group col-xs-12">
+            <label class="required-field"> <b>{{'task_field_label'| i18nString}}</b> </label>
+          </div>
+          <div class="form-group col-xs-12">
+            <select class="form-control" ng-model="manageFieldSynonym.field" name="field" required>
+              <option value="">{{'select_field_label'| i18nString}}</option>
+              <option ng-repeat="field in getSelectedTask(manageFieldSynonym.task).fields" value="{{field.title}}">{{field.title}}</option>
+            </select>
+            <div  ng-show="manageFieldSynonymForm.field.$dirty">
+              <div error-alert ng-show="manageFieldSynonymForm.field.$error.required" class="text-danger"> {{'filed_value_is_required'| i18nString}}</div>
+            </div>
+          </div>
+          <div class="form-group col-xs-12">
+            <label class="required-field"> <b>{{'Synonym_word'| i18nString}}</b> </label>
+          </div>
+          <div class="form-group col-xs-12">
+            <add-tags tags="manageFieldSynonym.synonyms"></add-tags>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="cancelManageFieldSynonym(manageFieldSynonymForm)">{{'cancel'| i18nString}}</button>
+        <button type="submit" class="btn btn-primary" ng-click="saveManageFieldSynonym(manageFieldSynonymForm)">{{'save'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="synonyms-manage col-xs-12" ng-hide="hideUi">
+<div class="col-xs-3 noPadding sidenav-container chat-response-menu">
+  <div class="sidebar-nav leftNav">
+    <ul class="workflow-sidebar">
+      <li class="pointer-hand">
+        <div >
+          <div class="wf-sidebar-step" ng-click="showType('botsynonyms')">
+            <div class="step-title" ng-class="{'active':views.botsynonyms,'disabled':!views.botsynonyms}">
+              <div class="">{{'Bot_synonyms_label'| i18nString}}</div>
+            </div>
+            <div class="step-desc"></div>
+          </div>
+        </div>
+      </li>
+      <li class="pointer-hand">
+        <div >
+          <div class="wf-sidebar-step" ng-click="showType('fieldsynonyms')">
+            <div class="step-title" ng-class="{'active':views.fieldsynonyms,'disabled':!views.fieldsynonyms}">
+              <div class="">{{'field_synonym_label'| i18nString}}</div>
+            </div>
+            <div class="step-desc"></div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="col-xs-9 rightPanel">
+  <div ng-show="views.botsynonyms">
+    <div class="row noPadding form-group field-synonyms-list rightPanelContainer">
+     
+          <div class="row ">
+            <div class="col-xs-12 ">
+              <div class="row">
+                <span class="save-ctrl pull-right">
+                  <div class="workflows-container">
+                    <div class="search ">
+                      <input focus-it tabindex="1" type="text" class="form-control" ng-model="botsearch" placeholder="{{'search_here'| i18nString}}">
+                    </div>
+                  </div>
+                </span>
+                <button class="btn btn-primary pull-right add-btn btn-sm" ng-click="api.openManageTaskSynonym()">{{'add'| i18nString}}</button>
+              </div>
+              <div class="col-xs-12 rightPanelContainer">
+                <table class="table">
+                  <tr ng-repeat="synonym in synonyms | orderBy : 'key' | filter : botsearch">
+                    <td class="col-xs-3"> {{synonym.key}} </td>
+                    <td class="col-xs-9 noPadding"><div class="col-xs-10">
+                        <add-tags tags="synonym.value"></add-tags>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="codeRed" ng-click="deleteSynonym(synonym)">{{'delete'| i18nString}}</div>
+                      </div></td>
+                  </tr>
+                </table>
+                <div class="col-xs-12 text-center" ng-show="synonyms.length==0">
+                  <div class="alert alert-sm alert-warning"> {{'no_synonyms_for_createdbot_err'| i18nString}}</div>
+                </div>
+                <div class="col-xs-12 text-center" ng-show="synonyms.length != 0 && (synonyms | orderBy : 'key' | filter : botsearch).length == 0">
+                  <div class="alert alert-sm alert-warning"> {{'no_synonyms_for_search_err'| i18nString}} </div>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+  <div ng-show="views.fieldsynonyms">
+    <div class="row noPadding form-group field-synonyms-list">
+      <div class="panel-default">
+        <div class="panel-body">
+          <div class="col-xs-12 form-group"> <br>
+            <div class="save-ctrl pull-right">
+              <div class="workflows-container">
+                <div class="search">
+                  <input focus-it tabindex="1" type="text" class="form-control" ng-model="fieldsearch" placeholder="{{'search_here'| i18nString}}">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row rightPanelContainer">
+            <div class="col-xs-12 task-info pointer-hand" ng-click="expand($index)" ng-repeat="task in tasks | orderBy : 'name' | filter : fieldsearch">
+              <div class="col-xs-6 fontSize16 textEllipsis"> {{task.name}} </div>
+              <div class="col-xs-3"> {{task.fields.length + ' Field(s)'}} </div>
+              <div class="col-xs-3 text-right"> <span class="action-btn-add" ng-click="api.openManageFieldSynonym($event,task)">{{'add'| i18nString}}</span> </div>
+              <div class="col-xs-12">
+                <div class="divider"></div>
+              </div>
+              <div class="col-xs-12" ng-show="showIndex == $parent.$index" ng-repeat="field in task.fields">
+                <div class="col-xs-4 noPadding fontSize16"> {{field.title}} </div>
+                <div class="col-xs-8">
+                  <add-tags tags="task.fieldSynonyms[field.title.toLowerCase()]"></add-tags>
+                </div>
+                <div class="col-xs-12 noPadding">
+                  <div class="divider marginTopBottom"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 text-center" ng-show="tasks.length == 0">
+              <div class="alert alert-sm alert-danger"> {{'no_field_synonyms'| i18nString}} </div>
+            </div>
+            <div class="col-xs-12 text-center" ng-show="tasks.length != 0 && (tasks | orderBy : 'name' | filter : fieldsearch).length == 0">
+              <div class="alert alert-sm alert-danger"> {{'no_field_synonyms_for_search_err'| i18nString}} </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="footer form-group noMargin" ng-hide="hideUi">
+  <div class="footerSub">
+    <div class="form-ctrl-div pull-left">
+      <button class="btn btn-default" ng-click="$parent.exit()">{{'exit_label'| i18nString}}</button>
+    </div>
+    <div class="help-hint-link"> <a target="_blank"  ng-href="{{$root.helpLinks.SYNONYMS}}" >{{'help_withpage_label'| i18nString}}</a> </div>
+    <div class="pull-right form-ctrl-div"> </div>
+  </div>
+</div>

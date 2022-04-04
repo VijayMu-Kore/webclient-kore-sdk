@@ -1,0 +1,292 @@
+<div class="animationIfLeave content-loading noPadding" ng-if="loadingSettings">
+			<span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content"> {{'please_wait'| i18nString}}</span>
+			</span>
+		</div>
+<div class="settingsContainer" ng-init="prepareSliders()" ng-class="{'read-only-div':displayMode==='VIEW'}" ng-if="!loadingSettings">
+  <div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">Settings</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent displayNone">
+            <input  placeholder="Search">
+            <i class="btx-search"></i>
+            <i class="btx-close displayNone"></i>
+        </div>
+        <div class="creationButton borderBtn displayNone">
+             <button class="btn btn-xs"> BTN Name</button>
+        </div>
+        <div class="filtersDetails displayNone">
+            <span class="filterListContainer">
+                <span class="filterCat">Languages </span>
+                <span class="filterClose">(1)</span>
+                <i class="btx-close"></i>
+            </span>
+            <span class="filterListContainer">
+                <span class="filterCat">User ID </span>
+                <span class="filterClose">(3)</span>
+                <i class="btx-close"></i>
+            </span>
+            <span class="filterListContainer">
+                <span class="filterCat">Date Period </span>
+                <span class="filterClose">(5 days)</span>
+                <i class="btx-close"></i>
+            </span>
+            <div class="dropdown moreDD">
+                <a href="#" class="moreFilters" data-toggle="dropdown">
+                    +2 more
+                    </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">
+                        <span class="filterCat">Channels </span>
+                        <span class="filterClose">(4)</span>
+                        <i class="btx-close"></i>
+                    </li>
+                    <li class="dropdown-item" >
+                        <span class="filterCat">Tasks </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </li>                       
+                </ul>
+            </div>
+            <span class="clearAllFilters">
+                <span class="filterCat">User ID </span>
+                <span class="filterClose">(3)</span>
+                <i class="btx-close"></i>
+            </span>
+        </div>
+  
+        <div class="btnActions displayNone">
+            <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+        </div>
+        <div class="titleDropdown displayNone">
+            <div class="dropdown">
+                <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Dropdown name
+                    <i class="btx-carrot-up"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">Option One</li>
+                    <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+            </div>
+        </div>
+        <div class="titleOverflow displayNone">
+            <div class="dropdown">
+                <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                    <i class="btx-overflow"></i>
+                    </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">Option One</li>
+                    <li class="dropdown-item" >Option Two</li>                       
+                </ul>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+	<div ng-if="showTrainSavingDiv" class="col-xs-12 MLSavingProgressDiv settings-threshold-saving">
+	    <div class="row saveRow">
+	        <div class="col-xs-6 intentTraining"><span class="tip paddingRight10">{{'bot_training'| i18nString}}</span><span class="trainIcon fa" ng-class="{'fa-check-circle':trainStatus.success,'fa-exclamation-circle':trainStatus.failed,'fa-spinner fa-spin':trainStatus.saving}"></span>
+	        </div>
+	        <div class="col-xs-6 text-right"><span ng-click="closeTrainSaveDiv()" class="fa fa-times"></span>
+	        </div>
+	    </div>
+	</div>
+	<div class="col-xs-12 botSynonyms noPadding">
+		<label class="wrap">{{'ddval_synonyms'| i18nString}}</label>
+		<p class="description">{{'Thresholds_bot_synonyms_ml_desc'| i18nString}}</p>
+		<div class="row">
+            <span class='toggleSwitch'>
+                <span class='toggle-text pl-10 disable' ng-class="{'toggleActive':!intentParams.useSynonyms , 'toggleInactive' : intentParams.useSynonyms}" style="position: relative; top: 1px">
+                    {{'Disable'| i18nString}}
+                </span>
+                <toggle-switch ng-model="intentParams.useSynonyms" no-opt="true" ng-change="showModal()" class="pull-left enableDisable" ng-class="{'screenFreeze':(selectedStreamState=='published')}">
+                </toggle-switch>
+                <span class='toggle-text pl-10 enable' ng-class="{'toggleActive':intentParams.useSynonyms , 'toggleInactive' : !intentParams.useSynonyms}" style="position: relative; top: 1px">
+                    {{'Enable'| i18nString}}
+                </span>
+            </span>
+		</div>
+	</div>
+<!-- 	<div class="col-xs-12 mlThreshold">
+			<label class="wrap">{{'ml_Threshold_label'| i18nString}}</label>
+			<p class="description">{{'ml_Threshold_des'| i18nString}} </p>
+			<div class="col-xs-12 single-slider noPadding" id="threshold-slider" ng-mouseover="showReset('.resetMlThreshold','#slider-ml')" ng-mouseleave="hideReset('.resetMlThreshold')">
+         <a class="resetButton resetMlThreshold pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+				<div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">1</span></div>
+	            <span id="slider-ml" class=""  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="1" data-slider-step="0.1"  ticks-tooltip="false" data-slider-value="0"></span>
+	        </div>
+	</div> -->
+<!-- 	<div class="col-xs-12 proximity">
+		<label class="wrap">{{'Proximity_of_Probable_Matches_label'| i18nString}}</label>
+		<p class="description">{{'Proximity_of_Probable_Matches_desc'| i18nString}}</p>
+		<div class="col-xs-12 single-slider noPadding" id="proxMatch-slider" ng-mouseover="showReset('.resetProbableMatch','#slider-proximity')" ng-mouseleave="hideReset('.resetProbableMatch')">
+      <a class="resetButton resetProbableMatch pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+		<div class="countThreshold"><span class="pull-left">0%</span><span class="pull-right">20%</span></div>
+            <span id="slider-proximity" class=""  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="20" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+         </div>
+	</div> -->
+	<div class="col-xs-12 switchVersion noPadding">
+		<label class="wrap">{{'switch_to_olderVersion'| i18nString}}</label>
+		<p class="description">{{'switch_to_olderVersion_desc'| i18nString}}</p>
+        <toggle-switch ng-model="switchOlder.switchToggle" ng-change="showSwitchModal()" no-opt="true" class="pull-left single-label-no-margin mt-4">
+        </toggle-switch>
+        <span class='toggleSwitch'>
+            <span class='toggle-text pl-10' ng-class="{'toggleActive':switchOlder.switchToggle , 'toggleInactive' : !switchOlder.switchToggle}" style="position: relative; top: 1px">
+                {{'switchNow'| i18nString}}
+            </span>
+        </span>
+	</div>
+	<div class="col-xs-12 triggerPhrases noPadding" ng-class="{'toggle-publish-mode-freeze':displayMode==='VIEW'}">
+		<label class="wrap">{{ 'triggerPhrases' | i18nString }} </label>
+		<p class="description">{{ 'triggerPhrase_desc' | i18nString }}</p>
+        <toggle-switch ng-model="triggerPhrase.enabled" ng-change="toggleSwitchHandler()" no-opt="true" class="pull-left single-label-no-margin mt-4">
+        </toggle-switch>
+        <span class='toggleSwitch'>
+            <span class='toggle-text pl-10' ng-class="{'toggleActive':triggerPhrase.enabled , 'toggleInactive' : !triggerPhrase.enabled}" style="position: relative; top: 1px">
+                {{'Enable'| i18nString}}
+            </span>
+        </span>
+        <!-- <div class="toggle-data-large-">
+            <label class="kr-sg-toggle with-label large SwitchNow">
+                <input type="checkbox" class="switch" ng-model="triggerPhrase.enabled">
+                    <div class="slider" ng-click="toggleSwitchHandler()">
+                        <span class="no">
+                            {{'disabled'| i18nString}} 
+                        </span>
+                        <span class="yes">
+                            {{'Enable'| i18nString}}
+                        </span>
+                    </div>
+            </label>
+        </div> -->
+		<!-- <div class="toggleSwitch" ng-click="toggleSwitchHandler()">
+			<span ng-show="!triggerPhrase.enabled">
+				<img ng-src="{{assetsBase}}images/left-menu-img/unselectedCheck.svg"  class="">
+			</span>
+			<span ng-show="triggerPhrase.enabled"><img ng-src="{{assetsBase}}images/toggle-1.png"  class=""></span>
+			 <span class="toggle-yes" ng-class="{'toggleActive':triggerPhrase.enabled , 'toggleInactive' : !triggerPhrase.enabled}">{{'Enable' | i18nString }}</span>
+		</div> -->
+		<div class="col-xs-12 marginTop10 radioDiv noPadding" ng-show="triggerPhrase.enabled">
+           <span class="opt-title">{{ 'trigger_behviour' | i18nString }}</span>
+                <div class="col-xs-12 noPadding marginTop10">
+                    <div class="radioInnerDiv">
+                         <label for="welcomeEvent" class="event">
+                         <input value="childBotWelcomeEvent" ng-disabled="displayMode === 'VIEW'" ng-model="triggerPhrase.action" ng-click="updateTriggerPhraseSettings()" type="radio" name="ontaskcompletion" id="welcomeEvent" />
+                         <span class="opt-title"> {{ 'welcome_event_desc' | i18nString }} </span>
+                        </label>
+                     </div>
+                     <div class="radioInnerDiv">
+                         <label for="presentMessage" class="event">
+                         <input value="showMsg" ng-disabled="displayMode === 'VIEW'" ng-model="triggerPhrase.action" ng-click="updateTriggerPhraseSettings()" type="radio" name="aftereverymessage" id="presentMessage" />
+                         <span class="opt-title">{{'present_message' | i18nString }} <a href="javascript:void(0)" ng-click="openManageResponse()" class="link">{{'manageResponse'| i18nString}}</a></span>
+                        </label>
+                     </div>
+                </div>
+             
+     </div>
+	</div>
+
+     <div class="col-xs-12 recentBots noPadding">
+     	<label class="wrap">{{'recent_bots_label' | i18nString }}</label>
+     	<p class="description">{{'recent_bots_desc' | i18nString}}</p>
+     	<div class="col-xs-12 single-slider noPadding marginLeft5" id="recentbot-slider" ng-mouseover="showReset('.recentBotLimit','#slider-recentbots')" ng-mouseleave="hideReset('.recentBotLimit')">
+        <!--  <a class="resetButton recentBotLimit pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a> -->
+		<div class="countThreshold"><span class="pull-left">0</span><span class="pull-right">5</span></div>
+            <span id="slider-recentbots" class=""  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="5" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+         </div>
+     </div>
+
+    <div class="col-xs-12 intentRescoring noPadding">
+      <label class="wrap">Intent Rescoring</label>
+      <p class="description">Define how the intents identified from the linked bots should be rescored to identify the winning intent</p>
+      <div class="col-xs-12 radioDiv noPadding">
+                <div class="radioInnerDiv">
+                     <label for="enableIntentScoring" class="event">
+                     <input value="true" ng-model="qualified.intentRescoring" type="radio" name="enableIntentScoring" id="enableIntentScoring" ng-click="updateIntentScoring()" />
+                     <span class="font-normal">Rescore the qualified intents to find the best possible match </span>
+                    
+                    </label>
+               
+                  </div>
+                  <div class="col-xs-12 proximity" ng-show="qualified.intentRescoring === 'true'">
+                    <span class="font-normal">{{'Proximity_of_Probable_Matches_label'| i18nString}}</span>
+                    <p class="description">{{'Proximity_of_Probable_Matches_desc'| i18nString}}</p>
+                    <div class="col-xs-12 single-slider noPadding" id="proxMatch-slider"  ng-mouseover="showReset('.resetProbableMatch','#slider-proximity')" ng-mouseleave="hideReset('.resetProbableMatch')">
+                      <a class="resetButton resetProbableMatch pull-right hide" ng-click="resetDefaultVal()">{{'reset_btn_label'| i18nString}}</a>
+                    <div class="countThreshold"><span class="pull-left">0%</span><span class="pull-right">20%</span></div>
+                            <span id="slider-proximity" class=""  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-tooltip="hide" data-slider-max="20" data-slider-step="1"  ticks-tooltip="false" data-slider-value="0"></span>
+                         </div>
+                  </div>
+                 <div class="radioInnerDiv" ng-class="{'paddingTop20':qualified.intentRescoring === 'true'}">
+                     <label for="disableIntentScoring" class="event mb-0">
+                     <input value="false" ng-model="qualified.intentRescoring" type="radio" name="disableIntentScoring" id="disableIntentScoring" ng-click="updateIntentScoring()" />
+                     <span class="font-normal">Present all the qualified intents to the end user for selection</span>
+                     
+                    </label>
+                 </div>
+            </div>
+    </div>
+
+     <div class="col-xs-12 botAssignment noPadding">
+     	<label class="wrap">{{'bot_assignment' | i18nString }}</label>
+		<p class="description">{{'bot_assignment_desc' | i18nString }}</p>
+		<div class="col-xs-12 radioDiv noPadding">
+                    <div class="radioInnerDiv">
+                         <label for="assignAllChildBots" class="event">
+                         <input value="true" ng-model="nlpSettings.assignAllChildBots" type="radio" name="assignAllChildBots" id="assignAllChildBots" ng-click="updateBotAssignment()" />
+                         <span class="opt-title">{{'assign_child_bots' | i18nString }}<div class="description">{{'assign_child_bots_desc' | i18nString }}
+                         </div>  </span>
+                        
+                        </label>
+                     </div>
+                     <div class="radioInnerDiv">
+                         <label for="noAssignAllChildBots" class="event">
+                         <input value="false" ng-model="nlpSettings.assignAllChildBots" type="radio" name="noAssignAllChildBots" id="noAssignAllChildBots" ng-click="updateBotAssignment()" />
+                         <span class="opt-title">{{'donot_assign_child_bots' | i18nString }}<div class="description">{{ 'donot_assign_child_bots_desc' | i18nString }}</div></span>
+                         
+                        </label>
+                     </div>
+                </div>
+     </div>
+
+</div>
+<div id="trainSuggestion" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'confirm_proceed'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <p ng-show="!intentParams.useSynonyms" class="desc">{{'inclusion_of_bot_synonyms_for_intent'| i18nString}}</p>
+        <p ng-show="intentParams.useSynonyms" class="desc">{{'exclusion_of_bot_synonyms_for_intent'| i18nString}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" ng-click='toggleSynonym()'>{{'proceed'| i18nString}}</button>
+        <button type="button" class="btn closeCancel" ng-click='closeModal()'>{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="switchModal" data-backdrop="static" tabindex="-1" role="dialog">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h4 class="modal-title">{{'are_you_sure'| i18nString}}</h4>
+	            </div>
+	            <div class="modal-body">
+	                    <p class="desc">{{'universalBot_noLonger_identify'| i18nString}}</p>
+                      <p class="deprication">{{'univer_depr' | i18nString }}</p>
+	            </div>
+	            <div class="modal-footer">
+	                <button class="btn confirm" ng-click="upgrade()">{{'confirm'| i18nString}}</button>
+	                <button class="btn closeCancel" ng-click="closeSwitchAlert()">{{'cancel'| i18nString}}</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+ <bt-standard-response class="manageResponseIndexDiv" ng-if="addResponses" cb="addResponseCB"></bt-standard-response>
+

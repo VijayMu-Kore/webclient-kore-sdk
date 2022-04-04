@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="64" viewBox="0 0 40 64">
+    <defs>
+        <rect id="b" width="32.002" height="25.601" x="3" y="14.934" rx="12.801"/>
+        <path id="c" d="M37.198 61.835c0-10.05-8.147-18.197-18.197-18.197C8.95 43.638.803 51.785.803 61.835h36.395z"/>
+        <path id="a" d="M26.468 7.467a7.467 7.467 0 0 0-14.934 0"/>
+        <mask id="d" width="16.934" height="9.467" x="-1" y="-1">
+            <path fill="#fff" d="M10.534-1h16.934v9.467H10.534z"/>
+            <use xlink:href="#a"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+        <use fill="#DAF9FB" xlink:href="#b"/>
+        <rect width="33.002" height="26.601" x="2.5" y="14.434" stroke="#009DAB" rx="13.301"/>
+        <g transform="rotate(-180 19 52.736)">
+            <use fill="#DAF9FB" xlink:href="#c"/>
+            <path stroke="#FFF" d="M37.698 62.335H.303v-.5c0-10.326 8.372-18.697 18.698-18.697s18.697 8.37 18.697 18.697v.5z"/>
+            <path stroke="#009DAB" d="M36.691 61.335c-.264-9.543-8.083-17.197-17.69-17.197-9.607 0-17.426 7.654-17.69 17.197h35.38z"/>
+        </g>
+        <path fill="#009AAC" d="M14.734 35.202c0 1.178 1.91 2.133 4.267 2.133 2.356 0 4.267-.955 4.267-2.133"/>
+        <path stroke="#009DAB" stroke-linecap="square" d="M19.188 7.758v5.204"/>
+        <circle cx="19.534" cy="8" r="3.734" fill="#009DAB"/>
+        <use stroke="#009DAB" stroke-dasharray="1" stroke-width="2" mask="url(#d)" xlink:href="#a"/>
+        <path fill="#FFF" stroke="#009DAB" d="M13.313 21.406h11.383a4.98 4.98 0 1 1 0 9.96H13.313a4.98 4.98 0 1 1 0-9.96zm-.355 6.895c.982 0 1.778-.858 1.778-1.916 0-1.057-.796-1.915-1.778-1.915s-1.779.858-1.779 1.915c0 1.058.797 1.916 1.779 1.916zm12.094 0c.982 0 1.778-.858 1.778-1.916 0-1.057-.796-1.915-1.778-1.915-.983 0-1.779.858-1.779 1.915 0 1.058.796 1.916 1.779 1.916z"/>
+    </g>
+</svg>

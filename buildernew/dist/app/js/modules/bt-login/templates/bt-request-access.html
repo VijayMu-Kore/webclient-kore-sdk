@@ -1,0 +1,71 @@
+<div class="modal btRequestAccessModal fade" class="request-bt-access" id="request-bt-access">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{'bt_reqst_reqst_for_bot_builder'| i18nString}}</h5>
+      </div>
+      <div class="modal-body modalPerfectScroll" perfect-scroll >
+        <form class="form-horizontal" name="requestBTAccess" ng-hide="displayMessage">
+          <fieldset>
+              <legend>{{'bt_reqst_bot_builder_desc'| i18nString}}</legend>
+              <div class="form-group">
+                  <!--<label for="normal-field" class="col-sm-4 control-label">first name</label>-->
+                  <div class="col-sm-7">
+                    <input required ng-model="firstName" name="firstName" type="text" class="form-control instant hide-invalid" placeholder="{{'bt_reqst_access_firstname_placeholder'| i18nString}}" placeholder-cursor-fix>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <!--<label for="normal-field" class="col-sm-4 control-label">last name</label>-->
+                  <div class="col-sm-7">
+                    <input required ng-model="lastName" name="lastName" type="text" class="form-control instant hide-invalid" placeholder="{{'bt_reqst_access_lastname_placeholder'| i18nString}}" placeholder-cursor-fix>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <!--<label for="normal-field" class="col-sm-4 control-label">email address</label>-->
+                  <div class="col-sm-7">
+                    <input required ng-model="businessEmail" name="email" email-phone email-only="true" class="form-control instant" placeholder="{{'bt_reqst_access_email_placeholder'| i18nString}}" placeholder-cursor-fix>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <!--<label for="normal-field" class="col-sm-4 control-label">company name</label>-->
+                  <div class="col-sm-7">
+                    <input required ng-model="companyName" name="companyName" type="text" class="form-control instant hide-invalid" placeholder="{{'bt_reqst_access_company_placeholder'| i18nString}}" placeholder-cursor-fix>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <!--<label for="normal-field" class="col-sm-4 control-label">job title</label>-->
+                  <div class="col-sm-7">
+                    <input required ng-model="jobTitle" name="jobTitle" type="text" class="form-control instant hide-invalid" placeholder="{{'bt_reqst_access_jobTitle_placeholder'| i18nString}}" placeholder-cursor-fix>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <!--<label for="normal-field" class="col-sm-4 control-label"></label>-->
+                  <div class="col-sm-7">
+                    <textarea required rows="3" class="autogrow form-control transition-height" ng-model="message1" name="message1" placeholder="{{'bt_reqst_access_why_do_you_want_builder_placeholder'| i18nString}}" placeholder-cursor-fix></textarea>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <!--<label for="normal-field" class="col-sm-4 control-label"></label>-->
+                  <div class="col-sm-7">
+                    <textarea required rows="3" class="autogrow form-control transition-height" ng-model="message2" name="message2" placeholder="{{'bt_reqst_access_chatBot_functionality_placeholder'| i18nString}}" placeholder-cursor-fix></textarea>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <!--<label for="normal-field" class="col-sm-4 control-label"></label>-->
+                  <div class="col-sm-7">
+                    <textarea required rows="3" class="autogrow form-control transition-height" ng-model="message3" name="message3" placeholder="{{'bt_reqst_access_channels_placeholder'| i18nString}}" placeholder-cursor-fix></textarea>
+                  </div>
+              </div>
+          </fieldset>
+        </form>
+        <div class="message" ng-show="displayMessage">
+          <span ng-bind-html="message"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn closeCancel" ng-click="logout()">{{displayMessage ? done : cancel }}</button>
+        <button type="button" class="btn" ng-click="submitRequest()" ng-disabled="!requestBTAccess.$valid" ng-hide="displayMessage">{{'request'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="col-xs-12">
+<div class="col-xs-2 noPadding" ng-show="showNumDropdown">
+
+                            <div class="group-box">
+                                <label for="sort" class="sort-title">{{'show_label'| i18nString}}</label>
+                                <div class="dropdown caret">
+                                    <select class="form-control itemsOnPage" ng-model="itemsOnPage" ng-change="changeNoOfRecordsToShow()">
+                                        <option label="10" value="10">10</option>
+                                        <option label="20" value="20">20</option>
+                                        <option label="50" value="50">50</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+<div class="col-xs-3 datacount noPadding marginLeft200">{{offset+1}}  {{'to_label'| i18nString}}  {{offset+limit < totalItems ? offset+limit : totalItems}}  {{'of_label'| i18nString}}  {{totalItems}}</div>
+<div class="col-xs-7 noPadding width47">
+    <div class="paginationDiv"><pagination rotate="false"  max-size="5" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" items-per-page="limit"></pagination></div>
+    
+</div>
+</div>

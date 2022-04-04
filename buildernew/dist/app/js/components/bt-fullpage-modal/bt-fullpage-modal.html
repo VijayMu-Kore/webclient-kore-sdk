@@ -1,0 +1,64 @@
+<status-loader></status-loader>
+<!-- starting of modal fade -->
+<div ng-show="modalType !== 'createBot'" id="btFullpageModal" ng-class="{'taskCreateOrEditModal':(step === 3 || wfType === 'flows' || step === 4), 'taskCreateOverlayModal': step !== 3, 'max-width-initial' : (workingTaskType === 'flowtaskEdit'||workingTaskType === 'flowtaskView'), 'positionAbsolute' : (step === 3 || step === 2 || step === 1 || workingTaskType === 'flowtaskEdit'), 'bt-preview-task-form':(modalType === 'uiForms') || (modalType === 'uiFormsTest') || (modalType === 'uiFormsBranding')}" class="btFullpageModal modal height-width-100" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" data-keyboard="false">
+  <!-- starting of modal dialog -->
+  <div class="modal-dialog modal-lg positionFixed">
+    <!-- staring of modal content -->
+    <div class="modal-content height-width-100 fullPageModalForm" ng-class="{'width80Percent border-0':(modalType==='uiFormsBranding') || (modalType==='uiFormsTest'), 'border-0':modalType.type === 'pdfAnno'}">
+      <bt-watch-videos ng-if="modalType === 'openVediosPage'"></bt-watch-videos> 
+      <bt-train-bot ng-if="modalType === 'trainBot'"></bt-train-bot>
+      <bt-ui-forms ng-if="modalType === 'uiForms'" form-mode='"build"'></bt-ui-forms>
+      <bt-ui-forms ng-if="modalType === 'uiFormsTest'" form-mode='"uiFormsTest"'></bt-ui-forms>
+      <bt-ui-forms ng-if="modalType === 'uiFormsBranding'" form-mode='"uiFormsBranding"'></bt-ui-forms>
+      <bt-pdf-anno ng-if="modalType.type === 'pdfAnno'" callbacks="modalType"></bt-pdf-anno>
+      <version-comparision ng-if="modalType === 'versionComparision'" custom-data="customData" close-full-callback="closeFullPageModal"></version-comparision>
+      <manage-components-form ng-if="modalType === 'manageComponents'"></manage-components-form>
+      <bt-small-talk ng-if="modalType === 'smallTalk'" class="btSmallTalk" group-details="groupDetails" new-group="newGroup" groups="groups" callback="callback"></bt-small-talk>
+      <div ng-if="modalType !== 'createBot' && modalType !== 'trainBot' && modalType !== 'manageComponents' && modalType !== 'openVediosPage' && modalType !== 'smallTalk'">
+        <bt-task-chooser class="animate-if-back form-kr" ng-if="step === 1"></bt-task-chooser>
+        <bt-task-creation-form class="form-kr" ng-class="{'animate-if-back':!frontNavigation, 'animate-if':frontNavigation}" ng-if="step === 2"></bt-task-creation-form>
+        <bt-task-edit-form class="animate-if form-kr" ng-show="step === 3"></bt-task-edit-form>
+      </div>
+    </div>
+    <!-- /.modal-content --> 
+  </div>
+  <!-- /.modal-dialog --> 
+</div>
+<!-- end of .modal .fade -->
+<!--<div ng-show="modalType == 'standardBot'" class=" stream-create-form" tabindex="-1" role="dialog">
+    <bot-modal-slider class="createBotslider" >
+    <div class="modalSliderContainer width500">
+        <div class="modalHeader">
+            <button type="button" class="close" ng-click="closeModalSlider()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+            <h4 class="modal-title">Standard Bot</h4>
+        </div>
+        <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-193" height-property="height">
+        <stream-form display-mode="edit" edit-mode="new"  ng-if="initializeCreateBot" bot-type="botType" on-save="onCreateNewBot()" on-cancel="onCancelBotCreation()"></stream-form>
+        </div>
+        
+    </div>
+    </bot-modal-slider>
+</div>-->
+<!--<div ng-show="modalType == 'createBot'" id="btFullpageModal" class="createnewbot" ng-class="{'taskCreateOrEditModal':(step === 3 || wfType === 'flows'), 'taskCreateOverlayModal': step !== 3, 'max-width-initial' : (workingTaskType === 'flowtaskEdit'||workingTaskType === 'flowtaskView'), 'positionAbsolute' : (step === 3 || step === 2 || step === 1 || workingTaskType === 'flowtaskEdit') }" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" data-keyboard="false">-->
+    <bot-modal-slider class="createBotslider" id="botcreate">
+    <div class="modalSliderContainer width550" ng-class="{'width900':((step === 6)||(step === 3))?true:false}">
+        <create-mode-selector class=" backgroundWhite" ng-if="step === 1" on-mode-selected="openBotChooser" on-cancel="onCancelBotCreation()" load-store="loadBotStore()" on-back="stepUpdate"></create-mode-selector>
+        <bt-select-sample-bots class="sampleBotInstall backgroundWhite"  on-cancel="onCancelBotCreation()" ng-class="{'animate-if-back':!frontNavigation, 'animate-if':frontNavigation}" ng-if="step === 2" on-back="stepUpdate"></bt-select-sample-bots>
+        <sample-bot-configuration class="form-kr backgroundWhite" on-cancel="onCancelBotCreation()" ng-if="(modalType === 'createBot') && (step === 3)" on-back="stepUpdate"></sample-bot-configuration>
+        <stream-form display-mode="edit" class="animate-if backgroundWhite" create-stream="createStream" edit-mode="new"  ng-if="step === 4" bot-type="botType" on-save="onCreateNewBot()" on-cancel="onCancelBotCreation()" on-back="stepUpdate" load-store="loadBotStore()" views="views"></stream-form>
+        <bt-select-smart-bots class="sampleBotInstall backgroundWhite" on-cancel="onCancelBotCreation()" ng-class="{'animate-if-back':!frontNavigation, 'animate-if':frontNavigation}" ng-if="step === 5" on-back="stepUpdate"></bt-select-smart-bots>
+        <bt-solution-install class=" animate-if form-kr backgroundWhite" smart-bot-id="smartBotId" on-cancel="onCancelBotCreation()" ng-if="step === 6" on-back="stepUpdate"></bt-solution-install>
+    </div>
+    </bot-modal-slider>
+<!--    <bot-modal-slider  id="stream-create-form" class="createBotslider">
+        <div class="modalSliderContainer width500">
+            <div class="modalHeader">
+                <button type="button" class="close" ng-click="closeModalSlider('#stream-create-form')" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h4 class="modal-title">Cteate Bot</h4>
+            </div>
+            <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-58" height-property="height">
+            <stream-form display-mode="edit" edit-mode="new"  ng-if="initializeCreateBot" bot-type="botType" on-save="onCreateNewBot()" on-cancel="onCancelBotCreation()"></stream-form>
+            </div>
+        </div>
+    </bot-modal-slider>-->
+<!--</div>-->

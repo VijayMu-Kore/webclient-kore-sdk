@@ -1,0 +1,24 @@
+<form novalidate name="autoLoginForm"  ng-submit="submitAutoLogin(autoLoginForm)" class="login-form">
+<div class="preSignUP">
+   <p class="pageDesc">{{'pre_sign_up_form_desc' | i18nString}}</p>
+   <p class="already">{{'do_not_have_account' | i18nString}} <a ng-click="switchForms('default')">{{'login' | i18nString}}</a></p>
+   <div class="ssoAccounts SSO-{{ssoOptions.length}}">
+       <div class="signUp">{{'sign_up_with' | i18nString}}</div>
+       <div class="signUpSingle">{{'use_your_social_account' | i18nString}}</div>
+       <a data-ng-click="ssoLogin(ssoOption.key)" class="btn btnSSO {{ssoOption.class}}" data-ng-repeat="ssoOption in ssoOptions">
+        <img ng-src="{{ssoOption.image}}" class="ssoIcon">
+       <span class="ssoName"> <span ng-if="ssoOptions.length == 1">{{'sign_up_with' | i18nString}}</span> {{ssoOption.name}}</span>
+    </a>
+   </div>
+
+   <div class="ssoSeperator">
+    <hr>
+    <span class="seperatorBG">{{'or_sign_up_with_email'| i18nString}}</span>
+</div>
+<div class="inputBTN">
+    <input autofocus required data-ng-change="error = false" ng-model="emailPhone" email-phone email-only="true" phone-codes="phoneCode(value)" class="form-control emailPhoneInpt emailInput" name="emailPhone" autocomplete="off" placeholder="Enter your email">
+    <button ng-disabled="!autoLoginForm.$valid && showSpinner" type="submit" class="emailBTN">{{'continue' | i18nString}}</button>
+</div>
+<div class="errorMSG" ng-if="existingUser"><i class="btx-warning"></i>{{'this_email_is_already_in_use' | i18nString}} <a ng-click="switchForms('default')">Click here to Sign-In</a></div>
+</div>
+</form>

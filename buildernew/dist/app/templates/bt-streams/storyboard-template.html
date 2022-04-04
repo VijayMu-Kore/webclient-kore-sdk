@@ -1,0 +1,203 @@
+<div class="positionRelative">
+<div class="hintDiv col-xs-12 showGenericLanguageProtip "
+    ng-show="((rightPanel.innerRightPanel.view === 'languageManagement') ||(rightPanel.innerRightPanel.view === 'storyboard')||(rightPanel.innerRightPanel.view === 'botSummary')) && showGenericProtip">
+    <div class="icon">
+        <i class="btx-warning"></i>
+    </div>
+    <div class="description">
+        There is a change in the Generic Language feature. Please map the Generic Language to one of the regular
+        languages.
+    </div>
+    <div class="hintActions">
+        <span>Learn More</span>
+        <span ng-click="openLanguageGenericModal()">Add Language</span>
+    </div>
+</div>
+<div class="hintDiv col-xs-12 showGenericProtip "
+    ng-show="((rightPanel.innerRightPanel.view === 'languageManagement') ||(rightPanel.innerRightPanel.view === 'storyboard')||(rightPanel.innerRightPanel.view === 'botSummary')) && inputTranslation && !showGenericProtip">
+    <div class="icon">
+        <i class="btx-warning"></i>
+    </div>
+    <div class="description">
+        Input Translation is no longer supported as an independent feature. Please enable all the required languages and
+        choose input translation where required.
+
+    </div>
+    <div class="hintActions"><span ng-click="openLanguageSlider()">Configure</span></div>
+</div>
+<div class="full-height full-width" ng-if="(storyBoardCotainer.selectedTab === 'story')">
+    <bt-story-board ></bt-story-board>
+</div>
+<div class="storyboardTemp" ng-if="storyBoardCotainer.selectedTab">
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle ">
+            <p class="pageTitle">{{'storyboard' | i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            
+        </div>
+    </div>
+    <div class="row btnSearchTitle tabsHead storyboard-header-tabs-content">
+        <div class="col-xs-6 leftTitle ">
+            <div class="tabStyle" ng-if='(!(stream.type === "universalbot"))' ng-class="{'active':storyBoardCotainer.selectedTab === 'dialog'}" ng-click="setStoryboardTab('dialog')">{{'ddval_dialog' | i18nString}}</div>
+            <div class="tabStyle" ng-class="{'active':storyBoardCotainer.selectedTab === 'faq'}" ng-click="setStoryboardTab('faq')">{{'faqs' | i18nString}}</div>
+            <div class="tabStyle" ng-class="{'active':storyBoardCotainer.selectedTab === 'story'}" ng-click="setStoryboardTab('story')">{{'mock_scene' | i18nString}}</div>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            <div ng-if="storyBoardCotainer.selectedTab === 'dialog'">
+                <div class="searchComponent" ng-show='dialogTasksByState.length > 0 && (!(stream.type === "universalbot"))'>
+                    <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="searchObj.searchDialogQuery" ng-minlength="1"  placeholder=" {{'search_dialog'| i18nString}}">
+                    <i ng-show="searchObj.searchDialogQuery === ''"  class="btx-search"></i>
+                    <i  ng-class="{displayNone: !searchObj.searchDialogQuery.length}" ng-click="searchObj.searchDialogQuery=''" class="btx-close"></i>
+                </div>
+                <div class="creationButton" ng-show='(callbacks.modeOfAccess !== "VIEW") && (dialogTasksByState.length > 0 && (!(stream.type === "universalbot")))'>
+                    <button class="btn btnSolidBlue" ng-click="showForm($event, 'dialogTasks',storyboard)"  ng-class="{'publishedMode':streamstate.toggleState == 'published'}">{{'create_dialog' | i18nString}}</button>
+                </div>
+            </div>
+            <div ng-if="storyBoardCotainer.selectedTab === 'faq'">
+                <div class="searchComponent">
+                    <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" ng-keyup="botDetailsCb.externalFaqSearch($event,searchObj.faqSeach)" tabindex="1" type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="searchObj.faqSeach" ng-minlength="1"  placeholder=" {{'search_faq'| i18nString}}">
+                    <i ng-show="searchObj.faqSeach === ''"  class="btx-search"></i>
+                    <i  ng-class="{displayNone: !searchObj.faqSeach.length}" ng-click="searchObj.faqSeach=''" class="btx-close"></i>
+                </div>
+                <div class="creationButton" ng-show='(callbacks.modeOfAccess !== "VIEW") && !loadingKnowledge && ((knowledgeTasks.length > 0) || (knowledgeTasksByState.length > 0))'>
+                    <button class="btn btnSolidBlue" ng-click="botDetailsCb.showOntologyQAForm()"  ng-class="{'publishedMode':streamstate.toggleState == 'published'}">{{'add_intent' | i18nString}}</button>
+                </div>
+            </div>
+            <div ng-if="storyBoardCotainer.selectedTab === 'story'">
+                <div class="searchComponent" ng-show='scenes.length > 0'>
+                    <input focus-it="" ng-focus="inSearchBox = true" ng-blur="inSearchBox = false" tabindex="1" type="text" class="fsynSearchInput orm-control ng-valid ng-touched ng-dirty ng-valid-parse" ng-model="searchObj.scene" ng-minlength="1"  placeholder="Search scenes">
+                    <i ng-show="searchObj.scene === ''"  class="btx-search"></i>
+                    <i  ng-class="{displayNone: !searchObj.scene.length}" ng-click="searchObj.scene=''" class="btx-close"></i>
+                </div>
+                <div class="creationButton" ng-show='(callbacks.modeOfAccess !== "VIEW") && (scenes.length > 0 )'>
+                    <button class="btn btnSolidBlue" ng-click="botDetailsCb.createSceneSlider(true)" ng-class="{'publishedMode':streamstate.toggleState == 'published'}">{{'create_scene' | i18nString}}</button>
+                </div>
+                <div class="creationButton" ng-show='(callbacks.modeOfAccess !== "VIEW") && (scenes.length > 0 )'>
+                    <button class="btn closeCancel" ng-click="botDetailsCb.openImportStoryModal()" ng-class="{'publishedMode':streamstate.toggleState == 'published'}">{{'import' | i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="(storyBoardCotainer.selectedTab === 'faq')">
+		<div class="kgStory" ng-if="!storyBoardCotainer.createFaq &&  ((knowledgeTasks.length == 0 && !loadingKnowledge) || (knowledgeTasksByState.length === 0))" ng-include="tmpltPrePath+'templates/bt-streams/knowledge-template.html'"></div>
+        <div ng-if="(knowledgeTasks.length > 0 && !loadingKnowledge) || (knowledgeTasksByState.length > 0) || storyBoardCotainer.createFaq" >
+            <bot-ontology stream-id="{{selectedStream._id}}" callback='botDetailsCb'  parent-cb="storyBoardCotainer"></bot-ontology>
+        </div>
+    </div>
+    <div ng-if="(storyBoardCotainer.selectedTab === 'dialog')" class="animationIfEnter innerRight" dynamic-height dynaoffset="showGenericProtip?-260:-200" perfect-scroll height-property="height" >
+        <div class="animationIfEnter" ng-include="tmpltPrePath+'templates/bt-streams/flowTasks-template.html'"></div>
+    </div>
+    <div ng-if="(storyBoardCotainer.selectedTab === 'story')" class="animationIfEnter innerRight" dynamic-height dynaoffset="-200" perfect-scroll height-property="height" >
+        <div class="flowTask-row"  ng-init="bulderReloaded()">
+            <div class="panel-default">
+                <div class="">
+                    <div class="panel-table col-xs-12 tableContainer p-b-70" ng-if="scenes.length">
+                        <div class="panel-table-header">
+                            <div class="row tableHeaderRow" >
+                                <div class="col-xs-3 title cursor-pointer" ng-class="{'defaultSort':defaultSortingName}" ng-click="sortTaskList('nameSort')">
+                                    <i class="fa btx-sort marginRight5" ng-if="!defaultSortingName"></i>
+                                    <i class="fa btx-sort-a marginRight5" ng-if="defaultSortingName && (orderType == '-name')"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="fa btx-sort-d marginRight5" ng-if="defaultSortingName && (orderType == 'name')"><span class="path1"></span><span class="path2"></span></i>
+                                    {{'bot_name'| i18nString}}</div>
+                                <div class="col-xs-3 title cursor-pointer" ng-class="{'defaultSort':defaultSortingDesc}" ng-click="sortTaskList('descSort')">
+                                    <i class="fa btx-sort marginRight5" ng-if="!defaultSortingDesc"></i>
+                                    <i class="fa btx-sort-a marginRight5" ng-if="defaultSortingDesc && (orderType == '-shortDesc')"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="fa btx-sort-d marginRight5" ng-if="defaultSortingDesc && (orderType == 'shortDesc')"><span class="path1"></span><span class="path2"></span></i>
+                                    {{'description_sample'| i18nString}}</div>
+                                <div class="col-xs-2 title cursor-pointer" ng-class="{'defaultSort':defaultSortingLast}" ng-click="sortTaskList('datesSort')">
+                                    <i class="fa btx-sort marginRight5" ng-if="!defaultSortingLast"></i>
+                                    <i class="fa btx-sort-a marginRight5" ng-if="defaultSortingLast && (orderType == '-lMod')"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="fa btx-sort-d marginRight5" ng-if="defaultSortingLast && (orderType == 'lMod')"><span class="path1"></span><span class="path2"></span></i>
+                                    {{'last_updated'| i18nString}}</div>
+                                <div class="col-xs-2 title cursor-pointer noPaddingLeft" ng-class="{'defaultSort':defaultSortingStatus}" ng-hide="showSolutionBotSetup" ng-click="sortTaskList('statusSort')">
+                                    <i class="fa btx-sort marginRight5" ng-if="!defaultSortingStatus"></i>
+                                    <i class="fa btx-sort-a marginRight5" ng-if="defaultSortingStatus && (orderType == '-state')"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="fa btx-sort-d marginRight5" ng-if="defaultSortingStatus && (orderType == 'state')"><span class="path1"></span><span class="path2"></span></i>
+                                    {{'bot_status'| i18nString}}</div>
+                                <!-- <div class="col-xs-1 title">VERSION</div> -->
+                                <div class="col-xs-2 title">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="panel-table-body tableBodyRow">
+                            <div class="text-center padding10" ng-show="searchObj.scene && filteredScenes.length===0">{{'no_results'| i18nString}}</div>
+                            <div class="row flowTask bodyRow" ng-repeat="scene in filteredScenes =(scenes  | filter:{name:searchObj.scene}) | orderBy:(orderType || '-lMod') | slice:(currentScenePage-1)*50:currentScenePage*50" ng-click="botDetailsCb.openScene(scene)">
+                                <div class="col-xs-3 contentDetails cursor-pointer">
+                                    {{scene.name}}
+                                </div>
+                                <div class="col-xs-3 contentDetails cursor-pointer tooltip-hover max-width-200 text_left" tooltip-placement="bottom-left" tooltip="{{scene.description}}">
+                                    {{scene.description}}
+                                </div>
+                                <div class="col-xs-2 contentDetails cursor-pointer">
+                                    {{scene.lastModifiedOn | date:'MM-dd-yyyy'}}
+                                </div>
+                                <div class="col-xs-2 contentDetails deploymentStatus cursor-pointer">
+                                <span class="positionRelative">
+                                    <span class="status">
+                                        {{scene.status}}
+                                    </span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-2 contentDetails text-center hoverIcons" ng-click="$event.stopPropagation()">
+                                    <!-- <span class="editSpan"   title="Edit"><i   class="btx-pencil" ></i></span> -->
+                                    <span class="shareSpan" title="Share"><i class="btx-share"  ng-click="botDetailsCb.openExportSlider(scene)"></i></span>
+                                    <span class="cloneSpan"  title="Clone"><i  class="btx-clone" ng-click="botDetailsCb.createSceneSlider(true,scene,true)"></i></span>
+                                    <span class="exportSpan" title="Export"><i class="btx-export"  ng-click="exportFile(scene)"></i></span>
+                                    <span class="deleteSpan" title="Delete"><i class="btx-delete-1"  ng-click="deleteStoryScene(scene)"></i></span>
+                                    <!-- <div class="dropdown panel-dropdown settingsDD">
+                                        <span  data-toggle="dropdown"><i title="More" class="btx-overflow"></i></span>
+                                        <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                                            <li role="presentation">
+                                            <a>{{'view'| i18nString}}</a>
+                                            </li>
+                                            <li role="presentation" ng-click="botDetailsCb.createSceneSlider(true,scene)">
+                                                <a>{{'settings'| i18nString}}</a>
+                                            </li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <pagination  rotate="false" 
+                                        ng-show="filteredScenes.length > 50"
+                                        class="pagination-sm pull-right" 
+                                        boundary-links="true" 
+                                        direction-links="false"
+                                        total-items="filteredScenes.length" 
+                                        items-per-page="50" 
+                                        ng-model="currentScenePage"
+                                        ng-init="currentScenePage=1"
+                                        max-size="10"
+                                        first-text="<<"
+                                        last-text=">>"
+                                        >
+                            </pagination>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 ">
+                        <div class="emptyStateContainer no_dialog_" role="alert" ng-show="scenes.length == 0 && !loadingScenes">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{emptyStateIcon_dialog_empty}}" class="emptyImg">           
+                                </div>  
+                                <span class="mainTitle">Create Your First Scene</span>
+                                <div class="emptyStateDesc">Storyboard lets you and your team collaboratively design the conversations the Virtual Assistant has with the end-users.<a target="_blank" ng-href="https://developer.kore.ai/docs/bots/bot-builder-tool/bot-creation/storyboard/" >{{'learn_more'| i18nString}}</a></div>
+                                <div class="generateBtn">
+                                    <button class="addBTN mr-10" ng-show="callbacks.modeOfAccess !== 'VIEW'" ng-class="{'publishedMode':streamstate.toggleState == 'published'}" ng-click="botDetailsCb.createSceneSlider(true)">{{'create_scene' | i18nString}}</button>                            
+                                    <button class="btn closeCancel mr-10" ng-show="callbacks.modeOfAccess !== 'VIEW'" ng-class="{'publishedMode':streamstate.toggleState == 'published'}" ng-click="botDetailsCb.openImportStoryModal()">{{'import' | i18nString}}</button>                            
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning alert-xs text-center" role="alert" ng-show="scenes.length == 0 && loadingScenes">
+                            {{'loading_dialogs'| i18nString}}...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+

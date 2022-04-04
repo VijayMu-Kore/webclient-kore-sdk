@@ -1,0 +1,36 @@
+<status-loader></status-loader>
+<div class="modalHeader">
+    <h4 class="modal-title"><i  class="btx-close" ng-src={{backArrow}} ng-click="onCancel()" ></i>{{'select_smartBot'| i18nString}}</h4>
+</div>
+<div class="modalBody noPadding">
+    <div class="botListSearch">
+        <input tabindex="1" class="botListSearchInput" type="text" ng-blur="searchSynExpand()" ng-model="search" placeholder="{{'search_bot'| i18nString}}" ng-keyup="searchBotIntl()"><i class="searchBar btx-search fa-search"></i>
+        <!-- <span class="chooseBotInstall">{{'choose_smartBot'| i18nString}}</span> -->
+    </div>
+    <div class="splScrollTop" perfect-scroll dynamic-height dynaoffset="-150" height-property="height">
+        <div class='emptyInstallList' ng-show="fetchingSmartBots"><i class="fa fa-circle-o-notch fa-spin marginRight5"></i>{{'pleasewait_label'| i18nString}}</div>
+        <div class='emptyInstallList' ng-show="!fetchingSmartBots && !smartBots.length">{{'no_smartBots'| i18nString}}</div>
+        <div ng-show="!fetchingSmartBots && smartBots.length" data-ng-repeat="bot in smartBots | filter:search track by $index" class="sampleBotListingContainer">
+            <div class="sampleBotListing">
+                <div class="bot-listing-item radio">
+                    <div class="radioDiv">
+                        <label for="smartBot{{$index + 1}}">
+                            <input type="radio" ng-model="$parent.selectedSmartBot" value="{{bot}}" name="smartBot" id="smartBot{{$index + 1}}"/>
+                            <span class="opt-title hide"></span> </label>
+                    </div>
+                </div>
+                <div class="bot-listing-item botIcon"> <a> <img data-ng-src="{{bot.media.icon}}" class="avatar" alt=""> </a> </div>
+                <div class="bot-listing-item"> 
+                    <a title="" class="details"> <span class="title">{{bot.name}}</span> 
+                        <div class="preview">{{bot.description}}</div>
+                    </a>
+                </div>
+    
+            <div class="mouseHoverInstall hide" ng-click="installSmartBot(bot)">
+                <button class="btn btn-primary installBtn " >
+                    {{'install'| i18nString}}</button> 
+            </div>  
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,127 @@
+<div class="form-group" ng-show="displayMode != 'view'">
+    <div class="col-xs-3 labelHeight noPadding">
+        <label tooltip-placement="right" tooltip="{{'chnl_ux_editor_tooltip'| i18nString}}"> {{'chnl_ux_editor_chnl_specific_msg'| i18nString}} </label>
+    </div>
+    <div class="col-xs-9 noPadding">
+        <button type="button" class="btn btn-primary btn-sm noMargin pull-right" ng-click="addChanneResponse()">{{'add'| i18nString}} </button>
+
+    </div>
+</div>
+<div class="form-group" ng-show="responses.length > 0">
+    <table class="table table-hover">
+        <tr>
+            <th class="col-xs-6">{{'channel_name'| i18nString}}</th>
+            <!-- <th>Response</th> -->
+            <!-- <th class="text-center col-xs-6">Actions</th> -->
+            <th class="col-xs-6">{{'actions'| i18nString}}</th>
+        </tr>
+        <tr ng-repeat="response in responses">
+            <td>{{response.channel==='rtm'? web_mobile_client :response.channel}}</td>
+            <td  ng-show="displayMode == 'view'">{{response.body | styleit | plaintext}}</td>
+            <td class="cntrl_list"  ng-show="displayMode != 'view'">
+                <div class="btn-group" role="group" aria-label="...">
+                  <span ng-click="editResponse($index)" class="channelBTN"><i class="fa fa-pencil"></i></span>
+                  <span ng-click="deleteResponse($index)" class="channelBTN"><i class="fa fa-trash"></i></span>
+                </div>
+            </td>
+<!--             <td>
+                <button type="button" class="btn btn-default no-padding" ng-click="editResponse($index)">
+                    Edit &nbsp;<i class="fa fa-pencil"></i>
+                </button>
+                <button type="button" class="btn btn-danger no-padding" ng-click="deleteResponse($index)">
+                    Delete &nbsp;<i class="fa fa-trash"></i>
+                </button>
+            </td> -->
+        </tr>
+    </table>
+</div>
+<div class="modal fade" id="channel_response_editor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+            <span aria-hidden="true"><i class="fa fa-close"></i></span>
+        </button>
+        <h4 class="modal-title">{{'response_msg'| i18nString}}</h4>
+      </div>
+      <div class="modal-body overflow-hidden">
+        <ng-form name="channel_info" novalidate>
+            <div class="col-xs-12">
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12">
+                        <label class="required-field"> {{'select_chnl'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <select class="btn btn-default btn-sm" ng-disabled="editor.edit" name="channel" ng-model="editor.channel" required>
+                            <option value="">{{'select_chnl'| i18nString}}</option>
+                            <option ng-repeat="channel in channels" value="{{channel.id}}">{{channel.name}}</option>
+                        </select>
+                        <br>
+                        <div ng-show="channel_info.channel.$dirty">
+                            <div ng-show="channel_info.channel.$error.required">
+                                <div error-alert>{{'chnl_value_req'| i18nString}} </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12">
+                        <label> {{'response_msg'| i18nString}} </label>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group">
+                    <tabset>
+                        <tab disabled="!!editor.code.trim()" active="tabs.normal" ng-click="notifyUser('normal',!!editor.code.trim())">
+                            <tab-heading>
+                                {{'normal_label'| i18nString}}
+                            </tab-heading>
+                            <div>
+                                <div kore-ux-editor ng-model="editor.normal" keys="keys" name="channel_normal_editor"></div>
+                            </div>
+                        </tab>
+                        <tab  disabled="!!editor.normal.trim()" active="tabs.code" ng-click="notifyUser('code',!!editor.normal.trim())">
+                            <tab-heading>
+                                {{'java_script'| i18nString}}
+                            </tab-heading>
+                            <div>
+                             <div class="header_wyswyg col-xs-12">
+                                <div class="col-xs-5 selectHead">
+                                    <div class="ace-select2" data="keys" default-value="use response keys" on-selection="codeCallback.onInsert(data)" bt-select2></div>
+                                </div>
+                                <div class="col-xs-5 selectHead">
+                                    <div ng-if="wfType == 'alert'" class="ace-select2" default-value="use standard keys" bt-select2 data="_constants_.koreuxconsts.alerts"
+                                        on-selection="codeCallback.onInsert(data)" ></div>
+                                    <div ng-if="wfType == 'action'" class="ace-select2" default-value="use standard keys" bt-select2 data="_constants_.koreuxconsts.actions"
+                                        on-selection="codeCallback.onInsert(data)" ></div>
+                                </div>
+                                </div>
+                                <div id="channel_ux_code_editor" acify ng-if="tabs.code" callback='codeCallback' ng-model="editor.code"></div>
+                            </div>
+                        </tab>
+                        <tab select="codePreviewRep()">
+                            <tab-heading>
+                                {{'preview_name'| i18nString}}
+                            </tab-heading>
+                            <div>
+                                <iframe ng-if="codePreview" class="overflow-hidden preview-iframe" safe-iframe-inner sandbox="allow-same-origin" data="codePreview"></iframe>
+                                <div ng-if="codePreviewIsOn">
+                                    <div class="alert alert-success alert-sm text-center" role="alert">
+                                        <i class="fa fa-spinner fa-spin"></i> {{'bot_welcomeMessage_resolving_Value_label'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+                <div class="modal-footer customFooter form-group">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default" ng-click="cancel()"> {{'cancel'| i18nString}} </button>
+                        <button type="button" class="btn btn-primary" ng-click="save(channel_info,channel_info.$valid)">{{'save'| i18nString}}</button>
+                    </div>
+                </div>
+        </ng-form>
+      </div>
+    </div>
+  </div>
+</div>

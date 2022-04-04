@@ -1,0 +1,40 @@
+<form novalidate name="landingForm" class="login-form sign-up-in">
+<p class="landingTitle">{{'choose_an_account' | i18nString}}</p>
+<p class="landingDesc">{{'choose_an_account_desc' | i18nString}}</p>
+    <div class="form-group multiAccountDiv" ng-if="availableAccounts.length>0" data-ng-repeat="item in availableAccounts">
+        <div class="input-group select-account" ng-mouseover="selectFavorite($event)" ng-mouseleave="hideFavorite($event)">
+            <div ng-model="item" type="text" class="form-control" >
+             <!-- <div data-ng-click="chooseAccount(item, $event)" title="{{item.displayName}}" class="col-xs-6 left">
+               <div class="accountName">{{item.displayName}}</div>
+               <div class="accountOwnerName">{{item.userFullName}}</div>
+               <button ng-hide="item.accountId===selectFavoriteAccount" ><i class="fa fa-star" style="margin-right:5px;"></i>{{'make_default'| i18nString}}</button>
+               <span ng-if="item.accountId===selectFavoriteAccount"><i class="fa fa-star" style="margin-right:5px;"></i>{{'default'| i18nString}}</span>
+             </div> -->
+             <div data-ng-click="chooseAccount(item, $event)" title="{{item.displayName}}" class="accDetails">
+              <div class="accountName">{{item.displayName}}
+               <span ng-hide="item.accountId===selectFavoriteAccount" class="accontType hover"  data-ng-click="$event.stopPropagation();chooseFavorite(item, $event)"><i class="btx-rating fa-star" ></i>{{'make_default'| i18nString}}</span>
+               <span ng-if="item.accountId===selectFavoriteAccount" class="accontType default"><i class="btx-rating fa-star" ></i>{{'default'| i18nString}}</span>
+              </div>
+              <div class="accountOwnerName">{{item.userFullName}}</div>
+              <i class="btx-arrow-next"></i>
+            </div>
+             <!-- <div class="favoriteAcccount hide col-xs-6 " ng-hide="item.accountId===selectFavoriteAccount" data-ng-click="chooseFavorite(item, $event)"></div>
+             <div class="defaultAcccount col-xs-6 " ></div> -->
+           </div>
+        </div>
+    </div>
+<!-- 
+      <div ng-if="availableAccounts.length">
+        <div class="button-group">
+          <button data-ng-click="logOut()" type="button" class="btn btn-primary">{{'logout'| i18nString}}</button>
+        </div>
+      </div> -->
+
+    <div ng-if="availableAccounts.length<=0">
+      <p>{{'account_admin'| i18nString}}</p>
+      <div class="button-group">
+        <button data-ng-click="showLoginForm()" type="button" class="btn btn-primary">{{'ok'| i18nString}}</button>
+      </div>
+    </div>
+
+</form>

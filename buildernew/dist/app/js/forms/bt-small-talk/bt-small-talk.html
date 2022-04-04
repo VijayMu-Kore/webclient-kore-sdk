@@ -1,0 +1,352 @@
+<div class="smallTalkFullContainer"  ng-class="{'read-only':(accessRights === 'VIEW') || (streamState=='published')}">
+<div class="modal-header bt-modal-header smallTalkHeader">
+   <div class="bt-modal-sub">
+      <div class="col-xs-6 noPadding">
+         <span class="pull-left closeBtn" ng-click="onCancel()">
+         <!-- <span aria-hidden="true"><i class="fa fa-chevron-left"></i></span> -->
+         <i class="btx-carrot-left"></i>
+         </span>
+          <bt-modal-title taskname="{{'small_talk'| i18nString}}" fontclass="{{isEditable() ? 'fa-pencil' : 'fa-eye'}}" bot="stream"></bt-modal-title>
+      </div>
+      <!--   <div  class="col-xs-5 lineheight">
+         <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+         </div> -->
+      <div class="col-xs-6 actionsLeft">
+        <button ng-if="streamState=='published' || accessRights === 'VIEW'" class="viewModeBtn"><i  ng-src="{{eyeimage}}" class="btx-password"></i><span class="modeTitle ">{{'view_only'| i18nString}}</span></button>
+        <div class="search-container">
+            <div class="searchSmallTalk">
+            </div>
+            <div class="searchComponent">
+                <input tabindex="1" type="text" class="smallTalkSearch" ng-keyup="searchUserUtterance(search,$event)" id="searchNode" ng-init="search.searchUtterance = ''" ng-model="search.searchUtterance" placeholder="{{'search_que'| i18nString}}">
+                <i class="btx-search" ng-show="search.searchUtterance === ''" ></i>
+                <i class="btx-close" ng-show="search.searchUtterance !== ''" ng-click="search.searchUtterance='';searchUserUtterance(search,$event)"></i>
+            </div>
+
+        </div>
+        
+         <button class="btn closeCancel kr-sg-button-primary btn_lg" ng-show="showTrainBtn" ng-disabled="trainStatus.success || trainStatus.saving || streamState=='published' || accessRights === 'VIEW'" ng-click="trainBot()"><span>{{trainStatus.success?trained:trainStatus.saving?training:train}}</span>
+            </button>
+  
+            
+            <help-button  help-id="updateHelpLink()" class="helpDiv" ></help-button>
+        <div class="dropdown dialogMenu">
+            <a href="#" class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                <!-- <i class="fa fa-ellipsis-v"></i> -->
+                <i class="ellipsisDark btx-overflow"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="menuOption" ng-if="accessRights !== 'VIEW'">
+                    <div class="dropdown">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="menuName" ng-click="importSmallTalk()">{{'import'| i18nString}}</span>
+                        </div>
+                    </div>
+                </li>
+                 <li class="menuOption">
+                    <div class="dropdown">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="menuName" ng-click="exportSmallTalk('tsv')">{{'export_tsv'| i18nString}}</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="menuOption">
+                    <div class="dropdown">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="menuName" ng-click="exportSmallTalk('json')">{{'export_json'| i18nString}}</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+    </div>
+         <span class="dhelpLink hide">
+         <a class="" target="_blank"  ng-if="(wfType == 'alert')" ng-href="{{$root.helpLinks.ALERTS_TASK_BASIC}}"><i class="btx-help fa-question-circle help-link"></i></a>
+         <a class="" target="_blank" ng-if="(wfType == 'action') && !isReportTask" ng-href="{{$root.helpLinks.ACTIONS_TASK_BASIC}}"><i class="btx-help fa-question-circle fa-lg help-link"></i></a>
+         <a class="" target="_blank" ng-if="(wfType == 'action') && isReportTask" ng-href="{{$root.helpLinks.INFORMATION_TASK_BASIC}}"><i class="btx-help fa-question-circle fa-lg help-link"></i></a>
+         </span>
+      </div>
+   </div>
+</div>
+<div class="modal-body smalltalk-form noPadding" ng-class="{'allowEdit':isEditable(), 'disableEdit':!isEditable()}">
+   <div class="noPadding smallTalkContainer">
+      <div class="smallTalkBlocks" dynamic-height dynaoffset="-50" height-property="height" perfect-scroll>
+            <h2 class="smTalkGroupTitle">{{'groups'| i18nString}}</h2>
+         <div class="blockMain" ng-repeat="block in smallTalkGroups.groupData track by $index">
+             <div class="blockContent" ng-click="setCurrentTab(block,$index,check)" parent-data="test" ng-class="{'selected':block.groupName === currentTab }" ng-init="check[$index].editMode = false">
+                <span ng-click="openSmallTalkBlock($event)" ng-class="{'noEdit':!check[$index].editMode,'editMode':check[$index].editMode}" tooltip-placement="bottom" tooltip="{{block.groupName}}" data-trigger="hover">
+                   <input type="text" ng-model="block.groupName" maxlength="50" ng-keydown="editGroup($event,block,check,$index)">
+                   <img ng-src="{{editSmalltalk}}" ng-show="!check[$index].editMode" class="edit-talk" ng-click="checkForEdit($event,check,$index,prev)">
+                   <img ng-src="{{saveIcon}}" ng-show="check[$index].editMode"  class="save-talk" ng-click="editGroup($event,block,check,$index)">
+                   <img ng-src="{{closeIcon}}" ng-show="check[$index].editMode" class="delete-talk" ng-click="closeEdit($event,check,$index)">
+                </span>
+            </div>
+        </div>
+      </div>
+      <div class="noPadding mainContainer" dynamic-height dynaoffset="-50" height-property="height">
+          <div class="col-xs-12 smallTalkRightContainer">
+
+            <form class="" name="smallTalkForm" novalidate>
+            <div class="col-xs-4 userSays">
+               <div class='tag-input-ctn' tabindex="-1">
+                        <span>{{'user_label'| i18nString}}</span>
+                         <input type='text' name="smallTalkForm.user" ng-model="node.userSays" placeholder="{{'user_says'| i18nString}}" maxlength="2048" ng-required="true">
+                </div>
+            </div>
+            <div class="col-xs-4 botSays">
+                 <div class='tag-input-ctn' tabindex="-1">
+                        <span>{{'constants.mainEntity'| i18nString}}</span>
+                        <input type='text' name='smallTalkForm.bot' ng-model="node.botSays" placeholder="{{'bot_says'| i18nString}}" ng-keypress="onEnterNewItem($event,smallTalkForm,node)" maxlength="2048" ng-required="true" context-typeahead>
+                </div>
+            </div>
+            <div class="col-xs-2 addBtn">
+              <button type="button" class="btn btn-primary" ng-disabled="smallTalkForm.$invalid" ng-click="newItem(node)">{{'add'| i18nString}}</button>
+            </div>
+          </form>
+          <div class="text-center padding10 col-xs-12" ng-show="search.searchUtterance.length && !data.length">No search results found</div>
+          </div>
+           <div class="smTalkContainer clt"  dynamic-height dynaoffset="-140" height-property="height" perfect-scroll when-scroll="loadMore()">
+                    <img ng-src="{{emptyStateIcon}}" ng-show="domLoading" class="emptyStateIcon">
+                     <script type="text/ng-template" id="smalltalk_nodes_renderer.html">
+                        <div ui-tree-handle class="tree-node tree-node-content smallTalkTree" ng-if="data.length">
+                          <div class="reOrder smallTalkSort">
+                            <img ng-src="{{groupingIcon}}" class="grouping firstLevelhandle">
+                          </div>
+                           <div class="inputAndaccordionBtn">
+                              <div class="userSyasInputSmallTalk">
+                                 <span class="col-xs-5 userSays">
+                                   <tags-input ng-model="node.userUtterances" min-length="0" max-length="2048" on-tag-added="onTagAddedUser($tag,node)" replace-spaces-with-dashes="false" count-tag="true" allow-click-to-edit="true" add-on-comma="false" custom-err-msg="{{'question_available'| i18nString}}" remove-on-back-space="false" max-length-msg="{{'questions_char'| i18nString}}" placeholder="{{'type_enter_add'| i18nString}}" on-tag-removed="onTagRemovedUser($tag,node)" validate-special-characters-inside-bracket="false" tag-title="true"></tags-input>
+                                  
+                                 </span>
+                                 <span class="col-xs-5 botSays">
+                                  <tags-input ng-model="node.botUtterances" min-length="0" max-length="2048" replace-spaces-with-dashes="false" count-tag="true" on-tag-added="onTagAddedBot($tag,node)"  allow-click-to-edit="true" custom-err-msg="{{'answer_available'| i18nString}}" max-length-msg="{{'answers_char'| i18nString}}" placeholder="{{'type_enter_add'| i18nString}}" on-tag-removed="onTagRemovedBot($tag,node)" add-on-comma="false" remove-on-back-space="false" validate-special-characters-inside-bracket="false" ui-text="uiText" tag-title="true"></tags-input>
+                                 </span>
+                              </div>
+                              <span class="col-xs-1 toggleArrow smallTalkToggleArrow" data-nodrag ng-click="toggle(this)" ng-class="(node.nodes.length > 0) ?'hasChild':'noChild'">
+                                 <div ng-if="node.nodes.length > 0"> <img ng-src="{{arrowGraySmalltalk}}" ng-class="{'arrowGraySmalltalk':collapsed ,'downArrowGraySmallTalk':!collapsed}"></div>
+                                 <div ng-if="node.nodes.length == 0">
+                                    <img class="arrowGraySmalltalk" ng-src="{{arrowGraySmalltalk}}">
+                                 </div>
+                              </span>
+                           </div>
+                          <span class="editProp" ng-class="{'alignRight':node.parentId !== undefined && this.depth() - 1 === allowedDepth}">
+                             <span class="smalltalkIconSpan add"  ng-if = "this.depth() - 1 < allowedDepth || node.parentId === undefined" ng-click="newSubItem(this)">
+                                <!-- <img ng-src="{{addsmalltalk}}" class="addsmalltalk" data-nodrag tooltip-placement="top" tooltip="{{'add'| i18nString}}"> -->
+                                <i class="addsmalltalk btx-add" data-nodrag tooltip-placement="top" tooltip="{{'add'| i18nString}}"></i>
+                              </span>
+                             <span class="smalltalkIconSpan setting" ng-class="{'backgroundSettings':accessRights === 'VIEW'}" ng-click="openSmallTalkResponses($event,node)"> 
+                                <!-- <img ng-src="{{settingSmalltalk}}" class="settingSmalltalk" data-nodrag tooltip-placement="bottom" tooltip="{{'settings'| i18nString}}"> -->
+                                <i class="settingSmalltalk btx-settings" data-nodrag tooltip-placement="top" tooltip="{{'settings'| i18nString}}"></i>
+                              </span>
+                             <span class="smalltalkIconSpan delete" ng-click="deleteNode(this)" ng-hide="accessRights === 'VIEW'">
+                                <!-- <img ng-src="{{trashSmalltalk}}" class="trashSmalltalk"  data-nodrag tooltip-placement="top" tooltip="{{'delete'| i18nString}}"> -->
+                                <i class="trashSmalltalk btx-delete-1"  data-nodrag tooltip-placement="top" tooltip="{{'delete'| i18nString}}"></i>
+                              </span>
+                        </span>
+                      </div>
+                      <ol ui-tree-nodes="" ng-init="parentId = node.id" parent-data="{{node.id}}" ng-model="node.nodes" ng-class="{hidden: collapsed}" data-nodrag>
+                          <li ng-repeat="node in node.nodes" parent-data="{{parentId}}" ui-tree-node  nodeId ="{{node.nodeId}}" data-scroll-container=".smTalkContainer" data-collapsed="node.defaultCollapse" ng-include="'smalltalk_nodes_renderer.html'">
+                          </li>
+                      </ol>
+     
+            </script>
+                    <div ui-tree="treeOptions" id="smalltalk-tree-root" data-max-depth="2" data-drag-enabled="true" data-drop-enabled="true" data-drag-delay="200" data-empty-placeholder-enabled=true data-dropzone-enabled="true">
+                        <ol ui-tree-nodes ng-model="data" class="noBorder" parent-data="test">
+                            <li class="noLeftBorder" ng-repeat="node in data" parent-data="test"  
+                                ui-tree-node data-expand-on-hover="false" id="{{node.seq}}" nodeId="{{node.nodeId}}" data-scroll-container=".smTalkContainer" data-collapsed="node.defaultCollapse" ng-include="'smalltalk_nodes_renderer.html'"
+                                >
+                              </li>
+                        </ol>
+                    </div>
+            </div>
+            <div class="row">
+              <div class="smalltalktreenode" ng-click="collapseAll()"></div>
+            </div>
+            <div ng-show="loadingBatch" class="loadingTag">{{'loading'| i18nString}}</div>
+
+      </div>
+      
+   </div>
+
+
+</div>
+</div>
+<div class="modal fade import-small-talkImport import-bot-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+      <div class="modal-content" ng-show="importing === 'initial'">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'import_small_talk'| i18nString}}</h4>
+            </div>
+            <div class="modal-body" perfect-scroll>
+                <div class="col-xs-12">
+                    <div class="col-xs-12 form-group smallTalkFileDrop noPadding">
+                        <div class="imgCntr">
+                          <img class="" ng-src="{{dragDropIcon}}">
+                        </div>
+                        <div class="dragdrophelp" ng-hide="fileName">
+                            <div class="dragdroptitle">{{'drag_drop'| i18nString}}</div>
+                            <div class="ortitle">{{'or'| i18nString}}</div>
+                            <div class="browsetitle"><span class="browseBtn cursor-pointer">{{'browse'| i18nString}}</span>
+                            </div>
+                        </div>
+                        <div class="downloadBlock" ng-hide="fileName">
+                          <p>{{'download'| i18nString}} <span class="download-title"><a download target="_blank" href="{{assetsBase}}/files/sampleSmallTalk.tsv">{{'sample_tsv'| i18nString}}</a></span>{{'or'| i18nString}} <span class="download-title"><a download target="_blank" href="{{assetsBase}}/files/sampleSmallTalk.json">{{'sample_json'| i18nString}}</a></span> {{'file'| i18nString}}</p>
+                        </div>
+                        <div class="uploadedSmallTalkFile" ng-show="fileName"><span class="filename">{{fileName}}</span><span class="removefile"><i ng-click="removeFile()" class="fa fa-close"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-disabled="!fileName" class="kr-sg-button-primary btn_lg" ng-click="startImport()">{{'next'| i18nString}}</button>
+                  <button type="button" class="kr-sg-button-secondary btn_lg" ng-click="closeModal()">{{'cancel'| i18nString}}</button>                
+            </div>
+           
+        </div>
+        <div class="modal-content" ng-if="importing === 'pending'">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'import_small_talk'| i18nString}}</h4>
+            </div>
+               <div class="modal-body" perfect-scroll>
+                <div class="col-xs-12">
+                    <div class="imgCntr">
+                      <img class="layer" ng-src="{{importingIcon}}">
+                    </div>
+                    <div class="importingText">
+                      <span class="processing">{{'importing'| i18nString}}</span>
+                    </div>
+                    <div class="progressouter"><div class="progressinner" ng-style="{width : (totalProgress + '%') }"></div></div>
+                </div>
+            </div>
+                 <div class="modal-footer importFooter">
+                    <button type="button" class="btn btn-primary" ng-disabled="importing === 'pending'">{{'done'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importing === 'failed'">
+           <div class="modal-header">
+                <h4 class="modal-title">{{'import_small_talk'| i18nString}}</h4>
+            </div>
+           <div class="modal-body" perfect-scroll>
+              <div class="col-xs-12">
+                    <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                        <div class="text-center importimage">
+                            <img class="" ng-src="{{wentWrongIcon}}">
+                        </div>
+                        <div class="importerror">
+                            <div class="title">{{'some_error'| i18nString}}</div>
+                            <div class="errors" ng-if="showFailedErrors" ng-repeat="error in errorMsg">
+                                <div class="statementutterdiv col-xs-12">
+                                    <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                                    <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                 <div class="modal-footer importFooter">
+                    <button type="button" class="btn btn-primary" ng-click="goToStep('initial')">{{'retry'| i18nString}}</button>
+                    <button type="button" class="btn btnClose" ng-click="closeModal()">{{'close'| i18nString}} </button>
+            </div>
+        </div>
+        <div class="modal-content" ng-if="importing === 'success'">
+           <div class="modal-header">
+                <h4 class="modal-title">{{'import_small_talk'| i18nString}}</h4>
+            </div>
+                 <div class="modal-body" perfect-scroll>
+              <div class="col-xs-12 form-group noPadding importsuccess">
+                    <div class="text-center importsuccessimage">
+                        <img ng-src="{{importDoneIcon}}">
+                    </div>
+                    <div class="importsuccessdiv">
+                        <div class="title">{{'import_success'| i18nString}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer importFooter">
+                    <button type="button" class="btn btn-primary btnSave" ng-click="onDone()">{{'done'| i18nString}}</button>
+            </div>
+        </div>
+</div>
+<bot-modal-slider id="manageSmallTalkResponse">
+   <div class="modalSliderContainer standardResponses width700">
+
+<!--Header Starts Here -->
+      <div class="modalHeader">
+        <h4 class="modal-title">
+            <i  class="btx-close" ng-click="closeSmallTalkResponse()"></i> 
+            {{'manageResponse'| i18nString}}
+        </h4>
+    </div>
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+    <div class="modalBody standardResponseBody" perfect-scroll dynamic-height dynaoffset="-100" height-property="height" ng-class="{'viewMode':accessRights === 'VIEW'}">
+        <div class="form-group col-xs-12 addSmallTalkResponseBtn" ng-click="addNewResponse()">{{'add_response'| i18nString}}</div>
+            <accordion class="smallTalkResAccordian stdResAccordian">
+                <accordion-group ng-repeat="prompt in _allPrompts track by $index" heading="{{prompt.text}}" is-open="prompt.isOpen" ng-init="prompt.isOpen = false" ng-class="{true:'panelOpen',false:'panelClose'}[prompt.isOpen]" id="prompt-{{$index}}">
+                    <accordion-heading>
+                        <span ng-show="prompt.channel!=='' && prompt.channel=='skype'" class="col-xs-2 channelIcon fa fa-skype"></span>
+                        <span ng-show="prompt.channel!=='' && prompt.channel!=='skype'" class="col-xs-2 Oval-15 channelIcon no-background">
+                        <span ng-show="prompt.channel=='default'" tooltip-placement="bottom" tooltip="{{'all_channels'| i18nString}}" class="channelText">{{'all_labels'| i18nString}}</span>
+                            <img ng-show="prompt.channel!=='default'" tooltip-placement="bottom" tooltip="{{_channelConfig.channelsObject[prompt.channel].name}}" class="img fa fa-{{prompt.channel}}" ng-src="{{_channelConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true" ng-click="editPrompt(prompt,$index,prompt.isOpen)">
+                        </span>
+                          <div class="col-xs-10 textHeaaderAccordian textTransformResponse" id="promptHeader-{{$index}}" ng-click="editPrompt(prompt,$index,prompt.isOpen)">
+                          <div class="col-xs-11 noPadding textEllipsis" ng-if="prompt.text && prompt.type === 'basic'" class="promptText">{{prompt.text}}</div>
+                          <div class="col-xs-11 noPadding textEllipsis" ng-if="prompt.text === '' && prompt.type==='basic'" class="promptText italic">{{'new_prompt'| i18nString}}</div>
+                          <div class="col-xs-11 noPadding textEllipsis" ng-if="prompt.type === 'uxmap'" class="promptText italic">{{'js_msg'| i18nString}}</div>
+                          <!-- <div class="col-xs-11 noPadding textEllipsis" ng-if="!prompt.isMarkDown" class="promptText italic">JavaScript Message</div> -->
+                          <div class="deletePromptDiv col-xs-1 noPadding" ng-hide="accessRights === 'VIEW'"><i class="btx-delete-1" ng-click="deleteResponse($index,$event)"></i></div>
+                        </div>
+                    </accordion-heading>
+                    <div class="inner-accordion-body">
+                        <div class="col-xs-12 noPadding">
+                            <div class="form-group row override-outer noMargin">
+
+                                <div class="channel-selector">
+                                    <div>
+                                        <label><b>{{'channel_name'| i18nString}}</b></label>
+                                    </div>
+                                    <div>
+                                        <select class="" ng-model="prompt.channel">
+                                            <option value="">{{'choose_channel'| i18nString}}</option>
+                                            <option value="default">{{'any_channel'| i18nString}}</option>
+                                            <option ng-repeat="option in availableChannels" value="{{option.id}}">{{option.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="override-message" ng-if="prompt.isOpen && (prompt.channel)">
+                                    <div>
+                                        <label class="marginTop10 noMarginBottom"><b>{{'response'| i18nString}}</b></label>
+                                        <span class="pos-relative floatRight" ng-show="prompt.type === 'uxmap'"><sample-tempalets selected-channel="prompt.channel" selected-callback="prompt.text" demo-templates="demoTemplates"></sample-tempalets></span>
+                                    </div>
+                                    <div class="editorMenus">
+                                        <div class="menuHeader" ng-class="{active: prompt.type === 'basic'}" ng-click="activeTabType('basic',prompt)">{{'standard_text'| i18nString}}</div>
+                                        <div class="menuHeader moveLeft" ng-class="{active: prompt.type !== 'basic'}" ng-click="activeTabType('uxmap',prompt)">{{'advanced_mode'| i18nString}}</div>
+                                    </div>
+                                    <markdown-editor  callback='markdownCbs' ng-focus="nofocus" ng-model="prompt.text" ng-show="prompt.type === 'basic'"></markdown-editor>
+                                    <div class="jsEditorDummyHeaderBlock" role="group" ng-show="prompt.type === 'uxmap'">{{'js_editor'| i18nString}}</div>
+                                    <div class="jseditorblock srJsEditorBlock" acify  id="jseditor" callback='jsEditorCallbacks' ng-model="prompt.text" ng-show="prompt.type === 'uxmap'"></div>
+                                    
+                                </div>
+                                <div class="col-xs-12 noPadding marginTop10">
+                                    <button type="button" class="btn responseBtn saveBtn btn-primary" ng-click="saveMessage($index,prompt)">{{'save'| i18nString}}</button>
+                                    <button type="button" class="btn responseBtn closeCancel" ng-click="prompt.isOpen = false">{{'cancel'| i18nString}}  </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </accordion-group>    
+            </accordion>
+        </div>
+        <div ng-show="loadingPrompts" class="emptyResponsesContainer">
+            <div><i class="fa fa-circle-o-notch fa-spin-fast"></i>&nbsp;&nbsp;<span class="working-on">{{'loading_prompts'| i18nString}}</span>
+        </div>
+    </div>
+     
+    </div>
+<!-- Body Ends Here -->
+
+<!-- Footer Starts Here -->
+     
+<!-- Footer Ends Here -->
+
+   </div>
+</bot-modal-slider>

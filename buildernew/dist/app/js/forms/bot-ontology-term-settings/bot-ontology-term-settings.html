@@ -1,0 +1,316 @@
+<div class="botontologytermsettings" ng-class="{'disablesNodeLevelEdit':levelOneNode.editLocked}">
+    <div class="btscontent">
+        <div class="btsheader">
+            <div class="header col-xs-12">
+                <div class="col-xs-8">
+                    <span class="lineHeight30 settingsText">{{'settings'| i18nString}}</span>
+                    <span class="error-color errorspan" ng-show="selectedTerm.saveFail">{{'failed_save_term'| i18nString}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="btsbody" perfect-scroll dynamic-height dynaoffset="-170">
+            <form name="termSettingsForm" novalidate class="form-settings-intent">
+                <div class="col-xs-12 noPaddingLeft terms">
+                    <div class="col-xs-12 noPadding">
+                    <div class="col-xs-12 noPadding">
+                        <div class="col-xs-12 form-group noPadding">
+                            <div class="col-xs-6 termName" ng-class="{'borderOrange': term.isDupe}">
+                                <label class="tooltip-hover text_left"  tooltip-placement="right" tooltip=""> {{'term_name'| i18nString}} </label>
+                                <div class="term-name">
+                                    <input type="text"  maxlength="50"  ng-model="term.label" encode-decode id="parentTermName" name="parentTermName" ng-disabled="newStreamData.isInMarket" class="form-control"
+                                    ng-minlength="1" ng-keyup="checkIsDupe(term)" maxlength="200" 
+                                required placeholder="{{'type_and_enter_placeholder'| i18nString}}">
+                                <div class='warn-icon tooltip-hover' ng-if="!isTermDisabled && term.isDupe" tooltip-placement="right" tooltip="{{ 'The parent term [] already has another child term with this name. Consider renaming this term.' | formTT:term:this }}">
+                                    <img ng-src="{{warnUserIcon}}" alt="">
+                                </div>
+                                </div>
+                                    <div  ng-show="termSettingsForm.parentTermName.$dirty">
+                                    <div error-alert  ng-show="termSettingsForm.parentTermName.$error.required" class="text-danger form-error-text"> {{'term_name_req'| i18nString}} </div>
+                                    </div>
+                            </div>
+                            <div class="col-xs-6 termType">
+                                <label>{{'term_type'| i18nString}}</label>
+                                        <div class="btn-group dropdown dropdown-select">
+                                            <button type="button" class="form-control btn-default dropdown-toggle{{$index}}" data-toggle="dropdown">
+                                                <span class="selectfield"></span> 
+                                                <span class="caret"></span>
+                                            </button>
+                                            <div class="dropdown-menu" onclick="event.stopPropagation();">
+                                                <ul class="noPadding positionRelative listMenu" role="menu">
+                                                    <li class="list" ng-repeat="termUsageType in termUsageTypes">
+                                                        <div class="termUsage" ng-click="selectTermUsage($event,termUsageType,term)">
+                                                            <span class="fa fa-check"  ng-class="{'selected':termUsageType.selected}"></span>
+                                                            <div class="termUsageType">
+                                                                <label>{{termUsageType.name}}</label>
+                                                                <p class="description">{{termUsageType.description}}</p>
+                                                            </div>
+                                                            <div class="sampleLayout">{{termUsageType.name}}<span ng-show="termUsageType.icon" class="{{termUsageType.class}}"><img class="termUsageIcon" ng-src="{{termUsageType.icon}}"/></span></div>
+                                                    
+                                                        </div>
+                                                    
+                                                    </li>
+                                
+                                                    
+                                        
+                                                </ul>
+                                            </div>
+                                        
+                                        </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-xs-6" ng-if="false">
+                        <div class="col-xs-12 form-group noPadding">
+                            <div  class="col-xs-12 noPaddingLeft noPaddingRight">
+                                <label class="tooltip-hover text_left"  tooltip-placement="right" tooltip=""> {{'class_label'| i18nString}} </label>
+                                <span ng-class="{'disableCreateClassBtn':isOrganizer}" class="createnewclassbtn"  ng-click="boc.ontologyClassModal.open()"><i class="fa fa-plus"></i>{{'create_class'| i18nString}}</span>
+                            </div>
+                            <div class="col-xs-12 uiselect2container noPaddingLeft noPaddingRight" ng-class="{'disableOption':isOrganizer}">
+                        <select id="classselect2" ui-select2="selectConfig"  data-placeholder="{{'select_class'| i18nString}}" ng-model="term.classId"  ng-change="selectBot(selectedBot)">
+                        <option value="">{{'none'| i18nString}}</option>
+                        <!-- <optgroup label="{{taskItem.type}}"  ng-repeat="bot in botsByType"> -->
+                        <option ng-repeat="class in allClasses"  value="{{class._id}}" >{{class.name}}</option>
+                        <!-- </optgroup> -->
+                    </select>
+                        </div>
+                        
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-xs-12" ng-if="!isTermDisabled">
+                        <div class="col-xs-12 form-group noPadding">
+                            <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                                <label class="tooltip-hover text_left"  tooltip-placement="right" tooltip=""> {{'Term_disp_name'| i18nString}} </label>
+                                <!-- <p class="grayTextSyn">Synonyms defined here are applicable only when <strong>{{term.label}}</strong> is present in this path ({{term.labelpath}})</p> -->
+                            </div>
+                            <div class="col-xs-12 noPaddingLeft noPaddingRight" ng-class="{'disableOption':isOrganizer}">
+                                <input type="text" class="form-control" ng-model="term.displayName" minlength="0" maxlength="100"  placeholder="{{'Term_disp_name_placeholder'| i18nString}}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 form-group mb-0" ng-if="!isTermDisabled">
+                        <div class="col-xs-12 noPadding radioDiv">
+                        <label>{{ 'auto_qualify_path' | i18nString }}</label>
+                        </div>
+                        <div class="grayInfoText h-auto col-xs-12 noPadding marginT5">{{ 'auto_qualify_path_desc' | i18nString }}</div>
+                        <div ng-class="{'screenFreeze':streamState=='published'}">
+                            <toggle-switch ng-model="term.autoQualify" class="pull-left">
+                            </toggle-switch>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-12">
+                            <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                                    <label class="tooltip-hover text_left" tooltip-placement="right" tooltip=""> {{'Traits_label'| i18nString}} </label>
+                                    <!-- <p class="grayTextSyn">Synonyms defined here are applicable only when <strong>{{term.label}}</strong> is present in this path ({{term.labelpath}})</p> -->
+                                </div>
+                                <div class="col-xs-12 noPaddingLeft noPaddingRight"   ng-class="{'disableOption':isOrganizer}">
+                                        <input type="text" ng-init="bindAuioComplete()" id="addTraitforKg" ng-model="traits.traitRule"  name="childTermName"  class="form-control"
+                                        min-length="0" max-length="200"  placeholder="{{'enter_trait_value'| i18nString}}">
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-xs-12 synonyms">
+                        <label>{{'synonyms_name'| i18nString}}</label>
+                        <div class="synonymContainer">
+                            <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                                    <label class="tooltip-hover text_left" tooltip-placement="right" tooltip=""> {{'path_level'| i18nString}} </label><span class="count" ng-show="term.synonyms.length">{{term.synonyms.length}} {{'synonyms_name'| i18nString}}</span>
+                                    <p class="grayTextSyn-">
+                                        <span ng-bind-html="'synonyms_applicable'| i18nString:({dyn:term.label})"></span>
+                                        <span>({{term.labelpath}})</span>
+                                    </p>
+                                </div>
+                                <div class="col-xs-12 noPaddingLeft noPaddingRight" ng-class="{'disableOption':isOrganizer}">
+                                    <tags-input show-on-focus="true" add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_and_enter_placeholder'| i18nString}}" use-strings="true"  ng-model="term.synonyms"></tags-input>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 noPaddingLeft">
+                                <div class="col-xs-12  form-group noPaddingLeft noPaddingRight marginbottom5">
+                                    <label class="tooltip-hover text_left" tooltip-placement="right" tooltip=""> {{'kg_synonyms'| i18nString}} </label><span class="count" ng-show="termSynonyms.synonyms">{{termSynonyms.synonyms.length}} {{'synonyms_name'| i18nString}}</span>
+                                    <p class="grayTextSyn-">
+                                        <span ng-bind-html="'synonyms_defined'| i18nString:({dyn:term.label})"> </span>
+                                        <span>
+                                            <a class="disableSynEdit" ng-if="termResponseSynonyms.count" ng-click="boc.editGlobalSynonyms(term.label,termSynonyms)"> {{'edit'| i18nString}}</a>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="col-xs-12 form-group noPadding" ng-if="!termResponseSynonyms.count">
+                                    {{'no_match_pattern_dyn'| i18nString:({dyn:term.label})}}. <a class="disableSynEdit" ng-click="boc.addnewGlobalSynonym(term.label)"> {{'add_new'| i18nString}}</a>
+                                </div>
+                                <div class="col-xs-12 form-group noPadding noTagEdit" ng-if="termResponseSynonyms.count" >
+                                    <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="" use-strings="true"  ng-model="termSynonyms.synonyms"></tags-input>
+                                </div>
+                            </div> 
+                            <div class="col-xs-12 noPaddingLeft noTagEdit" ng-show="stream.confidenceConfigs[1].useBotSynonyms">
+                                <div class="col-xs-12  form-group noPaddingLeft noPaddingRight marginbottom5">
+                                    <label class="tooltip-hover text_left" tooltip-placement="right" tooltip=""> {{'Bot_synonyms_label'| i18nString}} <i class="helpIcon btx-help tooltip-hover" tooltip-placement="right" tooltip="{{'synonyms_concepts'| i18nString}}"></i> </label>
+                                    <span class="count" ng-show="botSynonyms.synonyms">{{botSynonyms.synonyms.length}} {{'synonyms_name'| i18nString}}</span>
+                                    <p class="grayTextSyn-" ng-bind-html="'bot_synonyms_match'| i18nString:({dyn:term.label})" ng-show="botSynonyms.synonyms.length"></p>
+                                    <p class="grayTextSyn-" ng-show="!botSynonyms.synonyms.length">{{'no_match_found'| i18nString}}</p>
+                                    <tags-input ng-show="botSynonyms.synonyms.length" add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="" use-strings="true"  ng-model="botSynonyms.synonyms"></tags-input>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-xs-12 manageContext">
+                    <div class="col-xs-12 manage-context-head"  ng-class="{'screenFreeze':(selectedStreamState=='published')}">
+                        <label tooltip-placement="right" tooltip="" class="displayBlock"> {{'manage_context'| i18nString}} </label>
+                        <div class="toggle-wrap"  ng-class="{'hide':levelOneNode.editLocked}" ng-if="term.termUsage === 'organizer'" ng-click="openContextModal()">
+                            <span ng-class="{'active': !term.enableContext}">
+                                Disable
+                            </span>
+                            <span>
+                                <img ng-src="{{enableToggle}}" ng-if="term.enableContext">
+                                <img ng-src="{{disableToggle}}" ng-if="!term.enableContext">
+                            </span>
+                            <span ng-class="{'active': term.enableContext}">
+                                Enable
+                            </span>
+                        </div>              
+                        <div class="toggle-wrap" ng-if="levelOneNode.editLocked">
+                            <span ng-class="{'active': !term.enableContext}">
+                                Disable
+                            </span>
+                            <span>
+                                <img ng-src="{{disableToggle}}">
+                            </span>
+                            <span ng-class="{'active': term.enableContext}">
+                                Enable
+                            </span>
+                        </div>
+                    </div>
+                    <div id="contextModalEnable" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirm to proceed</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>"{{term.label}}"</strong> is an Organizer node. The Context Output and Context Preconditions defined for this node will be used only when an intent is answered from this node or any of its child nodes.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" ng-click="confirmContext()">Confirm</button>
+                            <button type="button" class="btn closeCancel" ng-click="contextModalClose()">Cancel</button>
+                        </div>
+                        </div>
+
+                    </div>
+                    </div>
+
+                            <!-- <p class="grayTextSyn">Synonyms defined here are applicable only when <strong>{{term.label}}</strong> is present in this path ({{term.labelpath}})</p> -->
+                            
+                        <div class="col-xs-12 noPaddingLeft">
+                                <div class="col-xs-12 manageContextContainer">
+                                        <div class="manageContextConditions">
+                                            <p class="pre-conditionsHeader">
+                                                {{'intent_preconditions_name'| i18nString}} 
+                                                <i class="helpIcon btx-help tooltip-hover text_left" tooltip-placement="right" tooltip="{{'term_qualified'| i18nString}}"></i>
+                                            </p>
+                                            <div ng-class="{'disabled': !term.enableContext && term.termUsage === 'organizer'}">
+                                                <tags-input add-on-comma="false" class="tagOrCondition" replace-spaces-with-dashes="false" min-length="0"
+                                                max-length="128" use-strings="true" placeholder="{{'type_and_enter_placeholder'| i18nString}}"
+                                                ng-model="term.preConditions"></tags-input>
+                                            </div>
+                                        </div>
+                                        <div class="manageContextConditions marginTop20">
+                                                <p class="contextOutputHeader">
+                                                    {{'context_output_name'| i18nString}}
+                                                        <i  class="helpIcon btx-help tooltip-hover text_left" tooltip-placement="right" tooltip="{{'def_qualified_path'| i18nString}}"></i>
+                                                </p>
+                                                <div ng-class="{'disabled': !term.enableContext && term.termUsage === 'organizer'}">
+                                                    <tags-input add-on-comma="false" class="" replace-spaces-with-dashes="false" min-length="0"
+                                                    max-length="128" use-strings="true" placeholder="{{'type_and_enter_placeholder'| i18nString}}" 
+                                                    ng-model="term.contextTags"></tags-input>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                
+                </div>
+                <div class="responsesection col-xs-12 disableIntent mt-20">
+                    <div class="kr-sg-input-text">
+                        <div class="referenceClass">
+                            <span class="label-text">  {{'term_status'| i18nString}}</span>
+                            <span>
+                                <span class="tooltip-custom alert-icon">
+                                    <i class="helpIcon btx-help font-12 top2px">
+                                    </i>
+                                    <span class="tooltiptextalert disableTooltip" ng-click="$event.stopPropagation()">
+                                        {{'term_status_tooltip1'| i18nString}} 
+                                        <br>
+                                        {{'term_status_tooltip2'| i18nString}} 
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                        <toggle-switch ng-model="term.termStatus" class="pull-left" 
+                            ng-class="{'toggle-publish-mode-freeze':selectedStreamState==='published'}">
+                        </toggle-switch>
+                    </div>
+                </div>
+                <div class="col-xs-12 childTerms noPadding">
+                            <div class="col-xs-12" ng-show="term.nodes.length > 0">
+                                <div class="col-xs-4 noPadding"> 
+                                    <div class="col-xs-12 noPaddingLeft">
+                                            <label  tooltip-placement="right" tooltip=""> {{'child_terms'| i18nString}} </label>
+                                        </div>
+                                </div>
+                            <div class="col-xs-8">
+                                <div class="col-xs-12 noPaddingLeft noPaddingRight">
+                                        <label tooltip-placement="right" tooltip=""> {{'synonyms_name'| i18nString}} </label>
+                                    </div>
+                            </div>
+                            </div>
+                            <div ng-repeat="node in term.nodes" class="col-xs-12 terms-node-data-inputs">
+                                <div class="col-xs-4 noPadding" ng-class="{'borderOrange': node.isDupe && !isTermDisabled}">
+                                
+                                    <div class="form-group noPadding">
+                                        
+                                        <div class="noPaddingRight term-name" >
+                                            
+                                            <input type="text"  ng-model="node.label" encode-decode  maxlength="50"  name="childTermName" ng-disabled="newStreamData.isInMarket" class="form-control"
+                                            ng-keyup="checkIsDupeChild(node)"
+                                                ng-minlength="1" maxlength="200"
+                                                required  placeholder="{{'type_and_enter_placeholder'| i18nString}}">
+                                                <span class='warn-icon' ng-if="!isTermDisabled && node.isDupe">
+                                                    <img ng-src="{{warnUserIcon}}" alt="">
+                                                </span>
+                                                <div  ng-show="termSettingsForm.childTermName.$dirty">
+                                                <div error-alert  ng-show="termSettingsForm.childTermName.$error.required" class="text-danger form-error-text">{{'child_term_is_required'| i18nString}} </div>
+                                        </div>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                                <div class="col-xs-8">
+                                    <div class="form-group noPadding">
+                                    
+                                        <div class="noPaddingLeft " ng-class="{'disableOption':isOrganizer}">
+                                        <tags-input add-on-comma="false" replace-spaces-with-dashes="false" min-length="0" max-length="128" placeholder="{{'type_and_enter_placeholder'| i18nString}}" use-strings="true"  ng-model="node.synonyms"></tags-input>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="footer-sec-btn-save-cancel">   
+            <button class="btn btnSolidBlue" ng-disabled="saveInProgress" ng-click="saveTermSettings()">
+                <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{(saveInProgress)? savingLabel :save}}
+            </button>
+            <button class="btn closeCancel disableEditException" ng-click="boc.hideBotOntologyTermSettings()">{{'cancel'| i18nString}}</button>
+        </div>
+    </div>
+</div>

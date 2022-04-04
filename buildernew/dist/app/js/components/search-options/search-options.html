@@ -1,0 +1,8 @@
+<div class="searchNodes" ng-class="{'expandView':expandview, 'collapseView':!expandview}">
+    <span class="clearSearch" ng-show="searchStr.length > 0" ng-click="clearSearch()">{{'clear_label'| i18nString}}</span>
+    <i class="btx-search searchIcon" ng-click="expandSearch()" ></i>
+    <input id="dialogSearchIn" class="form-control" ng-model="searchStr" ng-blur="collapseSearch()" ng-focus="updatedData()" ng-keyup="searchForNodes(searchString)" placeholder="{{'find_nodes'| i18nString}}"/>
+    <span class="searchTxtCount">{{searchTextInfo}}</span>
+    <img class="fa-chevron-circle-up prevSearch" ng-class="{'disabled': currentNodeNum <= 0}" ng-click="prevSearch()" ng-src="{{chevronCircleUp}}" />
+    <img class="fa-chevron-circle-down nextSearch" ng-class="{'disabled': currentNodeNum >= searchDataTemp.length - 1}" ng-click="nextSearch()" ng-src="{{chevronCircleDown}}" />
+</div>

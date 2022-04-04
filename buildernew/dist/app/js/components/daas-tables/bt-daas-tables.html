@@ -1,0 +1,191 @@
+<div class="modalHeader ">
+    <h4 class="modal-title" id="gridSystemModalLabel">
+        <i class="btx-close" ng-src="{{assetsBase}}landingImages/closeCross.png" ng-click="daasCloseModal()" ></i>
+        {{'Data Service Request Definition'}}
+    </h4>
+</div>
+<div class="modalBody data-table-service" perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+    <form name="tableForm" novalidate>
+        <div class="label_text">Choose Table Name</div>
+        <div class="desc-info-text">Choose the data table you would like to use</div>
+        <div class="kr-sg-dropdowns mb-10">
+            <div class="dropdown dropdown-open">
+                <div class="dropdown-toggle dropdown-input" data-toggle="dropdown" id="dropdownMenuButton1">
+                    {{ tableForm.name ||'Select'}}</div>
+                <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton1" perfect-scroll>
+                    <li ng-repeat="table in tables" ng-click="onChangeData(table.name)"><a>{{table.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- ACTION -->
+        <div ng-if="tableForm.name" class="mb-10">
+            <div class="label_text">Actions</div>
+            <div class="desc-info-text">Select the action you would like to perform on the data table</div>
+            <div class="kr-sg-dropdowns">
+                <div class="dropdown dropdown-open">
+                    <div class="dropdown-toggle dropdown-input" id="dropdownMenuButton2" data-toggle="dropdown">
+                        {{actionName || 'Select'}}
+                    </div>
+                    <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton2" perfect-scroll>
+                        <li ng-repeat="list in actionList" ng-click="actionSelected(list)" class="noPaddingBottom">
+                            <a class="action-list">
+                                <div class="action-link">{{list.name}}</div>
+                                <div class="desc-info-text">{{list.info}}</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="action-data">
+            <div ng-if="tableForm.action == 'insert' || tableForm.action == 'update'">
+                <div class="label_text">Assign Values</div>
+                <div class="desc-info-text">{{assignText}} </div>
+                <div ng-if="!selectedFields">
+                    No Data found
+                </div>
+                <div class="input-fields mb-10" ng-repeat="input in selectedFields track by $index"
+                    ng-class="{'readOnlyFields':input.readOnly}">
+                    <label class="label_text col-xs-3 noPadding m-0">{{input.name}}</label>
+                    <div class="col-xs-9 pr-0">
+                        <div class="kr-sg-input-text" ng-if="!input.readOnly">
+                            <input type="text" ng-model="addData[input.name]" placeholder="Provide value"
+                                class="input-text" maxlength="120" context-typeahead>
+                        </div>
+                        <!-- <div class="kr-sg-input-text" ng-if="input.type == 'string' && !input.readOnly">
+                            <input type="text" ng-model="addData[input.name]" placeholder="Provide value"
+                                class="input-text" maxlength="120" context-typeahead>
+                        </div> -->
+                        <!-- <div class="kr-sg-input-text" ng-if="input.type == 'date' && !input.readOnly">
+                            <input type="text" date-picker placeholder='Provide value' maxlength="20" class='input-text'
+                                ng-model="addData[input.name]" value="addData[input.name]"> -->
+                        <!-- <span class="calendaricon">
+                                    <i class="fa fa-calendar"></i>
+                                </span> -->
+                        <!-- <input type="text" ng-model="addData[input.name]" name="daterange" value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" class="input-text"
+                                size="30">
+                            <span class="calendaricon" ng-click="selectRange()">
+                                <i class="fa fa-calendar"></i>
+                            </span> -->
+                        <!-- </div> -->
+                        <!-- <div class="kr-sg-input-text" ng-if="input.type == 'number' && !input.readOnly">
+                            <input type="number" ng-model="addData[input.name]" placeholder="Provide value"
+                                class="input-text" maxlength="120">
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="filter mt-20"
+            ng-if="tableForm.action == 'query' || tableForm.action == 'update'|| tableForm.action == 'delete'">
+            <div class="label_text">Choose Filters</div>
+            <div class="desc-info-text">{{filterText || 'Not found'}}</div>
+            <div class="validation-section">
+                <div class="kr-sg-radiobutton">
+                    <input value='and' ng-model="tableForm.operator" name="tableForm.operator" id="and"
+                        class="radio-custom" type="radio">
+                    <label for="and" class="radio-custom-label">AND</label>
+                </div>
+                <div class="kr-sg-radiobutton">
+                    <input value='or' ng-model="tableForm.operator" name="tableForm.operator" id="or"
+                        class="radio-custom" type="radio">
+                    <label for="or" class="radio-custom-label">OR</label>
+                </div>
+                <div class="validation-setting-rules-info">
+                    <div class="col-xs-12 validation-content" ng-repeat="filter in tableForm.filterRules">
+                        <div class="close-minus-btn"><span ng-click="removeSimpleValidation(filter)">-</span></div>
+                        <div class="col-xs-4 pl-10 pr-0">
+                            <div class="kr-sg-dropdowns">
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input"
+                                        title="{{ filter.field ||'Select Column'}}" data-toggle="dropdown">
+                                        {{ filter.field ||'Select Column'}}
+                                    </button>
+                                    <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton3"
+                                        perfect-scroll>
+                                        <li ng-repeat="col in selectedFields" ng-click="setFilterValue(filter, col)">
+                                            <a title="{{col.name}}">{{col.name}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 pl-10 pr-0">
+                            <div class="kr-sg-dropdowns">
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                                        {{ (filter.operand | replaceHtmlString) ||'Select Option'}}</button>
+                                    <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton4"
+                                        perfect-scroll>
+                                        <li ng-repeat="col in ['=', '!=', '>', '<']" ng-click="filter.operand = col">
+                                            <a>{{col}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 pl-10 pr-0">
+                            <div class="kr-sg-input-text">
+                                <input type="text" placeholder="Enter Value" class="input-text" ng-model="filter.value">
+                            </div>
+                            <!-- <div class="kr-sg-input-text" ng-if="filter.type == 'string'">
+                                <input type="text" placeholder="Enter Value" class="input-text" ng-model="filter.value">
+                            </div>
+                            <div class="kr-sg-input-text" ng-if="filter.type == 'number'">
+                                <input type="number" placeholder="Enter Value" class="input-text" ng-model="filter.value">
+                            </div>
+                            <div class="kr-sg-input-text" ng-if="filter.type == 'date'">
+                                <input type="text" date-picker placeholder="Enter Value" class="input-text" ng-model="filter.value">
+                            </div> -->
+                        </div>
+                        <div class="col-xs-12 condtion-text">{{tableForm.operator | uppercase}}</div>
+                    </div>
+                    <div class="close-minus-btn add-plus"><span
+                            ng-class="{'disable-button': !isFilterRuleValid(tableForm)}"
+                            ng-click="addSimpleValidation()">+</span></div>
+                </div>
+            </div>
+            <div ng-if="tableForm.action == 'query'" class="mt-20">
+                <div class="label_text">Limit<span tooltip-placement="right"
+                        tooltip="The first ten records will be returned if the Limit is not defined"><img
+                            src="{{assetsBase}}icons/helpIcon.svg"></span></div>
+                <div class="desc-info-text">Define the number of records to be returned from the result set</div>
+                <div class="kr-sg-input-text mb-20">
+                    <input type="text" placeholder="Enter the number of records to fetch from the table"
+                        ng-model="tableForm.limit" class="input-text">
+                </div>
+                <div class="label_text">Offset<span tooltip-placement="right"
+                        tooltip="No records will be skipped if the Offset is not defined"><img
+                            src="{{assetsBase}}icons/helpIcon.svg"></span></div>
+                <div class="desc-info-text">Define the number of records to be skipped before beginning to return
+                    the
+                    results
+                </div>
+                <div class="kr-sg-input-text">
+                    <input type="text" placeholder="Enter the number of records to be skipped from the results"
+                        ng-model="tableForm.skip" class="input-text">
+                </div>
+            </div>
+
+        </div>
+        <div ng-if="tableForm.action == 'update'" class="mt-20 mb-10">          
+            <div class="help_hint_data">
+                <div class="bulb-icon">
+                    <i class="btx-bulb"></i>
+                </div>
+                <div class="hint-content">All the columns in the table will be updated based on the values defined here. If a field is left blank then the corresponding column values will be set as empty. <a href='https://developer.kore.ai/docs/bots/advanced-topics/data-as-a-service/#Update_Data' target='_blank'>Know More</a></div>
+            </div>
+        </div>
+</div>
+<!-- {{tableForm}} -->
+</form>
+</div>
+<div class="modalFooter">
+    <div class="actions-btn">
+        <button type="submit" class="kr-sg-button-primary btn_md" ng-disabled="isFormValid(tableForm)"
+            ng-click="saveTable('SAVE')">Save</button>
+        <button class="kr-sg-button-secondary-two btn_md" ng-disabled="isFormValid(tableForm)"
+            ng-click="saveTable('TEST')" ng-if="selectedStreamState !== 'published'">Test</button>
+        <button class="kr-sg-button-secondary btn_md" ng-click="daasCloseModal()">Cancel</button>
+    </div>
+</div>

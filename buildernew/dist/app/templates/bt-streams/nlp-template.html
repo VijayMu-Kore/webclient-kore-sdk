@@ -1,0 +1,270 @@
+<!--<div class="actions-row" ng-if="showContent">
+    <div class="panel-group accordion-streams" id="nl-accordion" role="tablist" aria-multiselectable="true">
+
+
+        <div class="tasktitleheader">
+            <p>Fine tune Natural Language(NL) settings to help the bot better understand the user utterance and match it with
+                a known intent</p>
+        </div>
+        <div class="panel panel-default" ng-if="stream._id">
+            <div class="panel-heading collapsed" role="button" id="headTrainBot" ng-click="setDisplayTabId('#trainbot');showTrainBot()"
+                data-parent="#nl-accordion" href="#trainbot">
+
+                <div>
+                    <span class="panel-title entity_count_label">Test & Train</span>
+                    <help-link help-link-url="TRAINING_HELP"></help-link>
+                    <span class="pull-right length"><i class="fa fa-window-maximize"></i></span>
+                    <p class="decription">Teach your bot to better understand users by providing multiple user utterances that match intents and
+                        entities.</p>
+                </div>
+            </div>
+            <div id="trainbot" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headTrainBot">
+                <div class="panel-body">
+                    <div ng-if="displayTabId=='#trainbot'">
+                        <bot-test-result ng-if="false"></bot-test-result>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default" ng-if="stream._id && _constants_.config.ENABLE_BATCHTESTING">
+            <div class="panel-heading collapsed" role="button" id="headBatchTesting" ng-click="setDisplayTabId('#batchTesting');navigateToPage(4)"
+                data-parent="#nl-accordion" href="#trainbot">
+
+                <div>
+                    <span class="panel-title entity_count_label">Batch Testing</span>
+                    <help-link help-link-url="TRAINING_HELP"></help-link>
+                    <span class="pull-right length"><i class="fa fa-window-maximize"></i></span>
+                    <p class="decription">Run tests on previously recorded utterances and their results to validate that they continue to work
+                        as expected after some changes are made to synonyms, patterns or machine learning utterances.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default" ng-if='stream'>
+            <div class="panel-heading collapsed" role="button" ng-click="setDisplayTabId('#ml');navigateToPage(0)" id="headMachineLearning"
+                data-toggle="collapse" data-parent="#nl-accordion" ng-click="navigateToPage(0)">
+
+                <div><span class="panel-title entity_count_label">Machine Learning Utterances</span>
+                    <help-link help-link-url="MACHINE_LEARINING_HELP"></help-link>
+                    <span class="pull-right length"><i class="fa fa-window-maximize"></i></span>
+                    <p>Provide user utterances and match them up with intents and entities.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="panel panel-default" ng-if="stream">
+            <div class="panel-heading collapsed" role="button" id="headSynonyms" ng-click="setDisplayTabId('#synonyms')" href="#synonyms"
+                data-parent="#nl-accordion">
+
+                <div><span class="panel-title entity_count_label">Synonyms</span>
+                    <help-link help-link-url="SYNONYMS_HELP"></help-link>
+                    <span class="pull-right length"> <i class="fa fa-window-maximize"></i></span>
+                    <p>Define synonyms for words used in intents to improve intent matching with the user's utterances</p>
+                </div>
+            </div>
+            <div id="synonyms" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headnlsettings">
+                <div class="panel-body">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading collapsed" role="button" ng-click="setDisplayTabId('#patterns')" id="headPatterns" href="#patterns"
+                data-parent="#nl-accordion">
+
+                <div><span class="panel-title entity_count_label">Patterns</span>
+                    <help-link help-link-url="PATTERNS_HELP"></help-link>
+                    <span class="pull-right length"> <i class="fa fa-window-maximize"></i></span>
+                    <p>Define specific patterns for intents to improve intent matching with the user's utterances</p>
+                </div>
+            </div>
+            <div id="patterns" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headnlsettings">
+                <div class="panel-body ">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default" ng-if="stream._id">
+            <div class="panel-heading collapsed" role="button" id="headStandardResponses" ng-click="setDisplayTabId('#standardResponses');navigateToPage(3)"
+                data-toggle="collapse" data-parent="#nl-accordion" href="#standardResponses">
+
+                <div>
+                    <span class="panel-title entity_count_label">Standard Responses</span>
+                    <help-link help-link-url="STANDARD_RESPONSE_HELP"></help-link>
+                    <span class="pull-right length"><i class="fa fa-window-maximize"></i></span>
+                    <p>Modify the standard bot responses the bot uses to interact with the user</p>
+                </div>
+            </div>
+        </div>
+
+        <div ng-hide="$root.appConfig.DISABLE_AGENT_TRANSFER" class="panel panel-default nlDefaultDialog">
+            <div class="panel-heading collapsed" role="button" id="headDefaultDialog" ng-click="isDefaultDialogExpanded('#headDefaultDialog') && setDisplayTabId('#defaultDialog')"
+                data-toggle="collapse" data-parent="#nl-accordion" href="#defaultDialog">
+
+                <div>
+                    <span class="panel-title entity_count_label">Default Dialog</span>
+                    <help-link help-link-url="HOME"></help-link>
+                    <span class="pull-right length"><i class="fa fa-chevron-right"></i></span>
+                    <p>Specify a default dialog to be triggered in the event the bot is unable to understand the user’s intent.
+                        The bot will automatically pick and run this dialog if the condition is met.</p>
+                </div>
+            </div>
+            <div id="defaultDialog" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headDefaultDialog">
+                <div class="panel-body">
+                    <default-dialog-settings ng-if="defaultDialogExpanded"></default-dialog-settings>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading collapsed" ng-click="setDisplayTabId('#nlsettings')" role="button" id="headnlsettings" data-toggle="collapse"
+                data-parent="#nl-accordion" href="#nlsettings">
+
+                <div><span class="panel-title entity_count_label">Ignore Words & Field Memory</span>
+                    <help-link help-link-url="IWORDS_FMEMORY_HELP"></help-link>
+                    <span class="pull-right length"><i class="fa fa-chevron-right"></i></span>
+                    <p>Fine tune recognition thresholds for better matching of the user's intent</p>
+                </div>
+            </div>
+            <div id="nlsettings" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headnlsettings">
+                <div class="panel-body">
+                    <intent-entity stream-id="{{stream._id}}"></intent-entity>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading collapsed" ng-click="setDisplayTabId('#threshold')" role="button" id="headthreshold" data-toggle="collapse"
+                data-parent="#nl-accordion" href="#threshold">
+
+                <div><span class="panel-title entity_count_label">Advanced Settings</span>
+                    <span class="panel-title save-tip">Saving...</span>
+                    <help-link help-link-url="TIS_HELP"></help-link>
+                    <span class="pull-right length"><i class="fa fa-chevron-right"></i></span>
+                    <p>Modify additional advanced settings like auto training setting for user utterances and minimum confidence
+                        level for Knowledge Tasks.</p>
+                </div>
+            </div>
+            <div id="threshold" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headthreshold">
+                <div class="panel-body">
+                    <div class="form-group mlAutoTrainSettings">
+                        <div class="col-xs-12 headerLabel">
+                            <label>AUTO TRAINING FOR MACHINE LEARNING</label>
+                        </div>
+                        <div class="col-xs-12 radioDiv">
+                            <div>
+                                <label for="autotrainData.enableAutoUtteranceAddition.yes">
+                          <input ng-value='true'  type="radio" ng-change="saveAutoTrainMLStatus()"  ng-model="autotrainData.enableAutoUtteranceAddition" name="autotrainData.enableAutoUtteranceAddition" id="autotrainData.enableAutoUtteranceAddition.yes"><span class="opt-title">Yes, add the successfully identified user utterances to the ML training model (Un-supervised learning)</span> </input>
+                        </label>
+                            </div>
+                            <div>
+                                <label for="autotrainData.enableAutoUtteranceAddition.no">
+                          <input ng-value='false' ng-checked="true" type="radio" ng-change="saveAutoTrainMLStatus()" ng-model="autotrainData.enableAutoUtteranceAddition" name="autotrainData.enableAutoUtteranceAddition" id="autotrainData.enableAutoUtteranceAddition.no" ><span class="opt-title">No, do not add user utterances to the ML training model.</span> </input>
+                        </label>
+                            </div>
+                        </div>
+                    </div>
+                    <ml-threshold selected-stream="stream"></ml-threshold>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<div ng-if="showContent" class="modal fade utterances-form utteranceModal taskCreateOrEditModal fullwidth-dialog height-width-100"
+    tabindex="-1" role="dialog">
+    <div class="modal-dialog height-width-100 modal-lg">
+        <div class="modal-content utterances-modal-content height-width-100">
+
+            <bt-utterances ng-if="canShowUtterances" stream-id="{{stream._id}}"></bt-utterances>
+        </div>
+    </div>
+</div>
+
+
+<div ng-if="showContent" class="modal fade batchtesting-form batchTestingModal taskCreateOrEditModal  fullwidth-dialog height-width-100"
+    tabindex="-1" role="dialog">
+    <div class="modal-dialog height-width-100 modal-lg">
+        <div class="modal-content batchtesting-modal-content height-width-100">
+            <batch-testing ng-if="rightPanel.innerRightPanel.view == 'generalSettings'" stream-id="{{stream._id}}"></batch-testing>
+        </div>
+    </div>
+</div>
+
+<div ng-if="showContent" class="modal fade standard-responses-form utteranceModal standardResponse taskCreateOrEditModal fullwidth-dialog height-width-100"
+    tabindex="-1" role="dialog">
+    <div class="modal-dialog height-width-100 modal-lg">
+        <div class="modal-content utterances-modal-content  height-width-100">
+
+
+            <bot-channel-response-manage stream-id="stream._id"></bot-channel-response-manage>
+
+
+        </div>
+    </div>
+</div>
+
+<div ng-if="displayTabId=='#synonyms'">
+    <synonyms-manage></synonyms-manage>
+</div>
+
+<div ng-if="displayTabId=='#patterns'">
+    <pattern-manage></pattern-manage>
+</div>-->
+
+
+
+<div>
+    
+            <!-- <batch-testing ng-if="rightPanel.innerRightPanel.view == 'batchTesting'" stream-id="{{stream._id}}"></batch-testing> -->
+    <!--ng-if="rightPanel.innerRightPanel.view == 'machineLearningUtterances'"-->
+
+
+    <bt-utterances class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'machineLearningUtterances'" stream-id="{{stream._id}}" g-search-select='gSearchCb'></bt-utterances>
+    <linked-bot-training ng-if="rightPanel.innerRightPanel.view == 'linkedBotTraining'" link-bots="linkedBots"></linked-bot-training>
+    <settings ng-if="rightPanel.innerRightPanel.view == 'settings'"></settings>
+
+    <synonyms-manage ng-if="rightPanel.innerRightPanel.view == 'synonyms'" g-search-cb='gSearch' class="animationIfEnter btSynonymsmodal"></synonyms-manage>
+    <pattern-manage ng-if="rightPanel.innerRightPanel.view == 'patterns'" class="animationIfEnter btPatternsModal" g-search-cb='gSearch'></pattern-manage>
+    <negative-patterns ng-if="rightPanel.innerRightPanel.view === 'negativePatterns'" class="animationIfEnter btPatternsModal"></negative-patterns>
+    <bt-traits ng-if="rightPanel.innerRightPanel.view === 'traits'" class="animationIfEnter btTraits"></bt-traits>
+    <bot-advanced-settings ng-if="rightPanel.innerRightPanel.view == 'advancedSettings'" class="animationIfEnter" stream-id="{{stream._id}}" callback="asCallback" ></bot-advanced-settings>
+    <amend-entity ng-if="rightPanel.innerRightPanel.view === 'amendEntity'" class="animationIfEnter" callback="amendEntityCb"></amend-entity>
+    <sentiment-management ng-if="rightPanel.innerRightPanel.view === 'sentimentManagement'" callback="sentimentCb"></sentiment-management>
+    <bot-channel-response-manage  ng-if="rightPanel.innerRightPanel.view == 'standardResponses'" class="animationIfEnter" stream-id="stream._id" stream-type="stream.type" search-term='searchQry'></bot-channel-response-manage>
+    <default-dialog-settings ng-if="rightPanel.innerRightPanel.view == 'defaultDialog'" class="animationIfEnter" ></default-dialog-settings>
+    <div class="default-dialog-universal animationIfEnter" ng-if="rightPanel.innerRightPanel.view === 'defaultDialogUniversal'">
+        <div ng-include="tmpltPrePath+'templates/bt-streams/flowTasks-template.html'"></div>
+    </div>
+    <intent-entity class="animationIfEnter"  ng-if="rightPanel.innerRightPanel.view == 'ignoreWords'" stream-id="{{stream._id}}"></intent-entity>
+    <div class="animationIfEnter panel-body mlThreshold" ng-if="rightPanel.innerRightPanel.view == 'nlAdvancedSettings' || rightPanel.innerRightPanel.view == 'multiIntentDetection'" ng-init="getAccessRight('BOTBUILDER_NATURAL_LANGUAGE')">
+        <div class="form-group mlAutoTrainSettings" ng-class="{'pointer-none':streamstate.toggleState=='published' || accessRight === 'VIEW'}" ng-if="rightPanel.innerRightPanel.view !== 'multiIntentDetection'">
+            <div class="col-xs-12 headerLabel noPadding">
+                <label class="autoTrain">{{'Auto_training_ml_label'| i18nString}}</label>
+            </div>
+            <div class="col-xs-12 radioDiv noPadding">
+                <div>
+                    <label for="autotrainData.enableAutoUtteranceAddition.yes">
+                          <input ng-value='true'  type="radio" ng-change="saveAutoTrainMLStatus()"  ng-model="autotrainData.enableAutoUtteranceAddition" name="autotrainData.enableAutoUtteranceAddition" id="autotrainData.enableAutoUtteranceAddition.yes"><span class="opt-title">{{'Auto_training_ml_yes'| i18nString}}</span> </input>
+                        </label>
+                </div>
+                <div>
+                    <label for="autotrainData.enableAutoUtteranceAddition.no">
+                          <input ng-value='false' ng-checked="true" type="radio" ng-change="saveAutoTrainMLStatus()" ng-model="autotrainData.enableAutoUtteranceAddition" name="autotrainData.enableAutoUtteranceAddition" id="autotrainData.enableAutoUtteranceAddition.no" ><span class="opt-title"> {{'Auto_training_ml_no'| i18nString}}</span> </input>
+                        </label>
+                </div>
+            </div>
+        </div>
+        <nl-advanced-settings stream-update-cb="streamUpdateCB" right-pannel-view="rightPanel.innerRightPanel.view"></nl-advanced-settings>
+    </div>
+    <ml-threshold class="animationIfEnter mlThreshold" ng-if="rightPanel.innerRightPanel.view == 'mlThresholds'" selected-stream="stream" stream-update-cb="streamUpdateCB" g-search-cb='mlThresCb'></ml-threshold>
+</div>

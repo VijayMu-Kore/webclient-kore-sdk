@@ -1,0 +1,194 @@
+<!-- slash command, bot type modals html -->
+
+<div ng-include="tmpltPrePath+'templates/bt-streams/modals-template.html'"></div>
+<div class="workflows-home full-height">
+  
+  <div ng-class="{'workflows-container':streams.length > 0, 'workflows-empty':streams.length === 0}"
+    class="row full-height displayTable" 
+    ng-if="!(loadingStreams && loadingStream && loadingAlerts && loadingFlows && loadingActions)">
+
+   
+    <div class="tableCell" ng-show="streams.length > 0" ng-include="tmpltPrePath+'templates/bt-streams/sidebar-template.html'"></div>
+
+
+    <div 
+      class="workflows-content app-view full-height" 
+      ng-class="{ welcomeContainer: !(loadingStreams && loadingStream && loadingAlerts && loadingFlows && loadingActions) && streams.length===0}"
+      >
+      <div class='botsDetailContainer' ng-show="views.bots"> 
+        
+        <!-- introduction template -->
+        <div ng-include="tmpltPrePath+'templates/bt-streams/intro-template.html'"></div>
+        
+        <!-- stream info template -->
+        <div ng-if="streams.length > 0" ng-include="tmpltPrePath+'templates/bt-streams/stream-info.template.html'"></div>
+        
+        
+
+ 
+  <div id="myTabs" ng-if="streams.length > 0" class="myTabs" perfect-scroll>
+ 
+  <div class="tab-content" >
+      <div role="tabpanel" class="tab-pane tasks-pane" ng-show="showContent" id="Tasks">
+
+          <div ng-include="tmpltPrePath+'templates/bt-streams/tasks-list-template.html'" ng-if="selectedStream.type !=='universalbot'"></div>
+          <div ng-include="tmpltPrePath+'templates/bt-streams/linked-bots-template.html'" ng-if="selectedStream.type =='universalbot'"></div>
+      </div>
+    
+         
+    <div role="tabpanel" class="tab-pane nl-pane" ng-show="showContent" id="NL" >
+    
+    <div ng-include="tmpltPrePath+'templates/bt-streams/nlp-template.html'"></div>
+
+      <help-link is-footer-link=true help-link-url="BOT_NL_HELP"></help-link>
+    
+    </div>
+    
+    <div role="tabpanel" class="tab-pane channels-pane" ng-show="showContent" id="Channels"> 
+
+        <div class="tasktitleheader">
+            <p>{{'Channels_title'| i18nString}}</p>
+        </div>
+        <bot-channels ng-if="navigateTabIndex =='.channels-pane'"></bot-channels>
+        <help-link is-footer-link=true help-link-url="BOT_CHANNEL_HELP"></help-link>
+    </div>
+            
+    <div role="tabpanel" ng-if="_constants_.config.showAppsAgentsTab" class="tab-pane apps-pane" ng-if="showContent" id="Apps">
+        <sdk-apps ng-if="navigateTabIndex =='.apps-pane'"></sdk-apps>
+    </div>
+      
+      <div role="tabpanel" class="tab-pane settings-pane" ng-if="showContent" id="Settings"> 
+          <div ng-if="showSettingsPane" ng-include="tmpltPrePath+'templates/bt-streams/settings-template.html'"></div>
+          <help-link is-footer-link=true help-link-url="BOT_SETTINGS_HELP"></help-link>
+      </div>
+
+
+      <div role="tabpanel" class="tab-pane publish-pane" ng-show="showContent" id="Publish">
+          <div ng-if="navigateTabIndex =='.publish-pane'"  ng-include="tmpltPrePath+'templates/bt-streams/publish-template.html'"></div>
+      </div>
+      <div role="tabpanel" class="tab-pane analyze-pane"  ng-show="showContent" id="analyze">
+          <div ng-if="navigateTabIndex =='.analyze-pane'"  ng-include="tmpltPrePath+'templates/bt-streams/analyze-bot.html'"></div>
+          <help-link is-footer-link=true help-link-url="BOT_ANALYZE_HELP"></help-link>
+      </div>
+      
+      <div role="tabpanel" class="tab-pane dashboard-pane" ng-if="showContent" id="Dashboard"> 
+          <div ng-if="navigateTabIndex =='.dashboard-pane'" ng-include="tmpltPrePath+'templates/bt-streams/dashboard-template.html'"></div>
+          <help-link is-footer-link=true help-link-url="."></help-link>
+          </div>
+      
+        </div>
+        </div>
+        <div 
+          class="content-loading" 
+          ng-if="!showContent && streams.length > 0"> 
+            <span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content"> {{'bt_streams_loading_bot_content'| i18nString}}</span> </span> 
+        </div>
+      </div>
+      
+      
+      <div ng-include="tmpltPrePath+'templates/bt-streams/apps-template.html'"></div>
+    </div>
+  </div>
+  <div 
+    class="content-loading" 
+    ng-if="(loadingStreams && loadingStream && loadingAlerts && loadingFlows && loadingActions)"
+    > <span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content"> {{'loading_your_bots'| i18nString}}</span> </span> </div>
+
+<div class="modal fade stream-create-form fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+    <div class="modal-dialog height-width-100">
+        <div class="modal-content utterances-modal-content height-width-100">
+            <div class="modal-body utterances-modal-body height-width-100" ng-if="initializeCreateBot">
+                <stream-form display-mode="edit" edit-mode="new" bot-type = "bottype" on-save="onCreateNewBot()" on-cancel="onCancelBotCreation()"></stream-form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade script-node-edit-form" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header scriptErroModalHeader">
+              <span aria-hidden="true" class="fa fa-close" ng-click="closeModal()"></span>\
+                <h4 class="modal-title" id="gridSystemModalLabel">{{'error_script'| i18nString:({dyn:errNodeType})}} : {{scriptNodeName}}</h4>
+                <div ng-show="showError" error-alert class="text-danger form-error-text">{{error}}</div>
+            </div>
+            <div class="modal-body">
+                <div class="inputNote" ng-show="showError">
+                    <div class="col-xs-1 bulbicon"><img class="layer" ng-src="{{bulbIcon}}"></div>
+                    <div class="col-xs-11">
+                        <span class="name">
+                          {{scriptNodeErrorHelp}}
+                            <!--<ul>
+                                <li>{{scriptNodeErrorHelp}}</li>
+                            </ul>-->
+                        </span>
+                    </div>
+                </div>
+                <form name='rqForm'> 
+                    <div class="head">
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-12">
+                                <div class="jsEditorPromptHeader">{{'current_script'| i18nString}}</div>
+                                <div id="script-editor-dialog" acify ng-model="scriptObj" callback='aceEditorCallback'></div>
+                            </div>
+                            <!--<div class="col-xs-6 textareaModal">
+                                <div class="jsEditorPromptHeader">Resolved code</div>
+                                <textarea class="bootbox-input bootbox-input-textarea form-control importResult" ng-model="resolvedCode" disabled></textarea>
+                            </div>-->
+                            <div class="col-xs-12">
+                                <div class="jsonEditorTitle">{{'context_object'| i18nString}}</div>           
+                                <div ng-jsoneditor class="json_editor contextEditor" ng-model="contextObject" options="options" name="context"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="closeModal()">{{'cancel'| i18nString}}</button>
+                <button class="btn btn-default" ng-click="validateJs()">{{'run'| i18nString}}</button>
+                <button type="submit" class="btn btn-primary" 
+                        ng-disabled="saveInProgress"
+                        ng-click="saveScript()">
+                    <i ng-show="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)? saving : save}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+ 
+
+    
+</div>
+
+<!--<div class="modal fade ontology-form ontologyModal taskCreateOrEditModal height-width-100" tabindex="-1" role="dialog" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content ontology-modal-content height-width-100">
+                <bot-ontology ng-if="canShowontology" stream-id="{{selectedStream._id}}" ></bot-ontology>
+        </div>
+    </div>
+</div>-->
+
+<div  class="modal fade ontology-form ontologyModal taskCreateOrEditModal  fullwidth-dialog height-width-100" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" data-keyboard="false">
+  <!-- starting of modal dialog -->
+  <div class="modal-dialog modal-lg">
+    <!-- staring of modal content -->
+    <div class="modal-content ontology-modal-content height-width-100">
+      <bot-ontology ng-if="canShowontology" stream-id="{{selectedStream._id}}" ></bot-ontology>
+    </div>
+    <!-- /.modal-content --> 
+  </div>
+  <!-- /.modal-dialog --> 
+</div>
+
+<!-- <task-create-overlay callback="taskCreateCallback" alerts = "alerts" actions="actions"></task-create-overlay>  -->
+
+<!-- <taskmodal ng-if="true"></taskmodal> -->
+<bt-fullpage-modal></bt-fullpage-madal>
+
+
+
+
+
+

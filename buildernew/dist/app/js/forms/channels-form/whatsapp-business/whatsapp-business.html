@@ -1,0 +1,381 @@
+<div class="modal fade" id="whatsAppModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel">
+    <div class="modal-dialog watch-out modal-md textareaModal" role="document">
+        <div class="modal-content">
+            <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'whatsapp_business'| i18nString}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12 noPadding">
+                    <img ng-src='{{whatsAppImage}}'>
+                    <p>
+                        {{'whats_app_details'| i18nString}}
+                        <a class='link-kore' href='https://developer.kore.ai/docs/bots/channel-enablement/adding-channels-to-your-bot' target='blank'>{{'knowMore'| i18nString}}</a>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer form-group">
+                <a href='https://support.kore.ai' target='_blank'><button type="button" class="btn btn-primary btnSave"  ng-click="contactUs()">{{'contact_us'| i18nString}} </button></a>
+                <button type="button" class="btn closeCancel btn-default" ng-click='closeSlider()'>{{'close'| i18nString}}  </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modalSliderContainer width700 whatsAppChannelSlider">
+	<form name = "whatsAppForm">
+	    <div class="modalHeader channelModalHeader">
+	        <h4 class="modal-title" id="gridSystemModalLabel">
+                <i class="btx-close" ng-click="goToHome()"></i>
+                    {{'bt_chnl_whatappb_header'| i18nString}} 
+                </h4>
+ </div>   
+        <div class="modalBody fb-channel-page inner-scroll channelInnerContent" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+            <div class="col-xs-12 step-progress-container">
+	            <step-progress steps="steps" on-click="stepClick"></step-progress>
+	        </div> 
+            <div ng-repeat="step in steps" ng-if="step.active" class="fbChannels widthseventy">
+                <div class="col-xs-12 noPadding" ng-show="step.step == 1">
+                	<div class="col-xs-12 channel-content">
+                        <div class="info noMargin">
+
+                            <p>{{'Bt_chnl_whatsappB_instruct_desc1'| i18nString}}</p>
+                            
+                            <p>{{'Bt_chnl_whatsappB_instruct_desc2'| i18nString}}</p> 
+                            <p>{{'Bt_chnl_whatsappB_instruct_drpdown_label'| i18nString}}</p>
+
+                            <!-- <select>
+                                <option>{{'Bt_chnl_whatsappB_instruct_drpdown_option'| i18nString}}</option>
+                            </select> -->
+                            <div class="kr-sg-dropdowns w-100">
+                               <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{instructionsSelectedPartner ? instructionsSelectedPartner.title :"Choose an option"}}</button>                                            
+                                    <ul class="dropdown-menu content-menu">                                               
+                                        <li ng-repeat="partner in messagingPartnerArray" ng-click="instructionsPartnerSelection(partner)" ng-if ="instructionsSelectedPartner && instructionsSelectedPartner.key !== partner.key"><a>{{partner.title}}</a></li>
+                                    </ul>
+                                  </div>
+                            </div>
+                            
+                            <br><br>
+                            <div class="infobip-instructions" ng-if="instructionsSelectedPartner && instructionsSelectedPartner.key === 'infobip'">
+
+                            <p>{{'note_label2'| i18nString}}</p>
+
+                            <ul>
+                                <li>{{'Bt_chnl_whatsappB_instruct_note_note1'| i18nString}}</li>
+                                <li>{{'Bt_chnl_whatsappB_instruct_note_note2'| i18nString}}</li>
+                            </ul>
+
+                            <p class="channelstep marginTop15">{{'Bt_chnl_whatsappB_instruct_step1_label'| i18nString}}</p>
+
+                            <p  ng-bind-html="'infobip_developer'| i18nString:({link:'https://portal.infobip.com/'})"></p>
+                                
+
+                            <img ng-src="{{assetsBase}}images/whatsAppBusinessNew-0.png" class="marginBottom10 width100percent"/>
+                            <img ng-src="{{assetsBase}}images/whatsAppBusinessNew-1.png" class="marginBottom10 width100percent"/>
+                            <p>{{'Bt_chnl_whatsappB_instruct_step1_note'| i18nString}}</p>
+
+                            <p class="channelstep marginTop15">{{'Bt_chnl_whatsappB_instruct_step2_label'| i18nString}}</p>
+                            <p ng-bind-html="'collect_url'| i18nString:({link:'https://dev.infobip.com/getting-started/base-url'})"></p>
+                            <p>{{'Bt_chnl_whatsappB_instruct_step2_note'| i18nString}}</p>
+
+
+                            <p class="channelstep marginTop15">{{'Bt_chnl_whatsappB_instruct_step3_label'| i18nString}}</p>
+                            <p>{{'Bt_chnl_whatsappB_instruct_step3_desc1'| i18nString}}</p>
+                            <p>{{'Bt_chnl_whatsappB_instruct_step3_desc2'| i18nString}}</p>
+
+
+                            <p class="channelstep marginTop15">{{'Bt_chnl_whatsappB_instruct_step4_label'| i18nString}}</p>
+                            <p>{{'Bt_chnl_whatsappB_instruct_step4_desc1'| i18nString}}</p>
+                            <p>{{'Bt_chnl_whatsappB_instruct_step4_desc2'| i18nString}}</p>
+
+
+                            <p class="channelstep marginTop15">{{'Bt_chnl_whatsappB_instruct_step5_label'| i18nString}}</p>
+                            <p>{{'Bt_chnl_whatsappB_instruct_step5_desc'| i18nString}}</p>
+                            <img ng-src="{{assetsBase}}images/whatsAppBusinessNew-2.png" class="marginBottom10 width100percent"/>
+
+
+                            <div class="hintDiv">
+                                <span class="icon"><i class="btx-bulb" ></i></span>
+                                <span class="description"> 
+                                    <p>{{'Bt_chnl_whatsappB_instruct_protip_note'| i18nString}}</p>
+                                </span>
+                            </div>
+                            </div>
+                            <div class="gupshup-instructions" ng-if="instructionsSelectedPartner && instructionsSelectedPartner.key === 'gupshup'">
+
+                            <p class="channelstep marginTop15">{{'Bt_chnl_slack_instruct_step1_label'| i18nString}}</p>
+
+                            <p  ng-bind-html="'gupshup_developer'| i18nString:({link:'https://www.gupshup.io/'})"></p>
+                                
+
+                            <img ng-src="{{assetsBase}}images/Gupshup1_1.png" class="marginBottom10 width100percent"/>
+                            <img ng-src="{{assetsBase}}images/Gupshup2_1.png" class="marginBottom10 width100percent"/>
+                            <p>{{'Bt-chnl_whatsappB_instruct_1'| i18nString}}</p>
+                            <p>{{'Bt-chnl_whatsappB_instruct_1-1'| i18nString}}</p>
+                            <img ng-src="{{assetsBase}}images/Gupshup3_1.png" class="marginBottom10 width100percent"/>
+                            <p>{{'Bt-chnl_whatsappB_instruct_1-2'| i18nString}}</p>
+                            <p>{{'Bt-chnl_whatsappB_instruct_1-3'| i18nString}}</p>
+                            <p>{{'Bt-chnl_whatsappB_instruct_1-4'| i18nString}}</p>
+                            <ol>
+                                <p>{{'Bt-chnl_whatsappB_instruct_1-5'| i18nString}}</p>
+                                <p>{{'Bt-chnl_whatsappB_instruct_1-6'| i18nString}}</p>
+                                <p>{{'Bt-chnl_whatsappB_instruct_1-7'| i18nString}}</p>
+                            </ol>
+                            <p class="channelstep marginTop15">{{'gupshup_doc_link'| i18nString}}</p>
+                            <a href="https://www.gupshup.io/developer/docs/bot-platform/guide/whatsapp-api-documentation#setupcallbackURL">https://www.gupshup.io/developer/docs/bot-platform/guide/whatsapp-api-documentation#setupcallbackURL</a>
+
+                            <p class="channelstep marginTop15">{{'note_label2'| i18nString}}</p>
+                            <p>{{'gupshup_imp_note'| i18nString}}</p>
+
+                        
+                            </div>
+
+                            <div class="karix-instructions" ng-if="instructionsSelectedPartner && instructionsSelectedPartner.key === 'karix'">
+                                <p>{{'karix_desc'| i18nString}}</p>
+
+                                <p class="channelstep marginTop15">{{'karix_desc_bold'| i18nString}}</p>
+                                <ul>
+                                    <li>{{'karix_vendor'| i18nString}}</li>
+                                    <li>{{'karix_acc_key'| i18nString}}</li>
+                                    <li>{{'karix_from'| i18nString}}</li>
+                                </ul>
+
+                                <p>{{'karix_desc2'| i18nString}}</p>
+    
+                            
+                                </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xs-12 noPadding" ng-show="step.step == 2">
+                    <div class="col-xs-12 channel-content p-0">
+                        <div class="info">
+                            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <div class="info">
+                                    <div class="col-xs-12 form-group noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <label>{{'delivery_partner'| i18nString}}</label>
+                                        </div>
+                                        <div class="kr-sg-dropdowns w-100">
+                                            <div class="dropdown dropdown-open">
+                                                 <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{configurationsSelectedPartner ? configurationsSelectedPartner.title :"Choose an option"}}</button>                                            
+                                                 <ul class="dropdown-menu content-menu">                                                
+                                                     <li ng-repeat="partner in messagingPartnerArray" ng-click="configurationsPartnerSelection(partner)" ng-if ="configurationsSelectedPartner && configurationsSelectedPartner.key !== partner.key"><a>{{partner.title}}</a></li>
+                                                 </ul>
+                                               </div>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <div class="info">
+                                    <div class="col-xs-12 form-group noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <label>{{'Bt_chnl_whatsappB_config_phennum_label'| i18nString}}</label>
+                                        </div>
+                                        <div class="col-xs-12 noPadding">
+                                            <input type="text" maxlength="12" class="form-control" ng-model="channel.from" name="from" placeholder="{{'Bt_chnl_whatsappB_config_phennum_placeholder'| i18nString}}" required="" ng-focus='phoneNumbInfo=true' ng-blur='phoneNumbInfo=false' ng-pattern="/^[0-9]*$/">
+                                            <div ng-show='phoneNumbInfo' class="text-info">
+                                                {{'Bt_chnl_whatsappB_config_phennum_example'| i18nString}}
+                                            </div>
+
+                                            <div  ng-show="whatsAppForm.from.$dirty || clientIDRequired">            
+                                                <div error-alert ng-show="whatsAppForm.from.$error.required" class="text-danger">
+                                                    {{'Bt_chnl_whatsappB_config_phennum_empty_err'| i18nString}}
+                                                </div>
+                                                <div error-alert ng-show="whatsAppForm.from.$error.pattern" class="text-danger">
+                                                    {{'Bt_chnl_whatsappB_config_phennum_err'| i18nString}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>  
+
+                            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}"  ng-if ="configurationsSelectedPartner && configurationsSelectedPartner.key === 'infobip'">
+                                <div class="info">
+                                    <div class="col-xs-12 form-group noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <label>{{'Bt_chnl_whatsappB_config_baseurl_label'| i18nString}}</label>
+                                        </div>
+                                        <div class="col-xs-12 noPadding">
+                                            <input type="url" class="form-control" ng-model="channel.host" name="host" placeholder="{{'Bt_chnl_whatsappB_config_baseurl_placeholder'| i18nString}}" required="">
+                                        </div>
+                                        <div  ng-show="whatsAppForm.host.$dirty">
+                                            <div error-alert ng-show="whatsAppForm.host.$error.required" class="text-danger">
+                                                {{'Bt_chnl_whatsappB_config_baseUrl_empty_err'| i18nString}}
+                                            </div>
+                                            <div error-alert ng-show="whatsAppForm.host.$error.url" class="text-danger">
+                                                {{'not_a_valid_url'| i18nString}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>  
+
+                            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}"  ng-if ="configurationsSelectedPartner && configurationsSelectedPartner.key !== 'karix'">
+                                <div class="info">
+                                    <div class="col-xs-12 form-group noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <label class="required-field">{{'username_label'| i18nString}}</label>
+                                        </div>
+                                        <div class="col-xs-12 noPadding">
+                                            <input type="text" class="form-control" ng-model="channel.username" name="username" required="" placeholder="{{'username_placeholder'| i18nString}}">
+                                            <div  ng-show="whatsAppForm.username.$dirty || clientIDRequired">
+                                                <div error-alert ng-show="whatsAppForm.username.$error.required" class="text-danger">
+                                                    {{'username_err'| i18nString}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}" ng-if ="configurationsSelectedPartner && configurationsSelectedPartner.key !== 'karix'">
+                                <div class="info">
+                                    <div class="col-xs-12 form-group noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <label class="required-field">{{'passwd_label'| i18nString}}</label>
+                                        </div>
+                                        <div class="col-xs-12 noPadding">
+                                            <input type="password" class="form-control" ng-model="channel.password" name="password" required="" placeholder="{{'enter_password'| i18nString}}">
+                                            <div  ng-show="whatsAppForm.password.$dirty || clientIDRequired">
+                                                <div error-alert ng-show="whatsAppForm.password.$error.required" class="text-danger">
+                                                    {{'passwd_err'| i18nString}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}" ng-if ="configurationsSelectedPartner && configurationsSelectedPartner.key === 'infobip'">
+                                <div class="info">
+                                    <div class="col-xs-12 form-group noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <label>{{'keyword_optional'| i18nString}}</label>
+                                        </div>
+                                        <div class="col-xs-12 noPadding">
+                                            <input type="text" class="form-control" ng-model="channel.keyword" name="keyword" placeholder="{{'enter_keyword_placeholder'| i18nString}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                            <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}" ng-if="configurationsSelectedPartner && configurationsSelectedPartner.key === 'karix'">
+                                <div class="info">
+                                    <div class="col-xs-12 form-group noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <label class="required-field">{{'account_key'| i18nString}}</label>
+                                        </div>
+                                        <div class="col-xs-12 noPadding">
+                                            <input type="text" class="form-control" ng-model="channel.accountKey" name="accountKey" required="" placeholder="{{'acc_key_placeholder'| i18nString}}">
+                                            <div  ng-show="whatsAppForm.accountKey.$dirty || clientIDRequired">
+                                                <div error-alert ng-show="whatsAppForm.accountKey.$error.required" class="text-danger">
+                                                    {{'account_key_err'| i18nString}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xs-12 form-group">
+                                <div class="col-xs-12 noPadding">
+                                    <label>{{'webhookurl_label'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="input-group"  ng-if="configurationsSelectedPartner && configurationsSelectedPartner.key === 'infobip'">
+                                        <input type="text" id="whatsAppForm_webhook_url" class="form-control" ng-model="channel.webhook_url" ng-readonly="true" name="appName">
+                                        <div class="input-group-addon pointer-hand" data-clipboard-target="#whatsAppForm_webhook_url"> {{'copy'| i18nString}} </div>  
+                                    </div>
+                                    <div class="input-group" ng-if="configurationsSelectedPartner && configurationsSelectedPartner.key === 'gupshup'">
+                                        <input type="text" id="whatsAppForm_webhook_url" class="form-control" ng-model="channel.webhook_url_gp" ng-readonly="true" name="appName">
+                                        <div class="input-group-addon pointer-hand" data-clipboard-target="#whatsAppForm_webhook_url"> {{'copy'| i18nString}} </div>  
+                                    </div>
+                                    <div class="input-group" ng-if="configurationsSelectedPartner && configurationsSelectedPartner.key === 'karix'">
+                                        <input type="text" id="whatsAppForm_webhook_url" class="form-control" ng-model="channel. webhook_url_karix" ng-readonly="true" name="appName">
+                                        <div class="input-group-addon pointer-hand" data-clipboard-target="#whatsAppForm_webhook_url"> {{'copy'| i18nString}} </div>  
+                                    </div>
+                                    <div ng-show="isSafariwh"><span class="pull-right">{{'press_c'| i18nString}}</span></div>               
+                                </div>
+                            </div>
+                            
+
+<!--                             <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-10 noPadding">
+                                    <label>Webhook URL</label>
+                                </div>
+                                <div class="col-xs-10 noPadding">
+                                    <div class="input-group">
+                                        <input type="text" id="whatsApp_webhook_url" class="form-control" ng-model="channel.webhook_url" ng-readonly="true" name="appName">
+                                        <div class="input-group-addon pointer-hand" data-clipboard-target="#whatsApp_webhook_url"> Copy </div>  
+                                    </div>
+                                    <div ng-show="isSafariwh"><span class="pull-right">[Press command + c to copy]</span></div>               
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-10 noPadding">
+                                    <label>Access Token</label>
+                                </div>
+                                <div class="col-xs-10 noPadding">
+                                    <div class="input-group">
+                                        <input type="text" id="whatsApp_verify_token" class="form-control" ng-readonly="channel.verify_token" ng-model="channel.verify_token" name="verifyToken">
+                                        <div class="input-group-addon pointer-hand copybtn" data-clipboard-target="#whatsApp_verify_token"> Copy </div>
+                                    </div>
+                                    <div ng-show="isSafarivt"><span class="pull-right">[Press command + c to copy]</span></div>
+                                </div>
+                            </div> -->
+                            <div class="col-xs-12 row form-group" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <div class="col-xs-12 form-group noPadding mb-0">
+                                    <label>{{'enable_chnl'| i18nString}}</label>
+                                    <p>{{'Bt_chnl_whatsappB_config_enablechnl_desc'| i18nString}}</p>
+                                </div>
+
+                                <div class="col-xs-12 radioDiv noPadding">
+                                    <div>
+                                        <label for="channel.enable.no" >
+                                            <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label for="channel.enable.yes">
+                                            <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>              
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modalFooter">
+            <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+            <button type="button" class="btn" ng-show="steps[1].active" ng-disabled="streamState.state === 'published'" ng-click="save(whatsAppForm)">{{'save'| i18nString}}</button>
+            <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+         </div>
+	</form>
+</div>
+<div class="modal fade kr-sg-modal DismissConfigurations" id="DismissConfigurations" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'choose_an_option'| i18nString}}<i class="btx-close closeEnableUserMsg" ng-click="closeOpenedConfigurePopup()"></i></h4>
+            </div>
+            <div class="modal-body">
+                <i class="btx-warning text-danger configurationTab"></i>
+                <p class="configuration_desc">{{'gupshup_conf_desc'| i18nString}}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" ng-click="updateWhatsappConfigurations()">{{'yes'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeEnableUserMsgPopup()">{{'no'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1589 @@
+
+            <div class="hintDiv col-xs-12 showGenericProtipPublish "
+                ng-show="(rightPanel.innerRightPanel.view === 'publish') && (inputTranslation || showGenericPublishProtip)">
+                <div class="icon">
+                    <i class="btx-warning"></i>
+                </div>
+                <div class="description" ng-if="inputTranslation">
+                    {{'publish_input'| i18nString}} 
+            
+                </div>
+                <div class="description" ng-if="showGenericPublishProtip">
+                    {{'publish_generic'| i18nString}}
+            
+                </div>
+                <div class="hintActions" ng-if="inputTranslation"><span ng-click="openLanguageSlider()">Configure</span></div>
+                <div class="hintActions" ng-if="showGenericPublishProtip"><span ng-click="openLanguageGenericModal()">Add Language</span></div>
+            </div>
+<div class="col-xs-12 bot-publish wf-form " ng-show="!noTasks">
+    <script  type="text/ng-template" id="/nodes-template.html">
+           <div class="row form-group">
+            <div class="col-xs-12 noPadding" >
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                    <input class="styled" checked type="checkbox" id="knowledgeAll" 
+                           ng-click="checkUncheckallRoot($event,allTasksSelected.selectAllKgs)"
+                           ng-model="allTasksSelected.selectAllKgs">
+                    <label for="knowledgeAll"></label>
+                </div>
+                <h5 class="fontSize13 inline_block inline_block m-0">{{ knowledge_graph  | uppercase }}</h5>
+            </div>
+            <div class="hintDiv col-xs-12 align-items-center width735 mb-0"> 
+                <div class="icon">
+                    <i class="bulbIconLayer btx-bulb"></i>
+                </div> 
+                <div class="description">
+                    {{'Bt_publish_protip_label'| i18nString}}
+                </div> 
+            </div>
+
+        </div>
+        <!--<div class="row publishKnowledgeTask" ng-class="{'primaryNodes':$index>0}" ng-show="(currentStep == 'options' && knowledgeCollection._selected ) || currentStep !== 'options' || (!knowledgeCollection.parent || !knowledgeCollection.parent.length)" ng-repeat="knowledgeCollection in allNodes">
+                <div class="row">
+                    <div class="col-xs-4">
+                         <div class="tableCell pull-left">
+                        <div class="checkbox checkbox-primary styledCSS noMargin" ng-hide="currentStep=='options'">
+                            <input class="styled" checked type="checkbox" id="{{knowledgeCollection.nodeId}}" ng-change="checkUncheckNodes($event, knowledgeCollection,'.publishKnowledgeTask','#knowledgeAll')" ng-model="knowledgeCollection._selected">
+                            <label class="textEllipsis" for="{{knowledgeCollection.nodeId}}">&nbsp;</label>
+                        </div>
+                         </div>
+                          <div class="tableCell pull-left knowledgeCollectionPublish">
+                            <label>{{knowledgeCollection.label}}<span class="languageName" ng-show="$index == 0">({{currentLanguage}})</span></label>
+                          </div>
+                        
+                    </div>
+                    <div class="col-xs-4 textEllipsis"> 
+                        <span class="taskstate pull-right" ng-show="$index > 0">Configured</span>
+                    </div>
+                    <div class="col-xs-4 textCapitalize secondaryFontColor text-center"> <a ng-show="$index == 0 && allNodes.length > 1" ng-click="manageNodes()">{{currentStep == 'options' ? 'View Nodes' : 'Manage Nodes'}}</a> </div>
+                </div>
+
+            </div>-->
+            <div ng-repeat="allNodes in allNodesCollection track by $index">
+             <div class="responseAccordion termsAccordion" id="termsAccordion{{$index}}" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default noMarginBottom noBorder">
+                      <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#termsAccordion{{$index}}" href="#termPanel{{$index}}" role="tab" id="rctry">
+                                <!--ng-show="(currentStep == 'options' && knowledgeCollection._selected && $index == 0 ) || (currentStep !== 'options' && $index == 0) || ((!knowledgeCollection.parent || !knowledgeCollection.parent.length) && $index == 0)"-->
+                           <div class="row publishKnowledgeTask" ng-if="$index == 0" ng-class="{'primaryNodes':$index>0,'mainTaskSelection':$index === 0}"  ng-repeat="knowledgeCollection in allNodes">
+                <div class="row">
+                    <div class="col-xs-6 marginLeftKG">
+                            <a ng-show="$index == 0 && allNodes.length > 0" ng-click="manageNodes()"><i class="btx-carrot-right fa-chevron-right"></i></a> 
+                         <div class="tableCell pull-left">
+                        <div class="checkbox checkbox-primary styledCSS noMargin" ng-hide="currentStep=='options'">
+                            <input class="styled allTasksCommonClass" checked type="checkbox" id="{{knowledgeCollection.nodeId}}" ng-click="checkUncheckNodes($event, knowledgeCollection,allNodes)" ng-model="knowledgeCollection._selected">
+                            <label class="textEllipsis" ng-click="checkUncheckRoot($event, knowledgeCollection,allNodes)" for="{{knowledgeCollection.nodeId}}">&nbsp;</label>
+                        </div>
+                         </div>
+                          <div class="tableCell pull-left knowledgeCollectionPublish">
+                            <label class="textEllipsis">{{knowledgeCollection.label}}<span class='deleted-text' ng-show="{{knowledgeCollection.deleted}}">&nbsp; {{'deleted_label'| i18nString}}</span><span class="languageName hide" ng-show="$index == 0">({{currentLanguage}})</span></label>
+                          </div>
+
+                        
+                    </div>
+                    <div class="col-xs-2"> 
+                        <div class="supportedLanguagesContainer">
+                          <span id="{{knowledgeCollection.nodeId}}{{allNodes.language}}" class="languageCheck disabled">
+                                <i class="fa fa-check"></i> <span class="language">{{seedLanguages[allNodes.language].dvalue}}</span>
+                            </span>
+                            </div>
+                    </div>
+                    <div class="col-xs-2 textCapitalize secondaryFontColor">  <span>{{getTermsCount(allNodes)}}  {{'terms_label'| i18nString}}</span></div>
+                    <div class="col-xs-1 textCapitalize secondaryFontColor"> <span>{{allNodes.KTdata.faqCount > 0 ? allNodes.KTdata.faqCount+ q_and_a_label : '-'}}</span> </div>
+                    <!-- <div class="col-xs-1 textCapitalize secondaryFontColor text-center"> </div> -->
+                </div>
+
+            </div>
+                       </div>
+             
+                      </div>
+                       <div>
+                
+                      <div id="termPanel{{$index}}" class="panel-collapse collapse trymodepanel" role="tabpanel" aria-labelledby="rctry">
+                         <div class="panel-body innerchild-panel-body">
+                    <div class="col-xs-12">
+<!--start of root question-->
+                         <div ng-show="((currentStep == 'options' && allNodes.rootTermQuestions._selected) || currentStep !== 'options') && !knowledgeCollection.publishRoot" class="row publishKnowledgeTask" ng-class="{'primaryNodes':$index>0}">
+                <div class="row">
+                    <div class="col-xs-4 firstDiv">
+                         <div class="tableCell pull-left">
+                        <div class="checkbox checkbox-primary styledCSS noMargin" ng-hide="currentStep=='options'">
+                            <input ng-model="allNodes.rootTermQuestions._selected" class="styled" checked type="checkbox" ng-click="checkUncheckRQ($event,allNodes,$index)" id="rootTermQuestion{{$index}}" />
+                            <label class="textEllipsis" for="rootTermQuestion{{$index}}">&nbsp;</label>
+                        </div>
+                         </div>
+                          <div class="tableCell pull-left">
+                            <label class="">{{'root_term_questions'| i18nString}}</label>
+                          </div>
+                          
+                        
+                    </div>
+<!--                    <div class="col-xs-4"> 
+                        <div class="supportedLanguagesContainer">
+                          <span id="{{rootTermQuestion}}{{allNodes.language}}" class="languageCheck disabled">
+                                <i class="fa fa-check"></i> <span class="language">{{allNodes.language}}</span>
+                            </span>
+                            </div>
+                    </div>-->
+                    <div class="col-xs-4 textCapitalize secondaryFontColor text-center hide"> <a ng-show="$index == 0 && allNodes.length > 0" ng-click="manageNodes()">{{currentStep == 'options' ? view_nodes_label : manage_nodes_label}}</a> </div>
+                </div>
+
+            </div>
+
+            <!--end of root question-->
+                        
+
+
+                      <div class="row publishKnowledgeTask" ng-if="$index > 0 && (currentStep !== 'options' || (knowledgeCollection._selected && currentStep == 'options'))" ng-class="{'primaryNodes':$index>0}" ng-repeat="knowledgeCollection in allNodes">
+                <div class="row">
+                    <div class="col-xs-4 firstDiv">
+                         <div class="tableCell pull-left">
+                        <div class="checkbox checkbox-primary styledCSS noMargin" ng-hide="currentStep=='options'">
+                            <input class="styled" checked type="checkbox" id="{{knowledgeCollection.nodeId}}" ng-change="checkUncheckNodes($event, knowledgeCollection,allNodes)" ng-model="knowledgeCollection._selected" />
+                            <label class="textEllipsis" for="{{knowledgeCollection.nodeId}}">&nbsp;</label>
+                        </div>
+                         </div>
+                          <div class="tableCell pull-left knowledgeCollectionPublish">
+                            <label class="textEllipsis">{{knowledgeCollection.label}}<span class='deleted-text' ng-show="{{knowledgeCollection.deleted}}">&nbsp; {{'deleted_label'| i18nString}} <span></span></span><span class="languageName hide" ng-show="$index == 0">({{currentLanguage}})</span></label>
+                          </div>
+                          
+                        
+                    </div>
+                    <div class="col-xs-4"> 
+                        <div class="supportedLanguagesContainer">
+                          <span id="{{knowledgeCollection.nodeId}}{{allNodes.language}}" class="languageCheck disabled">
+                                <i class="fa fa-check"></i> <span class="language">{{seedLanguages[allNodes.language].dvalue}}</span>
+                            </span>
+                            </div>
+                    </div>
+                    <div class="col-xs-4 textCapitalize secondaryFontColor text-center"> <a ng-show="$index == 0 && allNodes.length > 0" ng-click="manageNodes()">{{currentStep == 'options' ? view_nodes_label : manage_nodes_label}}</a> </div>
+                </div>
+
+            </div>
+
+
+                    </div>
+
+
+                </div>
+                
+                    </div>
+                  </div>   
+                </div><div>
+    </script>
+
+    
+    <div class="contentScrollDiv" dynamic-height dynaoffset="(inputTranslation ||  showGenericPublishProtip)?-120:-61" perfect-scroll height-property="height"  ng-show="currentStep == 'defineDeployment' ">
+        <div class="row btnSearchTitle" ng-if='!(alertLoading || actionLoading  || dialogLoading  || loadingFlows)'>
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'publish' | i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn displayNone">
+                     <button class="btn btn-xs"> BTN Name</button>
+                </div>
+                <div class="filtersDetails displayNone">
+                    <span class="filterListContainer">
+                        <span class="filterCat">Languages </span>
+                        <span class="filterClose">(1)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <span class="filterListContainer">
+                        <span class="filterCat">Date Period </span>
+                        <span class="filterClose">(5 days)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                    <div class="dropdown moreDD">
+                        <a href="#" class="moreFilters" data-toggle="dropdown">
+                            +2 more
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">
+                                <span class="filterCat">Channels </span>
+                                <span class="filterClose">(4)</span>
+                                <i class="btx-close"></i>
+                            </li>
+                            <li class="dropdown-item" >
+                                <span class="filterCat">Tasks </span>
+                                <span class="filterClose">(3)</span>
+                                <i class="btx-close"></i>
+                            </li>                       
+                        </ul>
+                    </div>
+                    <span class="clearAllFilters">
+                        <span class="filterCat">User ID </span>
+                        <span class="filterClose">(3)</span>
+                        <i class="btx-close"></i>
+                    </span>
+                </div>
+          
+                <div class="btnActions displayNone">
+                    <button class="filtersBTN" ng-click="editFilter()"> <i class="btx-filters"></i></button>
+                </div>
+                <div class="titleDropdown displayNone">
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                         </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow displayNone">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          </div>
+    <div class="animationIfLeave col-xs-12 content-loading positionStatic" ng-if='(alertLoading === true && actionLoading === true && dialogLoading === true && loadingFlows === true)'>
+        <span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content">  {{'loading_components'| i18nString}}</span></span>
+    </div>
+<div class="panel-group publishControlAccordion" id="advancedSettingsAccordion" role="tablist" aria-multiselectable="true" ng-show="currentStep == 'defineDeployment' && !(alertLoading === true && actionLoading === true && dialogLoading === true && loadingFlows === true)">
+     <div class=" panel panel-default  marginTop15 marg" ng-if="checkTaskAvailable()">
+        <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#advancedSettingsAccordion" href="#alltasksBodyData" role="tab" id="alltasksHeading">
+            <div class="panel-title">
+                <span class="pull-right length chevron"> <img class="fa fa-chevron-right" ng-src="{{chevronRight}}"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="allTasksCheckUncheck" 
+                       ng-click="checkOrUncheckAlltasks(allTasksSelected,$event)"
+                       ng-model="allTasksSelected.isSelected">
+                <label ng-click="checkOrUncheckAlltasks(allTasksSelected,$event)" for="allTasksCheckUncheck"></label>
+                </div><span class="publishMainHeaderText"> {{'Tasks_and_languages_label'| i18nString}} </span><span class="publishHeaderDiscText"> {{'Tasks_and_languages_shortdesc'| i18nString}}</span>
+            </div>
+        </div>
+        <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="alltasksHeading" id='alltasksBodyData'>
+             <div class="panel-body">
+                 <div class="content-loading" ng-show="currentStep == 'defineDeployment' && alertLoading === true && actionLoading === true && dialogLoading === true && loadingFlows === true">
+                     <span class="spinner-text"> 
+                         <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                         <span class="spinner-text-content ng-binding">  {{'loading_tasks_label'| i18nString}}</span>
+                     </span>
+                 </div>
+        <div class="col-xs-12 divCenter publishAccordBody" ng-show="currentStep == 'defineDeployment' && !(alertLoading === true && actionLoading === true && dialogLoading === true && loadingFlows === true)">
+        <!--<div class="col-xs-12 free-account-tip protipPadding noPadding"  ng-show="showfreeTrailProTip">
+            <div class="helphint-border col-xs-12 marginB20T0">
+                <div class="col-xs-12">
+                    <span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb557)"></span>
+                    <span class="name text2 ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb558)"></span>
+                    <span><a class="linkDecoration" href="{{freeTrailSupportUrl}}"  target="_blank">here</a></span>
+                </div>
+            </div>
+        </div>-->
+        <div class="alertsContainer" ng-show="alerts.length">
+        <div class="row form-group">
+            <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="alertsSectAll" 
+                       ng-change="selectAll(allTasksSelected.selectAllAlerts,'.publishAlertTask')"
+                       ng-model="allTasksSelected.selectAllAlerts">
+                <label for="alertsSectAll"></label>
+            </div>
+            <h5 class="fontSize13 inline_block inline_block m-0">{{alert_tasks_label | uppercase }}</h5>           
+        </div>
+        <div class="row tasksContainer">
+            <div class="row publishAlertTask " ng-repeat="alert in alerts">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="tableCell">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled allTasksCommonClass" checked type="checkbox" id="{{alert._id}}" ng-change="editTask($event, alert,'.publishAlertTask','#alertsSectAll')" ng-model="alert._selected">
+                            <label for="{{alert._id}}">&nbsp;</label>
+                        </div>
+                        </div>
+                        <div class="tableCell">
+                            <label>{{alert.name}}</label>
+                        <p>{{alert.shortDesc}}</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="supportedLanguagesContainer" ng-show="alert.supportedLanguages.length > 0">
+                             <span ng-repeat="lang in alert.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="{{alert._id}}{{lang.value}}" class="languageCheck" ng-click="addLanguage($event, lang, alert)">
+                                <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 secondaryFontColor"> {{alert.version}} </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="actonsContainer" ng-show="actions.length">
+        <div class="row form-group">
+            <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllActions" 
+                       ng-change="selectAll(allTasksSelected.selectAllActions,'.publishActionTask')"
+                       ng-model="allTasksSelected.selectAllActions">
+                <label for="selectAllActions"></label>
+            </div>
+            <h5 class="fontSize13 inline_block">{{action_tasks_label | uppercase }}</h5>
+        </div>
+        <div class="row tasksContainer">
+            <div class="row publishActionTask " ng-repeat="action in actions">
+                <div class="row">
+                    <div class="col-xs-6">
+                    <div class="tableCell">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled allTasksCommonClass" checked type="checkbox" id="{{action._id}}" ng-change="editTask($event, action,'.publishActionTask','#selectAllActions')" ng-model="action._selected">
+                            <label for="{{action._id}}">&nbsp;</label>
+                        </div></div>
+                        <div class="tableCell">
+                        <label>{{action.name}}</label>
+                        <p>{{action.shortDesc}}</p>
+                    </div>
+                    </div>
+                    <div class="col-xs-4"> 
+                <div class="supportedLanguagesContainer" ng-show="action.supportedLanguages.length > 0">
+                   <span ng-repeat="lang in action.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="{{action._id}}{{lang.value}}" class="languageCheck" ng-click="addLanguage($event, lang, action)">
+                                <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                            </span>
+                </div>
+                </div>
+                    <div class="col-xs-2 secondaryFontColor"> {{action.version}} </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+        <div class="actonsContainer" ng-show="information.length">
+        <div class="row form-group">
+            <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllInformation" 
+                       ng-change="selectAll(allTasksSelected.selectAllInformation,'.publishInfoTask','#selectAllInformation')"
+                       ng-model="allTasksSelected.selectAllInformation">
+                <label for="selectAllInformation"></label>
+            </div>
+            <h5 class="fontSize13 inline_block">{{information_tasks_label | uppercase }}</h5>
+        </div>
+        <div class="row tasksContainer">
+        <div class="row publishInfoTask" ng-repeat="info in information">
+                <div class="row">
+                    <div class="col-xs-6">
+                    <div class="tableCell">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{info._id}}" ng-change="editTask($event, info,'.publishInfoTask','#selectAllInformation')" ng-model="info._selected">
+                            <label for="{{info._id}}">&nbsp;</label>
+                        </div></div>
+                        <div class="tableCell">
+                        <label>{{info.name}}</label>
+                        <p>{{info.shortDesc}}</p>
+                    </div>
+                    </div>
+                    <div class="col-xs-4"> 
+                <div class="supportedLanguagesContainer" ng-show="info.supportedLanguages.length > 0">
+                   <span ng-repeat="lang in info.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="{{info._id}}{{lang.value}}" class="languageCheck" ng-click="addLanguage($event, lang, info)">
+                                <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                            </span>
+                </div>
+                </div>
+                    <div class="col-xs-2 secondaryFontColor"> {{info.version}} </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+        <div class="dialogsContainer" ng-show="dialogs.length">
+        <div class="row form-group">
+            <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllDialogTask" 
+                       ng-change="selectAll(allTasksSelected.selectAllDialogTask,'.publishDialogTask')"
+                       ng-model="allTasksSelected.selectAllDialogTask">
+                <label for="selectAllDialogTask"></label>
+            </div>
+            <h5 class="fontSize13 inline_block">{{dialog_tasks_label | uppercase }} <i ng-if="selectionInPogress" class="fa fa-circle-o-notch fa-spin-fast"></i></h5>
+        </div>
+        <div class="row tasksContainer">
+            <div class="row publishDialogTask " ng-repeat="dialog in dialogs">
+                <div class="row">
+                    <div class="col-xs-6">
+                         <div class="tableCell">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled allTasksCommonClass" checked type="checkbox" id="{{dialog._id}}" ng-change="editTask($event, dialog,'.publishDialogTask','#selectAllDialogTask')" ng-model="dialog._selected">
+                            <label class="textEllipsis" for="{{dialog._id}}">&nbsp;</label>
+                        </div>
+                         </div>
+                          <div class="tableCell knowledgeCollectionPublish">
+                            <label class="textEllipsis">{{dialog.name}}</label>
+                            <p>{{dialog.shortDesc}}</p>
+                          </div>
+                        
+                    </div>
+                    <div class="col-xs-4"> 
+                        <div class="supportedLanguagesContainer" ng-show="dialog.supportedLanguages.length > 0">
+                              <span ng-repeat="lang in dialog.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="{{dialog._id}}{{lang.value}}" class="languageCheck" ng-click="addLanguage($event, lang, dialog)">
+                                <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                            </span>
+
+                          
+                        </div>
+                    </div>
+                    <div class="col-xs-2 secondaryFontColor"> {{dialog.version}} </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+        <div class="dialogsContainer" ng-show="panels.length">
+            <div class="row form-group">
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                    <input class="styled" checked type="checkbox" id="selectAllPanelTasks" 
+                           ng-change="selectAll(allTasksSelected.selectAllPanelTasks,'.publishPanelTask')"
+                           ng-model="allTasksSelected.selectAllPanelTasks">
+                    <label for="selectAllPanelTasks"></label>
+                </div>
+                <h5 class="fontSize13 inline_block">{{panels_label | uppercase }}</h5>
+            </div>
+            <div class="row tasksContainer">
+                <div class="row publishPanelTask " ng-repeat="panel in panels">
+                    <div class="row">
+                        <div class="col-xs-6">
+                             <div class="tableCell">
+                            <div class="checkbox checkbox-primary styledCSS noMargin">
+                                <input class="styled allTasksCommonClass" checked type="checkbox" id="{{panel._id}}" ng-change="editTask($event, panel,'.publishPanelTask','#selectAllPanelTasks')" ng-model="panel._selected">
+                                <label class="textEllipsis" for="{{panel._id}}">&nbsp;</label>
+                            </div>
+                             </div>
+                              <div class="tableCell knowledgeCollectionPublish">
+                                <label class="textEllipsis">{{panel.name}}</label>
+                                <p>{{panel.displayName}}</p>
+                              </div>
+                            
+                        </div>
+                        <div class="col-xs-4"> 
+                            <div class="supportedLanguagesContainer" ng-show="panel.supportedLanguages.length > 0">
+                                  <span ng-repeat="lang in panel.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="{{panel._id}}{{lang.value}}" class="languageCheck" ng-click="addLanguage($event, lang, panel)">
+                                    <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                                </span>
+    
+                              
+                            </div>
+                        </div>
+                        <div class="col-xs-2 secondaryFontColor"> {{panel.version}} </div>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+        <div class="dialogsContainer" ng-show="widgets.length">
+            <div class="row form-group">
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                    <input class="styled" checked type="checkbox" id="selectAllWidgetTasks" 
+                        ng-change="selectAll(allTasksSelected.selectAllWidgetTasks,'.publishWidgetTask')"
+                        ng-model="allTasksSelected.selectAllWidgetTasks">
+                    <label for="selectAllWidgetTasks"></label>
+                </div>
+                <h5 class="fontSize13 inline_block">{{widgets_label | uppercase }}</h5>
+            </div>
+            <div class="row tasksContainer">
+                <div class="row publishWidgetTask " ng-repeat="panel in widgets">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="tableCell">
+                            <div class="checkbox checkbox-primary styledCSS noMargin">
+                                <input class="styled allTasksCommonClass" checked type="checkbox" id="{{panel._id}}" ng-change="editTask($event, panel,'.publishWidgetTask','#selectAllWidgetTasks')" ng-model="panel._selected">
+                                <label class="textEllipsis" for="{{panel._id}}">&nbsp;</label>
+                            </div>
+                            </div>
+                            <div class="tableCell knowledgeCollectionPublish">
+                                <label class="textEllipsis">{{panel.name}}</label>
+                                <p>{{panel.title}}</p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-xs-4"> 
+                            <div class="supportedLanguagesContainer" ng-show="panel.supportedLanguages.length > 0">
+                                <span ng-repeat="lang in panel.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="{{panel._id}}{{lang.value}}" class="languageCheck" ng-click="addLanguage($event, lang, panel)">
+                                    <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                                </span>
+    
+                            
+                            </div>
+                        </div>
+                        <div class="col-xs-2 secondaryFontColor"> {{panel.version}} </div>
+                    </div>
+    
+                </div>
+            </div>
+            </div>
+            <div class="dialogsContainer" ng-show="botUIForms.length">
+                <div class="row form-group">
+                    <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                        <input class="styled" checked type="checkbox" id="selectAllFormTask" 
+                               ng-change="selectAll(allTasksSelected.selectAllFormTask,'.publishFormTask')"
+                               ng-model="allTasksSelected.selectAllFormTask">
+                        <label for="selectAllFormTask"></label>
+                    </div>
+                    <h5 class="fontSize13 inline_block">{{uiforms_label | uppercase }}</h5>
+                </div>
+                <div class="row tasksContainer">
+                    <div class="row publishFormTask " ng-repeat="form in botUIForms">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                 <div class="tableCell">
+                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                    <input class="styled allTasksCommonClass" checked type="checkbox" id="{{form._id}}" ng-change="editTask($event, form,'.publishFormTask','#selectAllFormTask')" ng-model="form._selected">
+                                    <label class="textEllipsis" for="{{form._id}}">&nbsp;</label>
+                                </div>
+                                 </div>
+                                  <div class="tableCell knowledgeCollectionPublish">
+                                    <label class="textEllipsis">{{form.name}}</label>
+                                    <p>{{form.shortDesc}}</p>
+                                  </div>
+                                
+                            </div>
+                            <div class="col-xs-4"> 
+                                <div class="supportedLanguagesContainer" ng-show="form.supportedLanguages.length > 0">
+                                      <span ng-repeat="lang in form.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="{{form._id}}{{lang.value}}" class="languageCheck" ng-click="addLanguage($event, lang, form)">
+                                        <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                                    </span>
+        
+                                  
+                                </div>
+                            </div>
+                            <div class="col-xs-2 secondaryFontColor"> {{form.version}} </div>
+                        </div>
+        
+                    </div>
+                </div>
+                </div>
+        <!--<div class="row form-group">
+            <h5 class="fontSize13">{{'knowledge tasks' | uppercase }}</h5>
+        </div>-->
+        <div class="row" >
+            <div ng-include="'/nodes-template.html'" ng-show="allNodesCollection && allNodesCollection.length > 0"></div>
+            <div class="row">
+                <div ng-show="knowledgeCollections.length == 0 && !dialogLoading && false">
+                    <div class='bt-text-muted'>  {{'none_found'| i18nString}} </div>
+                </div>
+            </div>
+        </div>
+        <div class="actonsContainer smallTalkContainer marginTop20" ng-show="stream.isSmalltalkMigrated && smallTalkData">
+                <div class="row publishSmallTalk">
+                        <div class="row">
+                            <div class="col-xs-6 noPadding">
+                                 <div class="tableCell pull-left">
+                                <div class="checkbox checkbox-primary styledCSS noMargin">
+                                    <input class="styled allTasksCommonClass" checked type="checkbox" id="smallTalkPublish" ng-click="checkUncheckSmallTalk($event,smallTalk)" ng-model="smallTalk._selected">
+                                    <label class="textEllipsis"  ng-click="checkUncheckSmallTalk($event,smallTalk)" for="smallTalkPublish">&nbsp;</label>
+                                </div>
+                                 </div>
+                                  <div class="tableCell pull-left knowledgeCollectionPublish">
+                                    <label class="textEllipsis"> {{'small_talk_uppercase'| i18nString}}</label>
+                                  </div>
+        
+                                
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="supportedLanguagesContainer" ng-show="smallTalk.supportedLanguages.length > 0">
+                                     <span ng-repeat="lang in smallTalk.supportedLanguages"  ng-class="{'disabled':lang.disable, 'unchecked': !lang.selected}" id="smallTalk{{lang.value}}" class="languageCheck" ng-click="smallTalkLanguageUpdates($event, lang, smallTalk)">
+                                        <i class="fa fa-check"></i> <span class="language">{{seedLanguages[lang.value].dvalue}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 textCapitalize secondaryFontColor"> <span>{{smallTalk.count > 0 ? smallTalk.count+ q_and_a_label : '-'}}</span> </div>
+                            <!-- <div class="col-xs-1 textCapitalize secondaryFontColor text-center"> </div> -->
+                        </div>
+        
+                    </div>
+            
+         </div>
+                  </div>
+        </div>
+        </div>
+        </div>
+        <div class="panel panel-default marginTop15">
+            <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#languageBody" role="tab" id="languageHeading">
+              <div class="panel-title">
+                <span class="pull-right length chevron"><img class="fa fa-chevron-right" ng-src="{{chevronRight}}"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                  <input class="styled" checked type="checkbox" id="selectAllLanguages" ng-model="selectAllLanguage.selected" ng-click="selectAllLanguages($event,selectAllLanguage,'botLanguage')">
+                  <label ng-click="selectAllLanguages($event,selectAllLanguage,'botLanguage')" for="selectAllLanguages"></label><span class="publishMainHeaderText">{{'Bot_Languages' | i18nString}}</span><span class="publishHeaderDiscText">{{'Bot_Languages_shortdesc' | i18nString}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="languageHeading" id='languageBody'>
+            <div class="panel-body publishAccordBody">
+              <!-- <span class="warn" ng-show="advancedPublishOptions.botLanguage.modules.disabledLanguages.length || unPublishLang.length">
+                <i class="fa fa-warning"></i>
+                <p class="desc">{{ 'language_notify' | i18nString }}</p>
+              </span> -->
+                <div class="hintDiv col-xs-12 align-items-center width735 mt-0" ng-show="advancedPublishOptions.botLanguage.modules.disabledLanguages.length || unPublishLang.length"> 
+                    <div class="icon">
+                        <i class="bulbIconLayer btx-bulb"></i>
+                    </div> 
+                    <div class="description">
+                        {{ 'language_notify' | i18nString }}
+                    </div> 
+                </div>
+            <div class="enable-disable-lang-sec pl-pr-4" ng-show="languages.enabledLanguages.length > 0">
+                <div class="label pt-0 text_left_side">{{'Enabled_Languages' | i18nString }}</div>
+                <div class="row  enable-disable-lang" ng-repeat="enabledLanguage in languages.enabledLanguages">
+                 
+                    <div class="row" ng-show="languages.enabledLanguages.length > 0">
+                        <div class="col-xs-12 noPadding">
+                            <div class="checkbox checkbox-primary styledCSS noMargin" ng-class="{'disabled':enabledLanguage.isDisabled || enabledLanguage.value === defaultLanguage}">
+                                <input class="styled" checked type="checkbox" ng-disabled="enabledLanguage.isDisabled || enabledLanguage.value === defaultLanguage " id="{{enabledLanguage.value}}" ng-change="checkUncheckLanguage('#languageBody','#selectAllLanguages','botLanguage')" ng-model="enabledLanguage.selected">
+                                <label class="textEllipsis" for="{{enabledLanguage.value}}"> <span class="languagecheck">{{enabledLanguage.value}}</span>{{enabledLanguage.name}} <span class="default" ng-if="enabledLanguage.value === defaultLanguage">Default</span>
+                                </label>                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="enable-disable-lang-sec pl-pr-4" ng-show="languages.disabledLanguages.length > 0">
+                <span class="label">{{'Disabled_Languages' | i18nString }}</span>
+                <div class="row enable-disable-lang" ng-repeat="disabledlanguage in languages.disabledLanguages">
+                    <div class="row">
+                        <div class="col-xs-12 noPadding">
+                            <div class="checkbox checkbox-primary styledCSS noMargin" ng-class="{'disabled':disabledlanguage.isDisabled}">
+                                <input class="styled" checked type="checkbox" id="{{disabledlanguage.value}}" ng-disabled="disabledlanguage.isDisabled" ng-change="checkUncheckLanguage('#languageBody','#selectAllLanguages','botLanguage')" ng-model="disabledlanguage.selected">
+                                <label class="textEllipsis" for="{{disabledlanguage.value}}"> 
+                                <span class="languagecheck">{{disabledlanguage.value}}</span>{{disabledlanguage.name}}<span class="default" ng-if="disabledlanguage.value === defaultLanguage">Default</span>
+                                </label>                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class=" panel panel-default marginTop15">
+            <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#mlBodyData" role="tab" id="mlHeading">
+                <div class="panel-title">
+                    <span class="pull-right length chevron"> <img class="fa fa-chevron-right" ng-src="{{chevronRight}}"></span>
+                    <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                        <input class="styled" checked type="checkbox" id="selectAllML" 
+                               ng-click="selectAllAdvanced('nl',advancedPublishOptions.nl,$event)"
+                               ng-model="advancedPublishOptions.nl.allSelected">
+                        <label  ng-click="selectAllAdvanced('nl',advancedPublishOptions.nl,$event)" for="selectAllML"></label>
+                    </div><span class="publishMainHeaderText"> {{'natural_langname'| i18nString}}</span><span class="publishHeaderDiscText"> {{'Bt_publish_natural_language_desc'| i18nString}}</span>
+                </div>
+            </div>
+        <div class="panel-collapse collapse pt-5"  role="tabpanel" aria-labelledby="mlHeading" id='mlBodyData'>
+            <div class="panel-body publishAccordBody">
+            <div class="row marginBottom10 " ng-repeat="nlModule in advancedPublishOptions.nl.allModules">
+                <div class="row">
+                    <div class="col-xs-12 pl-pr-4">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{nlModule.type}}" ng-change="changeAdvPubControls($event, nlModule,advancedPublishOptions.nl,'#mlBodyData','#selectAllML')" ng-model="nlModule.selected">
+                            <label class="textEllipsis" for="{{nlModule.type}}">{{nlModule.name}}</label>
+                            <p  class="grayInfoText marginLeft30">{{nlModule.discription}}</p>
+                        </div>
+<!--                        <div class="col-xs-12 noPadding" ng-if="nlModule.type==='nl_model'">
+                            <div class="form-group ng-scope" >
+                                <div class="col-xs-12 radioDiv padding5 marginleft20">
+                                    <div>
+                                        <label for="nlp.data.full">
+                                            <input type="radio" ng-model="advancedPublishOptions.nl.selectedNlpData" name="nlp.data" id="nlp.data.full"  class="ng-pristine ng-untouched ng-valid" value="full">
+                                            <span class="opt-title">Full NLP Data</span>
+                                        </label>
+                                            <p class="grayInfoText paddingLeft25">Publish NLP model associated with all the tasks present in the bot, even if they are not selected for publishing</p>
+                                    </div>
+                                    <div>
+                                        <label for="nlp.data.task">
+                                            <input type="radio" ng-model="advancedPublishOptions.nl.selectedNlpData" name="nlp.data" id="nlp.data.task"  class="ng-pristine ng-untouched ng-valid" value="task_specific">
+                                            <span class="opt-title">Tasks Specific NLP Data</span>
+                                        </label>
+                                             <p class="grayInfoText paddingLeft25">Publish NLP model associated only with the tasks selected for publishing</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+                </div>
+        </div>
+        </div>
+         <div class=" panel panel-default  marginTop15" ng-if=" advancedPublishOptions.channels.allModules.length">
+        <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#channelsBodyData" role="tab" id="channelsHeading">
+            <div class="panel-title">
+                <span class="pull-right length chevron"> <img class="fa fa-chevron-right" ng-src="{{chevronRight}}"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllchannels" 
+                       ng-click="selectAllAdvanced('channels',advancedPublishOptions.channels,$event)"
+                       ng-model="advancedPublishOptions.channels.allSelected">
+                <label ng-click="selectAllAdvanced('channels',advancedPublishOptions.channels,$event)" for="selectAllchannels"></label>
+                </div><span class="publishMainHeaderText"> {{'channels'| i18nString}}</span><span class="publishHeaderDiscText"> {{'Bt_publish_channels_desc'| i18nString}} </span>
+            </div>
+        </div>
+        <div class="panel-collapse collapse"  role="tabpanel" aria-labelledby="channelsHeading" id='channelsBodyData'>
+             <div class="panel-body publishAccordBody">
+            <div class="row marginBottom10 " ng-repeat="channelsModule in advancedPublishOptions.channels.allModules">
+                <div class="row col-xs-12 channelBtPublishRow">
+                    <div class="col-xs-4 channelPublishDiv">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{channelsModule.type}}" ng-change="changeAdvPubControls($event, channelsModule,advancedPublishOptions.channels,'#channelsBodyData','#selectAllchannels')" ng-model="channelsModule.selected">
+                            <label class="textEllipsis" for="{{channelsModule.type}}"><img class="icons" ng-src="{{channelsModule.icon}}">{{channelsModule.name}}</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-8 channelPubStatusDiv">{{channelsModule.status}}</div>
+                </div>
+              </div>
+            </div>
+        </div>
+        </div>
+        <div class="marginTop15 panel panel-default">
+        <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#extensionsBodyData" role="tab" id="extensionsHeading">
+            <div class="panel-title"><span class="pull-right length chevron"> <img class="fa fa-chevron-right" ng-src="{{chevronRight}}"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllextensions" 
+                       ng-click="selectAllAdvanced('extensions',advancedPublishOptions.extensions,$event)"
+                       ng-model="advancedPublishOptions.extensions.allSelected">
+                <label ng-click="selectAllAdvanced('extensions',advancedPublishOptions.extensions,$event)" for="selectAllextensions"></label>
+            </div><span class="publishMainHeaderText"> {{'Bt_publish_api_exte_label'| i18nString}}</span><span class="publishHeaderDiscText"> {{'Bt_publish_api_exte_desc'| i18nString}} </span>
+            </div>
+        </div>
+        <div class="panel-collapse collapse padding pt-5"  role="tabpanel" aria-labelledby="extensionsHeading" id='extensionsBodyData'>
+            <div class="panel-body publishAccordBody">
+            <div class="row marginBottom10" ng-repeat="extensionsModule in advancedPublishOptions.extensions.allModules">
+                <div class="row">
+                    <div class="col-xs-12 pl-pr-4">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{extensionsModule.type}}" ng-change="changeAdvPubControls($event, extensionsModule,advancedPublishOptions.extensions,'#extensionsBodyData','#selectAllextensions')" ng-model="extensionsModule.selected">
+                            <label class="textEllipsis" for="{{extensionsModule.type}}">{{extensionsModule.name}}</label>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            </div>
+        </div>
+        </div>
+        <div class="marginTop15 panel panel-default">
+        <div class="panel-heading collapsed" data-toggle="collapse" role="tablist" data-parent="#taskGenAccordion" href="#settingsBodyData" role="tab" id="settingsHeading">
+            <div class="panel-title">
+                <span class="pull-right length chevron"> <img class="fa fa-chevron-right" ng-src="{{chevronRight}}"></span>
+                <div class="checkbox checkbox-primary styledCSS noMargin inline_block">
+                <input class="styled" checked type="checkbox" id="selectAllSettings" 
+                       ng-click="selectAllAdvanced('settings',advancedPublishOptions.settings,$event)"
+                       ng-model="advancedPublishOptions.settings.allSelected">
+                <label ng-click="selectAllAdvanced('settings',advancedPublishOptions.settings,$event)" for="selectAllSettings"></label>
+                </div><span class=" publishMainHeaderText"> {{'settings'| i18nString}}</span><span class="publishHeaderDiscText"> {{'Bt_publish_settings_desc'| i18nString}}</span>
+            </div>
+        </div>
+        <div class="panel-collapse collapse pt-5"  role="tabpanel" aria-labelledby="settingsHeading" id='settingsBodyData'>
+            <div class="panel-body publishAccordBody">
+            <div class="row marginBottom10" ng-repeat="settingsModule in advancedPublishOptions.settings.allModules">
+                <div class="row">
+                    <div class="col-xs-12 pl-pr-4">
+                        <div class="checkbox checkbox-primary styledCSS noMargin">
+                            <input class="styled" checked type="checkbox" id="{{settingsModule.type}}" ng-change="changeAdvPubControls($event, settingsModule,advancedPublishOptions.settings,'#settingsBodyData','#selectAllSettings')" ng-model="settingsModule.selected">
+                            <label class="textEllipsis" for="{{settingsModule.type}}">{{settingsModule.name}}</label>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        
+            <div class="col-xs-12 free-account-tip noPadding" ng-show="appControls.isBillingEnabled && selectedAccount.accountType === 1 && stream.type === 'default' && license._id === 'free' && selectedAccount.adminPreferences.autoApproval && selectedAccount.accountType">             
+                <div class="help_hint_data">
+                    <div class="bulb-icon">
+                        <i class="btx-bulb"></i>
+                    </div>
+                    <div class="hint-content">{{'exceed_publishing_desc'| i18nString:({dyn:freePlan.sessions, plan: license.planName})}} <a href="{{freeTrailSupportUrl}}" target="_blank" class="link">Learn more</a></div>
+                </div>
+            </div>
+
+            <div class="help_hint_data mb-10" ng-show="(deletedTaskList.length || languages.deletedLanguages.length) && advancedPublishOptions.nl.allModules">
+                <div class="bulb-icon">
+                    <i class="btx-bulb"></i>
+                </div>
+                <div class="hint-content">
+                    <div class="mb-10">The following tasks and languages are deleted in the 'In-development' version of this bot. These tasks and languages will be submitted for removal from the 'Published' version along with the current publish request.</div>
+                    <div ng-show="deletedTaskList.length">
+                        <div>Tasks</div>
+                        <div class="taskList paddingLeft10" ng-repeat="task in deletedTaskList">
+                          <div class="task">- {{task.taskName}} ({{task.type}}<span ng-show="task.language"> -{{task.language}}</span>)</div>
+                        </div>
+                    </div>
+                    <div ng-show="languages.deletedLanguages.length">
+                        <div>Languages</div>
+                        <div class="taskList paddingLeft10" ng-repeat="language in languages.deletedLanguages">
+                          <div class="task">- {{language.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="help_hint_data mb-10" ng-show="(advancedPublishOptions.nl.selectedModules.indexOf('nl_model') == -1 && (allTasksSelected.selectAllDialogTask || allTasksSelected.selectAllAlerts))">
+                <div class="bulb-icon">
+                    <i class="btx-bulb"></i>
+                </div>
+                <div class="hint-content">{{ 'publish_nlmodel' | i18nString }}</div>
+            </div>
+        </div>
+    <div class="col-xs-12" ng-if="currentStep == 'type'" ng-init="stream.publishType='standardbot'"> 
+
+
+        <div class="col-xs-12 noPadding">
+      <div class="form-group ng-scope">
+        <div class="col-xs-12 labelling noPadding">
+          <label> {{'publish_as_label'| i18nString}}</label>
+        </div>
+        <div class="col-xs-12 radioDiv noPadding">
+          <div>
+            <label for="stream.publishType.standardbot">
+              <input ng-checked="true" type="radio" ng-model="stream.publishType" name="stream.publishType" id="stream.publishType.standardbot" class="ng-pristine ng-untouched ng-valid" value="standardbot" checked="checked">
+              <span class="opt-title"> {{'standard_bot_label'| i18nString}}</span> </label>
+          </div>
+          <div>
+            <label for="stream.publishType.smartbot">
+              <input type="radio" ng-model="stream.publishType" name="stream.publishType" id="stream.publishType.smartbot"  class="ng-pristine ng-untouched ng-valid" value="smartbot">
+              <span class="opt-title"> {{'pre_configured_smart_bot'| i18nString}}</span> </label>
+          </div>
+          <div>
+            <label for="stream.publishType.samplebot">
+              <input type="radio" ng-model="stream.publishType" name="stream.publishType" id="stream.publishType.samplebot"  class="ng-pristine ng-untouched ng-valid" value="samplebot">
+              <span class="opt-title"> {{'sample_bot'| i18nString}}</span> </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <!--<div ng-if="currentStep == 'enableTryMode'" class="marginTop20">
+        <try-mode-form enable-try-mode="enableTryMode" trymodeid="intab" account="account" callback="trymodecallback"></try-mode-form>
+
+    </div>-->
+
+    <div class="col-xs-12 confirmPage" dynamic-height dynaoffset="-61" perfect-scroll height-property="height" ng-if="currentStep == 'options'">
+
+<!--        <div class="row form-group">
+            <h5 class="fontSize13">{{'Tasks & Flows to be deployed' | uppercase }}</h5>
+        </div>-->
+        <div class="row deploymentconfirmsection" >
+            <div class="row form-group">
+                <div class="row planSelected" ng-if="license" style="display: none;">
+                    <h3 class="noMargin headingTitle">Plan Selected</h3>
+                    <div class="row planDetailsContainer">
+                        <div class="col-xs-3 planDetails">
+                            <div class="planType">Plan Type</div>
+                            <div class="planTypeDesc">{{license.planName || '---'}}</div>
+                        </div>
+                        <div class="col-xs-3 planDetails">
+                            <div class="planType">Subscription Type</div>
+                            <div class="planTypeDesc">{{license.billingType || '---'}}</div>
+                        </div>
+                        <div class="col-xs-3 planDetails">
+                            <div class="planType">Total Cost</div>
+                            <div class="planTypeDesc">${{(license.creditsUsed | localString) || 0}}</div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="row">
+                                    <h3 class="noMargin headingTitle"> {{'comment_label'| i18nString}}</h3>
+
+                                </div>
+                                <div class="row">
+                                    <textarea type="text"
+                                            class="form-control" 
+                                             auto-grow-textarea
+                                         ng-model="botPublishObject.upgradeVersionComment" 
+                                        placeholder=" {{'enter_comments_for_public_request'| i18nString}}">
+                                    </textarea>
+                                </div>
+                                <div class="hintDiv col-xs-12 align-items-center marginTop15 width735" ng-if="appControls.isBillingEnabled && selectedAccount.accountType === 1 && stream.type === 'default' && license._id === 'free' && selectedAccount.adminPreferences.autoApproval && selectedAccount.accountType"> 
+                                    <div class="icon">
+                                        <i class="bulbIconLayer btx-bulb"></i>
+                                    </div> 
+                                    <div class="description">
+                                        {{'you_are_publishing_desc'| i18nString:({dyn:freePlan.sessions})}}
+                                    </div> 
+                                </div>
+            </div>
+            
+            <div>
+                <div ng-if="tasks && tasks.length" ng-show="(tasks | filter:{'taskType':  'alert','parentId':'!!'}).length">
+                     <h3 class="headingTitle alertOpt"> {{'alert_task_options'| i18nString}}</h3>
+                     <p class="headingDescription"> {{'define_settings_for_upgrading'| i18nString}}</p>
+                </div>
+                <div class="row form-group taskTypeBorder alertsWrap" ng-if="task.parentId && task.taskType=='alert'" ng-repeat="task in tasks" ng-include="'pubishOptions_renderer.html'"></div>
+
+<!--                <div ng-show="(tasks | filter:{'taskType':  'action'}:true).length"><h5 class="fontSize13 ng-binding taskHeader">Action tasks options</h5></div>
+                <div class="row form-group" ng-if="task.taskType=='action'" ng-repeat="task in tasks" ng-include="'pubishOptions_renderer.html'"></div>
+
+                <div ng-show="(tasks | filter:{'taskType':  'dialog'}:true).length"><h5 class="fontSize13 ng-binding taskHeader">Dialog tasks options</h5></div>
+                <div class="row form-group" ng-if="task.taskType=='dialog'" ng-repeat="task in tasks" ng-include="'pubishOptions_renderer.html'"></div>-->
+
+            <script type="text/ng-template" id="pubishOptions_renderer.html">
+                <div class="row pointer-hand form-group expandTask" ng-click="expandTask(task)">
+                    <div class="col-xs-10 taskNameDiv">                       
+                    <span class="taskType">{{task.name}}</span> <span>&nbsp;</span> <span class="ng-hide">{{getType(task._id)}}</span>   
+                    </div>
+                    <div class="col-xs-2 textEllipsis ng-hide"> {{task.parentId ? upgrade_label :new_deployment_label}} </div>
+                    <div class="dropdown col-xs-3 textEllipsis textTransformCapitalize customdropdown ng-hide">
+                        <bot-tooltip task="task" from="publish" container="bot-publish" hover-text="{{task.approvedLangString}}"></bot-tooltip>
+                    </div>
+                    <div class="col-xs-2 noPaddingRight chevronLeftAlign">
+                        <div class="pull-left ng-hide"> {{task.upgradeInfo.version || task.version}} </div>
+                        <i  ng-show="task.parentId" ng-class="{'fa fa-chevron-down pull-right': task.subView , 'fa fa-chevron-up pull-right': !task.subView}"></i>
+                    </div>
+                </div>
+                <div class="row" ng-show="task.subView && task.parentId">
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="noBoxShadowGrayBG">
+                            <div class="row marginBottom10-imp" ng-show="task.flows.length>0">
+                                  <div class="row form-group" >
+                                    <div class="row flows">
+                                      <label class="shortLongMsg"> {{'constants.flows '| i18nString}}</label>
+                                      <div class="help-block"> {{'review_flow_definations'| i18nString}}</div>
+                                    </div>
+                                  </div>
+                                <div class="row publish-section-expander" ng-repeat="flow in task.flows">
+                                    <expander item="flow" on-delete="deleteMapping(flow,$index,task)" on-change="updateMapping(flow,index)" index="$index">
+                                        <workflows-mapping map-id="flow.mapId" status="flow.state" component="true" resource-type="resourceType" resource="flow">
+                                        </workflows-mapping>
+                                    </expander>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="task.upgradeInfo">
+                                <div class="col-xs-12 versionDivContainer">
+                                    <h3 class="noMargin"> {{'version_type_label'| i18nString}}</h3>
+                                        <p class="help-block">
+                                            {{'this_version_of_the_task_desc'| i18nString}}
+                                        </p>
+                                </div>
+                                <div class="col-xs-5 radioDiv form-group">
+                                    <div class="col-xs-5 noPadding">
+                                        <label class="checkbox-inline label-mapping noPaddingTop">
+                                        <input type="radio" ng-disabled="task.upgradeInfo.versionChange==='major'" value="minor" ng-model="task.versionType">
+                                        <span> {{'minor_update_label'| i18nString}}</span>
+                                     </label>
+                                    </div>
+                                    <div class="col-xs-5 noPadding">
+                                        <label class="checkbox-inline label-mapping noPaddingTop">
+                                        <input type="radio" ng-disabled="task.upgradeInfo.versionChange==='major'" value="major" ng-model="task.versionType">
+                                        <span> {{'major_update_label'| i18nString}}</span>
+                                    </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="task.upgradeInfo && (task.upgradeInfo.upgrade !== 'automatic')">
+                                <div class="col-xs-12 noPadding">
+                                    <h3 class="noMarginBottom"> {{'upgrade'| i18nString}}</h3>
+                                <p class="help-block">
+                                    {{'if_mandatory_user'| i18nString}}
+                                </p>
+                                </div>
+                                <div class="col-xs-12 radioDiv form-group">
+                                    <div class="col-xs-5 noPadding">
+                                        <label class="checkbox-inline label-mapping noPaddingTop">
+                                        <input type="radio" value="mandatory" ng-model="task.upgradeType">
+                                        <span> {{'mandatory'| i18nString}}</span>
+                                     </label>
+                                    </div>
+                                    <div class="col-xs-5 noPadding">
+                                        <label class="checkbox-inline label-mapping noPaddingTop">
+                                        <input type="radio" value="optional" ng-model="task.upgradeType">
+                                        <span> {{'optional'| i18nString}}</span>
+                                    </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div ng-show="task.versionType==='major' && task.upgradeType==='mandatory'">
+                            <div class="col-xs-12 " ng-show="task.parentId && task._id[0] === 'l'">
+                                <div class="row">
+                                    <label class="required-field shortLongMsg"> {{'short_message'| i18nString}}</label>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="help-block">  {{'this_msg_is_shown_to_user_as_botmsg'| i18nString}} </div>
+                                    <div ng-repeat="lang in task.approvedLanguages" class="languagePublish">
+                                        <label>{{supportedLangMap[lang]}}</label>
+                                        <input type="text" class="form-control" ng-model="task.upgradeShortMessage[lang]" minlength="1" maxlength="256" placeholder= "{{'this_update'| i18nString}}"/>
+                                    
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-show="task.parentId && task._id[0] === 'l' && task.upgradeInfo.upgrade==='manual'">
+                                <div class="row">
+                                    <label class="required-field shortLongMsg"> {{'long_message'| i18nString}}</label>
+                                </div>
+                                <div class="row">
+                                    <div class="help-block"> {{'this_msg_is_shown_to_user_when_clicks_update'| i18nString}}
+                                    </div>
+                                    <div ng-repeat="lang in task.approvedLanguages" class="languagePublish">
+                                        <label>{{supportedLangMap[lang]}}</label>
+                                        <input type="text" class="form-control" ng-model="task.upgradeLongMessage[lang]" placeholder=" {{'this_update'| i18nString}}" />
+                                </div>
+                            </div>
+                            </div>
+                            
+                            <div class="row form-group"></div>
+                        </div>
+                    </div>
+                </div>
+            </script>
+            </div>
+
+            <div ng-show="partialLanguageTasks.length > 0" class="deploymentHintBox">
+                <div class="noPadding text-center"><i class="btx-info"></i></div>
+                <div class="noPadding col-xs-11" ng-init="showAll=false">
+                    <div class="title"> {{'following_tasks_are_not_included'| i18nString}}</div>
+                    <div class="taskListDiv" ng-repeat="partialTask in  partialLanguageTasks track by $index">
+                        <div class="taskrow" ng-show="showAll || $index<3" >
+                            <span class="taskIndex">{{$index+1}}. </span><span class="taskName">{{partialTask.name}}</span>
+                        </div>
+                    </div>
+
+                    <div ng-click="showAll=!showAll"><a ng-if="!(partialLanguageTasks.length < 4)" >
+                        <span   ng-show="!showAll">  {{partialLanguageTasks.length-3}}  {{'more_label'| i18nString}}</span> {{showAll?show_less_label2:tasks_label2}}</a></div>
+                </div>
+            </div>
+
+
+            <div class="form-group ng-scope" ng-hide="true" ng-if='showVisibilty()'>
+                <div class="col-xs-12 labelling noPadding">
+                    <label> {{'visibility'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv noPadding">
+                    <div>
+                        <label for="stream.showInMp.no">
+                      <input ng-change="changeVisibility()" ng-value="false"  type="radio" ng-model="stream.showInMp" name="stream.showInMp" id="stream.showInMp.no" class="ng-pristine ng-untouched ng-valid" value="false" >
+                      <span class="opt-title"> {{'kore_ai_enterprise_bot'| i18nString}}</span> </label>
+                    </div>
+                    <div>
+                        <label for="stream.showInMp.yes">
+                      <input ng-change="changeVisibility()" ng-value="true" type="radio" ng-model="stream.showInMp" name="stream.showInMp" id="stream.showInMp.yes"  class="ng-pristine ng-untouched ng-valid" value="true" checked="checked">
+                      <span class="opt-title"> {{'kore_ai_public_bot'| i18nString}}</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ng-scope" ng-hide="true" ng-if='showVisibiltyForSmartBot()'>
+                <div class="col-xs-12 labelling noPadding">
+                    <label>{{'visibility'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv noPadding">
+                    <div>
+                        <label for="upgrade.botType.workplacefb">
+                      <input value="enterprise"  type="radio" ng-model="upgrade.botType" name="upgrade.botType" id="upgrade.botType.workplacefb" class="ng-pristine ng-untouched ng-valid">
+                      <span class="opt-title"> {{'kore_ai_bot_store'| i18nString}}</span> </label>
+                    </div>
+<!--                    <div class="col-xs-12 checkboxStyling clear-fix" ng-if="upgrade.botType==='workplacefb'">
+
+                        <div class="col-xs-12 checkbox checkbox-primary marginBottom10-imp">
+                            <input class="styled" checked type="checkbox" ng-model="upgrade.isMention" name="channel.isMention" id="channel.isMention.yes">
+                            <label for="channel.isMention.yes">Allow communication with a Bot in a Workplace Group</label>
+                        </div>
+                        <div class="col-xs-12 checkbox checkbox-primary marginBottom10-imp">
+                            <input class="styled" checked type="checkbox" ng-model="upgrade.isChat" name="channel.isChat" id="channel.isChat.yes">
+                            <label for="channel.isChat.yes">Allow communication with a Bot through Work Chat</label>
+                        </div>
+                    </div>-->
+                    <div>
+                        <label for="upgrade.botType.default">
+                      <input value="solution" type="radio" ng-model="upgrade.botType" name="upgrade.botType" id="upgrade.botType.default"  class="ng-pristine ng-untouched ng-valid">
+                      <span class="opt-title"> {{'kore_ai_public_bot'| i18nString}}</span></label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="BtNoteDiv" ng-if="streamPublishInfo.namespaceTo === 'public' && $root.wfAdmin && stream.publishType!=='smartbot' && stream.publishType !== 'samplebot'">
+                <div class="reportInner">
+                    <span class="task-icon "><i class="layer btx-bulb" ></i></span>
+                    <p class="name"> {{'note'| i18nString}}</p>
+                    <p class="description"> {{'check_all_settings_under_bot'| i18nString}} <a ng-click="openBotStoreSettingsModal()"> {{'edit_bot_store_settings'| i18nString}}</a></p>
+
+                </div>
+
+            </div>
+            <div ng-if="streamPublishInfo.namespaceTo === 'public' && $root.wfAdmin && stream.publishType!=='smartbot' && stream.publishType !== 'samplebot'"
+                class="checkbox checkbox-primary styledCSS marginTop15">
+                <input class="styled" checked type="checkbox" id="bsscheck" ng-model="streamPublishInfo.botStoreSettingsCheck">
+                <label for="bsscheck" class="text-transform-init font-weight-init fontSize16"> {{'yes_i_verified'| i18nString}}</label>
+            </div>
+<!--            <div class="row form-group" ng-if="stream.publishType == 'smartbot' || stream.publishType == 'samplebot'">
+                <div class="row form-group">
+                    <div class="row">
+                        <label class="required-field">{{ stream.publishType == 'smartbot' ? 'Smart bot description' : 'Sample bot description' | uppercase }}</label>
+                    </div>
+                    <div class="row">
+                        <input type="text" class="form-control" placeholder="{{'Enter a description of this ' + (stream.publishType == 'smartbot' ? 'smart' : 'sample') + ' bot for the bot installer'}}"
+                            ng-model="upgrade.description" />
+                    </div>
+                </div>
+                <div class="row form-group" ng-hide="stream.publishType == 'samplebot'">
+                    <div class="row">
+                        <label>{{ 'Configuration instructions' | uppercase }}</label>
+                    </div>
+                    <div class="row">
+                        <input type="text" class="form-control" placeholder="Enter some configuration instructions for the smart bot installer" ng-model="upgrade.instructions"
+                        />
+                    </div>
+                </div>
+                <div class="row form-group" ng-show="stream.publishType == 'samplebot'">
+                    <div class="row">
+                        <label>{{ 'Configuration instructions' | uppercase }}</label>
+                    </div>
+                    <div class="input-group">
+                        <input name="importInstructionsFile" type="text" class="form-control" placeholder="Upload a pdf document for detailed configuration instructions"
+                            ng-model="upgrade.instructionsFileName">
+                        <div class="input-group-addon btn-file"><input type="file" file-model="upgrade.instructionsFile" id="importInstructions" name="importInstructions"
+                                on-file-change="uploadInstructionsDocument" />choose file</div>
+                    </div>
+                    <div ng-show="fileExtensionError" class="text-danger form-error-text"> Only .pdf file extensions are supported. </div>
+                </div>
+                <div class="row form-group" ng-hide="stream.publishType == 'samplebot'">
+                    <div class="row">
+                        <label>{{ 'Configuration instructions URL' | uppercase }}</label>
+                    </div>
+                    <div class="row form-group">
+                        <input type="url" class="form-control" placeholder="URL to detailed configuration instructions for the smart bot installer"
+                            ng-model="upgrade.instructionsURL" />
+                    </div>
+                </div>
+
+                <div class="row form-group" ng-hide="stream.publishType == 'samplebot'">
+
+                    <try-mode-form enable-try-mode="enableTryMode" trymodeid="intab" account="account" callback="trymodecallback"></try-mode-form>
+                    <div class="panel-group responseAccordion" id="tryrcAccordion" role="tablist" aria-multiselectable="true" ng-if="false">
+                        <div class="panel panel-default">
+                            <div class="panel-heading collapsed" ng-click="isCollapsed('#rctry') && trymodecallback.loadAuthInfo()" role="button" data-toggle="{{(stream.canTryOut && trymodecallback.idpConfigs.length) ? 'collapse' : ''}}"
+                                data-parent="#tryrcAccordion" href="#tryrcpanel" role="tab" id="rctry">
+                                <div><span class="panel-title entity_count_label ng-binding">Try mode</span>
+
+                                    <span class="pull-right length ng-binding"> {{stream.canTryOut ? "Enabled":"Disabled"}} <i ng-show="stream.canTryOut && trymodecallback.idpConfigs.length" class="fa fa-chevron-right"></i></span>
+                                    <p>Configure Bot developer authorisation to allow users to test this Bot in marketplace</p>
+                                </div>
+
+                            </div>
+                            <div id="tryrcpanel" class="panel-collapse collapse trymodepanel" role="tabpanel" aria-labelledby="rctry">
+                                <div class="panel-body">
+                                    <div class="col-xs-12">
+
+
+                                        <try-mode-form callback="trymodecallback" enable-try-mode="enableTryMode" account="account" trymodeid="reviewconfirm"></try-mode-form>
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>-->
+        </div>
+    </div>
+    <div class='bottomZeroPublish pull-left'>
+        <div class="row buttonDiv" ng-show="currentStep != 'defineDeployment'" >
+                <!--        <h3 class="noMarginTop headingTitle" ng-show="currentStep == 'options'">Review Deployment & Confirm</h3>-->
+                            
+                            
+                            <button type="button" ng-show="currentStep == 'options'" class="btn btnSolidBlue exitBtn" style="position: relative;"  ng-click="confirm()" ng-disabled="publishInProgress"> 
+                                <i ng-if="publishInProgress" class="fa fa-spinner fa-spin ng-scope"></i> 
+                                <span ng-if="!publishInProgress" > {{'confirm'| i18nString}}</span>
+                                <span ng-if="publishInProgress" > {{'publishing_label'| i18nString}}</span>
+                            </button>
+                            <button type="button" ng-show="(currentStep != 'defineDeployment') && partialImportAllowed" class="btn closeCancel"  style="position: relative;" ng-click="previousStep()">  {{'back_label'| i18nString}} </button>
+                         
+                    </div>
+                 <button type="button" ng-disabled= "(stream.enableInputTranslation && !inputGenericTranslation) || (showGenericPublishProtip)" ng-show="currentStep != 'options' && canShowNext() && !alertLoading && !actionLoading && !dialogLoading && !loadingFlows" class="btn btnSolidBlue exitBtn"  style="position: relative;" ng-click="nextStep()">  {{'proceed'| i18nString}} </button>
+    </div>
+</div>
+</div> 
+<!-- <div id="publishWarn" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header">
+                <h4 class="modal-title">Publish Bot</h4>
+              </div>
+            <div class="modal-body">
+               <p class="desc">{{publishWarnMsg}}</p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default proceed" ng-click='nextStep()'>{{'proceed'| i18nString}}</button>
+                <button type="button" class="btn btn-default cancel" ng-click='closePublishWarn()'>{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="row"  ng-show="noTasks && stream.visibility.namespace=='private'">
+                    <div class="noDataImage text-center marginBottom15"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+                    <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert">
+                        {{'not_ready_to_publish'| i18nString}}
+            <p ng-show="stream.type!=='universalbot'">  {{'you_must_have_one_more_tasks'| i18nString}}</p>
+            <p ng-show="stream.type =='universalbot'">  {{'you_must_have_one_more_published_bots'| i18nString}}</p>
+                        <p> <a target="_blank" ng-href="{{helpLinks.NOT_READY_PUBLISH_HELP}}"> {{'learn_more_label'| i18nString}}</a></p>
+                    </div>
+                   
+
+</div>
+
+
+
+<div class="modal" id="errorMsgStatus" data-backdrop="static">
+  <div class="modal-dialog " role="document" ng-class="{'noHeaderFooter': (stream.type === 'default' && selectedAccount.accountType === 1)}">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
+        <div ng-if="!license">
+            <h4 class="modal-title"  ng-show="selectedAccount.adminPreferences && !selectedAccount.adminPreferences.autoApproval"> {{'published_for_admin_approval'| i18nString}}</h4>
+            <h4 class="modal-title"  ng-show="selectedAccount.adminPreferences && selectedAccount.adminPreferences.autoApproval"> {{'publish_status'| i18nString}} </h4>
+        </div>
+        <div ng-if="license">
+            <h4 class="modal-title"  ng-if="checkPublishModal() === 'ADMIN' || checkPublishModal() === 'MANUAL'"> {{'req_submit_to_enterprise'| i18nString}} <i ng-click="closeModal()" class="btx-close"></i></h4>
+            <h4 class="modal-title"  ng-if="checkPublishModal() === 'ENTERPRISE'"> {{'publish_status'| i18nString}}</h4>
+            <ng-container ng-if="checkPublishModal() === 'FREE'">
+                <h4 class="modal-title titleGreen"  > {{'congratulations'| i18nString}}!</h4>
+                <h4 class="modal-title"  > {{'Your Free Plan is now activated and your Virtual Assistant is published.'}}</h4>
+            </ng-container>
+            <ng-container ng-if="checkPublishModal() === 'DEFAULT'">
+                <h4 class="modal-title"  >{{'publish_status'| i18nString}}</h4>
+            </ng-container>
+            <ng-container ng-if="checkPublishModal() === 'PAID'">
+                <h4 class="modal-title titleGreen"  > {{'congratulations'| i18nString}}!</h4>
+                <h4 class="modal-title"  >  {{'standard_virtual_assistant_published_title'| i18nString:({planName: ((planSelectionCb.planName || license.planName) || '---')})}}</h4>
+            </ng-container>
+            <ng-container ng-if="checkPublishModal() === 'SUBSEQUENT'">
+                <h4 class="modal-title" > {{'virtual_assitance_published_success' | i18nString}}</h4>
+            </ng-container>
+        </div>
+      </div>
+      <div class="modal-body modalPerfectScroll"  perfect-scroll dynamic-height dynaoffset="-180" height-property="height">
+        <div ng-if="license">
+            <div class="row" >
+                <div >
+                    <p ng-if="checkPublishModal() === 'SUBSEQUENT'"> {{'virtual_assitance_published_success_desc' | i18nString}} </p>
+                    <p ng-if="checkPublishModal() === 'ADMIN'"> {{'req_submit_to_admin_with_auto_approval'| i18nString}} </p>
+                    <p ng-if="checkPublishModal() === 'MANUAL'"> {{'req_submit_to_admin_with_mannual_approval'| i18nString}} </p>
+                    <p ng-if="checkPublishModal() === 'PAID'"> {{'standard_virtual_assistant_published_successfully'| i18nString:({planName: ((planSelectionCb.planName || license.planName) || '---')})}}</p>
+                    <p ng-if="(checkPublishModal() === 'FREE')"> {{'virtual_assistant_published_successfully'| i18nString:({planName: (license.planName || 'Free'), sessions: (license.totalRequests || 5000)})}}</p>
+                    <p ng-if="(checkPublishModal() === 'DEFAULT')"> {{'publish_request_success' | i18nString}}</p>
+                </div>
+              </div>
+              <div class="accordiankr">
+                <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel">
+                      <div class="panel-heading" role="tab" id="publishOne">
+                        <h4 class="panel-title ">
+                          <a role="button" class="accor-collapse" data-toggle="collapse" data-parent="#accordion" href="#publishAccord" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="btx-carrot-down"></i>
+                              <ng-container ng-if="checkPublishModal() === 'ADMIN' || checkPublishModal() === 'MANUAL'">{{'view_publishing_summary'| i18nString}}</ng-container>
+                              <ng-container ng-if="checkPublishModal() === 'PAID'">{{'view_publishing_summary'| i18nString}}</ng-container>
+                              <ng-container ng-if="(checkPublishModal() === 'FREE') || (checkPublishModal() === 'DEFAULT')">{{'view_publishing_summary'| i18nString}}</ng-container>
+                              <ng-container ng-if="checkPublishModal() === 'ENTERPRISE'">{{'view_publishing_summary' | i18nString}}</ng-container>
+                              <ng-container ng-if="checkPublishModal() === 'SUBSEQUENT'">{{'view_publishing_summary' | i18nString}}</ng-container>
+                            </a>
+                        </h4>
+                      </div>
+                      <div id="publishAccord" class="panel-collapse collapse" role="tabpanel" aria-labelledby="publishOne">
+                        <div class="panel-body" ng-if="messages.length">
+                            <div class="task" ng-repeat="message in messages | filter : { 'type' : 'success' }">
+                                <div class="name" ng-show="message.type == 'success' && message.message != undefined" > <span>  &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span><i class="fa fa-check-circle-o success-color pull-right" aria-hidden="true"></i> </div>
+                            </div>
+                            <div class="task" ng-repeat="message in messages | filter : { 'type' : 'error' }">
+                                <div class="name" ng-show="message.type == 'error'" > 
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                          <div class="row"> <span> &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span> <i class="fa fa-times-circle-o fail-color pull-right" aria-hidden="true"></i> </div>
+                                          <div class="row">
+                                            <div class="alert alert-danger alert-sm">
+                                                {{message.error}}
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <button class="btn btn-primary btn-sm noPadding" ng-disabled="!allowRetry" type="button" ng-click="retry(message)" ><i ng-class="{'fa fa-spinner fa-spin':!allowRetry}"></i>{{allowRetry? retry_label: retrying_label}}</button>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div> 
+                </div>
+             </div>
+            </div>
+        <div ng-if="!license">
+            <div class="row"> 
+                <div class="row " ng-show="selectedAccount.adminPreferences && !selectedAccount.adminPreferences.autoApproval && !stream.showInMp && (messages | filter : { 'type' : 'success' }).length > 0">
+                  <h4> {{'bot_sent_for_admin_approval'| i18nString}} </h4>
+                </div>
+                <div class="row noComponents" ng-show="!messages.length">
+                  <div class="messageSuccess"> 
+                    <span> <i class="fa fa-check-circle-o success-color" aria-hidden="true"></i> &nbsp;&nbsp; </span>
+                    <h4 class="heading">{{'publish_request_success' | i18nString}} </h4> 
+                  </div>
+                </div>
+      
+                <div class="row " ng-show="selectedAccount.adminPreferences && selectedAccount.adminPreferences.autoApproval && !stream.showInMp && (messages | filter : { 'type' : 'success' }).length > 0">
+                  <h4> {{'following_tasks_components_published'| i18nString}}</h4>             
+                </div>
+                
+                <div class="row " ng-repeat="message in messages | filter : { 'type' : 'success' }">     
+                  <div class="col-xs-12">
+                    <div class="row form-group" ng-show="message.type == 'success' && message.message != undefined" > <span> <i class="fa fa-check-circle-o success-color" aria-hidden="true"></i> &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span> </div>
+                  </div>
+                </div>
+      
+      <!--          <div class="row" ng-show="(messages | filter : { 'state' : 'awaitingApproval' }).length > 0 && !stream.showInMp && (messages | filter : { 'type' : 'success' }).length > 0">
+                  <h4>Once the bot is approved, the task status will change to published.</h4>
+                </div>-->
+                
+                <div class="row" ng-show="!stream.showInMp && (messages | filter : { 'type' : 'failed' }).length > 0">
+                    <h4> {{'these_were_issues_following'| i18nString}}</h4>             
+                </div>
+                <div class="row " ng-repeat="message in messages | filter : { 'type' : 'error' }"> 
+                  <div class="row form-group" ng-show="message.type == 'error'" >
+                    <div class="row">
+                      <div class="col-xs-8">
+                        <div class="row"> <span> <i class="fa fa-times-circle-o fail-color" aria-hidden="true"></i> &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span> </div>
+                        <div class="row">
+                          <div class="alert alert-danger alert-sm">
+                              {{message.error}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-4 text-center">
+                          <button class="btn btn-primary btn-sm noPadding" ng-disabled="!allowRetry" type="button" ng-click="retry(message)" ><i ng-class="{'fa fa-spinner fa-spin':!allowRetry}"></i>{{allowRetry? retry_label: retrying_label}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+                  <div ng-if="publishInTrailMsg" class="row text-muted">
+                      {{'this_bot_is_published_under_free'| i18nString}} 
+                  </div>
+                
+            </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn closeCancel" ng-click="closeModal()">{{'close'| i18nString}}</button>
+        <button type="button" class="btn btn-primary" ng-disabled="!allowRetry" ng-show="(messages | filter : { 'type' : 'error' }).length > 0" ng-click="retryAll()"><i ng-class="{'fa fa-spinner fa-spin':!allowRetry}"></i>{{allowRetry?retry_all :retrying_label}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="botStoreSettingsModal modal fade" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" ng-click="closeBotStoreSettingsModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                      <h4 class="modal-title" id="gridSystemModalLabel"> {{'bot_store_settings'| i18nString}}</h4>
+                    </div>
+                    <div class="modal-body wf-form modalPerfectScroll" perfect-scroll >
+                      <div>
+                         <bot-store-settings ng-if="showBTStoreSettingsModal" callback="bssCallback" stream-id="{{stream._id}}" display-mode="displayMode" edit-mode="edit" on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></bot-store-settings>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer"> 
+
+                      <div class="pull-right">
+                        <button type="reset"  ng-click="closeBotStoreSettingsModal()" class="btn closeCancel">  {{'cancel'| i18nString}} </button>
+                         <button type="button" ng-click="bssCallback.createStream($event)"
+          class="btn btn-sm btn-primary text-info"> <i ng-if="bssCallback.saveInprogress" class="fa fa-spinner fa-spin"></i> {{(bsssaveinprogress) ? saving_label : save}} </button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade" id="planValidationModal" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> {{'Bot cannot be published'}}<i class="btx-close" ng-click="closePlanValidation()"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll"  perfect-scroll dynamic-height dynaoffset="-180" height-property="height">
+          <div class="descPlan" ng-if="planValidationDetails && planValidationDetails.warningMessage">
+            {{planValidationDetails.warningMessage}} 
+          </div>
+          <div class="accordiankr" ng-if="planValidationDetails && planValidationDetails.exceededData">
+            <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel">
+                  <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                      <a role="button" class="accor-collapse" data-toggle="collapse" data-parent="#accordion" href="#collapse17" aria-expanded="true" aria-controls="collapseOne">
+                          <i class="btx-carrot-down"></i>View  features that are exceeding the limits
+                        </a>
+                    </h4>
+                  </div>
+
+                  <div id="collapse17" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body" >
+                        <div class="task" ng-repeat="key in planValHeaders track  by $index">
+                            <ng-container ng-repeat="item in planValidationDetails.exceededData[key] track  by $index">
+                                <div class="name">{{item.exceeded}} {{item.componentName}} exceeded</div>
+                                <div class="count">Allowed: {{item.allowed}} {{item.componentName}}</div>
+                            </ng-container>
+                        </div>
+                    </div>
+                  </div>
+                </div> 
+            </div>
+
+
+          </div>
+        </div>
+
+        <div class="modal-footer"> 
+            <button type="button" ng-click="closePlanValidation()" class="btn closeCancel">  {{'close'| i18nString}} </button>
+            <a href="{{freeTrailSupportUrl}}" target="_blank" class="link">Learn more</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Pre publishing Warning modal -->
+<!-- <div class="modal fade" id="prePublishWarning" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content noHeaderFooter">
+        <div class="modal-header">
+          <h4 class="modal-title"> {{'Deploy Standard Bot'}}<i class="btx-close" ng-click="closeCustomModal('prePublishWarning')"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll"  perfect-scroll dynamic-height dynaoffset="-180" height-property="height">
+          <div class="desc">
+            {{'You are about to publish the bot '+stream.name+' for use by anonymous users. Once published this setting cannot be changed later. Would you like to go ahead?'}} 
+          </div>
+        </div>
+        <div class="modal-footer"> 
+            <button type="button" ng-click="deployStandardBot()" class="kr-sg-button-primary btn_lg">  {{'Deploy'}} </button>
+            <button type="button" ng-click="closeCustomModal('prePublishWarning')" class="kr-sg-button-secondary btn_lg">  {{'cancel'| i18nString}} </button>
+        </div>
+      </div>
+    </div>
+</div> -->
+<!-- Pre publishing Warning modal -->
+<!-- Request Submit to Admin Warning modal -->
+<div class="modal fade" id="reqSubmitToAdmin" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md noHeaderFooter">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> {{'Request Submitted to Administrator'}}<i class="btx-close" ng-click="closeCustomModal('reqSubmitToAdmin')"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll"  perfect-scroll dynamic-height dynaoffset="-180" height-property="height">
+          <div class="desc">
+            {{'Your request to publish this Virtual Assistant is submitted to your enterprise Account Administrator. Your customers will be able to interact with your Virtual Assistant only after the Administrator has approved it.'}} 
+          </div>
+          <div class="accordiankr" >
+            <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel">
+                  <div class="panel-heading" role="tab" id="reqSubmitToAdmin">
+                    <h4 class="panel-title">
+                      <a role="button" class="accor-collapse" data-toggle="collapse" data-parent="#accordion" href="#reqSubmitId" aria-expanded="true" aria-controls="collapseOne">
+                          <i class="btx-carrot-down"></i>View  features that are exceeding the limits
+                        </a>
+                    </h4>
+                  </div>
+
+                  <div id="reqSubmitId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="reqSubmitToAdmin">
+                    <div class="panel-body" >
+                        <!-- <div class="task" ng-repeat="message in messages | filter : { 'type' : 'success' }">
+                            <div class="row form-group" ng-show="message.type == 'success' && message.message != undefined" > <span> <i class="fa fa-check-circle-o success-color" aria-hidden="true"></i> &nbsp;&nbsp; </span> <span ng-bind-html="message.message"> {{message.message}} </span> </div>
+                        </div> -->
+                    </div>
+                  </div>
+                </div> 
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"> 
+            <button type="button" ng-click="selectComponent('botSummary')" class="kr-sg-button-secondary btn_lg">  {{'Go to Summary'}} </button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Request Submit to Admin Warning modal -->
+<!-- Pre publishing Warning modal -->
+<div class="modal fade" id="submitToAdminReview" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md noHeaderFooter">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> {{'Submit to Administrator for Review'}} <i class="btx-close" ng-click="closeCustomModal('submitToAdminReview')"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll" >
+          <div class="desc">
+            {{'A paid plan is required to publish your virtual assistant. The Owner of this Virtual Assistant will be able to choose a plan and publish it. Alternatively, you can submit the request to your Account Administrator.   '}} 
+          </div>
+        </div>
+        <div class="modal-footer"> 
+            <button type="button" ng-click="deploy()" class="kr-sg-button-primary btn_lg">  {{'Submit to Admin'}} </button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Pre publishing Warning modal -->
+<!-- Upgrade/ Downgrade is required modal -->
+<div class="modal fade" id="upDownRequired" data-backdrop="static"  role="dialog" aria-labelledby="plan" aria-hidden="true">
+    <div class="modal-dialog modal-md noHeaderFooter">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title titleRed"> {{'Upgrade is required'}} <i class="btx-close" ng-click="closeCustomModal('upDownRequired')"></i></h4>
+        </div>
+        <div class="modal-body wf-form modalPerfectScroll"  perfect-scroll style="min-height: 250px;">
+          <div class="desc" ng-if="license && license.planName">
+            You are using one or more features that are not available in your current <b>{{license.planName || '---'}} Plan</b>. You can either upgrade to a higher plan to publish these features. Alternatively, you may modify the definition to remove the features that are not included in your current plan.
+          </div>
+          <div class="accordiankr" >
+            <div class="accordiankr" ng-if="planValidationDetails && planValidationDetails.exceededData">
+                <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel">
+                      <div class="panel-heading" role="tab" id="upgradeReq">
+                        <h4 class="panel-title">
+                          <a role="button" class="accor-collapse" data-toggle="collapse" data-parent="#accordion" href="#upgradeAccor" aria-expanded="true" aria-controls="collapseOne">
+                              <i class="btx-carrot-down"></i>View  features that are exceeding the limits
+                            </a>
+                        </h4>
+                      </div>
+    
+                      <div id="upgradeAccor" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="upgradeReq">
+                        <div class="panel-body" >
+                            <div ng-repeat="item in planValidationDetails.exceededData[license.planId] track  by $index" class="data-text">
+                                <div class="info-title"> <ng-container ng-if="item.exceeded !== false && item.exceeded !== true">{{item.exceeded}}</ng-container> {{item.componentName || item.key}} exceeded</div>
+                                <div class="exceed-data">Allowed: <ng-container> {{ (item.allowed !== false && item.allowed !== true) ? item.allowed: ''}} {{(item.allowed === false || item.allowed === true) ? 'No': ''}} </ng-container> {{item.componentName || item.key}}</div>
+                            </div>
+                        </div>
+                      </div>
+                    </div> 
+                </div>
+    
+    
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"> 
+            <button type="button"  class="kr-sg-button-primary btn_lg" ng-click="confirm(true)" ng-if="selectedAccount.adminPreferences.autoApproval && selectedAccount.accountType && selectedAccount.accountType !==1">  {{'Submit to Admin'}} </button>
+            <button type="button"  class="kr-sg-button-primary btn_lg" ng-click="openPlanUsage('plan')" ng-if="selectedAccount.adminPreferences.autoApproval && selectedAccount.accountType && selectedAccount.accountType ===1">  {{'Upgrade Plan'}} </button>
+            <button type="button" ng-click="closeCustomModal('upDownRequired')" class="kr-sg-button-secondary btn_lg">  {{'cancel'| i18nString}} </button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Upgrade/ Downgrade is required modal -->
+<plan-usage cb='planSelectionCb' ng-if="planSelectionCb.plansSlider" class="publishPlanSlider"></plan-usage>

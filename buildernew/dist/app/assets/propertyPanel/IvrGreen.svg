@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>IvrGreen</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="IvrGreen" transform="translate(1.000000, 0.000000)" stroke="#0156D4" stroke-width="1.5">
+            <g id="Group" stroke-linecap="round" stroke-linejoin="round" transform="translate(0.000000, 2.000000)">
+                <path d="M0.605,0.778 C-0.74,5.792 2.075,10.902 6.889,12.192 L0.605,0.778 Z M0.605,0.778 L3.874,1.654 L3.114,4.491 L0.326,4.352 C0.196418131,3.15367533 0.291029578,1.9416993 0.605,0.778 Z" id="Shape"></path>
+                <path d="M6.89,12.192 L7.802,8.788 L5.077,8.058 L3.797,10.656 C4.71453278,11.3696934 5.76595617,11.8920046 6.889,12.192 L6.89,12.192 Z" id="Path"></path>
+            </g>
+            <path d="M6.87,3.73 C8.76099603,4.23703251 9.88295351,6.18098279 9.376,8.072 L9.338,8.213 M8.111,0.986 C11.2627597,1.83124793 13.1330591,5.07092174 12.289,8.223 L12.226,8.459" id="Shape"></path>
+        </g>
+    </g>
+</svg>

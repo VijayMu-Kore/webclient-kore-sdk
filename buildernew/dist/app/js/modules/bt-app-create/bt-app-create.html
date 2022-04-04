@@ -1,0 +1,125 @@
+<div class='createAppModal'>
+    <div ng-show="!confirmApp" class='defineApp'>
+        <form name="createApp">
+            <div class="modal-header">
+                
+                <h4 class="modal-title">{{config.type==='Create'? createNew :  edit }}{{'clientApp'| i18nString}} <i class="btx-close" ng-click="closeModal()"></i></h4>
+            </div>
+            <div class="modal-body">
+                <div class="app-name option row form-group">
+                   <div class="col-sm-10 noPadding"> 
+                       <label >
+                    {{'name'| i18nString}}
+                    </label></div>
+                    <div class="col-sm-12 noPadding">
+                        <input ng-model="appName" ng-disabled="config.type!=='Create'" name="appName" required   type="text" class="form-control" placeholder="{{'bt_app_create_give_appName'| i18nString}}">
+                    </div>
+                </div>
+                <div class="scope-select option row form-group">
+                    <!-- JWE/ JTI options -->
+                    <div class="col-sm-12 noPadding">
+                        <div class='row1'>
+                            <div class="checkbox checkbox-primary">
+                                <input class="styled" checked type="checkbox" id="anonychat" ng-model="anonyChat">
+                                <label for="anonychat" >{{'bt_app_create_allow_anonymous_users'| i18nString}}</label>
+                            </div>
+                            <div class="checkbox checkbox-primary">
+                                <input class="styled" type="checkbox" id="newUser" ng-model="newUser" >
+                                <label for="newUser" >{{'bt_app_create_auto_register'| i18nString}}</label>
+                            </div>
+<!--                            <span class="error" ng-show="(!(createApp.anonyChat || createApp.newUser))">Select atleast one scope</span>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="algorithm option row form-group">
+                    <div class="col-sm-10 label-width noPadding"> <label>
+                        {{'jwt_auth'| i18nString}}
+                    </label></div>
+                    <div class="col-sm-12 noPadding">
+                        <select class="form-control" ng-options="item as item.label for item in algthms track by item.id" ng-model="selectedAlg" required>
+                            <option value="">{{'select'| i18nString}}</option>
+                        </select>
+                        <textarea ng-if="selectedAlg.label === 'RS256'" ng-model='$parent.publicKey' class="form-control public-key" rows="5" placeholder="{{'enter_public_key'| i18nString}}" id="publicKey" required ></textarea>
+                    </div>
+                </div>
+                <div class="col-xs-12 jweEnforce noPadding" style="margin-bottom: 10px;">
+                    <div class="checkbox checkbox-primary">
+                        <input class="styled" checked type="checkbox" id="isJtiEnforced" ng-model="jweEnforce.isJtiEnforced">
+                        <label for="isJtiEnforced" >{{'enforce_jti_label' | i18nString}}</label>
+                        <span class="tooltip-hover" style="position: relative;left: -5px;" tooltip-placement="right" tooltip="{{'jti_tooltip_text' | i18nString}}"> <img ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"></span>
+                    </div>
+                    <div class="checkbox checkbox-primary">
+                        <input class="styled" type="checkbox" id="isJweEnforced" ng-model="jweEnforce.isJweEnforced" >
+                        <label for="isJweEnforced" >{{'enforce_jwe_label' | i18nString}}</label>
+                        <span class="tooltip-hover" style="position: relative;left: -5px;" tooltip-placement="right" tooltip="{{'jwe_tooltip_text' | i18nString}}"> <img ng-src="{{assetsBase}}icons/helpIcon.svg" alt="help"></span>
+                    </div>
+                </div>
+                <div class="bots option row form-group" ng-hide="config.context==='addChannel'">
+                    <div class="col-sm-10"> <label>
+                        {{'select_bots'| i18nString}}
+                    </label></div>
+                    <div class="col-sm-12">
+                        <select multiple class="full-width" ui-select2="categoryConfig" ng-model="selectedBots"  id="category" name="category" required>
+                            <option ng-repeat="bot in availableBots"  value="{{bot._id}}">{{bot.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="push-notify option row form-group">
+                   <div class="col-sm-10 p-0">  <label>
+                    {{'push_notification'| i18nString}}
+                    </label></div>
+                    <div class="col-sm-12 p-0">
+                        <div class='pushEnableWrp'>
+                            <div class="checkbox checkbox-primary">
+                                <input class="styled" checked type="checkbox" id="pushNotify" ng-model="pushNotification">
+                                <label for="pushNotify" >{{'Enable'| i18nString}}</label>
+                            </div>
+                        </div>
+                        <textarea type="url" ng-if="pushNotification" ng-model='$parent.pushUrl' class="form-control" rows="5" placeholder="{{'bt_app_create_pushnotifi_placeholder'| i18nString}}" id="publicKey" required ></textarea>
+                    
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" ng-disabled="createApp.$invalid" ng-click='createApplication()'>
+                    <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i>
+                    <span ng-show="config.type !== 'Edit'">{{'create_label'| i18nString}}</span>
+                    <span ng-show="config.type === 'Edit'">{{'save'| i18nString}}</span>
+                </button>
+                <button type="button" class="btn closeCancel" data-dismiss="modal" ng-click='closeModal()'>{{'cancel'| i18nString}}</button>
+            </div>
+        </form>
+    </div>
+    <div ng-if="confirmApp" class='confirmApp'>
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click='closeModal()' aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+            <h4 class="modal-title">{{'bt_app_create_header_titleApp'| i18nString:({dyn:headerTitle})}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class='app-name-confim-wrp'>
+                {{appNameConfirm}}
+            </div>
+            <div class="client-wrp">
+                <div>{{'clientId_label'| i18nString}} -</div>
+                <div id='copyClientId' >{{clientId}}</div>
+                <a data-clipboard-target="#copyClientId" >{{'copy_braces'| i18nString}}</a>
+            </div>
+            <div class="secret-wrp">
+                <div>Secret Key - </div>
+                <div id='secretKeyId'>{{secretKeyUI}}</div>
+                <a ng-show="secretKeyShown" data-clipboard-target="#secretKeyId" >{{'copy_braces'| i18nString}}</a>
+                <a ng-hide="secretKeyShown" ng-click="showHideSecret()">(view)</a>
+                <button type="button" class="btn btn-xs btn-primary refreshSecretBtn" ng-click="refreshSecretToken()">
+                    <i ng-if="secretKeyInProgress" class="fa fa-spinner fa-spin"/>
+                    <span ng-if="!secretKeyInProgress">{{'refresh'| i18nString}}</span>
+                    <span ng-if="secretKeyInProgress">{{'refreshing_key'| i18nString}}</span>
+                </button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn" ng-click='closeModal()'>{{'done'| i18nString}}</button>
+            <button type="button" class="btn closeCancel" data-dismiss="modal" ng-click='closeModal()'>{{'cancel'| i18nString}}</button>
+        </div>
+    </div>
+</div>

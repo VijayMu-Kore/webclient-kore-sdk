@@ -1,0 +1,334 @@
+<div class="sentiment-management" ng-class="{'read-only-wrap':accessRights === 'VIEW'}">
+           <!-- <div class="NoAppScopes" ng-show="eventDetails.length == 0">
+            <div class="noAppScopesImage"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+            <p class="noscopesLine sentimentLine"> {{'No_sentiments_msg_label'| i18nString}}</p>
+            <p class="shortDesc"> {{'No_sentiments_msg_desc'| i18nString}}</p>
+            <div class="NewScopeBtn"><button class="btn btn-sm btn-primary text-info add-app-btn" ng-click="sentimentEventSlider()">  {{'newEvent_button_label'| i18nString}} </button></div>
+        </div> -->
+        <div class="row btnSearchTitle" ng-show="eventDetails.length == 0">
+            <div class="col-xs-6 leftTitle">
+                <p class="pageTitle">{{'Sentiment_management_label'| i18nString}}</p>
+            </div>
+            <div class="col-xs-6 rightBTNSearch">
+                <div class="searchComponent displayNone">
+                    <input  placeholder="Search">
+                    <i class="btx-search"></i>
+                    <i class="btx-close displayNone"></i>
+                </div>
+                <div class="creationButton borderBtn displayNone">
+                    <button class="titleBTN" ng-class="{'publishedMode':streamstate.toggleState == 'published'}" ng-click="sentimentEventSlider()">  {{'newEvent_button_label'| i18nString}} </button>
+                </div>
+                <div class="titleDropdown displayNone displayNone">
+                    <div class="dropdown">
+                        <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Dropdown name
+                            <i class="btx-carrot-up"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                         </ul>
+                    </div>
+                </div>
+                <div class="titleOverflow displayNone">
+                    <div class="dropdown">
+                        <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                            <i class="btx-overflow"></i>
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="emptyStateContainer" ng-show="eventDetails.length == 0">
+            <div class="emptyState">
+                <div class="emptyImage">
+                    <img ng-src="{{emptyStateIcon_sentiment}}" class="emptyImg">           
+                </div>  
+                <span class="mainTitle">{{'No_sentiments_msg_label'| i18nString}}</span>
+                <div class="emptyStateDesc">{{'empty_sentiment_mang_desc'| i18nString}} <a target="_blank" ng-click="redirectToLink('SENTIMENT_MANAGEMENT')">{{'learn_more'| i18nString}}</a></div>
+                <div class="generateBtn">
+                    <button class="btn btnSolidBlue" ng-class="{'publishedMode':streamstate.toggleState == 'published'}" ng-click="sentimentEventSlider()"> {{'account_create'| i18nString}} {{'newEvent_button_label'| i18nString}}</button>
+                    <!-- <button class="btn" target="_blank" >learn more</button> -->
+                </div>
+            </div>
+        </div>
+        <div class="sentimentContainer" ng-show="eventDetails.length > 0">
+            <div class="row btnSearchTitle">
+                <div class="col-xs-6 leftTitle">
+                    <p class="pageTitle">{{'Sentiment_management_label'| i18nString}}</p>
+                </div>
+                <div class="col-xs-6 rightBTNSearch">
+                    <div class="searchComponent displayNone">
+                        <input  placeholder="Search">
+                        <i class="btx-search"></i>
+                        <i class="btx-close displayNone"></i>
+                    </div>
+                    <div class="creationButton borderBtn ">
+                        <button class="titleBTN" ng-class="{'publishedMode':streamstate.toggleState == 'published'}" ng-click="sentimentEventSlider()">  {{'newEvent_button_label'| i18nString}} </button>
+                    </div>
+                    <div class="titleDropdown displayNone">
+                        <div class="dropdown">
+                            <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               Dropdown name
+                                <i class="btx-carrot-up"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+                             </ul>
+                        </div>
+                    </div>
+                    <div class="titleOverflow displayNone">
+                        <div class="dropdown">
+                            <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                                <i class="btx-overflow"></i>
+                                </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">Option One</li>
+                                <li class="dropdown-item" >Option Two</li>                       
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="btnSpan">
+                <button class="btn btn-sm btn-primary text-info add-app-btn pull-right" ng-click="sentimentEventSlider()">  {{'newEvent_button_label'| i18nString}} </button>
+            </div> -->
+             <div class="col-xs-12 bottomBorder darkBottomBorder">
+                    <div class="col-xs-1 width5"></div>
+                    <div class="col-xs-2 header">
+                        <div class="headertitle"><span class="name"> {{'event_name'| i18nString}}</span></div>
+                    </div>
+                    <div class="col-xs-2 header">
+                        <div class="headertitle"><span class="name"> {{'event_trigger'| i18nString}}</span></div>
+                    </div>
+                    <div class="col-xs-5 header">
+                        <div class="headertitle"><span class="name">{{'details_label'| i18nString}}</span></div>
+                    </div>
+            </div> 
+            <div ui-sortable="sortableOptionsSentiment" ng-model="eventDetails">
+                <div class="col-xs-12 padding15 cursor-pointer sentimentBlock" ng-repeat="eventData in eventDetails track by $index">
+                    <div class="col-xs-1 width5 sortBar1 item1 ui-sortable-handle">
+                        <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                    </div>
+                    <div class="col-xs-2" ng-click="openSentimentSlider(eventData)">
+                        <p class="desc" tooltip-placement="bottom" tooltip="{{eventData.name}}">{{eventData.name}}</p>
+                    </div>
+                    <div class="col-xs-2" ng-click="openSentimentSlider(eventData)">
+                        <p>{{eventData.setting}}</p>
+                    </div>
+                    <div class="col-xs-5" ng-click="openSentimentSlider(eventData)">
+                        <p class="eventDetails" ng-bind-html="eventData._msg"></p>
+                    </div>
+                    
+                     <div class="col-xs-1 pull-right">                        
+                        <i class="deleteicon btx-delete-1" ng-click="deleteSentimentEvent($index,eventData)"></i>
+                    </div>
+                   
+                    
+                </div>
+            </div>
+        </div>
+     <bot-modal-slider id="sentimentEvent">
+        <div class="modalSliderContainer width700 sentimentScroll">
+            <div class="modalHeader">
+                <h4 class="modal-title tableRow">
+                    <i class="btx-close top25"  ng-click="cancelSentimentBased()"></i>
+                    <div class="miHeadBar">
+                        <div class="header">{{eventsHeading}}</div>
+                        <div class="desc">{{'nuild_sentiment_handling_desc'| i18nString}}</div>                        
+                    </div>                     
+                </h4>
+            </div>
+             <div class="modalBody sentiScroll" perfect-scroll dynamic-height dynaoffset="-145" height-property="height">
+                <form name="sentimentForm" novalidate="true">
+                <div class="sentiBody">
+                    <div class="col-xs-12 noPadding marginBottom10">
+                        <div class="heaing_label_text"> {{'event_name'| i18nString}}</div>
+                        <div class="">
+                            <input type="text" class="form-control" name="eventname" ng-model="events.name" ng-required="true">
+                       </div>
+                    </div>
+                    <div class="col-xs-12 paddingTopBottom10 radioDiv">
+                        <div class="heaing_label_text">{{'event_trigger'| i18nString}}</div>
+                            <div class="">
+                                <div class="radioInnerDiv">
+                                     <label for="onTaskCompletion" class="event">
+                                     <input value="onTaskCompletion" ng-model="events.setting" type="radio" name="ontaskcompletion" id="onTaskCompletion" />
+                                     <span class="opt-title"> {{'on_task'| i18nString}}</span>
+                                    </label>
+                                 </div>
+                                 <div class="radioInnerDiv">
+                                     <label for="afterEveryMessage" class="event paddingLeft15">
+                                     <input value="onEveryMessage" ng-model="events.setting" type="radio" name="aftereverymessage" id="afterEveryMessage" />
+                                     <span class="opt-title"> {{'ask_for_every_utterence'| i18nString}}</span>
+                                    </label>
+                                 </div>
+                            </div>
+                    </div>
+                    <div class="col-xs-12 paddingTopBottom10 emotionConfiguration">
+                         <div class="heaing_label_text"> {{'emotion_config'| i18nString}}
+                            <i class="btx-help helpIcon" ng-click="redirectToLink('TONE_ANALYSIS')"></i>
+                        </div>
+                         <p class="shortDesc">{{'one_emotions'| i18nString}}</p>
+                         <div class="col-xs-12 noPadding" ng-show="emotions.length > 0">
+                             <div class="col-xs-6 noPadding">
+                                <p class="heaing_label_text"> {{'select_emotion_label'| i18nString}}</p>  
+                             </div>
+                             <div class="col-xs-6">
+                                <p class="heaing_label_text"> {{'range'| i18nString}}</p>  
+                             </div>
+                         </div>
+
+                         <div class="emotionBody slider{{parentIndex}}" ng-show="emotions.length > 0" ng-init="parentIndex = $index" ng-repeat="emotion in emotions track by $index">
+                            <div class="col-xs-12 emotiontag">
+                                <div class="col-xs-6 paddingTop7 pl-0 pr-0">
+                                    <div class="btn-group dropdown dropdown-select">
+                                        <button type="button" class="form-control btn btn-default dropdown-toggle{{$index}}" data-toggle="dropdown" ng-click="initialzeScroll($event,parentIndex)"><span class="selectfield">
+                                            {{'select_emotion_label'| i18nString}} <i class="btx-carrot-down top10"></i></span> 
+                                        </button>
+                                        <div class="dropdown-menu" onclick="event.stopPropagation();">
+                                             <ul class="senti noPadding positionRelative" dynamic-height role="menu" perfect-scroll dynaoffset="-330" height-property="height">
+                                            <li class="divider"> {{'message_level_label'| i18nString}}</li>
+                                            <li ng-repeat="emotionTag in emotionList.slice(0,6) track by $index" class="noPadding">
+                                                <a tabindex="-1" ng-class="{'selected':emotionTag.added}" ng-click="selectEmotionConfig(emotionTag.type,parentIndex,$event,emotionTag)" ng-model="emotion.type" class="noBG"><i ng-if = "emotionTag.added"  class="checkTickIcon btx-check"></i><span class="type">{{emotionTag.label}}</span></a>
+                                            </li>
+                                            <li class="divider"> {{'dialog_level_label'| i18nString}}</li>
+                                            <li ng-repeat="emotionTag in emotionList.slice(6) track by $index" class="noPadding">
+                                                <a tabindex="-1" ng-class="{'selected':emotionTag.added}" ng-click="selectEmotionConfig(emotionTag.type,parentIndex,$event,emotionTag)" class="noBG"><i ng-if = "emotionTag.added"  class="checkTickIcon btx-check"></i><span class="type">{{emotionTag.displayName || emotionTag.label}}</span></a>
+                                            </li>
+                                        </ul>
+                                        </div>
+                                       
+                                    </div>
+                            
+                                </div>                           
+                                
+                                <div class="col-xs-5">
+                                   <div class="col-xs-12 dual-slider noPadding" ng-class="['slider-'+$index]" ng-mouseleave="selectRange($index)">
+                                    <div class="countThreshold">
+                                        <span class="pull-left">-3</span>
+                                        <span class="pull-right">3</span>
+                                    </div>
+                                     <span id="dual-slider{{$index}}"  class="width-250"  data-handle="round" data-slider-id='ex1Slider' type="text" data-slider-min="-3" data-slider-tooltip="hide" data-slider-max="3" data-slider-step="1"  ticks-tooltip="false" data-slider-value="[-3,3]"></span>
+                                    
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 pull-right">
+                                    <i class="deleteicon btx-delete-1" ng-click="deleteEmotion($index,emotion.type)"></i>                                    
+                                </div>
+                            </div>                         
+                         </div>
+                        <div class="col-xs-12 noPadding" ng-hide="addEmotionTag.length === 0">
+                            <button ng-click="addEmotion(emotions.length,$event)" class="kr-sg-button-secondary btn_lg"><i class="tx-add"></i>{{'add_emotion'| i18nString}}</button>
+                        </div>
+                         
+
+                    </div>
+                 
+                        
+                    <div class="col-xs-12 paddingTopBottom10 emotionConfiguration radioDiv" ng-class="{'disabled':emotions.length == 0}">
+                            <div class="heaing_label_text"> {{'event_config'| i18nString}}</div>
+                             <p class="shortDesc"> {{'proceed_event'| i18nString}}</p>
+                             <div>
+                                <div class="radioInnerDiv">
+                                     <label for="initiateTask" class="event">
+                                     <input value="triggerDialog" ng-model="events.action" type="radio" name="initiatetask" id="initiateTask" />
+                                     <span class="opt-title"> {{'trigger_dialog'| i18nString}}</span>
+                                    </label>
+                                </div>
+                                <div class="radioInnerDiv">
+                                     <label for="runScript" class="event paddingLeft15">
+                                     <input value="runScript" ng-model="events.action" type="radio" ng-click="runScript($event)" name="runscript" id="runScript" />
+                                     <span class="opt-title"> {{'run_script'| i18nString}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="row paddingTop10" ng-if="events.action === 'triggerDialog'">
+                        <!--     <select placeholder= "{{'task_name_label'| i18nString}}" ng-if="stream.type !== 'universalbot'" name="evntslist" ng-model="events.task" ng-options="task.refId as task.name for task in dialogTasks | filter : { isFollowUp : false}" ng-required="true">
+                                <option value="">{{'select_task_name'| i18nString}}</option>
+                            </select> -->  
+                                    <div class="form-group">
+                                        <div class="kr-sg-dropdowns clear-fix" ng-show="stream.type !== 'universalbot'" ng-class="{'screenFreeze':(streamState=='published')}">
+                                            <div class="label-text">{{'select_task_name'| i18nString}}</div>
+                                            <div class="dropdown dropdown-open zIndexAuto" clear-search>
+                                                <button class="dropdown-toggle dropdown-input" slide-botton data-toggle="dropdown">
+                                                    <span class="selected-data">{{currentDialogTask.name?currentDialogTask.name:'Select Task'}}</span>
+                                                    <span class="selected-data" ng-show=" !dialogTasks.length">{{'no_tasks_label'| i18nString}}</span>
+                                                </button>
+
+                                                <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-430" >
+                                                    <li ng-click="setTaskData(task)" ng-repeat="task in dialogTasks | filter : { isFollowUp : false}">{{task.name}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="kr-sg-dropdowns clear-fix" ng-show="stream.type === 'universalbot'" ng-class="{'screenFreeze':(streamState=='published')}">
+                                            <div class="label-text">Select Bot</div>
+                                          <div class="dropdown dropdown-open zIndexAuto" clear-search>
+                                              <button class="dropdown-toggle dropdown-input"  slide-bottom data-toggle="dropdown"><span class="selected-data" ng-show="selectedLinkedBot.type !== 'universalbot'">{{selectedLinkedBot.botName?selectedLinkedBot.botName:'Select Bot'}}</span>
+                                                <span class="selected-data" ng-show="selectedLinkedBot.type === 'universalbot'">{{selectedLinkedBot.name?selectedLinkedBot.name:'Select Bot'}}</span>
+                                                <span class="master-bot" ng-show="selectedLinkedBot.type === 'universalbot'">Master bot</span></button>
+                                                    <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-325" >
+                                                          <li >     
+                                                               <div class="searchComponent">
+                                                                <input type="text" ng-click="$event.stopPropagation()" ng-model="search.searchBot" placeholder="{{'search'| i18nString}}" class="">
+                                                            <i class="btx-search"></i>
+                                                            <i class="btx-close displayNone"></i>
+                                                        </div>
+                                                            </li>
+                                                          <li class="masterBot" ng-click="getTasksUb(stream);"><a class="lineHeight40">{{stream.name}} <span class="ubBot">Master Bot</span></a></li>
+                                                          <li ng-repeat="linkedBot in totalLinkedBots | filter:{'botName':search.searchBot} track by $index" ng-click="getLinkedBotTasks(linkedBot)"><a href="#">{{linkedBot.botName}}</a>
+                                                          </li>
+                                                    </ul>
+                                            </div>
+                                        </div>
+                                        <div class="kr-sg-dropdowns marginTop10" ng-show="(selectedLinkedBot.botName || selectedLinkedBot.name) && stream.type === 'universalbot'"  ng-class="{'screenFreeze':(streamState=='published')}">
+                                            <div class="label-text">{{'select_task_name'| i18nString}}</div>
+                                              <div class="dropdown dropdown-open" clear-search>
+                                                  <button class="dropdown-toggle dropdown-input" placeholder="{{'select_task_name'| i18nString}}" slide-bottom data-toggle="dropdown"><span class="selected-data" ng-show="(selectedLinkedBot.type === 'universalbot' && dialogTasks.length) || (selectedLinkedBot.type !== 'universalbot' && tasks.length)">{{currentTask.name?currentTask.name:'Select Task'}}</span><span class="selected-data" ng-show="(selectedLinkedBot.type === 'universalbot' && !dialogTasks.length) || (selectedLinkedBot.type !== 'universalbot' && !tasks.length)">No Tasks</span></button>
+                                                        <ul class="dropdown-menu content-menu" perfect-scroll style="max-height: 200px;" ng-show="selectedLinkedBot.type !== 'universalbot' && tasks.length">
+                                                              <!-- <li class="search-box">
+                                                                 <input type="text" ng-click="$event.stopPropagation()" ng-model="search.searchTask" placeholder="{{'search'| i18nString}}" class="search-input">
+                                                                </li> -->
+                                                                <li >     
+                                                                    <div class="searchComponent">
+                                                                        <input type="text" ng-click="$event.stopPropagation()" ng-model="search.searchTask" placeholder="{{'search'| i18nString}}" >
+                                                                 <i class="btx-search"></i>
+                                                                 <i class="btx-close displayNone"></i>
+                                                             </div>
+                                                                 </li>
+                                                              <li ng-repeat="task in tasks | filter:{'name':search.searchTask} track by $index" ng-click="selectTask(task,selectedLinkedBot)"><a href="#">{{task.name}}</a>
+                                                              </li>
+                                                        </ul>
+                                                         <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-320" ng-show="selectedLinkedBot.type === 'universalbot'">
+                                                              <li ng-repeat="task in dialogTasks | filter : { isFollowUp : false}"  ng-click="selectTask(task,selectedLinkedBot)"><a href="#">{{task.name}}</a>
+                                                              </li>
+                                                        </ul>
+                                                </div>
+                                        </div>
+                </div>                              
+                        </div>
+                     <div ng-if="events.action === 'runScript'" class="textbox-jseditor jseditor" ng-class="{'disabled':emotions.length == 0}">
+                        <div id="runscript" class="jseditor-acify runscript top10" acify callback='jsPromptCB' ng-model="events.script" ng-required="true"></div>
+                    </div>
+                   </div>
+               </form>
+             
+             
+                  
+                </div>
+                <div class="modalFooter zIndex">
+                    <button class="btn btn-primary appBtn" ng-disabled="(!(sentimentForm.$valid) || !(emotions.length > 0 ) || checkValidation() || saveEnaDis() || (selectedLinkedBot && !(selectedLinkedBot.botName || selectedLinkedBot.name)))" ng-click="sentimentEventSubmit(events,sentimentForm)"> {{'save'| i18nString}}</button>
+                    <button class="btn closeCancel" ng-click="cancelSentimentBased()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+    </bot-modal-slider>
+</div>

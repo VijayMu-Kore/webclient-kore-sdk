@@ -1,0 +1,274 @@
+{
+   "groups":[
+      {
+         "groupName":"greetings",
+         "groupId":"smg-d7dc20e1-dbbe-539a-aef6-0724850565b1",
+         "nodes":[
+            {
+               "userUtterances":[
+                  {
+                     "text":"~emohello"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"Hi! ",
+                     "type":"basic",
+                     "_id":"mt-ec2e513c-133d-571c-af40-958d80acdb92"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Hello ",
+                     "type":"basic",
+                     "_id":"mt-85f42d27-91e6-556c-a53b-c8c579399db2"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Hi there! ",
+                     "type":"basic",
+                     "_id":"mt-78ac3035-4132-52a0-b3cc-0d673f9cd7a9"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Hey :)",
+                     "type":"basic",
+                     "_id":"mt-368dc24d-5e99-5b5d-8e63-8d96bb9422dc"
+                  }
+               ],
+               "refId":"faf66a05-709d-5619-961e-c096b106f2a1",
+               "seq":0,
+               "nodeId":"smn-395725fa-3071-534e-90d0-b6f07f2d659f"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"!n ~no"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"OK. ",
+                     "type":"basic",
+                     "_id":"mt-c47eb724-1cdb-5bbb-b6ec-13783207429a"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Alright.",
+                     "type":"basic",
+                     "_id":"mt-fe812a83-c04f-5ee9-afbe-7284bca80702"
+                  }
+               ],
+               "refId":"e4d648fd-7003-5927-924d-484372824213",
+               "seq":5,
+               "nodeId":"smn-42837996-96a1-509a-a037-75e1c104b3f0"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"What ~your name"
+                  },
+                  {
+                     "text":"what ~you called"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"I'm <display-bot-name>.",
+                     "type":"basic",
+                     "_id":"mt-fa9d0dbb-fffd-5a7c-a1ad-2bfcb121fa66"
+                  }
+               ],
+               "refId":"8e4d70a9-6642-5e4f-b3cf-02e4cf4a942b",
+               "seq":2,
+               "nodeId":"smn-4655f1c9-6230-5a00-9e3e-ebfb211d5725"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"~emohowzit"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"I'm good. Thank you.",
+                     "type":"basic",
+                     "_id":"mt-cc508fdf-d8c8-5002-a598-a60bdcb56a81"
+                  }
+               ],
+               "refId":"850a8f4b-2e3f-5a14-9a47-6a00ea57abc2",
+               "seq":1,
+               "nodeId":"smn-474e7bd5-dc04-571e-bbdf-f7cb1b80a745"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"~positiveackwords"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"Glad I could help. ",
+                     "type":"basic",
+                     "_id":"mt-60a2d5da-784f-5b0e-9e5e-3df6e42512e6"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Always great to be able to help. ",
+                     "type":"basic",
+                     "_id":"mt-186f5a02-e1eb-5aa7-80cd-1e03c34a196a"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Glad I could be of assistance. ",
+                     "type":"basic",
+                     "_id":"mt-43235871-ac77-5250-b538-35260762cd24"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Glad I could be of some help.",
+                     "type":"basic",
+                     "_id":"mt-e506268e-fbbd-59db-a8b1-478557ad5675"
+                  }
+               ],
+               "refId":"212f384d-db16-50fa-b359-c38cfd2f257c",
+               "seq":4,
+               "nodeId":"smn-59270d87-f197-55a8-b898-48d69a933c6f"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"thanks"
+                  },
+                  {
+                     "text":"thank ~you"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"You're welcome.",
+                     "type":"basic",
+                     "_id":"mt-11cf4bea-b808-57eb-8449-e02d4b98629b"
+                  }
+               ],
+               "refId":"ba5f23c0-2afa-5372-a990-93353bf1244a",
+               "seq":8,
+               "nodeId":"smn-7136c410-2c18-56ab-8fd2-fbb7aaa24d03"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"~ibedone"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"Alright. ",
+                     "type":"basic",
+                     "_id":"mt-997c2104-dcbb-5997-b148-807e3e0cf7fb"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Right, then.",
+                     "type":"basic",
+                     "_id":"mt-4087846c-d583-5d82-b745-e17d1a9b1fdd"
+                  }
+               ],
+               "refId":"728f0700-89e9-581b-8a61-f793374c1938",
+               "seq":6,
+               "nodeId":"smn-850d837f-dffa-584a-83db-482842d1941f"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"~emogoodbye"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"OK, bye for now! ",
+                     "type":"basic",
+                     "_id":"mt-c78f0691-3843-549d-95b6-cd7b7ebcbf99"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Have a good one!",
+                     "type":"basic",
+                     "_id":"mt-d98d2741-dd8f-50fc-bc83-61b14ef5fff3"
+                  }
+               ],
+               "refId":"4cd328f6-6991-567d-b6bb-1be94bcbb6c4",
+               "seq":7,
+               "nodeId":"smn-8f9567d2-e064-52b1-aaa8-a32976354775"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"~emohappy"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"Glad I could help. ",
+                     "type":"basic",
+                     "_id":"mt-896b3db5-4074-5576-9316-4519694590cc"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Glad you are happy.",
+                     "type":"basic",
+                     "_id":"mt-afe641fa-31df-5797-8411-e1074cfb6079"
+                  }
+               ],
+               "refId":"83b26f27-2cae-591d-b378-337c394d2c94",
+               "seq":3,
+               "nodeId":"smn-c7624888-bbcb-5d4a-b120-61a005f162a4"
+            },
+            {
+               "userUtterances":[
+                  {
+                     "text":"!y ~yes"
+                  },
+                  {
+                     "text":"get_it"
+                  },
+                  {
+                     "text":"i_understand"
+                  }
+               ],
+               "botUtterances":[
+                  {
+                     "channel":"default",
+                     "text":"OK, great! ",
+                     "type":"basic",
+                     "_id":"mt-13afdd1f-4af2-5c92-8e85-db93f4843e01"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Alright. ",
+                     "type":"basic",
+                     "_id":"mt-9fe4df9c-a38c-5eb5-9d8f-5a8899b2636c"
+                  },
+                  {
+                     "channel":"default",
+                     "text":"Right, then.",
+                     "type":"basic",
+                     "_id":"mt-3de801cb-5813-5f61-a7be-97edf478b6ac"
+                  }
+               ],
+               "refId":"4f3f3a68-437b-57b2-a735-92d724d0960b",
+               "seq":9,
+               "nodeId":"smn-de322356-854a-52e3-992e-3ed7b7b6f515"
+            }
+         ]
+      }
+   ]
+}

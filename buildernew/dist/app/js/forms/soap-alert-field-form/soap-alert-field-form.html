@@ -1,0 +1,428 @@
+<div class="form-container">
+    <div class="sub-form">
+        <ng-form class="wf-form sub-form synonyms_manage" name="alertFieldsForm" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field">{{'soap_alert_field_title'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12">
+                        <input maxlength="256" type="text" class="form-control" ng-model="fieldData.name" id="name" placeholder="{{'field_title'| i18nString}}" name="name" required>
+                        <div ng-show="alertFieldsForm.name.$dirty">
+                            <div error-alert ng-show="alertFieldsForm.name.$error.required" class="text-danger form-error-text"> {{'soap_alert_field_name_req'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <div class="col-xs-4 labelling">
+                        <label> Synonyms</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <add-tags tags="fieldData.synonyms"></add-tags>
+                        <div class="help-block">
+                            The synonyms against each word in your task name will to be stored at the bot level and these are used for customizing natural language processing
+                        </div>
+                        <div ng-show="alertFieldsForm.synonyms.$dirty">
+                            <div error-alert ng-show="alertFieldsForm.synonyms.$error.required" class="text-danger form-error-text"> Synonyms required. </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="form-group" ng-if="fieldData.fieldtype.value!=='label'">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field"> {{'help_hint'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" ng-model="fieldData.help" id="help" placeholder="{{'add_help_hint'| i18nString}}" name="help" required>
+                       <div ng-show="alertFieldsForm.help.$dirty">
+                            <div error-alert ng-show="alertFieldsForm.help.$error.required" class="text-danger form-error-text"> {{'soap_alert_field_help_hint_req'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.fieldtype.value==='label'">
+                    <div class="col-xs-12 labelling">
+                        <label> {{'help_hint'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" ng-model="fieldData.help" id="help" placeholder="{{'add_help_hint'| i18nString}}" name="help">
+                       <div  ng-show="alertFieldsForm.help.$dirty">
+                            <div error-alert ng-show="alertFieldsForm.help.$error.required" class="text-danger form-error-text"> {{'soap_alert_field_help_hint_req'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field"> {{'auth_field_key'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <input maxlength="256" type="text" class="form-control" ng-model="fieldData.key" id="key" placeholder="{{'soap_alert_field_valid_key'| i18nString}}" name="key" required>
+
+                        <div  ng-show="alertFieldsForm.key.$dirty">
+                            <br />
+                            <div error-alert ng-show="alertFieldsForm.key.$error.required" class="text-danger form-error-text"> {{'auth_field_req'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field"> {{'field_type_label'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <select ng-model="fieldData.fieldtype" class="btnDropdown" id="fieldtype" name="fieldtype" required ng-options="fieldtype.name for fieldtype in supportedFieldTypes">
+                            <option value=""> {{'select_a_field_type'| i18nString}} </option>
+                        </select>
+                        <div ng-show="alertFieldsForm.fieldtype.$dirty">
+                            <div error-alert ng-show="alertFieldsForm.fieldtype.$error.required" class="text-danger form-error-text"> {{'field_data_type_is_required'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field"> {{'data_type'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <select ng-model="fieldData.datatype" ng-disabled="fieldData.fieldtype.value === 'file'" class="btnDropdown" id="datatype" name="datatype" required ng-options="datatype.name for datatype in supportedDataTypes" required>
+                            <option value=""> {{'select_data_type'| i18nString}} </option>
+                        </select>
+                        <div ng-show="alertFieldsForm.datatype.$dirty">
+                            <div error-alert ng-show="alertFieldsForm.datatype.$error.required" class="text-danger form-error-text"> {{'field_type_is_Required'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="fieldData.datatype.value === 'array'">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field"> {{'array_element_type'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <select ng-model="fieldData.arrayElementType" class="btnDropdown" id="arrayElementType" name="arrayElementType" required ng-options="datatype.name for datatype in supportedDataTypes" required>
+                            <option value=""> {{'select_type'| i18nString}} </option>
+                        </select>
+                        <div ng-show="alertFieldsForm.arrayElementType.$dirty">
+                            <div error-alert ng-show="alertFieldsForm.arrayElementType.$error.required" class="text-danger form-error-text"> {{'field_type_is_Required'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="form-group" ng-if="wfType === 'alert' || fieldData.actionFieldType">
+                    <div class="col-xs-4 labelling">
+                        <label>  Field Meta Information </label>
+                    </div>
+                    <div class="col-xs-8">
+                        <select name="metadata" ng-model="fieldData.metadata" class="btnDropdown">
+                            <option value="">Select Type</option>
+                            <option ng-repeat="const in _constants_.nlp" value="{{const.value}}">{{const.title}}</option>
+                        </select>
+                        <div class="help-block">
+                            Select the meta information that relates to the field. This will help in understanding the right field value when user interacts with the Bot using natural language.
+                        </div>
+                        <div  ng-show="alertFieldsForm.metadata.$dirty">
+                            <div error-alert ng-show="alertFieldsForm.metadata.$error.required" class="text-danger form-error-text"> Meta data value is required. </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="form-group" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform'">
+                    <div class="col-xs-12 labelling">
+                        <label>{{'add_nested_form_field'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="btn btn-primary" ng-click="showNestedFieldForm()"><i class="fa fa-plus"></i> {{'add_nested_form_field'| i18nString}} </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform' && showFieldForm">
+                    <div class="col-xs-12">
+                        <div class="well well-sm overflow-hidden">
+                            <div class="col-xs-12 background-white" nested-soap-form></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.datatype.value === 'array' && fieldData.fieldtype.value === 'nestedform'">
+                    <div class="col-xs-12">
+                        <table class="table table-hover table-bordered" ng-if="fieldData.fields.length>0">
+                            <tr>
+                                <td class="col-xs-3">{{'soap_alert_field_title'| i18nString}}</td>
+                                <td class="col-xs-3">{{'key'| i18nString}}</td>
+                                <td class="col-xs-3">{{'field'| i18nString}}</td>
+                                <td class="col-xs-3">{{'actions'| i18nString}}</td>
+                            </tr>
+                            <tr ng-repeat="field in fieldData.fields">
+                                <td>{{field.title}}</td>
+                                <td>{{field.key}}</td>
+                                <td>{{field.fieldType}}</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default no-padding" ng-click="edit($index,row)"><i class="btx-pencil"></i></button>
+                                        <button type="button" class="btn btn-default no-padding" ng-click="delete($index,row)"><i class="btx-delete-1"></i></button>
+                                        <button type="button" class="btn btn-default no-padding" ng-show="$index != 0" ng-click="moveUp($index)"><i class="fa fa-caret-up"></i></button>
+                                        <button type="button" class="btn btn-default no-padding" ng-show="$index != fieldData.fields.length - 1" ng-click="moveDown($index)"><i class="fa fa-caret-down"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="(fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search' || fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'staticDropdownCB' || fieldData.fieldtype.value === 'checkbox')">
+                    <div class="well well-sm">
+                         <div class="col-xs-12 background-white">
+                            <div class="form-group" ng-if="fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'staticDropdownCB' || fieldData.fieldtype.value === 'checkbox'">
+                                <key-value-form form="keyvalueform" options="fieldData.staticDropDownFields"></key-value-form>
+                            </div>
+                            <div class="form-group" ng-if="(fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search')">
+                                <div class="col-xs-4">
+                                    <label>{{'soap_alert_field_Form_use_separate_wsdl'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-8">
+                                    <input type="checkbox" ng-model="displayCtrls.wsdl" ng-click="swithWsdlCtrls()">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="(fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search') && displayCtrls.wsdl">
+                                <div class="col-xs-4">
+                                    <label class="required-field">{{'wsdl_url'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-4">
+                                    <input  class="form-control" placeholder="{{'soap_alert_field_form_wsdl_url_placeholder'| i18nString}}" ng-model="fieldData.dynamicDropDownURL" required>
+                                    <div ng-show="alertFieldsForm.dynamicDropDownURL.$dirty">
+                                      <div error-alert ng-show="alertFieldsForm.dynamicDropDownURL.$error.required" class="text-danger form-error-text"> {{'endpoint_url_req'| i18nString}} </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <button class="btn btn-sm btn-default btnHeight"  ng-click="getWSDLDesc()">{{'soap_request_get_wsdl_Desc'| i18nString}}</button>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="soap.operations.length >0 &&  (fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search')">
+                                <div class="form-group">
+                                    <div class="col-xs-12"> 
+                                        <label> {{'soap_request_available_operations'| i18nString}} :- </label>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <tr>
+                                                    <td><b>{{'soap_request_service_name'| i18nString}}</b></td>
+                                                    <!-- <td><b>Port Name</b></td> -->
+                                                    <td><b>{{'soap_request_operation'| i18nString}}</b></td>
+                                                    <td><b>{{'soap_request_input_output'| i18nString}}</b></td>
+                                                    <td class="text-center"><b>{{'action_label'| i18nString}}</b></td>
+                                                    <td class="text-center"><b>{{'notes_label'| i18nString}}</b></td>
+                                                </tr>
+                                                <tr insert-after prop-name="operation" col-span="6" template-id="'/wsdloperationio.html'" ctx="operation" dom-id="'ioView'" api="operation" ng-repeat="operation in soap.operations">
+                                                    <td>{{operation.service_name}}</td>
+                                                    <!-- <td>{{operation.port_name}}</td> -->
+                                                    <td>{{operation.name}}</td>
+                                                    <td ng-click="operation.displayIO($index,operation.isUsed)">
+                                                        <a ng-if="operation.isUsed">{{'soap_request_view_input_output'| i18nString}}t</a>
+                                                        <p ng-if="!operation.isUsed">{{'soap_request_view_input_output'| i18nString}}t</p>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button ng-if="!operation.isUsed" class="btn btn-xs btn-primary no-padding" ng-click="useOperation(operation)">{{'select'| i18nString}}</button>
+                                                        <button ng-if="operation.isUsed"  class="btn btn-xs btn-primary btn-outline no-padding" ng-click="leaveOperation(operation)">{{'selected_label'| i18nString}}</button>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span ng-if="operation.isUsed"><b>{{'soap_request_added_to_requst_chain'| i18nString}}</b></span>
+                                                        <span ng-if="!operation.isUsed">--</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                                <div class="col-xs-12">
+                                    <label class="required-field">{{'content_type'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-12">
+                                    <select class="btnDropdown" name="dynamicDropDownContentType" required ng-model="fieldData.dynamicDropDownContentType" ng-options="contenttypes.name for contenttypes in dynamicDropDownContentTypes">
+                                        <option value="" > {{'select_content_type'| i18nString}}</option>
+                                    </select>
+                                    <div ng-show="alertFieldsForm.dynamicDropDownContentType.$dirty">
+                                      <div error-alert ng-show="alertFieldsForm.dynamicDropDownContentType.$error.required" class="text-danger form-error-text"> {{'content_type_req'| i18nString}} </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                                <div class="col-xs-12">
+                                    <label>{{'response_path'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-12">
+                                    <input type="text" class="form-control" placeholder="{{'url_response'| i18nString}}" ng-model="fieldData.dynamicDropDownPath">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                                <div class="col-xs-12"><label class="required-field">{{'option_label_key'| i18nString}}</label></div>
+                                <div class="col-xs-12">
+                                    <input type="text" class="form-control" name="dynamicDropDownLabelKey" placeholder="{{'Label_key_placeholder'| i18nString}}" ng-model="fieldData.dynamicDropDownLabelKey" required>
+                                    <div ng-show="alertFieldsForm.dynamicDropDownLabelKey.$dirty">
+                                      <div error-alert ng-show="alertFieldsForm.dynamicDropDownLabelKey.$error.required" class="text-danger form-error-text"> {{'label_key_req'| i18nString}} </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="fieldData.fieldtype.value === 'dynamicDropDownCB' || fieldData.fieldtype.value === 'dynamicDropDown' || fieldData.fieldtype.value === 'typeahead' || fieldData.fieldtype.value === 'search'">
+                                <div class="col-xs-12"><label class="required-field">{{'value_key'| i18nString}}</label></div>
+                                <div class="col-xs-12">
+                                    <input type="text" class="form-control" name="dynamicDropDownValueKey" placeholder="{{'value_key_placeholder'| i18nString}}" ng-model="fieldData.dynamicDropDownValueKey" required>
+                                    <div ng-show="alertFieldsForm.dynamicDropDownValueKey.$dirty">
+                                      <div error-alert ng-show="alertFieldsForm.dynamicDropDownValueKey.$error.required" class="text-danger form-error-text"> {{'value_key_req'| i18nString}} </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="fieldData.fieldtype.value === 'staticDropDown' || fieldData.fieldtype.value === 'dynamicDropDown'">
+                                <div class="col-xs-12"><label>{{'searchable'| i18nString}}</label></div>
+                                <div class="col-xs-12">
+                                    <input type="checkbox" ng-model="fieldData.isSearchable">
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.fieldtype.value === 'datetime' || fieldData.fieldtype.value === 'date'">
+                    <div class="col-xs-12"><label>{{'format'| i18nString}}</label></div>
+                    <div class="col-xs-12">
+                        <div ng-show="showDateField">
+                            <div class="row col-xs-6" >
+                                <input type="text" class="form-control" placeholder="{{'date_time'| i18nString}}" ng-model="fieldData.format">
+                            </div>
+                            <div class="col-xs-2">
+                                <i class="fa fa-times remove-new-date-format" ng-click="hideDateTextField()"></i>
+                            </div>
+                        </div>
+                        <select ng-show="fieldData.fieldtype.value === 'datetime'" class="btnDropdown" ng-model="dateFormat" ng-change="fieldData.format = dateFormat">
+                            <option value="">{{'select_date'| i18nString}}</option>
+                            <option value="yyyy-MM-ddThh:mm:ssZ">YYYY-MM-DDThh:mm:ss+hh:mm</option>
+                        </select>
+                        <select ng-show="fieldData.fieldtype.value === 'date' &&  !showDateField" class="btnDropdown" ng-model="fieldData.format" ng-change="showDateTextField(fieldData.format)">
+                            <option value="">{{'select_date'| i18nString}}</option>
+                            <option ng-repeat="(key,value) in formats" value="{{key}}">{{value}}</option>
+                            <option value="_new_">{{'field_name'| i18nString}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.fieldtype.value === 'textarea' || fieldData.fieldtype.value === 'datetime'">
+                    <div class="col-xs-12"><label>{{'placeholder'| i18nString}}</label></div>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" placeholder="{{'lhs_input_placeholder'| i18nString}}" ng-model="fieldData.textplaceholder">
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.fieldtype.value === 'url'">
+                    <div class="col-xs-12"><label>{{'placeholder'| i18nString}}</label></div>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" placeholder="{{'enter_url'| i18nString}}" ng-model="fieldData.textplaceholder">
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.fieldtype.value === 'email'">
+                    <div class="col-xs-12"><label>{{'placeholder'| i18nString}}</label></div>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" placeholder="{{'enter_Valid_email'| i18nString}}" ng-model="fieldData.textplaceholder">
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.fieldtype.value === 'file'">
+                    <key-value-form payload-type="'object'" form="keyvalueform" options="fieldData.fileMeta"></key-value-form>
+                </div>
+                <div class="form-group" ng-if="fieldData.fieldtype.value === 'textbox' || fieldData.fieldtype.value === 'file'">
+                    <div class="col-xs-12"><label>{{'placeholder'| i18nString}}</label></div>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" placeholder="{{'lhs_input_placeholder'| i18nString}}" ng-model="fieldData.textplaceholder">
+
+                    </div>
+                </div>
+                <div class="form-group" ng-if="isMultiRequired(fieldData.fieldtype.value)">
+                    <div class="col-xs-12 labelling">
+                        <label> {{'multi_select'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="field-type-dd">
+                            <input type="checkbox" ng-model="fieldData.isMultiSelect" />
+                        </div>
+                        <div  class="help-block">{{'multi_select_control'| i18nString}}</div>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <div class="col-xs-12 labelling">
+                        <label> {{'visibility'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="field-type-dd">
+                            <select ng-model="fieldData.visibility" class="btnDropdown" id="fieldtype" name="visibility">
+                                <option value=""> {{'visible'| i18nString}} </option>
+                                <option value="static">{{'static'| i18nString}}</option>
+                                <option value="hidden">{{'hidden'| i18nString}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="hasDependsOn(fieldData.fieldtype.value)">
+                    <div class="col-xs-12 labelling">
+                        <label> {{'depends_on'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="text" ng-model="fieldData.dependsOn" placeholder="workspace,project"  class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 labelling">
+                        <label> {{'mandatory'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 radioDiv" ng-init="fieldData.isRequired=fieldData.isRequired||false">
+                        <div class="col-xs-12">
+                            <label for="fieldData.isRequired.no">
+                                <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.isRequired" name="fieldData.isRequired" id="fieldData.isRequired.no" ><span class="opt-title">{{'not_mandatory_prompt'| i18nString}} </span> </input>
+                            </label>
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="fieldData.isRequired.yes">
+                                <input ng-value='true'  type="radio"   ng-model="fieldData.isRequired" name="fieldData.isRequired" id="fieldData.isRequired.yes"><span class="opt-title">{{'mandatory_prompt'| i18nString}}</span> </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 labelling">
+                        <label>{{'transpose_key'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-12 radioDiv" ng-init="fieldData.untranspose=fieldData.untranspose||false">
+                            <div>
+                                <label for="fieldData.untranspose.no">
+                                    <input ng-value='false' ng-checked="true" type="radio"  ng-model="fieldData.untranspose" name="fieldData.untranspose" id="fieldData.untranspose.no" ><span class="opt-title">{{'allow_key_transposition'| i18nString}}</span> </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="fieldData.untranspose.yes">
+                                    <input ng-value='true'  type="radio"   ng-model="fieldData.untranspose" name="fieldData.untranspose" id="fieldData.untranspose.yes"><span class="opt-title">{{'not_allow_key_transposition'| i18nString}}</span> </input>
+                                </label>
+                            </div>
+                        </div>
+                        <div  class="help-block">
+                            {{'soap_alert_field_keyValue_transposed'| i18nString}}
+                            <br>
+                            Eg : - key = "data.value"  transpose -> data : { value : "something" }
+                            <br>
+                            Eg : - key = "data.value"  untranspose -> "data.value":"something"
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="fieldData.visibility === 'hidden'">
+                    <div class="col-xs-12 labelling">
+                        <label> {{'mapping'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="field-type-dd">
+                            <input type="text" class="form-control" ng-model="fieldData.mapping">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="col-xs-12 labelling">
+                        <div error-alert ng-show="alertFieldsForm.__$invalid">
+                            {{'enter_req_values'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </ng-form>
+    </div>
+    <div class="modal-footer customFooter form-group noMarginLeft">
+        <div class="col-xs-12">
+            <button type="submit" class="btn" ng-click="saveAlertFieldObj(alertFieldsForm.$valid,true,$event,alertFieldsForm)">{{'add_continue'| i18nString}}</button>
+            <button type="submit" class="btn" ng-click="saveAlertFieldObj(alertFieldsForm.$valid,false,$event,alertFieldsForm)">{{'add_exit'| i18nString}}</button>
+            <button type="reset" ng-click="fieldData = {};cancelFieldForm();" class="btn closeCancel"> {{'cancel'| i18nString}} </button>
+        </div>
+    </div>
+</div>

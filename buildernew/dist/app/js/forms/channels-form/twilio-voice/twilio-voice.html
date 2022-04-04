@@ -1,0 +1,422 @@
+<div class="modalSliderContainer width700">
+   <form name="form.twilioVoiceForm" novalidate>
+      <div class="modalHeader channelModalHeader">
+         <h4 class="modal-title" id="gridSystemModalLabel">
+            <i class="btx-close"   ng-click="goToHome()"></i>
+            {{'constants.iconsTooltips_twiliovoice'| i18nString}}
+         </h4>
+      </div>
+      <div class="modalBody slack-channel-page inner-scroll channelInnerContent twilio-ivr-settings twilioChannelContainer" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+         <div class="col-xs-12 step-progress-container">
+            <step-progress steps="steps" on-click="stepClick"></step-progress>
+         </div>
+         <!-- <div ng-repeat="step in steps" ng-show="step.active" class="slcakChannels widthseventy"> -->
+            <!--STEP 1-->
+            <div class="col-xs-12 noPadding" ng-show="steps[0].active">
+               <div class="col-xs-12 channel-content">
+                  <div class="info noMargin">
+                     <p>{{'Bt_chnl_twilioV_instruct_desc'| i18nString}}</p>
+                     <div class="info">
+                        <div class="bulbiconwrappernew col-xs-12">
+                           <div class="col-xs-1 bulbicon"><i class="btx-bulb" ></i></div>
+                           <div class="col-xs-11">
+                              <p class="step1Note">{{'Bt_chnl_twilioV_instruct_protip_label'| i18nString}}</p>
+                              <ol class="step1Note">
+                                 <li>{{'Bt_chnl_twilioV_instruct_protip_pt1'| i18nString}}</li>
+                                 <li>{{'Bt_chnl_twilioV_instruct_protip_pt2'| i18nString}}</li>
+                                 <li>{{'Bt_chnl_twilioV_instruct_protip_pt3'| i18nString}}</li>
+                                 <li>{{'Bt_chnl_twilioV_instruct_protip_pt4'| i18nString}}</li>
+                                 <li>{{'Bt_chnl_twilioV_instruct_protip_pt5'| i18nString}}</li>
+                                 <li>{{'Bt_chnl_twilioV_instruct_protip_pt6'| i18nString}}</li>
+                              </ol>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="info">
+                     <p class="channelstep">{{'Bt_chnl_twilioV_instruct_step1_label'| i18nString}}</p>
+                     <p ng-bind-html="'login_twilio_voice'| i18nString:({link:'https://www.twilio.com/'})"></p>
+                     <img ng-src="{{assetsBase}}/images/twilio-voice-1.png" class="marginBottom10 width100percent" />
+                     <p>{{'Bt_chnl_twilioV_instruct_step1_desc2'| i18nString}}</p>
+                  </div>
+               </div>
+               <div class="col-xs-12 channel-content">
+                  <div class="info">
+                     <p class="channelstep">{{'Bt_chnl_twilioV_instruct_step2_label'| i18nString}}</p>
+                     <p>{{'Bt_chnl_twilioV_instruct_step2_desc'| i18nString}}</p>
+                     <img ng-src="{{assetsBase}}/images/twilio-voice-2.png"  class="marginBottom10 width100percent"/>
+                  </div>
+               </div>
+               <div><br></div>
+               <div class="col-xs-12 channel-content">
+                  <div class="info">
+                     <p class="channelstep">{{'Bt_chnl_twilioV_instruct_step3_label'| i18nString}}</p>
+                     <p>{{'Bt_chnl_twilioV_instruct_step3_desc1'| i18nString}}</p>
+                     <img ng-src="{{assetsBase}}/images/twilio-voice-3.png"  class="marginBottom10 width100percent"/>
+                     <p>{{'Bt_chnl_twilioV_instruct_step3_desc2'| i18nString}}</p>
+                  </div>
+               </div>
+               <div><br></div>
+               <div class="col-xs-12 channel-content">
+                  <div class="info text-justify">
+                     <p class="channelstep">{{'Bt_chnl_twilioV_instruct_step4_label'| i18nString}}</p>
+                     <p ng-bind-html="'agent_transfer_functionality'| i18nString:({link:'https://github.com/Koredotcom/'})"></p>
+                     <ul>
+                        <li>{{'Bt_chnl_twilio_instruct_step4_desc_li1'| i18nString}}</li>
+                        <li>{{'Bt_chnl_twilio_instruct_step4_desc_li2'| i18nString}}</li>
+                        <li>{{'Bt_chnl_twilio_instruct_step4_desc_li3'| i18nString}} </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+            <!--STEP 2-->
+            <div class="col-xs-12 noPadding" ng-show="steps[1].active" >
+               <div class="col-xs-12 channel-content">
+                  <div class="col-xs-12 form-group paddingTopBottom10 mb-5">
+                     <div class="col-xs-10 noPadding">
+                        <label>{{'Bt_chnl_jabber_config_webhookurl_label'| i18nString}}</label>
+                     </div>
+                     <p class="info col-xs-12 channel-content sub-head-twilio">{{'Bt_chnl_twilioV_config_desc'| i18nString}}</p>
+                     <div class="col-xs-12 noPadding">
+                        <div class="input-group">
+                           <input type="text" id="twiliovoiceoauthuri" class="form-control" ng-model="channel.oAuthRedirectURI" ng-readonly="true" name="appName">
+                           <div class="input-group-addon pointer-hand" data-clipboard-target="#twiliovoiceoauthuri"> {{'copy'| i18nString}} </div>
+                        </div>
+                        <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}</span></div>
+                     </div>
+                  </div>
+               </div>
+               <div class="paddingTop10"><br/></div>
+               <div class="col-xs-12 channel-content paddingBottom0" ng-class="{'screenFreeze':streamState.state=='published'}">
+                  <div class="modal-content-row">
+                     <div class="modal-content-col">
+                        <!-- Text Bot -->
+                        <div class="col-xs-10 noPadding">
+                           <label>{{'Bt_chnl_twilioV_config_twilioN_label'| i18nString}}</label>
+                        </div>
+                        <div class="form-group">
+                           <div class="input-group full-width">
+                              <p class="sub-head-twilio">{{'Bt_chnl_twilioV_config_twilioN_desc'| i18nString}}</p>
+                              <!-- Country codes -->
+                              <div class="col-xs-12 row form-group noPadding mb-0" ng-repeat="phoneNumber in channel.numbers track by $index">
+                                 <div class="col-xs-12 noPadding">
+                                    <div auto-close="outsideClick" class="country-codes no-margin dropdown">
+                                       <button  type="button" data-toggle="dropdown" class="country-codes-toggle dropdown-toggle"
+                                          ng-click="searchCountryCodes = ''">
+                                       {{phoneNumber.countryCode}}<i class="fa fa-chevron-down"></i>
+                                       </button>
+                                       <div class="dropdown-menu dropdown-menu-left">
+                                          <!-- Search -->
+                                          <div class="navbar-search-wrapper">
+                                             <div class="navbar-search">
+                                                <div class="search-bar">
+                                                   <input type="text" ng-model="searchCountryCodes"
+                                                      class="form-control"
+                                                      placeholder="{{'search'| i18nString}}">
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <ul class="country-codes-ul" perfect-scroll dynamic-height dynaoffset="-430">
+                                             <div class="scroll-data">
+                                                <li data-ng-repeat="item in _constants_.countryCodes | filter:{name:searchCountryCodes}">
+                                                   <a data-ng-click="selectItem(item, $parent.$index)" data-ng-hide="">
+                                                   <span class="name">{{item.name}}</span>
+                                                   <span class="value">{{item.value}}</span>
+                                                   </a>
+                                                </li>
+                                             </div>                                             
+                                          </ul>
+                                       </div>
+                                       <input type="text" 
+                                          name="phoneOnly{{$index}}" 
+                                          class="form-control  phone-field"
+                                          phone-only="true" 
+                                          country-code={{phoneNumber.countryCode}} 
+                                          placeholder="Enter a phone number" ng-model="phoneNumber.number" email-phone>
+                                       <span class="bt-mb-delete" ng-if="channel.numbers.length !== 1" style="color:#ff5d6d;"><a ng-click="deleteMobileField($index)"><i class="fa fa-minus-circle"></i></a></span>
+                                       <div ng-if="$index === channel.numbers.length-1">
+                                          <span class="pull-right bt-mob-add" style="margin-right:10px;"><a ng-click="addNewMobileField($index)"><i class="fa fa-plus"></i>{{'add_row'| i18nString}}</a></span>
+                                       </div>
+                                       <div  ng-show="form.twilioVoiceForm.phoneOnly{{$index}}.$dirty">
+                                          <div error-alert ng-show="form.twilioVoiceForm.phoneOnly{{$index}}.$error.invalidFormat" class="text-danger">
+                                             {{'pls_enter_valid_phone_number'| i18nString}}
+                                          </div>
+                                          <div error-alert ng-show="form.twilioVoiceForm.phoneOnly{{$index}}.$error.mobRequired" class="text-danger">
+                                             {{'pls_enter_phone_number'| i18nString}}
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <span class="input-group-btn" ng-hide="true">
+                              <button  type="button"
+                                 ng-disabled="!channelForm.phoneOnly.$valid || vm.phoneNo.length === 0 || vm.phoneNo === null"
+                                 class="search-submit btn btn-primary" ng-click="vm.textMe(vm.phoneNo)">{{'add'| i18nString}}
+                              </button>
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xs-12 form-group radioDiv options-wrap channel-content paddingTopBottom10 hide" ng-class="{'screenFreeze':streamState.state=='published'}">
+                  <div>
+                     <label>{{'voice_engine_uppercase'| i18nString}}</label>
+                  </div>
+                  <div class="">{{'select_voice_engine'| i18nString}}</div>
+                  <div>
+                     <label for="channel.koreVoice.no" >
+                     <input ng-value="false" type="radio" ng-model="channel.koreVoice" name="channel.koreVoice" id="channel.koreVoice.no" class="ng-pristine ng-untouched ng-valid" checked="checked"><span class="opt-title">{{'default_twilio_voice'| i18nString}}</span> 
+                     </label>
+                  </div>
+                  <div>
+                     <label for="channel.koreVoice.yes">
+                     <input ng-value="true" type="radio" ng-model="channel.koreVoice" name="channel.koreVoice" id="channel.koreVoice.yes"  class="ng-pristine ng-untouched ng-valid" ><span class="opt-title">{{'use_kore_voice'| i18nString}} </span> 
+                     </label>
+                  </div>
+                  <div class="bulbiconwrappernew col-xs-10">
+                     <div class="col-xs-1 bulbicon"><span class="icon"><i class="btx-bulb" ></i></span></div>
+                     <div class="col-xs-11">
+                        <p class="step1Note">{{'bot_msgs_are_converted'| i18nString}}</p>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xs-12 channel-content ng-hide" ng-class="{'screenFreeze':streamState.state=='published'}">
+                  <div class="col-xs-12 form-group noPadding marginBottom25">
+                     <div class="col-xs-10 noPadding">
+                        <label>{{'Bt_chnl_twilioV_config_chooseLang_label'| i18nString}}</label>
+                     </div>
+                     <div class="col-xs-12 noPadding">
+                        <div class="input-group width100percent">
+                           <p class="marginBottom10 sub-head-twilio">{{'Bt_chnl_twilioV_config_chooseLang_desc'| i18nString}}</p>
+                           <div class="col-xs-12 uiselect2container langSelectContainer noPadding">
+                              <select id="languageSelect2" ui-select2="selectConfig"  ng-model="channel.speechlanguage" ng-disabled="fromSettings === 'true'" class="" id="language" name="language" required>
+                                 <option ng-repeat="languagein in channel.languages" value="{{languagein.value}}">{{languagein.name}}</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+               <div class="col-xs-12 form-group radioDiv options-wrap channel-content ng-hide" ng-class="{'screenFreeze':streamState.state=='published'}">
+                  <div>
+                     <label>{{'Bt_chnl_twilioV_config_selectvoice'| i18nString}}</label>
+                  </div>
+                  <p class="sub-head-twilio">{{'Bt_chnl_twilioV_config_select_voice_info' | i18nString }}</p>
+                  <select id="voiceSelect" ng-model="channel.voice" id="language">
+                     <option ng-repeat="voice in voiceList" value="{{voice}}">{{voice}}</option>
+                  </select>
+               </div>
+               <div class="col-xs-12 form-group radioDiv options-wrap channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                  <div>
+                     <label>{{'enable_chnl'| i18nString}}</label>
+                  </div>
+                  <div>
+                     <label for="channel.enable.no" >
+                     <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                     </label>
+                  </div>
+                  <div>
+                     <label for="channel.enable.yes">
+                     <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                     </label>
+                  </div>
+               </div>
+            </div>
+            <!--STEP 3-->
+            <div class="col-xs-12 noPadding paddingLeft20" ng-show="steps[2].active">
+               <div ng-if="isLoading" class="new-app-channel-loading">
+                  <i class="fa fa-spinner"></i>
+                  Please Wait...
+                </div>
+               <div ng-if="!isLoading">
+                  <div class='form-group'>
+                     <div class='noPadding'>
+                        <label class='required-field'>{{'end_conversation_behave'| i18nString}}</label>
+                     </div>
+                     <div class="grayInfoText noPadding marginT5 marginBottom10">{{"def_bot_behave"| i18nString}}</div>
+                     <div class="radioDiv" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <span class="radioInnerDiv paddingRight20">
+                        <label for="trigger" class="noMargin">
+                        <input value='trigger' type="radio" ng-model="conver.value" name="conversationBehavior" id="trigger"><span>{{"trigger_event"| i18nString}}</span>
+                        </label>
+                        </span>
+                        <span class="radioInnerDiv">
+                        <label for="terminate" class="noMargin">
+                        <input value='terminate' type="radio" ng-model="conver.value" name="conversationBehavior" id="terminate"><span>{{"terminate_call_label"| i18nString}}</span>
+                        </label>
+                        </span>
+                     </div>
+                    </div>
+                    <div class="events-form" ng-if='conver.value === "trigger"'>
+                     <div class='form-group'>
+                        <div class='noPadding'>
+                           <label class='required-field'>{{"event_config"| i18nString}}</label>
+                        </div>
+                        <div class="grayInfoText noPadding marginT5 marginBottom10">{{"def_proceed_event"| i18nString}}</div>
+                     </div>
+                     <div class="">
+                        <div class="radioDiv space-between" ng-class="{'screenFreeze':streamState.state=='published'}">
+                           <span class="radioInnerDiv">
+                           <label for="initiate">
+                           <input value='initiate' type="radio" ng-model="events.config" name="eventConfig" id="initiate"><span>{{"trigger_dialog"| i18nString}}</span>
+                           </label>
+                           </span>
+                           <span class="radioInnerDiv">
+                           <label for="runScript">
+                           <input value='runScript' type="radio" ng-model="events.config" name="eventConfig" id="runScript"><span>{{"run_script"| i18nString}}</span>
+                           </label>
+                           </span>
+                           <span class="radioInnerDiv">
+                           <label for="showMessage">
+                           <input value='showMessage' type="radio" ng-model="events.config" name="eventConfig" id="showMessage"><span>{{"show_msg"| i18nString}}</span>
+                           </label>
+                           </span>                        
+                        </div>
+                     </div>
+                     <div class="initiate-block" ng-if='events.config === "initiate"' ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="form-group eventConfigurationDropDown">
+                           <select ng-model='selected.dialog' class='form-control' name='selectTask' required ng-if='isDialogsAvailable'>
+                              <option value="" disabled selected>{{"select_task_name"| i18nString}}</option>
+                              <option ng-repeat="nameD in dialogsName track by $index" value="{{nameD.name}}">{{nameD.name}}</option>
+                           </select>
+                           <div error-alert ng-show="form.twilioVoiceForm.selectTask.$error.required && submitForm"  class="text-danger">
+                              {{"please_select_task"| i18nString}}
+                           </div>
+                           <span ng-if='!isDialogsAvailable'><i class="fa fa-spinner fa-spin"></i>{{"loading_tasks"| i18nString}}</span>
+                        </div>                       
+                        <div class="help_hint_data mb-0">
+                           <div class="bulb-icon">
+                               <i class="btx-bulb"></i>
+                           </div>
+                           <div class="hint-content">{{"handle_nl"| i18nString}}</div>
+                       </div>
+                     </div>
+                     <div class="run-script-block" ng-if='events.config === "runScript"' ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="noPaddingLeft">
+                           <div id="ux-script-editor-dialog" name='textScript' required acify ng-model="inp.scriptText" callback="codeCallback"></div>
+                        </div>
+                        <div error-alert ng-show="(form.twilioVoiceForm.textScript.$error.required && form.twilioVoiceForm.textScript.$dirty) || (form.twilioVoiceForm.textScript.$error.required && submitForm)"  class="text-danger">
+                           {{"please_add_script"| i18nString}}
+                        </div>                      
+                        <div class="help_hint_data mb-0">
+                           <div class="bulb-icon">
+                               <i class="btx-bulb"></i>
+                           </div>
+                           <div class="hint-content">{{"handle_nl"| i18nString}}</div>
+                       </div>
+                     </div>
+                     <div class="show-message-block" ng-if='events.config === "showMessage"' ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <button class='btn btn-primary' ng-click="editResponse(-1)">
+                        <i class="fa fa-plus"></i>{{"add_response_label"| i18nString}}
+                        </button>
+                        <!-- <span class='add-box cursor-pointer' ></span> -->
+                        <div class="welcomeMessageDiv" ng-repeat="prompt in responseObj track by $index">
+                           <div class="msgDiv">
+                              <span class="imgDivCircle">
+                                 <span ng-if="prompt.channel==='default'" class="Oval-15 default"  tooltip-placement="right" tooltip="All Channels"><span class="channelText">{{"All"| i18nString}}</span></span>
+                                 <span ng-if="prompt.channel!=='default' && prompt.channel!=='skype' && prompt.channel!=='wfacebook' && prompt.channel !== 'googleactions'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{channelsConfig.channelsObject[prompt.channel].name}}"><img class="img fa fa-{{prompt.channel}}"  ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                                 <span ng-if="prompt.channel === 'googleactions'" class="Oval-15 no-background">
+                                    <img class="img" ng-src="{{assetsBase}}images/google-home.svg">
+                                    <div class="property-panelIconTitle">{{"Google_asstnt"| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div>
+                                 </span>
+                                 <span ng-if="prompt.channel!=='default' && prompt.channel==='skype' && prompt.channel!=='wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{channelsConfig.channelsObject[prompt.channel].name}}"><span class="img fa fa-{{prompt.channel}}"  ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span> </span>
+                                 <span ng-if="prompt.channel==='wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{prompt.isMention?_constants_.iconsTooltips['Workplace For Groups']:_constants_.iconsTooltips['Workplace For Chat']}}"><img class="img fa fa-{{prompt.channel}}"  ng-src="{{channelsConfig.channelsObject[prompt.channel].icon}}" aria-hidden="true"></span>
+                              </span>
+                              <span class="msgDecription">{{prompt.type=='uxmap'?'Javascript Message':decodeJS(prompt.text)}}</span>
+                              <span class="delete fa fa-trash" ng-class="{'pointer-none': selectedState === 'published'}" ng-click="deleteMessage(prompt,$index)"></span>
+                              <span class="edit fa fa-pencil" ng-click="editResponse($index)"></span>
+                           </div>
+                        </div>                       
+                        <div class="help_hint_data mb-0">
+                           <div class="bulb-icon">
+                               <i class="btx-bulb"></i>
+                           </div>
+                           <div class="hint-content">{{"handle_nl"| i18nString}}</div>
+                       </div>
+                     </div>
+                    </div>
+                    <div class="col-xs-12 form-group radioDiv  pointerEventNone noPadding">
+                       <div class="col-xs-12 noPadding">
+                          <label class="required-field">{{"call_handler"| i18nString}}</label>
+                       </div>
+                       <div class="grayInfoText col-xs-12 noPadding marginT5 marginBottom10">{{"specify_intent"| i18nString}}</div>
+                       <div class="col-xs-12  noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                          <select ng-model="twilioVoiceSettings.callTerminationHandler" class="" name="callTermination" required="">
+                             <option ng-repeat="task in dialogsName" value="{{task.id}}">
+                                {{task.name}}
+                             </option>
+                          </select>
+                          <div error-alert ng-show="(form.twilioVoiceForm.callTermination.$error.required && submitForm)" class="text-danger">{{"provide_call"| i18nString}}</div>
+                       </div>
+                    </div>
+                    <div class="col-xs-12 form-group radioDiv  noPadding pointerEventNone">
+                        <div class="col-xs-12 noPadding">
+                            <label class="required-field">{{"timeout_prompt"| i18nString}}</label>
+                        </div>
+                        <div class="grayInfoText col-xs-12 noPadding marginT5 marginBottom10">{{"define_prompt"| i18nString}}</div>
+                        <div class="col-xs-12  noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                            <textarea  type="text" class="form-control" name="timeoutPrompts"
+                                       ng-model="twilioVoiceSettings.timeoutPrompts[0][0].value"
+                                       auto-grow-textarea
+                                       maxlength="4000"
+                                       id="timeoutPrompts" placeholder="Enter plain text prompt" required>
+                            </textarea>
+                            <div>
+                                <div error-alert ng-show="(form.twilioVoiceForm.timeoutPrompts.$error.required && submitForm)"  class="text-danger">
+                                    {{"provide_timeout"| i18nString}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                 
+                    <div class="col-xs-12 form-group radioDiv  noPadding pointerEventNone">
+                        <div class="col-xs-12 noPadding radioDiv">
+                            <label>{{"adv_item"| i18nString}}</label>
+                        </div>
+                        <div class="grayInfoText col-xs-12 noPadding marginT5 marginBottom10">{{"def_progress"| i18nString}}</div>
+                        <div ng-class="{'screenFreeze':streamState.state=='published'}">
+                           <toggle-switch yes-no="true" ng-model="twilioVoiceSettings.bargein" class="pull-left toggleNoMargin">
+                           </toggle-switch>
+                        </div>
+                    </div>    
+                    <div class="col-xs-12 form-group  noPadding pointerEventNone">
+                        <div class="col-xs-12 noPadding">
+                            <label>{{"timeout"| i18nString}}</label>
+                        </div>                      
+                       <div class="grayInfoText col-xs-12 noPadding marginT5 marginBottom10">{{"wait_time"| i18nString}}</div>
+                        <div class="col-xs-12  noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                            <select ng-model="twilioVoiceSettings.timeout" ng-options="(convertToInt(time/1000) +' '+(convertToInt(time/1000) == 1?'Sec':'Secs')) for time in timeIntervels">
+                            </select>
+                       </div>
+                    </div>
+                    <div class="col-xs-12 form-group  noPadding pointerEventNone ">
+                        <div class="col-xs-12 noPadding">
+                            <label>{{"no_retries"| i18nString}}</label>
+                        </div>
+                       <div class="grayInfoText col-xs-12 noPadding marginT5 marginBottom10">{{"max_retries"| i18nString}}</div>
+                          <div class="col-xs-12  noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                             <select ng-model="twilioVoiceSettings.retry_limit" ng-options="convertToInt(entries) for entries in retriesCount">
+                             </select>
+                          </div>
+                    </div>
+               </div>
+            </div>
+         <!-- </div> -->
+      </div>
+      <div class="modalFooter" >
+         <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+         <button type="button" class="btn" ng-click="save(form.twilioVoiceForm)" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+         <button type="button" class="btn" ng-click="saveIVR(form.twilioVoiceForm)" ng-show="steps[2].active" ng-class="{'disabled':streamState.state=='published'}">{{"save"| i18nString}}</button>
+         <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+      </div>
+
+   </form>
+
+</div>
+
+   <bot-modal-slider id="btWelcomeMess" ng-if="showEnable">
+      <div class="modalSliderContainer width700 welcomeMessageContainer welcomeMessageModal  form-group" ng-if='welcomeMessagecbs.isAddResponseEnabled'>
+         <bt-welcome-message cb="welcomeMessagecbs"></bt-welcome-message>
+      </div>
+   </bot-modal-slider>

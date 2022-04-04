@@ -1,0 +1,52 @@
+<div class="count-board"  ng-class="{onlyChild:items.length===1}">
+    <div>
+        <tabset active="active">
+            <div class="tooltip-top">
+                <i class="helpdark-icon tooltip-hover btx-help" tooltip-placement="left" tooltip="{{'channels_tooltip'| i18nString}}"></i>
+            </div>
+            <!-- <div class="tooltip-top">
+                <img class="helpdark-icon tooltip-hover" ng-src="{{helpDarkIcon}}">
+                <span class="tooltiptext" ng-click="$event.stopPropagation()">{{'count_of_task_completions_tooltip'| i18nString}} </span>
+            </div> -->
+            <tab ng-repeat="items in data" index="0" heading="{{items.title}}">
+                <div class="profile-header channels-profile-header" ng-if="items.data.length != 0">
+                    <div class="leftLabel">
+                        {{'channel_name'| i18nString}} 
+                    </div>
+                    <div class="rightLabel">
+                        {{'total_messages'| i18nString}}   
+                    </div>
+                </div>
+                <ul class="list-group m-0">
+                    <li ng-repeat="item in items.data | slice:(currentPage-1)*5:currentPage*5" ng-if="!items.isLinkedBotSelected" class="list-group-item">
+                        <div class ="channelData" ng-if="items.data.length != 0">
+                            <div class="channelsInfo"><img class="channelIcon" ng-src="{{item.icon}}"/></div>
+                            <div class= "channelName">
+                                {{item.name | channelNameDisp}}
+<!--                             {{item.name === 'googleactions'?'Google Assistant':item.name}} --></div>
+                            <div class="channelCount">{{item.count | number:0}}</div>
+                        </div>
+                    </li>
+                </ul>   
+                <div ng-if="items.data.length == 0 || items.isLinkedBotSelected" class="text-center">
+                    <img ng-src="{{channels}}" class="channels marginTop50 max-width-100">
+                    <div class="nodataTask">{{'no_data_available'| i18nString}}</div>
+                </div>
+                <pagination  rotate="false" 
+                    ng-show="items.data.length > 3" 
+                    class="pagination-sm pull-right" 
+                    boundary-links="true" 
+                    direction-links="false"
+                    total-items="items.data.length" 
+                    items-per-page="5" 
+                    ng-model="currentPage"
+                    ng-init="currentPage=1"
+                    max-size="5"
+                    first-text="<<"
+                    last-text=">>"
+                >
+                </pagination>
+            </tab>
+        </tabset>
+    </div>
+</div>

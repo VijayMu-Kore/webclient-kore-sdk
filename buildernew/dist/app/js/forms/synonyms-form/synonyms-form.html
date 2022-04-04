@@ -1,0 +1,75 @@
+<a ng-show="synonymFor != 'stream'" href="" ng-click="openModal()" class="btn btn-primary">{{'manage_synonyms'| i18nString}}</a>
+<div class="modal fade synonyms_manage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title">{{'manage_synonyms'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group dispalyTable">
+          <div class="col-xs-12">
+            <label>{{'name_label'| i18nString}}</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" class="form-control" ng-model="taskName" ng-disabled="true"></input>
+          </div>
+        </div>
+        <div class="form-group dispalyTable">
+          <div class="col-xs-12 ">
+            <label tooltip-placement="right" tooltip="{{'synonyms_form_tooltip'| i18nString}}">{{'synonyms_form_synonyms_words'| i18nString}}</label>
+          </div>
+        </div>
+        <div class="form-group" ng-repeat="synonym in synonyms">
+          <div class="row">
+            <div class="col-xs-12">
+              <label>{{'synonyms_form_synonyms_for'| i18nString}} <span class="taskColor">{{synonym.key}}</span></label>
+            </div>
+            <div class="col-xs-12">
+                <div class="noPadding col-xs-11">
+                  <add-tags tags="synonym.value"></add-tags>
+                </div>
+                <div class="col-xs-1 noPadding ">
+                  <button type="button" class="btn btn-default btn-sm trashBTN"  ng-click="deleteSynonym($index)">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer customFooter form-group">
+          <button type="button" class="btn btn-default" ng-click="cancel()">{{'close'| i18nString}}</button>
+          <button type="button" class="btn btn-primary" ng-click="save()"> {{ saveInProgress ? savingLabel : save }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row noPadding form-group synonyms_manage" ng-show="synonymFor == 'stream' && synonymsAreThere()">
+  <div class="col-xs-12" ng-if="!hideHeading">
+    <label for="">{{'manage_synonyms'| i18nString}}</label>
+  </div>
+  <table class="table">
+    <tr>
+      <th class="col-xs-4"> {{'synonyms_form_primary_word'| i18nString}} </th>
+      <th> {{'synonyms_name'| i18nString}} </th>
+    </tr>
+    <tr ng-repeat="synonym in synonyms.slice((synonymsCurrentPage-1)*5,synonymsCurrentPage*5)">
+      <td>
+        <input type="text" ng-model="synonym.key" class="form-control"/>
+      </td>
+      <!-- <td>{{synonym.key}}</td> -->
+      <td class="synonyms_table_header">
+        <div class="col-xs-10">
+          <add-tags tags="synonym.value"></add-tags>
+        </div>
+        <div class="col-xs-2">
+          <button type="button" class="btn btn-default btn-sm" ng-click="deleteSynonym($index)">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <pagination  rotate="false" max-size="5" ng-show="synonyms.length>5" class="pagination-sm" boundary-links="true" direction-links="false" total-items="synonyms.length" items-per-page="5" ng-model="synonymsCurrentPage"></pagination>
+</div>

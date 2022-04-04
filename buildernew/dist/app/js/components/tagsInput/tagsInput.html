@@ -1,0 +1,12 @@
+<div class="form-container">
+    <div class='tag-input-ctn' tabindex="-1">
+        <div class='input-tag' data-ng-repeat="tag in inputTags" tooltip-placement="bottom" tooltip="{{tag.emailId}}" ng-class="{'invalid': tag.inValidEmail}">
+            <div class="imageDiv" ng-if="tag.profImage && tag.profImage === 'no-avatar'" style="background-color:{{tag.profColor !==''?tag.profColor:'#6386d9'}};">{{getDisplayName(tag)}}</div>
+            <div class="profimageDiv" ng-if="tag.profImage && tag.profImage !== 'no-avatar'"><img src="{{tag.url}}" alt="profile" onerror="handleimgLoad(this)"></div>
+            <!-- <div class="imageDiv fa fa-envelope" ng-if="tag.otherDomain && !tag.inValidEmail"></div> -->
+            <div class="tagname">{{tag.fullName || tag.emailId}}</div>
+            <div class='delete-tag' data-ng-click='deleteTag($index)'>&times;</div>
+        </div>
+        <input type='text' autofocus onblur="this.focus()" id="tagInput" data-ng-style='{width: inputWidth}' data-ng-model='tagText' ng-keyup="callback.inviteOtherDomainUser($event);" placeholder='{{placeholder}}'/>
+    </div>
+</div>

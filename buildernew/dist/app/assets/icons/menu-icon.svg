@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="470px" height="470px" viewBox="0 0 470 470" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>menu-icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="menu-icon" fill="#767688" fill-rule="nonzero">
+            <path d="M53.333,106.667 L416,106.667 C445.417,106.667 469.333,82.74 469.333,53.334 C469.333,23.928 445.417,0 416,0 L53.333,0 C23.917,0 0,23.927 0,53.333 C0,82.739 23.917,106.667 53.333,106.667 Z" id="Path"></path>
+            <path d="M416,181.333 L53.333,181.333 C23.917,181.333 0,205.26 0,234.667 C0,264.074 23.917,288 53.333,288 L416,288 C445.417,288 469.333,264.073 469.333,234.667 C469.333,205.261 445.417,181.333 416,181.333 Z" id="Path"></path>
+            <path d="M416,362.667 L53.333,362.667 C23.917,362.667 0,386.594 0,416 C0,445.406 23.917,469.333 53.333,469.333 L416,469.333 C445.417,469.333 469.333,445.406 469.333,416 C469.333,386.594 445.417,362.667 416,362.667 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

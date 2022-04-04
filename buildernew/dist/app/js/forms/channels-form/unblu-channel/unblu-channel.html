@@ -1,0 +1,265 @@
+<div class="modalSliderContainer width700">
+    <form name="unbluForm">
+        <div class="modalHeader channelModalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                <i class="btx-close" ng-click="goToHome()"></i>
+                {{'Unblu_channel'| i18nString}}</h4>
+ </div>
+        <div class="modalBody Unblu-channel-page slack-channel-page inner-scroll channelInnerContent" perfect-scroll
+            dynamic-height dynaoffset="-125" height-property="height">
+            <div class="col-xs-12 step-progress-container">
+                <step-progress steps="steps" on-click="stepClick"></step-progress>
+            </div>
+            <div ng-repeat="step in steps" ng-show="step.active" class="slcakChannels widthseventy">
+                <div class="col-xs-12 noPadding" ng-show="steps[0].active">
+                    <div class="col-xs-12 channel-content">
+                        <div class="info noMargin"> 
+                            <p>{{'unblu_chnl_1'| i18nString}}</p>
+                            <div class="info">
+                                <p class="channelstep marginTop15">{{'unblu_chnl_2'| i18nString}}</p>
+                                <p class="channelsteps marginTop15">{{'unblu_chnl_3'| i18nString}}</p>
+                                <p ng-bind-html="'login_unblu'| i18nString:({link:'https://latest.demo.unblu.com/'})"></p>
+                                <img ng-src="{{assetsBase}}images/Unblu_1.png" class="marginBottom10 width100percent" />
+                                <p class="channelsteps marginTop15">{{'unblu_chnl_5'| i18nString}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 channel-content paddingTop10">
+                        <div class="info">  
+                            <p class="channelstep">{{'unblu_chnl_6'| i18nString}}</p>
+                            <p>{{'unblu_chnl_7'| i18nString}}</p>
+                            <p>{{'unblu_chnl_8'| i18nString}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configurations -->
+
+
+                <div class="col-xs-12 noPadding" ng-show="steps[1].active">
+                    <div class="col-xs-12 channel-content marginBottom10">
+                        <div class="info">
+                            <div class="col-xs-12 row noPadding">
+                                <div class="col-xs-12 noPadding">
+                                    <p>{{'unblu_chnl_label'| i18nString}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}"> 
+                        <div class="info"> 
+                            <div class="form-group">
+                                <div class="col-xs-10 noPadding">
+                                    <label class="required-field">{{'hosturl_label'| i18nString}}</label>
+                                </div>
+                                <p class="col-xs-10 noPadding" ng-bind-html="'url_unblu'| i18nString:({link:'https://www.unblu.com/'})"></p>
+                                <div class="col-xs-10 form-group noPadding">
+                                    <input type="text" class="form-control" ng-model="channel.unbluUrl" name="unbluUrl" id="unbluUrl" placeholder="{{'host_placeholder'| i18nString}}" required>
+                                    <div ng-show="unbluForm.unbluUrl.$dirty">
+                                        <div error-alert ng-show="unbluForm.unbluUrl.$error.required" class="text-danger">
+                                            {{'unblu_hosturl_err'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                      </div>
+
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding marginTopBottomFive">
+                                    <label for="userName" class="required-field">{{'unblu_userName'| i18nString}}</label>
+                                </div>
+                                <p class="col-xs-10 noPadding">{{'unblu_username_desc'| i18nString}}</p>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" ng-model="channel.userName" name="unbluUserName" class="form-control"
+                                        id="unbluUserName" placeholder="{{'enterUnblu_userName'| i18nString}}" required="">
+                                    <div ng-show="unbluForm.unbluUserName.$dirty">
+                                        <div error-alert ng-show="unbluForm.unbluUserName.$error.required"
+                                            class="text-danger">
+                                            {{'unblu_userName_err'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding marginTopBottomFive">
+                                    <label for="password" class="required-field">{{'unblu_password'| i18nString}}</label> 
+                                </div>
+                                <p class="col-xs-10 noPadding">{{'unblu_password_desc'| i18nString}}</p>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="password" ng-model="channel.password" name="unbluPassword" class="form-control"
+                                        id="unbluPassword" placeholder="{{'enterUnblu_password'| i18nString}}" required="">
+                                    <div ng-show="unbluForm.unbluPassword.$dirty">
+                                        <div error-alert ng-show="unbluForm.unbluPassword.$error.required"
+                                            class="text-danger">
+                                            {{'unblu_password_err'| i18nString}}
+                                        </div>
+                                    </div>
+                                    <p class="help-block"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding marginTopBottomFive">
+                                    <label class="required-field">{{'unblu_botPerson_Name'| i18nString}}</label>
+                                </div>
+                                <p class="col-xs-10 noPadding">{{'unblu_bot_desc'| i18nString}}</p>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" id="dialogBotName"
+                                        placeholder="{{'enterFirstName'| i18nString}}" ng-model="channel.dialogBotName"
+                                        name="dialogBotName" required>
+                                    <div ng-show="unbluForm.dialogBotName.$dirty">
+                                        <div error-alert ng-show="unbluForm.dialogBotName.$error.required"
+                                            class="text-danger">
+                                            {{'unblu_please_provide_botName'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding marginTopBottomFive">
+                                    <label class="required-field">{{'unblu_botPerson_desc'| i18nString}}</label>
+                                </div>
+                                <p class="col-xs-10 noPadding">{{'unblu_bot_description'| i18nString}}</p>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" placeholder="{{'enterDescBot'| i18nString}}"
+                                        ng-model="channel.description" id="botDescription" name="botDescription" required>
+                                    <div ng-show="unbluForm.botDescription.$dirty">
+                                        <div error-alert ng-show="unbluForm.botDescription.$error.required"
+                                            class="text-danger">
+                                            {{'unblu_please_provide_botDescription_err'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding marginTopBottomFive">
+                                    <label class="required-field">{{'unblu_BotPerson'| i18nString}}</label>
+                                </div>
+                                <p class="col-xs-10 noPadding">{{'unblu_botPerson_label'| i18nString}}</p>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" placeholder="{{'enterDialogBotName'| i18nString}}"
+                                        ng-model="channel.firstName" id="botPerson" name="botPerson" required>
+                                    <div ng-show="unbluForm.botPerson.$dirty">
+                                        <div error-alert ng-show="unbluForm.botPerson.$error.required"
+                                            class="text-danger">
+                                            {{'unblu_botPerson_err'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding marginTopBottomFive">
+                                    <label class="required-field">{{'unblu_DialogBotSecret'| i18nString}}</label>
+                                </div>
+                                <p class="col-xs-10 noPadding">{{'unblu_botPerson_secret'| i18nString}}</p>
+                                <div class="col-xs-12 noPadding">
+                                    <input type="text" class="form-control" placeholder="{{'enterDialogBotSecret'| i18nString}}"
+                                        ng-model="channel.dialogBotSecret" id="botSecret" name="botSecret" required>
+                                    <div ng-show="unbluForm.botSecret.$dirty">
+                                        <div error-alert ng-show="unbluForm.botSecret.$error.required"
+                                            class="text-danger">
+                                            {{'unblu_botSecret_err'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="info">
+                            <div class="col-xs-12 row form-group noPadding">
+                                <div class="col-xs-12 noPadding marginTopBottomFive">
+                                    <label class="required-field">{{'unblu_named_areaDisplay'| i18nString}} </label>
+                                </div>
+                                <p class="col-xs-10 noPadding">{{'unblu_named_label'| i18nString}}</p>
+                                <div class="col-xs-12 noPadding">
+                                    <tags-input id="namedAreaName" use-strings="true" ng-model="channel.namedAreaName"  min-length="2" max-length="50" replace-spaces-with-dashes="false" placeholder="{{'unblu_named_areaDisplay_placeHolder'| i18nString}}"></tags-input>
+                                    <div ng-show="unbluForm.namedAreaName.$dirty">
+                                        <div error-alert ng-show="unbluForm.namedAreaName.$error.required"
+                                            class="text-danger">
+                                            {{'unblu_named_areaDisplay_err'| i18nString}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12  marginBottom15">
+                        <div class="hintDiv col-xs-12 marginTop15">
+                            <span class="icon"><i class="btx-bulb" ></i></span>
+                           <span class="description ng-binding">{{'unblu_protip'| i18nString}}</span>
+                        </div>
+                     </div>
+                   
+
+
+                    <div class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="col-xs-12 noPadding form-group radioDiv options-wrap">
+                            <div>
+                                <label>{{'enable_chnl'| i18nString}}</label>
+                                <p>{{'enable_unblu'| i18nString}}</p>
+                            </div>
+                            <div>
+                                <label for="channel.enable.no">
+                                    <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable"
+                                        name="kore.enable" id="channel.enable.no"
+                                        class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span
+                                        class="opt-title">{{'no'| i18nString}}</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="channel.enable.yes">
+                                    <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable"
+                                        id="channel.enable.yes" class="ng-pristine ng-untouched ng-valid"
+                                        value="true"><span class="opt-title">{{'yes'| i18nString}}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-xs-12"> </div>
+                </div>
+            </div>
+        </div>
+        <div class="modalFooter">
+            <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+            <button type="button" class="btn" ng-click="save(unbluForm)" ng-show="steps[1].active"
+                ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+            <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+         </div>
+    </form>
+</div>

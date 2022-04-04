@@ -1,0 +1,176 @@
+<div class="form-container row">
+    <form class="wf-form sub-form" name="authTestForm" novalidate>
+        <fieldset ng-if="auth.sso_type == 'api_key' || auth.sso_type == 'basic' || auth.sso_type == 'custom'">
+            <div class="col-xs-12 form-group noPadding">
+                <div class="col-xs-12 noPadding"><label class="required-field">{{'auth_check'| i18nString}} </label></div>
+                <div class="col-xs-12 noPadding">
+                    <input type="text" ng-disabled="custom && authTest.authCheckUrl" autocomplete="off" class="form-control" name="authCheckUrl" ng-model="authTest.authCheckUrl" required>
+                    <div ng-if="authTestForm.authCheckUrl.$dirty">
+                        <br />
+                        <div error-alert ng-if="authTestForm.authCheckUrl.$error.required">
+                            {{'auth_check_url'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding" ng-if="enterpriseLicenseType" ng-init="authTest.connectorEnabled = authTest.connectorEnabled || false">
+                <div class="col-xs-12 noPadding">
+                    <label tooltip-placement="right" tooltip="{{'url_uncheck'| i18nString}}">{{'access_connector'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 radioDiv noPadding">
+                    <div>
+                        <label for="authTest.connectorEnabled.no">
+                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="authTest.connectorEnabled" name="authTest.connectorEnabled" id="authTest.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="authTest.connectorEnabled.yes">
+                            <input ng-value='true'  type="radio"   ng-model="authTest.connectorEnabled" name="authTest.connectorEnabled" id="authTest.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                        </label>
+                    </div>  
+                    <div class="no-connectors-msg" ng-show="authTest.connectorEnabled && connectors.length <=0">{{'no_active_conn'| i18nString}}</div>
+                </div>  
+            </div>
+            <div class="col-xs-12 form-group noPadding" ng-if="authTest.hasTenancy">
+                <div class="col-xs-12 noPadding"><label class="required-field"> {{'tenant'| i18nString}} </label></div>
+                <div class="col-xs-12 noPadding">
+                    <input type="text" class="form-control" name="tenant" autocomplete="off" ng-model="authTest.tenant" required>
+                    <div ng-if="authTestForm.tenant.$dirty">
+                        <br />
+                        <div error-alert ng-if="authTestForm.tenant.$error.required">
+                            {{'tenant_req'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding" ng-if="authTest.sso_type === 'basic' || auth.sso_type == 'custom'">
+                <div class="col-xs-12 noPadding"><label class="required-field"> {{'user_name'| i18nString}} </label></div>
+                <div class="col-xs-12 noPadding">
+                    <input type="text noPadding" class="form-control" required name="username" autocomplete="off" ng-model="authTest.userName">
+                    <div ng-if="authTestForm.username.$dirty">
+                        <br />
+                        <div error-alert ng-if="authTestForm.username.$error.required">
+                            {{'user_name_req'| i18nString}} 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group" ng-if="authTest.sso_type === 'api_key'">
+                <div class="col-xs-12 noPadding"><label class="required-field"> {{'api_key'| i18nString}} </label></div>
+                <div class="col-xs-12 noPadding">
+                    <input type="text" class="form-control" name="apiKey" autocomplete="off" ng-model="authTest.apiKey" required>
+                    <div ng-if="authTestForm.apiKey.$dirty">
+                        <br />
+                        <div error-alert ng-if="authTestForm.apiKey.$error.required">
+                            {{'api_req'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding" ng-if="authTest.sso_type === 'basic' || auth.sso_type == 'custom'">
+                <div class="col-xs-12 noPadding"><label class="required-field">{{'password'| i18nString}} </label></div>
+                <div class="col-xs-12 noPadding">
+                    <input type="password" class="form-control" required name="password" autocomplete="off" ng-model="authTest.password">
+                    <div ng-if="authTestForm.password.$dirty">
+                        <br />
+                        <div error-alert ng-if="authTestForm.password.$error.required">
+                            {{'password_req'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding">
+                <div class="col-xs-12 noPadding"><label class="required-field">{{'content_Type'| i18nString}}</label></div>
+                <div class="col-xs-12 noPadding">
+                    <select class="btnDropdown" name="contenttype" ng-disabled="authTest.contentType.value" ng-model="authTest.contentType" ng-options="datatype.name for datatype in datatypes" required>
+                        <option value="">{{'select_content_type'| i18nString}}</option>
+                    </select>
+                    <div ng-if="authTestForm.contenttype.$dirty">
+                        <br />
+                        <div error-alert ng-if="authTestForm.contenttype.$error.required">
+                            {{'content_type_q'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding">
+                <div class="col-xs-12 noPadding"><label class="required-field">{{'method'| i18nString}}  </label></div>
+                <div class="col-xs-12 noPadding">
+                    <!-- <input type="text" class="form-control" ng-model="authTest.method" name="method" ng-readonly="true"> -->
+                    <select ng-disabled="authTest.method" required class="btnDropdown" name="method" ng-model="authTest.method">
+                        <option value="">{{'select_Method'| i18nString}}</option>
+                        <option value="PUT"> {{'put'| i18nString}} </option>
+                        <option value="POST"> {{'post'| i18nString}} </option>
+                        <option value="PATCH">{{'patch'| i18nString}} </option>
+                        <option value="DELETE"> {{'delete_caps'| i18nString}} </option>
+                        <option value="GET"> {{'get'| i18nString}} </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group last-form-groupnoPadding">
+                <div class="col-xs-12 noPadding"></div>
+                <div class="col-xs-12 noPadding">
+                    <button type="button" ng-click="cancelChainForm();" class="btn btn-default">{{'cancel'| i18nString}} </button>
+                    <button type="submit" class="btn btn-primary" ng-click="testReqchainObj(authTestForm.$valid,authTestForm)">
+                    {{testOnProgress?testing:test}}</button>
+                </div>
+            </div>
+            <div ng-if="idptestresponse" class="col-xs-12 noPadding">
+                <div class="well well-sm overflow-hidden">
+                    <div class="col-xs-12 background-white">
+                        <div class="panel panel-default" ng-class="{'panel-success':+idptestresponse.status < 300,'panel-danger':! (+idptestresponse.status < 300)}">
+                          <div class="panel-heading">{{+idptestresponse.status < 300 ?{{'auth_success'| i18nString}}:{{'auth_failed'| i18nString}}</div>
+                          <div class="panel-body">
+                            <tabset>
+                                <tab>
+                                    <tab-heading>
+                                        {{'headers'| i18nString}}
+                                    </tab-heading>
+                                    <div class="col-xs-12 form-group" ng-repeat="(key,value) in idptestresponse.headers">
+                                        <div class="col-xs-4">
+                                            <label>{{key}}</label>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <span>{{value}}</span>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab>
+                                    <tab-heading>
+                                        {{'response'| i18nString}}
+                                    </tab-heading>
+                                    <div class="form-group">
+                                        <textarea type="text" class="form-control" ng-model="idptestresponse.response"  rows="8" ng-readonly="true"> </textarea>
+                                    </div>
+                                </tab>
+                            </tabset>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset ng-if="!(auth.sso_type == 'api_key' || auth.sso_type == 'basic'  || auth.sso_type == 'custom')">
+            <div class="col-xs-12 form-group noPadding" ng-if="authTest.hasTenancy">
+                <div class="col-xs-12 noPadding"><label class="required-field"> {{'tenant'| i18nString}} </label></div>
+                <div class="col-xs-12 noPadding">
+                    <input type="text" class="form-control" name="tenant" ng-model="authTest.tenant" required>
+                    <div ng-if="authTestForm.tenant.$dirty">
+                        <br />
+                        <div error-alert ng-if="authTestForm.tenant.$error.required">
+                            {{'tenant_req'| i18nString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group last-form-group">
+                <div class="col-xs-12"></div>
+                <div class="col-xs-12">
+                    <button type="button" ng-click="cancelChainForm();" class="btn btn-default pull-right">{{'cancel'| i18nString}} </button>
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="captureTenant(authTestForm.$valid,authTestForm)">
+                    {{testOnProgress?testing:test}}</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

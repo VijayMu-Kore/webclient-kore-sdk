@@ -1,0 +1,790 @@
+<div class="animationIfLeave content-loading noPadding" ng-if="loadingBatchTestSuits">
+      <span class="spinner-text"> <i class="fa fa-circle-o-notch fa-spin-fast"></i> <span class="spinner-text-content"> {{'please_wait'| i18nString}}</span>
+      </span>
+  </div>
+<div class="batch-testing" ng-class="{'read-only-div':displayMode==='VIEW' || parentDisplayMode === 'VIEW'}" ng-show="!loadingBatchTestSuits">
+<status-loader></status-loader>
+
+<div class="modal fade batchtesting-form batchTestingModal taskCreateOrEditModal  fullwidth-dialog height-width-100" tabindex="-1"
+  role="dialog">
+  <div class="modal-dialog height-width-100 modal-lg">
+    <div class="modal-content batchtesting-modal-content height-width-100">
+      <div class="modal-header bt-modal-header modal-header-padding">
+        <div class=""><a href="#" class="fa fa-chevron-left btnBack" ng-click="viewTestSuites()"></a></div>
+        <div class="col-xs-10">
+          <!--<h4 class="modal-title" id="gridSystemModalLabel">Report Details</h4>-->
+          <bt-modal-title title="Report Details" bot="selectedStream"></bt-modal-title>
+        </div>
+      </div>
+      <div class="utterancecountheader col-xs-12">
+        <div class="col-xs-4 mlheader">{{reportName}}</div>
+        <div class="col-xs-4 lasttested"> {{'last_tested'| i18nString}}: {{getLocaleTime(runReport.result.startTime)}}</div>
+        <div class="col-xs-4 utterancecounter">{{'utterance_count'| i18nString}}: {{runReport.utterance_count || 0}}</div>
+      </div>
+      <div class="modal-body wf-form" perfect-scroll dynamic-height dynaoffset="-128">
+
+        <div class="col-xs-12">
+          <div class="col-xs-6">
+            <div class="chartContainer col-xs-12" id="chartContainter">
+
+            </div>
+            <div class="col-xs-12 legendbox">
+              <div class="col-xs-6" ng-repeat="data in graphData">
+                <div class="col-xs-1 colorbox"><span style="background:{{data.color}}"></span></div>
+                <div class="col-xs-11 legendtext"><span class="">{{data.text}}</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 successFailureContent">
+            <div class="panel-table col-xs-12 BTtoolTip">
+
+              <div class="panel-table-body">
+                <div class="row sfreport">
+                  <div class="col-xs-12">
+                    <div class="cursor-pointer col-xs-8 fontBold"> {{'success_failure_ratio'| i18nString}}</div>
+                    <div class="cursor-pointer col-xs-4 fontSize15Gray">{{succPercentage(RunReportPercentage.success,RunReportPercentage.failure) | number : 2}}</div>
+                  </div>
+                </div>
+                <div class="row sfreport">
+                  <div class="col-xs-12">
+                    <div class="cursor-pointer col-xs-8 fontBold"> {{'F1_Score'| i18nString}}</div>
+                    <div class="cursor-pointer col-xs-4 fontSize15Gray">{{getValue(runReport.result.f1_score, 0)}}</div>
+                  </div>
+                </div>
+                <div class="row sfreport">
+                  <div class="col-xs-12">
+                    <div class="cursor-pointer col-xs-8 fontBold"> {{'precision'| i18nString}}</div>
+                    <div class="cursor-pointer col-xs-4 fontSize15Gray">{{getValue(runReport.result.precision, 0)}}</div>
+                  </div>
+                </div>
+                <div class="row sfreport">
+                  <div class="col-xs-12">
+                    <div class="cursor-pointer col-xs-8 fontBold"> {{'Recall'| i18nString}}'| i18nString}}</div>
+                    <div class="cursor-pointer col-xs-4 fontSize15Gray">{{getValue(runReport.result.recall, 0)}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 btdownlaodcenter">
+              <a target="_blank" href="{{runReport.result.fileUrl}}" download>
+            <button type="button" class="btExport"> {{'download_complete_report'| i18nString}}</button>
+            </a></div>
+          </div>
+          <div class="panel-table col-xs-12 BTtoolTip marginTop20 " ng-show='false'>
+            <div class="panel-table-header">
+              <div class="row borderBTM2">
+                <div class="col-xs-4 headerTitleFS14"> {{'utterance_caps'| i18nString}}</div>
+                <div class="col-xs-3 headerTitleFS14"> {{'expected_intent'| i18nString}}</div>
+                <div class="col-xs-3 headerTitleFS14"> {{'matched_intent'| i18nString}}</div>
+                <div class="col-xs-2 headerTitleFS14"> {{'bot_status'| i18nString}}</div>
+              </div>
+            </div>
+            <div class="panel-table-body">
+              <div class="row " ng-repeat="assertion in runReport.result.assertions">
+                <div class="col-xs-4">{{getValue(assertion.utterance, "--")}}</div>
+                <div class="col-xs-3">{{getValue(assertion.expectedIntent, "--")}}</div>
+                <div class="col-xs-3">{{getValue(assertion.matchedIntent, "--")}}</div>
+                <div class="col-xs-2">{{getValue(assertion.resultType, "--", "resultType")}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-header bt-modal-header modal-header-padding hide">
+  <div class="col-xs-1">
+    <button ng-click="closeModalByClass('.batchtesting-form')" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button>
+  </div>
+  <div class="col-xs-10">
+    <!--<h4 class="modal-title" id="gridSystemModalLabel">Batch Testing</h4>-->
+    <bt-modal-title title="Batch Testing" bot="selectedStream"></bt-modal-title>
+  </div>
+</div>
+<div class="wf-form batchTesting">
+
+  <div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'batch_testing'| i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent displayNone">
+            <input  placeholder="Search">
+            <i class="btx-search"></i>
+            <i class="btx-close displayNone"></i>
+        </div>
+        <div class="creationButton borderBtn">
+            <button ng-click="openNewTestSuitModal()" ng-class="{'screenFreeze':streamstate.toggleState == 'published'}" ng-show="batchTestingData.testSuits.length || !isUniversalbot"  class="titleBTN"> {{'new_test_suite_label'| i18nString}}</button>
+        </div>
+        <div class="titleDropdown displayNone">
+            <div class="dropdown">
+                <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Dropdown name
+                    <i class="btx-carrot-up"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">Option One</li>
+                    <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+            </div>
+        </div>
+        <div class="titleOverflow displayNone">
+            <div class="dropdown">
+                <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                    <i class="btx-overflow"></i>
+                    </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">Option One</li>
+                    <li class="dropdown-item" >Option Two</li>                       
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--   <p class='marginBottom15' ng-if="isUniversalbot">Run tests on previously recorded utterances and their results to validate that they continue to work as expected after
+      some changes are made to synonyms, patterns or machine learning utterances.</p> -->
+  
+  <div class="col-xs-12 noPadding" perfect-scroll dynamic-height dynaoffset="-158">
+     
+  <!--   <p ng-if="!isUniversalbot">Run tests on previously recorded utterances and their results to validate that they continue to work as expected after
+      some changes are made to synonyms, patterns or machine learning utterances.</p> -->
+
+        
+    <div class="panel-group requestAccordion  accordion-streams" id="batchAccordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default" ng-if="!isUniversalbot">
+        <div class="panel-heading collapsed" role="button" id="headallUtterances" ng-click="isCollapsed('#headallUtterances') && viewReport('AllMlUtterances')"
+          data-toggle="collapse" data-parent="#batchAccordion" href="#allUtterances">
+
+          <div><span class="panel-title entity_count_label"> {{'developer_defined_utterances_label'| i18nString}}</span>
+            <help-link help-link-url="MANAGE_TEST_SUITS"></help-link>
+            <span class="pull-right length chevron align"><i class="fa_chevron_right btx-carrot-right"></i></span>
+            <p> {{'developer_defined_utterances_desc'| i18nString}}</p>
+          </div>
+        </div>
+
+        <div id="allUtterances" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headallUtterances">
+          <div class="panel-body noPadding">
+            <div class="loc-spinner text-center testrunsloading" ng-show="fetching">
+              <span>
+                            <i class="fa fa-circle-o-notch wf-spinner"></i>   {{'loading_test_runs'| i18nString}}
+                        </span>
+            </div>
+            <!-- <div ng-hide="batchTestingData['AllMlUtterances'].runHistory.length > 0">
+              <div class="col-xs-12 noContentDiv">
+                <div class="alert-xs text-center alert-msg-home" role="alert" ng-show="!fetching && !lastRunDetails.length">
+                  <p class="noContentHeader"> {{'batch_testing_noContentHeader'| i18nString}}</p>
+                  <p class="noContentDesc"> {{'batch_testing_noContentDesc'| i18nString}}</p>
+                  <p class="createLink" ng-class="{'pointerEvents':displayMode === 'VIEW'}" type="button" data-toggle="modal" data-target=".addfilter" class="btn" ng-click="runTestSuit('AllMlUtterances')"> {{'run_test_suite'| i18nString}}</p>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="emptyStateContainer" ng-hide="batchTestingData['AllMlUtterances'].runHistory.length > 0">
+              <div class="emptyState">
+                  <div class="emptyImage">
+                      <img ng-src="{{batchEmptyStateIcon}}" class="emptyImg">           
+                  </div>  
+                  <div role="alert" ng-show="!fetching && !lastRunDetails.length">
+                    <span class="mainTitle"> {{'batch_testing_noContentHeader'| i18nString}}</span>
+                    <div class="emptyStateDesc">{{'batch_testing_noContentDesc'| i18nString}}</div>
+                    <div class="generateBtn">
+                        <button class="btn btnSolidBlue" ng-class="{'pointerEvents':displayMode === 'VIEW'}" type="button" data-toggle="modal" data-target=".addfilter" ng-click="runTestSuit('AllMlUtterances')"> {{'run_test_suite'| i18nString}}</button>
+                        <!-- <button class="btn" target="_blank" >learn more</button> -->
+                    </div>
+                  </div>
+              </div>
+          </div>
+          
+            <div class="panel-table col-xs-12 BTtoolTip" ng-show="!fetching && batchTestingData['AllMlUtterances'].runHistory.length > 0">
+               <div class="panel-table-header">
+                  <div class="row displayBlock paddingLeft15 ">
+                     <div class="col-xs-1 headerTitle noPadding recordWarningIcon"></div>
+                     <div class="col-xs-2 headerTitle">{{'last_run_date'| i18nString}}</div>
+                     <div class="col-xs-1 headerTitle"> {{'F1_Score'| i18nString}}</div>
+                     <div class="col-xs-1 headerTitle">{{'precision'| i18nString}}</div>
+                     <div class="col-xs-1 headerTitle">{{'Recall'| i18nString}}</div>
+                     <div class="col-xs-2 headerTitle">{{'intent_sucess'| i18nString}}</div>
+                     <div class="col-xs-2 headerTitle">{{'entity_sucess'| i18nString}}</div>
+                     <div class="col-xs-2 headerTitle">{{'version_type'| i18nString}}</div>
+                  </div>
+               </div>
+               <div class="panel-table-body">
+                  <div class="row actionTask" ng-repeat="runDetails in batchTestingData['AllMlUtterances'].runHistory">
+                     <div  class="recordWarningIcon noPadding col-xs-1"  class="col-xs-1 noPadding" ng-show="runDetails.failureMeta && runDetails.failureMeta.severity" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="{{runDetails.failureMeta.message || 'Test Suit Failed Test Suit Failed Test Suit Failed Test Suit Failed Test Suit Failed Test Suit Failed'}}">
+                        <a ng-if="(runDetails.failureMeta && runDetails.failureMeta.severity) || true">
+                        <img  ng-if="runDetails.failureMeta.severity=='warning'" ng-src="{{assetsBase}}icons/errorWarning.svg">
+                        <img  ng-if="runDetails.failureMeta.severity=='error'" ng-src="{{assetsBase}}icons/failedWarning.svg">
+                        </a>
+                     </div>
+                     <div  ng-hide="runDetails.failureMeta && runDetails.failureMeta.severity" class="recordWarningIcon noPadding col-xs-1"></div>
+                     <div class="col-xs-2 run-details">{{getLocaleTime(runDetails.startTime)}}</div>
+                     <div class="col-xs-1 run-details">{{runDetails.f1_score ? runDetails.f1_score : "--"}}</div>
+                     <div class="col-xs-1 run-details">{{runDetails.precision ? runDetails.precision : "--"}}</div>
+                     <div class="col-xs-1 run-details">{{runDetails.recall ? runDetails.recall : "--"}}</div>
+                     <div class="col-xs-2 run-details">{{succPercentage(runDetails.results.success,runDetails.results.failure) | number : 2}}</div>
+                     <div class="col-xs-2 run-details">{{(runDetails.results.totalEntitiesCount && runDetails.results.matchedEntitiesCount)?(getPercentage(runDetails.results.totalEntitiesCount,runDetails.results.matchedEntitiesCount) | number : 2):"--"}}</div>
+                     <div class="col-xs-2 run-details">{{runDetails.runType == 'published'?'Published': runDetails.runType =='inDevelopment'?"In-Development":"--"}}</div>
+                     <div class="col-xs-1 deploymentStatus viewReport cursor-pointer">
+                        <a id="report{{$index}}" class="hide" ng-click="alert(9)" target="_blank"  download></a>
+                        <i ng-if="runDetails.status !== 'running'" class="" ng-class="{'visibility-hidden': runDetails.failureMeta && runDetails.failureMeta.severity =='error'}"><i ng-click="$event.stopPropagation();downloadFile(runDetails,$index,$event,'AllMlUtterances')"  class="downloadIcon btx-export"></i></i>
+                        <i ng-if="runDetails.status !== 'running'" ng-hide="displayMode === 'VIEW'" class="btx-delete-1 delete-run-details" ng-click="deleteRunDetails(runDetails)"></i>
+                        <div ng-click="runDetails.status !== 'running' && getReportDetailsByRunID('AllMlUtterances', runDetails.id)" ng-if="runDetails.status == 'running'" class="progress" title="{{progressUttStatus['AllMlUtterances']}}">
+                           <div class="progress-bar" role="progressbar" ng-style="pollingPercentageWidth['AllMlUtterances']" aria-valuenow="{{pollingPercentage['AllMlUtterances']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                           <span class="current-progress">{{progressUttStatus['AllMlUtterances']}}</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div ng-show="batchTestingData['AllMlUtterances'].runHistory.length > 0 && !fetching" class="col-xs-12 marginTop10 noPadding batch-test-tooltip">
+                <button ng-disabled="testSuitRunning['AllMlUtterances'] || displayMode === 'VIEW'" ng-click="runTestSuit('AllMlUtterances')" type="button" class="pull-right btn btnSolidBlue">
+                  <i ng-if="testSuitRunning['AllMlUtterances']" class="fa fa-spinner fa-spin"></i>{{'run_test_suite'| i18nString}}
+                </button>
+                 <span class="radioDiv noPadding marginRight10 marginTop5 pull-right">
+                 <label for="dev-AllMlUtterances">
+                 <input type="radio" checked="checked" name="modeType" id="dev-AllMlUtterances">
+                 <span class="opt-title">{{'in_development'| i18nString}}</span>
+                 <span class="radioTooltip" tooltip-placement="bottom" tooltip="Test suite will be run against the In-Development version of the bot"><i class="btx-info"></i></span>
+                 </label>
+                 <label for="pub-AllMlUtterances">
+                 <input type="radio" name="modeType" id="pub-AllMlUtterances">
+                 <span class="opt-title">{{'published'| i18nString}}</span>
+                 <span class="radioTooltip" tooltip-placement="bottom" tooltip="Test suite will be run against the Published version of the bot"><i class="btx-info"></i></span>
+                 </label>
+                 </span>
+               </div>
+            </div>
+          <div class="col-xs-12 noPadding pageNation" ng-show="totalItems >5">
+            <bt-pagination limit="limit" total-items="totalItems" show-num-dropdown=false get-page-data="viewReport('AllMlUtterances', offset)"></bt-pagination>
+          </div>
+        </div>
+
+      </div>
+        </div>
+      <div ng-if="!isUniversalbot" class="panel panel-default">
+        <div class="panel-heading collapsed" ng-init="loadBotChatScenarios = false" ng-click="isCollapsed('#headlast1000') && viewReport('Last100sentences')"
+          role="button" id="headlast1000" data-toggle="collapse" data-parent="#batchAccordion" href="#last1000">
+
+          <div><span class="panel-title entity_count_label"> {{'Successful_user_utterances'| i18nString}}</span>
+            <help-link help-link-url="MANAGE_TEST_SUITS"></help-link>
+            <span class="pull-right length chevron align"><i class="fa_chevron_right btx-carrot-right"></i></span>
+            <p> {{'Successful_user_utterances_desc'| i18nString}}</p>
+          </div>
+        </div>
+        <div id="last1000" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headlast1000">
+          <div class="panel-body noPadding">
+            <div class="loc-spinner text-center testrunsloading" ng-show="fetching">
+              <span>
+                            <i class="fa fa-circle-o-notch wf-spinner"></i>   {{'loading_test_runs'| i18nString}}
+                        </span>
+            </div>
+            <!-- <div ng-hide="fetching || batchTestingData['Last100sentences'].runHistory.length > 0">
+              <div class="col-xs-12 noContentDiv">
+                <div class="alert-xs text-center alert-msg-home" role="alert">
+                  <p class="noContentHeader"> {{'batch_testing_noContentHeader'| i18nString}}</p>
+                  <p class="noContentDesc"> {{'batch_testing_noContentDesc'| i18nString}}</p>
+                  <p class="createLink" ng-class="{'pointerEvents':displayMode === 'VIEW'}" type="button" data-toggle="modal" data-target=".addfilter" class="btn "
+                    ng-click="runTestSuit('Last100sentences')"> {{'run_test_suite'| i18nString}}</p>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="emptyStateContainer" ng-hide="fetching || batchTestingData['Last100sentences'].runHistory.length > 0">
+              <div class="emptyState">
+                  <div class="emptyImage">
+                      <img ng-src="{{batchEmptyStateIcon}}" class="emptyImg">           
+                  </div>  
+                  <div >
+                    <span class="mainTitle"> {{'batch_testing_noContentHeader'| i18nString}}</span>
+                    <div class="emptyStateDesc">{{'batch_testing_noContentDesc'| i18nString}}</div>
+                    <div class="generateBtn">
+                        <button class="btn btnSolidBlue" ng-class="{'pointerEvents':displayMode === 'VIEW'}" type="button" data-toggle="modal" data-target=".addfilter"
+                        ng-click="runTestSuit('Last100sentences')"> {{'run_test_suite'| i18nString}}</button>
+                        <!-- <button class="btn" target="_blank" >learn more</button> -->
+                    </div>
+                  </div>
+              </div>
+          </div>
+            <div class="panel-table col-xs-12 BTtoolTip" ng-show="!fetching && batchTestingData['Last100sentences'].runHistory.length > 0">
+               <div class="panel-table-header ">
+                  <div class="row displayBlock paddingLeft15">
+                     <div class="col-xs-1 headerTitle noPadding recordWarningIcon"></div>
+                     <div class="col-xs-2 headerTitle">{{'last_run_date'| i18nString}}</div>
+                     <div class="col-xs-1 headerTitle"> {{'F1_Score'| i18nString}}</div>
+                     <div class="col-xs-1 headerTitle">{{'precision'| i18nString}}</div>
+                     <div class="col-xs-1 headerTitle">{{'Recall'| i18nString}}</div>
+                     <div class="col-xs-2 headerTitle">{{'intent_sucess'| i18nString}}</div>
+                     <div class="col-xs-2 headerTitle">{{'entity_sucess'| i18nString}}</div>
+                     <div class="col-xs-2 headerTitle">{{'version_type'| i18nString}}</div>
+                  </div>
+               </div>
+               <div class="panel-table-body">
+                  <div class="row actionTask" ng-repeat="runDetails in batchTestingData['Last100sentences'].runHistory">
+                     <div  class="recordWarningIcon noPadding col-xs-1"  class="col-xs-1 noPadding" ng-show="runDetails.failureMeta && runDetails.failureMeta.severity" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="{{runDetails.failureMeta.message || 'Test Suit Failed'}}">
+                        <a ng-if="(runDetails.failureMeta && runDetails.failureMeta.severity)">
+                        <img  ng-if="runDetails.failureMeta.severity=='warning'" ng-src="{{assetsBase}}icons/errorWarning.svg">
+                        <img  ng-if="runDetails.failureMeta.severity=='error'" ng-src="{{assetsBase}}icons/failedWarning.svg">
+                        </a>
+                     </div>
+                     <div  ng-hide="runDetails.failureMeta && runDetails.failureMeta.severity" class="recordWarningIcon noPadding col-xs-1"></div>
+                     <div class="col-xs-2 run-details">{{getLocaleTime(runDetails.startTime)}}</div>
+                     <div class="col-xs-1 run-details">{{runDetails.f1_score ? runDetails.f1_score : "--"}}</div>
+                     <div class="col-xs-1 run-details">{{runDetails.precision ? runDetails.precision : "--"}}</div>
+                     <div class="col-xs-1 run-details">{{runDetails.recall ? runDetails.recall : "--"}}</div>
+                     <div class="col-xs-2 run-details">{{succPercentage(runDetails.results.success,runDetails.results.failure) | number : 2}}</div>
+                     <div class="col-xs-2 run-details">{{(runDetails.results.totalEntitiesCount && runDetails.results.matchedEntitiesCount)?(getPercentage(runDetails.results.totalEntitiesCount,runDetails.results.matchedEntitiesCount) | number : 2):"--"}}</div>
+                     <div class="col-xs-2 run-details">{{runDetails.runType == 'published'?'Published': runDetails.runType =='inDevelopment'?"In-Development":"--"}}</div>
+                     <div class="col-xs-1 deploymentStatus viewReport cursor-pointer">
+                      <a id="report{{$index}}" target="_blank"  download></a>
+                        <i ng-if="runDetails.status !== 'running'" class="" ng-class="{'visibility-hidden': runDetails.failureMeta && runDetails.failureMeta.severity =='error'}"><i ng-click="downloadFile(runDetails,$index,$event,'Successful_user_utterances')"  class="downloadIcon btx-export" ng-src="{{assetsBase}}icons/download.svg"></i></i>
+                        <i ng-if="runDetails.status !== 'running'" ng-hide="displayMode === 'VIEW'" class="btx-delete-1 delete-run-details" ng-click="deleteRunDetails(runDetails)"></i>
+                        <div ng-click="runDetails.status !== 'running' && getReportDetailsByRunID('Last100sentences', runDetails.id)" ng-if="runDetails.status == 'running'" class="progress" title="{{progressUttStatus['Last100sentences']}}">
+                           <div class="progress-bar" role="progressbar" ng-style="pollingPercentageWidth['Last100sentences']" aria-valuenow="{{pollingPercentage['Last100sentences']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                           <span class="current-progress">{{progressUttStatus['Last100sentences']}}</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div ng-show="batchTestingData['Last100sentences'].runHistory.length > 0 && !fetching" class="col-xs-12 marginTop10 noPadding batch-test-tooltip">
+               <button ng-disabled="testSuitRunning['Last100sentences'] || displayMode === 'VIEW'" ng-click="runTestSuit('Last100sentences')" type="button" class="pull-right btn btnSolidBlue"><i ng-if="testSuitRunning['Last100sentences']" class="fa fa-spinner fa-spin"></i> {{'run_test_suite'| i18nString}}
+               </button>
+               <span class="radioDiv noPadding marginRight10 marginTop5 pull-right">
+               <label for="dev-Last100sentences">
+               <input type="radio" checked="checked" name="modeType" id="dev-Last100sentences">
+               <span class="opt-title">{{'in_development'| i18nString}}</span>
+               <span class="radioTooltip" tooltip-placement="bottom" tooltip="Test suite will be run against the In-Development version of the bot"><i class="btx-info"></i></span>
+               </label>
+               <label for="pub-Last100sentences">
+               <input type="radio" name="modeType" id="pub-Last100sentences">
+               <span class="opt-title">{{'published'| i18nString}}</span>
+               <span class="radioTooltip" tooltip-placement="bottom" tooltip="Test suite will be run against the Published version of the bot"><i class="btx-info"></i></span>
+               </label>
+               </span>
+            </div>
+            <div class="col-xs-12 noPadding pageNation" ng-show="totalItems >5">
+              <bt-pagination limit="limit" total-items="totalItems" show-num-dropdown=false get-page-data="viewReport('Last100sentences', offset)"></bt-pagination>
+            </div>
+          </div>  
+        </div>
+
+      </div>
+
+      <div class="panel panel-default " ng-repeat="testSuit in batchTestingData.testSuits">
+        <div class="panel-heading collapsed trash-delete-all" ng-init="loadBotChatScenarios = false" ng-click="isCollapsed('#head'+testSuit._id) && viewReport(testSuit._id)"
+          role="button" id="head{{testSuit._id}}" data-toggle="collapse" data-parent="#batchAccordion" href="#testsuit{{testSuit._id}}">
+
+          <div class="editTestSuitDiv"><span class="panel-title entity_count_label">{{testSuit.name}}</span>
+            <help-link help-link-url="MANAGE_TEST_SUITS"></help-link>
+            <span class="pull-right length chevron align"><i class="fa_chevron_right btx-carrot-right"></i></span>
+            <span class="trash-wrap" ng-hide="displayMode === 'VIEW'"><i class="btx-delete-1" ng-click="deleteRunDetailsComplete($event, testSuit)"></i></span>
+            <i class="btx-pencil edit-suit pull-right" ng-show="displayMode !== 'VIEW'" ng-click="openNewTestSuitModal(testSuit,$event)"></i>
+            <p>{{testSuit.description}}</p>
+          </div>
+        </div>
+        <div id="testsuit{{testSuit._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="head{{testSuit._id}}">
+          <div class="panel-body noPadding">
+            <div class="loc-spinner text-center testrunsloading" ng-show="fetching">
+              <span>
+                            <i class="fa fa-circle-o-notch wf-spinner"></i>   {{'loading_test_runs'| i18nString}}
+                        </span>
+            </div>
+            <!-- <div ng-hide="fetching || batchTestingData['{{testSuit._id}}'].runHistory.length > 0">
+              <div class="col-xs-12 noContentDiv">
+                <div class="alert-xs text-center alert-msg-home" role="alert">
+                  <p class="noContentHeader"> {{'batch_testing_noContentHeader'| i18nString}}</p>
+                  <p class="noContentDesc"> {{'batch_testing_noContentDesc'| i18nString}}</p>
+                  <p class="createLink" ng-class="{'pointerEvents':displayMode === 'VIEW'}" type="button" data-toggle="modal" data-target=".addfilter" class="btn "
+                    ng-click="runTestSuit(testSuit._id)"> {{'run_test_suite'| i18nString}}</p>
+                </div>
+              </div>
+            </div> -->
+            <div class="emptyStateContainer"  ng-hide="fetching || batchTestingData['{{testSuit._id}}'].runHistory.length > 0">
+              <div class="emptyState">
+                  <div class="emptyImage">
+                      <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                  </div>  
+                  <span class="mainTitle">{{'batch_testing_noContentHeader'| i18nString}}</span>
+                  <div class="emptyStateDesc">{{'batch_testing_noContentDesc'| i18nString}}</div>
+                  <div class="generateBtn">
+                      <button class="btn btnSolidBlue" ng-click="runTestSuit(testSuit._id)" ng-class="{'pointerEvents':displayMode === 'VIEW'}" type="button" data-toggle="modal" data-target=".addfilter" >{{'run_test_suite'| i18nString}}</button>
+                      <!-- <button class="btn" target="_blank" >learn more</button> -->
+                  </div>
+              </div>
+          </div>
+          
+            <div class="panel-table col-xs-12 BTtoolTip" ng-show="!fetching && batchTestingData['{{testSuit._id}}'].runHistory.length > 0">
+              <div class="panel-table-header">
+                <div class="row displayBlock paddingLeft15">
+                  <div class="col-xs-1 headerTitle noPadding recordWarningIcon"></div>
+                  <div class="col-xs-2 headerTitle">{{'last_run_date'| i18nString}}</div>
+                  <div class="col-xs-1 headerTitle"> {{'F1_Score'| i18nString}}</div>
+                  <div class="col-xs-1 headerTitle">{{'precision'| i18nString}}</div>
+                  <div class="col-xs-1 headerTitle">{{'Recall'| i18nString}}</div>
+                  <div class="col-xs-2 headerTitle">{{'intent_sucess'| i18nString}}</div>
+                  <div class="col-xs-2 headerTitle">{{'entity_sucess'| i18nString}}</div>
+                  <div class="col-xs-2 headerTitle">{{'version_type'| i18nString}}</div>
+                </div>
+              </div>
+              <div class="panel-table-body">
+                <div class="row actionTask" ng-repeat="runDetails in batchTestingData[testSuit._id].runHistory">
+                  <div  class="recordWarningIcon noPadding col-xs-1"  ng-show="runDetails.failureMeta && runDetails.failureMeta.severity" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="{{runDetails.failureMeta.message || 'Test Suit Failed'}}">
+                        <a ng-if="(runDetails.failureMeta && runDetails.failureMeta.severity)">
+                            <!-- <span class="hoverInfoText">
+                                <span class="innerwarningText">
+                                    {{runDetails.failureMeta.message || "Test Suit Failed"}}
+                                    </span>
+                                <i class="fa fa-caret-down mlMessageArrowFN"></i>
+                            </span> -->
+                          <img  ng-if="runDetails.failureMeta.severity=='warning'" ng-src="{{assetsBase}}icons/errorWarning.svg">
+                          <img  ng-if="runDetails.failureMeta.severity=='error'" ng-src="{{assetsBase}}icons/failedWarning.svg">
+                        </a>
+                  </div>
+                  <div  ng-hide="runDetails.failureMeta && runDetails.failureMeta.severity" class="recordWarningIcon noPadding col-xs-1"></div>
+                  <div class="col-xs-2 run-details">{{getLocaleTime(runDetails.startTime)}}</div>
+                  <div class="col-xs-1 run-details">{{runDetails.f1_score ? runDetails.f1_score : "--"}}</div>
+                  <div class="col-xs-1 run-details">{{runDetails.precision ? runDetails.precision : "--"}}</div>
+                  <div class="col-xs-1 run-details">{{runDetails.recall ? runDetails.recall : "--"}}</div>
+                  <div class="col-xs-2 run-details">{{succPercentage(runDetails.results.success,runDetails.results.failure) | number : 2}}</div>
+                  <div class="col-xs-2 run-details">{{(runDetails.results.totalEntitiesCount && runDetails.results.matchedEntitiesCount)?(getPercentage(runDetails.results.totalEntitiesCount,runDetails.results.matchedEntitiesCount) | number : 2):"--"}}</div>
+                  <div class="col-xs-2 text-center run-details">{{runDetails.runType == 'published'?'Published': runDetails.runType =='inDevelopment'?"In-Development":"--"}}</div>
+                  <div class="col-xs-1 deploymentStatus viewReport cursor-pointer">
+                    <a id="report{{$index}}" target="_blank"  download></a>
+                    <i ng-if="runDetails.status !== 'running'" class="" ng-class="{'visibility-hidden': runDetails.failureMeta && runDetails.failureMeta.severity =='error'}">
+                        <i ng-click="downloadFile(runDetails,$index,$event,testSuit.name)"  class="downloadIcon btx-export" ></i>
+                    </i>
+                    <i ng-if="runDetails.status !== 'running'" ng-hide="displayMode === 'VIEW'" class="btx-delete-1 delete-run-details" ng-click="deleteRunDetails(runDetails)"></i>
+                   <div ng-click="runDetails.status !== 'running' && getReportDetailsByRunID(testSuit._id, runDetails.id)" ng-if="runDetails.status == 'running'" class="progress" title="{{progressUttStatus[testSuit._id]}}">
+                       <div class="progress-bar bg-success" role="progressbar" ng-style="pollingPercentageWidth[testSuit._id]" aria-valuenow="{{pollingPercentage[testSuit._id]}}" aria-valuemin="0" aria-valuemax="100"></div>
+                       <span class="current-progress">{{progressUttStatus[testSuit._id]}}</span>
+                   </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <div ng-show="batchTestingData['{{testSuit._id}}'].runHistory.length > 0 && !fetching" class="col-xs-12 marginTop10 noPadding batch-test-tooltip">
+              <button ng-disabled="testSuitRunning[testSuit._id] || displayMode === 'VIEW'" ng-click="runTestSuit(testSuit._id)" type="button" class="pull-right nextBtn btn btnSolidBlue "><i ng-if="testSuitRunning[testSuit._id]" class="fa fa-spinner fa-spin"></i> {{'run_test_suite'| i18nString}}</button>
+              <span class="radioDiv noPadding marginRight10 marginTop5 pull-right">
+                <label for="dev-{{testSuit._id}}">
+                  <input type="radio" checked="checked" name="modeType" id="dev-{{testSuit._id}}">
+                  <span class="opt-title">{{'in_development'| i18nString}}</span>
+                  <span class="radioTooltip" tooltip-placement="bottom" tooltip="Test suite will be run against the In-Development version of the bot"><i class="btx-info"></i></span>
+                </label>
+                <label for="pub-{{testSuit._id}}">
+                  <input type="radio" name="modeType" id="pub-{{testSuit._id}}">
+                  <span class="opt-title">{{'published'| i18nString}}</span>
+                  <span class="radioTooltip" tooltip-placement="bottom" tooltip="Test suite will be run against the Published version of the bot">
+                    <i class="btx-info"></i>
+                  </span>
+                </label>
+              </span>
+            </div>  
+            <div class="col-xs-12 noPadding pageNation" ng-show="totalItems >5">
+              <bt-pagination limit="limit" total-items="totalItems" show-num-dropdown="" metadata="{testSuitID : testSuit._id}" get-page-data="viewReport(testSuitID , offset)"></bt-pagination>
+            </div>
+            <!--<bot-chat-scenarios ng-if="loadBotChatScenarios" stream="selectedStream"></bot-chat-scenarios>-->
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="col-xs-12 marginBottom15 noPadding emptyState" ng-show="isUniversalbot && !batchTestingData.testSuits.length">
+  <div class="emptyImage">
+     <img ng-src="{{emptyStateSmallTalk}}" class="emptyImg">
+     <p class="mainTitle">No Test Suits Available</p>
+   </div> 
+   <div class="runtestBtn">
+     <button ng-click="openNewTestSuitModal()" class="btn new-suit"> {{'new_test_suite_label'| i18nString}}</button>
+   </div>
+
+</div> -->
+
+<div class="emptyStateContainer" ng-show="isUniversalbot && !batchTestingData.testSuits.length">
+  <div class="emptyState">
+      <div class="emptyImage">
+          <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+      </div>  
+      <span class="mainTitle">No Test Suits Available</span>
+      <!-- <div class="emptyStateDesc">Description</div> -->
+      <div class="generateBtn">
+          <button class="btn btnSolidBlue" ng-click="openNewTestSuitModal()" ng-class="{'screenFreeze':streamstate.toggleState == 'published'}">{{'new_test_suite_label'| i18nString}}</button>
+          <!-- <button class="btn" target="_blank" >learn more</button> -->
+      </div>
+  </div>
+</div>
+<!-- MODAL -->
+<bot-modal-slider id='batchTestingSlider'>
+   <div class="modalSliderContainer width700">
+
+<!--Header Starts Here -->
+      <div class="modalHeader">
+          <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="fieldData = {};closeNewTestSuiteModal();"  ></i>{{testSuitIDToEdit ? update_test_suite : new_test_suite}}</h4>
+         <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="fieldData = {};closeNewTestSuiteModal();" ></i></span> -->
+      </div>
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+      <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-115" height-property="height"> 
+        <div class="col-xs-12 wf-form noPadding">
+
+          <!-- <div class="unmatchedtext" ng-if="false">
+            <div ng-show="creationErrorIntents.length > 0 ">
+              <p><i class="fa fa-warning"></i>Test suite creation failed</p>
+              <div ng-show="creationErrorIntents.length == 1 ">{{creationError}}</div>
+              <div ng-show="creationErrorIntents.length > 1 "><span><strong>Following intents are not matched, Please verify the uploaded JSON data</strong></span>
+                <div ng-repeat="unmatchedIntent in unmatchedIntents | limitTo:3">
+                  <span>{{unmatchedIntent + " "}}  </span>
+                </div>
+              </div>
+            </div>
+            <div ng-show="creationErrorIntents.length > 5 ">
+              <a data-placement="right" data-toggle="popover" type="button" data-html="true" href="#">{{unmatchedIntents.length-3}}more</a></div>
+            <div>
+              <div id="popover-content" class="hide">
+                <div class="intentslist" ng-repeat="unmatchedIntent in unmatchedIntents track by $index">
+                  <p>{{unmatchedIntent}}</p>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <form name="batchTestingData.newSuitForm" novalidate>
+            <div class="col-xs-12 form-group noPadding">
+
+              <div class="col-xs-12 noPadding">
+                <label class="required-field" tooltip-placement="top" tooltip="">  {{'name_label'| i18nString}} </label>
+              </div>
+              <div class="col-xs-12 noPadding" ng-show="displayMode==='view'">
+                {{batchTestingData.name}}
+              </div>
+              <div class="col-xs-12 noPadding" ng-show="displayMode!=='view'">
+                <input type="text" id="_batchTesting" focus-it="" ng-model="batchTestingData.name" name="name" ng-disabled="batchTestingData.isInMarket" class="form-control"
+                  ng-minlength="1" maxlength="50" required ng-pattern="/^$|^[A-Z a-z 0-9_]+$/" placeholder="{{'enterName'| i18nString}}">
+                <div ng-show="batchTestingData.newSuitForm.name.$dirty">
+                  <div error-alert ng-show="batchTestingData.newSuitForm.name.$error.required" class="text-danger form-error-text">  {{'test_suite_name_is_required'| i18nString}} </div>
+                  <div error-alert ng-show="batchTestingData.newSuitForm.name.$error.minlength" class="text-danger form-error-text">   {{'Generalform_name_invalid'| i18nString}}</div>
+                  <div error-alert ng-show="batchTestingData.newSuitForm.name.$error.pattern" class="text-danger form-error-text">  {{'test_suite_allows'| i18nString}}</div>
+                  <div class="pull-right characters" ng-if="batchTestingData.name.length > 0">{{(50-batchTestingData.name.length)+ char_remaining}}</div>
+                </div>
+                <div error-alert ng-show="duplicateKTName" class="text-danger form-error-text">  {{'duplicateStreamName_error'| i18nString}} </div>
+              </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding">
+              <div class="col-xs-12 noPadding">
+                <label class="required-field" tooltip-placement="top" tooltip="">  {{'tooltip_desc'| i18nString}} </label>
+              </div>
+              <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'">
+                {{batchTestingData.description}}
+              </div>
+              <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+
+                <textarea type="text" id="_batchTesting" rows='2' ng-model="batchTestingData.description" name="description" class="batch-test-ta" ng-pattern="validatePattern"
+                  required placeholder="{{'provide_description_for_testRun'| i18nString}}" ng-minlength="1" maxlength="250"></textarea>
+                <div ng-show="batchTestingData.newSuitForm.description.$dirty">
+                  <div error-alert ng-show="batchTestingData.newSuitForm.description.$error.pattern" class="text-danger form-error-text"> {{'test_suite_desc_err'| i18nString}}</div>
+                  <div error-alert ng-show="batchTestingData.newSuitForm.description.$error.required" class="text-danger form-error-text">  {{'test_suite_desc_required'| i18nString}} </div>
+                  <div class="pull-right characters" ng-if="batchTestingData.description.length > 0">{{(250-batchTestingData.description.length)+ char_remaining}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding">
+              <div class="col-xs-12 noPadding">
+                <label class="required-field">{{'batch_testing_Dataset_type'| i18nString}}</label>
+              </div>
+                <div class="col-xs-6 radioDiv displayWebKitinline noPadding">
+                    <div class="marginRight15">
+                        <label for="dataset.type.json" >
+                            <input ng-checked="true" type="radio" ng-model="dataset.type" name="dataset.type" id="dataset.type.json" class="ng-pristine ng-untouched ng-valid" value="json" checked="checked"><span class="opt-title"> {{'json_label'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <div>
+                        <label for="dataset.type.csv">
+                            <input type="radio" ng-model="dataset.type" name="dataset.type" id="dataset.type.csv"  class="ng-pristine ng-untouched ng-valid" value="csv"><span class="opt-title"> {{'csv_label'| i18nString}}</span> 
+                        </label>
+                    </div>
+                </div>
+              <div class="row col-xs-12 noPadding">
+                <div class="input-group">
+                  <input type="text" id="qafileimport" name="qaFile" class="form-control" placeholder="{{'selectFiletype'| i18nString:({fileType:dataset.type})}}" required readonly
+                    ng-model="batchTestingData.qafile.fileName">
+                  <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}} <i class="fa fa-spinner fa-spin" ng-show="qafileuploading"></i> <input type="file" file-model="batchTestingData.qaFile"
+                      id="qaFile" name="qaFile" required ng-disabled="smBannerUploading" ng-click="$event.value == null;changeFile($event)" on-file-change="uploadCSVorJSONFile"
+                    /></div>
+                </div>
+                <div ng-show="batchTestingData.newSuitForm.qaFile.$dirty">
+                  <div error-alert ng-show="batchTestingData.newSuitForm.qaFile.$error.required" class="text-danger form-error-text">{{data_set + dataset.type + file_is_required}} </div>
+                </div>
+                <div ng-show="bSfileExtensionError" class="text-danger form-error-text"> {{'png_file'| i18nString}} </div>
+                <div ng-show="bSiconRequiredError" class="text-danger form-error-text"> {{'Icon_error'| i18nString}} </div>
+                <div class="uploads" ng-show="batchTestingData.qafile.fileName">
+                  <div class="alert alert-success alert-sm">
+                    <span class="pointer-hand" ng-click="deleteBatchFile()"><i class="btx-close"></i></span>
+                    <span class="content"> {{batchTestingData.qafile.fileName}} </span>
+                  </div>
+                </div>
+              </div>
+                <div class="batchTestingErrordiv">
+                <div ng-if="btCreationErrors.length" class="batchNewTestSuteError">
+                        <p class="testSuitImportErrors" ng-repeat="error in btCreationErrors track by $index">{{error}}</p>
+                </div></div>
+    <div class="hintDiv"  ng-if="dataset.type == 'json'">
+      <span class="icon">
+        <i class="btx-bulb"></i>
+      </span>
+      <span class="description">
+        <p class="step1Note"> {{'dataset_allowed_syntax'| i18nString}}</p>
+          <ul class='hint-ul-align'>
+            <li class='hint-li-align'> {{'file_should_be_json'| i18nString}}</li>
+            <li class='hint-li-align'> {{'file_should_contain_array_utterances'| i18nString}}</li>
+            <!--<li class='hint-li-align'>A maximum of 1000 utterances are allowed in each file</li>-->
+            <li class='hint-li-align'> {{'download'| i18nString}} 
+              <a class='download-underline' download ng-if="stream.type==='universalbot'" target="_blank" href="{{assetsBase}}/files/sampleBatchtestingUniversal.json">{{'sample_json'| i18nString}}</a>
+              <a class='download-underline' download ng-if="stream.type!=='universalbot'" target="_blank" href="{{assetsBase}}/files/sampleBatchtesting.json">{{'sample_json'| i18nString}}</a> 
+            </li>
+          </ul>
+      </span>
+    </div>
+    <div ng-if="dataset.type == 'csv'" class="hintDiv">
+        <span class="icon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></span>
+        <span class="description">
+           <p class="step1Note">{{'dataset_allowed_syntax'| i18nString}} </p>
+            <ul class='hint-ul-align-csv' >
+                <li class='hint-li-align'> {{'file_should_be_csv'| i18nString}}</li>
+                <li ng-if="stream.type==='universalbot'" class='hint-li-align'> {{'file_should_contain_header1'| i18nString}}
+                </li>
+                <li ng-if="stream.type!=='universalbot'" class='hint-li-align'> {{'file_should_contain_header2'| i18nString}}
+                </li>
+                <li class='hint-li-align'> {{'download'| i18nString}}
+                  <a class='download-underline' download ng-if="stream.type==='universalbot'" target="_blank" href="{{assetsBase}}/files/sampleBatchtestingUniversal.csv"> {{'sample_csv'| i18nString}}</a>
+                  <a class='download-underline' download ng-if="stream.type!=='universalbot'" target="_blank" href="{{assetsBase}}/files/sampleBatchtesting.csv"> {{'sample_csv'| i18nString}}</a>
+                </li>
+            </ul>
+        </span>
+    </div>
+
+
+
+
+                  <!-- HINT PROTIP STARTS HERE -->
+     <div class="hintDiv ng-hide width735"  ng-if="dataset.type == 'json'" >
+<!--       <div class='hintDiv ng-hide'> -->
+      <span class="icon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></span>
+      <span class="description">
+         <p class="step1Note"> {{'dataset_allowed_syntax_colon'| i18nString}}
+                    <ul>
+                      <li> {{'file_should_be_json'| i18nString}}</li>
+                      <li> {{'file_should_contain_array_utterances_acc_json'| i18nString}}<br>
+                        <pre ng-if="stream.type!=='universalbot'" class="noborderbgcolor">
+{
+ "testCases": [
+  {
+   "input": "Hello, How are you?",
+   "intent": "intent one"
+  },
+  {
+   "input": "Hello, where are you?",
+   "intent": "intent two"
+  },
+  {
+   "input": "Hello, what are you doing?",
+   "intent": "intent three"
+  }
+ ]    
+}
+                          </pre>
+                          <pre ng-if="stream.type==='universalbot'" class="noborderbgcolor">
+                              {
+                               "testCases": [
+                                {
+                                 "input": "Hello, How are you?",
+                                 "intent": "intent one",
+                                 "botname":"Bot One"
+                                },
+                                {
+                                 "input": "Hello, where are you?",
+                                 "intent": "intent two",
+                                 "botname":"Bot Two"
+                                },
+                                {
+                                 "input": "Hello, what are you doing?",
+                                 "intent": "intent three",
+                                 "botname":"Bot Three"
+                                }
+                               ]    
+                              }
+                          </pre>
+                      </li>
+                      <!--<li>A maximum of 1000 utterances are allowed in each file </li>-->
+                    </ul>
+                  </p>
+      </span>
+    </div>
+                   <div ng-if="dataset.type == 'csv'" class="hintDiv ng-hide width735">
+               <!--      <div class='ng-hide'> -->
+                      <span class="icon"><i class="btx-bulb"></i></span>
+                      <span class="description">
+                         <p class="step1Note">{{'dataset_allowed_syntax_colon'| i18nString}}
+                          <ul ng-if="stream.type!=='universalbot'" >
+                              <li> {{'file_should_be_csv'| i18nString}}</li>
+                              <li> {{'file_should_contain_desc1'| i18nString}}<br>
+                                <pre class="noborderbgcolor">
+                                input,intent
+                                "Hello, How are you?", "intent one"
+                                "Hello, where are you?", "intent two"
+                                "Hello, what are you doing?", "intent three"
+                                </pre>
+                              </li>
+                          </ul>
+                            <ul ng-if="stream.type==='universalbot'">
+                              <li> {{'file_should_be_csv'| i18nString}}</li>
+                              <li> {{'file_should_contain_desc2'| i18nString}}<br>
+                                  <pre class="noborderbgcolor">
+                                  input,intent,botname
+                                  "Hello, How are you?", "intent one", "Bot Name"
+                                  "Hello, where are you?", "intent two", "Bot Name"
+                                  "Hello, what are you doing?", "intent three", "Bot Name"
+                                  </pre>
+                              </li>
+                          </ul>
+                        </p>
+
+                      </span>
+                  </div>
+    <!-- HINT PROTIP ENDS HERE -->
+
+             <!--  <div class="bulbiconwrappernew col-xs-12">
+                <div class="col-xs-1 bulbicon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></div>
+                <div class="col-xs-11">
+                 
+                </div>
+              </div> -->
+            </div>
+        </div>
+          </form>
+      </div>
+      <!-- Body Ends Here -->
+      <!-- Footer Starts Here -->
+      <div class="modalFooter">
+         <button type="submit" class="btn" ng-click="createOrUpdateTestSuit(batchTestingData.newSuitForm)">{{testSuitIDToEdit ? update_label : create_label}}</button>
+         <button type="reset" ng-click="fieldData = {};closeNewTestSuiteModal();" class="btn closeCancel">  {{'cancel'| i18nString}} </button>
+     </div>
+<!-- Footer Ends Here -->
+</div>
+
+
+
+
+  
+</bot-modal-slider>
+
+<!-- end of modal -->
+</div>

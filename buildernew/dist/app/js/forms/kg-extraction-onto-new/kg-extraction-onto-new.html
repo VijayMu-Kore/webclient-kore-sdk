@@ -1,0 +1,442 @@
+<div class="summaryLoader" ng-if="loaderFlag">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">  {{'loading'| i18nString}}</span>
+    </span>
+ </div>
+<div class='row listHeader kgExtractionDetailsModalheader'>
+  <div class="col-xs-6">
+    <span class="iconsDiv "> 
+        <i class="btx-carrot-left" ng-click='goBackFromOntoNew()'></i>
+    </span>
+    <span class="botDetailsDiv">
+      <bt-modal-title taskname="{{callback.openedName}}" fontclass="{{isEditable() ? 'fa-pencil' : 'fa-eye'}}" bot="stream"></bt-modal-title>
+    </span> 
+  </div>
+  <div class="col-xs-6 noPaddingRight">
+      <help-button  help-id="'kgExtract'" class="pull-right" ></help-button>
+  </div>
+</div>
+<div class="anno-left-nav annotate-block" ng-if="pdfAnnoData && pdfAnnoData.fileExtension === 'pdf'">
+    <div ng-click="reAnnotateDocument()">
+        <div class="title">Annotate</div> 
+    </div>
+</div>
+<!-- ONTOLOGY HERE -->
+<div class="modal-body wf-form noPadding kgExtractionDetailsModal " ng-class="{'marginLeft35': pdfAnnoData && pdfAnnoData.fileExtension === 'pdf'}" ng-class="{'allowEdit':isEditable(), 'disableEdit':!isEditable()}">
+    <div class="col-xs-12  ontologyContainerDrag kg-onto-contain-drag" ng-show="!loadingKnowledgeGraph">
+        <div class='row noPadding'>
+                <div class='col-xs-8'>
+                        <div class='row headerFaq align-left'>
+                            <div class="childContainer col-xs-6">
+                                <ul class="nav nav-tabs" id="analyzeTabs">
+                                    <li class="active allQuestions" ng-click="updateCurrentTab('allQues')"><a data-toggle="tab">{{'all_questions'| i18nString}} <span class='count-qna'>({{qna.total}})</span></a></li>
+                                    <li ng-click="updateCurrentTab('addedQues')"><a data-toggle="tab">{{'added'| i18nString}}<span class='count-qna'>({{qna.added}})</span></a></li>
+                                    <li ng-click="updateCurrentTab('notAdded')"><a data-toggle="tab">{{'not_added'| i18nString}}<span class='count-qna'>({{qna.notAdded}})</span></a></li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-6 text-right noPaddingRight">
+
+                                      <textarea tabindex="1" class="synSearchInput" type="text" ng-model="search.faq" ng-init="search.faq=''" ng-keydown='checkFaqSearchInp($event)' ng-keyup='shift.key = false'></textarea>
+                                        <span class='searchDiv'>
+                                            <span class="synSearch">
+                                                <span class="btx-search search-onto" ng-if='search.faq === ""'></span>
+                                                <span class="btx-close times-onto cursor-pointer" ng-if='search.faq !== ""' ng-click='search.faq=""'></span>
+                                            </span> 
+                                        </span> 
+                                        <!-- <span class="dropdown ellipsisDropdown">       
+                                            <a class="dropdown-toggle" type="button" data-toggle="dropdown" ng-click='deleteNIndexDD($event)'>
+                                                <i class="ellipsisDark btx-overflow"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-custom">
+                                              <li><a class="rich-text-nav" tabindex="-1" href="#" ng-click='importFaq()'>{{'import'| i18nString}}</a></li>
+                                              <li><a class="rich-text-nav" tabindex="-1" href="#" ng-click='exportFaq()'>{{'export'| i18nString}}</a></li>
+                                              <li><a class="rich-text-nav" tabindex="-1" href="#" ng-click='delMultipleFAQ()'>{{'delete_selected'| i18nString}}</a></li>
+                                              <li ng-if='callback.fileUrlLink'><a class="rich-text-nav" tabindex="-1" href="{{callback.fileUrlLink}}" target="_blank">{{'view_source'| i18nString}}</a></li>
+                                            </ul>
+                                        </span>  -->
+
+                                        <div class="kr-sg-dropdowns elipse-dropdown-info">    
+                                            <div class="dropdown dropdown-open">
+                                                <button ng-click='deleteNIndexDD($event)' class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                                                    <i class="btx-overflow"></i>
+                                                </button>                                            
+                                                <ul class="dropdown-menu content-menu">                                                      
+                                                  <li><a tabindex="-1" ng-click='importFaq()'>{{'import'| i18nString}}</a></li>
+                                                  <li><a tabindex="-1" ng-click='exportFaq()'>{{'export'| i18nString}}</a></li>
+                                                  <li><a class="delete-text" ng-click='delMultipleFAQ()'>{{'delete_selected'| i18nString}}</a></li>
+                                                  <li ng-if='callback.fileUrlLink'><a tabindex="-1" href="{{callback.fileUrlLink}}" target="_blank" ng-click='delMultipleFAQ()'>{{'view_source'| i18nString}}</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                            </div>
+                            </div> 
+                            <div class="body faqcollection clear-fix">
+                                    <div class="col-xs-12 noBorderTop" ng-show="loadingKnowledgeGraph">
+                                            <div class="log-item">
+                                                <div class="loaderAlert">
+                                                    <div class="alert alert-warning alert-xs text-center" role="alert">
+                                                        <i class="fa-spin fa fa-circle-o-notch"></i> {{'fetching_data'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="col-md-12 noPaddingRight">
+                                        <div class="panel panel-default panel-table BTtoolTip">
+                                          <div ng-show='isFaqEmpty' class='noFaqAvailable'>
+                                            <img ng-src="{{iconContextPath}}/emptyImgNew.svg"  class="emptyImg"/>
+                                            <p class="mainTitle">{{'no_faqs'| i18nString}}</p>
+                                          </div>
+
+                                          <div class="panel-table-header" ng-hide='isFaqEmpty'>
+                                             <div class="row displayBlock checkboxWrap">
+                                                <div class="col-xs-1 noMargin checkbox checkbox-primary">
+                                                   <input class="styled" ng-model="selectKgCheck.all" type="checkbox" name="selectAllKg" id="selectAllKg">
+                                                   <label ng-click="selectAllQna()" for="selectAllKg"></label>
+                                                </div>
+           
+                                                <div class="col-xs-4 faq-head cursor-pointer">
+                                                    <span class='ques-head'>{{'user_question'| i18nString}} </span>
+                                                </div>
+                                                <div class="col-xs-4 faq-head">{{'bot_response'| i18nString}}</div>
+                                                <div class='col-xs-2 faq-head'>{{'bot_status'| i18nString}}</div>
+                                                <div class="col-xs-1"></div>
+                                             </div>
+                                          </div>
+                                          <div class="panel-table-body kgQnaBody kgFaqScroll panelTableBody"  ng-hide="extraction.qas.length===0" perfect-scroll dynamic-height dynaoffset="-150"  id='FaqKgList'>
+                                             <div class="row actionTask faqrow checkboxWrap" faqid="{{qa._id}}" ng-class="{'disableRow' : (dragInProgress && qa.selected), 'faqselected':qa.selected, 'fullrow': qa.fullView}" ng-repeat="qa in extraction.qas"  ng-click="isResponseEllipsis($event, qa) && showFullResponse(qa)" ng-if='current.tag === "allQues" || current.tag === "addedQues" && !qa.status || current.tag === "notAdded" && qa.status'>
+                                                <div class="col-xs-1 noMargin checkbox checkbox-primary qaFinder" qa-id='{{qa._id}}' ng-click='registerDD()'>
+                                                   <input ng-click="$event.stopPropagation();$event.stopImmediatePropagation();registerDD()" class="styled faqCheckBox" ng-model="qa.selected" type="checkbox" name="{{qa._id}}" id="{{qa._id}}">
+                                                   <label ng-click="$event.stopPropagation();$event.stopImmediatePropagation();registerDD()" for="{{qa._id}}"></label>
+                                                </div>
+                    
+                                                <div class="cursor-pointer col-xs-4 questiontext ovalcountcircleHide qaFinder" qa-id='{{qa._id}}'>
+                                                    <span class="ellipsisview" ng-show="!qa.fullView" style="max-height:75px;" 
+                                                    data-ng-bind-html="(qa.question | shortenEllipsisString)" data-ellipsis more-count="{{qa.question.length}}" ng-if="!checkFromSearch()"></span>
+                                                    <span class="fullview" ng-show="qa.fullView || checkFromSearch()" data-ng-bind-html="(qa.question | nextLineFilter)"></span>
+                                                </div>
+                    
+                                                <div class="cursor-pointer col-xs-4 responsetext ovalcountcircleHide qaFinder" qa-id='{{qa._id}}'>
+                                                    <span class="ellipsisview" ng-show="!checkFromSearch() && !qa.fullView" data-ng-bind-html="(qa.answer | shortenEllipsisString)" data-ellipsis more-count="{{qa.answer.length}}" ng-if="!checkFromSearch()"></span>
+                                                    <span class="fullview" data-ng-bind-html="(qa.answer | nextLineFilter)" ng-show="(qa.fullView || checkFromSearch())"></span>
+                                                </div>
+                    
+                                                <div class='col-xs-2 noPaddingLeft qna-state-add' ng-class="{'disable-kg-faq': qa.status}" ng-show='statusEnabled'>
+                                                    <span ng-if='qa.status'>{{'not_added'| i18nString}}</span>
+                                                    <span ng-if='!qa.status'>{{'added'| i18nString}}</span>
+                                                </div>
+                    
+                    
+                                                <div class="cursor-pointer col-xs-1 faqoptions noPadding qaFinder" qa-id='{{qa._id}}'>
+                                                    <span class="editfaq" ng-click='editKgQnA(qa)'>
+                                                        <i class="btx-pencil fa-pencil"></i>
+                                                    </span>
+                                                   <span class="deletefaq" ng-click='deleteKgFAQ(qa)'>
+                                                        <i class="btx-delete-1 fa-trash codeRed"></i>
+                                                    </span>
+                                                </div>
+                    
+                    
+                                                <div class="col-xs-12 editQnAForm" edit-id='{{qa._id}}'>
+                                                    <div class='form-group'>
+                                                        <textarea type='text' ng-model='editQnA.ques' class='inputQues form-control'></textarea>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <textarea type='text' ng-model='editQnA.ans' class='inputAns form-control'></textarea>
+                                                    </div>
+                                                    <div class='row text-right form-group noPadding'>
+                                                        <button class="btn btn-primary" ng-click="saveEditQnA(qa)" ng-disabled="editQnA.ques.length === 0 || editQnA.ans.length === 0">Save</button>
+                                                        <button class='btn closeCancel' ng-click='cancelEditQnA(qa)'>{{'cancel'| i18nString}}</button>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                             <div class='text-center' ng-show='isMoreAvailable && countFaqRow'>
+                                                {{'loading_more'| i18nString}}  <br />
+                                                <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+                                            </div>
+                                          </div>
+<!--                                             <div class="col-xs-12 noQuestionsContainer text-center" ng-show="extraction.qas.length === 0">
+                                                <div class="noQuestionsImage"><img ng-src="{{iconContextPath}}/empty-illustration.png" /></div>
+                                                <div class="noQuestionsContent" ng-if="!checkFromSearch()">
+                                                    <div class="header">No questions added yet</div>
+                                                    <div class="info">
+                                                        Looks like there are no questions added yet.
+                                                    </div>
+                                                </div>
+                                                <div class="noQuestionsContent" ng-if="checkFromSearch()">
+                                                    <div class="header">No search results found</div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+        <div class="col-xs-4 termContainer tCKg">
+            <h5 class="termTitle">{{'knowledge_graph'| i18nString}}</h5>
+            <p class="termDesc">{{'extracted_faqs'| i18nString}}</p>
+            <script type="text/ng-template" id="nodes_renderer_kg_extract.html">
+                <div ng-form name="forms.newTermForm" class="tree-node ontologytreenodeKgExt {{node.class}} node-flag" ng-class="{newterm:node.isNewNode, nochildnode: (!data[0].nodes.length && node.class)}" ui-tree-handle>
+                <div class="tree-node-content-kg">
+
+                <span class="termInfo" ng-click="getQASForThisTerm(this, true)">
+                <div class="nodeNameInput textEllipsis" ng-if="!node.isNewNode" type="text" ng-bind-html="node.label" ></div><!-- | highlight:pattern-->
+                <input class="nodeNameInput termname" maxlength="50" name="termname" ng-if="node.isNewNode" placeholder="{{'add_node'| i18nString}}" type="text" ng-model="node.label" /><!--ng-pattern="validateTermName"-->
+                </span>
+                <span class="termOptions" ng-if="!node.isNewNode" ng-class="{'disablesYNEdit':isThisTermEditable(node)}">            
+                <span class="btn-xs float lock" ng-if="checkLevel(node)" ng-class="{'screenFreeze':(((stream.state==='setup') && stream.sbStreamId) || !isEditable())}" data-nodrag ng-click="unlockTerm(node)" style="margin-right: 8px;"><i class="fa fa-lock"></i></span>
+                <span class="btn-xs float " ng-class="{hide:node.class,'lock':( !checkLevel(node) && stream.type == 'solution' )}" ng-if="node.nodes.length" data-nodrag ng-click="toggleNode(this)" style="margin-right: 8px;float: right"><i
+                class="fa" ng-class="{'fa-caret-down': (node.nodes.length && !collapsed && !node.class), 'fa-caret-right': (node.nodes.length && collapsed && !node.class), 'fa-expand': (node.class && !expandAllNodes), 'fa-compress': (node.class && expandAllNodes)}"></i></span>
+                </span>
+                <span ng-show="node.termUsage == 'mandatory' || node.termUsage == 'organizer'" ng-class="{'mandatoryColor':node.termUsage == 'mandatory', 'organizerColor':node.termUsage == 'organizer'}">
+                <img ng-src="{{$root[node.termUsage]}}"/>
+                </span>
+                </div>
+                </div>
+                <span ng-show="node.isNewNode && !isNewNodeSaveTriggered" class="typeenter">{{'type_and__enter_placeholder'| i18nString}}</span>
+                <span ng-show="node.isNewNode && isNewNodeSaveTriggered" class="typeenter"><i class="fa fa-refresh fa-spin"></i></span>
+                <span ng-show="node.showCheck" class="typeenter"><i class="btx-check fa-check"></i></span>
+                <span ng-show="node.isNewNode && forms.newTermForm.termname.$error.pattern" class="typeenter"><i class="fa fa-warning" data-popover-trigger="mouseenter" popover-placement="right" popover-container="body" popover="{{'term_name_allows'| i18nString}}"></i></span>
+                <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                <li ng-repeat="node in node.nodes" data-expand-on-hover="true"  label="{{node.label}}" ng-class="{'noBorderBottom':node.nodes.length && !collapsed,'disablesNodeLevelEdit':node.editLocked}"
+                class="ontologyuitreenode ontologyKguitreenode marginleft20" nodeID="{{node.nodeId}}" data-nodrag="{{node.isNewNode ? true : !node.parent.length ? true : false}}" nodeLabel="{{node.label}}" ui-tree-node
+                data-scroll-container=".kgContainer" data-collapsed="node.defaultCollapse" ng-if="!collapsed" ng-include="'nodes_renderer_kg_extract.html'"><!--checkCollapsed(this) -->
+                </li>
+                </ol>
+                <!--data-scroll-container=".kgContainer"-->
+            </script>
+            <div class="row"  id="dragbar">
+                <div class="termSearch" ng-show='data[0].nodes.length > 0 || !showNodeSuggestions'>
+                    <input id="termsearchid" focus-it tabindex="1" type="text" ng-keyup="highlightTermText($event)" class="form-control" ng-model="pattern" placeholder="{{'search_term'| i18nString}}">
+                    <span class="searchTxtCount">{{searchTextInfo}}</span>
+                    <i class="fa fa-chevron-up prevSearch" ng-show="(pattern && pattern.trim().length) && matchedTerms.length > 1" ng-class="{'disabled': currentNodeNum <= 0}" ng-click="prevSearch()"></i>
+                    <i class="fa fa-chevron-down nextSearch" ng-show="(pattern && pattern.trim().length) && matchedTerms.length > 1" ng-class="{'disabled': currentNodeNum >= searchDataTemp.length - 1}" ng-click="nextSearch()"></i>
+                    <i  class="searchIconG btx-search" ng-show="!(pattern && pattern.trim().length)"></i>
+                    <!-- <i class="fa fa-search searchicon" ng-show="!(pattern && pattern.trim().length)"></i> -->
+                    <i class="btx-close clearsearch" ng-click="clearSearch()" ng-show="(pattern && pattern.trim().length)"></i>
+                </div>
+                <div class="col-sm-12  kgContainer clt" dynamic-height dynaoffset="-220" height-property="height" perfect-scroll >
+                    <div ui-tree="treeOptions" id="tree-root" data-drag-delay="200" data-empty-placeholder-enabled=true data-dropzone-enabled=true >
+                        <ol ui-tree-nodes ng-model="data" class="noBorder marginleftn20">
+                            <li ng-repeat="node in data" label="{{node.label}}" class="ontologyuitreenode ontologyKguitreenode noPadding" ng-class="{'noBorder': $index == 0, 'noBorderBottom':node.nodes.length,'disablesNodeLevelEdit':node.editLocked}"
+                                nodeID="{{node.nodeId}}"  nodeLabel="{{node.label}}" ui-tree-node data-expand-on-hover="true" data-scroll-container=".kgContainer" data-collapsed="node.defaultCollapse" ng-if="!collapsed"
+                                ng-include="'nodes_renderer_kg_extract.html'"></li>
+                        </ol>
+                        <!--data-scroll-container=".kgContainer"-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="kg-extract-modal" class="modal hide" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'add_prefix'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class='form-group'>
+            <label for='namePrefix'>{{'type_prefix'| i18nString}}</label>
+            <input type='text' id='namePrefix'/>
+        </div>
+        <div class="hintDiv">
+           <span class="icon">
+              <img class="layer"  ng-src="{{assetsBase}}/images/24x29-bulbicon.png">
+           </span>
+           <span class="description text-left">
+            {{'prefixed_questions'| i18nString}}  
+           </span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-cancel" ng-click='closePrefixModal()'>{{'cancel'| i18nString}}</button>
+        <button type="button" class="btn btn-default">{{'save'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade import-utterance-modal import-bot-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" ng-show="importStep == 0">
+            <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import_faqs'| i18nString}}</h4>
+            </div>
+            <div class="modal-body import-bot-modal-body" perfect-scroll>
+                <div class="col-xs-12 ques-block">
+                    <div class="col-xs-12 form-group noPadding fileDropContainer fileDropContainerKGOnto">
+                        <h5 class='ques'>{{'are_you_sure'| i18nString}}</h5>
+                        <p class='ques-text'>{{'existing_faqs'| i18nString}}</p>
+                        <div class="col-xs-12 noteText">
+                        <span class="noteDesc backup">{{'backup'| i18nString}}</span>
+                        <div class="col-xs-12 paddingTop10">
+                            <i class="fa fa-download download" aria-hidden="true"><span class="desc" ng-click="exportFaq(true)">{{'csv_label'| i18nString}}</span></i>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer importFooter">
+                <button type="button" class="kr-sg-button-primary btn_lg mr-10" ng-click="proceedFirst()">{{'proceed'| i18nString}}</button>
+                <button type="button" class="kr-sg-button-secondary btn_lg" ng-click="onCancel()">{{'cancel'| i18nString}}</button>
+            </div>
+        </div>        
+        <div class="modal-content" ng-show="importStep == 1">
+            <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+            </div>
+            <div class="modal-body import-utterances-modal-body" perfect-scroll>
+                <div class="col-xs-12">
+                    <div class="col-xs-12 form-group noPadding fileDropContainer">
+                        <div class="imgCntr"><img class="" ng-src="{{dragDropIcon}}"></img></div>
+                        <div class="dragdrophelp" ng-hide="fileName">
+                            <div class="dragdroptitle">{{'drag_drop'| i18nString}}</div>
+                            <div class="ortitle">{{'or'| i18nString}}</div>
+                            <div class="browsetitle"><span id='kgExtractOntoNewBrowse' class="browseBtn cursor-pointer">{{'browse'| i18nString}}</span></div>
+                        </div>
+                        <div class="uploadedUtteranceFile" ng-show="fileName"><span class="filename">{{fileName}}</span><span class="removefile"><i ng-click="removeFile()" class="fa fa-close"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer importFooter">                
+                <button type="button" ng-disabled="!fileName" class="kr-sg-button-primary btn_lg mr-10" ng-click="startImport()">{{'next'| i18nString}}</button>
+                <button type="button" class="kr-sg-button-secondary btn_lg" ng-click="onCancel()">{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="modal-content" ng-show="importStep == 2">
+            <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+                    <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                        <div class="text-center importimage">
+                            <img ng-src="{{wentWrongIcon}}"></img>
+                        </div>
+                        <div class="importerror">
+                            <div class="title">{{'import_failed'| i18nString}}</div>
+                            <span class="import-error-mess col-xs-12">{{error.mess}}</span>
+                            <div class="errors" ng-repeat="error in errorMsg">
+                                <div class="statementutterdiv col-xs-12">
+                                    <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                                    <span class="erroricon"><i class="fa fa-warning"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer form-group">
+                <button type="button" class="kr-sg-button-primary btn_lg mr-10" ng-click="goToStep(1)">{{'retry'| i18nString}}</button>
+                <button type="button" class="kr-sg-button-secondary btn_lg" ng-click="onCancel()">{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="modal-content" ng-show="importStep == 3">
+            <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import_faq'| i18nString}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+                    <div class="imgCntr"><img class="layer" ng-src="{{importingIcon}}"></img>
+                        </span>
+                    </div>
+                    <div class="importingText mb-15"><span class="processing">{{'importing'| i18nString}}</span></div>
+                    <div class="processAnimationDiv animationwidth col-xs-offset-1 mt-5"></div>
+                </div>
+            </div>
+            <div class="modal-footer form-group">
+                <button type="button" class="kr-sg-button-secondary btn_lg" ng-click="onCancel('fromImport')">{{'cancel'| i18nString}}  </button>
+            </div> 
+        </div>
+        <div class="modal-content" ng-show="importStep == 4">
+            <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+            </div>
+            <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12 form-group noPadding importsuccess">
+                    <div class="text-center importsuccessimage">
+                        <img ng-src="{{importDoneIcon}}" />
+                    </div>
+                    <div class="importsuccessdiv">
+                        <div class="title">{{'import_success'| i18nString}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer form-group">
+                <button type="button" class="kr-sg-button-primary btn_lg" ng-click="onDone()">{{'done'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD TO EXTRACTION MODAL -->
+<div class="modal fade create-copy-modal" id="add-to-extraction-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h4 class="modal-title">{{'Add Extracted FAQ'}}</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    The questions and answers in this document were extracted using annotations. After you add one or more questions, you would not be allowed to re-annotate the document
+                </p>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button type="button" class="btn btn-primary" ng-click="proceedAddToExtractDialog()">{{'proceed'| i18nString}}</button>
+                    <button type="button" class="btn closeCancel" ng-click="cancelAddToExtractDialog()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+<!-- RE_ANNOTATE DOCUMENT -->
+<div class="modal fade create-copy-modal" id="re-annotate-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h4 class="modal-title">{{'Re-annotate Document'}}</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Re-annotation of this document is not allowed as some of extracted questions are already added to the Knowledge Graph. You may choose to create a copy of this document along with the annotations and re-annotate in this copy.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button type="button" class="btn btn-primary" ng-click="createCopyModal()">{{'copy'| i18nString}}</button>
+                    <button type="button" class="btn closeCancel" ng-click="closeReAnnotateDocument()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+<!-- ANNO CREATE COPY MODAL -->
+<div class="modal fade create-copy-modal" id="create-copy-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h4 class="modal-title">{{'Create a copy'}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="kr-sg-input-text">
+                    <div class="label-text">Name of extract</div>
+                    <div class="Helper-text">Provide a name for the new extract to be created</div>
+                    <input type="text" id="extract-name" placeholder="Enter extract name" class="input-text" ng-model="pdfAnnoData.copyFileName" autofocus>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button type="button" class="btn btn-primary" ng-click="createCopy()">{{'proceed'| i18nString}}</button>
+                    <button type="button" class="btn closeCancel" ng-click="createCopyClose()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+</div>

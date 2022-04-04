@@ -1,0 +1,501 @@
+ <div class="modalSliderContainer width700">
+    <form name="ivrDetailForm">
+    <div class="modalHeader channelModalHeader">
+        <h4 class="modal-title" id="gridSystemModalLabel">
+            <i class="btx-close" ng-click="goToHome()"></i>
+            {{'constants.iconsTooltips_ivr'| i18nString}}
+        </h4>
+</div>
+    <div class="modalBody slack-channel-page inner-scroll channelInnerContent" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+        <div class="col-xs-12 step-progress-container">
+            <step-progress steps="steps" on-click="stepClick"></step-progress>
+        </div>
+        <div class="slcakChannels widthseventy">
+            <div class="col-xs-12 noPadding" ng-show="steps[0].active">
+                <div class="col-xs-12 channel-content">
+                    <div class="info text-justify">
+                        <p>{{'Bt_chnl_instruct_webhook_desc'| i18nString}}<br></p>
+                        <!-- <div class="bulbiconwrappernew col-xs-12 marginBottom10-imp">
+                            <div class="col-xs-1 bulbicon step2BulbIcon"><img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></div>
+                            <p class="step2Note"><i><b>Note:</b> You may also use this channel to integrate with any of your systems that support webhook integration.</i></p>
+                        </div> -->
+                        <!-- <div class="helphint-border channelsHint col-xs-12 width100percent">
+                            <div class="col-xs-1 bulbicon step2BulbIcon"><i class="btx-bulb" ></i></div>
+                            <ul class="marginLeft10">
+                                <li class="name">{{'Bt_chnl_instruct_webhook_protip_p1'| i18nString}}</li>
+                                <li class="name">{{'Bt_chnl_instruct_webhook_protip_p2'| i18nString}}</li>
+                            </ul>
+                        </div> -->
+                        <div class="info"> <p class="channelstep">{{'Bt_chnl_instruct_webhook_step1_label'| i18nString}}</p> 
+                            <p>{{'Bt_chnl_instruct_webhook_step1_desc'| i18nString}}</p>
+                        </div>
+                        <div class="info"> <p class="channelstep">{{'Bt_chnl_instruct_webhook_step2_label'| i18nString}}</p> 
+                            <p>{{'Bt_chnl_instruct_webhook_step2_desc1'| i18nString}}</p>
+                            <p>{{'Bt_chnl_instruct_webhook_step2_desc2'| i18nString}}</p>
+                        </div>
+                        <div class="info"> <p class="channelstep">{{'Bt_chnl_instruct_webhook_step3_label'| i18nString}}</p>
+                            <p ng-bind-html="'Bt_chnl_instruct_webhook_step3_desc'| i18nString:({link:'https://github.com/Koredotcom/web-kore-sdk'})">{{'Bt_chnl_instruct_webhook_step3_desc'| i18nString}}</p>
+                        </div>
+                        <div class="info"> <p class="channelstep">{{'Bt_chnl_instruct_webhook_step4_label'| i18nString}}</p> 
+                            <p>{{'Bt_chnl_instruct_webhook_step4_desc'| i18nString}} </p>
+                        </div>
+                        <div class="col-xs-12 noPadding sessionBehavior marginBottom10">
+                            <div class="kr-sg-radiobutton">
+                                <input id="webhookApiV1" ng-value="true" ng-model="showWebhookV1" name="radioWebhookV1" class="radio-custom" type="radio" ng-click="changeWebhook(true)">
+                                <label for="webhookApiV1" class="radio-custom-label">{{'webhook_APi_v1'| i18nString}}</label>
+                            </div> 
+                            <div class="kr-sg-radiobutton">
+                                <input id="webhookApiV2" ng-value="false" ng-model="showWebhookV1" name="radioWebhookV2" class="radio-custom" type="radio" ng-click="changeWebhook(false)">
+                                <label for="webhookApiV2" class="radio-custom-label">{{'webhook_Api_v2'| i18nString}}</label>
+                            </div>
+                        </div>  
+                    </div>
+                    <div ng-show="showWebhookV1">
+                    <div class="info"> <p class="channelstep">{{'Bt_chnl_instruct_webhook_incmg_label'| i18nString}}</p> 
+                        <p>{{'Bt_chnl_instruct_webhook_uincmng_desc'| i18nString}}</p>
+                        <pre>
+    payload : {
+        "session" : { //In case of synchronous if user wants to start a new session.           
+                "new" : true
+                },
+    "message":{
+                    "text" : "Hi",
+                    "attachments" : &lt;attachment links as array of objects. For example: [{"url":"https://- - "}]&gt;
+                },
+        "from" :{
+                "id": &lt;unique-id-of-sender(mandatory)&gt;,
+                "userInfo" :{
+                                "firstName" : &lt;first-name(optional)&gt;,
+                                "lastName" : &lt;second-name(optional)&gt;,
+                                "email" : &lt;email(optional)&gt;
+                            }
+                },
+    "to" :{
+                "id": &lt;unique-id-of-recipient(mandatory)&gt;,
+                "groupInfo" : { //If message comes from a group/team/room                        
+                                "id" : &lt;unique-id-of-group&gt;,
+                                "name": &lt;group-name(optional)&gt;
+                            }
+            }
+                        }
+                                                    </pre>
+                                                </div>
+                            
+                            
+                                                <div class="info"><p class="channelstep">{{'Bt_chnl_instruct_webhook_synres_label'| i18nString}}</p>
+                                                    <pre>
+                            {
+                                "text' : "message"
+                            }
+                                                    </pre>                        
+                            
+                                                </div>
+                            
+                                                <div class="info"><p class="channelstep">{{'Bt_chnl_instruct_webhook_assynres_label'| i18nString}}</p>
+                                                    <pre>
+                            {
+                                 "text" : "message",
+                                 "to" : "to_id",
+                                 "from" : "from_id"
+                            }
+                                                    </pre>      
+                    </div>
+                   </div>
+<div ng-show="!showWebhookV">
+    <div class="info"> <p class="channelstep">{{'Bt_chnl_instruct_webhook_incmg_label'| i18nString}}</p> 
+        <p>{{'Bt_chnl_instruct_webhook_uincmng_desc'| i18nString}}</p>
+                <pre>
+    payload : {
+        "session" : { //In case of synchronous if user wants to start a new session.           
+        "new" : true
+        },
+    "message":{
+            "type": "text/event/template",
+            "val": "Hi/ON_CONNECT/{}",
+            "attachments" : &lt;attachment links as array of objects. [{'url':'https://- - '},{ "fileName": "Kore_ai_Logo%405x.png", "fileType":"image", "fileId": "6163e17bf60e0a7e4799f423" }]&gt;
+            },
+    "from" :{
+        "id": &lt;unique-id-of-sender(mandatory)&gt;,
+        "userInfo" :{
+                        "firstName" : &lt;first-name(optional)&gt;,
+                        "lastName" : &lt;second-name(optional)&gt;,
+                        "email" : &lt;email(optional)&gt;
+                    }
+            },
+    "to" :{
+        "id": &lt;unique-id-of-recipient(mandatory)&gt;,
+        "groupInfo" : { //If message comes from a group/team/room                        
+                        "id" : &lt;unique-id-of-group&gt;,
+                        "name": &lt;group-name(optional)&gt;
+                      } 
+          }
+    "mergeIdentity":<true/false>,
+    "metaTags": {// metatags to be captured for this message
+            "userLevelTags": [&lt;array of objects: To capture user tags&gt;],
+            "sessionLevelTags": [[&lt;array of objects: To capture session tags&gt;]],
+            "messageLevelTags": [&lt;array of objects: To capture message tags&gt;]
+               },
+        "preferredChannelForResponse": "<channel name>" //the channel context to be used to generate a response 
+
+    }
+                                            </pre>
+                                </div>
+            
+            
+                                <div class="info"><p class="channelstep">{{'Bt_chnl_instruct_webhook_synres_label'| i18nString}}</p>
+                                    <pre>
+                                        Sample#1:
+                                        {
+                                           "data": [
+                                               {
+                                                   "type": "text",
+                                                   "val": "Sample message for Message0014",
+                                                   "createdOn": "2021-10-11T13:44:34.675Z"
+                                               }
+                                           ],
+                                           "_v": "v2",
+                                           "pollId": "7b7a5a74d8395a31d2495168a9e6deb6"
+                                        }{
+                                        }
+                                        Sample#2:
+                                        {
+                                             "data": [      
+                                              "type": "template",
+                                              "val": {
+                                               "name":"John",
+                                               "age":30
+                                              },
+                                              "timestamp": "2021-09-15T10:48:04.343Z"
+                                            }
+                                            ],
+                                          "_v": "v2",
+                                          "endOfTask": true,
+                                          "endReason": "Fulfilled",
+                                          "completedTaskId": "dg-f8bea693-fd41-5c48-a1da-b53693ba3eb8",
+                                          "completedTaskName": "dialog1"
+                                        }
+                                        
+                                    </pre>                        
+            
+                                </div>
+            
+                                <div class="info"><p class="channelstep">{{'Bt_chnl_instruct_webhook_assynres_label'| i18nString}}</p>
+                                    <pre>
+                                        Sample#1:
+                                        {
+                                        "to": "to_id",
+                                        "from": "from_id",   
+                                        "data": [
+                                               {
+                                                   "type": "text",
+                                                   "val": "Sample message for Message0014",
+                                                   "createdOn": "2021-10-11T13:44:34.675Z"
+                                               }
+                                           ],
+                                           "_v": "v2",
+                                           "pollId": "7b7a5a74d8395a31d2495168a9e6deb6"
+                                        }{
+                                        }
+                                        Sample#2:
+                                        {
+                                        "to": "to_id",
+                                        "from": "from_id",  	
+                                        "data": [      
+                                              "type": "template",
+                                              "val": {
+                                               "name":"John",
+                                               "age":30
+                                              },
+                                              "timestamp": "2021-09-15T10:48:04.343Z"
+                                            }
+                                            ],
+                                          "_v": "v2",
+                                          "endOfTask": true,
+                                          "endReason": "Fulfilled",
+                                          "completedTaskId": "dg-f8bea693-fd41-5c48-a1da-b53693ba3eb8",
+                                          "completedTaskName": "dialog1"
+                                        }
+                                        
+                                    </pre>      
+    </div>
+</div>
+                    <div class="footer modal-header hide  form-group noMargin" ng-if="displayMode !== 'view'">
+                        <div class="footerSub">
+                            <div class="col-xs-3"><button type="button"  ng-click="$parent.goToHome()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+
+                            <div  class="col-xs-6 lineheight"><div class="form-ctrl-div pull-left hide">
+                                    <button type="button"  class="btn btn-default" ng-click="$parent.goToHome()">{{'exit_label'| i18nString}}</button>
+                                </div>
+                                <div class="help-hint-link"> <a target="_blank"  ng-href="{{$root.helpLinks.ADD_CHANNEL_WFACEBOOK}}">{{'help_withpage_label'| i18nString}}</a> </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="pull-right form-ctrl-div">
+                                    <button type="button"  class="btn btn-primary" ng-click="$parent.next(2)">{{'next'| i18nString}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div></div>
+            <div class="col-xs-12 noPadding" ng-show="steps[1].active">
+                    <div class="channel-content ivr-channel">
+                        <div class="row form-group col-xs-12">
+                            <div  ng-if="apps.length < 1" class="apps-empty">
+                                <div>{{'you_dont_have_any_apps_now'| i18nString}}</div>
+                                <div ng-class="{'screenFreeze':streamState.state=='published'}">{{'bt_chnl_rtm_chnl_create_app'| i18nString}} <a ng-click="createApp()">{{'create_app'| i18nString}}</a></div>
+                                <div ng-bind-html="'read_app_creation'| i18nString:({link:$root.helpLinks.CREATE_APP})"> </div>
+                            </div>
+                            <div class="spinnerChannel" ng-show = "isAppLoading">
+                                <span class="fa fa-spinner fa-spin"></span>
+                                <span class="loadingApps">
+                                    {{'loading_apps'| i18nString}}
+                                </span>
+                            </div>
+                            <div class="col-xs-8 noPadding" ng-show="apps.length > 0 && !isAppLoading" ><label class="required-field">{{'Bt_chnl_config_chnlName_label'| i18nString}}</label></div>
+                            <div ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <input id="channelName" class="form-control" ng-keyup="isFormValid()" maxlength="50" placeholder="{{'enter_chnl_name_placeholder'| i18nString}}" ng-model='channel.displayName' type="text" name = "displayName"/>
+                            </div>
+                            <div ng-show="ivrDetailForm.displayName.$dirty">
+                                <div class="charactersLength" ng-show="channel.displayName.length > 0">{{(50 - channel.displayName.length) + char_remaining}}</div>
+                            </div>
+                            <div class="helphint-border channelsHint col-xs-12 width100percent">
+                                <div class="col-xs-1 bulbicon step2BulbIcon"><i class="btx-bulb" ></i></div>
+                                <ul class="marginLeft10">
+                                    <li class="name">{{'Bt_chnl_config_chnlName_protip_1'| i18nString}}</li>
+                                    <li class="name">{{'Bt_chnl_config_chnlName_protip_2'| i18nString}}</li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-8 noPadding" ng-show="apps.length > 0 && !isAppLoading" ><label class="required-field">{{'Bt_chnl_config_selectApp_label'| i18nString}}</label></div>
+                            <div class="col-xs-8 selectAppInput noPadding" ng-show="apps.length > 0 && !isAppLoading" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <!-- <select id="select2" ui-select2="selectConfig" ng-disabled="isNonEditable" data-placeholder="{{'choose'| i18nString}}" ng-model="selectedApp">
+                                    <option value=""></option>
+                                    <option value="create" ng-class="{'screenFreeze':streamState.state=='published'}">{{'create_app'| i18nString}}</option>
+                                    <optgroup label="{{'select_app'| i18nString}}" >
+                                        <option ng-repeat="app in apps" ng-selected="{{app.clientId === selectedAppView.clientId}}" value="{{app.clientId}}" >{{app.appName}}</option>
+                                    </optgroup>
+                                </select> -->
+                                <div class="kr-sg-dropdowns selectapp-dropdown">                                        
+                                    <div class="dropdown dropdown-open open">
+                                        <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{selectedAppView.appName || 'Choose'}}</button>                                            
+                                        <ul class="dropdown-menu content-menu" perfect-scroll style="max-height: 250px;">
+                                          <li ng-click="createApp()" ng-class="{'screenFreeze':streamState.state=='published'}"><a >{{'create_app'| i18nString}}</a></li>
+                                          <li class="selectTitle">{{'select_app'| i18nString}}</li>
+                                          <li ng-repeat="app in apps" ng-click="onSelectedApp(app.clientId)"><a title="{{app.appName}}">{{app.appName}} <span class="check-icon pull-right" ng-if="selectedAppView.clientId === app.clientId"><i class="btx-check"></i></span></a></li>
+                                        </ul>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 appButtonsDiv" ng-hide="isNonEditable" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <span class="appButtons displayFlex">
+                                    <button ng-show="selectedAppView.clientId" ng-click="editApp()" type="button" class="btn marginRight10" >{{'edit'| i18nString}}</button>
+                                    <button ng-show="apps.length > 0 && !isAppLoading" ng-click="createNewApp()" type="button" class="btn" >{{'add'| i18nString}}</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 ivr-channel" ng-show="selectedAppView.clientId">
+                            <div class="edit-appDetailsDiv mt-0">
+                                <div class="row form-group">
+                                    <div class="form-ele-title col-xs-10" >{{'botName'| i18nString}}</div>
+                                    <div class="col-xs-10 noPaddingRight">
+                                        <input id="botname" readonly class="form-control" ng-model='stream.name' type="text"/>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button  data-clipboard-target="#botname"  type="button" class="btn btn-primary btnCopySave" >{{'copy'| i18nString}}</button>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="form-ele-title col-xs-10" >{{'bot_id'| i18nString}}</div>
+                                    <div class="col-xs-10 noPaddingRight">
+                                        <input readonly id="botId" class="form-control" ng-model='stream._id' type="text"/>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button  data-clipboard-target="#botId"  type="button" class="btn btn-primary btnCopySave" >{{'copy'| i18nString}}</button>
+                                    </div>
+                                </div>
+                                <div class="row form-group" ng-show="selectedAppView.clientId">
+                                    <div class="form-ele-title col-xs-8" >{{'clientId_label'| i18nString}}</div>
+                                    <div class="col-xs-10 noPaddingRight">
+                                            <input id="clientId_addChnl" readonly class="form-control" value='{{selectedAppView.clientId}}' type="text"/>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button  data-clipboard-target="#clientId_addChnl"  type="button" class="btn btn-primary btnCopySave" >{{'copy'| i18nString}}</button>
+                                    </div>
+                                </div>
+                                <div class="row form-group"  ng-show="selectedAppView.clientId">
+                                    <div class="form-ele-title col-xs-8" >{{'clientsecret_label'| i18nString}}</div>
+                                    <div class="col-xs-10 noPaddingRight">
+                                        <div>
+                                            <input ng-show="secretKeyShown" id="secretKeyId_addChnl" readonly class="form-control" value='{{selectedAppView.clientSecret}}' type="text"/>
+                                            <input ng-hide="secretKeyShown" disabled                  class="form-control" value='{{selectedAppView.clientSecret| mask}}' type="text"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button ng-show="secretKeyShown" data-clipboard-target="#secretKeyId_addChnl"  type="button" class="btn btn-primary btnCopySave" >{{'copy'| i18nString}}</button>
+                                        <button ng-hide="secretKeyShown" ng-click="showHideSecret()" type="button" class="btn btn-primary btnCopySave" >{{'view'| i18nString}}</button>
+                                    </div>
+                                    <div class="col-xs-12 JSONDiv">
+                                        <span class="">{{'json_JWE_link'| i18nString}}</span><span data-toggle="modal" data-target="#JWTToken" class="JSONText">{{'here'| i18nString}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 channel-content" ng-show="apps.length > 0 && !isAppLoading" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="col-xs-12 form-group noPadding info mb-5">
+                            <label>{{'Bt_chnl_config_integration_label'| i18nString}}</label>
+                            <div class="radioDiv">
+                                <div>
+                                    <label for="channel.isAsync.no">
+                                        <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.isAsync" name="channel.isAsync" id="channel.isAsync.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked">
+                                        <span class="opt-title">{{'Bt_chnl_config_integration_synch_label'| i18nString}}</span> 
+                                    </label>
+                                </div>
+                                <div >
+                                    <label for="channel.isAsync.yes">
+                                        <input ng-value="true" type="radio" ng-model="channel.isAsync" name="channel.isAsync" id="channel.isAsync.yes"  class="ng-pristine ng-untouched ng-valid" value="true">
+                                        <span class="opt-title">{{'Bt_chnl_config_integration_asynch_label'| i18nString}}</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if=channel.isAsync class="col-xs-12 channel-content" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="col-xs-12 row form-group noPadding mb-5">
+                            <div class="col-xs-10 noPadding">
+                                <label class="required-field">{{'post_url_uppercase'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12 noPadding">{{'posturl_async_integration'| i18nString}} </div>
+                            <div class="col-xs-12 paddingTopBottom10">
+                                <input type="text" class="form-control" ng-model="channel.post_url" name="post_url" required="">
+                                <div  ng-show="ivrDetailForm.post_url.$dirty || post_urlRequired">
+                                    <div error-alert ng-show="ivrDetailForm.post_url.$error.required" class="text-danger">
+                                        {{'please_provide_post_url'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-0 col-xs-12 noPadding">
+                            <div class="col-xs-12 noPadding">
+                                <label class="required-field">{{'acesstoken_label'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12 noPadding">{{'bt_chnl_ivr_access_token_desc'| i18nString}} </div>
+                            <div class="col-xs-12 form-group paddingTopBottom10 mb-0">
+                                <input type="text" class="form-control" ng-model="channel.app_token" name="appToken" required>
+                                <div  ng-show="ivrDetailForm.appToken.$dirty">
+                                    <div error-alert ng-show="ivrDetailForm.appToken.$error.required" class="text-danger">
+                                        {{'acesstoken_err'| i18nString}}
+                                    </div>
+                                </div>
+                            </div>                           
+                        </div>
+
+                    </div>
+
+                <div class="col-xs-12 channel-content" ng-show="apps.length > 0 && !isAppLoading" ng-if="showURL">
+                    <div class="col-xs-12 noPadding">
+                        <div class="col-xs-12 form-group noPadding mb-5">
+                            <div class="col-xs-10 noPadding">
+                                <label>{{'webhook_v1'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12 noPadding">{{'webhook_v1_desc'| i18nString}}</div>
+                            <div class="col-xs-11 paddingTopBottom10">
+                                <div class="input-group">
+                                    <input type="text" id="ivroauthuri{{step.step}}" class="form-control" ng-model="channel.oAuthRedirectURI" ng-readonly="true" name="appName">
+                                    <div class="input-group-addon pointer-hand" data-clipboard-target="#ivroauthuri{{step.step}}"> {{'copy'| i18nString}} </div>  
+                                </div> 
+                                <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}<span></div>              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 channel-content" ng-show="apps.length > 0 && !isAppLoading" ng-if="showURL">
+                    <div class="col-xs-12 noPadding">
+                        <div class="col-xs-12 form-group noPadding mb-5">
+                            <div class="col-xs-10 noPadding">
+                                <label>{{'webhook_v2'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-10 noPadding">{{'webhook_v2_desc'| i18nString}}</div>
+                            <div class="col-xs-11 paddingTopBottom10">
+                                <div class="input-group">
+                                    <input type="text" id="ivroauthuriv2{{step.step}}" class="form-control" ng-model="channel.url_v2" ng-readonly="true" name="appName2">
+                                    <div class="input-group-addon pointer-hand" data-clipboard-target="#ivroauthuriv2{{step.step}}"> {{'copy'| i18nString}} </div>  
+                                </div> 
+                                <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}<span></div>              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 channel-content" ng-show="apps.length > 0 && !isAppLoading" ng-class="{'screenFreeze':streamState.state=='published'}">
+      
+                    <div class="col-xs-12 form-group noPadding info">
+                        <label>{{'enable_chnl'| i18nString}}</label>
+                        <div class="radioDiv">
+                            <div>
+                                <label for="channel.enable.no">
+                                    <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                                </label>
+                            </div>
+                            <div >
+                                <label for="channel.enable.yes">
+                                    <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true">
+                                    <span class="opt-title">{{'yes'| i18nString}}</span> 
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="footer modal-header hide form-group noMargin" ng-if="displayMode !== 'view'">
+                     <div class="footerSub">
+                         <div class="col-xs-3"><button type="button"  ng-click="$parent.goToHome()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+                         <div  class="col-xs-6 lineheight">
+                             <div class="form-ctrl-div pull-left hide">
+                                 <button type="button"  class="btn btn-default" ng-click="$parent.goToHome()">{{'exit'| i18nString}}</button>
+                             </div>
+                             <div class="help-hint-link"> <a target="_blank"  ng-href="{{$root.helpLinks.ADD_CHANNEL_WFACEBOOK}}">{{'help_withpage_label'| i18nString}}</a> </div>
+                         </div>
+                         <div class="col-xs-3">
+                             <div class="pull-right form-ctrl-div">
+                                 <button type="button"  class="btn btn-default " ng-click="$parent.save(ivrDetailForm)">{{'save'| i18nString}}</button>
+                                 <button type="button"  class="btn btn-primary " ng-disabled="ivrDetailForm.$invalid" ng-click="$parent.next(3)">{{'next'| i18nString}}</button>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modalFooter">
+        <button type="button" class="btn" ng-show="steps[0].active" ng-click="next(2)">{{'next'| i18nString}}</button>
+        <button type="button" class="btn" ng-click="save(ivrDetailForm)" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+        <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+    </div>
+    </form>
+</div>
+
+
+<div id="JWTToken" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{{'jwe_key'| i18nString}}</h4>
+        </div>
+        <div class="modal-body">
+          <div class='csCode' id= "copyJWT">
+<pre>
+{
+        e:{{JWEPublicKey.e}}
+        kid:{{JWEPublicKey.kid}}
+        kty:{{JWEPublicKey.kty}}
+        n:{{JWEPublicKey.n}}
+}
+</pre>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" ng-click="copyJWTToken('copyJWT')">{{'copy'| i18nString}}</button>
+          <button type="button" data-dismiss="modal" class="btn closeCancel">{{'close'| i18nString}}</button>
+        </div>
+      </div>
+    </div>
+</div>

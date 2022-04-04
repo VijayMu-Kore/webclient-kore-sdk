@@ -1,0 +1,524 @@
+ <form name="streamGeneralForm" class="wf-form" novalidate ng-show="!loadingGeneralSettings">
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">{{'generalSettings'| i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            <div class="searchComponent displayNone">
+                <input  placeholder="Search">
+                <i class="btx-search"></i>
+                <i class="btx-close displayNone"></i>
+            </div>
+            <div class="creationButton borderBtn displayNone">
+                <button class="titleBTN">button</button>
+            </div>
+            <div class="titleDropdown displayNone">
+                <div class="dropdown">
+                    <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Dropdown name
+                        <i class="btx-carrot-up"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item" >Option Two</li>                       
+                     </ul>
+                </div>
+            </div>
+            <div class="titleOverflow displayNone">
+                <div class="dropdown">
+                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                        </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item" >Option Two</li>                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <fieldset class="row">
+        <div class="generalSettings" ng-class="{'read-only-wrap':callback.modeOfAccess === 'VIEW'}">
+            <div class="col-xs-12 form-group noPadding botName">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="">  {{'botName'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode ==='view'">
+                    {{newStreamData.name}}
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode !=='view'">
+                    <input type="text" id ="_botName" ng-model="newStreamData.name" name="name" ng-disabled="newStreamData.isInMarket" class="form-control" ng-focus="showBotNameHint = true"  ng-blur="showBotNameHint = false" ng-minlength="1" maxlength="50" required ng-pattern="validateBotName" placeholder=" {{'give_bot_name'| i18nString}}">
+                    <div  ng-show="streamGeneralForm.name.$dirty">
+                        <div error-alert  ng-show="streamGeneralForm.name.$error.required" class="text-danger form-error-text">  {{'Generalform_name_error'| i18nString}} </div>
+                        <div error-alert ng-show="streamGeneralForm.name.$error.minlength" class="text-danger form-error-text">  {{'Generalform_name_invalid'| i18nString}} </div>
+                        <div error-alert ng-show="streamGeneralForm.name.$error.pattern" class="text-danger form-error-text"> {{'Generalform_name_pattern'| i18nString}}</div>
+                        <div class="charactersLimit limitSet " ng-if="newStreamData.name.length > 0">{{(50-newStreamData.name.length)+ char_remaining}}</div>
+                    </div>
+                    <div error-alert ng-show="duplicateStreamName" class="text-danger form-error-text"> {{'duplicateStreamName_error'| i18nString}}</div>
+                    <div ng-show="showBotNameHint" class="botNameHintDiv">
+                        <span class="task-icon"><img class="bulbIconLayer" ng-src="{{bulbSvg}}"/></span>
+                        <span class="fs13 botNameHint"> {{'botNameHint'| i18nString}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding botDescription">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="">  {{'tooltip_desc'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.description}}
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                    <textarea rows="3" ng-model="newStreamData.description" placeholder=" {{'desc_bot'| i18nString}}" class="form-control" name="description" ng-minlength="1" maxlength="2048" required></textarea>
+                    <div ng-show="streamGeneralForm.description.$dirty">
+                        <div error-alert ng-show="streamGeneralForm.description.$error.required" class="text-danger form-error-text">  {{'Description_error'| i18nString}} </div>
+                        <div class="pull-right" ng-if="newStreamData.description.length > 0">{{(2048-newStreamData.description.length)+ char_remaining}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding botIcon">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="{{'png_only_recommended'| i18nString}}">  {{'tooltip_icon'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 noPadding"  ng-show="displayMode === 'view'">
+                    <img class="img-thumbnail" width="70px" height="70px" ng-src="{{newStreamData.icon.url}}"/>
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                    <div class="input-group">
+                        <input name="iconFile" type="text" class="form-control" placeholder=" {{'upload_icon'| i18nString}}" readonly ng-model="newStreamData.icon.fileName" required>
+                        <div class="input-group-addon btn-file">  {{'choose_file'| i18nString}} <i class="fa fa-spinner fa-spin" ng-show="iconUploading"></i><input type="file" file-model="newStreamData.iconFile" id="iconFile" name="iconFile" required ng-disabled="iconUploading || newStreamData.icon.fileId || callback.modeOfAccess === 'VIEW' " on-file-change="uploadStreamIcon"/></div>
+                    </div>
+                    <div ng-show="streamGeneralForm.iconFile.$dirty">
+                        <div error-alert ng-show="streamGeneralForm.iconFile.$error.required" class="text-danger form-error-text"> {{'icon_req'| i18nString}} </div>
+                    </div>
+                    <div ng-show="fileExtensionError" class="text-danger form-error-text">  {{'png_file'| i18nString}} </div>
+                    <div ng-show="iconRequiredError" class="text-danger form-error-text">  {{'icon_req'| i18nString}} </div>
+                    <div class="uploads" ng-show="newStreamData.icon.fileName">
+                        <div class="alert alert-success alert-sm">
+                            <span class="pointer-hand" ng-click="deleteStreamIcon()"><i class="btx-close"></i></span>
+                            <span class="content"> {{newStreamData.icon.fileName}} </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-hide="true" class="col-xs-12 form-group noPadding streamColor">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="{{'use_light_colors'| i18nString}}">  {{'color'| i18nString}} </label>
+                </div>
+                <div class="col-xs-10 noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.color}}
+                </div>
+                <div class="col-xs-5" ng-show="displayMode !== 'view'">
+                    <input type="text" color-picker class="form-control" ng-model="newStreamData.color" name="color" required>
+                    <input type="text" class="form-control colorCode" placeholder="{{'select_color'| i18nString}}" ng-model="newStreamData.color" name="streamColor" required>
+                    <div ng-show="streamGeneralForm.color.$dirty">
+                        <div error-alert ng-show="streamGeneralForm.color.$error.required" class="text-danger form-error-text">  {{'color_info'| i18nString}} </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 form-group noPadding" ng-if="false">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field" >  {{'large_banner'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <div class="row col-xs-12 radioDiv noPadding">
+                        <div>
+                            <label  for="bbimg">
+                                <input type="radio" ng-model="newStreamData.bbannerchoice" value="image" id="bbimg"> <span class="opt-title" tooltip-placement="right" tooltip=" {{'img_tooltip'| i18nString}}">{{'image'| i18nString}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label  for="bbcolor">
+                                <input type="radio" ng-model="newStreamData.bbannerchoice" value="color" id="bbcolor"> <span class="opt-title" tooltip-placement="right" tooltip="{{'bot_color'| i18nString}}"> {{'use_color'| i18nString}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="row col-xs-12 noPadding" ng-if="newStreamData.bbannerchoice == 'image'">
+                        <!-- <br> -->
+                        <div class="input-group">
+                            <input type="text" name="bigBannerFile" class="form-control" placeholder=" {{'large_banner_place'| i18nString}}" required readonly ng-model="newStreamData.bBanner.fileName">
+                            <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}}<i class="fa fa-spinner fa-spin" ng-show="bigBannerUploading"></i><input type="file" file-model="newStreamData.bigBannerFile" id="bigBannerFile" name="bigBannerFile" required ng-disabled="bigBannerUploading" on-file-change="uploadLargeStreamBanner"/></div>
+                        </div>
+                        <div ng-show="streamGeneralForm.bigBannerFile.$dirty">
+                            <div error-alert ng-show="streamGeneralForm.bigBannerFile.$error.required" class="text-danger form-error-text">  {{'large_banner_req'| i18nString}} </div>
+                        </div>
+                        <div ng-show="bBfileExtensionError" class="text-danger form-error-text">  {{'png_file'| i18nString} </div>
+                        <div ng-show="bBiconRequiredError" class="text-danger form-error-text">  {{'icon_req'| i18nString}} </div>
+                        <div class="uploads" ng-show="newStreamData.bBanner.fileName">
+                            <div class="alert alert-success alert-sm">
+                                <span class="pointer-hand" ng-click="deleteStreamBBanner()"><i class="btx-close"></i></span>
+                                <span class="content"> {{newStreamData.bBanner.fileName}} </span>
+                            </div>
+                        </div>
+                    </div>
+          
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding" ng-if="false">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field"> {{'small_banner'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <div class="row col-xs-12 radioDiv noPadding">
+                        <div>
+                            <label  for="sbimg">
+                                <input type="radio" ng-model="newStreamData.sbannerchoice" value="image" id="sbimg"><span class="opt-title" tooltip-placement="right" tooltip="{{'png_file_pixel'| i18nString}}">{{'image'| i18nString}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label  for="sbcolor">
+                                <input type="radio" ng-model="newStreamData.sbannerchoice" value="color" id="sbcolor"><span class="opt-title"  tooltip-placement="right" tooltip="{{'bot_color'| i18nString}}">{{'use_color'| i18nString}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row col-xs-12 noPadding"  ng-if="newStreamData.sbannerchoice=='image'" >
+                        <div class="input-group">
+                            <input type="text" name="smBannerFile" class="form-control" placeholder=" {{'small_banner_place'| i18nString}}" required readonly ng-model="newStreamData.sBanner.fileName">
+                            <div class="input-group-addon btn-file">  {{'choose_file'| i18nString}} <i class="fa fa-spinner fa-spin" ng-show="smBannerUploading"></i> <input type="file" file-model="newStreamData.smBannerFile" id="smBannerFile" name="smBannerFile" required ng-disabled="smBannerUploading" on-file-change="uploadSmallStreamBanner"/></div>
+                        </div>
+                        <div ng-show="streamGeneralForm.smBannerFile.$dirty">
+                            <div error-alert ng-show="streamGeneralForm.smBannerFile.$error.required" class="text-danger form-error-text">  {{'Small_banner_error'| i18nString}} </div>
+                        </div>
+                        <div ng-show="bSfileExtensionError" class="text-danger form-error-text">  {{'png_file'| i18nString}} </div>
+                        <div ng-show="bSiconRequiredError" class="text-danger form-error-text">  {{'Icon_error'| i18nString}} </div>
+                        <div class="uploads" ng-show="newStreamData.sBanner.fileName">
+                            <div class="alert alert-success alert-sm">
+                                <span class="pointer-hand" ng-click="deleteStreamSBanner()"><i class="btx-close"></i></span>
+                                <span class="content"> {{newStreamData.sBanner.fileName}} </span>
+                            </div>
+                        </div>
+                    </div>
+         
+                </div>
+            </div>
+
+            <div class="col-xs-12 form-group noPadding" ng-if="false">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="{{'category_tooltip'| i18nString}}">  {{'Category'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.category.name}}
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                    <select multiple class="full-width" ui-select2="categoryConfig" ng-model="newStreamData.categoryIds"  id="category" name="category" required>
+                        <option ng-repeat="category in categories" ng-if="!category.subCategories" value="{{category._id}}">{{category.name}}</option>
+                    </select>
+                    <div ng-show="streamGeneralForm.category.$dirty">
+                        <div error-alert ng-show="streamGeneralForm.category.$error.required" class="text-danger form-error-text"> {{'Category_error'| i18nString}} </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--removed condition for targetAudience -->
+            <!--<div class="col-xs-12 form-group noPadding targetAudience" ng-if="newStreamData.purposeisRequired">-->
+            <div class="col-xs-12 form-group noPadding targetAudience">
+                <div class="col-xs-12 noPadding">
+                    <label class="required-field"  tooltip-placement="right"> {{'Target_audience'| i18nString}}</label>
+                   <!--  <label class="required-field"  tooltip-placement="right" tooltip="Bots for Employee are managed and deployed used within your organization only.  Bots for Consumer can be deployed for everyone.">TARGET AUDIENCE</label> -->
+                </div>
+                <div class="col-xs-12 radioDiv noPadding" ng-class="{'disabled':newStreamData.isInMarket}" ng-init="newStreamData.purpose=newStreamData.purpose||'employee'">
+                    <div>
+                    <label ng-if="!newStreamData.isInMarket" for="purposeCustomor">
+                        <input ng-disabled="newStreamData.isInMarket || callback.modeOfAccess === 'VIEW'"  type="radio" ng-model="newStreamData.purpose" ng-change="purposeChanged()" id="purposeCustomor" value="customer" name="purpose" required/> <span class="text-transform-init font-weight-init "> {{'General_public'| i18nString}}</span>
+                    </label>
+                         </div>
+                     <div>
+                    <label ng-if="newStreamData.isInMarket" for="purposeCustomor">
+                        <input ng-disabled="newStreamData.isInMarket"  type="radio" ng-model="newStreamData.purpose" ng-change="purposeChanged()" id="purposeCustomor" value="customer" name="purpose"/> <span class="text-transform-init font-weight-init "> {{'General_public'| i18nString}}</span>
+                    </label>
+                    </div>
+                   <div>
+                    <label ng-if="!newStreamData.isInMarket" for="purposeEmployee">
+                        <input ng-disabled="newStreamData.isInMarket"  type="radio" ng-model="newStreamData.purpose" ng-change="purposeChanged()" id="purposeEmployee" value="employee" name="purpose" required/> <span class="text-transform-init font-weight-init "> {{'Enterprise_users'| i18nString}}</span>
+                    </label>
+                        </div>
+                     <div>
+                    <label ng-if="newStreamData.isInMarket" for="purposeEmployee" class="mb-0">
+                        <input ng-disabled="newStreamData.isInMarket"  type="radio" ng-model="newStreamData.purpose" ng-change="purposeChanged()" id="purposeEmployee" value="employee" name="purpose"/> <span class="text-transform-init font-weight-init "> {{'Enterprise_users'| i18nString}}</span>
+                    </label>
+                         </div>
+                    
+                    <div ng-show="streamGeneralForm.purpose.$dirty">
+                        <div error-alert ng-show="streamGeneralForm.purpose.$error.required" class="text-danger form-error-text">  {{'Purpose_of_use_value'| i18nString}}</div>
+                    </div>
+                    <div error-alert ng-show="universalBotPurposeError" class="text-danger form-error-text ml-25 mb-5"> {{universalBotPurposeErrorMessage}} </div>
+                    <div class="tagetAudienceDiv m-0">
+                        <span class="infoIcon"><i class="btx-error-info" aria-hidden="true"></i></span>
+                        <span class="fs13 tagetAudienceHint">{{newStreamData.type === 'universalbot' ? If_universalbot : not_universalbot}}</span>
+                    </div>  
+                </div>
+            </div>
+
+            <language-selector from-settings="true" language="language">
+                
+            </language-selector>
+
+
+
+            <div class="col-xs-12 form-group welcomeMessageContainer" ng-hide="true">
+                <div class="col-xs-12  noPadding ">
+                    <label tooltip-placement="right" ng-class="{'noMessagesLabelblock':welcomeMessages.length===0}"> {{'welcome_msg'| i18nString}}</label>
+                    <div class="addResponseBtn" ng-class="{'noMessages':welcomeMessages.length===0}" ng-click="editResponse(-1)" ng-disabled="callback.modeOfAccess === 'VIEW'"> {{'Add_response'| i18nString}}</div>
+                    <div ng-if="stream.ivrSettings && stream.ivrSettings.enable" ng-class="{'noMessages':welcomeMessages.length===0}" class="addResponseBtn" ng-click="selectMessage(message);editIVRSettings(message)"><i class="fa  fa-plus"></i>{{stream.welcomeIvrOptions? edit :add_label}}  IVR Settings</div>
+                </div>
+                <div class="welcomeMessageDiv" ng-repeat="prompt in welcomeMessages track by $index">
+                    <div class="msgDiv">
+                        <span class="imgDivCircle">
+                            <span ng-if="prompt.channel==='default'" class="Oval-15 default"  tooltip-placement="right" tooltip="{{'all_channels'| i18nString}}"><span class="channelText"> {{'all_label'| i18nString}}</span></span>
+                            <span ng-if="prompt.channel!=='default' && prompt.channel!=='skype' && prompt.channel!=='wfacebook' && prompt.channel !== 'googleactions' && prompt.channel !== 'hangoutchat'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{_constants_.iconsTooltips[prompt.channel]}}"><img class="img fa fa-{{prompt.channel}}" ng-src="{{icons[prompt.channel]}}" aria-hidden="true"></span>
+                            <span ng-if="prompt.channel === 'googleactions'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/google-home.svg"><div class="property-panelIconTitle"> {{'google_ass'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                            <span ng-if="prompt.channel === 'hangoutchat'" class="Oval-15 no-background"><img class="img" ng-src="{{assetsBase}}images/hangoutchat.png"><div class="property-panelIconTitle"> {{'hangouts'| i18nString}}<i class="fa  fa-caret-left leftArrow"></i></div> </span>
+                            <span ng-if="prompt.channel!=='default' && prompt.channel==='skype' && prompt.channel!=='wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{_constants_.iconsTooltips[prompt.channel]}}"><span class="img fa fa-{{prompt.channel}}" ng-src="{{icons[prompt.channel]}}" aria-hidden="true"></span> </span>
+                            <span ng-if="prompt.channel==='wfacebook'" class="Oval-15 no-background" tooltip-placement="right" tooltip="{{prompt.isMention?_constants_.iconsTooltips['Workplace For Groups']:_constants_.iconsTooltips['Workplace For Chat']}}"><img class="img fa fa-{{prompt.channel}}" ng-src="{{icons[prompt.channel]}}" aria-hidden="true"></span>
+                        </span>
+                        <span class="msgDecription">{{prompt.type=='uxmap'? js_msg :decodeJS(prompt.text)}}</span>
+                        <span class="delete fa fa-trash" ng-click="welcomeMessagecb.deleteMessage(welcomeMessages,$index)"></span>
+                        <span class="edit fa fa-pencil" ng-click="editResponse($index)"></span>
+                    </div>
+                </div>
+                <bt-welcome-message cb="welcomeMessagecb"></bt-welcome-message>
+            </div>
+
+            <bot-modal-slider id="IVRSettingsSlider">
+                <div class="modalSliderContainer width700">
+                    <!--Header Starts Here -->
+                    <div class="modalHeader">
+                        <h4 class="modal-title"> {{'Ivr_settings_modal_title'| i18nString}}</h4>
+                        <span aria-hidden="true"><i class="fa fa-close" ng-click="closeIVRSettings()" ></i></span>
+                    </div>
+                    <!-- Header Starts Here -->
+
+                    <!-- Body Starts Here -->
+                    <div class="modalBody add-message" perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+                        <ivr-settings ng-if="editIVR" ivr-options="ivrOptions" bridge="ivrBridge" callback="cb"></ivr-settings>
+                        </div>
+                    <!-- Body Ends Here -->
+
+                    <!-- Footer Starts Here -->
+                    <div class="modalFooter">
+                        <button type="button" class="btn" ng-click="saveIVRSettings()"  ng-disabled="callback.modeOfAccess === 'VIEW'"> {{'save'| i18nString}}</button>
+                        <button type="button" class="btn closeCancel" ng-click="closeIVRSettings()"> {{'cancel'| i18nString}}</button>
+                     </div>
+                </div>
+                    <!-- Footer Ends Here -->
+                </bot-modal-slider>
+ 
+            <div class="col-xs-12 form-group noPadding botId">
+                <div class="col-xs-12 noPadding">
+                    <label> {{'Bot_id'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-class="{'noPadding':fromSettings === 'false'}">
+                    <div class="input-group">
+                        <input type="text" id="bot_id" class="form-control width100percent" ng-model="newStreamData._id" ng-readonly="true">
+                        <div class="input-group-addon pointer-hand" data-clipboard-target="#bot_id">  {{'copy'| i18nString}} </div>  
+                    </div> 
+                    <div ng-show="alertFieldsForm.language.$dirty"><span class="pull-right"> {{'press_c'| i18nString}}</span></div>              
+                </div>
+            </div>
+            
+            <div class="col-xs-12 form-group namespace-toggle noPadding" ng-if="stream.type!=='universalbot'">
+                <label>
+                    {{'var_namespace'| i18nString}}
+                </label>
+                <div class="desc">
+                    {{'var_namespace_desc'| i18nString}}
+                    <a class="redirect cursor-pointer" target="_blank" href="https://developer.kore.ai/docs/bots/bot-settings/general-settings/">{{'knowMore'| i18nString}}</a>
+
+                </div>
+                <toggle-switch ng-model="stream.enableNameSpace" ng-change="showModal()" class="pull-left" ng-class="{'screenFreeze':(selectedStreamState=='published') || (callback.modeOfAccess === 'VIEW')}">
+                </toggle-switch>
+            </div>
+
+
+            <div class="col-xs-12 form-group pointerEventNone Subdomain noPadding" ng-hide="newStreamData.type==='universalbot'">
+                <div class="col-xs-12  noPadding">
+                    <label  tooltip-placement="right" tooltip="{{'bot_sub_domain'| i18nString}}"> {{'sub_domain'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12  noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.hasTenant}}
+                </div>
+                <div class="col-xs-12  noPadding radioDiv" ng-class="{'screenFreeze':(selectedStreamState=='published') || (callback.modeOfAccess === 'VIEW')}">
+                 <div>
+                    <div>
+                            <label for="newStreamData.hasTenant.no">
+                                <input ng-value='false' ng-checked="true" type="radio"  ng-model="newStreamData.hasTenant" name="newStreamData.hasTenant" id="newStreamData.hasTenant.no" ><span class="opt-title"> {{'tenancy_bot'| i18nString}}</span> 
+                            </label>
+                        </div>
+                        <div>
+                            <label for="newStreamData.hasTenant.yes" class="noMargin">
+                                <input ng-value='true'  type="radio"   ng-model="newStreamData.hasTenant" name="newStreamData.hasTenant" id="newStreamData.hasTenant.yes"><span class="opt-title"> {{'tenancy_auth'| i18nString}}</span> 
+                            </label>
+                        </div>
+
+
+                    </div>
+
+                      <div class="col-xs-12  form-group col-wrapper subFormgrayBG leftwidth90" ng-show="newStreamData.hasTenant">
+                        <div class="col-xs-12  noPadding form-group col-wrapper pointerEventNone">
+                            <label class="required-field" tooltip-placement="right" tooltip="{{'help_hint_tooltip'| i18nString}}">  {{'help_hint'| i18nString}} </label>
+                            <input ng-show="displayMode !== 'view'" class="form-control" type="text" ng-model="newStreamData.helpHint" placeholder="{{'provide_hint'| i18nString}}" ng-required="newStreamData.hasTenant" id="tenantUrl" name="tenantUrl"/>
+                            <label ng-show="displayMode === 'view'" class="form-control">{{newStreamData.helpHint}}</label>
+                            <div ng-show="streamAdvancedForm.tenantUrl.$dirty">
+                                <div error-alert ng-show="streamAdvancedForm.tenantUrl.$error.required" class="text-danger form-error-text">  {{'help_text'| i18nString}} </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group col-wrapper noPadding pointerEventNone">
+                            <label class="required-field" tooltip-placement="right" tooltip="{{'url_tooltip'| i18nString}}"> {{'base_url'| i18nString}} </label>
+                            <input ng-show="displayMode !== 'view'" url-validate class="form-control" type="url" name="defaultUrl" ng-model="newStreamData.defaultUrl" placeholder=" {{'tenant_place'| i18nString}}" ng-required="newStreamData.hasTenant" id="tenantHelpText" class="tenentHelpText" />
+                            <label ng-show="displayMode === 'view'" class="form-control">{{newStreamData.defaultUrl}}</label>
+                            <div ng-show="streamAdvancedForm.defaultUrl.$dirty">
+                                <div ng-show="streamAdvancedForm.defaultUrl.$error.url">
+                                    <div error-alert>
+                                        <span>
+                                            {{'valid_url'| i18nString}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div error-alert ng-show="streamAdvancedForm.defaultUrl.$error.required" class="text-danger form-error-text"> {{'tenant_url_req'| i18nString}} </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="col-xs-12 form-group pointerEventNone execution noPadding" >
+                <div class="col-xs-12 noPadding">
+                    <label  tooltip-placement="right" tooltip="{{'utterance_bot'| i18nString}}"> {{'show_setup'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'">
+                    {{newStreamData.skipMakeEditLinks}}
+                </div>
+                <div class="col-xs-12 noPadding radioDiv" ng-init="newStreamData.skipMakeEditLinks=newStreamData.skipMakeEditLinks||false" ng-class="{'screenFreeze':(selectedStreamState=='published') || (callback.modeOfAccess === 'VIEW')}">
+                    <div>
+                        <div>
+                            <label for="newStreamData.skipMakeEditLinks.yes">
+                                <input ng-value=false ng-checked="true" type="radio"  ng-model="newStreamData.skipMakeEditLinks" name="newStreamData.skipMakeEditLinks" id="newStreamData.skipMakeEditLinks.yes" ><span class="opt-title"> {{'show_utterance_user'| i18nString}}</span> 
+                            </label>
+                        </div>
+                        <div>
+                            <label for="newStreamData.skipMakeEditLinks.no">
+                                <input ng-value=true  type="radio"   ng-model="newStreamData.skipMakeEditLinks" name="newStreamData.skipMakeEditLinks" id="newStreamData.skipMakeEditLinks.no"><span class="opt-title"> {{'no_task_perform'| i18nString}}</span> 
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-hide="true" ng-if="newStreamData.purpose==='employee'" class="col-xs-12 form-group noPadding" ng-if="newStreamData.profileRequired == 'true'">
+                <div class="col-xs-12">
+                    <label class="required-field"  tooltip-placement="right" tooltip="{{'bot_contact_details'| i18nString}}"> {{'send_contact'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 radioDiv" ng-init="newStreamData.sendVcf=newStreamData.sendVcf||'false'">
+                    <div> <label  for="vcfYes">
+                        <input type="radio" ng-model="newStreamData.sendVcf" value="true"  name="sendVcf" id="vcfYes" required/> <span class="opt-title"> {{'introduce_msg'| i18nString}}</span>
+                    </label></div>
+                      <div><label  for="vcfNo">
+                        <input type="radio" ng-model="newStreamData.sendVcf" value="false" name="sendVcf" id="vcfNo" required/> <span class="opt-title"> {{'send_no_contact'| i18nString}}</span>
+                    </label></div>
+                    
+                    <div ng-show="streamGeneralForm.sendVcf.$dirty">
+                        <div error-alert ng-show="streamGeneralForm.sendVcf.$error.required" class="text-danger form-error-text">   {{'send_vcf_req'| i18nString}} </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+</form>
+<div class="modal fade vxml-prop-modal" id="vxml-add" data-backdrop="static" tabindex="-1" role="dialog">
+            <div class="modal-dialog vxml-dialog">
+                <div class="modal-content">
+                <div class="modalHeader vxmlHeader">
+                     <h4 class="modal-title vxml-title" id="gridSystemModalLabel"> {{'new_call_cont_param'| i18nString}}</h4>
+                </div>
+                <form name="vxmlform">
+                <div class="modalBody vxml-body" height-property="height">
+                    <div class="newVariable">
+                        <div class="col-xs-12  paddingTop10">
+                            <div class="required-field name"><label class="vxml-font"> {{'param_name'| i18nString}}</label></div>
+                            <div><textarea class="form-control autoGrowTA required-field vxml-textarea" name="propertyname" type="text" ng-model="vprop.name" auto-grow-textarea default-grown="true" placeholder=" {{'place_param'| i18nString}}" ng-required="true"></textarea></div>
+                        </div>
+                        <div class="col-xs-12 paddingTop10">
+                            <div class="required-field name"><label class="vxml-font"> {{'value'| i18nString}}</label></div>
+                            <div><textarea class="form-control autoGrowTA required-field vxml-textarea" name="propertyvalue" type="text" ng-model="vprop.value" auto-grow-textarea default-grown="true" placeholder=" {{'Vprop_value_placehol'| i18nString}}" ng-required="true"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            <div class="modalFooter vxml-footer">
+                <div class="col-xs-12">
+                     <button class="btn saveSubmit" ng-click="addProperty(vprop)" ng-disabled="vxmlform.$invalid" class="btn"> {{'confirm'| i18nString}}</button>
+                    <button ng-click="closeNodeVxmlProp()" class="btn closeCancel">  {{'cancel'| i18nString}}</button>
+                   
+                </div>
+            </div>
+        </div>
+</div>
+</div> 
+<div class="col-xs-12 form-group " ng-if="newStreamData.sbStreamId && checkInheritance()">
+        <div class="col-xs-12 noPadding">
+            <label class="required-field"  tooltip-placement="right" tooltip=""> {{'update_preference'| i18nString}} </label>
+        </div>
+        <p class="grayInfoText noMargin"> {{'bot_def_updates'| i18nString}}</p>
+        <div class="col-xs-12 radioDiv noPadding marginTop10">
+            <div>
+                <label  for="inheritanceType.1">
+                    <input type="radio" ng-model="newStreamData.inheritanceType" ng-value="1"  name="inheritanceType" id="inheritanceType.1" required/> <span class="opt-title"> {{'add_bot_updates'| i18nString}}</span>
+                </label>  
+            </div>
+            <div>
+                <label  for="inheritanceType.2">
+                    <input type="radio" ng-model="newStreamData.inheritanceType" ng-value="2" name="inheritanceType" id="inheritanceType.2" required/> <span class="opt-title"> {{'update_indevelop'| i18nString}}</span>
+                </label>
+            </div>
+        </div>
+</div>
+<div class="col-xs-12  form-group" ng-if="currentStream.sbStreamId">
+    <div class="col-xs-12 form-group noPadding">
+    <label>  {{'smart_bot_inherit'| i18nString}}  </label>
+    <p ng-if="!checkInheritance()" class="customScriptDescription">inheritance_from <i>{{ " "+(parentSBStream.name || parent_bot )+" "}}</i> {{'inheritance_desc'| i18nString}} <i>{{ getLocaleTime( currentStream.inheritanceDisabledOn) }}</i>.</p>
+    <p ng-if="checkInheritance()" class="customScriptDescription"> {{'current_inheritance_1'| i18nString}} <i>{{parentSBStream.name || parent_bot }}</i>.  {{'current_inheritance_2'| i18nString}}</p>
+    <button ng-if="checkInheritance()" type="button"  ng-click = "dissableInheritance()" class="btn saveBtn">  {{'disable_inheritance'| i18nString}} </button>
+</div>
+</div>
+<error-form  ng-hide="stream.type==='universalbot'" error-for="stream" error="newStreamData.errorCodes" class="displayTable"></error-form>
+<!-- LINKS START HERE -->
+<div class="modal fade" id="disableNamespaceDialog" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">                                 
+            <h4 class="modal-title">{{'confirm_to_proceed_label'| i18nString}}</h4>
+        </div>
+        <div class="modal-body">
+            <p>{{'dis_var_namespace'| i18nString}}<a href="https://developer.kore.ai/docs/bots/bot-settings/general-settings/" target="_blank" class="redirect">&nbsp;{{'knowMore'| i18nString}}</a></p>
+        </div>
+        <div class="modal-footer">                               
+            <button class="kr-sg-button-primary btn_md mr-10" ng-click="toggleNamespace()">Confirm</button>
+            <button class="kr-sg-button-secondary btn_md" data-dismiss="modal" ng-click="stream.enableNameSpace = !stream.enableNameSpace">Cancel</button>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="enableNamespaceDialog" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">                                 
+            <h4 class="modal-title">{{'confirm_to_proceed_label'| i18nString}}</h4>
+        </div>
+        <div class="modal-body">
+            <p>{{'ena_var_namespace'| i18nString}} <a href="https://developer.kore.ai/docs/bots/bot-settings/general-settings/" target="_blank" class="redirect">&nbsp;{{'knowMore'| i18nString}}</a></p>
+            <ul>
+                <li>{{'ena_var_namespace_list1'| i18nString}}</li>
+                <li>{{'ena_var_namespace_list2'| i18nString}}</li>
+                <li>{{'ena_var_namespace_list3'| i18nString}}</li>
+            </ul>
+        </div>
+        <div class="modal-footer">                               
+            <button class="kr-sg-button-primary btn_md mr-10" ng-click="toggleNamespace()">{{'confirm'| i18nString}}</button>
+            <button class="kr-sg-button-secondary btn_md" data-dismiss="modal" ng-click="stream.enableNameSpace = !stream.enableNameSpace">{{'cancel'| i18nString}}</button>
+        </div>
+        </div>
+    </div>
+</div>

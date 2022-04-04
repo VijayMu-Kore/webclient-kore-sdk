@@ -1,0 +1,46 @@
+<div class="botchatHistoryContainer">
+    <div ng-show="loading" class="loadingRecords"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="text">{{'loading_data'| i18nString}}..</span></div>
+    <div ng-show="chatHistory.messages.length > 0" data-msg-id={{message._id}} ng-repeat="message in chatHistory.messages" id="{{message._id}}" ng-class="{'userMessageContainer':message.type==='incoming'}">
+        <div class="time">{{helpers.formatDate(message.createdOn)}}</div>
+        <div ng-if="message.type==='outgoing'" class="botResponse">
+            <div class="imgDiv"><img ng-src="{{stream.icon}}"/></div>
+            <div ng-if="!checkForTemplate(message.components[0].data.text)" class="msg" ng-bind-html="helpers.convertMDtoHTML(message.components[0].data.text,'bot')"></div>
+            <div  ng-if="checkForTemplate(message.components[0].data.text)" class="template" ng-init="renderTemplate(message,$element)"></div>
+            <div ng-if="checkForTemplate(message.components[0].data.text)" ng-click="showJSON(message)" class="openJavascriptIcon fa fa-ellipsis-h"></div>
+        </div>
+
+        <div ng-if="message.type==='incoming'" class="userMessage">
+            <div class="msg" ng-class="{'borderOrange':originalIntent.messageId===message._id}" ng-bind-html="helpers.convertMDtoHTML(message.components[0].data.renderMsg?message.components[0].data.renderMsg:message.components[0].data.text,'user')"></div>
+            <img ng-src="{{assetsBase}}images/left-menu-img/logo-copy.svg"/>
+        </div>
+         
+        <div ng-if="message.type === 'timelinemsg'" class="timeLineMsg">
+            <div class="userTransferedAgent" ng-show="message.showUserMessage == 5">
+                <hr><span>{{'user_transfer'| i18nString}}</span>
+            </div>
+                <div class="userDroppedOff" ng-show="message.showUserMessage == 6">
+                    <hr><span>{{'user_dropped'| i18nString}}</span>
+                </div>
+        </div>
+        <div class="entityMatched" ng-if="originalIntent.messageId===message._id">{{message.intentData}}</div>
+        <div class ="messageTags" ng-if="message.msgTagValue.length" ng-class="{'showRightMessageTags':message.type==='outgoing'}">
+          <div class="showMessageTags">
+            <span> <img class="moveUp" ng-click="showNextMessageTag(message,'showPreviousIcon')" ng-if="previousMessageTag" ng-src="{{moveUpIcon}}">
+           </span>
+            <span class="showMessageTag">
+               <span class="chatHistoryMessageTag">
+               {{message.msgTagValue[messageIndex].name}}:{{message.msgTagValue[messageIndex].value}}
+
+               </span>
+            </span> 
+            <span>
+            <img class="moveDown" ng-click="showNextMessageTag(message,'showNextIcon')" ng-if="message.msgTagValue.length > 1 && nextMessageTag" ng-src="{{moveDownIcon}}">
+             </span>
+            <span class="showMessageCount" ng-show="message.messageTagLength > 0"> +{{message.messageTagLength}}</span>
+        </div>
+        </div>
+
+       
+    </div>
+    <div class="noHistory" ng-show="chatHistory.messages.length === 0">{{'no_chat_history'| i18nString}}</div>
+</div>

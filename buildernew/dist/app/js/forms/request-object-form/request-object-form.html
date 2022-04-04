@@ -1,0 +1,699 @@
+ <bt-test-form api="btTestFormApi" status="btTestStatus" ></bt-test-form>
+
+<bot-modal-slider id="commonId">
+    <!--Add Task Field Modal-->
+    <alert-field-modal-form ng-if="showAlertFieldSlider" is-report="isReport" mode="create" class="formContainer"  view = "displayMode==='view'" task-id="taskId" set-field-data="editingAlertField" on-cancel="onFieldFormCancel({fieldForm : false})"  on-save="onAlertFieldSave(alertFieldDef,showIt,rqObjSave)" wf-type="{{wfType}}"></alert-field-modal-form>
+    <!--Add Processor Modal-->
+    <processor-form ng-if="showProcForm" view="displayMode==='view'" show-proc-form = "showProcForm" wf-type="wfType" edit="processInEdit" processor="processor" on-save="processorSave(processor,rqObjSave)" on-cancel="processorCancel()" ></processor-form>
+    <!--Add API Modal-->
+    <rq-form ng-if="showReqForm" view="displayMode==='view'"  show-req-form="showReqForm" mode="{{rqMode}}" is-first="isFirst" set-req-chain="editingReqChain" wf-type="{{wfType}}" on-cancel="onRqFormCancel({chainForm : false})" on-save="onReqObjFormSave(requestObj,showIt,rqObjSave)"></rq-form>
+    <!-- bt-test-form -->
+</bot-modal-slider>              
+    
+<!-- request accordions -->
+<div class="panel-group requestAccordion" id="requestAccordion" role="tablist" aria-multiselectable="true">
+  <div ng-if="showDivs.dataType" class="panel panel-default">
+    <div class="panel-heading collapsed" ng-click="updateContentType()" role="button" data-toggle="collapse" data-parent="#requestAccordion" href="#contentType" role="tab" id="headingOne">
+         <div><span class="panel-title entity_count_label">  {{'content_type_label'| i18nString}} </span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'reqst_object_content_type_desc'| i18nString}}</p>
+      </div>
+ 
+    </div>
+    <div id="contentType" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+         <div class="col-xs-12 noPadding" ng-if="displayMode !== 'view'">
+                    <div class="col-xs-12 labelling noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="{{'request_object_datatype_tooltip'| i18nString}}">{{'content_type_label'| i18nString}} </label>
+                </div>
+                    <select ng-model="reqObj.datatype" class="btnDropdown form-control" id="datatype" name="datatype" required ng-change="setRequestObject('', isFormValid(reqObjForm), false, true)" ng-options="datatype.name for datatype in datatypes">
+                        <option value=""> {{'select_a_data_type'| i18nString}} </option>
+                    </select>
+                    <div ng-show="reqObjForm.datatype.$dirty">
+                        <div error-alert ng-show="reqObjForm.datatype.$error.required" class="text-danger form-error-text"> {{'data_type_for_reqst_object'| i18nString}} </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="displayMode === 'view'">
+                    <label>{{reqObj.datatype.value}}</label>
+                </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="panel panel-default" ng-if="!isWebhook()" >
+        <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#requestAccordion" href="#authPannel" role="tab" id="headAuth">
+            <div><span class="panel-title entity_count_label"> {{'authorization_label'| i18nString}}</span> <span class="red_info">{{'choose_authorization_profile'| i18nString}}</span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+                <p>{{'reqst_object_auth_Desc'| i18nString}}</p>
+            </div>
+        </div>
+        <div id="authPannel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headAuth">
+            <div>
+                <div class="">
+                    <div class="">
+                        <!-- on-complete="onAuthFormResponse()" -->
+                        <auth-form wf-type="{{wfType}}"
+                                   display-mode="{{displayMode}}"
+                                   on-cancel="handleAuthForm()"
+                                   on-complete="handleAuthForm()"
+                                   resource="resource"
+                                   callbacks="authHooks"
+                                   callback='authCB'>         
+                        </auth-form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+  <!-- {{wfType.toLowerCase() == 'action' ? (_constants_.action) : (_constants_.alert)}} -->
+  <div class="panel panel-default" ng-if="showDivs.alertFields">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#requestAccordion" href="#taskFields" role="tab" id="headingTwo">
+         <div><span class="panel-title entity_count_label">{{'parameters_label'| i18nString}}</span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'reqst_object_parameters_desc'| i18nString}}</p>
+      </div>
+    </div>
+    <div id="taskFields" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        <div class="col-xs-12 noPadding"  ng-if="alrtField.alrtFldObjects.rows.length">
+                    <sortable-table set on-view="alrtFldObjRowView(index,row)" show-actions="{{displayMode !== 'view'}}" callback="orderFields(type,index)" on-edit="alrtFldObjRowEdit(index,row)" on-delete="alrtFldObjRowDel(index,row)" table-data="alrtField.alrtFldObjects"></sortable-table>
+                </div> 
+                <div ng-if="!alrtField.alrtFldObjects.rows.length">
+                     <div class="col-xs-12 noContentDiv">
+        <div class="alert-xs text-center alert-msg-home" role="alert" ng-show="!alrtField.alrtFldObjects.rows.length">
+          <p class="noContentHeader">{{'no_parameters_yet'| i18nString}}</p>
+          <p class="noContentDesc">{{'reqst_object_add_parameters'| i18nString}}</p>
+          <p class="createLink" ng-show="displayMode !== 'view'" ng-click="showAlertFieldForm()">{{'create_parameter'| i18nString}}</p>
+        </div>
+      </div>
+                </div>
+      </div>
+      <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button 
+                      class="btn btn-sm btn-primary text-info"  ng-click="showAlertFieldForm()"> {{'add'| i18nString}} </button>
+                    </div>
+    </div>
+  </div>
+   <div class="panel panel-default" ng-show="showRequestChainDiv(wfType)">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#requestAccordion" href="#taskInitializerPannel" role="tab" id="headingThree">
+        <div><span class="panel-title entity_count_label"> {{'initializer'| i18nString}}</span>
+          <save-status save-in-progress="saveInProgress" save-from="initializer"></save-status>
+          <span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'reqst_object_javascript_desc'| i18nString}}</p>
+      </div>
+    </div>
+    <div id="taskInitializerPannel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+        <div class="col-xs-12 jsEditor noPaddingLeft">
+            <tabset class="col-xs-12 noPadding">
+                <tab active="true">
+                    <tab-heading>
+                        {{'javaScript_editor'| i18nString}}
+                    </tab-heading>
+                    <div class="row">
+                        <div id="taskInitializer" mode="displayMode==='view'" callback="taskInitCB" acify  ng-model="reqObj.taskInitializer"  name="taskInitializer"></div>
+                    </div>
+                </tab>
+            </tabset>  
+        </div>
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button 
+                      class="btn btn-sm btn-primary text-info"  ng-click="setRequestObject('initializer', isFormValid(), false, true);"> <i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save}} </button>
+                    </div>
+    </div>
+  </div>
+  <div class="panel panel-default" ng-if="showDivs.requestChain">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#requestAccordion" href="#taskExecution" role="tab" id="headingThree">
+        <div><span class="panel-title entity_count_label"> {{'request'| i18nString}}</span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'reqst_object_request_desc'| i18nString}}</p>
+      </div>
+    </div>
+    <div id="taskExecution" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+       
+                     <div class="col-xs-12 noPadding" ng-if="reqObj.requestChainObjects.rows.length" >
+                    <sortable-table on-view="reqChainObjRowEdit(index,row)" show-actions="{{displayMode !== 'view'}}" callback="orderRQChain(type,index)" on-edit="reqChainObjRowEdit(index,row)" on-delete="reqChainObjRowDel(index,row)"
+                                    table-data="reqObj.requestChainObjects"></sortable-table>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <div ng-show="reqObjForm.reqchain.$dirty">
+                        <div error-alert ng-show="reqObjForm.reqchain.$error.required" class="text-danger form-error-text"> {{'atleast_one_task_execution_api'| i18nString}} </div>
+                    </div>
+                </div>
+                 <div ng-if="!reqObj.requestChainObjects.rows.length">
+                     <div class="col-xs-12 noContentDiv">
+        <div class="alert-xs text-center alert-msg-home" role="alert" ng-show="!reqObj.requestChainObjects.rows.length">
+          <p class="noContentHeader">{{'reqst_object_no_processors_and_apirequests'| i18nString}}</p>
+          <p class="noContentDesc">
+            {{'reqst_object_no_processors_and_apirequests_desc'| i18nString}}</p>
+          <p class="createLink hide" ng-click="showAlertFieldForm()">{{'create_parameter'| i18nString}}r</p>
+        </div>
+      </div>
+                </div>
+      </div>
+      <div class="panel-footer">
+         <div class="">
+
+                        <div ng-if="reqObj.requestChainObjects.rows.length" class="displayinline">
+
+                            <button ng-hide="accounts.length && idpValue !== 'none'" class="btn" ng-click="startRQChainTest()" ng-class="{'disabled':showProcForm || showReqForm || (displayMode === 'view')}">
+                                <span ng-if="!spinner.testingInProgress">{{'test_label'| i18nString}}</span> 
+                                <span ng-if="spinner.testingInProgress" class="text-center" role="alert">
+                                    {{'testing'| i18nString}} &nbsp;<i class="fa fa-spinner fa-spin"></i>
+                                </span>                    
+                            </button>           
+
+                            <div ng-show="accounts.length && idpValue !== 'none'" class="dropdown"  >
+                                <button type="button" ng-disabled="loadingAccounts || showProcForm || showReqForm || displayMode === 'view'" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    <span ng-show="loadingAccounts">{{'loading'| i18nString}}</span>
+                                    <span ng-show="!loadingAccounts && spinner.testingInProgress">{{'loading_lable'| i18nString}} &nbsp;<i class="fa fa-spinner fa-spin"></i></span>
+                                    <span ng-show="!loadingAccounts && !spinner.testingInProgress">{{'test_label'| i18nString}}</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" >
+                                    <li ><a href="#"ng-click="startRQChainTest()">{{'use_new_account'| i18nString}}</a></li>
+                                    <li ng-repeat="account in accounts"><a href="#" ng-click="startRQChainTest(account)">{{'use_dyn'| i18nString:({dyn:account.label})}}</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+
+                        <button class="btn" ng-click="newProcessor()"  ng-class="{'disabled':showProcForm || showReqForm || (displayMode === 'view')}">{{'add_processor'| i18nString}} </button>
+                        <button class="btn" ng-click="showRQForm()"  ng-class="{'disabled':showProcForm || showReqForm || (displayMode === 'view')}">{{'add_api'| i18nString}}</button> 
+                    </div>
+      </div>
+    </div>
+  </div>
+   <div class="panel panel-default">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#requestAccordion" href="#sampleResponse" role="tab" id="headingThree">
+        <div><span class="panel-title entity_count_label">{{'constants.propertyPanel_sampleResponse'| i18nString}}</span>
+          <save-status save-in-progress="saveInProgress" save-from="responseSample"></save-status>
+          <span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'sample_json_Desc'| i18nString}}</p>
+      </div>
+    </div>
+    <div id="sampleResponse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+         <div class="showadvancedoptions">
+
+                        <div class="col-xs-12 noPaddingLeft">
+                            <div ng-jsoneditor class="json_editor" ng-model="reqObj.sampledata" id="reqObjSampleRes" name="reqsample" options="options" callback="sampleResCB"></div>
+                            <br />
+                            <div ng-show="reqObjForm.reqsample.$dirty">
+                                <div error-alert ng-show="reqObjForm.reqsample.$error.invalid" class="text-danger form-error-text">{{'valid_response_required'| i18nString}} </div>
+                            </div>
+                        </div>
+
+                    </div> 
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button 
+                      class="btn btn-sm btn-primary text-info"  ng-click="setRequestObject('responseSample', isFormValid(), false, true);"> <i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save }}</button>
+                    </div>
+    </div>
+  </div>
+
+
+     <div class="panel panel-default"  ng-if="showDivs.alertsPath">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#requestAccordion" href="#alerttaskpath" role="tab" id="headingThree">
+        <div><span class="panel-title entity_count_label"> {{'alert_tasks_path'| i18nString}}</span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'reqst_object_alert_tasks_path_desc'| i18nString}}</p>
+      </div>
+    </div>
+    <div id="alerttaskpath" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+           <div class="col-xs-12 form-group" ng-if="showDivs.alertsPath">
+                <div class="col-xs-12 labelling">
+                    <label>{{'alert_tasks_path'| i18nString}} </label>
+                </div>
+                <div class="col-xs-10" >
+                    <input class="form-control" ng-if="displayMode !== 'view'" type="text" ng-model="reqObj.alertsPath"
+                           id="alertsPath" />
+                    <label ng-if="displayMode === 'view'">{{reqObj.alertsPath}}</label>
+                </div>
+            </div>
+      </div>
+       <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button 
+                      class="btn btn-sm btn-primary text-info"  ng-click="setRequestObject('', isFormValid(reqObjForm), false, true)"> <i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save }}</button>
+                    </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="panel panel-default" ng-if="showDivs.linksPath">
+    <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#requestAccordion" href="#previewWebsite" role="tab" id="headingThree">
+         <div><span class="panel-title entity_count_label"> {{'preview_website_link'| i18nString}}</span><span class="pull-right length chevron chevronRightDark"> <img class="fa-chevron-right " ng-src="{{chevronRightDark}}"></span>
+      <p>{{'reqst_object_preview_link_Desc'| i18nString}}</p>
+      </div>
+      
+    </div>
+    <div id="previewWebsite" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+        <div class="col-xs-12 noPaddingLeft">
+            <div class="radioDiv" ng-init="reqObj.previewLink = reqObj.previewLink || false">
+                <div>
+                    <label for="reqObj.previewLink.no">
+                        <input ng-disabled="displayMode === 'view'" ng-change="setUpLinksPath(reqObj.previewLink)" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.previewLink" name="reqObj.previewLink" id="reqObj.previewLink.no" >
+                        <span class="opt-title">{{'reqst_object_no_link_view'| i18nString}}</span>
+                        </input>
+                    </label>
+                </div>
+                <div>
+                    <label for="reqObj.previewLink.yes">
+                        <input  ng-disabled="displayMode === 'view'" ng-change="setUpLinksPath(reqObj.previewLink)" ng-value='true'  type="radio"   ng-model="reqObj.previewLink" name="reqObj.previewLink" id="reqObj.previewLink.yes">
+                        <span class="opt-title">{{'reqst_object_link_view'| i18nString}}</span>
+                        </input>
+                    </label>
+                </div>
+            </div>
+        </div>
+                
+            <div class="col-xs-12 form-group" ng-if="showDivs.linksPath && reqObj.previewLink"> 
+                <div class="col-xs-11 grayBG ">
+                    <!-- <div class="col-xs-4 labelling">
+                                <label> Link Preview Keys </label>
+                            </div> -->
+                    <div class="col-xs-12 form-group">
+                        <div class="col-xs-12 labelling noPadding">
+                            <label> {{'reqst_object_path_to_link'| i18nString}}</label>
+                        </div>
+                        <div class="col-xs-10 noPadding" >
+                            <input class="form-control" ng-if="displayMode !== 'view'" placeholder="{{'links_path_placeholder'| i18nString}}" type="text" required='true' name='linksPath'  ng-model="reqObj.linksPath"
+                                   id="alertsPath" />
+                            <label ng-if="displayMode === 'view'">{{reqObj.linksPath}}</label>
+                            <div ng-show="reqObjForm.linksPath.$dirty">
+                                <div error-alert ng-show="reqObjForm.linksPath.$error.required" class="text-danger form-error-text">{{'reqst_object_path_to_link_req'| i18nString}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" >
+                        <div class="radioDiv" ng-init="reqObj.linkPreview.title = reqObj.linkPreview.title || false">
+                            <label> {{'preview_title'| i18nString}} </label>
+                            <div>
+                                <label for="reqObj.linkPreview.title.no">
+                                    <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.linkPreview.title" name="reqObj.linkPreview.title" id="reqObj.linkPreview.title.no" >
+                                    <span class="opt-title">{{'reqst_object_no_preview_title'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="reqObj.linkPreview.title.yes">
+                                    <input ng-disabled="displayMode === 'view'"  ng-value='true'  type="radio"   ng-model="reqObj.linkPreview.title" name="reqObj.linkPreview.title" id="reqObj.linkPreview.title.yes">
+                                    <span class="opt-title">{{'reqst_object_view_preview_title'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="radioDiv" ng-init="reqObj.linkPreview.description = reqObj.linkPreview.description || false">
+                            <label> {{'preview_Description'| i18nString}} </label>
+                            <div>
+                                <label for="reqObj.linkPreview.description.no">
+                                    <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.linkPreview.description" name="reqObj.linkPreview.description" id="reqObj.linkPreview.description.no" >
+                                    <span class="opt-title">{{'reqst_object_no_preview_Description'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="reqObj.linkPreview.description.yes">
+                                    <input ng-disabled="displayMode === 'view'"  ng-value='true'  type="radio"   ng-model="reqObj.linkPreview.description" name="reqObj.linkPreview.description" id="reqObj.linkPreview.description.yes">
+                                    <span class="opt-title">{{'reqst_object_yes_preview_Description'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="radioDiv" ng-init="reqObj.linkPreview.video = reqObj.linkPreview.video || false">
+                            <label> {{'preview_video'| i18nString}}  </label>
+                            <div>
+                                <label for="reqObj.linkPreview.video.no">
+                                    <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.linkPreview.video" name="reqObj.linkPreview.video" id="reqObj.linkPreview.video.no" >
+                                    <span class="opt-title">{{'request_object_no_preview_video'| i18nString}} </span>
+                                    </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="reqObj.linkPreview.video.yes">
+                                    <input ng-disabled="displayMode === 'view'"  ng-value='true'  type="radio"   ng-model="reqObj.linkPreview.video" name="reqObj.linkPreview.video" id="reqObj.linkPreview.video.yes">
+                                    <span class="opt-title">{{'request_object_yes_preview_video'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="radioDiv" ng-init="reqObj.linkPreview.image = reqObj.linkPreview.image || false">
+                            <label> {{'preview_image'| i18nString}} </label>
+                            <div>
+                                <label for="reqObj.linkPreview.image.no">
+                                    <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.linkPreview.image" name="reqObj.linkPreview.image" id="reqObj.linkPreview.image.no" >
+                                    <span class="opt-title">{{'request_object_no_preview_image'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="reqObj.linkPreview.image.yes">
+                                    <input ng-disabled="displayMode === 'view'"  ng-value='true'  type="radio"   ng-model="reqObj.linkPreview.image" name="reqObj.linkPreview.image" id="reqObj.linkPreview.image.yes">
+                                    <span class="opt-title">{{'request_object_yes_preview_image'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            </div>
+            <div class="panel-footer" ng-show="displayMode !== 'view'">
+                      <button 
+                      class="btn btn-sm btn-primary text-info"  ng-click="setRequestObject('', isFormValid(reqObjForm), false, true)"> <i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save }}</button>
+                    </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="form-container request-form">
+    <form name="reqObjForm" class="wf-form" ng-submit="setRequestObject('', isFormValid(reqObjForm))" novalidate>
+        <fieldset>
+            <div class="col-xs-12 form-group noPadding hide" ng-if="showDivs.dataType">
+                <div class="col-xs-12 labelling noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="{{'request_object_datatype_tooltip'| i18nString}}">{{'content_type_label'| i18nString}} </label>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="displayMode !== 'view'">
+                    <select ng-model="reqObj.datatype" class="btnDropdown form-control" id="datatype" name="datatype" required ng-options="datatype.name for datatype in datatypes">
+                        <option value=""> {{'select_a_data_type'| i18nString}} </option>
+                    </select>
+                    <div ng-show="reqObjForm.datatype.$dirty">
+                        <div error-alert ng-show="reqObjForm.datatype.$error.required" class="text-danger form-error-text"> {{'data_type_for_reqst_object'| i18nString}} </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="displayMode === 'view'">
+                    <label>{{reqObj.datatype.value}}</label>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding hide" ng-if="showDivs.alertFields">
+                <div class="col-xs-12 labelling noPadding">
+                    <label tooltip-placement="right" tooltip="{{wfType.toLowerCase() == 'action' ? actionTask : alertTask }} {{'action_alert_task_parameters_tooltip'| i18nString}}"> {{wfType.toLowerCase() == 'action' ? actionTask : alertTask }} {{'parameters'| i18nString}} </label>
+                    <div class="btn btn-primary pull-right btn-sm" ng-show="displayMode !== 'view'" ng-click="showAlertFieldForm()">{{'add'| i18nString}}</div>
+                </div>
+                <div class="col-xs-12 noPadding"  ng-if="alrtField.alrtFldObjects.rows.length">
+                    <sortable-table set on-view="alrtFldObjRowView(index,row)" show-actions="{{displayMode !== 'view'}}" callback="orderFields(type,index)" on-edit="alrtFldObjRowEdit(index,row)" on-delete="alrtFldObjRowDel(index,row)" table-data="alrtField.alrtFldObjects"></sortable-table>
+                </div>
+            </div>
+
+            <div ng-if="false" class="col-xs-12 noPadding form-group leftAdjust hide" ng-show="showRequestChainDiv(wfType)" >
+                <div class="col-xs-12 noPadding form-group adv_opt_wrp reqObjTaskInitWrapDiv" id="reqObjTaskInitWrapDiv">
+                    <span class="col-xs-12 noPadding" ng-click="showTaskInitializerOption()">
+                        {{'task_initializer'| i18nString}} 
+                        <i class="fa  fa-chevron-right  pull-right fontSize13 iconArrow"></i>
+                        <p>{{'request_object_write_Script'| i18nString}} </p>
+                    </span>
+                    <div ng-show="showTaskInitializer" class="showadvancedoptions">
+
+                        <div class="col-xs-12 noPadding jsEditor">
+                            <tabset class="col-xs-12 noPadding">
+                                <tab active="true">
+                                    <tab-heading>
+                                        {{'javaScript_editor'| i18nString}} 
+                                    </tab-heading>
+                                    <div class="row">
+                                        <div id="taskInitializer" mode="displayMode==='view'" callback="taskInitCB" acify  ng-model="reqObj.taskInitializer"  name="taskInitializer"></div>
+                                    </div>
+                                </tab>
+                            </tabset>  
+                        </div>
+
+                    </div>
+                </div> 
+            </div>  
+
+            <div class="col-xs-12 noPadding form-group requestChainForm hide" ng-if="showDivs.requestChain">
+                <div class="col-xs-12 labelHeight btnTitle noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="">{{'task_execution_apis'| i18nString}} </label>
+                    <div class="pull-right">
+
+                        <div ng-if="reqObj.requestChainObjects.rows.length" class="pull-left">
+
+                            <button ng-hide="accounts.length" class="btn" ng-click="startRQChainTest()" ng-class="{'disabled':showProcForm || showReqForm || (displayMode === 'view')}">
+                                <span ng-if="!spinner.testingInProgress">{{'test_label'| i18nString}} </span> 
+                                <span ng-if="spinner.testingInProgress" class="text-center" role="alert">
+                                    {{'testing'| i18nString}}    &nbsp;<i class="fa fa-spinner fa-spin"></i>
+                                </span>                    
+                            </button>           
+
+                            <div ng-show="accounts.length" class="dropdown"  >
+                                <button type="button" ng-disabled="loadingAccounts || showProcForm || showReqForm" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    <span ng-show="loadingAccounts">{{'loading'| i18nString}} </span>
+                                    <span ng-show="!loadingAccounts && spinner.testingInProgress">{{'loading_lable'| i18nString}} &nbsp;<i class="fa fa-spinner fa-spin"></i></span>
+                                    <span ng-show="!loadingAccounts && !spinner.testingInProgress">{{'test_label'| i18nString}}</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" >
+                                    <li ><a href="#"ng-click="startRQChainTest()">{{'use_new_account'| i18nString}} </a></li>
+                                    <li ng-repeat="account in accounts"><a href="#" ng-click="startRQChainTest(account)">{{'use_dyn'| i18nString:({dyn:account.label})}}</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+
+                        <button class="btn btn-primary btn-sm" ng-click="newProcessor()"  ng-class="{'disabled':showProcForm || showReqForm || (displayMode === 'view')}">{{'add_processor'| i18nString}}</button>
+                        <button class="btn btn-primary btn-sm" ng-click="showRQForm()"  ng-class="{'disabled':showProcForm || showReqForm || (displayMode === 'view')}">{{'add_api'| i18nString}} </button> 
+                    </div>
+                </div>
+                <div class="col-xs-12 noPadding" ng-if="reqObj.requestChainObjects.rows.length" ng-hide="showProcForm || showReqForm">
+                    <sortable-table on-view="reqChainObjRowEdit(index,row)" show-actions="{{displayMode !== 'view'}}" callback="orderRQChain(type,index)" on-edit="reqChainObjRowEdit(index,row)" on-delete="reqChainObjRowDel(index,row)"
+                                    table-data="reqObj.requestChainObjects"></sortable-table>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <div ng-show="reqObjForm.reqchain.$dirty">
+                        <div error-alert ng-show="reqObjForm.reqchain.$error.required" class="text-danger form-error-text"> {{'atleast_one_task_execution_api'| i18nString}}. </div>
+                    </div>
+                </div>
+            </div>
+
+<!--            <div class="col-xs-10 form-group" ng-if="showDivs.sampleResponse">
+                <div class="col-xs-12 labelling">
+                    <label ng-class="{'required-field':wfType.toLowerCase() == 'alert'}"> Sample Response Data </label>
+                    <br />
+                </div>
+                <div class="col-xs-12">
+                     <div ng-jsoneditor class="json_editor" ng-model="reqObj.sampledata" name="reqsample" options="options" is-req="{{wfType.toLowerCase() == 'alert'}}"></div> 
+                    <div ng-jsoneditor class="json_editor" ng-model="reqObj.sampledata" name="reqsample" options="options"></div>
+                    <br />
+                    <div ng-show="reqObjForm.reqsample.$dirty">
+                        <div error-alert ng-show="reqObjForm.reqsample.$error.invalid" class="text-danger form-error-text">Valid Response is required. </div>
+                    </div>
+                </div>
+            </div>-->
+            
+            
+            <div class="col-xs-12 form-group leftAdjust noPadding hide">
+                <div class="col-xs-12 noPadding form-group adv_opt_wrp reqObjResDataWrapDiv" id="reqObjResDataWrapDiv">
+                    <span class="col-xs-12 noPadding" ng-click="showResponseDataOption()">
+                        {{'sample_Response'| i18nString}}  
+                        <i class="fa  fa-chevron-right  pull-right fontSize13 iconArrow"></i>
+                        <p>{{'add_the_Expected_sample'| i18nString}}</p>
+                    </span>
+                    <div ng-show="showResponseData" class="showadvancedoptions">
+
+                        <div class="col-xs-12 noPadding">
+                            <div ng-jsoneditor class="json_editor" ng-model="reqObj.sampledata" id="reqObjSampleRes" name="reqsample" options="options" callback="sampleResCB"></div>
+                            <br />
+                            <div ng-show="reqObjForm.reqsample.$dirty">
+                                <div error-alert ng-show="reqObjForm.reqsample.$error.invalid" class="text-danger form-error-text">{{'valid_response_required'| i18nString}}  </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> 
+            </div>  
+
+
+            <!--      <div class="col-xs-12 form-group" ng-if="showDivs.requestChain && displayMode!=='view'">
+                    <div class="col-xs-10 labelHeight">
+                      <label class="required-field" tooltip-placement="right" tooltip="All {{wfType.toLowerCase()=='action'?(_constants_.action):(_constants_.alert)}}s will require at least the Basic Request Chain Object and sometimes 1 or more additional Request Chain Objects ">Request Chain Object</label>
+                      <div class="pull-right">
+                        <div class="btn btn-primary btn-sm btn-outline" ng-if="reqObj.requestChainObjects.rows.length" ng-click="startRQChainTest()"> <span ng-if="!spinner.testingInProgress">Test Request Chain</span> <span ng-if="spinner.testingInProgress" class="text-center" role="alert">Testing &nbsp;<i class="fa fa-spinner fa-spin"></i></span> </div>
+                        <div class="btn btn-primary btn-sm" ng-click="showRQForm()">Add </div>
+                         <span ng-if="currentIdp.testResult">{{currentIdp.testResult}}</span> 
+                      </div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div ng-show="reqObjForm.reqchain.$dirty">
+                        <div error-alert ng-show="reqObjForm.reqchain.$error.required" class="text-danger form-error-text"> At least one Request Chain is required. </div>
+                      </div>
+                    </div>
+                  </div>-->
+
+
+
+            <!--      <div class="col-xs-12 form-group" ng-if="showDivs.requestChain && reqObj.requestChainObjects.rows.length">
+                    <div class="col-xs-12 labelling">
+                      <label class="required-field">Request Chains </label>
+                    </div>
+                    <div class="col-xs-10" ng-if="reqObj.requestChainObjects.rows.length">
+                      <sortable-table show-actions="{{displayMode!=='view'}}" on-view= "reqChainObjRowView(index,row)" callback="orderRQChain(type,index)" on-edit="reqChainObjRowEdit(index,row)" on-delete="reqChainObjRowDel(index,row)"
+                                table-data="reqObj.requestChainObjects"></sortable-table>
+                    </div>
+                  </div>-->
+
+            <div class="col-xs-12 form-group" ng-if="showDivs.alertsPath && false">
+                <div class="col-xs-12 labelling">
+                    <label> {{'alert_tasks_path'| i18nString}}   </label>
+                </div>
+                <div class="col-xs-10" >
+                    <input class="form-control" ng-if="displayMode !== 'view'" type="text" ng-model="reqObj.alertsPath"
+                           id="alertsPath" />
+                    <label ng-if="displayMode === 'view'">{{reqObj.alertsPath}}</label>
+                </div>
+            </div>
+            <div class="col-xs-12 form-group noPadding hide" ng-if="showDivs.linksPath && false">
+                <div class="col-xs-12 labelling noPadding">
+                    <label tooltip-placement="right" tooltip="{{'request_object_alertTask_tooltip'| i18nString}}" > {{'preview_website_link'| i18nString}}</label>
+                </div>
+                <div class="col-xs-12 noPadding">
+                    <div class="radioDiv" ng-init="reqObj.previewLink = reqObj.previewLink || false">
+                        <div>
+                            <label for="reqObj.previewLink.no">
+                                <input ng-disabled="displayMode === 'view'" ng-change="setUpLinksPath(reqObj.previewLink)" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.previewLink" name="reqObj.previewLink" id="reqObj.previewLink.no" >
+                                <span class="opt-title">{{'reqst_object_no_link_view'| i18nString}} </span>
+                                </input>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="reqObj.previewLink.yes">
+                                <input  ng-disabled="displayMode === 'view'" ng-change="setUpLinksPath(reqObj.previewLink)" ng-value='true'  type="radio"   ng-model="reqObj.previewLink" name="reqObj.previewLink" id="reqObj.previewLink.yes">
+                                <span class="opt-title">{{'reqst_object_link_view'| i18nString}}</span>
+                                </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 form-group hide" ng-if="false && showDivs.linksPath && reqObj.previewLink"> 
+                <div class="col-xs-11 grayBG marginLeft15">
+                    <!-- <div class="col-xs-4 labelling">
+                                <label> Link Preview Keys </label>
+                            </div> -->
+                    <div class="col-xs-12 form-group">
+                        <div class="col-xs-12 labelling noPadding">
+                            <label> {{'reqst_object_path_to_link'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-10 noPadding" >
+                            <input class="form-control" ng-if="displayMode !== 'view'" placeholder="{{'links_path_placeholder'| i18nString}}" type="text" required='true' name='linksPath'  ng-model="reqObj.linksPath"
+                                   id="alertsPath" />
+                            <label ng-if="displayMode === 'view'">{{reqObj.linksPath}}</label>
+                            <div ng-show="reqObjForm.linksPath.$dirty">
+                                <div error-alert ng-show="reqObjForm.linksPath.$error.required" class="text-danger form-error-text">{{'reqst_object_path_to_link_req'| i18nString}} </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" >
+                        <div class="radioDiv" ng-init="reqObj.linkPreview.title = reqObj.linkPreview.title || false">
+                            <label> {{'preview_title'| i18nString}}  </label>
+                            <div>
+                                <label for="reqObj.linkPreview.title.no">
+                                    <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.linkPreview.title" name="reqObj.linkPreview.title" id="reqObj.linkPreview.title.no" >
+                                    <span class="opt-title">{{'reqst_object_no_preview_title'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="reqObj.linkPreview.title.yes">
+                                    <input ng-disabled="displayMode === 'view'"  ng-value='true'  type="radio"   ng-model="reqObj.linkPreview.title" name="reqObj.linkPreview.title" id="reqObj.linkPreview.title.yes">
+                                    <span class="opt-title">{{'reqst_object_view_preview_title'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="radioDiv" ng-init="reqObj.linkPreview.description = reqObj.linkPreview.description || false">
+                            <label> {{'preview_Description'| i18nString}}  </label>
+                            <div>
+                                <label for="reqObj.linkPreview.description.no">
+                                    <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.linkPreview.description" name="reqObj.linkPreview.description" id="reqObj.linkPreview.description.no" >
+                                    <span class="opt-title">{{'reqst_object_no_preview_Description'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="reqObj.linkPreview.description.yes">
+                                    <input ng-disabled="displayMode === 'view'"  ng-value='true'  type="radio"   ng-model="reqObj.linkPreview.description" name="reqObj.linkPreview.description" id="reqObj.linkPreview.description.yes">
+                                    <span class="opt-title">{{'reqst_object_yes_preview_Description'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="radioDiv" ng-init="reqObj.linkPreview.video = reqObj.linkPreview.video || false">
+                            <label> {{'preview_video'| i18nString}}  </label>
+                            <div>
+                                <label for="reqObj.linkPreview.video.no">
+                                    <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.linkPreview.video" name="reqObj.linkPreview.video" id="reqObj.linkPreview.video.no" >
+                                    <span class="opt-title">{{'request_object_no_preview_video'| i18nString}} </span>
+                                    </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="reqObj.linkPreview.video.yes">
+                                    <input ng-disabled="displayMode === 'view'"  ng-value='true'  type="radio"   ng-model="reqObj.linkPreview.video" name="reqObj.linkPreview.video" id="reqObj.linkPreview.video.yes">
+                                    <span class="opt-title">{{'request_object_yes_preview_video'| i18nString}}</span>
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="radioDiv" ng-init="reqObj.linkPreview.image = reqObj.linkPreview.image || false">
+                            <label> {{'preview_image'| i18nString}} </label>
+                            <div>
+                                <label for="reqObj.linkPreview.image.no">
+                                    <input ng-disabled="displayMode === 'view'" ng-value='false' ng-checked="true" type="radio"  ng-model="reqObj.linkPreview.image" name="reqObj.linkPreview.image" id="reqObj.linkPreview.image.no" >
+                                    <span class="opt-title">{{'request_object_no_preview_image'| i18nString}} </span>
+                                    </input>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="reqObj.linkPreview.image.yes">
+                                    <input ng-disabled="displayMode === 'view'"  ng-value='true'  type="radio"   ng-model="reqObj.linkPreview.image" name="reqObj.linkPreview.image" id="reqObj.linkPreview.image.yes">
+                                    <span class="opt-title">{{'request_object_yes_preview_image'| i18nString}} </span>
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer form-group noMargin hide">
+                <div class="footerSub">
+                   <div class="col-xs-3"><button ng-click="onCancel();$parent.onCancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+                    
+                    <div  class="col-xs-6 lineheight"><div class="form-ctrl-div pull-left hide">
+                        <a href="/bt">
+                            <button class="btn btn-default">{{'exit_label'| i18nString}} </button>
+                        </a>
+                    </div>
+                    <!-- <div class="taskNameHeader textEllipsis">{{resource.name}}</div> -->
+                    <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+                    </div>
+                     <div  class="col-xs-3">
+                    <div class="help-hint-link hide"> <a target="_blank"  ng-href="{{helpLink}}"> {{'help_withpage_label'| i18nString}}</a> </div>
+                    <div class="pull-right form-ctrl-div">
+                        <!-- <button type="button" ng-click="cancel()" ng-if="displayMode && displayMode!=='view'" class="btn btn-default"> Cancel </button> -->
+                        <!-- <button type="button" ng-click="clear()" ng-if="!displayMode" class="btn btn-default">Clear</button> -->
+                        <button type="button" ng-click="$parent.$parent.previousStep()" ng-if="!displayMode" class="btn btn-default">{{'previous'| i18nString}}</button>
+                        <button type="submit" ng-disabled="saveInProgress" ng-if="!displayMode" class="btn btn-primary"><i ng-if="saveInProgress && !stopNavigation" class="fa fa-spinner fa-spin"></i> {{'next'| i18nString}} </button>
+                        <button type="button" ng-disabled="saveInProgress || !reqObjForm.$dirty" ng-if="!displayMode || displayMode !== 'view'" ng-click="setRequestObject('', isFormValid(reqObjForm), false, true)" class="btn btn-primary hide"><i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save}}</button>
+                        <button type="button" ng-if="displayMode === 'edit'" class="btn btn-primary" ng-click="onFinishSetup(wfType)"><i ng-if="$parent.$parent.isFinshSetupLoading" class="fa fa-spinner fa-spin"></i> {{'finish_setup'| i18nString}}</button>
+                    </div>
+                    <span class="dhelpLink">
+                    <a class="" target="_blank" ng-href="{{helpLink}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+             </span>
+             </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

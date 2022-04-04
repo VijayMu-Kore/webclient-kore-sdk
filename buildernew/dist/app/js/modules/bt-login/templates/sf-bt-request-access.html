@@ -1,0 +1,168 @@
+<div class="modal btRequestAccessModal  fade fullModalPopup height-width-100" class="request-bt-access" id="request-sf-bt-access">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content height-width-100">
+      <div class="modal-header bt-modal-header">
+        <div class="col-xs-1">
+          <button ng-click="closeSFBTAccessModal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button>
+        </div>
+        <div class="col-xs-10">
+          <h4 class="modal-title" id="gridSystemModalLabel">{{'bt_reqst_reqst_for_bot_builder'| i18nString}}</h4>
+        </div>
+        
+        <div class="col-xs-1">
+          <button type="button"  ng-disabled="!requestBTAccess.$valid" ng-hide="displayMessage" class="pull-right nextBtn btn btn-xs btn-primary" ng-click="signUpAndAccessBt()">{{'submit'| i18nString}}</button>
+          <button type="button" ng-show="displayMessage" class="pull-right nextBtn btn btn-xs btn-primary" ng-click="closeSFBTAccessModal()">{{'ok'| i18nString}}</button>
+        </div>
+      </div>
+   <div class="modal-body" ng-hide="displayMessage" dynamic-height dynaoffset="-60" perfect-scroll>
+     <div class="fixed">
+         <div class="col-xs-12">
+            <p class="description">{{'sf_bt_request_thank_you_for_requesting'| i18nString}}</p>
+              <div class="BtNoteDiv">
+                        <div class="reportInner">
+                           <span class="task-icon ">
+                      <img class="layer" ng-src="{{bulbSvg}}"></img></span>
+                      <p class="name">{{'important'| i18nString}}</p>
+                <p class="description">{{'sf_bt_request_request_using_consumer_based'| i18nString}}</p>
+                          
+                </div> 
+               
+          </div>
+          </div>
+        <form  class="form-horizontal accessForm" name="requestBTAccess" >
+         <div class="col-xs-12">
+           <div class="col-xs-6 paddingLeft">
+              <label class="required-field"> {{'firstname'| i18nString}} </label>
+              <input type="text" name="firstName" class="form-control" required  ng-model="reqBTAccessDetails.FirstName" placeholder="{{'enter_your_first_name'| i18nString}}">
+          </div>
+           <div class="col-xs-6 paddingRight">
+              <label class="required-field"> {{'lastname'| i18nString}} </label>
+              <input type="text" name="lastName" class="form-control" required  ng-model="reqBTAccessDetails.LastName" placeholder="{{'enter_your_last_name'| i18nString}}">
+          </div>
+         </div>
+
+           <div class="col-xs-12">
+           <div class="col-xs-6 paddingLeft">
+              <label class="required-field">{{'company_name_uppercase'| i18nString}}</label>
+              <input type="text" name="companyName" class="form-control" required  ng-model="reqBTAccessDetails.CompanyName" placeholder="{{'enter_Company_name'| i18nString}}">
+          </div>
+           <div class="col-xs-6 paddingRight">
+              <label class="required-field">{{'email'| i18nString}}</label>
+              <input type="email" name="email" class="form-control" ng-class="{'errBorder':(requestBTAccess.email.$valid == false) && (requestBTAccess.email.$viewValue !='')}" required  ng-model="reqBTAccessDetails.Email" placeholder="{{'enter_your_company_email'| i18nString}}">
+          </div> 
+         </div>
+
+           <div class="col-xs-12">
+           <div class="col-xs-6 paddingLeft">
+              <label class="required-field">{{'title'| i18nString}}</label>
+              <input type="text" name="title" class="form-control" required  ng-model="reqBTAccessDetails.Title" placeholder="{{'enter_your_job_title'| i18nString}}">
+          </div>
+           <div class="col-xs-6 paddingRight">
+              <label class="required-field">{{'industry'| i18nString}}</label>
+              <input type="text" name="industry" class="form-control" required  ng-model="reqBTAccessDetails.Industry" placeholder="{{'enter_your_industry'| i18nString}}">
+          </div>
+         </div>
+
+           <div class="col-xs-12">
+           <div class="col-xs-6 paddingLeft">
+              <label class="required-field">{{'phone'| i18nString}}</label>
+              <input type="number" name="phone" class="form-control" required  ng-model="reqBTAccessDetails.Phone" placeholder="{{'enter_your_phoneNumber'| i18nString}}">
+          </div>
+           <div class="col-xs-6 paddingRight">
+              <label class="required-field">{{'number_of_employees'| i18nString}}</label>
+              <input type="number" name="noOfEmployees" class="form-control" required  ng-model="reqBTAccessDetails.Number_Of_Employees" placeholder="{{'number_of_employees_placeholder'| i18nString}}">
+          </div>
+         </div>
+
+
+
+           <div class="col-xs-12">
+           <div class="col-xs-12 noPadding noMargin">
+              <label class="required-field">{{'sf_bt_reqst_pls_describe'| i18nString}}</label>
+              <textarea class="form-control" required  name="usecaseToEnableBot" ng-model="reqBTAccessDetails.Describe_the_use_cases_for_bots_E" placeholder="{{'describe_useCase'| i18nString}}"></textarea>
+          </div>
+         </div>
+
+
+
+           <div class="col-xs-12">
+           <div class="col-xs-12 noPadding noMargin">
+              <label class="required-field">{{'sf_bt_reqest_what_backend_Systems'| i18nString}}</label>
+              <textarea class="form-control" required  name="backendSysForBots" ng-model="reqBTAccessDetails.What_backend_sys_will_bot_interact_E" placeholder="{{'describe_backend_integration'| i18nString}}"></textarea>
+          </div>
+         </div>
+
+
+           <div class="col-xs-12">
+           <div class="col-xs-6 paddingLeft">
+              <label class="required-field">{{'sf_bt_reqest_does_backend_have_api'| i18nString}}</label>
+              <select  name="backendSysHaveApi" class="form-control" required  ng-model="reqBTAccessDetails.Does_the_backend_system_have_APIs_E">
+                <option selected value="">{{'None_label'| i18nString}}</option>
+                <option value="No">{{'no'| i18nString}}</option>
+                <option value="Yes">{{'yes'| i18nString}}</option>
+              </select> 
+          </div>
+           <div class="col-xs-6 paddingRight">
+              <label class="required-field">{{'access_to_api'| i18nString}}</label>
+              <select  name="haveAccessToApis" class="form-control" required  ng-model="reqBTAccessDetails.Do_you_have_access_to_those_APIs_E">
+                <option selected value="">{{'None_label'| i18nString}}</option>
+                <option value="No">{{'no'| i18nString}}</option>
+                <option value="Yes">{{'yes'| i18nString}}</option>
+              </select>
+          </div>
+         </div>
+
+
+
+           <div class="col-xs-12">
+           <div class="col-xs-12 noPadding noMargin">
+              <label class="required-field">{{'sf_bt_reqest_production_deployment'| i18nString}}</label>
+              <textarea name="projectBudgetOwner" class="form-control" required  ng-model="reqBTAccessDetails.Who_is_the_budget_owner_E" placeholder="{{'details_about_production'| i18nString}}"></textarea>
+          </div>
+       </div>
+         
+
+           <div class="col-xs-12">
+           <div class="col-xs-6 paddingLeft">
+              <label class="required-field">{{'sf_bt_reqest_budget_owner_title'| i18nString}}</label>
+              <input type="text" name="budgetOwnersTitle" class="form-control" required  ng-model="reqBTAccessDetails.What_is_the_title_of_budget_owner_E" placeholder="{{'enter_budget_owner_title'| i18nString}}">
+          </div>
+           <div class="col-xs-6 paddingRight">
+              <label class="required-field">{{'sf_bt_reqest_how_many_users'| i18nString}}</label>
+              <input type="number" name="noOfUsersUtilizeThisBot" class="form-control" required  ng-model="reqBTAccessDetails.How_many_users_would_use_this_bot_E" placeholder="{{'sf_bt_reqest_how_many_users_placeholder'| i18nString}}">
+          </div>
+         </div>
+
+
+
+           <div class="col-xs-12">
+           <div class="col-xs-12 noPadding noMargin">
+              <label class="required-field">{{'sf_bt_reqest_bot_valuble'| i18nString}}</label>
+              <textarea class="form-control" required  name="whyBotForOrganization" ng-model="reqBTAccessDetails.Why_are_bots_valuable_for_org_E" placeholder="{{'describe_bot_value'| i18nString}}"></textarea>
+          </div>
+         </div>
+
+         
+
+           <div class="col-xs-12">
+           <div class="col-xs-6 paddingLeft">
+              <label class="required-field">{{'sf_bt_reqest_when_do_you_plan'| i18nString}}</label>
+          <bt-date class= "datePickerTbody" name="purchaseLicenseData" onkeypress="return (false)" schema="dateField" required ng-model="reqBTAccessDetails.When_to_purchase_licenses_for_users_E"></bt-date>
+           </div>
+           <div class="col-xs-6 paddingRight">
+            
+          </div>
+         </div>
+        </form>
+     </div>
+     
+    
+      </div>
+      <div class="modal-body" ng-show="displayMessage" dynamic-height dynaoffset="-60" perfect-scroll>
+     <div class="message" >
+          <span ng-bind-html="message"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,316 @@
+<div class="creation create-container container-fluid noPadding"> 
+  
+  <!-- Top bar -->
+  <div class="row top-bar selected-stream noMargin" style="background:{{selectedStream.color}}">
+    <div class="main-body row">
+      <div class="stream-icon"> <a href="/bt" title=""> <img  ng-src="{{selectedStream.icon}}"> </a> </div>
+      <div class="stream-details"> 
+      <div class="name">{{selectedStream.name}}</div> 
+       <div class="taskContainer">
+      <div class="categories">{{entityObj.name}}</div> 
+      <div class="alert-action">{{'create_label'| i18nString}} 
+      <span  ng-if="wftype!=='alert'" >{{'an_dyn_value'| i18nString:({dyn:wftype})}}</span> 
+      <span  ng-if="wftype==='alert'" >{{'bt_wf_create_an_alert_label'| i18nString}}</span> 
+      </div> 
+    </div>
+      </div>
+    </div>
+    
+    <div id="myTabs" class="tabContainer" ng-hide = "wftype === 'knowledge'">
+        
+                
+  <ul class="nav nav-tabs tablist" role="tablist" >
+    <li role="presentation" ng-if="isThisSectionRequired('basic')" ng-class="{'active':sections.basic,'disabled':!sections.basic}" ng-click="navigateTo('basic')">
+    
+    <a href="#" aria-controls="home" role="tab" data-toggle="tab" >
+       <!-- <span class="step-serial">1</span>-->
+       <span class="step-serial"> {{getStepNo('basic')}} </span>
+       {{'general_info'| i18nString}}</a>
+        
+    </li>
+    <li role="presentation" ng-if="isThisSectionRequired('auth')"  ng-click="navigateTo('auth')" ng-class="{'active':sections.auth,'disabled':!sections.auth}">
+    <a href="#" aria-controls="#" role="tab" ng-attr-data-toggle="{{sections.auth ? 'tab' : '' }}">
+    <!--<span class="step-serial">2</span>-->
+    <span class="step-serial"> {{getStepNo('auth')}} </span>
+    {{'authentication_label'| i18nString}}</a>
+    </li>
+    <li role="presentation" ng-if="isThisSectionRequired('requestObj')"   ng-click="navigateTo('requestObj')" ng-class="{'active':sections.requestObj,'disabled':!sections.requestObj}">
+    <a href="#" aria-controls="Channels" role="tab" ng-attr-data-toggle="{{sections.requestObj ? 'tab' : '' }}">
+    <!--<span class="step-serial" ng-if="isThisSectionRequired('auth')">2</span>
+       <span class="step-serial" ng-if="!isThisSectionRequired('auth')">3</span>-->
+       <span class="step-serial"> {{getStepNo('requestObj')}} </span>
+       {{'request'| i18nString}}</a>
+    </li>
+    <li role="presentation" ng-if="isThisSectionRequired('responseObj')"  ng-click="navigateTo('responseObj')" ng-class="{'active':sections.responseObj,'disabled':!sections.responseObj}">
+    <a href="#" aria-controls="Flows" role="tab" ng-attr-data-toggle="{{sections.responseObj ? 'tab' : '' }}" >
+       <!--<span class="step-serial" ng-if="isThisSectionRequired('auth')">4</span>
+       <span class="step-serial" ng-if="!isThisSectionRequired('auth')">3</span>-->
+       <span class="step-serial"> {{getStepNo('responseObj')}} </span>
+       {{'response'| i18nString}}</a>
+    </li>
+    <li role="presentation" ng-if="isThisSectionRequired('settings')"  ng-click="navigateTo('settings')" ng-class="{'active':sections.settings,'disabled':!sections.settings}">
+        <a href="#" aria-controls="Publish" role="tab" ng-attr-data-toggle="{{sections.settings ? 'tab' : '' }}">
+        <span class="step-serial" ng-if="isThisSectionRequired('auth')">5</span>
+        <span class="step-serial" ng-if="!isThisSectionRequired('auth')">4</span>
+        <!-- <span class="step-serial">{{getStepNo('settings')}}</span> -->
+        {{'schedule'| i18nString}} </a></li>
+  </ul>
+
+</div>   
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content scroll-div"  dynamic-height dynaoffset="-130"> 
+    
+    <!-- Type Creation -->
+    <div class="type-creation-forms widget-body" >
+      <div class="row forms-container"> 
+
+        <!-- Knowledge task related form -->
+
+        
+
+        <!-- End of knowledge task related form -->
+        
+
+        <!-- Sidebar steps -->
+      
+        <!-- Forms for steps -->
+        <div class="step-forms">
+          <div class="bt-step" ng-if="sections.basic"> 
+            
+            <!-- step heading --> 
+            <!--  <div class="step-heading" id="headingThree">
+                            <h3>General Info
+                                <a ng-if="wftype==='alert'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/alert-task-basic-settings/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='action'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-action-tasks/basic-settings-for-an-action-task/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </h3>
+                        </div>--> 
+            
+            <!-- Step Body -->
+            <div class="step-body">
+              <intro-form wf-type="{{wftype}}" callbacks="callbacks.basic" configure="finishSetup(type)" display-mode="{{displayMode}}" on-complete="onIntroFormResponse(wftype,authRequired)"></intro-form>
+            </div>
+            
+            <!-- Next and previous buttons -->
+            <div class="prev-next-buttons" ng-show="false"> 
+              <!-- <button type="button" class="btn btn-default" ng-click="previousStep(3)">
+                                Previous Step
+                            </button> -->
+              <button type="button" ng-if="currentStage.visited" class="btn btn-default pull-right" ng-click="nextStep()"> {{'bt_wf_mapping_next_step'| i18nString}} </button>
+            </div>
+          </div>
+          <div class="bt-step" ng-if="sections.auth"> 
+            
+            <!-- step heading --> 
+            <!-- <div class="step-heading" id="headingFour">
+                            <h3>
+                                Authentication Setup
+                                <a ng-if="wftype==='alert'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/setting-up-authentication-for-alert-tasks/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='action'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-action-tasks/setting-up-authentication-for-action-tasks/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </h3>
+                        </div>--> 
+            
+            <!-- Step Body -->
+            <div class="step-body">
+              <auth-form wf-type="{{wftype}}" callbacks="callbacks.auth" is-finish-setup-loading = "isFinshSetupLoading" configure="finishSetup(type)" on-complete="onAuthFormResponse()" resource="resource"></auth-form>
+            </div>
+            
+            <!-- Next and previous buttons -->
+            <div class="prev-next-buttons" ng-show="false">
+              <button type="button" class="btn btn-default" ng-click="previousStep()"> {{'bt_wf_mapping_previous_step'| i18nString}} </button>
+              <button type="button" ng-if="currentStage.visited" class="btn btn-default pull-right" ng-click="nextStep()"> {{'bt_wf_mapping_next_step'| i18nString}} </button>
+            </div>
+          </div>
+          <div class="bt-step" ng-if="sections.requestObj"> 
+            
+            <!-- step heading --> 
+            <!-- <div class="step-heading" id="headingFive">
+                            <h3>
+                                Configure the {{(wftype.toLowerCase()=='action')?_constants_.action:_constants_.alert}} Request
+                                <a ng-if="wftype==='alert' && getAlertType() === 'webhook'" target="_blank" class="pull-right help-link"
+                                href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/configuring-the-alert-task-request-object-webhook/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='alert' && getAlertType() === 'webservice' && isItRestType()" target="_blank" class="pull-right help-link"
+                                href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/configuring-the-alert-task-request-object-webservice-rest/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='alert' && getAlertType() === 'webservice' && !isItRestType()" target="_blank" class="pull-right help-link"
+                                href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/configuring-the-alert-task-request-object-webservice-soap/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='alert' && getAlertType() === 'rss'" target="_blank" class="pull-right help-link"
+                                href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/configuring-the-alert-task-request-object-rss/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='action' && isItRestType()" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-action-tasks/configuring-the-action-task-request-rest/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='action' && !isItRestType()" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-action-tasks/configuring-the-action-task-request-soap/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </h3>
+                        </div>--> 
+            
+            <!-- Step Body -->
+            <div class="step-body" ng-if="isItRestType()">
+              <request-object-form wf-type="{{wftype}}" callbacks="callbacks.requestObj" configure="finishSetup(type)" on-complete="onReqObjectFormResponse(wftype)"></request-object-form>
+            </div>
+            <div class="step-body" ng-if="!isItRestType()">
+              <soap-request-object wf-type="{{wftype}}" is-finish-setup-loading = "isFinshSetupLoading" configure="finishSetup(type)"
+                            on-complete="onReqObjectFormResponse(wftype)()"></soap-request-object>
+            </div>
+            
+            <!-- Next and previous buttons --> 
+            <!-- <div class="prev-next-buttons">
+                            <button type="button" class="btn btn-default" ng-click="previousStep()">
+                                Previous Step
+                            </button>
+                            <button type="button" ng-if="currentStage.visited" class="btn btn-default pull-right" ng-click="nextStep()">
+                                Next Step
+                            </button>
+                        </div> --> 
+            
+          </div>
+          <div class="bt-step" ng-if="sections.responseObj"> 
+            
+            <!-- step heading --> 
+            <!-- <div class="step-heading" id="headingSix">
+                            <h3>
+                                Configure the {{(wftype.toLowerCase()=='action')?_constants_.action:_constants_.alert}} Response
+                                <a ng-if="wftype==='alert'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/configuring-the-response-object-for-an-alert-task/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='action'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-action-tasks/configuring-the-action-task-response/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </h3>
+                        </div>--> 
+            
+            <!-- Step Body -->
+            <div class="step-body">
+              <response-object-form wf-type="{{wftype}}" callbacks="callbacks.responseObj" configure="finishSetup(type)" on-complete="onResObjectFormResponse(wftype)"></response-object-form>
+            </div>
+            
+            <!-- Next and previous buttons --> 
+            <!-- <div class="prev-next-buttons">
+                            <button type="button" class="btn btn-default" ng-click="previousStep()">
+                                Previous Step
+                            </button>
+                            <button type="button" ng-if="currentStage.visited" class="btn btn-default pull-right" ng-click="nextStep()">
+                                Next Step
+                            </button>
+                        </div> --> 
+            
+          </div>
+          <!-- <div class="bt-step" ng-if="sections.errorMsgs">  -->
+            
+            <!-- step heading --> 
+            <!-- <div class="step-heading" id="headingSeven">
+                            <h3>
+                                Error Handling
+                                <a ng-if="wftype==='alert'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/error-messages-for-alert-tasks/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='action'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-action-tasks/error-messages-for-action-tasks/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </h3>
+                        </div>--> 
+            
+            <!-- Step Body -->
+            <!-- <div class="step-body">
+              <error-form error="junk" error-for="{{wftype}}" on-save="errorMsgSave(error,cb)"></error-form>
+            </div> -->
+            
+            <!-- Next and previous buttons --> 
+            <!-- <div class="prev-next-buttons">
+                            <button type="button" class="btn btn-default" ng-click="previousStep()">
+                                Previous Step
+                            </button>
+                            <button type="button" ng-if="currentStage.visited" class="btn btn-default pull-right" ng-click="nextStep()">
+                                Next Step
+                            </button>
+                        </div> --> 
+            
+          <!-- </div> -->
+          <div class="bt-step" ng-if="sections.settings"> 
+            
+            <!-- step heading --> 
+            <!-- <div class="step-heading" id="headingSeven">
+                            <h3>
+                                Advanced Settings
+                                <a ng-if="wftype==='alert'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/settings-for-alert-tasks/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='action'" target="_blank" class="pull-right help-link" href="https://support.kore.com/hc/en-us/articles/206222507">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </h3>
+                        </div>--> 
+            
+            <!-- Step Body -->
+            <div class="step-body">
+              <settings-form wf-type="{{wftype}}" callbacks="callbacks.settings" configure="finishSetup(type)" on-complete="onSettingsFormResponse()"></settings-form>
+            </div>
+            
+            <!-- Next and previous buttons --> 
+            <!-- <div class="prev-next-buttons">
+                            <button type="button" class="btn btn-default" ng-click="previousStep()">
+                                Previous Step
+                            </button>
+                            <button type="button" ng-if="currentStage.visited" class="btn btn-default pull-right" ng-click="nextStep()">
+                                Next Step
+                            </button>
+                        </div> --> 
+            
+          </div>
+          <!-- <div class="bt-step" ng-if="sections.finishForm">  -->
+            
+            <!-- step heading --> 
+            <!-- <div class="step-heading" id="headingEight">
+                            <h3>
+                                Review
+                                <a ng-if="wftype==='alert'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-alert-tasks/reviewing-an-alert-task-configuration/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <a ng-if="wftype==='action'" target="_blank" class="pull-right help-link" href="http://apidocs.kore.com/docs/bots/bot-builder/kore-bot-action-tasks/reviewing-an-action-task-configuration/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </h3>
+                        </div>--> 
+            
+            <!-- Step Body -->
+            <!-- <div class="step-body">
+              <finish-form wf-type="{{wftype}}" configure="finishSetup(type)"></finish-form>
+            </div> -->
+            
+            <!-- Next and previous buttons --> 
+            <!-- <div class="prev-next-buttons">
+                            <button type="button" class="btn btn-default" ng-click="previousStep()">
+                                Previous Step
+                            </button>
+                            <button type="button" ng-if="currentStage.visited" class="btn btn-default pull-right" ng-click="nextStep()">
+                                Next Step
+                            </button>
+                        </div> --> 
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Save and Cancel --> 
+  <!-- <div class="pull-right" ng-if="progressStage!==9">
+        <button class="btn btn-default" ng-click="onCancel()">Cancel</button>
+        <button class="btn btn-primary" ng-click="onSaveAndExit()">Save &amp; Exit</button>
+    </div> --> 
+</div>

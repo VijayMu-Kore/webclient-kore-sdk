@@ -1,0 +1,445 @@
+<div class="synonyms_manage knowledgetaskform">
+  <fieldset class="row">
+    <div class="col-xs-12 form-group">
+      <div class="col-xs-12">
+        <div class="col-xs-10 noPadding">
+          <h4 class="" tooltip-placement="right" tooltip=""> {{'stream_knowledge_define_knowledge_task'| i18nString}}  </h4><i class="fa fa-info-circle"></i>
+
+          <p>{{'stream_knowledge_define_knowledge_task_desc'| i18nString}}</p>
+        </div>
+        <div class="col-xs-2" ng-if = "displayMode !== 'view'">
+          <span class="pull-right bt-color-blue bt-cursor-pointer fontSize16" ng-click="openKTMetaModal()">{{'edit'| i18nString}} </span>
+        </div>
+
+      </div>
+      <div class="col-xs-12">
+        <label class="required-field" tooltip-placement="right" tooltip=""> {{'name_label'| i18nString}} </label>
+      </div>
+      <div class="col-xs-10" ng-show="true">
+        {{knowledgeData.name}}
+      </div>
+    </div>
+    <div class="col-xs-12 form-group">
+      <div class="col-xs-12">
+        <label class="" tooltip-placement="right" tooltip=""> {{'tooltip_desc'| i18nString}} </label>
+      </div>
+      <div class="col-xs-10" ng-show="true">
+        {{knowledgeData.description}}
+      </div>
+    </div>
+
+
+    <!-- Start of questions and answers -->
+
+
+
+    <div class="col-xs-12 form-group knowladgeTask">
+      <div class="col-xs-12 ">
+        <label class="required-field" tooltip-placement="right" tooltip=""> {{'stream_knowledge_questions_answers'| i18nString}} </label>
+      </div>
+      <div class="col-xs-12 knowladgeContainer">
+        <div  class="col-xs-12 noPadding addImport"> 
+      <!--  <textarea rows="3" ng-model="knowledgeData.description" placeholder="Describe your {{_constants_.label}} in about 3 to 4 lines" class="form-control" name="description" ng-minlength="1" maxlength="250" required></textarea> 
+      ng-keyup = "searchFaqsBySearchParam()"-->
+      <div class="knowladgeSubContainer">
+        <div ng-show="true" class="pull-right bt-inline faqSearchContainer">
+          <div class="search pull-left" >
+            <input  tabindex="1" type="text" class="form-control" ng-enter="getFaqsByKnowledge()" ng-keyup = "searchFaqsBySearchParam()" ng-model = "knowledgeData.qasearchparam" placeholder="{{'find_q_a_placeholder'| i18nString}}">
+          </div>
+          <button class="btn btn-sm btn-outline" type="button" ng-show="knowledgeData.questions.length>0" ng-click="trainBot()">{{'train'| i18nString}} </button>
+          <button type="button" ng-click="openImportModal()" ng-show = "displayMode !== 'view'" class="btn btn-sm btn-outline"> {{'import'| i18nString}} </button>
+          <button type="button" ng-show = "displayMode !== 'view'" ng-disabled = "showqaform || isNewKnowledgeTask " class="btn btn-sm btn-primary" ng-click="showQAForm()">{{'add'| i18nString}}</button>
+        </div>
+      </div>
+      <div id="formContainer" class="col-xs-12 formContainer">
+        <div class="clearboth knowladgeSubContent" ng-show="showqaform || isNewKnowledgeTask">
+          <div class="form-container faq-body" >
+            <ng-form name="question_answers_form" novalidate>
+            <fieldset class="subFormFieldset"  ng-if="true">
+              <div class="col-xs-12 labelling bt-addnew">
+                <label>{{'add_new'| i18nString}}</label><i class="fa fa-info-circle"></i>
+
+                <span class = "pull-right fa fa-close" ng-show = "knowledgeTaskDetails.ktID" ng-click = "hideQAForm()"></span>
+              </div>
+              <div class="form-group col-xs-12">
+                <div class="col-xs-12 labelling">
+                  <label class="required-field"> {{'user_says_label'| i18nString}} </label>
+                  <span class="pull-right bt-color-blue bt-cursor-pointer fontSize13Bold" ng-click="addUtteranceFiled()">{{'stream_knowledge_add_utterance'| i18nString}}</span>   </div>
+                  <div class="col-xs-12">
+                    <input maxlength="1024" type="text" class="form-control" ng-model="knowledgeData.question" format-input="replaceHtmlString" ng-pattern="validatePatternQA" id="key" input-note note-description="userSaysDescription" placeholder="{{'add_user_utterance_placeholder'| i18nString}} " name="utterance" required />
+                    <!--<div class="marginBottom10">Add as many different user utterances as possible for ML to learn and identify the user intent accurately. Learn more</div>-->
+                    <div ng-show="question_answers_form.utterance.$dirty">
+                      <div error-alert ng-show="question_answers_form.utterance.$error.required" class="text-danger form-error-text"> {{'stream_knowledge_user_says_is_required'| i18nString}}  </div>
+                      <div error-alert ng-show="question_answers_form.utterance.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_utterance_shouldnot_allow_script'| i18nString}}</div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 marginBottom10" ng-repeat="field in knowledgeData.subQuestions track by $index">
+                    <input maxlength="1024" type="text" class="form-control" ng-model='knowledgeData.subQuestions[$index]' id="key" placeholder="{{'add_another_user_utterance'| i18nString}}" name="subUtterance{{$index}}" ng-pattern="validatePatternQA"/>
+                    <i class="fa fa-minus-circle bt-minus-circle deleteUtterance" ng-click="deleterUttranceField($index)"></i>
+                    <div error-alert ng-show="question_answers_form.subUtterance{{$index}}.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_subutterance_shouldnot_allow_script'| i18nString}} </div>
+
+                  </div>
+                </div>
+                <div class="form-group col-xs-12">
+                  <div class="col-xs-12 labelling">
+                    <label class="required-field"> {{'bot_response'| i18nString}}  </label>
+                    <span class="pull-right bt-color-blue bt-cursor-pointer fontSize13Bold" ng-click="addResponseFiled()">{{'add_response'| i18nString}} </span>
+                  </div>
+                  <div class="col-xs-12">
+                      <input maxlength="2048" type="text" class="form-control" ng-model="knowledgeData.answer" format-input="replaceHtmlString" id="type" placeholder="{{'enter_a_response'| i18nString}}" name="response" required ng-pattern="validatePatternAnswers" />
+                    <div class="marginBottom10">{{'stream_knowledge_random_bot_response'| i18nString}}</div>
+                    <div ng-show="question_answers_form.response.$dirty">
+                      <div error-alert ng-show="question_answers_form.response.$error.required" class="text-danger form-error-text"> {{'bot_response_is_req'| i18nString}}  </div>
+                      <div error-alert ng-show="question_answers_form.response.$error.pattern" class="text-danger form-error-text">{{'stream_knowledge_response_condition'| i18nString}}</div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 marginBottom10" ng-repeat="field in knowledgeData.subAnswers track by $index">
+                    <input  maxlength="2048" type="text" class="form-control" ng-model='knowledgeData.subAnswers[$index]' id="key" placeholder="{{'add_another_user_response'| i18nString}}" name="subResponse{{$index}}" ng-pattern="validatePatternAnswers" />
+                    <i class="fa fa-minus-circle bt-minus-circle deleteUtterance" ng-click="deleterResponseField($index)"></i>
+                    <div error-alert ng-show="question_answers_form.subResponse{{$index}}.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_subresponse_condition'| i18nString}}</div>
+
+                  </div>
+                </div>
+                <div class="pull-right">
+                  <button ng-click="openClearConfirmModal()" class="btn btn-default"> {{'clear_label'| i18nString}}  </button>
+                  <button type="submit" class="btn btn-primary" ng-disabled = "!knowledgeData.question || !knowledgeData.answer" ng-click="addQuestionAnswers(question_answers_form.$valid,question_answers_form,$event)">{{'save'| i18nString}} </button>
+                </div>
+              </fieldset>
+            </ng-form>
+          </div>
+        </div>
+        <div class="well well-sm" ng-show="true">
+          <div class="form-container" >
+            <div class="btFaqList" ng-repeat="question in knowledgeData.questions">
+              <div class="bt-paddingleftright10">
+                <div class="row">
+                  <div class="labelResp"><label>{{'stream_knowledge_user_Says'| i18nString}}</label></div>
+                  <div class="labelDec"> 
+                    <div class="labelfaq">
+                      <span class="bt-breakall" ng-repeat = "subQuestionToView in ::question.subQuestionsToView track by $index">"{{::subQuestionToView | replaceHtmlString}}" </span> 
+                    </div>
+                    <!-- <span>"What is Task?" "define a task" "explain a task"</span> -->
+                    <div class="pull-right bt-color-blue" ng-show = "displayMode !== 'view'"> <span class="bt-cursor-pointer" ng-click="(removeQaIndex !== $index) && showEditQAForm($index)">{{'edit'| i18nString}}</span> <span class="bt-cursor-pointerRemove" ng-click="(removeQaIndex !== $index) && removeFAQByID($index, question._id )">{{'remove'| i18nString}}</span> </div>
+                  </div>
+                </div>
+                <div class="row">
+                 <div class="labelResp"><label>{{'stream_knowledge_response'| i18nString}}  </label></div>
+                 <div class="labelDec">
+                  <div class="labelfaq">
+                    <span class="bt-breakall" ng-repeat = "subAnswerToView in ::question.subAnswersToView track by $index">"{{::subAnswerToView | replaceHtmlString}}" </span>
+                  </div></div>
+               </div>
+             </div>
+             <ng-form name="question_answers_form_edit" ng-show="selectedDiv === $index" novalidate>
+             <fieldset class="subFormFieldset bt-bg-white"  ng-if="true">
+              <div class="col-xs-12 labelling bt-addnew">
+                <label>Edit</label><i class="fa fa-info-circle"></i>
+                <span class = "pull-right fa fa-close" ng-click = "hideEditQAForm()"></span>
+              </div>
+              <div class="form-group col-xs-12">
+                <div class="col-xs-12 labelling">
+                  <label class="required-field"> {{'user_says_label'| i18nString}}</label>
+                  <span class="pull-right bt-color-blue bt-cursor-pointer fontSize13Bold" ng-click="addUtteranceFiledEdit($index)">{{'stream_knowledge_add_utterance'| i18nString}}</span> </div>
+                  <div class="col-xs-12">
+                      <input maxlength="1024" type="text" class="form-control" ng-model="knowledgeData.questions[$index]['question']" ng-value="question.question" id="questionedit" format-input="replaceHtmlString" placeholder="{{'add_user_utterance_placeholder'| i18nString}} " input-note note-description="userSaysDescription" name="questionedit" required ng-pattern="validatePatternQA"/>
+                    <!--<div class="marginBottom10">Add as many different user utterances as possible for ML to learn and identify the user intent accurately. Learn more</div>-->
+                    <div ng-show="question_answers_form_edit.questionedit.$dirty">
+                      <div error-alert ng-show="question_answers_form_edit.questionedit.$error.required" class="text-danger form-error-text"> {{'stream_knowledge_user_says_is_required'| i18nString}} </div>
+                      <div error-alert ng-show="question_answers_form_edit.questionedit.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_utterance_shouldnot_allow_script'| i18nString}}</div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 marginBottom10" ng-repeat = "subQuestion in question.subQuestions track by $index">
+                    <input maxlength="1024"  type="text" class="form-control" ng-value="subQuestion" ng-model='question.subQuestions[$index]' id="key" placeholder="{{'add_another_user_utterance'| i18nString}}" ng-pattern="validatePatternQA" name="subQuestionEdit{{$index}}"/>
+                    <i class="fa fa-minus-circle bt-minus-circle deleteUtterance" ng-click="deleteUttranceFieldEdit($parent.$index, $index)"></i>
+                    <div error-alert ng-show="question_answers_form_edit.subQuestionEdit{{$index}}.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_subutterance_shouldnot_allow_script'| i18nString}} </div>
+                  </div>
+                </div>
+                <div class="form-group col-xs-12">
+                  <div class="col-xs-12 labelling">
+                    <label class="required-field"> {{'bot_response'| i18nString}} </label>
+                    <span class="pull-right bt-color-blue bt-cursor-pointer fontSize13Bold" ng-click="addResponseFiledEdit($index)">{{'add_response'| i18nString}}</span></div>
+
+                    <div class="col-xs-12">
+                      <input  maxlength="2048" type="text" class="form-control" format-input="replaceHtmlString" ng-value="question.answer" ng-model="knowledgeData.questions[$index]['answer']" id="answeredit" placeholder="{{'enter_a_response'| i18nString}}" name="answeredit" required ng-pattern="validatePatternAnswers" />
+                      <div class="marginBottom10">{{'stream_knowledge_random_bot_response'| i18nString}}</div>
+                      <div ng-show="question_answers_form_edit.answeredit.$dirty">
+                        <div error-alert ng-show="question_answers_form_edit.answeredit.$error.required" class="text-danger form-error-text"> {{'bot_response_is_req'| i18nString}} </div>
+                        <div error-alert ng-show="question_answers_form_edit.answeredit.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_bot_response_condition'| i18nString}}</div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 marginBottom10" ng-repeat = "subAnswer in question.subAnswers track by $index">
+                      <input  maxlength="2048" type="text" class="form-control" ng-value="question.subAnswers[$index]" ng-model='question.subAnswers[$index]' format-input="replaceHtmlString" id="key" name="subResponseEdit{{$index}}" placeholder="{{'add_another_user_response'| i18nString}} " ng-pattern="validatePatternAnswers" />
+                      <i class="fa fa-minus-circle bt-minus-circle deleteUtterance" ng-click="deleteResponseFieldEdit($parent.$index, $index)"></i>
+                      <div error-alert ng-show="question_answers_form_edit.subResponseEdit{{$index}}.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_bot_sub_response_condition'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="pull-right">
+                    <button ng-click="openClearConfirmModal($index)" class="btn btn-default"> {{'clear_label'| i18nString}}  </button>
+                    <button type="submit" class="btn btn-primary" ng-disabled = "!knowledgeData.questions[$index]['question'] || !knowledgeData.questions[$index]['answer']" ng-click="updateQuestionAnswers($index, question_answers_form_edit.$valid,question_answers_form_edit,$event)">{{'update'| i18nString}}</button>
+                  </div>
+                </fieldset>
+              </ng-form>
+            </div>
+            <div class="col-xs-12 noPadding" ng-show="totalItems>10">
+              <bt-pagination limit="limit" total-items="totalItems" show-num-dropdown="true" get-page-data="getFaqsByKnowledge(offset)"></bt-pagination>
+            </div>
+          </div>
+          <div ng-show = "!knowledgeData.isSearchResultFound" class="fontSize30">
+            {{'no_results_found'| i18nString}}
+          </div>
+          <div ng-show = "!knowledgeData.qafound" class="fontSize30">
+            {{'no_question_answers'| i18nString}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- End of questions and answers -->
+
+
+
+
+<!-- MODAL -->
+<div class="importkcmodal modal fade" role="dialog" data-backdrop="static" ng aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="fieldData = {};closeImportModal();" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{{'import_kg'| i18nString}}</h4>
+      </div>
+      <div class="modal-body wf-form modalPerfectScroll" perfect-scroll>
+        <!-- <auth-test-form test-on-progress="authTestInProgress" type="idp" api="testFormApi" idp="currentIdp"> </auth-test-form> -->
+        <div class="col-xs-12 form-group">
+          <div class="col-xs-12 noPadding">
+            <h4 class="faq-import-options bt-text-capitalize">{{'Import_Options'| i18nString}}</h4><i ng-show="false" class="fa fa-info-circle"></i>
+            <!-- <p class="faq-imprt-content fontSize15">Import a CSV or JOSN file with questions & answers pre-populated in it into this collection.</p> -->
+            <p class="faq-imprt-content fontSize15">{{'stream_knowledge_import_a_csv'| i18nString}}</p>
+          </div>
+          <div class="col-xs-12 noPadding">
+            <label class="">{'upload_file_uppercase'| i18nString}}</label>
+          </div>
+          <div class="row col-xs-12 noPadding">
+            <div class="input-group">
+              <input type="text" id="qafileimport" name="qaFile" class="form-control" placeholder="{{'select_csv_file'| i18nString}} " required readonly ng-model="knowledgeData.qafile.fileName">
+              <div class="input-group-addon btn-file"> {{'choose_file'| i18nString}} <i class="fa fa-spinner fa-spin" ng-show="qafileuploading"></i> <input type="file" file-model="knowledgeData.qaFile" id="qaFile" name="qaFile" required ng-disabled="smBannerUploading" ng-click="$event.value == null" on-file-change="uploadCSVorJSONFile"/></div>
+            </div>
+                        <!-- <div ng-show="streamktform.qaFile.$dirty">
+                            <div error-alert ng-show="streamktform.qaFile.$error.required" class="text-danger form-error-text"> Question and answers file is required. </div>
+                          </div> -->
+                          <div ng-show="bSfileExtensionError" class="text-danger form-error-text"> {{'png_file'| i18nString}} </div>
+                          <div ng-show="bSiconRequiredError" class="text-danger form-error-text"> {{'Icon_error'| i18nString}} </div>
+                          <div class="uploads" ng-show="knowledgeData.qafile.fileName">
+                            <div class="alert alert-success alert-sm">
+                              <span class="pointer-hand" ng-click="deleteQAFile()"><i class="btx-close"></i></span>
+                              <span class="content"> {{knowledgeData.qafile.fileName}} </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-12 noPadding">
+                          <div class="row col-xs-12 radioDiv noPadding">
+                            <div>
+                              <h4 class="">Import Settings</h4>
+                            </div>
+                            <div>
+                              <label  for="sbimg" tooltip-placement="top">
+                                <input type="radio" ng-model="knowledgeData.importchoice" value="update" id="sbimg"><span class="opt-title" >{{'stream_knowledge_append_update'| i18nString}} </span>
+                              </label>
+                            </div>
+                            <div>
+                              <label  for="sbcolor" tooltip-placement="top">
+                                <input type="radio" ng-model="knowledgeData.importchoice" value="override" id="sbcolor"><span class="opt-title"  >{{'stream_knowledge_delete_Existing_Content'| i18nString}}</span>
+                              </label>
+                            </div>
+                            <p class="helpText">
+                              {{'stream_knowledge_existing_data'| i18nString}}
+                            </p>
+                            <!-- <div class="faq-fu-format csvJsonBG">
+                              The CSV and JSON files must be in a specific format for the import to be successful. Download a <a download target="_blank" href="{{assetsBase}}/files/sampleFaq.csv">CSV</a> or <a download target="_blank" href="{{assetsBase}}/files/sampleFaq.json">JSON</a> sample file to get started.
+                            </div> -->
+                            <div class="faq-fu-format csvJsonBG"
+                              ng-bind-html="'download_csv_file'| i18nString:({link:'{{assetsBase}}/files/sampleFaq.csv'})"> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer"> 
+
+                      <div class="pull-right">
+                        <button type="reset" ng-click="fieldData = {};closeImportModal();" class="btn btn-default"> {{'cancel'| i18nString}} </button>
+                        <button type="submit" class="btn btn-primary" ng-click="importFileByFileIDPreprocess()">{{'import'| i18nString}}</button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- end of modal -->
+
+
+
+
+              <div class="importkcmodalconfirm modal fade" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" ng-click="closeImportModalConfirm()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                      <h4 class="modal-title" id="gridSystemModalLabel">{{'confirm_delete_replace'| i18nString}}</h4>
+                    </div>
+                    <div class="modal-body wf-form">
+                      <p class="fontSize18 marginLeftRight20">  {{'confirm_delete_replace_desc'| i18nString}}</p>
+                    </div>
+
+                    <div class="modal-footer"> 
+
+                      <div class="pull-right">
+                        <button type="reset" ng-click="closeImportModalConfirm();fieldData = {};closeImportModal();" class="btn btn-default"> {{'cancel'| i18nString}} </button>
+                        <button type="submit" class="btn btn-primary" ng-click="importFileByFileID()">{{'confirm'| i18nString}}</button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+
+
+              <div class="clearConfirmModal modal fade" data-backdrop="static"  role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" ng-click="closeclearConfirmModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                      <h4 class="modal-title" id="gridSystemModalLabel">{{'clear_form'| i18nString}}</h4>
+                    </div>
+                    <div class="modal-body wf-form">
+                      <p class="fontSize18 marginLeftRight20">  {{'clear_form_desc'| i18nString}}</p>
+                    </div>
+
+                    <div class="modal-footer"> 
+
+                      <div class="pull-right">
+                        <button type="reset"  ng-click="fieldData = {};closeImportModal();closeclearConfirmModal()" class="btn btn-default"> {{'cancel'| i18nString}}  </button>
+                        <button type="submit" class="btn btn-primary" ng-click="resetQuestionAnswersForm()">{{'ok'| i18nString}} </button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+
+
+
+
+              <!-- Knowledge task metadata modal -->
+              <div class="ktmetamodal modal fade" role="dialog" data-backdrop="static" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" ng-click="closeKTMetaModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                      <h4 class="modal-title" id="gridSystemModalLabel">{{'stream_knowledge_new_knowledge_task'| i18nString}}</h4>
+                    </div>
+                    <div class="modal-body wf-form modalPerfectScroll" perfect-scroll>
+                      <form name="streamktform" class="wf-form" novalidate>
+                        <fieldset class="row">
+                          <div class="col-xs-12 form-group">
+
+                            <div class="col-xs-12">
+                              <label class="required-field" tooltip-placement="top" tooltip=""> {{'collection_name'| i18nString}} </label>
+                            </div>
+                            <div class="col-xs-12" ng-show="displayMode==='view'">
+                              {{knowledgeData.name}}
+                            </div>
+                            <div class="col-xs-12" ng-show="displayMode!=='view'">
+                              <input type="text" focus-it="" ng-model="knowledgeData.name" name="name" ng-disabled="knowledgeData.isInMarket" class="form-control" ng-minlength="1" maxlength="50" required ng-pattern="validatePattern" placeholder="{{'name_this_knowledge_collection'| i18nString}}">
+                              <div  ng-show="streamktform.name.$dirty">
+                                <div error-alert  ng-show="streamktform.name.$error.required" class="text-danger form-error-text"> {{'stream_knowledge_knowledge_task_is_req'| i18nString}} </div>
+                                <div error-alert ng-show="streamktform.name.$error.minlength" class="text-danger form-error-text"> {{'Generalform_name_invalid'| i18nString}} </div>
+                                <div error-alert ng-show="streamktform.name.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_knowledge_task_name'| i18nString}} </div>
+                                <div class="pull-right" ng-if="knowledgeData.name.length > 0">{{(50-knowledgeData.name.length)+ char_remaining }}</div>
+                              </div>
+                              <div error-alert ng-show="duplicateKTName" class="text-danger form-error-text"> {{'duplicateStreamName_error'| i18nString}} </div>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 form-group">
+                            <div class="col-xs-12">
+                              <label class="" tooltip-placement="top" tooltip=""> {{'constants.flowtasks_description'| i18nString}} </label>
+                            </div>
+                            <div class="col-xs-12" ng-show="displayMode === 'view'">
+                              {{knowledgeData.description}}
+                            </div>
+                            <div class="col-xs-12" ng-show="displayMode !== 'view'">
+                             <!--  <textarea rows="3" ng-model="knowledgeData.description" placeholder="Describe your {{_constants_.label}} in about 3 to 4 lines" class="form-control" name="description" ng-minlength="1" maxlength="250" required></textarea> -->
+
+                             <input type="text" ng-model="knowledgeData.description" name="description"  class="form-control" placeholder="Optional short description for this collection" ng-minlength="1" maxlength="250">
+                             <div error-alert ng-show="streamktform.description.$error.pattern" class="text-danger form-error-text"> {{'stream_knowledge_knowledge_task_name'| i18nString}}</div>
+
+
+                           </div>
+                         </div>
+                       </fieldset>
+                     </form>
+
+                   </div>
+
+                   <div class="modal-footer"> 
+
+                    <div class="pull-right">
+                      <button type="reset" ng-click="fieldData = {};closeKTMetaModal();" class="btn btn-default"> {{'cancel'| i18nString}} </button>
+                      <button type="submit" class="btn btn-primary" ng-click="saveKnowledgeTask(isFormValid(true),streamktform,$event)">{{'add'| i18nString}}</button>
+                    </div>
+
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+
+
+            <!-- Knowledge task metadata modal end -->
+
+
+
+
+
+
+
+
+
+            <div class="footer col-xs-12 hide">
+              <div class="footerSub">
+                 <div class="col-xs-3"><button ng-click="onCancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+               <div class="form-ctrl-div pull-left hide">
+                <button type="button" class="btn btn-default" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+              </div>
+              <div  class="col-xs-6 lineheight">
+                  
+
+                    <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+                    </div>
+              <div class="help-hint-link hide">
+                <a target="_blank" ng-show="editMode==='new'"  ng-href="{{$root.helpLinks.ADDKT_LEARNMORE}}">{{'help_withpage_label'| i18nString}}</a>
+                <a target="_blank" ng-show="editMode==='edit'"  ng-href="{{$root.helpLinks.ADDKT_LEARNMORE}}">{{'help_withpage_label'| i18nString}}</a>
+              </div>
+              <div class="pull-right form-ctrl-div hide" ng-show="false" ng-if="displayMode !== 'view'">
+                <button type="button" ng-click="onKnowledgeFormCancel();" class="btn btn-default"> {{'cancel'| i18nString}} </button>
+                <button type="button" ng-click="saveKnowledgeTask(isFormValid(true),streamktform,$event)"  class="btn btn-primary" ng-disabled="saveInProgress">
+                  <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)? savingLabel : done }}</button>
+                </div>
+                <span class="dhelpLink">
+                    <a class="" target="_blank" ng-href="{{$root.helpLinks.ADDKT_LEARNMORE}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+             </span>
+              </div>
+            </div>
+          </fieldset>
+
+        </div>

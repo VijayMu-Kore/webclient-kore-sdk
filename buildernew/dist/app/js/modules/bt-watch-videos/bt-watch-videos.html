@@ -1,0 +1,46 @@
+<div class="watchVideoContainer">
+    <div class="col-xs-12 watchVideoHeader" >
+        <!-- <img ng-scr="{{backToLanding}}"> -->
+        <i class="fa fa-angle-left" ng-click='closeVideo()'></i>
+        <span>{{'bt_watch_videos_title'| i18nString}}</span>
+    </div>
+    <div class="watchVideoContentMain" dynamic-height dynaoffset="-50" height-property="height" perfect-scroll>
+        <div class="col-xs-12 watchVideoContent" >
+            <div class="col-xs-8 left" >
+                <div class="watchVideoDiv">
+                    <div class="onBoardVideo">
+                        <iframe  ng-src="{{videoObject.selectedVideo.link}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<!--                        <iframe id="player" width="100%" height="514px" ng-src="{{videoObject.selectedVideo.link}}" allow='autoplay'  allowfullscreen="allowfullscreen"
+            mozallowfullscreen="mozallowfullscreen" 
+            msallowfullscreen="msallowfullscreen" 
+            oallowfullscreen="oallowfullscreen" 
+            webkitallowfullscreen="webkitallowfullscreen"></iframe>-->
+                        <!--<object width="100%" height="514px" data="https://www.youtube.com/embed/9FM1RnBmY_8?controls=0/autoplay=1" allowfullscreen="true"></object>-->
+                    </div>
+                </div>
+                <h2 class="titleDescription">{{videoObject.selectedVideo.title}}</h2>
+                <p class="detalDescription">{{videoObject.selectedVideo.disc}}</p>
+                <!-- <p class="detalDescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dapibus arcu purus, eget pretium dolor lobortis vitae. Sed pellentesque mi lacus, vel auctor diam elementum eget. In tristique ipsum ligula, sit amet interdum nulla lobortis tincidunt.</p> -->
+            </div>
+            <div class="col-xs-4 right" >
+                <h5 class="pList">{{'bt_watch_playlist'| i18nString}}</h5>
+                <div class="playListScrollDiv" dynamic-height dynaoffset="-150" height-property="height" perfect-scroll>
+                    <div class="palyListDiv" ng-class="{'blurVedio':videoObject.selectedVideo.link==(videoLink.link+'?controls=1&autoplay=1&rel=0')}" ng-repeat="videoLink in videoObject.videos">
+                        <div class="palyListThumb poin" ng-click="selectVideoToPlay(videoLink)">
+                            <div class="palyHover" >
+                                <div class="hoverPlayimg"><img class="videoBgImg" ng-src="{{videoPlayIcon}}"></div>
+                                <img class="videoTumbnail" ng-src="{{videoLink.tumbnail}}">
+                            </div>
+                        </div>
+                        <div class="titleDecDiv">
+                        <p ng-click="selectVideoToPlay(videoLink)" class="playListTitle">{{videoLink.title}}</p>
+                        <p ng-click="selectVideoToPlay(videoLink)" class="playListDesc">{{videoLink.disc}}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div ng-hide="hideLoadMore" ng-click="paginate.size=loadMoreVideos(paginate.size)" class="showMoreBtn">Show more</div> -->
+            </div>
+        </div>
+    </div>
+ 
+</div>

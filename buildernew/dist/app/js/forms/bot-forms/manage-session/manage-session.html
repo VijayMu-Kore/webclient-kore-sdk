@@ -1,0 +1,98 @@
+<bt-standard-response ng-if="showStandardResponses" class="manageResponseIndexDiv" cb="manageResponseCB"></bt-standard-response>
+<div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'manage_sessions'| i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent displayNone">
+            <input  placeholder="Search">
+            <i class="btx-search"></i>
+            <i class="btx-close displayNone"></i>
+        </div>
+        <div class="creationButton borderBtn displayNone">
+             <button class="btn btn-xs"> BTN Name</button>
+        </div>
+        <div class="titleDropdown displayNone">
+            <div class="dropdown">
+                <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Dropdown name
+                    <i class="btx-carrot-up"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">Option One</li>
+                    <li class="dropdown-item" >Option Two</li>                       
+                 </ul>
+            </div>
+        </div>
+        <div class="titleOverflow displayNone">
+            <div class="dropdown">
+                <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                    <i class="btx-overflow"></i>
+                    </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">Option One</li>
+                    <li class="dropdown-item" >Option Two</li>                       
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xs-12 manage-sessions-content">
+    <div class="label_text mb-5">{{'conversations_session'| i18nString}}</div>
+    <div class="col-xs-12 noPadding">
+        <div class="kr-sg-radiobutton d-block">
+            <input ng-value="true" ng-checked="true" ng-model="newStreamData.hasSession" name="newStreamData.hasSession" id="newStreamData.hasSession.yes" class="radio-custom" type="radio">
+            <label for="newStreamData.hasSession.yes" class="radio-custom-label font-weight-normal">{{'do_not_proactive'| i18nString}}</label>
+        </div>
+        <div class="m-session-helpdata" ng-show="newStreamData.hasSession === true" >
+            <div class="helphint-border col-xs-12">
+                <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                <div class="col-xs-11 textDiv"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb559)"></span></div>
+            </div>
+        </div>
+        <div class="kr-sg-radiobutton d-block">
+            <input ng-value="false" ng-model="newStreamData.hasSession" name="newStreamData.hasSession" id="newStreamData.hasSession.no" class="radio-custom" type="radio">
+            <label for="newStreamData.hasSession.no" class="radio-custom-label font-weight-normal">{{'proactive_session'| i18nString}}</label>
+        </div>
+        <div class="col-xs-12 has-session-data" ng-show="newStreamData.hasSession === false">
+            <div class="label_text">{{'inactivity_period'| i18nString}}</div>
+            <div class="desc-info-text">{{'configure_period'| i18nString}}</div>
+            <div class="col-xs-12 noPadding">
+                <div class="col-xs-5 noPadding">
+                    <div class="kr-sg-input-text">                       
+                        <input ng-model="newStreamData.sessionInactiveTime" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  type="text" placeholder="{{'placeholder_duration'| i18nString}}" class="input-text">                        
+                    </div>
+                </div>
+                <div class="col-xs-6 minutes-label">{{'minutes'| i18nString}}</div>
+            </div>      
+            <div class="col-xs-12 sessionBehavior">
+                <div class="label_text mb-5">{{'pre_closure'| i18nString}}</div>
+                <div class="kr-sg-radiobutton d-block">
+                    <input class="radio-custom" ng-value="false" type="radio" ng-model="newStreamData.skipSessionMessage" ng-click="onToggleChange(false)" name="respondAndResumeFaqs" id="infotoUser">
+                    <label for="infotoUser" class="radio-custom-label font-weight-normal">{{'manageSession_condition'| i18nString}}.<span class="manageResponse" ng-click="openManageResponse('manageSession', $event)">{{'manageResponse'| i18nString}}</span></label>
+                </div> 
+                <div class="kr-sg-radiobutton d-block">
+                    <input class="radio-custom" ng-value="true" type="radio" ng-model="newStreamData.skipSessionMessage" ng-click="onToggleChange(true)" name="useHoldResumeForFaqs" id="noinfotoUser">
+                    <label for="noinfotoUser" class="radio-custom-label font-weight-normal">{{'close_session'| i18nString}}</label>
+                </div> 
+            </div>  
+            <!-- <div class="col-xs-12 radioDiv form-group pointerEventNone noPadding sessionBehavior">                
+                <div class="col-xs-12 radioDiv radioSection noPadding">
+                    <div class="radioInnerDiv">
+                        <label for="infotoUser">
+                            <input ng-value="true" type="radio" ng-model="newStreamData.skipSessionMessage" ng-click="onToggleChange(true)" name="respondAndResumeFaqs" id="infotoUser" />
+                            <span class="opt-title"> {{'manageSession_condition'| i18nString}}</span>
+                            <span class="manageResponse" ng-click="openManageResponse('manageSession', $event)">{{'manageResponse'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="noinfotoUser">
+                            <input ng-value="false" type="radio" ng-model="newStreamData.skipSessionMessage" ng-click="onToggleChange(false)" name="useHoldResumeForFaqs" id="noinfotoUser" />
+                            <span class="opt-title">{{'close_session'| i18nString}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>

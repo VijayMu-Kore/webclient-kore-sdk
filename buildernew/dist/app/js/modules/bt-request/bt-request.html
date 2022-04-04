@@ -1,0 +1,311 @@
+<div class="bt-request-modal" ng-class="{'read-only':displayMode == 'view'}">
+    <form name='rqForm'> 
+        <div class="modal-header">
+            <!-- <span class="pull-left closeBtn" ng-click="closeModal()">
+                <span aria-hidden="true"><i class="fa fa-chevron-left"></i></span>
+            </span> -->
+            <i ng-src="{{backArrow}}" class="requestFormBackArrow btx-carrot-right" ng-click="closeModal()"></i>
+            <bt-modal-title taskname="{{task.name}}" title="Define Request for '{{component.name}}'" bot="stream"></bt-modal-title>
+            <div class="pull-right form-ctrl-div" >
+                <button type="submit" class="btn btn-primary save-request-btn" 
+                        ng-disabled="saveInProgress || !rqForm.$valid"
+                        ng-click="saveRequest()">
+                    <i ng-show="saveInProgress" class="fa fa-spinner fa-spin"></i>{{(saveInProgress)? saving :  save}}</button>
+            </div>
+        </div>
+        <div class="modal-body"  perfect-scroll dynaoffset="-50" dynamic-height >
+            <div class="head requestModalHead">
+                <div class="col-xs-12 noPadding form-group">
+                    <!-- <div class="col-xs-12 noPadding">
+                        <label class=""> Request URL </label>
+                    </div> -->
+                    <div class="col-xs-12  getMethodContainer" >
+                        <div class="col-xs-2 noPaddingLeft getMethod">
+                        <select required name="method" class="btnDropdown method-select" ng-model="props.endPoint.method">
+                            <option value="put"> {{'bt_request_put'| i18nString}} </option>
+                            <option value="post"> {{'bt_request_post'| i18nString}} </option>
+                            <option value="patch"> {{'bt_request_patch'| i18nString}} </option>
+                            <option value="delete"> {{'bt_request_delete'| i18nString}} </option>
+                            <option value="get" > {{'get'| i18nString}} </option>
+                        </select>
+                        <div ng-show="rqForm.method.$dirty"> <br />
+                            <div ng-show="rqForm.method.$error.required">
+                                <div error-alert > {{'method_req'| i18nString}} </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-10 noPadding urlRequired" >
+                        <div class="displayTable">
+                            <div class="leftDiv">
+                                <textarea  auto-grow-textarea default-grown="true" rows="1" class="form-control whiteInput methodTextarea" url-validate ng-model="props.endPoint.requestUrl" id="requestUrl" context-typeahead placeholder="{{'bt_reqst_enter_reqst_url_placeholder'| i18nString}}" name="requestUrl" required></textarea>
+                            </div>
+                            <div class="rightDiv">
+                                <button class="btn saveBtn" ng-click="executeService()"><i ng-show="testInProgress" class="fa fa-spinner fa-spin"></i><img ng-src="{{testArrowIcon}}" class="testArrowIcon"/>{{(testInProgress)? testing : test}}</button> 
+                            </div>
+                            
+                            
+                        </div>
+                         
+                         <div ng-show="rqForm.requestUrl.$dirty">
+                            <div ng-show="rqForm.requestUrl.$error.required">
+                                <div error-alert>{{(wfType==="alert"? request: post )}}&nbsp;&nbsp;{{'url_required'| i18nString}}</div>
+                            </div>
+                            <div ng-show="rqForm.requestUrl.$error.url">
+                                <div error-alert> <span> {{'enter_valid_url_value'| i18nString}} </span> </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </div>
+                </div>  
+
+ 
+            </div>
+            <div class="body requestModalBody"> 
+
+
+                <ul class="nav nav-tabs requestModalTabs" role="tablist">
+                    <li role="presentation" class="active"><a ng-click="navigate('auth')" aria-controls="general" role="tab" data-toggle="tab">{{'bt_request_auth'| i18nString}}</a></li>
+                    <li role="presentation"><a ng-click="navigate('headers')" class="headersTabBtn" aria-controls="requestResponse" role="tab" data-toggle="tab">{{'bt_request_headers'| i18nString}}</a></li>
+                    <li ng-if="!disableBody" role="presentation"><a  ng-click="navigate('params')" aria-controls="botResponse" role="tab" data-toggle="tab">{{'bt_request_body'| i18nString}}</a></li>
+                    <!--                    <li role="presentation"><a ng-click="navigate('curl')" aria-controls="setting" role="tab" data-toggle="tab">cURL</a></li>-->
+                    <!--              <li role="presentation"><a ng-click="navigate('preReq')" aria-controls="setting" role="tab" data-toggle="tab">Pre-request Script</a></li>-->
+                    <li role="presentation"><a ng-click="navigate('testReq')" aria-controls="setting" role="tab" data-toggle="tab">{{'bt_request_test_reqst'| i18nString}}</a></li>
+                    <li role="presentation" class="advOpt"><a class="show-adv-opt" ng-click="showAdvancedOptions()">{{'bt_request_test_advanced'| i18nString}} <img ng-src="{{backArrowGreen}}" class="backArrowGreen" ></a></li>
+                </ul>
+
+                <div class="sections requestModalTabSection">
+
+                    <div role="tabpanel" class="section" ng-if="sections.auth">
+                        <div class="auth-wrp">
+                            <p class="description">{{'choose_auth_request'| i18nString}}</p>
+                            <div class="col-xs-5 form-group noPadding">
+                                <!--  <div class="col-xs-12 labelling">
+                                      <label class="required-field">Authorization Provider</label>
+                                  </div>-->
+                                <div class="col-xs-12 noPadding">
+                                    <select ng-model="newAuth.selected" ng-change="idpSelectionChange()" ng-disabled="displayMode == 'view'" class="form-control newAuth" name="authList" ng-options="authList.name for authList in authLists" ng-change="getselectedObj(newAuth.selected)" >
+                                        <option value=""> {{'create_new'| i18nString}} </option>
+                                    </select>
+                                </div>
+
+                            </div> 
+                        </div>
+
+
+                    </div>
+                    <div role="tabpanel" class="section" ng-if="sections.headers">
+
+                        <div class="headers-wrp row">
+                                <div  class="col-xs-12 noPadding">
+                                    <div class="col-xs-5 noPadding title">
+                                        {{'key'| i18nString}}
+                                    </div>
+                                    <div class="col-xs-5 title">
+                                        {{'value'| i18nString}}
+                                    </div>
+                                    <div class="col-xs-2">
+                                    </div>
+                                </div>
+                            <div  class="col-xs-12 noPadding key-value-row marginBottom10"  ng-repeat="header in props.headers track by $index">
+                                    <div class="col-xs-5 noPadding">
+                                        <input class="form-control headerKey" type="text" 
+                                               ng-model="header.key" placeholder="{{'key'| i18nString}}"  
+                                               ng-focus="onHeaderFocus($index)"
+                                               context-typeahead ng-disabled="displayMode == 'view'">
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <input class="form-control headerValue" type="text" 
+                                               ng-model="header.value" placeholder="{{'value'| i18nString}}"  
+                                               ng-focus="onHeaderFocus($index)"
+                                               context-typeahead ng-disabled="displayMode == 'view'">
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <i  class="trashIcon btx-delete-1" ng-disabled="displayMode == 'view'" ng-click="props.headers.length > 1 && deleteHeader($index)" ng-class="{true:'',false:'inactive'}[props.headers.length > 1]" ></i>
+                                        <!-- <i   ng-class="{true:'fa fa-minus-circle closeHeader',false:'fa fa-minus-circle closeHeader inactive'}[props.headers.length > 1]" ng-click="props.headers.length > 1 && deleteHeader($index)"></i> -->
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="section" ng-if="sections.params"> 
+
+                        <div class="headers-wrp row">
+
+                            <div class="param-types col-xs-6 radioDiv labelSpacing noPadding">
+                                <div class="param-types-select">
+
+                                    <select ng-model="props.paramType" ng-change="onParamTypeChange()" class="form-control" ng-disabled="displayMode == 'view'">
+                                        <option ng-repeat="(key, value) in contentTypeUIMap" value="{{key}}">{{value}}</option>
+                                    </select>
+
+                                    <!--                                    <label for="props.paramType.urlencoded">
+                                                                            <input value='urlencoded' type="radio" ng-change="onParamTypeChange()"  ng-model="props.paramType" name="props.paramType" id="props.paramType.urlencoded" ><span class="opt-title">x-www-form-urlencoded</span> </input>
+                                                                        </label>
+                                                                        <label for="props.paramType.raw">
+                                                                            <input value='raw'  type="radio"  ng-change="onParamTypeChange()"  ng-model="props.paramType" name="props.paramType" id="props.paramType.raw"><span class="opt-title">raw (application/JSON)</span> </input>
+                                                                        </label>-->
+                                </div>
+                            </div>  
+
+
+                            <div ng-show="props.paramType !== 'urlencoded'" class="col-xs-12 noPadding">
+                                <div ng-jsoneditor prefer-text=true class="json_editor"  ng-model="props.rawParams" id="serviceNodeParamsRaw" name="serviceNodeParamsRaw" options="options" callback="rawParamsCB"></div>
+                            </div>
+
+                            <div ng-show="props.paramType === 'urlencoded'" class="col-xs-12 noPadding key-value-row"  ng-repeat="param in props.params track by $index">
+                                <div>
+                                    <div class='col-xs-6 noPadding'>
+                                        <input class="form-control" type="text" 
+                                               ng-model="param.key" placeholder="{{'key'| i18nString}}"  
+                                               ng-focus="onParamFocus($index)"
+                                               >
+                                    </div>
+                                    <div class='col-xs-5'>
+                                        <input class="form-control" type="text" 
+                                               ng-model="param.value" placeholder="{{'value'| i18nString}}"  
+                                               ng-focus="onParamFocus($index)"
+                                               >
+                                    </div>
+                                    <span  class="col-xs-1" ng-class="{true:'fa fa - minus - circle closeHeader',false:'fa fa - minus - circle closeHeader inactive'}[props.params.length > 1]" ng-click="props.params.length > 1 && deleteParam($index)"></span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="section" ng-if="sections.curl"> 
+                        <div class="curl-wrp">
+                            <div class="col-xs-12 noPadding">
+                                <p class="description">
+                                    {{'bt_request_curl_desc'| i18nString}} 
+                                </p>
+                                <div class="textAreaHeader"><span class="title">{{'bt_request_curl'| i18nString}}</span></div>
+                                <textarea class="curl-text-area" ng-model="curlText" ng-blur="curlOnBlur()">
+                                </textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div role="tabpanel" class="section" ng-if="sections.preReq"> 5 </div>
+                    <div role="tabpanel" class="section" ng-if="sections.testReq"> 
+                        <div class="test-req-wrp">
+                            <div ng-show="props.contextParams.length">
+                                <div class="col-xs-12 noPadding">
+                                    <label tooltip-placement="right" tooltip="Values for all parameterized values defined with double curly braces need to fill here">{{'bt_request_sample_context_values'| i18nString}}</label>
+                                </div>
+                                <div class="headers-wrp row">
+                                    <div  class="col-xs-12 key-value-row noPadding contextParam"  ng-repeat="contextParam in props.contextParams track by $index">
+                                        <div>
+                                            <div class='col-xs-6 noPadding'>
+                                                <input class="form-control" type="text" 
+                                                       ng-model="contextParam.key" 
+                                                       ng-value="contextParam.key | removeArrayPath"
+                                                       placeholder="{{'key'| i18nString}}"
+                                                       ng-readonly="true"
+                                                       >
+                                            </div>
+                                            <div class='col-xs-5 context-value'>
+                                                <input class="form-control" type="text" ng-disabled="displayMode == 'view'" 
+                                                       ng-model="contextParam.value" placeholder="{{'value'| i18nString}}"  
+                                                       >
+                                                <span class='arr-hint' ng-if="hasArrayPath(contextParam.key)">
+                                                    {{'bt_request_actual_array_eg'| i18nString}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-1 helpIconDiv">
+                                            <img ng-src="{{helpIcon}}" class="helpIcon" ooltip-placement="top" tooltip="You may modify this value to test your service calls. Modified values will not be used to update variable definition" >
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+
+                            <!-- <div class="col-xs-12 test-rq-opt-btns noPadding">
+                                <div class="labelHeight btnTitle">
+
+                                    <div class="pull-right">
+                                        <button ng-show="true" class="btn sampleResponseBtn" ng-click="saveSampleResponse()"><i ng-show="resSaveInProgress" class="fa fa-spinner fa-spin"></i>{{(resSaveInProgress)?' Saving...':' Save as Sample Response'}}</button> 
+                                        
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="col-xs-12 test-rq-opt-btns noPadding" ng-show="statusCode">
+                                <div class="pull-right status-text">{{'status_dyn'| i18nString:({dyn:statusCode})}}</div>
+                            </div>
+
+                            <div class="col-xs-12 noPadding" >
+                                    <button ng-show="true" class="btn sampleResponseBtn" ng-class="{'read-only':displayMode === 'view'}"  ng-click="saveSampleResponse()"><i ng-show="resSaveInProgress" class="fa fa-spinner fa-spin"></i>{{(resSaveInProgress)? saving : sample_res }}</button> 
+                                <div ng-jsoneditor prefer-text=true class="json_editor"  ng-model="props.sampleResponse" id="serviceNodeSampleRes" name="reqsample" options="options" callback="sampleResCB" ></div>
+                            </div>
+
+                        </div>
+
+                    </div>  
+                </div>
+            </div>                 
+        </div>
+    </form>
+
+
+
+
+    
+    <bot-modal-slider class="dispalyInline" id="requestmodelAdvanced">
+            <div class="modalSliderContainer width700">
+                <div class="modalHeader">
+                        <h4 class="modal-title tableRow">
+                            <i  class="btx-close" ng-click="closeRequestModal()"></i>
+                            {{'advanced_options'| i18nString}}
+                        </h4>
+                </div>
+                <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-70" height-property="height" >
+                        <div class="col-xs-12 form-group noPadding"  ng-if="enterpriseLicenseType" ng-init="props.endPoint.connectorEnabled = props.endPoint.connectorEnabled || false">
+                                <div class="col-xs-12 noPadding">
+                                    <label>{{'access_connector'| i18nString}}</label>
+                                    <img ng-src={{helpIcon}} class="helpIcon" tooltip-placement="bottom" tooltip="If the above URL is behind your enterprise firewall, select to enable access via the connector. Unless checked, Kore will not be able to access this URL">                    
+                                </div>
+                                <div class="col-xs-12 radioDiv noPadding">
+                                    <div>
+                                        <label for="props.endPoint.connectorEnabled.no">
+                                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="props.endPoint.connectorEnabled" name="props.endPoint.connectorEnabled" id="props.endPoint.connectorEnabled.no" ><span class="opt-title">{{'all_urs_public_domain'| i18nString}}</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label for="props.endPoint.connectorEnabled.yes">
+                                            <input ng-value='true'  type="radio"   ng-model="props.endPoint.connectorEnabled" name="props.endPoint.connectorEnabled" id="props.endPoint.connectorEnabled.yes"><span class="opt-title">{{'urls_firewall_connector'| i18nString}}</span>
+                                        </label>
+                                    </div>  
+                                    <div class="no-connectors-msg" ng-show="props.endPoint.connectorEnabled && connectors.length <= 0">{{'no_active_conn'| i18nString}}</div>
+                                </div>  
+                            </div>  
+                            <div class="col-xs-12 form-group noPadding" >
+                                <div class="col-xs-12 noPadding">
+                                    <label>{{'pii_data'| i18nString}}</label>
+                                    <img ng-src={{helpIcon}} class="helpIcon" tooltip-placement="bottom" tooltip="If you enable de-identification, ensure that you suffix required entities with '.original'. E,g, context.entities.email_address.original">                                                    
+                                </div>
+                                <div class="col-xs-12 radioDiv noPadding">
+                                    <div>
+                                        <label for="piiDisable">
+                                            <input ng-value='false' type="radio" id="piiDisable" ng-model="piiDataEnabled.status">
+                                            <span class="opt-title">{{'de_identify_pii_data'| i18nString}}</span> 
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label for="piiEnable">
+                                            <input ng-value='true' type="radio" id="piiEnable" ng-model="piiDataEnabled.status">
+                                            <span class="opt-title">{{'use_original_values_pii'| i18nString}}</span> 
+                                        </label>
+                                    </div> 
+                                </div>  
+                            </div> 
+                </div>
+                <div class="modalFooter">
+                    <button class="btn" ng-click="closeRequestModal()" ng-disabled="displayMode === 'view'">{{'ok_uppercase'| i18nString}}</button>
+                    <button class="btn closeCancel" ng-click="closeRequestModal()">{{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </bot-modal-slider>
+</div>

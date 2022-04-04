@@ -1,0 +1,8 @@
+<div class="summaryLoader animationIfLeave" ng-if="lodingForm">
+    <span class="spinner-text">
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+        <span class="spinner-text-content"> {{'loading'| i18nString}}</span>
+    </span>
+</div>
+<iframe id="conversations" class="iframeContainer" dynamic-height dynaoffset="0" height-property="height"
+    frameBorder="0" ng-src="{{iframeUrl}}"></iframe>

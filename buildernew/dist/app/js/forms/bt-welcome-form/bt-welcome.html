@@ -1,0 +1,378 @@
+<div class="onBoardingModalMainContainer">
+    <!--NEW UI--> 
+    <div class="PosSignUpheader botBuilderHeader">
+        <div class="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-collapse" id="myNavbar">
+                            <ul class="nav navbar-nav  leftPanel"> 
+                                    <li><a href="#" class="homePageLink"><img ng-src="{{logoFull}}" class="logoIcon"></a></li>
+                                    <li class="kr-sg-dropdowns welcomeDD" ng-if="accounts && accounts.length > 1">
+                                        <div class="dropdown dropdown-open">
+                                            <a class="dropdown-toggle dropdown-input profileIcon" data-toggle="dropdown">{{selectedAccount.displayName || selectedAccount.accountName}} <i class="btx-carrot-down"></i></a>                                            
+                                            <ul class="dropdown-menu content-menu">
+                                                <li ng-repeat="account in accounts" ng-click="switchAccount(account)"><a >{{account.displayName || account.accountName}}</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                      
+                        <!--Left container starts here-->
+                        <ul class="nav navbar-nav navbar-right rightPanel"> 
+                                <li ng-show="guideStep==2" class="btn exit" ng-click="exit()">{{'exit_label'| i18nString}}</li>
+                            <!-- <li  ng-show="builderHeader.menuItems.bots && views.botDetailsForm && currSelectedBot.name" class="seperator">|</li> -->
+                            
+                        </ul>
+                    
+                    </div>
+                </div>
+        </div>
+    </div>   
+    <div class="PosSignUpBody" perfect-scroll dynamic-height dynaoffset='-75' height-property="height">
+        <div class="fixedWidth">
+            <p class="userName">{{'welcome' | i18nString}} {{koreUserInfo.firstName}}! </p>
+            <!--Continue with John’s Invite-->
+            <div class="invuserDetails" ng-if="invitedBot && invitedBot.createdBy">
+                <p class="invinfo">{{'continue_with' | i18nString}} {{invitedBot.createdBy.firstName}} {{'invites' | i18nString}}</p>
+                <div class="invContainer">
+                    <div class="botImg">
+                        <img ng-src="{{invitedBot.icon}}" class="botIconInv" onerror='handleimgLoad(this)'>
+                    </div>
+                    <div class="invDetails">
+                        <p class="invName">{{invitedBot.name}} <span class="accontName va">{{botTypeObj[invitedBot.type]}}</span></p>
+                        <p class="invDesc">{{invitedBot.description}}</p>
+                    </div>
+                    <div class="btnDiv">
+                        <button class="btnContinue"  ng-click="selectBot(invitedBot)">{{'continue' | i18nString}}</button>
+                    </div>
+                </div>
+            </div>
+
+            <!--Continue with John’s Invite-->
+            <!--Invitations-->
+            <div class="accountInvite" ng-if="(sharedBots && sharedBots.length)">
+                <div class="invDesc">{{'continue_va_pa' | i18nString }}</div>
+                <h4 class="invitationsCount" ng-if="!(invitedBot && invitedBot.createdBy)">{{'invitations' | i18nString}} ({{sharedBots.length}})</h4>
+                <h4 class="invitationsCount" ng-if="invitedBot && invitedBot.createdBy"><span class="clircleBG"><i class="btx-carrot-down"></i></span><span class="contText">{{'other_invitation' | i18nString}}  ({{sharedBots.length}})</span></h4>
+                <div class="listOfInv">
+                    <div class="invContainer" ng-repeat="sharedBot in sharedBots" ng-if="($index < showBotsCount)">
+                        <div class="botImg">
+                            <img ng-src="{{sharedBot.icon}}" class="botIconInv" onerror='handleimgLoad(this)'>
+                        </div>
+                        <div class="invDetails">
+                            <p class="invName">{{sharedBot.name}} <span class="accontName va">{{botTypeObj[sharedBot.type]}}</span></p>
+                            <p class="invDesc">{{sharedBot.description}}</p>
+                        </div>
+                        <div class="btnDiv">
+                            <button class="btnContinue" ng-click="selectBot(sharedBot)">{{'continue' | i18nString}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="moreInv" ng-click="showBotsCount = sharedBots.length" ng-if="(sharedBots.length-showBotsCount) && (sharedBots.length > showBotsCount)"><span class="moreAction">View {{sharedBots.length-3}} more <i class="btx-carrot-down"></i></span></div>
+            </div>
+             <!--Invitations-->
+             <!--Choose what you want to create.-->
+             <div class="buttonsContainer">
+                <div class="orSeperator" ng-if="invitedBot || (sharedBots && sharedBots.length)">
+                    <span class="orLine">
+                        <span class="orBG">or</span>
+                    </span>
+                </div>
+                <p class="actionsTitle"> {{'choose_what_to_create' | i18nString}}</p>
+                <!-- <p class="actionsDesc">{{'switch_between_apps' | i18nString}}<a><i ng-click="openBackDropModal('help')" class="btx-impExp"></i></a></p> -->
+                <div class="vapa">
+                    <div class="va">
+                        <div class="vaImgTitle">
+                            <img ng-src="{{vaImg}}" class="gifimg">
+                            <!-- <span class="vaTitle">{{'va_label_caps' | i18nString}}</span> -->
+                        </div>
+                        <div class="ace"><img ng-src="{{vaIcon}}" class="Iconimg">
+                            <div class="titleDiv">
+                                <p class="tdTitle">{{'virtual_assistants' | i18nString}}</p>
+                                <p class="tdDesc">{{'automate_conversational_experience' | i18nString}}</p>
+                            </div>
+                            
+                            <!-- <i class="btx-help" id="vaExperiance" ng-init="attachPopover('vaExperiance')"></i> -->
+                            <div class="hide">
+                                 <div class="vaPopover" id="vaExperianceContent">
+                                   <ul>
+                                       <li>{{'automate_conv_protip1' | i18nString}}</li>
+                                       <li>{{'automate_conv_protip2' | i18nString}}</li>
+                                       <li class="noMargin">{{'automate_conv_protip3' | i18nString}}</li>
+                                   </ul>
+                                 </div>
+                            </div>
+                        </div>
+                                      
+                        <p class="fixedHeightP">{{'va_welcomeform_desc' | i18nString}}
+                             <!-- <a>Learn more</a> -->
+                            </p>
+                        <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel">
+                              <div class="panel-heading" role="tab" id="headingOne1">
+                                <h4 class="panel-title">
+                                  <a role="button" class="accor-collapse collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="btx-carrot-right"></i>
+                                    <span class="hTitle">{{'key_features' | i18nString}}</span>
+                                    </a>
+                                </h4>
+                              </div>
+                              <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne1">
+                                <div class="panel-body">
+                                    <ul ng-init="initToolTipts()">
+                                        <li>{{'conversation_designer' | i18nString}}<i data-container="body" data-toggle="popover" data-placement="top" data-content="{{'conversation_designer_desc' | i18nString}}" class="btx-info"></i></li>
+                                        <li>{{'multi_level_nlp' | i18nString}}<i data-container="body" data-toggle="popover" data-placement="top" data-content="{{'multi_level_nlp_desc' | i18nString}}" class="btx-info"></i></li>
+                                        <li>{{'omnichannel_deployment' | i18nString}}<i data-container="body" data-toggle="popover" data-placement="top" data-content="{{'omnichannel_deployment_desc' | i18nString}}" class="btx-info"></i></li>
+                                        <li>{{'conversation_insites' | i18nString}}<i data-container="body" data-toggle="popover" data-placement="top" data-content="{{'conversation_insites_desc' | i18nString}}" class="btx-info"></i></li>
+                                    </ul>
+                                </div>
+                              </div>
+                            </div>                                                          
+                        </div>
+                        <div class="btnCont"> <a class="videoBTN " ng-click="startCreate('bots')">{{'create_virtual_assistant' |  i18nString}}</a></div>
+                       
+                    </div>
+                    <div class="pa">
+                        
+                        <div class="vaImgTitle">
+                            <img ng-src="{{paImg}}" class="gifimg">
+                        </div>
+                        <div class="abp">
+                            <img ng-src="{{paIcon}}" class="Iconimg">
+                            <div class="titleDiv">
+                                <p class="tdTitle">{{'process_apps' | i18nString}}</p>
+                                <p class="tdDesc">{{'automate_business_processes' | i18nString}}</p>
+                            </div>
+                            <!-- <p>{{'automate_business_processes' | i18nString}}</p> -->
+                            <div class="hide">
+                                 <div class="vaPopover" id="paExperianceContent">
+                                   <ul>
+                                       <li>{{'automate_pa_protip1' | i18nString}}</li>
+                                       <li>{{'automate_pa_protip2' | i18nString}}</li>
+                                       <li class="noMargin">{{'automate_pa_protip3' | i18nString}}</li>
+                                   </ul>
+                                 </div>
+                            </div>
+                        </div>
+                        <p class="fixedHeightP">{{'automate_business_processes_desc' | i18nString}}
+                            <!-- <a>Learn more</a> --> 
+                        </p>
+                        <!-- ACCORDION START HERE -->
+                          
+                        <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel">
+                              <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                  <a role="button" class="accor-collapse collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapseOne">
+                                      <i class="btx-carrot-right"></i>
+                                      <span class="hTitle">{{'key_features' | i18nString}}</span>
+                                    </a>
+                                </h4>
+                              </div>
+                              <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body">
+                                    <ul>  
+                                        <li>{{'workflow_designer' | i18nString}}<i data-container="body" data-toggle="popover" data-placement="top" data-content="{{'workflow_designer_desc' | i18nString}}" class="btx-info"></i></li>
+                                        <li>{{'form_builder' | i18nString}}<i data-container="body" data-toggle="popover" data-placement="top" data-content="{{'form_builder_desc' | i18nString}}" class="btx-info"></i></li>
+                                        <li>{{'conversation_traditional_channels' | i18nString}}<i data-container="body" data-toggle="popover" data-placement="top" data-content="{{'conversation_traditional_channels_desc' | i18nString}}" class="btx-info"></i></li>
+                                        <li>{{'process_insights' | i18nString}}<i data-container="body" data-toggle="popover" data-placement="top" data-content="{{'process_insights_desc' | i18nString}}" class="btx-info"></i></li>
+                                    </ul>
+                                </div>
+                              </div>
+                            </div>                                                          
+                        </div>
+
+                        <!-- ACCORDION ENDS HERE -->
+                        <div class="btnCont">
+                        <a class="videoBTN " ng-click="startCreate('processApps')">{{'create_process_app' |  i18nString}}</a>
+                      </div>
+                    </div>
+                </div>
+               
+            </div>
+            <!--Choose what you want to create.-->
+        </div>
+
+        <div class="rightImg">
+            <div class="imageContainer">
+                <p class="rightContent">{{'platform_banner_text' | i18nString}}</p>
+                <!-- <p class="rightDesc">{{'platform_banner_text_desc' | i18nString}}</p> -->
+                <div class="videoAction" ng-click="showVideoModal()">
+                    <div class="videoPlayer"> <img ng-src="{{playBtn}}"></div>
+                    <div class="vaDesc">
+                        <p class="vaT">{{'kore_xo_platform' | i18nString}}</p>
+                        <p class="vaD">{{'kore_xo_platform_desc' | i18nString}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!--NEW UI--> 
+</div>
+<div class="krBackDropModal" ng-if="currentModal">
+    <div class="videoMain" ng-if="currentModal === 'video'">
+        <div class="videoContainer" >
+            <span class="closeVideoModal" ng-click="closeOptionsModal()"><i class="btx-close"></i></span>
+            <div class="details-section">
+                <div class="video" dynamic-height dynaoffset='-240' height-property="height">
+                    <iframe id="koreWelcomeVideo" ng-init="initPlayer();" ng-src="https://player.vimeo.com/video/670552063?h=c506b5193f&autoplay=1&loop=0" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen ng-click="videoPlayed()">
+                    </iframe>
+
+                </div>
+                <!-- <div class="details" perfect-scroll dynamic-height dynaoffset='-145' height-property="height">
+                    <form novalidate name="detailsform">
+                        <div class="d-title">{{'few_more_details_about' | i18nString}}</div>
+                        <div class="d-description">{{'please_enter_below_details' | i18nString}}</div>
+                        <div class="kr-sg-dropdowns w-100">
+                            <div class="label-text">{{'job_title' | i18nString}}</div>
+                            <div class="dropdown dropdown-open" >
+                                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown" ng-click="updateScroll('#roleEle')">{{(userProfile.jTitle ?getDisplayName('role'): ('select' | i18nString) )}}</button>                                            
+                                <ul class="dropdown-menu content-menu" perfect-scroll  style="max-height: 150px;"  id="roleEle">
+                                  <li ng-repeat="role in rolesList" ng-click="changeRole(role.value)" title="{{role.name}}"><a >{{role.name}}</a></li>
+                                </ul>
+                              </div>
+                        </div>
+                        <div class="kr-sg-dropdowns w-100">
+                            <div class="label-text">{{'department' | i18nString}}</div>
+                            <div class="dropdown dropdown-open">
+                                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown" ng-click="updateScroll('#deptEle')">{{(userProfile.dept ?getDisplayName('dept'): ('select' | i18nString) )}}</button>                                            
+                                <ul class="dropdown-menu content-menu" perfect-scroll  style="max-height: 150px;"  id="deptEle">     
+                                    <li ng-repeat="dept in departmentList" ng-click="changeDepartment(dept.value)" title="{{dept.name}}"><a >{{dept.name}}</a></li>
+                                </ul>
+                              </div>
+                        </div>
+                        <div class="kr-sg-dropdowns w-100">
+                            <div class="label-text">{{'industry' | i18nString}}</div>
+                            <div class="dropdown dropdown-open">
+                                <button class="dropdown-toggle dropdown-input" data-toggle="dropdown" ng-click="updateScroll('#indusEle')">{{(userProfile.industry ?getDisplayName('industry'): ('select' | i18nString) )}}</button>                                            
+                                <ul class="dropdown-menu content-menu" perfect-scroll  style="max-height: 150px;"  id="indusEle">
+                                  <li ng-repeat="indus in industryList" ng-click="changeIndustry(indus.value)" title="{{indus.name}}"><a >{{indus.name}}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="kr-sg-input-text maginTop8" ng-if="userProfile.industry === 'others'">
+                            <input type="text" class="input-text" maxLength="150" name="title" placeholder="{{'enter_industry_name' | i18nString}}" ng-model="userProfile.others" >
+                            <div class="error-msg" ng-if="!userProfile.others"> <i class="btx-warning"></i> {{'please_add_industry_name' | i18nString}}</div>
+                        </div>
+                        <button class="kr-sg-button-primary btn_md" type="submit" ng-click="sendProfileData()" ng-disabled="!isDetailsForm()">{{'submit' | i18nString}}</button>
+                    </form>
+                </div> -->
+            </div>
+            <div class="vidoeDesc">
+                <h4>{{'video_modal_desc' | i18nString}}</h4>
+                <p>{{'video_modal_desc2' | i18nString}}</p>
+            </div>
+    </div>
+    </div>
+
+    <!-- <div class="comparission" ng-if="currentModal === 'help'">
+      <div class="vapaMain" perfect-scroll dynamic-height dynaoffset='-90' height-property="height">
+         <div class="vapaContainer">
+            <div class="vaContent">
+                <div class="vaDetails">
+                    <div class="imgDiv"><img ng-src="{{vaMain}}"></div>
+                    <div class="textDiv">Virtual Assistant</div>
+                    <div class="buttonDiv">
+                        <span class="btnSperator"></span>
+                        <button class="getStartedBTN" ng-click="startCreate('bots')">Get Started<i class="btx-carrot-right"></i></button>
+                    </div>
+                </div>
+                <div class="connectingDivs">
+                    <div class="connectionContainer">
+                        <div class="imgDiv"><img ng-src="{{vaOne}}"></div>
+                        <div class="connetionDetails">
+                            <p class="ct">{{'conversation_designer' | i18nString}}</p>
+                            <p class="cd">{{'conversation_designer_desc' |  i18nString}}</p>
+                        </div>
+                    </div>
+                    <div class="connectionContainer">
+                        <div class="imgDiv"><img ng-src="{{vaTwo}}"></div>
+                        <div class="connetionDetails">
+                            <p class="ct">{{'multi_level_nlp' | i18nString}}</p>
+                            <p class="cd">{{'multi_level_nlp_desc' | i18nString}}</p>
+                        </div>
+                    </div>
+                    <div class="connectionContainer">
+                        <div class="imgDiv"><img ng-src="{{vathree}}"></div>
+                        <div class="connetionDetails">
+                            <p class="ct">{{'omnichannel_deployment' | i18nString}}</p>
+                            <p class="cd">{{'omnichannel_deployment_desc' | i18nString}}</p>
+                        </div>
+                    </div>
+                    <div class="connectionContainer">
+                        <div class="imgDiv"><img ng-src="{{vaFour}}"></div>
+                        <div class="connetionDetails">
+                            <p class="ct">{{'conversation_insites' | i18nString}}</p>
+                            <p class="cd">{{'conversation_insites_desc' | i18nString}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="paContent">
+                <div class="paDetails">
+                    <div class="imgDiv"><img ng-src="{{paMain}}"></div>
+                    <div class="textDiv">{{'process_app' | i18nString}}</div>
+                    <div class="buttonDiv">
+                        <span class="btnSperator"></span>
+                        <button class="getStartedBTN" ng-click="startCreate('processApps')">Get Started<i class="btx-carrot-right"></i></button>
+                    </div>
+                </div>
+                <div class="connectingDivs">
+                    <div class="connectionContainer">
+                        <div class="imgDiv"><img ng-src="{{paOne}}"></div>
+                        <div class="connetionDetails">
+                            <p class="ct">{{'workflow_designer' | i18nString}}</p>
+                            <p class="cd">{{'workflow_designer_desc' | i18nString}}</p>
+                        </div>
+                    </div>
+                    <div class="connectionContainer">
+                        <div class="imgDiv"><img ng-src="{{paTwo}}"></div>
+                        <div class="connetionDetails">
+                            <p class="ct">{{'form_builder' | i18nString}}</p>
+                            <p class="cd">{{'form_builder_desc' | i18nString}}</p>
+                        </div>
+                    </div>
+                    <div class="connectionContainer">
+                        <div class="imgDiv"><img ng-src="{{pathree}}"></div>
+                        <div class="connetionDetails">
+                            <p class="ct">{{'conversation_traditional_channels' | i18nString}}</p>
+                            <p class="cd">{{'conversation_traditional_channels_desc' | i18nString}}</p>
+                        </div>
+                    </div>
+                    <div class="connectionContainer">
+                        <div class="imgDiv"><img ng-src="{{paFour}}"></div>
+                        <div class="connetionDetails">
+                            <p class="ct">{{'process_insights' | i18nString}}</p>
+                            <p class="cd">{{'process_insights_desc' | i18nString}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="okBTNdiv" ng-click="closeOptionsModal()"><button class="okBTN">{{'ok_thanks' | i18nString}}</button></div>
+      </div>
+    </div> -->
+    <div class="storeModel" ng-if="currentModal === 'create'">
+        <div class="modalBgContainer">
+            <span class="closeCreateModal" ng-click="closeOptionsModal()"><i class="btx-close"></i></span>
+                    <div class="gsHeader">
+                        <div class="gsTemplates">{{'template_store' | i18nString}}</div>
+                        <div class="btnScratchDiv">
+                            <button ng-click="startFromScratch(productId,'newBot')" class="btnScratch">{{'start_form_scratch' | i18nString}}</button>
+                            <button ng-click="startFromScratch(productId,'importbot')" class="btnScratch exportStart"><i class="btx-overflow"></i></button>
+                            <div class="creationModal" ng-if="showCreationDropdown">
+                                <div class="createnewTitle">{{(views.product === 'PA')?"Name and icon":("create_new" | i18nString)}}</div>
+                                <stream-form display-mode="edit" class="animate-if backgroundWhite" edit-mode="new" bot-type="botType" on-save="onCreateNewBot($event)" on-cancel="onCancelBotCreation()" dropdown-view="true" views="views" ></stream-form>
+                            </div>
+                        </div>
+                    </div>
+               <bt-store dynamic-height dynaoffset='-170' height-property="height"></bt-store>
+        </div>
+    
+    </div>
+</div>
+<div class="loadingTemplateDiv" ng-show="installationStatus && installationStatus.status === 'pending'">
+    <span class="templateWaiting"> 
+        <img ng-src="{{btLoader}}" class="btLoader">
+       <p class="installDetails">{{'please_wait_installing' | i18nString}}  ‘{{installationStatus.name}}’ {{'for_you' | i18nString}}</p>
+    </span>
+</div>

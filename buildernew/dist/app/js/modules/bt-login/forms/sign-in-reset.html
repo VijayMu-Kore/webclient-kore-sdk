@@ -1,0 +1,134 @@
+<form novalidate name="resetPassForm" ng-submit="resetPassword(resetPassForm)" class="login-form">
+    <div class="logoInCard">
+        <img ng-src="{{logoFull}}" alt="Kore" class="koreLogo">
+       </div>
+    <div class="loginDetails">
+        <p class="cardTitle">Reset your password</p>
+        <p class="cardDesc">{{'reset-desc' | i18nString}}</p>
+    </div>
+    <!-- Email -->
+    <div class="form-group" style="display: none;">
+
+        <!-- Country codes -->
+        <div data-ng-show="displayCountryCodes" uib-dropdown auto-close="outsideClick" class="country-codes">
+            <button uib-dropdown-toggle type="button">
+                {{selectedCountryCode.value}}
+            </button>
+
+            <div uib-dropdown-menu class="dropdown-menu dropdown-menu-left">
+
+                <!-- Search -->
+                <div class="navbar-search-wrapper">
+                    <div class="navbar-search">
+                        <div class="search-bar">
+                            <input type="text" ng-model="searchCountryCodes" class="form-control" placeholder="{{'search_name'| i18nString}}">
+                        </div>
+                    </div>
+                </div>
+
+                <perfect-scrollbar suppress-scroll-X="true" refresh-on-change="[countryCodes, searchCountryCodes]" class="country-codes-content">
+                    <ul>
+                        <li data-ng-repeat="item in countryCodes | filter:{name: searchCountryCodes}">
+                            <a data-ng-click="selectCountryCode(item)">
+                                <span class="name">{{item.name}}</span>
+                                <span class="value">{{item.value}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </perfect-scrollbar>
+            </div>
+        </div>
+
+        <!-- <div class="input-group">
+            <input required
+                   data-ng-change="error=false"
+                   ng-model="emailPhone"
+                   name="emailPhone"
+                   email-phone
+                   email-only="true"
+                   phone-codes="phoneCode(value)"
+                   country-code={{selectedCountryCode.value}}
+                   class="form-control"
+                   autocomplete="off"
+                   disabled
+                   placeholder-cursor-fix>
+                    <span class="movingingLabel">Enter your email</span>
+        </div> -->
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+        <div class="input-group">
+            <input required
+                   data-ng-change="error=false"
+                   ng-model="pass"
+                   name="pass"
+                   ng-minlength="{{pwdPolicy.minLength}}"
+                   ng-maxlength="{{pwdPolicy.maxLength}}"
+                   ng-pattern="pwdPolicy.pattern"
+                   type="password"
+                   class="form-control instant hide-invalid pass-input" 
+                   placeholder="{{'new_password'| i18nString}}" 
+                   autofocus>
+             <!-- <span class="movingingLabel">{{'new_password'| i18nString}}</span> -->
+
+                <!-- Info Password icon -->
+                <i type="button"
+                        data-ng-show="!resetPassForm.pass.$valid && resetPassForm.pass.$dirty"
+                        class="alertMsg btx-warning"
+                        tabindex="-1"
+                        tooltip="{{pwdPolicy.hintText}}"
+                        tooltip-placement="right"
+                        >
+                </i>
+
+                <!-- Valid Password icon -->
+                <i type="button"
+                        data-ng-show="resetPassForm.pass.$valid"
+                        class="alertMsg fa btx-billing-check"
+                        tabindex="-1">
+                </i>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <input required
+                   data-ng-change="error=false"
+                   ng-model="passConfirm"
+                   name="passConfirm"
+                   ng-minlength="{{pwdPolicy.minLength}}"
+                   ng-maxlength="{{pwdPolicy.maxLength}}"
+                   match="pass"
+                   type="password"
+                   class="form-control instant pass-input" 
+                   placeholder="{{'confirm_password'| i18nString}}" 
+                   >
+             <!-- <span class="movingingLabel">{{'confirm_password'| i18nString}}</span> -->
+
+                <!-- Invalid Password icon -->
+                <i type="button"
+                        data-ng-show="resetPassForm.passConfirm.$error.match && resetPassForm.passConfirm.$dirty"
+                        class="alertMsg btx-warning"
+                        tooltip="{{'password_tooltip'| i18nString}}"
+                        tooltip-placement="right"
+                        >
+                </i>
+
+                <!-- Valid Password icon -->
+                <i type="button"
+                        data-ng-show="resetPassForm.passConfirm.$valid"
+                        class="alertMsg btx-billing-check"
+                        tabindex="-1">
+                </i>
+        </div>
+    </div>
+
+    <div ng-show="errorReset" class='error-message'>{{errorMsg}}</div>
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <button ng-disabled="!resetPassForm.$valid" type="submit" class="btn btn-primary">{{'reset_pwd'| i18nString}}</button>
+        <button ng-click="cancel();" type="button" class="btn btn-default closeCancel">{{'cancel'| i18nString}}</button>
+    </div>
+
+</form>

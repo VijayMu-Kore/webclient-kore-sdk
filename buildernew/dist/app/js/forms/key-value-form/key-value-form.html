@@ -1,0 +1,159 @@
+<div class="form-container row">
+	<ng-form class="wf-form" name="keyvalueform">
+		<div class="col-xs-12 noPadding">
+			<div class="col-xs-4 noPadding">
+				<label ng-if="payloadType">{{form.btnLabel}}</label>
+				<label ng-if="!payloadType"> {{'payload_field'| i18nString}} </label>
+			</div>
+			<div class="col-xs-8 noPadding">
+				<button type="button" ng-if="payloadType" class="btn btn-sm btn-primary pull-right" ng-click="enableCreate()">{{form.btnText}}
+				</button>
+				<button type="button" ng-if="!payloadType" class="btn btn-sm btn-primary pull-right" ng-click="enableCreate()">{{'add_label'| i18nString}} 
+				</button>
+			</div>
+		</div>
+		<div class="form-group col-xs-12"  ng-if="showForm && payloadType">
+			<div class="col-xs-12">
+				<label class="required-field" tooltip-placement="right" tooltip=" {{'show_user'| i18nString:({dyn:form.key})}}">{{form.key}}</label>
+			</div>
+			<div class="col-xs-12">
+				<input type="text" name="key" class="form-control" ng-disabled="isEditItem" ng-model="item.title" required />
+				<div ng-show="keyvalueform.key.$dirty && keyvalueform.key.$error.required">
+					<div error-alert>
+						{{'keyErrorMsg'| i18nString:({dyn:form.keyErrorMsg})}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-xs-12"  ng-if="showForm && payloadType">
+			<div class="col-xs-12">
+				<label class="required-field" tooltip-placement="right" tooltip=" {{'form_values'| i18nString:({dyn:form.value})}}">{{form.value}}</label>
+			</div>
+			<div class="col-xs-12">
+				<input type="text" name="value" class="form-control" ng-model="item.value" required />
+				<div ng-show="keyvalueform.value.$dirty && keyvalueform.value.$error.required">
+					<div error-alert>
+						{{'valueErrorMsg'| i18nString:({dyn:form.valueErrorMsg})}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-xs-12"  ng-if="showForm && !payloadType">
+			<div class="col-xs-12">
+				<label class="required-field" tooltip-placement="right" tooltip="{{'key_payload'| i18nString}}">{{'payload_field_key'| i18nString}}</label>
+			</div>
+			<div class="col-xs-12">
+				<input type="text"  name="key" class="form-control" ng-disabled="isEditItem" ng-model="item.title" required />
+				
+				<div ng-show="keyvalueform.key.$dirty && keyvalueform.key.$error.required">
+					<div error-alert>
+						{{'payload_field_req'| i18nString}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-xs-12"  ng-if="showForm && !payloadType">
+			<div class="col-xs-12">
+				<label class="required-field" tooltip-placement="right" tooltip="{{'value_assigned'| i18nString}}">{{'payload_field_value'| i18nString}}</label>
+			</div>
+			<div class="col-xs-12">
+				<select name="value" class="btn btn-default" ng-model="item.value" required>
+					<option value="">{{'select_any_label'| i18nString}}</option>
+					<option value="{{key}}" ng-repeat="(key,value) in metavalues">{{value}}</option>
+				</select>
+				<div ng-show="keyvalueform.value.$dirty && keyvalueform.value.$error.required">
+					<div error-alert>
+						{{'payload_value_req'| i18nString}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-xs-12"  ng-show="showForm">
+			<div class="col-xs-8 col-xs-offset-4">
+				<button type="button" class="btn btn-default btn-sm" ng-click="cancel()">{{'cancel'| i18nString}}</button>
+				<button type="button" class="btn btn-primary btn-sm" ng-click="save(keyvalueform.$valid,keyvalueform)">{{'save'| i18nString}}</button>
+			</div>
+		</div>
+	</ng-form>
+	<div class="col-xs-12" ng-if="options.length > 0 && payloadType && payloadType != 'isobject'">
+		<table class="table table-bordered text-center">
+			<thead>
+				<tr>
+					<th class="text-center">{{form.key}}</th>
+					<th class="text-center">{{form.value}}</th>
+					<th class="text-center">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in options">
+					<td>{{item.title}}</td>
+					<td>{{item.value}}</td>
+					<td>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default no-padding" ng-click="editItem($index)">
+								<i class="fa fa-pencil"></i>
+							</button>
+							<button type="button" class="btn btn-default no-padding" ng-click="deleteItem($index)">
+								<i class="fa fa-trash"></i>
+							</button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-xs-12" ng-if="values.length > 0 && payloadType == 'isobject'">
+		<table class="table table-bordered text-center">
+			<thead>
+				<tr>
+					<th class="text-center">{{form.key}}</th>
+					<th class="text-center">{{form.value}}</th>
+					<th class="text-center">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in values">
+					<td>{{item.title}}</td>
+					<td>{{item.value}}</td>
+					<td>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default no-padding" ng-click="editItem($index)">
+								<i class="fa fa-pencil"></i>
+							</button>
+							<button type="button" class="btn btn-default no-padding" ng-click="deleteItem($index)">
+								<i class="fa fa-trash"></i>
+							</button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-xs-12" ng-if="showTable()">
+		<table class="table table-bordered text-center">
+			<thead>
+				<tr>
+					<th class="text-center">{{'upload_key'| i18nString}}</th>
+					<th class="text-center">{{'upload_value'| i18nString}}</th>
+					<th class="text-center">{{'actions'| i18nString}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="(key,value) in options">
+					<td>{{key}}</td>
+					<td>{{metavalues[value]}}</td>
+					<td>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default no-padding" ng-click="editItem(key)">
+								<i class="fa fa-pencil"></i>
+							</button>
+							<button type="button" class="btn btn-default no-padding" ng-click="deleteItem(key)">
+								<i class="fa fa-trash"></i>
+							</button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

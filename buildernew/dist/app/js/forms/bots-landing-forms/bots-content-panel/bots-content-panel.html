@@ -1,0 +1,302 @@
+<div class="scrollDiv" dynamic-height dynaoffset="-60" height-property="height" perfect-scroll ng-if="!loadingStore">
+    <!--Welcome to bot builder container starts here-->
+    <div class="jumbotron">
+        <ng-transclude></ng-transclude>
+    </div>
+    <!--Welcome to bot builder container ends here-->    
+  
+
+    <!--Guided Tour container starts here--> 
+    <div class="container-fluid bg-3 text-center guidedTour">    
+
+        <div class="guidedTourContainer">
+            <h3 class="subHeading">{{'guide_tour'| i18nString}}</h3>
+            <div class="col-sm-3 contentDiv"> 
+
+                <div class="container text-center">
+                    <div class="iconDiv"><img ng-src="{{dialog}}" class="bitmap"></div>
+                    <div class="descriptionDiv">
+                        <h1>
+                            <span>
+                                {{'create_bot_label'| i18nString}} 
+                            </span>
+                            <span class="guide-loader hide">
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                            </span>
+                        </h1> 
+
+                        <p>{{'build_bot'| i18nString}}</p>
+                        <p class="timeStamp">-5mins</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 contentDiv"> 
+
+                <div class="container text-center"  ng-click="triggerTour($event, 'universalbot')">
+                    <div class="iconDiv"><img ng-src="{{task}}" class="bitmap"></div>
+                    <div class="descriptionDiv">
+                        <h1>
+                            <span>
+                                {{'create_uni_bot'| i18nString}}
+                            </span>
+                            <span class="guide-loader hide">
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                            </span>
+                        </h1>      
+                        <p>{{'build_uni_bot'| i18nString}}</p>
+                        <p class="timeStamp">-5mins</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 contentDiv"> 
+
+                <div class="container text-center" ng-click="triggerTour($event, 'createbot')">
+                    <div class="iconDiv"><img ng-src="{{nlp}}" class="bitmap"></div>
+                    <div class="descriptionDiv">
+                        <h1>
+                            <span>
+                                {{'knowledge_graph'| i18nString}} 
+                            </span>
+                            <span class="guide-loader hide">
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                            </span>
+                        </h1> 
+                        <!--<p>Add a Bot Ontology based knowledge graph to an existing bot</p>-->
+                        <p>{{'add_bot_ontology'| i18nString}}</p>
+                        <p class="timeStamp">-5mins</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 contentDiv"> 
+
+                <div class="container text-center" ng-click="triggerTour($event, 'kgraph')">
+                    <div class="iconDiv"><img ng-src="{{sampleTask}}" class="bitmap"></div>
+                    <div class="descriptionDiv">
+                        <h1>
+                            <span>
+                                {{'weather_bots'| i18nString}} 
+                            </span>
+                            <span class="guide-loader hide">
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                            </span>
+                        </h1>            
+                        <p>{{'build_sample'| i18nString}}</p>
+                        <p class="timeStamp">-5mins</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 contentDiv" ng-show="seeAllGuidedTours"> 
+
+                <div class="container text-center" ng-click="triggerTour($event, 'installsamplebot')">
+                    <div class="iconDiv"><img ng-src="{{nlp}}" class="bitmap"></div>
+                    <div class="descriptionDiv">
+                        <h1>
+                            <span>
+                                {{'install_sample'| i18nString}}
+                            </span>
+                            <span class="guide-loader hide">
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                            </span>
+                        </h1>    
+                        <p>{{'install_list'| i18nString}}</p>
+                        <p class="timeStamp">-5mins</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 contentDiv" ng-show="seeAllGuidedTours">
+
+                <div class="container text-center"  ng-click="triggerTour($event, 'importbot')">
+                    <div class="iconDiv"><img ng-src="{{sampleTask}}" class="bitmap"></div>
+                    <div class="descriptionDiv">
+                        <h1>
+                            <span>
+                                {{'import_name'| i18nString}} 
+                            </span>
+                            <span class="guide-loader hide">
+                                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                            </span>
+                        </h1> 
+                        <p>{{'build_bot_import'| i18nString}}</p>
+                        <p class="timeStamp">-5mins</p>
+                    </div>
+                </div>
+            </div>
+            <div class="moreLink"><a href="" ng-click="seeAllGuidedTours = !seeAllGuidedTours">
+                    <span ng-show="!seeAllGuidedTours">{{'see_all'| i18nString}} <i class="fa fa-angle-right"></i></span>
+                    <span ng-show="seeAllGuidedTours">{{'see_less'| i18nString}} <i class="fa fa-angle-down"></i></span>
+                </a> <span ng-show="!seeAllGuidedTours" class="more">{{'two_more'| i18nString}}</span></div>
+        </div>
+
+    </div>
+    <!--Guided Tour container starts here-->
+
+
+    <!--Carousel  container starts here-->
+    <div class="row carouselDiv">
+        <!-- <div id="carousel-buttons" class="carousel slide" data-ride="carousel" intervel="myInterval"> -->
+                <div id="carousel-buttons" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-buttons" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-buttons" data-slide-to="1"></li>
+                <li data-target="#carousel-buttons" data-slide-to="2"></li>
+                <li data-target="#carousel-buttons" data-slide-to="3"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <div class="row">
+                        <div class="col-xs-6 leftPanel ">
+                            <h1 class="name ">{{slides[0].heading}}</h1>
+                            <h2 class="title ">{{slides[0].taskType}}</h2>
+                            <p class="description " >{{slides[0].description}}</p>
+                            <div class="buttonDiv">
+                                <div class="video"><button ng-click="fullModalCallback.openFullPageModal(null,'openVediosPage')">{{'watch_videos'| i18nString}}</button></div>
+                                <!-- <div class="article"><button ng-click="redirectToLink(slide.linkKey)">Read Article</button><p>2 Articles</p></div> -->
+                            </div>
+                        </div>
+                        <div class="col-xs-6 rightPanel ">
+                            <div class="imgDiv cursor-pointer" ng-click="fullModalCallback.openFullPageModal(null,'openVediosPage')"><img class="image" ng-src="{{slides[0].image}}" ></div>
+                            <!-- <div class="moreLink"><a target="_blank" href="https://developer.kore.ai/docs/bots/bot-builder/defining-bot-tasks/">See all &gt;</a> <span class="more hide">2 more</span></div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="item ">
+                    <div class="row">
+                        <div class="col-xs-6 leftPanel ">
+                            <h1 class="name ">{{slides[1].heading}}</h1>
+                            <h2 class="title ">{{slides[1].taskType}}</h2>
+                            <p class="description " >{{slides[1].description}}</p>
+                            <div class="buttonDiv">
+                                <div class="video"><button ng-click="redirectToLink(slides[1].linkKey)">{{'read_article'| i18nString}}</button></div>
+                                <!-- <div class="article"><button ng-click="redirectToLink(slide.linkKey)">Read Article</button><p>2 Articles</p></div> -->
+                            </div>
+                        </div>
+                        <div class="col-xs-6 rightPanel ">
+                            <div class="imgDiv"><img class="image" ng-src="{{slides[1].image}}" ></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item ">
+                    <div class="row">
+                        <div class="col-xs-6 leftPanel ">
+                            <h1 class="name ">{{slides[2].heading}}</h1>
+                            <h2 class="title ">{{slides[2].taskType}}</h2>
+                            <p class="description " >{{slides[2].description}}</p>
+                            <div class="buttonDiv">
+                                <div class="video"><button ng-click="redirectToLink(slides[2].linkKey)">{{'read_article'| i18nString}}</button></div>
+                                <!-- <div class="article"><button ng-click="redirectToLink(slide.linkKey)">Read Article</button><p>2 Articles</p></div> -->
+                            </div>
+                        </div>
+                        <div class="col-xs-6 rightPanel ">
+                            <div class="imgDiv"><img class="image" ng-src="{{slides[2].image}}" ></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item ">
+                    <div class="row">
+                        <div class="col-xs-6 leftPanel ">
+                            <h1 class="name ">{{slides[3].heading}}</h1>
+                            <h2 class="title ">{{slides[3].taskType}}</h2>
+                            <p class="description " >{{slides[3].description}}</p>
+                            <div class="buttonDiv">
+                                <div class="video"><button ng-click="redirectToLink(slides[3].linkKey)">{{'read_article'| i18nString}}</button></div>
+                                <!-- <div class="article"><button ng-click="redirectToLink(slide.linkKey)">Read Article</button><p>2 Articles</p></div> -->
+                            </div>
+                        </div>
+                        <div class="col-xs-6 rightPanel ">
+                            <div class="imgDiv"><img class="image" ng-src="{{slides[3].image}}" ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        
+        </div>
+        <div  class="left carousel-control carousalArrowLeft">
+            <a  id="previousCourosel" ng-non-bindable data-target="#carousel-buttons" role="button" data-slide="prev"></a>
+            <img  ng-click="changeCourosel('#previousCourosel')" role="button" class="image" ng-src="{{carousalArrow}}">
+        </div>
+        <div class="right carousel-control carousalArrowRight">
+            <a id="nextCourosel" ng-non-bindable data-target="#carousel-buttons" role="button" data-slide="next"> </a>
+            <img   ng-click="changeCourosel('#nextCourosel')" class="image" ng-src="{{carousalArrow}}">
+        </div>
+    </div>
+    <!--Carousel container ends here-->
+
+    <!--Pro Tip  container starts here-->
+    <div class="row proTip">
+        <div class="proTipContainer">
+
+            <div class="col-xs-6 leftPanel">
+                <h3 class="subHeading">{{'protip'| i18nString}}</h3>
+                <div class="container text-center cursor-pointer" ng-click="redirectToLink('MACHINE_LEARINING_HELP')">
+                    <div class="descriptionDiv">
+                        <h1>{{'machine_learning'| i18nString}}</h1>      
+                        <p>{{'enable_autotrain'| i18nString}}</p>
+                    </div>
+                </div>
+                <div class="container text-center cursor-pointer" ng-click="redirectToLink('BATCH_TESTING_HELP')">
+                    <div class="descriptionDiv">
+                        <h1>{{'batch_testing'| i18nString}}</h1>      
+                        <p>{{'create_testsuite'| i18nString}}</p>
+                    </div>
+                </div>
+                <div class="container text-center cursor-pointer" ng-click="redirectToLink('AGENT_TRANSFER_HELP')">
+                    <div class="descriptionDiv">
+                        <h1>{{'agent_transfer'| i18nString}}</h1>      
+                        <p>{{'handoff_con'| i18nString}}</p>
+                    </div>
+                </div>
+                <div class="moreLink"><a href="" ng-click="redirectToLink('HOME')">{{'read_more'| i18nString}} ></a></div>
+            </div>
+
+            <div class="col-xs-6 rightPanel">
+                <h3 class="subHeading">{{'updates'| i18nString}}</h3>
+                <div class="container text-center cursor-pointer" ng-click="redirectToLink('ROLE_BASED_ACCESS')">
+                    <div class="descriptionDiv">
+                        <!--<h1>Universal Bots</h1>      
+                        <p>Build varied bots based on different functions in your organization and link them together under a single Universal bot that the user can converse with. </p> -->
+                        <h1>{{'role_based'| i18nString}}</h1>      
+                        <p>{{'invite_developer_per'| i18nString}} </p>
+                    </div>
+                </div>
+                <div class="container text-center cursor-pointer" ng-click="redirectToLink('FULL_VERSION_CTRL')">
+                    <div class="descriptionDiv">
+                        <!-- <h1>Multi-lingual Bots</h1>      
+                <p>Build a bot in that can respond in multiple languages. Kore.ai platform supports bots in English, German, French and Spanish with other languages being added soon. </p> -->
+                        <!--<h1>Bot Analytics</h1>      
+                        <p>View most frequent utterances that matched intents or failed to match any intent. Review task fulfillment failures and measure performance of service and script nodes. </p>-->
+                        <h1>{{'full_version'| i18nString}}</h1>      
+                        <p>{{'gain_control'| i18nString}}</p>
+                    </div>
+                </div>
+                <div class="container text-center cursor-pointer" ng-click="redirectToLink('KNOWLEDGE_EXTRACT')">
+                    <div class="descriptionDiv">
+                        <!-- <h1>Bot Import / Export</h1>      
+                <p>Migrate, clone or backup your bot configuration.</p> -->
+                        <!--<h1>NLP, Demystified!</h1>      
+                        <p>Detailed analysis of how user utterances are processed by NLP engine for intent identification. View graphical representation of bot's ML model.</p>-->
+                        <h1>{{'extract_kg_web'| i18nString}}</h1>      
+                        <p>{{'static_faqs'| i18nString}}</p>
+                    </div>
+                </div>
+                <div class="moreLink"><a href="" ng-click="redirectToLink('WHATSNEW')">{{'read_more'| i18nString}}></a></div>
+            </div>
+
+        </div>
+    </div>
+    <!--Pro Tip container ends here-->
+</div>
+<div class="scrollDiv" dynamic-height dynaoffset="-60" height-property="height">
+    <div class="summaryLoader animationIfLeave" ng-if="iframeLoadingStore">
+        <span class="spinner-text"> 
+            <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+            <span class="spinner-text-content">  {{'loading'| i18nString}}</span>
+        </span>
+    </div>
+    <div class="full-width full-height" dynaoffset="-62" dynamic-height height-property="height" ng-show="!iframeLoadingStore">            
+        <bt-store></bt-store>
+    </div>
+</div>

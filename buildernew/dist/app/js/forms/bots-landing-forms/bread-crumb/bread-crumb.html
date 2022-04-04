@@ -1,0 +1,12 @@
+<!-- <div class="btBreadCrumb" id="btBreadCrumb">
+    <span ng-repeat="bc in breadCrumb">
+        <span class="arrow" ng-hide="$index == 0">></span>
+        <span ng-class="{'cursor-pointer':$index !== breadCrumb.length-1, 'active': $index == breadCrumb.length-1}" ng-click="$index !== breadCrumb.length-1 && bc.cbMethod()">{{bc.name | replaceHtmlString}}</span></span><button ng-if="streamState=='published'" class="viewMode"><img ng-src="{{eyeimage}}"><span class="modeTitle">VIEW ONLY</span></button>
+</div> -->
+<div class="btBreadCrumb" id="btBreadCrumb">
+        <span>
+            <!-- <span class="arrow">></span> -->
+            <span>{{breadCrumb[0].name | replaceHtmlString}}<img ng-src="{{betaIcon}}" class="betaIcon" ng-if="(breadCrumb[0].name==='Storyboard')" tooltip-placement="bottom" tooltip="{{'beta_version'| i18nString}}"></span>
+        </span>
+            <button ng-if="streamState=='published'" class="viewMode"><img ng-src="{{eyeimage}}"><span class="modeTitle">{{'view_only'| i18nString}}</span></button>
+</div>

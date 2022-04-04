@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>paperPlane</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="paperPlane" fill-rule="nonzero">
+            <polygon id="Path" fill="#FFFBEA" points="8.60346 14.7499 5.24996 14.7499 5.24996 11.3964 0.959961 7.10637 19.0985 0.901367 12.8935 19.0399"></polygon>
+            <path d="M18.697,1.303 L12.7865,18.5795 L8.8535,14.6465 L8.707,14.5 L8.5,14.5 L5.5,14.5 L5.5,11.5 L5.5,11.293 L5.3535,11.1465 L1.4205,7.2135 L18.697,1.303 Z M19.5,0.5 L0.5,7 L5,11.5 L5,15 L8.5,15 L13,19.5 L19.5,0.5 Z" id="Shape" fill="#806D16"></path>
+            <polygon id="Path" fill="#FFDA2D" points="5.75 14.2504 5.75 11.4239 15.894 4.10645 8.5765 14.2504"></polygon>
+            <path d="M14.7875,5.2125 L8.4485,14 L6,14 L6,11.5515 L14.7875,5.2125 Z M17,3 L5.5,11.2955 L5.5,11.5 L5.5,14.5 L8.5,14.5 L8.7045,14.5 L17,3 Z" id="Shape" fill="#FFDA2D"></path>
+            <polygon id="Path" fill="#806D16" points="5.5 11.2955 5.5 11.5 5.5 14.5 17 3"></polygon>
+        </g>
+    </g>
+</svg>

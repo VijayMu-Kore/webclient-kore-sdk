@@ -1,0 +1,856 @@
+<div class="botvariablesManagementSection" ng-init="getLinkedBots()">
+    <div class="row btnSearchTitle">
+       <div class="col-xs-4 leftTitle" ng-show="botVariableType === 'env'">
+          <p class="pageTitle">{{'global_variable' | i18nString}}</p>
+       </div>
+       <div class="col-xs-4 leftTitle" ng-show="botVariableType === 'locale'">
+         <p class="pageTitle">{{'content_variable' | i18nString}}</p>
+      </div>
+       <div class="col-xs-8 rightBTNSearch" ng-if="botVariables.length">
+          <div class="searchComponent " ng-if="btCollectionVariables.collectionList.length && btCollectionVariables.useCollections && botVariableType === 'env'">
+            <input type="text" placeholder="{{'search'| i18nString}}" class="input-search" ng-change='searchQuery()'
+                   ng-init="collectionVariableForm.searchQuery = ''" ng-model="collectionVariableForm.searchQuery">
+             <i class="btx-search"></i>
+             <i class="btx-close displayNone"></i>
+          </div>          
+          <div class="titleDropdown" ng-if="btCollectionVariables.collectionList.length && btCollectionVariables.useCollections && botVariableType === 'env'">
+             <div class="dropdown">
+                <div class="dropdown dropdown-open">
+                  <a ng-class="{'adjust-padding-right':collectionVariableForm.activeCollection.isActive}" class="viewModalBtn dropdown-toggle truncate-text-dropdown-toggle" title="{{collectionVariableForm.activeCollection.name ? collectionVariableForm.activeCollection.name:'Default'}}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     {{collectionVariableForm.activeCollection.name ? collectionVariableForm.activeCollection.name:'Default'}}<span class="active-collection" ng-if="collectionVariableForm.activeCollection.isActive">(Active)</span>
+                   <i class="btx-carrot-up"></i>
+                   </a>                   
+                   <ul class="dropdown-menu content-menu h-auto w-100" perfect-scroll dynamic-height dynaoffset="-400" height-property="height">
+                      <li ng-repeat="item in btCollectionVariables.collectionList"><a ng-click="sortByCollection(item)" title="{{item.name}}">{{item.name}} <span class="active-collection" ng-if="item.isActive"> ({{'active_label' | i18nString}})</span></a></li>
+                   </ul>
+                </div>
+             </div>
+          </div>
+          <div class="creationButton borderBtn">
+             <button class="kr-sg-button-primary btn_lg" ng-show="botVariableType === 'env'" ng-click="addNewVariable()"
+                ng-disabled="displayMode === 'VIEW'"> {{('add_environment_variable'| i18nString)}}</button>
+             <button class="kr-sg-button-primary btn_lg" ng-show="botVariableType === 'locale'" ng-click="addNewVariable()"
+                ng-disabled="displayMode === 'VIEW'"> {{'add_content_variable'| i18nString}}</button>
+          </div>
+          <div class="titleOverflow">
+             <div class="dropdown">
+                <a href="#" class="ellipsisGray" type="button" data-toggle="dropdown" ng-click='dropdownClickHandler()'>
+                <i class="btx-overflow"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-custom">
+                   <li ng-hide="displayMode === 'VIEW'">
+                      <a class="rich-text-nav" tabindex="-1" href="#" ng-click='importVariables()' ng-class="{'linkDisable':displayMode === 'VIEW'}">{{'import'| i18nString}}</a>
+                     </li>
+                   <li class="menuOption hasPadding" ng-click="showDropDown($event)">
+                      <div class="dropdown leftposition">
+                         <div class="dropdown-toggle d-flex align-items-center" data-toggle="dropdown">
+                            <span class="menuName">{{'export'| i18nString}}</span>
+                            <i class="btx-carrot-right fa-caret-right moreOptions ml-5"></i>
+                         </div>
+                         <ul class="dropdown-menu pull-right subMenu">
+                            <li class="subMenuOptions" ng-click="exportVariables('json')">{{'json_label'| i18nString}}</li>
+                            <li class="subMenuOptions" ng-click="exportVariables('csv')">{{'csv_label'| i18nString}}</li>
+                         </ul>
+                      </div>
+                   </li>
+                   <li ng-click="manageNamespacesSlider()" ng-if="allowNamespace">
+                      <a class="rich-text-nav" tabindex="-1" href="#">{{'manage_namespaces'| i18nString}}</a>
+                   </li>
+                   <li ng-click="manageCollectionsSlider()" ng-if="btCollectionVariables.useCollections && botVariableType === 'env'">
+                      <div class="rich-text-nav mng-col-nav" >{{'manage_collection' | i18nString}}</div>
+                      <!-- <a class="rich-text-nav"  tabindex="-1" href="#" ng-if="btCollectionVariables.useCollections && botVariableType === 'env'">{{'manage_collection' | i18nString}}</a> -->
+                   </li>
+                </ul>
+             </div>
+          </div>
+       </div>
+ </div>
+       <div class="emptyStateContainer" ng-show="(!isLoading) && (botVariables.length === 0) && (botVariableType === 'env')">
+          <div class="emptyState">
+             <div class="emptyImage">
+                <img ng-src="{{environmentEmptyStateIcon}}" class="emptyImg">	         
+             </div>
+             <span class="mainTitle">{{'no_global_Variables'| i18nString}}</span>
+             <div class="emptyStateDesc">{{'no_Global_variable_desc'| i18nString}} <a target="_blank" ng-href="{{$root.helpLinks.VARIABLE_MANAGEMENT_HELP}}">{{'learn_more_label'| i18nString}}</a></div>
+             <div class="generateBtn">
+                <button class="addBTN" ng-click="addNewVariable()"> {{'add_environment_variable'| i18nString}} </button>
+                <!-- <button class="learnmoreBTN"><a target="_blank" ng-href="{{$root.helpLinks.VARIABLE_MANAGEMENT_HELP}}"
+                   >{{'learn_more_label'| i18nString}}</a></button> -->
+               <button class="learnmoreBTN" ng-click='importVariables()' ng-class="{'linkDisable':displayMode === 'VIEW'}">{{'import'| i18nString}}</button>
+             </div>
+          </div>
+       </div>
+       <div class="emptyStateContainer" ng-show="(!isLoading) && (botVariables.length === 0) && (botVariableType === 'locale')" >
+          <div class="emptyState">
+             <div class="emptyImage">
+                <img ng-src="{{contentEmptyStateIcon}}" class="emptyImg"/>	         
+             </div>
+             <span class="mainTitle">{{'no_content_variables'| i18nString}}</span>
+             <div class="emptyStateDesc">{{'no_content_variable_desc'| i18nString}} <a target="_blank" ng-href="{{$root.helpLinks.VARIABLE_MANAGEMENT_HELP}}">{{'learn_more_label'| i18nString}}</a></div>
+             <div class="generateBtn">
+                <button class="addBTN" ng-click="addNewVariable()"> {{'add_content_variable'| i18nString}} </button>
+                <!-- <button class="learnmoreBTN"><a target="_blank"
+                   ng-href="{{$root.helpLinks.VARIABLE_MANAGEMENT_HELP}}">{{'learn_more_label'| i18nString}}</a></button> -->
+               <button class="learnmoreBTN" ng-click='importVariables()' ng-class="{'linkDisable':displayMode === 'VIEW'}">{{'import'| i18nString}}</button>
+             </div>
+          </div>
+       </div>
+       <div ng-show="botVariables.length > 0" class="relclear">
+          <div class="panel-body variableManagementPanel">
+             <!-- loading spinner -->
+             <div ng-show="callback.showLoading">
+                <div class="loc-spinner text-center variables-empty-view">
+                   <span>
+                   <i class="fa fa-circle-o-notch wf-spinner"></i> {{'fetching_variables'| i18nString}}
+                   </span>
+                </div>
+             </div>
+             <div class="bt-variableManagement" ng-show="!callback.showLoading" ng-init="showEditVariables = true">
+                <!-- Showing variables -->
+            
+                   <div class="botVariable">
+                      <div class="bottomBorder col-xs-12 noPadding editVariables" ng-class="'botVariable' + $index"
+                         ng-show="showEditVariables"
+                         >
+                               <!-- Header menu titless -->
+                   <div class="col-xs-12 bottomBorder headerTable noPadding evRow" ng-show="showEditVariables">
+                     <div class="nameHeading evColumn">
+                        <div ng-show="!showNameSearch" class="headerTitle">{{'name_label_uppercase'| i18nString}}<i class="btx-search" ng-click="activateNameSearch(true)"></i>
+                        </div>
+                        <div ng-show="showNameSearch" class="searchVariable">
+                           <input focus-it tabindex="1" type="text" class="form-control focusNameSearch"
+                              ng-model="searchQry.name" ng-keyup="trackSearch($event)"
+                              ng-change="searchRecords('key')" placeholder="{{'search_by_variable_name'| i18nString}}">
+                           <span class="btx-close" ng-click="activateNameSearch(false)"></span>
+                        </div>
+                     </div>
+                     <div class="valueHeading evColumn">
+                        <div ng-show="!showValueSearch" class="headerTitle">{{'value_caps'| i18nString}}
+                           <i class="btx-search" ng-click="activateValueSearch(true)"></i>
+                        </div>
+                        <div ng-show="showValueSearch" class="searchVariable">
+                           <input focus-it tabindex="1" type="text" class="form-control focusValueSearch"
+                              ng-model="searchQry.value" ng-keyup="trackSearch($event)"
+                              ng-change="searchRecords('value')" placeholder="{{'search_by_variable_value'| i18nString}}">
+                           <span class="btx-close" ng-click="activateValueSearch(false)"></span>
+                        </div>
+                     </div>
+                     <div class="groupHeading evColumn">
+                        <div class="headerTitle">{{'group_label_uppercase'| i18nString}} 
+                           <i class="btx-dropdown-down marginLeft5 cursor-pointer" ng-show = "ascendingOrder" ng-click = "sortByGroup()"></i>
+                           <i class="btx-dropdown-up marginLeft5 cursor-pointer" ng-show = "decendingOrder" ng-click = "sortByGroup()"></i>
+                        </div>
+                     </div>
+                     <div class="namespaceHeading evColumn" ng-if="allowNamespace">
+                        <div class="headerTitle">{{'namespace_label_uppercase'| i18nString}}  
+                           <i class="btx-dropdown-down marginLeft5 cursor-pointer" ng-show = "ascendingOrderNS" ng-click = "sortByNamespace()"></i>
+                           <i class="btx-dropdown-up marginLeft5 cursor-pointer" ng-show = "decendingOrderNS" ng-click = "sortByNamespace()"></i>
+                        </div>
+                     </div>
+                     <div class="notesHeading evColumn">
+                        <div class="headerTitle">{{'notes_label_uppercase'| i18nString}}</div>
+                     </div>
+                     <div class="propagateHeading evColumn" ng-show="selectedStream.type === 'universalbot'">
+                        <div class="headerTitle">{{'propagate_value' | i18nString}}</div>
+                     </div>
+                     <div class="linkedbotHeading evColumn" ng-show="selectedStream.type === 'universalbot'">
+                        <div class="headerTitle">{{'linked_bots' | i18nString}}</div>
+                     </div>
+                     <div ng-show="showSetupOptions && botVariableType === 'env'" class="setupHeading evColumn">
+                        <div class="headerTitle">{{'setup_options'| i18nString}}</div>
+                     </div>
+                     <!--  <div class="padding15" ng-class="{'col-xs-1':showSetupOptions,'col-xs-2':!showSetupOptions}">
+                        <div class="notes">&nbsp;</div>
+                        </div> -->
+                  </div>
+                  <!-- List of variables -->
+                        <ng-container ng-repeat="variable in tempBotVariables.slice((currentPage - 1) * 10, currentPage * 10) | filter:{originalKey:searchQry.name, value: searchQry.value} | filter: collectionVariableForm.searchQuery | orderBy:sortKey track by $index" ng-if='!isSearching' ng-show="tempBotVariables.length > 0 && showEditVariables">
+                           <div ng-show="!variable.showEditDiv && !(isChildBot && variable.scope==='hidden')" ng-click="editVariable($index, variable.key)"
+                           ng-init="variable.showEditDiv = false" class="col-xs-12 noPadding evRow evRowBody">
+                           <div class="variableName paddingTopBottom15  evColumn">
+                              <div title="{{variable.key | patternChangeVariable}}" class="ellipsis line-clamp">
+                                 {{variable.key | patternChangeVariable}}
+                              </div>
+                           </div>
+                           <div class="variableValue paddingTopBottom15  evColumn">
+                              <div title="{{variable.value | patternChangeVariable}}" class="ellipsis line-clamp">
+                                 {{variable.value | patternChangeVariable}}
+                              </div>
+                           </div>
+                           <div class="variableGroup paddingTopBottom15  evColumn">
+                              <div title="{{variable.group}}" class="ellipsis line-clamp">
+                                 {{variable.group || '---'}}
+                              </div>
+                           </div>
+                           <div class="variableNamespace paddingTopBottom15  evColumn"  ng-if="allowNamespace">
+                              <div data-toggle="tooltip" data-placement="top" tooltip="{{variable.namespace.length > 200? variable.namespace.slice(0, 200) + '...':(variable.namespace.length > 18?variable.namespace:'')}}" class="ellipsis line-clamp tooltip-hover">
+                                 {{variable.namespace || '---'}}
+                              </div>
+                           </div>
+                           <div class="variableNote paddingTopBottom15  evColumn">
+                              <!-- <div class="ellipsis1" tooltip-placement="bottom" tooltip="{{variable.hint}}">{{variable.hint}}</div> -->
+                              <div class="ellipsis line-clamp" title = "{{variable.hint | patternChangeVariable}}" >{{variable.hint | patternChangeVariable}}</div>
+                           </div>
+                           <div ng-if="showSetupOptions && botVariableType === 'env'" class="variableSetUp padding15  evColumn">
+                              <!-- <div class="ellipsis1" tooltip-placement="bottom" tooltip="{{variable.hint}}">{{variable.hint}}</div> -->
+                              <div ng-if="variable.scope==='prePopulated' && variable.variableType==='env'"
+                                 class="ellipsis1">{{'pre_populated'| i18nString}}</div>
+                              <div ng-if="variable.scope==='hidden' && variable.variableType==='env'"
+                                 class="ellipsis1">{{'hidden'| i18nString}}</div>
+                              <div ng-if="variable.scope==='askOnInstall' && variable.variableType==='env'"
+                                 class="ellipsis1">{{'ask_on_install'| i18nString}}</div>
+                           </div>
+                           <div class="propagateValue paddingTopBottom15  evColumn" ng-show="selectedStream.type === 'universalbot'">
+                              <div class="ellipsis line-clamp" title = "{{variable.propagateValue?'Enable':'Disable'}}" >{{variable.propagateValue?'Enable':'Disable'}}</div>
+                           </div>
+                           <div class="linkBot paddingTopBottom15  evColumn" ng-show="selectedStream.type === 'universalbot'" ng-class="{'invisible': !variable.propagateValue}">
+                              <div class="ellipsis line-clamp" title = "{{variable.linkedBotName}}" >{{variable.linkedBotName}}</div>
+                           </div>
+                           <div class="editVariableIcons"  ng-class="{'read-only-wrap':displayMode === 'VIEW'}" ng-show="displayMode !== 'VIEW'">
+                              <div class="variableTitle iconsDiv">
+                                 <!-- <span ng-click="editVariable($index, variable.key)" class="fa fa-pencil"></span>
+                                    <span class="fa fa-trash" ng-click="deleteVariable($index, variable.key)"></span> -->
+                                 <i ng-click="editVariable($index, variable.key)"  class="fa-pencil btx-pencil" ></i>
+                                 <i  ng-click="$event.stopPropagation();deleteVariable($index, variable.key)" class="btx-delete-1" ></i>                                        
+                                 <span class="fa fa-spin fa-refresh"></span>
+                              </div>
+                           </div>
+                        </div>
+                        </ng-container>
+                         <!-- Edit variable block -->
+                         <div ng-show="variable.showEditDiv" class="col-xs-12 editVariableDiv">
+                            <div class="col-xs-12 noPadding keyValueDiv">
+                               <div class="col-xs-6">
+                                  <div class="required name"><label class="required-field">{{'variable_name'| i18nString}}</label>
+                                  </div>
+                                  <div><textarea class="form-control autoGrowTA required-field"
+                                     name="variableName" type="text" ng-model="variable.key"
+                                     auto-grow-textarea default-grown="true"
+                                     ng-paste="handleLengthValidation('key',512, $event)"
+                                     ng-keypress="checkLengthValidation(variable.key,512,$event)"
+                                     placeholder="{{'no_spaces_or_special_char'| i18nString}}" ng-disabled="displayMode === 'VIEW'"></textarea></div>
+                                  <div class="lengthHintText edit"><span>{{512 - variable.key.length+' '+ char_remaining}}
+                                     </span>
+                                  </div>
+                                  <div error-alert ng-show="invalidText" class="text-danger form-error-text">
+                                     {{'special_characters_are_not_allowed'| i18nString}} 
+                                  </div>
+                               </div>
+                               <div class="col-xs-6">
+                                  <div class="required name"><label class="required-field">Value</label></div>
+                                  <div><textarea class="form-control autoGrowTA required-field"
+                                     name="variableValue" type="text" ng-model="variable.value"
+                                     auto-grow-textarea default-grown="true"
+                                     ng-paste="handleLengthValidation('value',8000, $event)"
+                                     ng-keypress="checkLengthValidation(variable.value,8000,$event)"
+                                     placeholder="{{'enter_a_value'| i18nString}}" ng-disabled="displayMode === 'VIEW'"></textarea>
+                                     <span class="fa fa-volume-up cursor-pointer" ng-if="volumeShow"
+                                        ng-click="audioTagClickHandler()"></span>
+                                  </div>
+                                  <div class="lengthHintText edit"><span>{{8000 - variable.value.length +' '+char_remaining}}</span></div>
+                               </div>
+                               <input class="audioInput" ng-model="audio.tagLocation" type="text"
+                                  ng-if="audioTagShow" placeholder="{{'enter_alt_audio_location'| i18nString}}">
+                            </div>
+                            <div class="col-xs-12 marginT12">
+                               <div class="required name">{{'notes_label'| i18nString}}</div>
+                               <div><textarea class="form-control autoGrowTA required-field" name="variableHint"
+                                  type="text" ng-model="variable.hint" auto-grow-textarea default-grown="true"
+                                  ng-paste="handleLengthValidation('hint',2000, $event)"
+                                  ng-keypress="checkLengthValidation(variable.hint,2000,$event)"
+                                  placeholder="{{'enter_the_notes'| i18nString}}" ng-disabled="displayMode === 'VIEW'"></textarea></div>
+                               <div class="lengthHintText edit"><span>{{2000 - variable.hint.length +' '+ char_remaining}}
+                                  </span>
+                               </div>
+                            </div>
+                            <div class="col-xs-12 marginT12 iconsDiv">
+                               <button ng-click="saveVariables($index, variable.key)" class="btn"> {{'save'| i18nString}}</button>
+                               <button ng-click="cancelEditDiv($index, variable.key)" class="btn closeCancel">
+                               {{'cancel'| i18nString}}</button>
+                            </div>
+                         </div>
+                      </div>
+                      <!-- List of variables when searching  -->
+                      <div ng-if="isSearching" ng-show="tempSearchBtVar.length > 0 && showEditVariables"
+                         class="bottomBorder col-xs-12 noPadding editVariables" ng-class="'botVariable' + $index"
+                         ng-show="showEditVariables"
+                         ng-repeat="variable in tempSearchBtVar.slice((currentPage - 1) * 10, currentPage * 10) track by $index">
+                         <div ng-show="!variable.showEditDiv"
+                            ng-init="variable.showEditDiv = false" class="col-xs-12 noPadding evRow">
+                            <div class="padding15 evColumn">
+                               <div title="{{variable.key | patternChangeVariable}}" class="ellipsis line-clamp">
+                                  {{variable.key | patternChangeVariable}}
+                               </div>
+                            </div>
+                            <div class="padding15 evColumn">
+                               <div title="{{variable.value | patternChangeVariable}}" class="ellipsis line-clamp">
+                                  {{variable.value | patternChangeVariable}}
+                               </div>
+                            </div>
+                            <div class="variableGroup paddingTopBottom15  evColumn">
+                              <div title="{{variable.group}}" class="ellipsis line-clamp">
+                                 {{variable.group || '---'}}
+                              </div>
+                            </div>
+                            <div class="variableNamespace paddingTopBottom15  evColumn"  ng-if="allowNamespace">
+                              <div data-toggle="tooltip" data-placement="top" tooltip="{{variable.namespace.length > 200? variable.namespace.slice(0, 200) + '...':(variable.namespace.length > 18?variable.namespace:'')}}" class="ellipsis line-clamp tooltip-hover">
+                                 {{variable.namespace || '---'}}
+                              </div>
+                            </div>
+                            <div class="padding15 evColumn"
+                               ng-class="{'col-xs-3':showSetupOptions,'col-xs-4':!showSetupOptions}">
+                               <!-- <div class="ellipsis1" tooltip-placement="bottom" tooltip="{{variable.hint}}">{{variable.hint}}</div> -->
+                               <div class="ellipsis line-clamp" title="{{variable.hint | patternChangeVariable}}">{{variable.hint | patternChangeVariable}}</div>
+                            </div>
+                            <div ng-if="showSetupOptions && botVariableType === 'env'" class="padding15 evColumn">
+                               <!-- <div class="ellipsis1" tooltip-placement="bottom" tooltip="{{variable.hint}}">{{variable.hint}}</div> -->
+                               <div ng-if="variable.scope==='prePopulated' && variable.variableType==='env'"
+                                  class="ellipsis1">{{'pre_populated'| i18nString}}</div>
+                               <div ng-if="variable.scope==='hidden' && variable.variableType==='env'"
+                                  class="ellipsis1">{{'hidden'| i18nString}}</div>
+                               <div ng-if="variable.scope==='askOnInstall' && variable.variableType==='env'"
+                                  class="ellipsis1">{{'ask_on_install'| i18nString}}</div>
+                            </div>
+                            <div class="propagateValue paddingTopBottom15  evColumn" ng-show="selectedStream.type === 'universalbot'">
+                               <div class="ellipsis line-clamp" title = "{{variable.propagateValue?'Enable':'Disable'}}" >{{variable.propagateValue?'Enable':'Disable'}}</div>
+                             </div>
+                             <div class="linkBot paddingTopBottom15  evColumn" ng-show="selectedStream.type === 'universalbot'" ng-class="{'invisible': !variable.propagateValue}">
+                                <div class="ellipsis line-clamp" title = "{{variable.linkedBotName}}" >{{variable.linkedBotName}}</div>
+                             </div>
+                            <div class="editVariableIcons">
+                              <!-- ng-class="{'col-xs-1':showSetupOptions,'col-xs-2':!showSetupOptions}" -->
+                               <div class="variableTitle iconsDiv">
+                                  <span ng-click="editVariable($index, variable.key)"
+                                     class="fa fa-pencil"></span><span class="fa fa-trash"
+                                     ng-click="deleteVariable($index, variable.key)"></span><span
+                                     class="fa fa-spin fa-refresh"></span>
+                               </div>
+                            </div>
+                         </div>
+                         <!-- Edit variable block -->
+                         <div ng-show="variable.showEditDiv" class="col-xs-12 editVariableDiv">
+                            <div class="col-xs-12 noPadding keyValueDiv evRow">
+                               <div class="col-xs-6 evColumn">
+                                  <div class="required name"><label class="required-field">{{'variable_name'| i18nString}}</label>
+                                  </div>
+                                  <div><textarea class="form-control autoGrowTA required-field"
+                                     name="variableName" type="text" ng-model="variable.key"
+                                     auto-grow-textarea default-grown="true"
+                                     ng-paste="handleLengthValidation('key',512, $event)"
+                                     ng-keypress="checkLengthValidation(variable.key,512,$event)"
+                                     placeholder="{{'no_spaces_or_special_char'| i18nString}}" ng-disabled="displayMode === 'VIEW'"></textarea></div>
+                                  <div class="lengthHintText edit"><span>{{512 - variable.key.length +' '+ char_remaining }}
+                                     </span>
+                                  </div>
+                                  <div error-alert ng-show="invalidText" class="text-danger form-error-text">
+                                     {{'special_characters_are_not_allowed'| i18nString}} 
+                                  </div>
+                               </div>
+                               <div class="col-xs-6 evColumn">
+                                  <div class="required name"><label class="required-field">Value</label></div>
+                                  <div><textarea class="form-control autoGrowTA required-field"
+                                     name="variableValue" type="text" ng-model="variable.value"
+                                     auto-grow-textarea default-grown="true"
+                                     ng-paste="handleLengthValidation('value',8000, $event)"
+                                     ng-keypress="checkLengthValidation(variable.value,8000,$event)"
+                                     placeholder="{{'enter_a_value'| i18nString}}"></textarea>
+                                     <span class="fa fa-volume-up cursor-pointer" ng-if="volumeShow"
+                                        ng-click="audioTagClickHandler()"></span>
+                                  </div>
+                                  <div class="lengthHintText edit"><span>{{8000 - variable.value.length +' '+ char_remaining}}</span></div>
+                               </div>
+                               <input class="audioInput" ng-model="audio.tagLocation" type="text"
+                                  ng-if="audioTagShow" placeholder="{{'enter_alt_audio_location'| i18nString}}">
+                            </div>
+                            <div class="col-xs-12 marginT12">
+                               <div class="required name">{{'notes_label'| i18nString}}</div>
+                               <div><textarea class="form-control autoGrowTA required-field" name="variableHint"
+                                  type="text" ng-model="variable.hint" auto-grow-textarea default-grown="true"
+                                  ng-paste="handleLengthValidation('hint',2000, $event)"
+                                  ng-keypress="checkLengthValidation(variable.hint,2000,$event)"
+                                  placeholder="{{'enter_the_notes'| i18nString}}" ng-disabled="displayMode === 'VIEW'"></textarea></div>
+                               <div class="lengthHintText edit"><span>{{2000 - variable.hint.length +' '+ char_remaining}}
+                                  </span>
+                               </div>
+                            </div>
+                            <div class="col-xs-12 marginT12 iconsDiv">
+                               <button ng-click="saveVariables($index, variable.key)" class="btn"> {{'save'| i18nString}}</button>
+                               <button ng-click="cancelEditDiv($index, variable.key)" class="btn closeCancel">
+                               {{'cancel'| i18nString}}</button>
+                            </div>
+                         </div>
+                      </div>
+                      <!-- NO SEARCH DATA -->
+                      <div class="noSearchData" ng-show="(tempBotVariables.slice((currentPage - 1) * 10, currentPage * 10) | filter:{originalKey:searchQry.name, value: searchQry.value} | filter: collectionVariableForm.searchQuery).length===0" >
+                         <p class="col-xs-12 searchNoVariables">{{'no_Variables_found'| i18nString}}</p>
+                      </div>
+                   </div>
+                   <div ng-show="tempBotVariables.length === 0">
+                      <p class="col-xs-12 searchNoVariables">{{'no_Variables_found'| i18nString}}</p>
+                   </div>
+                   <pagination rotate="false" max-size="10"
+                      ng-show="!isSearching && tempBotVariables.length > 10 && showFooter" class="pagination-sm"
+                      total-items="tempBotVariables.length" items-per-page="10" ng-model="currentPage"></pagination>
+                   <pagination rotate="false" max-size="10"
+                      ng-show="isSearching && tempSearchBtVar.length > 10 && showFooter" class="pagination-sm"
+                      total-items="tempSearchBtVar.length" items-per-page="10" ng-model="currentPage"></pagination>
+                   <!--<pagination rotate="false"  max-size="5" ng-show="((botVariables | filter : { key : searchQry.name })).length > 5" class="pagination-sm"  total-items="( (botVariables | filter : { type : searchQry.name })).length" items-per-page="5" ng-model="currentPage"></pagination> -->
+             </div>
+          </div>
+       </div>
+       <bot-modal-slider id="variableManagementSlider">
+          <div class="modalSliderContainer width800" ng-if="openVarManSlid">
+             <div class="modalHeader">
+                <h4 class="modal-title" id="gridSystemModalLabel" ng-if="!isEditVariable">
+                   <i class="btx-close" ng-click="closeSlider(globalVar)" ></i>
+                   <span ng-show="botVariableType === 'locale'">{{isEditVariable? edit_content_variable : add_content_variable}}</span>
+                   <span ng-show="botVariableType === 'env'">{{isEditVariable? edit_global_variable : add_global_variable}}
+                   </span>
+                </h4>
+                <h4 class="modal-title tableRow" ng-if="isEditVariable">
+                  <i class="btx-close top25" ng-click="closeSlider(globalVar)"></i>
+                  <div class="miHeadBar">
+                      <div class="desc">
+                        <span ng-show="botVariableType === 'locale'">{{isEditVariable? edit_content_variable : add_content_variable}}</span>
+                        <span ng-show="botVariableType === 'env'">{{isEditVariable? edit_global_variable : add_global_variable}}
+                      </div>
+                      <div class="heading heading-truncate">{{variableForm.variableKey}}</div>
+                  </div>
+                </h4>
+                <!-- <div ng-if="isEditVariable">
+                   <span class="variableName">{{variableForm.variableKey}}</span>
+                </div> -->
+                <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="closeModalSlider()" ></i></span> -->
+             </div>
+             <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-132" height-property="height">
+                <div class="newVariable" ng-show="!showEditVariables || true" ng-class="{'read-only-wrap':displayMode === 'VIEW'}">
+                   <form name='globalVar' novalidate>
+                      <div class="col-xs-12  noPadding">
+                         <div class="required-field name"><label class="required-field">{{'variable_name'| i18nString}}</label></div>
+                         <div><textarea ng-change='saveButtonChange()' class="form-control autoGrowTA required-field"
+                            maxlength="512" name="variableName" type="text" ng-model="variableForm.variableKey"
+                            ng-required="true"
+                            auto-grow-textarea default-grown="true"
+                            ng-paste="handleLengthValidation('key',512, $event)"
+                            ng-keyup="checkLengthValidation(variableForm.variableKey,512,$event)"
+                            placeholder="{{'enter_a_name'| i18nString}}" ng-disabled="displayMode === 'VIEW'"></textarea></div>
+                         <div class="lengthHintText"><span>{{512 - variableForm.variableKey.length +' '+ char_remaining}}
+                            </span>
+                         </div>
+                         <div class="variable-invalid" ng-show="globalVar.variableName.$touched && globalVar.variableName.$invalid">{{'please_enter_var_name'| i18nString}}</div>
+                         <div error-alert ng-show="invalidText" class="text-danger form-error-text">{{'special_characters_are_not_allowed'| i18nString}}
+                         </div>
+                      </div>
+                      <div class="col-xs-12  noPadding marginBottom10" ng-if="sampleBot">
+                        <div class="kr-sg-dropdowns w-100">
+                           <div class="label-text">{{'data_type' | i18nString}}</div>
+                           <div class="dropdown dropdown-open">
+                               <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">{{dataTypesObj[selectedVariableDataType] || ('choose_option' || i18nString)}}</button>                                            
+                               <ul class="dropdown-menu content-menu">
+                                 <li ng-repeat="dataType in dataTypes track by $index" ng-click="selectDataType(dataType.dataType)"><a>{{dataType.displayName}}</a></li>
+                               </ul>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-xs-12 noPadding" ng-if="btCollectionVariables.collectionList.length && btCollectionVariables.useCollections && botVariableType === 'env'">
+                         <div class="col-xs-4 noPadding">
+                            <div class="required-field name"><label class="required-field">{{'collection_name' | i18nString}}</label></div>
+                         </div>
+                         <div class="col-xs-8 noPadding">
+                            <div class="required-field name"><label class="required-field">{{'value' | i18nString}}</label></div>
+                         </div>
+                         <ng-container ng-repeat="item in btCollectionVariables.collectionList track by $index">
+                            <div class="col-xs-4 noPadding pr-20">
+                               <div class="collection_name" title="{{item.name}}">{{item.name}}<span class="active-collection" ng-if="item.isActive" tooltip-placement="top" tooltip="{{'Active'}}"></span></div>
+                            </div>
+                            <div class="col-xs-8 noPadding">
+                               <div>
+                                  <textarea class="form-control autoGrowTA required-field" name="collectionValue{{$index}}" type="text"
+                                     ng-change='saveButtonChange()'
+                                     ng-mouseleave="autoCompleteCollection($event, $index, item)"
+                                     ng-model="variableForm.collectionVal[item.refId]" auto-grow-textarea default-grown="true"
+                                     ng-paste="handleLengthValidation('value',8000, $event)"
+                                     ng-required="true"
+                                     ng-keypress="handleLengthValidation('value',8000, $event)"
+                                     placeholder="{{'enter_a_value'| i18nString}}" ng-disabled="displayMode === 'VIEW'"></textarea>
+                                  <span class="fa fa-volume-up cursor-pointer" ng-if='volumeShow'
+                                     ng-click="audioColClickHandler(item, $index)"></span>
+                               </div>
+                               <div class="variable-invalid" ng-show="globalVar.collectionValue{{$index}}.$touched && globalVar.collectionValue{{$index}}.$invalid">Please enter value</div>
+                               <input class="audioInput" type="text" ng-model="audio.collection[item.refId]" ng-if="audioColShow[$index]"
+                                  placeholder="{{'enter_alt_audio_location'| i18nString}}"  ng-disabled="displayMode === 'VIEW'">
+                            </div>
+                         </ng-container>
+                      </div>
+                      <ng-container ng-if="!btCollectionVariables.collectionList.length">
+                         <div ng-if="!sampleBot || (sampleBot && (selectedVariableDataType === 'string'))">
+                           <div class="required-field name">
+                              <label class="required-field">{{'value'| i18nString}}</label>
+                           </div>
+                           <div>
+                              <textarea class="form-control autoGrowTA required-field" name="variableValue" type="text"
+                                 ng-model="variableForm.variableVal" name="variableValue" auto-grow-textarea default-grown="true"
+                                 ng-paste="handleLengthValidation('value',8000, $event)"
+                                 ng-required="true"
+                                 ng-keypress="handleLengthValidation('value',8000, $event)"
+                                 placeholder="{{'enter_a_value'| i18nString}}"  ng-disabled="displayMode === 'VIEW'"></textarea>
+                              <span class="fa fa-volume-up cursor-pointer" ng-if='volumeShow'
+                                 ng-click="audioTagClickHandler()"></span>
+                           </div>
+                           <div class="lengthHintText">
+                              <span>{{8000 - variableForm.variableVal.length +' '+ char_remaining}}</span>
+                           </div>
+                           <div class="variable-invalid" ng-show="globalVar.variableValue.$touched && globalVar.variableValue.$invalid">Please enter value</div>
+                           <input class="audioInput" type="text" ng-model="audio.tagLocation" ng-if="audioTagShow"
+                              placeholder="{{'enter_alt_audio_location'| i18nString}}">
+                         </div>
+                         <div ng-if="(sampleBot && (selectedVariableDataType === 'dropDown'))" ng-click="$event.stopPropagation()">
+                           <div class="dropDownValues">
+                              <div class="valuesText">Values</div>
+                              <div ng-click="addDropdownValue()" class="addDropdownValue"><i class="btx-add"></i>Add Values</div>
+                              <div ng-repeat="dropdownValue in dropdownValues track by $index" class="dropdownValue" ng-class="{'defaultValue':dropdownValueIndex === $index }">
+                               <div class="col-xs-12 noPadding">
+                                  <div class="collection_name">Value</div>
+                               </div>
+                               <div class="col-xs-12 noPadding">
+                                  <div class="inputIcons">
+                                     <input name="dropdownValue{{$index}}" class="valueInput" type="text" maxlength="8000" ng-change="saveDropDownValues($index)"  placeholder="{{'enter_a_value'| i18nString}}" ng-disabled="displayMode === 'VIEW'"  ng-model="dropdownValues[$index]" ng-required="true">
+                                     <!-- <span class="fa fa-volume-up cursor-pointer" ng-if='volumeShow' ng-click="audioColClickHandler(item, $index)"></span> -->
+                                     <div  ng-class="{'screenFreez':dropdownValues.length == 1 }" ng-click="selectDefaultDropDownValue($index)">
+                                        <i class="btx-billing-checked"></i>
+                                        <i class="btx-ok"></i>
+                                       </div>
+                                 
+                                     <div  ng-class="{'screenFreez':dropdownValues.length == 1 }" ng-click="removeDropDownValue($index)"><i class="btx-delete-1"></i></div>
+                                  </div>
+                                  <div class="variable-invalid" ng-show="globalVar.dropdownValue{{$index}}.$touched && globalVar.dropdownValue{{$index}}.$invalid">Please enter value</div>
+                                  <!-- <input class="audioInput" type="text" ng-model="audio.collection[item.refId]" ng-if="audioColShow[$index]"
+                                     placeholder="{{'enter_alt_audio_location'| i18nString}}"  ng-disabled="displayMode === 'VIEW'"> -->
+                               </div>
+                              </div>
+                            </div>
+                         </div>
+                        <div ng-if="(sampleBot && (selectedVariableDataType === 'date'))">
+                           <div class="required-field name">
+                              <label class="required-field">{{'value'| i18nString}}</label>
+                           </div>
+                           <div> 
+                              <input class="form-control autoGrowTA required-field" name="variableValue" type="text" id="datePicker" ng-init="initDate('datePicker')"
+                                 ng-model="variableForm.variableVal" name="variableValue"
+                                 ng-paste="handleLengthValidation('value',8000, $event)" ng-required="true"
+                                 ng-keypress="handleLengthValidation('value',8000, $event)" placeholder="{{'enter_a_value'| i18nString}}"
+                                 ng-disabled="displayMode === 'VIEW'"></textarea>
+                               <span class="fa fa-volume-up cursor-pointer" ng-if='volumeShow' ng-click="audioTagClickHandler()"></span>
+                           </div>
+                           <div class="lengthHintText">
+                              <span>{{8000 - variableForm.variableVal.length +' '+ char_remaining}}</span>
+                           </div>
+                           <div class="variable-invalid" ng-show="globalVar.variableValue.$touched && globalVar.variableValue.$invalid">Please
+                              enter value</div>
+                           <input class="audioInput" type="text" ng-model="audio.tagLocation" ng-if="audioTagShow"
+                              placeholder="{{'enter_alt_audio_location'| i18nString}}">
+                        </div>
+                      </ng-container>
+                      <div class="col-xs-12 noPadding">
+                         <div class="required name"><label>{{'notes_label'| i18nString}}</label></div>
+                         <div><textarea maxlength="512" class="form-control autoGrowTA required-field"
+                            name="variableHint" type="text" ng-model="variableForm.variableHint" auto-grow-textarea
+                            default-grown="true" ng-paste="handleLengthValidation('hint',512, $event)"
+                            ng-keypress="handleLengthValidation('hint',512, $event)"
+                            placeholder="{{'enter_the_notes'| i18nString}}" ng-disabled="displayMode === 'VIEW'"></textarea></div>
+                         <div class="lengthHintText"><span>{{512 - variableForm.variableHint.length +' '+ char_remaining}}
+                            </span>
+                         </div>
+                      </div>
+                      <div class="col-xs-12 noPadding">
+                         <div class="required name"><label>{{'group'| i18nString}}</label></div>
+                         <div>
+                            <div class="kr-sg-dropdowns marginbottom5" ng-if="variableForm.variableGroup != addNewGroup">
+                               <div class="dropdown dropdown-open">
+                                  <button class="dropdown-toggle dropdown-input" ng-if="variableForm.variableGroup.length" data-toggle="dropdown">{{variableForm.variableGroup}}</button>   
+                                  <button class="dropdown-toggle dropdown-input" ng-if="!variableForm.variableGroup.length" data-toggle="dropdown">{{'select_group' | i18nString}}</button>                   
+                                  <ul class="dropdown-menu content-menu">
+                                     <li ng-repeat="name in varGroup track by $index" ng-if="name" ng-click="inputNewGroup(name)" ng-class="{'add-new': $index == 0 }" >
+                                        <a href="#">{{name}}</a>
+                                     </li>
+                                  </ul>
+                               </div>
+                            </div>
+                            <div class="kr-sg-input-text marginbottom5" ng-init="add.newVar = ''" ng-if="variableForm.variableGroup == addNewGroup">
+                               <input type="text" id="inputGroup" ng-model="add.newVar" placeholder="{{'enter_group_name'| i18nString}}" class="input-text" autocomplete="off" ng-disabled="displayMode === 'VIEW'" ng-keypress="handleLengthValidation('hint',128, $event)" ng-paste="handleLengthValidation('hint',128, $event)">
+                            </div>
+                            <!-- <input maxlength="128" id="tags" class="form-control autoGrowTA required-field optionalDeveloperGroups"
+                               name="variableHint" type="text" ng-model="variableForm.variableGroup" auto-grow-textarea
+                               default-grown="true" ng-paste="handleLengthValidation('hint',512, $event)"
+                               ng-keypress="handleLengthValidation('hint',128, $event)"
+                               placeholder="{{'enter_the_group'| i18nString}}">
+                               </input> -->
+                         </div>
+                         <div class="lengthHintText"><span>{{128 - add.newVar.length +' '+ char_remaining}}
+                            </span>
+                         </div>
+                      </div>
+                      <div class="col-xs-12 noPadding marginTop10" id="namespace_var_slider" ng-if="allowNamespace" ng-init="attachOpenDropdown()">
+                         <div class="required name">
+                            <label>{{'namespace'| i18nString}}</label>
+                            <span data-toggle="popover" class="tooltip-hover" data-html="true" data-content="{{'namespace_var_tooltip'| i18nString}}">
+                            <!-- <img ng-src="{{help}}" /> -->
+                            <i class="btx-help"></i>
+                            </span>
+                            <div class="dropdown add-namespace-dd" >
+                               <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                               + Add Namespace
+                               </span>
+                               <div class="dropdown-menu" >
+                                  <input ng-click="$event.stopPropagation();" autofocus ng-keydown="checkKey($event)" type="text" ng-model="add.newName" id="namespaceInp" maxlength="25" placeholder="Enter namespace name" autocomplete="off" ng-disabled="displayMode === 'VIEW'">
+                                  <button class="btn btnSolidBlue" ng-click='createNamespace()'>Add</button>
+                               </div>
+                            </div>
+                         </div>
+                         <div ng-if="!isNamespaceLoading">
+                            <div class="tags namespace-tags col-xs-12 noPadding">
+                               <tags-input min-length="1" add-on-comma="false" add-from-autocomplete-only = 'true' ng-model="inpTags.text" show-on-focus='true' placeholder="{{'select_namespace' | i18nString}}" display-property="tag" replace-spaces-with-dashes="false" class='namespace-tags-inp'>
+                                  <auto-complete auto-complete-id="qTags{{$index}}" id="qTags{{$index}}" min-length="1" select-first-match='false' max-results-to-show="999" highlight-matched-text="false" source="namespacesList"></auto-complete>
+                               </tags-input>
+                            </div>
+                         </div>
+                         <div ng-if="isNamespaceLoading">
+                            <i class="fa fa-spinner"></i>
+                            Loading Namespaces...
+                         </div>
+                      </div>
+                      <div class="col-xs-12 noPadding propagateValue" ng-show="selectedStream.type === 'universalbot' && totalLinkedBots.length">
+                         <div class="required name">
+                            <label>{{'propagate_linkedbots' | i18nString}}</label>
+                            <p class="desc mb-0">{{'propagate_desc' | i18nString}}<span class="info" data-toggle="popover" data-trigger="click" data-placement="top" data-content="{{'propagate_tooltip'| i18nString}}"><img ng-src="{{infoIcon}}"></span></p>
+                         </div>
+                         <toggle-switch ng-model="variableForm.propagateValue" ng-change="toggleSwitchHandler(variableForm)" class="pull-left">
+                        </toggle-switch>
+                      </div>
+                      <div class="linkBotDropDown" ng-show="variableForm.propagateValue && selectedStream.type === 'universalbot'">
+                         <label>{{'choose_linked'| i18nString}}</label>             
+                         <div class="kr-sg-dropdowns">
+                            <div class="dropdown dropdown-open open">
+                               <button class="dropdown-toggle dropdown-input" slide-bottom data-toggle="dropdown" ng-disabled="!totalLinkedBots.length">
+                               <span class="selectfield">{{totalLinkedBots.length?selectBots:nobots}}</span> 
+                               </button>                                            
+                               <ul class="dropdown-menu content-menu">
+                                  <li class="p-0" ng-repeat="linkBot in totalLinkedBots" ng-click="selectedBot(linkBot)"><a>{{linkBot.botName}}</a></li>
+                               </ul>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-xs-12 radioDiv form-group noPadding marginTop10"
+                         ng-if="showSetupOptions && botVariableType === 'env'">
+                         <div class="required-field name marginBottom10"><label class="required-field">{{'setup_option'| i18nString}}
+                            </label>
+                         </div>
+                         <div>
+                            <label for="prePopulated">
+                               <input type="radio" ng-model="variableForm.scope" id="prePopulated" value="prePopulated"
+                                  name="setupOption" required />
+                               <span class="text-transform-init font-weight-init">
+                                  {{'pre_populated'| i18nString}} 
+                                  <div class="noteCheck m-0">
+                                     {{'pre_populated_with_a_value'| i18nString}}
+                                  </div>
+                               </span>
+                            </label>
+                         </div>
+                         <div>
+                            <label for="hidden">
+                               <input type="radio" ng-model="variableForm.scope" id="hidden" value="hidden"
+                                  name="setupOption" />
+                               <span class="text-transform-init font-weight-init">
+                                  {{'hidden'| i18nString}} 
+                                  <div class="noteCheck m-0">{{'hide_with_predefined_data'| i18nString}}</div>
+                               </span>
+                            </label>
+                         </div>
+                         <div>
+                            <label for="askToInstall">
+                               <input type="radio" ng-model="variableForm.scope" id="askToInstall" value="askOnInstall"
+                                  name="setupOption" required />
+                               <span class="text-transform-init font-weight-init">
+                                  {{'ask_on_install'| i18nString}} 
+                                  <div
+                                     class="noteCheck m-0">{{'ask_the_user_to_provide_value_during_setup'| i18nString}}</div>
+                               </span>
+                            </label>
+                         </div>
+                      </div>
+                   </form>
+                </div>
+             </div>
+             <div class="modalFooter">
+                   <button ng-if="!isEditVariable" ng-click="createVariable(globalVar)" ng-disabled="saving || globalVar.$invalid || displayMode === 'VIEW'"
+                      class="btn saveButton"> {{(saving)? savingLabel:saveLabel }}</button>
+                   <button ng-if="isEditVariable" ng-click="saveVariables(currentIndexValuetoEdit)"
+                      ng-disabled="saving || globalVar.$invalid || displayMode === 'VIEW'" class="btn saveButton"> {{(saving)? savingLabel : saveLabel}}</button>
+                      <button ng-click="cancelCreateVariable(globalVar)" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+             </div>
+          </div>
+       </bot-modal-slider>
+       <!--<div class="col-xs-12" ng-if="!showEditFooter && showFooter">
+          <button ng-click="cancelCreateVariable()" class="btn btn-sm btn-default text-info closeCancel"> Cancel</button>
+          <button ng-click="createVariable()" ng-disabled="saving" class="btn btn-sm btn-primary text-info"> {{(saving)?' Saving...':'Save'}}</button>
+          </div>-->
+       <div class="panel-footer hide" ng-if="showEditFooter && showFooter">
+          <button ng-click="addNewVariable()" class="btn"> {{'add_variable'| i18nString}}</button>
+       </div>
+    <div class="modal fade import-utterance-modal import-bot-modal" data-backdrop="static" data-keyboard="false"
+       tabindex="-1" role="dialog">
+       <div class="modal-dialog">
+          <div class="modal-content" ng-show="importStep == 0">
+             <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import_variable'| i18nString}}</h4>
+             </div>
+             <div class="modal-body import-bot-modal-body" perfect-scroll>
+                <div class="col-xs-12 ques-block">
+                   <div class="col-xs-12 form-group noPadding fileDropContainer">
+                      <h5 class='ques'>{{'are_you_sure'| i18nString}}</h5>
+                      <p class='ques-text'>{{'this_will_add_env_cont_variables'| i18nString}}</p>
+                      <div class="col-xs-12 noteText">
+                         <span class="noteDesc backup">{{'backup'| i18nString}}</span>
+                         <div class="col-xs-12 paddingTop10">
+                            <i class="fa fa-download download" aria-hidden="true"><span class="desc"
+                               ng-click="exportVariables('csv')">{{'csv_label'| i18nString}}</span></i>
+                            <i class="fa fa-download download" aria-hidden="true"><span class="desc"
+                               ng-click="exportVariables('json')">{{'json_label'| i18nString}}</span></i>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <div class="modal-footer importFooter">
+                   <button type="button" class="btn btn-primary" ng-click="proceedFirst()">{{'proceed'| i18nString}}</button>
+                   <button type="button" class="btn closeCancel" ng-click="onCancel()">{{'cancel'| i18nString}}</button>
+             </div>
+          </div>
+          <div class="modal-content" ng-show="importStep == 1">
+             <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+             </div>
+             <div class="modal-body import-utterances-modal-body" perfect-scroll>
+                <div class="col-xs-12">
+                   <div class="col-xs-12 form-group noPadding fileDropContainer">
+                      <div class="imgCntr"><img class="" ng-src="{{dragDropIcon}}"></img></div>
+                      <div class="dragdrophelp" ng-hide="fileName">
+                         <div class="dragdroptitle">{{'drag_drop'| i18nString}}</div>
+                         <div class="ortitle">{{'or'| i18nString}}</div>
+                         <div class="browsetitle"><span ng-click='browseHandle()'
+                            class="browseBtn cursor-pointer">{{'browse'| i18nString}}</span></div>
+                      </div>
+                      <div class="uploadedUtteranceFile" ng-show="fileName"><span
+                         class="filename">{{fileName}}</span><span class="removefile"><i ng-click="removeFile()"
+                         class="fa fa-close"></i></span></div>
+                   </div>
+                </div>
+             </div>
+             <div class="modal-footer importFooter">
+                   <button type="button" ng-disabled="!fileName" class="btn btn-primary"
+                      ng-click="startImport()">{{'next'| i18nString}}</button>
+                   <button type="button" class="btn closeCancel" ng-click="onCancel()">{{'cancel'| i18nString}}</button>
+             </div>
+          </div>
+          <div class="modal-content" ng-show="importStep == 2">
+             <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+             </div>
+             <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+                   <div class="col-xs-12 form-group noPadding importerrorcontainer">
+                      <div class="text-center importimage">
+                         <img class="" ng-src="{{wentWrongIcon}}"/>
+                      </div>
+                      <div class="importerror">
+                         <div class="title">{{'import_failed'| i18nString}}</div>
+                         <span class="import-error-mess col-xs-12">{{error.mess}}</span>
+                         <div class="errors" ng-repeat="error in errorMsg">
+                            <div class="statementutterdiv col-xs-12">
+                               <span class="statement textEllipsis col-xs-11">{{error.msg}}</span>
+                               <span class="erroricon"><i class="fa fa-warning"></i></span>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <div class="modal-footer form-group">
+                  <button type="button" class="btn btn-primary btnSave" ng-click="goToStep(1)">{{'retry'| i18nString}}</button>
+                  <button type="button" class="btn btn-default" ng-click="onCancel()"> {{'cancel'| i18nString}} </button>
+             </div>
+          </div>
+          <div class="modal-content" ng-show="importStep == 3">
+             <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import_variable'| i18nString}}</h4>
+             </div>
+             <div class="modal-body overflow-hidden modalPerfectScroll" perfect-scroll>
+                <div class="col-xs-12">
+                   <div class="imgCntr"><img class="layer" ng-src="{{importingIcon}}"></img>
+                   </div>
+                   <div class="importingText"><span class="processing">{{'importing'| i18nString}}</span></div>
+                   <div class="processAnimationDiv animationwidth col-xs-offset-1"></div>
+                </div>
+             </div>
+             <div class="modal-footer form-group">
+                   <button type="button" class="btn btn-primary btnSave" ng-disabled="importStep == 3" ng-click="onDone()">{{'done'| i18nString}}</button>
+                   <!--  <button type="button" class="btn btn-default" ng-click="onCancel()"> {{'cancel'| i18nString}} </button>
+                      <button type="button" class="btn btn-primary btnSave" ng-click="goToStep(1)">{{'retry'| i18nString}}</button> -->
+             </div>
+          </div>
+          <div class="modal-content" ng-show="importStep == 4">
+             <div class="modal-header bulkImport">
+                <h4 class="modal-title">{{'import'| i18nString}}</h4>
+             </div>
+             <div class="modal-body overflow-hidden modalPerfectScroll"  dynamic-height dynaoffset="-390" height-property="height" perfect-scroll>
+                <div class="col-xs-12 form-group noPadding importsuccess">
+                   <div class="text-center importsuccessimage">
+                      <img ng-src="{{importDoneIcon}}" />
+                   </div>
+                   <div class="importsuccessdiv">
+                      <div class="title variable-title">{{'import_success'| i18nString}}</div>
+                   </div>
+                   <div class="importingText" ng-if="statusLogs.length"><span>{{'import_status_logs'| i18nString}}</span></div>
+                   <div class="col-xs-12 importErrorsDiv">
+                      <div class="col-xs-12 marginT5" ng-show="showSuccessMsg">
+                         <div class="col-xs-12">
+                            <div class="text-center importError">
+                               <div class="importErrorMsg" tooltip-placement="top" tooltip="{{logMessage}}">{{logMessage}} </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-xs-12 marginT5" ng-repeat="statuslog in statusLogs"  ng-show="!showSuccessMsg">
+                         <div class="col-xs-12">
+                            <div class="importError">
+                               <div class="col-xs-10 importErrorMsg" tooltip-placement="top" tooltip="{{statuslog.errorMsg}}">{{statuslog.errorMsg}}
+                                  <span class="col-xs-2 fa" ng-class="statuslog.logType === 'warn'?'fa-exclamation-triangle':'fa-close'" ></span>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-xs-12 downloadLogFile" ng-click="downloadLog()">{{'download_log_file'| i18nString}}</div>
+                   </div>
+                </div>
+             </div>
+             <div class="modal-footer form-group">
+                   <button type="button" class="btn btn-primary btnSave" ng-click="onDone()">{{'done'| i18nString}}</button>
+             </div>
+          </div>
+       </div>
+    </div>
+    <a id='downloadButton' target="_blank" href="{{downloadURL}}" download>{{'click_here_label'| i18nString}}</a>
+    <div class="modal fade export-utterance-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+       <div class="modal-dialog modal-center">
+          <div class="modal-content modal-content-center">
+             <div class="modal-body export-utterances-modal-body" perfect-scroll>
+                <i class='fa fa-circle-o-notch fa-spin-fast'></i>
+                <span>{{modalText}}</span>
+             </div>
+          </div>
+       </div>
+    </div>
+</div> 
+
+<manage-variables-namespace-table cb='bt_var_manage_cb' id="manageVarNamespaceTable" ng-if="manageVarTabEnable"></manage-variables-namespace-table>
+<manage-collections cb='btCollectionVariables' id="manageCollectionsSlider" ng-show="manageCollectionVarEnable"></manage-collections>

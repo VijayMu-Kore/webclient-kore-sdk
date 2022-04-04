@@ -1,0 +1,33 @@
+<i ng-if="warnObj.all && warnObj.all.length && (iconType === 'font')" ng-click="$event.stopPropagation()" class="btx-{{primaryType}} nluWarnTriggers {{parentClass}}" ng-class="{hover:warnObj.hovered,'noFooter':!(type == 'intent') || (iconType === 'infoIcon')}" id="nlu_{{type+id}}" id="nlu_{{type+id}}" ng-mouseover="nluPopover()" ng-mouseleave="hideNluPopover()"></i>
+<image  ng-if="warnObj.all && warnObj.all.length && (iconType === 'image')" ng-click="$event.stopPropagation()" class="nluWarnTriggers {{parentClass}}" ng-class="{hover:warnObj.hovered}" id="nlu_{{type+id}}" ng-mouseover="nluPopover()" ng-mouseleave="hideNluPopover()" ng-src="{{warnIcon}}">
+<div ng-if="warnObj.all && warnObj.all.length && (iconType === 'infoIcon')" ng-click="$event.stopPropagation()" class="nlu-popover-div nluWarnTriggers {{parentClass}}" ng-class="{hover:warnObj.hovered}" id="nlu_{{type+id}}" ng-mouseover="nluPopover()" ng-mouseleave="hideNluPopover()" >
+        <i class="btx-warn"></i>
+        <span class="nlu-dot"></span>
+</div>
+<div class="hide hidenMainPopContent{{type+id}}" ng-if="warnObj.all && warnObj.all.length" ng-click="$event.stopPropagation()">
+    <div class="popoverContent" id="nluPopoverContent_{{type+id}}">
+        <h3 class="popover-header">
+           <span class="popover-tabs" id="nlurulesAllTab" ng-click="selectTab('all')" ng-class="{'selected':selectedTab === 'all'}" >All ({{warnObj.all.length}})</span>
+           <span class="popover-tabs" id="nlurulesErrorTab" ng-click="selectTab('errors')" ng-class="{'selected':selectedTab === 'errors'}" ng-if="warnObj.errors.length">Error ({{warnObj.errors.length}})</span>
+           <span class="popover-tabs" id="nlurulesWarningsTab" ng-click="selectTab('warnings')" ng-class="{'selected':selectedTab === 'warnings'}"  ng-if="warnObj.warnings.length">Warning ({{warnObj.warnings.length}})</span>
+        </h3>
+        <div class="popover-body">
+            <div class="warningsBlock nluelements{{warnObj.all.length}}" perfect-scroll ng-init="initPopover()">
+                    <div class="{{warning.severity}} warning-block" ng-repeat="warning in warnObj[selectedTab] track by $index">
+                        <!-- <i class="btx-warning icon-warning"></i> -->
+                        <image ng-if="warning.severity === 'error'" ng-src="{{error}}">
+                        <image ng-if="warning.severity === 'warning'" ng-src="{{warn}}">
+                        <div class="warning-data-block">
+                            <span class="warning-header">{{warning.text}}
+                                <span ng-if="toolTips[warning.type]" class="nlutooltipTrigger" id="{{type+id+'_tip_'+$index}}" ng-init="initToolTip(type+id+'_tip_'+$index)" ng-mouseover="showInnerToolTip(type+id+'_tip_'+$index)" ng-mouseleave="hideInnerToolTip(type+id+'_tip_'+$index)"><i class="btx-info"></i></span>
+                            </span>
+                            <span class="{{warning.severity}}-desc">{{warning.desc}}</span>
+                            <!-- dynamically add classes in above lines if waring use warning-desc : or error-desc -->
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="btn-view-utterance" ng-if="(type == 'intent') && (iconType !== 'infoIcon')" ng-click="viewUtterance()" ><i class="btx-list-view icon-listView"></i>View Utterances</div>
+    </div>
+</div>
+

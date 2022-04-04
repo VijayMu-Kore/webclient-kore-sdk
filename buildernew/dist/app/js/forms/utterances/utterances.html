@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<div class="workflows-home full-height bt-utterances">
+    <div class="utterance-info">
+        {{'utterances_Desc'| i18nString}}
+    </div>
+    <div class="workflows-container row full-height">
+        <div ng-include="tmpltPrePath+'templates/bt-streams/utterances-sidebar.html'" class="ng-scope"></div>
+        <div class="workflows-content app-view full-height">
+            <div class="botsDetailContainer">
+                <div class="row bt-task-detail">
+                    <div class="col-xs-9 bt-task-name">
+                        {{tasks[activeTask].name}}
+                    </div>
+                    <div class="col-xs-3 utterance-number">
+                        {{count}} Unique Utterances
+                    </div>
+                </div>
+                <div class="row utterances-form-div" ng-show="editId ===-1">
+                    <form name="utterances-form" class="utterances-form" ng-submit="addUtterance" novalidate>
+                        <div class="col-xs-12 row  form-group">
+                            <div class="col-xs-12 noPadding">
+                                <label class="lineHeight">{{'utterances_userSays'| i18nString}}</label>
+                                <button type="button" ng-show="utterences.length>0" class="pull-right btn btn-sm btn-outline" ng-click="trainBot()">Train</button>
+                            </div>
+                            <div class="col-xs-12 noPadding utterence-textview">
+                                <input type="text" autocomplete="off" ng-keyup="$event.keyCode == 13 && addUtterance()" id="utterance-text" placeholder = "{{'type_a_typical_utter_placeholder'| i18nString}}" class="form-control"  ng-model="utteranceText" name="utterance-text">
+                            </div>
+                            <div class="utterence-enter-help col-xs-12 pull-right" ng-show="utteranceText.length"> {{'press_enterto_add_label'| i18nString}} </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row utterances-list-div">
+                    <div class="col-xs-12 uttrence-view" ng-repeat="utterence in utterences" ng-init="utterence.show = false" ng-mouseenter="utterence.show=true" ng-mouseleave="utterence.show=false">
+                        <div class="col-xs-10 noPadding utterance-item-title" ng-show="editId !==$index" >
+                            {{utterence.sentence}}
+                        </div>
+                        <div class="col-xs-2 utterance-btn-div" ng-show="utterence.show && editId !==$index " >
+                            <span class="utterance-btn"  ng-click="editThis($index)">{{'edit'| i18nString}}</span>
+                            <span class="utterance-btn" ng-click="delete($index)">{{'delete'| i18nString}}</span>
+                        </div>
+                        <div class="col-xs-12 noPadding utterence-textview" ng-show="editId ===$index">
+                            <input type="text"  autocomplete="off" ng-keyup="$event.keyCode == 13 && editUtterence($index)" id="utterance-text" placeholder = "{{'type_a_typical_utter_placeholder'| i18nString}}" class="form-control"  ng-model="utterence.sentence" name="utterance-text">
+                            <div class="utterence-enter-help col-xs-12 pull-right" ng-show="utterence.sentence.length"> {{'press_enterto_add_label'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="text-center utterances-empty-view" ng-hide="utterences.length">
+                    <div class="utterances-empty-view-title">{{'no_utterences_defined_yet_label'| i18nString}}</div>
+                    <div class="utterances-empty-view-description">{{'add_utterences_label'| i18nString}}</div>
+                    <div class="utterances-empty-view-learn-more"><a target="_blank"  ng-href="{{$root.helpLinks.HOME}}"> {{'learn_more_label'| i18nString}}</a></div>
+                </div> -->
+                <div class="emptyStateContainer" ng-hide="utterences.length">
+                    <div class="emptyState">
+                        <div class="emptyImage">
+                            <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                        </div>  
+                        <span class="mainTitle">{{'no_utterences_defined_yet_label'| i18nString}}</span>
+                        <div class="emptyStateDesc">{{'add_utterences_label'| i18nString}}</div>
+                        <div class="generateBtn">
+                            <!-- <button class="addBTN" >Add</button> -->
+                            <button class="learnmoreBTN"><a target="_blank" >{{'learn_more_label'| i18nString}}</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      <div class="footer form-group noMargin" ng-if="displayMode!=='view'">
+          <div class="footerSub">
+            <div class="form-ctrl-div  pull-left">
+              <button class="btn btn-default" ng-click="goBack()">{{'close'| i18nString}}</button>
+            </div>
+            <div class="help-hint-link"> <a target="_blank"  ng-href="{{$root.helpLinks.UTTERENCES_HELP}}">{{'help_withpage_label'| i18nString}}</a> </div>
+           
+          </div>
+        </div>
+</div>

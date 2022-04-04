@@ -1,0 +1,17 @@
+    <div class="col-xs-12 form-group noPadding mb-5">
+    	<div class="col-xs-12 noPadding">
+    		<label class="required-field"  tooltip-placement="right" tooltip="{{'bot_contact_details'| i18nString}}">{{'send_contact'| i18nString}} </label>
+    	</div>
+    	<div class="col-xs-12 radioDiv noPadding" ng-init="streamObject.sendVcf = streamObject.sendVcf || 'false'">
+    		<div>
+    			<label  for="streamvcfYes">
+    				<input type="radio" ng-model="streamObject.sendVcf" value="true"  name="sendVcf" id="streamvcfYes" required/> <span class="opt-title">{{'Bt_chnl_cisco_config_sendcontact_Y_label'| i18nString}}</span>
+    			</label>
+    		</div>
+    		<div>
+    			<label  for="streamvcfNo">
+    				<input type="radio" ng-model="streamObject.sendVcf" value="false" name="sendVcf" id="streamvcfNo" required/> <span class="opt-title">{{'Bt_chnl_cisco_config_sendcontact_N_label'| i18nString}}</span>
+    			</label>
+    		</div>
+    	</div>
+    </div>

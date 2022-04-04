@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="15px" viewBox="0 0 14 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>lockHover</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Smartbot" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="(2.1-SB)-Locked-task" transform="translate(-1311.000000, -434.000000)" stroke="#8A959F" stroke-width="1.5">
+            <g id="lockHover" transform="translate(1312.684016, 435.000796)">
+                <rect id="Rectangle-path" x="0" y="5.60160023" width="11.2032005" height="6.84640029" rx="1"></rect>
+                <path d="M2.4896001,5.60160023 L2.4896001,3.11200013 C2.4896001,1.39328992 3.88289002,2.76401136e-16 5.60160023,0 C7.32031045,-5.52802272e-16 8.71360036,1.39328992 8.71360036,3.11200013 L8.71360036,5.60160023" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

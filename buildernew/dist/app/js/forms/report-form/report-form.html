@@ -1,0 +1,129 @@
+<div class="form-container row reportForm">
+	<div class="col-xs-12 noPadding">
+		<form name="reportForm" class="wf-form">
+			<div class="form-group">
+				<div class="col-xs-12">
+					<label class="required-field" tooltip-placement="right" tooltip="{{'ideally_short'| i18nString}}">{{'link_title'| i18nString}}</label>
+				</div>
+				<div class="col-xs-12">
+					<input type="text" class="form-control" ng-disabled="displayMode == 'view'" ng-model="report.title" name="title"
+					 placeholder="{{'bot_msg'| i18nString}}" required>
+					
+					<div ng-show="reportForm.title.$dirty">
+						<div ng-if="reportForm.title.$error.required">
+							<div error-alert class="text-danger form-error-text">
+								{{'link_title_req'| i18nString}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<label class="required-field" tooltip-placement="right" tooltip="{{'simple_info'| i18nString}}">{{'header'| i18nString}}</label>
+				</div>
+				<div class="col-xs-12">
+					<input type="text" class="form-control" ng-disabled="displayMode == 'view'"  ng-model="report.header" name="header"
+						placeholder="{{'details_page'| i18nString}}" required>
+					
+					<div ng-show="reportForm.header.$dirty">
+						<div ng-if="reportForm.header.$error.required">
+							<div error-alert class="text-danger form-error-text">
+								{{'header_req'| i18nString}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<label tooltip-placement="right" tooltip="{{'example_case'| i18nString}}">{{'details_label'| i18nString}}</label>
+				</div>
+				<div class="col-xs-12">
+					<input type="text" class="form-control"  ng-disabled="displayMode == 'view'" ng-model="report.details" placeholder="{{'shared_info'| i18nString}}">
+				
+				</div>
+			</div>
+                        <div ng-if='wfType==="dialog"' class="form-group">
+                            <div class="col-xs-12">
+                                <label class="required-field" tooltip-placement="right"  tooltip="">{{'path_data'| i18nString}}</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" class="form-control" ng-disabled="displayMode == 'view'"  ng-model="report.dataPath" name="dataPath"
+                                       placeholder="{{'place_report'| i18nString}}" required>
+                                
+                                <div ng-show="reportForm.dataPath.$dirty">
+                                    <div ng-if="reportForm.dataPath.$error.required">
+                                        <div error-alert class="text-danger form-error-text">
+											{{'data_path'| i18nString}} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="fs13">
+									{{'example_service'| i18nString}}  
+                                </span>
+                            </div>
+                        </div>
+
+			<div class="form-group">
+				<div class="col-xs-12">
+					<label class="required-field" tooltip-placement="right" tooltip="{{'select_template_req'| i18nString}}">{{'template'| i18nString}}</label>
+				</div>
+				<div class="testReport" ng-class="{'col-xs-12': (report.templates.length === 0 || !report.templates || !report), 'col-xs-9': report.templates.length>0 }">
+                                    
+					<select class="form-control" ng-model="template" ng-disabled="displayMode == 'view'" required ng-change="addTemplate()" name="template">
+						<option value="">{{'select_template'| i18nString}}</option>
+						<option ng-repeat="template in templates" value="{{template.value}}">{{template.name}}</option>
+					</select>
+					<div ng-show="reportForm.template.$dirty && reportForm.template.$error.required">
+						<div error-alert class="text-danger form-error-text">
+							{{'template_req'| i18nString}}
+						</div>
+					</div>
+				</div>
+                                        <div class="col-xs-3 noPadding">
+                                            <div class="" ng-if="report.templates.length>0">
+                                                    <div class="row">
+                                                            <div class="form-group template" ng-repeat="control in report.templates">
+
+                                                                                <button ng-show='template' ng-click="editTemplate()" class="btn">{{'edit_template'| i18nString}}</button>
+                                                                                
+
+                                                                                <template-container ng-if="editReportLoaded" edit-report="editReport" template="control.template" display-mode="displayMode" refresh="bindData()" wf-type="wfType" on-save="saveReport(config,callback)" on-cancel="cancelReport()" keys="sampleResponseKeys" cb-bridge="cb">
+                                                                                </template-container>
+                                                            </div>
+                                                    </div>
+                                            </div>
+                                    </div>
+			</div>
+                    <div class="form-group" ng-show="template==='cardlayoutwithactions' || template==='shoppinglayoutwithactions'">
+				<div class="col-xs-12">
+					<label>{{'possible_Action'| i18nString}}</label>
+				</div>
+				<div class="col-xs-12">
+					<tags-box tags="report.actions" key="name" on-delete="deleteAction"></tags-box>
+					<div class="alert alert-warning alert-xs" ng-show="!report.actions || report.actions.length == 0">
+						{{'possible_actions'| i18nString}}
+					</div>
+				</div>
+			</div>
+			<div class="form-group" ng-show="template==='cardlayoutwithactions' || template==='shoppinglayoutwithactions'">
+				<div class="col-xs-12">
+					<label tooltip-placement="right" tooltip="{{'please_select_action'| i18nString}}">{{'select_action'| i18nString}}</label>
+				</div>
+				<div class="col-xs-12">
+                <div class="col-xs-7 noPadding">
+					<select class="form-control" ng-model="takenAction">
+						<option value="">{{'select_action'| i18nString}}</option>
+						<option ng-repeat="action in actions" value="{{action._id}}">{{action.name}}</option>
+					</select>
+                    </div>
+                    <div class="col-xs-5 possibleActions">
+					<button type="button" ng-disabled="!takenAction" class="btn editTemplate" ng-click="addActionToList(takenAction);takenAction='';">{{'possible_action'| i18nString}}</button>
+					</div>
+				</div>
+			</div>
+			
+		</form>
+	</div>
+</div>

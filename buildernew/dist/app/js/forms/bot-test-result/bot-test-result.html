@@ -1,0 +1,199 @@
+<div class="modal fade add-meta" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" ng-click="cancelEntity()" class="close" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+    		 <h4 class="modal-title" id="gridSystemModalLabel">{{'add_entity_type_label'| i18nString}}</h4>
+		</div>
+		<div class="modal-body">
+			<form>
+			  <div class="form-group row">
+			    <label>{{'task_field_label'| i18nString}}</label>
+			    <input type="text" class="form-control" placeholder="{{'task_field_label'| i18nString}}" ng-model="addmeta.field">
+			  </div>
+			  <div class="form-group row">
+			    <label>{{'meta_data_label'| i18nString}}</label>
+			    <select class="form-control" ng-model="addmeta.metadata">
+			    	<option value="">{{'select_meta_data_type'| i18nString}}</option>
+			    	<option ng-repeat="const in constants.nlp" value="{{const.value}}">{{const.title}}</option>
+			    </select>
+			  </div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button  class="btn  btn-default" ng-click="cancelEntity()">{{'cancel'| i18nString}}</button>
+			<button  class="btn  btn-primary" ng-click="saveEntity()">{{'save'| i18nString}}</button>
+		</div>
+	</div>
+  </div>
+</div>
+<synonyms-manage hide-ui="{{true}}"  context="context.api"></synonyms-manage>
+<pattern-manage  hide-ui="{{true}}"  stream="stream" context="context.api"></pattern-manage>
+<div class="nlp-verify-page">
+	<div class="full-page">
+		<div class="col-xs-12 noPadding">
+		  	<form name="form">
+		  		<div class="nlp-user-says">
+		  			<label>{{'user_says_label'| i18nString}}</label>
+		  		</div>
+		  		<div class="intent-text row userSaysDiv">
+		  			<div class="col-xs-12 noPadding">
+			  			<div class="nlp-text-ctrl col-xs-8 noPadding">
+			  				<rich-editor context="context.api" api="eventHandlers" ng-model="nlp.text" tokens="intent.Entities" placeholder="{{'bot_test_result_type_a_typical_sentence_placeholder'| i18nString}}"></rich-editor>
+			  			</div>
+                        <div class="col-xs-4 noPadding">
+                        <button type="button"  ng-disabled="!nlp.text" class="btn btn-primary tunTest" ng-click="verify()">{{'run_test_label'| i18nString}}</button>
+                        <button type="button" ng-disabled="!nlp.text" class="btn btn-default closeBtn" ng-click="clear()">{{'clear_label'| i18nString}}</button>
+                        </div>
+		  			</div>
+		  		</div>
+		  		<div class="intent-identified  col-xs-12 noPadding" ng-if="!verifying && !testing">
+		  			<div class="nlp-user-says">
+		  				<label>{{'bot_brain_label'| i18nString}}</label>
+		  			</div>
+		  			<div class="identified-intent col-xs-2 noPadding">
+		  				<div class="alert alert-sm alert-success">
+		  					 😴  &nbsp;&nbsp;{{'bot_test_result_asleep_label'| i18nString}} 💤
+		  				</div>
+		  			</div>
+		  		</div>
+		  		<div class="intent-identified col-xs-12 noPadding" ng-if="testing">
+		  			<div class="nlp-user-says">
+		  				<label>{{'bot_brain_label'| i18nString}}</label>
+		  			</div>
+		  			<div class="identified-intent">
+		  				<div class="alert alert-sm alert-success">
+							{{'bot_test_result_thinking_label'| i18nString}}
+		  				</div>
+		  			</div>
+		  		</div>
+		  		<div class="intent-identified col-xs-12 noPadding" ng-if="intent.intent.length == 1 && !testing">
+		  			<div class="nlp-user-says">
+		  				<label>{{'bot_brain_label'| i18nString}}</label>
+		  			</div>
+		  			<div class="identified-intent">
+		  				<div class="" ng-show="intent.intent[0].name">
+                                                    <div class="alert alert-sm alert-success col-xs-10">
+                                                        <span>{{'bot_test_result_task_recognised_as'| i18nString}} </span>
+                                                        <span class="found-intent">
+                                                            {{intent.intent[0].name}}
+                                                        </span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm pull-right trainBotBTN"  ng-click="showTrainBot(scenario)">{{'train_bot_label'| i18nString}}</button>
+		  				</div>
+                                            <div class="failedRecog" ng-show="!intent.intent[0].name">
+                                                <div class="alert alert-sm alert-warning col-xs-10">
+                                                    <span class="btfontnormal fontSize16">😞  &nbsp;&nbsp;&nbsp;{{'bot_test_result_intent_not_recognised'| i18nString}}</span>
+                                                </div>   
+                                                <button class="btn btn-primary btn-sm pull-right trainBotBTN"  ng-click="showTrainBot(scenario)">{{'train_bot_label'| i18nString}}</button>
+                                            </div>
+		  			</div>
+		  		</div>
+		  		<div class="intent-identified " ng-if="intent.intent.length != 1 && !testing">
+		  			<div ng-show="intent.intent.length == 0">
+			  			<div class="nlp-user-says">
+			  				<label>{{'bot_brain_label'| i18nString}}</label>
+			  			</div>
+			  			<div class="failedRecog" ng-show="!intent.intent[0].name">
+                                                <div class="alert alert-sm alert-warning col-xs-10">
+                                                    <span class="fontSize16 btfontnormal">😞  &nbsp;&nbsp;&nbsp;{{'bot_test_result_intent_not_recognised'| i18nString}}</span>
+                                                </div>   
+                                                <button class="btn btn-primary btn-sm pull-right trainBotBTN"  ng-click="showTrainBot(scenario)">{{'train_bot_label'| i18nString}}</button>
+                                            </div>
+		  				<div class="alert alert-sm alert-success ng-hide">
+				  			<div class="identified-intent">{{'not_identified_label'| i18nString}}</div>
+				  			<br>
+				  			<div class="alert alert-warning alert-sm intent-warning">
+				  				<span>
+				  					<i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+				  				</span>
+				  				<span>
+									{{'bot_test_result_task_could_not_be_identified_desc'| i18nString}}
+				  				</span>
+				  			</div>
+		  				</div>
+		  			</div>
+		  			<div ng-show="intent.intent.length > 1 && !testing">
+		  				<div class="nlp-user-says">
+		  				<label>{{'bot_brain_label'| i18nString}}</label>
+		  				</div>
+		  				<div class="row">
+			  				<div class="col-xs-12">
+				  				<div class="identified-intent" ng-repeat="intent in intent.intent">
+				  					{{intent.name}}
+				  				</div>
+			  					<br>
+			  				</div>
+		  				</div>
+		  				<div class="row">
+		  					<div class="col-xs-12">
+				  				<div class="alert alert-warning alert-sm intent-warning multipletasks">
+				  					<span>
+				  						<i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+				  					</span>
+				  					<span>
+										{{'bot_test_result_mapped_to_multiple_tasks_desc'| i18nString}}
+				  					</span>
+				  				</div>
+				  				<button class="btn btn-primary btn-sm pull-right trainBotBTN"  ng-click="showTrainBot(scenario)">{{'train_bot_label'| i18nString}}</button>
+		  					</div>
+		  				</div>
+		  			</div>
+		  		</div>
+		  	</form>
+		</div>
+		<div ng-show="verifying && intent.Entities.length > 0" class="col-xs-10">
+			<div class="nlp-user-says">
+				{{'entities_identified_uppercase'| i18nString}}
+			</div>
+			<div class="alerts-row">
+			    <div class="panel-table">
+		            <div class="panel-table-header">
+		                <div class="row">
+		                   <div class="col-xs-3">{{'entity_field_label'| i18nString}}</div>
+		                   <div class="col-xs-4">{{'type_label'| i18nString}}</div>
+		                   <div class="col-xs-4">{{'value'| i18nString}}</div>
+		                   <div class="col-xs-1"></div>
+		                </div>
+		            </div>
+		            <div class="panel-table-body">
+		               <div class="row" ng-repeat="entity in intent.Entities">
+		                   <div class="col-xs-3">
+		                   		<span color-circle color="{{entity.color}}"></span>
+		                   		<span> &nbsp;&nbsp;{{entity.name}}</span>
+		                   </div>
+		                   <div class="col-xs-4">
+			                   <span>
+			                   	{{entity.type}}
+			                   </span>
+		                   </div>
+		                   <div class="col-xs-4">
+		                   		<span>
+		                   			{{entity.value}}
+		                   		</span>
+		                   </div>
+		                   <div class="col-xs-1" ng-hide="entity.taskType==='dialog'">
+		                   	<div class="dropdown panel-dropdown">
+		                   		<span data-toggle="dropdown">
+		                   	    	<i class="fa fa-ellipsis-h pointer-hand" ></i>
+		                   		</span>
+		                   	    <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+		                   	        <li>
+		                   	           <a ng-click="editEntityType(intent.intent[0].name,entity.name)">{{'edit_entity_type'| i18nString}}</a>
+		                   	           <a ng-click="context.api.addFieldSynonym(intent.intent[0].name,entity.name)">{{'add_synonym_label'| i18nString}}</a>
+		                   	        </li>
+		                   	    </ul>
+		                   	</div>
+		                   </div>
+		               </div>
+		            </div>
+		        </div>
+				<div class="text-center" ng-show="intent.Entities.length == 0">
+					<div class="alert alert-sm alert-warning">
+						{{'no_intents_matched_label'| i18nString}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,1086 @@
+<div class="authmodal modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md widthNineHundred">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        
+        <div>
+          <a href="#" ng-if="hideOuterForm || showKeyValueForm" class="fa fa-chevron-left btnBack" ng-click="cancelModalInnerForm()"></a>
+          <h4 class="modal-title" id="gridSystemModalLabel"><i type="button" class="btx-close" ng-click="cancelNewAuthForm()" ></i>{{showKeyValueForm ? ('additional_fields'| i18nString) : (!hideOuterForm ? ('new_authorization_mechanism'| i18nString) : (innerFormType ===
+            'idp' ? ('form_field_label'| i18nString) : ('authorization_field'| i18nString)  ))}}</h4>
+          <a href="#" ng-if="hideOuterForm || showKeyValueForm" class="btnDone" style="display: block;" ng-click="saveInnerForm()">{{'done'| i18nString}}</a>
+        </div>
+
+
+      </div>
+      <div class="modal-body authMechanism modalPerfectScroll" ng-if="showNewAuthForm" isNotPropogateWheel="true" perfect-scroll>
+
+        <div ng-if="!hideOuterForm && showOuterForm && !showKeyValueForm" class="form-kr animate-if-back form-container row">
+          <fieldset class="" ng-disabled="displayMode==='view'">
+            <div class="col-xs-12 form-group">
+              <div class="col-xs-12 labelling">
+                <label class="required-field">{{'authorization_type'| i18nString}} </label>
+              </div>
+              <div class="col-xs-12">
+                <select ng-disabled="editInOperation" ng-model="newAuth.sso_type" class="btnDropdown" id="authType" name="authType"
+                  ng-options="authType.name for authType in authTypes" ng-change="resetAddtionalFields();">
+                <option value=""> {{'select_option'| i18nString}} </option>
+              </select>
+                <div ng-show="streamForm.authType.$dirty">
+                  <div error-alert ng-if="ifAction" ng-show="streamForm.authType.$error.required" class="text-danger form-error-text">{{wfType.toLowerCase()=='action'?('auth_action_task'| i18nString):('auth_alert_task'| i18nString)}}
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div ng-switch on="newAuth.sso_type.value">
+              <div ng-switch-when="oauth">
+                <ng-form name="oauthv1Form" class="wf-form" novalidate>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field">{{'callback_url_name'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <span class="label-gray"> {{callbackurl}} </span>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'identity_provide'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" ng-disabled="editInOperation" class="form-control" ng-model="v1Auth.name" id="v1AuthName" name="v1AuthName"
+                        placeholder="{{'enter_name_of_identity_provider_placeholder'| i18nString}}" required/>
+                      <div error-alert ng-show="oauthv1Form.v1AuthName.$dirty && oauthv1Form.v1AuthName.$error.required" class="text-danger"> {{'name_for_v1_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'consumer_key'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" ng-model="v1Auth.consumerKey" id="v1AuthConsumerKey" name="consumerKey" placeholder="{{'enter_consumer_key'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv1Form.consumerKey.$dirty && oauthv1Form.consumerKey.$error.required" class="text-danger">
+                        {{'consumer_key_v1_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'consumer_secret'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" ng-model="v1Auth.consumerSecret" id="v1ConsumerSecret" name="consumerSecret" placeholder="{{'enter_consumer_secret'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv1Form.consumerSecret.$dirty && oauthv1Form.consumerSecret.$error.required" class="text-danger">
+                        {{'consumer_secret_v1_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'request_token_link'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <!-- type="url" -->
+                      <input url-validate class="form-control ng-pristine ng-valid ng-touched" ng-model="v1Auth.requestTokenLink" id="v1RequestTokenLink"
+                        name="requestTokenLink" placeholder="{{'enter_url_refresh_token'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv1Form.requestTokenLink.$dirty && oauthv1Form.requestTokenLink.$error.required" class="text-danger">
+                        {{'request_token_link_v1_auth_req'| i18nString}} </div>
+                      <div error-alert ng-show="oauthv1Form.requestTokenLink.$dirty && oauthv1Form.requestTokenLink.$error.url" class="text-danger">
+                        {{'request_tokesn_link_invalid'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'access_token_link'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <!-- type="url" -->
+                      <input url-validate class="form-control" ng-model="v1Auth.accessTokenLink" id="v1AccessTokenLink" name="accessTokenLink"
+                        placeholder="{{'enter_token_url'| i18nString}}" required/>
+                      <div error-alert ng-show="oauthv1Form.accessTokenLink.$dirty && oauthv1Form.accessTokenLink.$error.required" class="text-danger">
+                        {{'access_token_link_v1_auth_req'| i18nString}} </div>
+                      <div error-alert ng-show="oauthv1Form.accessTokenLink.$dirty && oauthv1Form.accessTokenLink.$error.url" class="text-danger">
+                        {{'access_token_link_invalid'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'user_auth_link'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <!-- type="url" -->
+                      <input url-validate class="form-control" ng-model="v1Auth.authLink" id="v1AuthLink" name="v1AuthLink" placeholder="{{'enter_auth_url'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv1Form.v1AuthLink.$dirty && oauthv1Form.v1AuthLink.$error.required" class="text-danger"> {{'auth_link_v1_auth_req'| i18nString}} </div>
+                      <div error-alert ng-show="oauthv1Form.v1AuthLink.$dirty && oauthv1Form.v1AuthLink.$error.url" class="text-danger"> {{'auth_link_invalid'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group" ng-if="enterpriseLicenseType" ng-init="v1Auth.connectorEnabled = v1Auth.connectorEnabled || false">
+                    <div class="col-xs-12">
+                      <label>{{'access_connector'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv">
+                      <div>
+                        <label for="v1Auth.connectorEnabled.no" bt-init="v1Auth.connectorEnabled=false">
+                      <input ng-value='false' ng-checked="true" type="radio"  ng-model="v1Auth.connectorEnabled" name="v1Auth.connectorEnabled" id="v1Auth.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                    </label>
+                      </div>
+                      <div>
+                        <label for="v1Auth.connectorEnabled.yes">
+                      <input ng-value='true'  type="radio"   ng-model="v1Auth.connectorEnabled" name="v1Auth.connectorEnabled" id="v1Auth.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                    </label>
+                      </div>
+                      <div class="no-connectors-msg" ng-show="v1Auth.connectorEnabled && connectors.length <=0">{{'active_connectors'| i18nString}}</div>
+                      <div class="col-xs-12">
+                        <div class="helphint-border col-xs-12 marginB20T0">
+                          <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                          <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb509)"></span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label> {{'subdomain_aka_tenancy_url'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <div>
+                        <div class="radioDiv">
+                          <label for="v1Auth.hastenancy.no" bt-init="v1Auth.hastenancy = false">
+                                                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="v1Auth.hastenancy" name="v1Auth.hastenancy" id="v1Auth.hastenancy.no" ><span class="opt-title">{{'tenancy_bot'| i18nString}}</span> </input>
+                                                          </label>
+                        </div>
+                        <div class="radioDiv">
+                          <label for="v1Auth.hastenancy.yes">
+                                                            <input ng-value='true'  type="radio"   ng-model="v1Auth.hastenancy" name="v1Auth.hastenancy" id="v1Auth.hastenancy.yes"><span class="opt-title">{{'tenancy_auth'| i18nString}}</span> </input>
+                                                          </label>
+                        </div>
+                      </div>
+                      <!-- <label class="checkbox-inline"><input class="form-group" type="checkbox" ng-model="v1Auth.hastenancy"> This authorization has subdomains (Tenancy links). </label> -->
+                      <div class="" ng-if="v1Auth.hastenancy">
+                        <label class="required-field"> {{'base_url'| i18nString}} </label>
+                        <input type="text" class="form-control required-field" placeholder="{{'tenant_place'| i18nString}}" input-note note-description="baseurlDescription"
+                          ng-model="v1Auth.basictenancyUrl" name="basictenancyUrl" required/></label>
+                        <div error-alert ng-show="oauthv1Form.basictenancyUrl.$dirty && oauthv1Form.basictenancyUrl.$error.required" class="text-danger">
+                          {{'subdomain_basic_auth_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12 authHeader" ng-if="displayMode !== 'view'">
+                      <label>{{'additional_fields'| i18nString}}</label>
+                      <div class="addAuthBtn pull-right" ng-hide="showKeyValueForm" ng-click="showAdditionalFieldsForm();"><i class="fa  fa-plus"></i>{{'add_additional_field'| i18nString}}</div>
+
+                    </div>
+                    <div class="col-xs-12" ng-if="displayMode !== 'view'">
+                      <div class="helphint-border col-xs-12 marginB20T0">
+                        <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                        <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb513)"></span></div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12" ng-show="getAdditionalFieldsLength()">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th class="text-center">{{'key'| i18nString}}</th>
+                            <th class="text-center">{{'value'| i18nString}}</th>
+                            <th class="text-center">{{'actions'| i18nString}}</th>
+                            <th class="text-center">{{'actions'| i18nString}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="(key,value) in additionalFields">
+                            <td>{{key}}</td>
+                            <td>{{value}}</td>
+                            <td><a href="" ng-click="editAdditionalField(key);"> <i class="fa fa-pencil"></i> </a></td>
+                            <td><a href="" ng-click="removeAdditionalField(key);"> <i class="fa fa-trash"></i> </a></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group" ng-if="false">
+                    <div class="col-xs-12">
+                      <!-- <p> Create a new Authorization Name & Value pair </p> -->
+                      <div class="form-container col-xs-12 noPadding">
+                        <ng-form class="wf-form sub-form" name="v1AdditionalFieldsForm" novalidate>
+                          <fieldset class="subFormFieldse" ng-if="showKeyValueForm">
+                            <div class="col-xs-12 form-group noPadding">
+                              <div class="col-xs-12 noPadding">
+                                <label class="required-field"> {{'auth_field_key'| i18nString}} </label>
+                              </div>
+                              <div class="col-xs-12 noPadding">
+                                <input type="text" class="form-control" ng-model="additionalFieldsForm.key" id="key" placeholder="{{'enter_field_key'| i18nString}}" name="key"
+                                  required/>
+                                <div ng-show="v1AdditionalFieldsForm.key.$dirty">
+                                  <div error-alert ng-show="v1AdditionalFieldsForm.key.$error.required" class="text-danger form-error-text"> {{'auth_field_req'| i18nString}} </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding">
+                              <div class="col-xs-12">
+                                <label class="required-field"> {{'auth_field_value'| i18nString}}</label>
+                              </div>
+                              <div class="col-xs-12">
+                                <input type="text" class="form-control" ng-model="additionalFieldsForm.value" id="addtionalValue" placeholder="{{'enter_field_value'| i18nString}}"
+                                  name="value" required/>
+                                <div ng-show="v1AdditionalFieldsForm.value.$dirty">
+                                  <div error-alert ng-show="v1AdditionalFieldsForm.value.$error.required" class="text-danger form-error-text"> {{'value_for_key_required'| i18nString}}. </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xs-12 form-group">
+                              <div class="col-xs-12" ng-show="showKeyValueForm">
+                                <span class="pull-right">
+                                                                <button type="button" ng-click="cancelAdditionalFieldsForm()" class="btn closeCancle"> {{'cancel'| i18nString}} </button>
+                                                                <!-- ng-class="{'btn-primary': v1AdditionalFieldsForm.$invalid, 'btn-success': v1AdditionalFieldsForm.$valid}" -->
+                                                                <button type="button"  class="btn" ng-click="addAdditionalFields(v1AdditionalFieldsForm.$valid,v1AdditionalFieldsForm,$event)"> {{'add'| i18nString}} </button>
+                                                              </span>
+                              </div>
+                            </div>
+                          </fieldset>
+                        </ng-form>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="col-xs-12 form-group">
+                          <div class="col-xs-12">
+                            <auth-field-form  fields="authObj.fields" mode ="displayMode"></auth-field-form>
+                          </div>
+                        </div> -->
+                  <auth-inner-form mode="displayMode" show-inner-form="showModalInnerForm" inner-form="authorization" ctrl="authFieldsCtrl"
+                    fields="authObj.fields"></auth-inner-form>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class=""> {{'tooltip_desc'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" id="basicdescription" name="basicdescription" ng-model="v1Auth.basicdescription"
+                        placeholder="{{'enter_v1_auth_description_placeholder'| i18nString}}">
+                      <div error-alert ng-show="oauthv1Form.basicdescription.$dirty && oauthv1Form.basicdescription.$error.required" class="text-danger">
+                        {{'description_for_v1_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer customFooter form-group" ng-if="displayMode !== 'view'">
+                    <div class="pull-right">
+                      <!-- ng-class="{'btn-default':oauthv1Form.$invalid, 'btn-primary':!oauthv1Form.$invalid}" -->
+                      <button type="button" class="btn " ng-click="saveoAuthV1(oauthv1Form.$valid,oauthv1Form,$event)">{{'save_auth'| i18nString}} </button>
+                      <button type="reset" ng-click="cancelNewAuthForm();" class="btn closeCancle"> {{'close'| i18nString}} </button>
+                    </div>
+                  </div>
+                </ng-form>
+              </div>
+              <div ng-switch-when="oauth2">
+                <ng-form name="oauthv2Form" class="wf-form" novalidate>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'callback_url_name'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <span class="label-gray"> {{callbackurl}} </span>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'identity_provide'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input ng-disabled="editInOperation" type="text" class="form-control" ng-model="v2Auth.name" id="v2AuthName" name="v2AuthName"
+                        placeholder="{{'enter_name_of_identity_provider_placeholder'| i18nString}}" required/>
+                      <div error-alert ng-show="oauthv2Form.v2AuthName.$dirty && oauthv2Form.v2AuthName.$error.required" class="text-danger"> {{'name_for_v2_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'clientId_label'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" ng-model="v2Auth.clientId" id="v2AuthClientId" name="clientId" placeholder="{{'enter_clientId_placeholder'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv2Form.clientId.$dirty && oauthv2Form.clientId.$error.required" class="text-danger"> {{'client_id_for_v2_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'client_secret_key'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" ng-model="v2Auth.clientSecret" id="v2ClientSecret" name="clientSecret" placeholder="{{'enter_client_secret_key_placeholder'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv2Form.clientSecret.$dirty && oauthv2Form.clientSecret.$error.required" class="text-danger">
+                        {{'client_secret_for_v2_auth_req'| i18nString}}</div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'authorization_url'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" input-note note-description="authorizationurlDescription" ng-model="v2Auth.authUrl"
+                        id="v2AuthUrl" name="authUrl" placeholder="{{'enter_auth_url'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv2Form.authUrl.$dirty && oauthv2Form.authUrl.$error.required" class="text-danger"> {{'auth_url_for_v2_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 form-group" ng-if="enterpriseLicenseType" ng-init="v2Auth.connectorEnabled = v2Auth.connectorEnabled || false">
+                    <div class="col-xs-12">
+                      <label>{{'access_connector'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv">
+                      <div>
+                        <label for="v2Auth.connectorEnabled.no" bt-init="v2Auth.connectorEnabled=false">
+                                                          <input ng-value='false' ng-checked="true" type="radio"  ng-model="v2Auth.connectorEnabled" name="v2Auth.connectorEnabled" id="v2Auth.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                                                        </label>
+                      </div>
+                      <div>
+                        <label for="v2Auth.connectorEnabled.yes">
+                                                          <input ng-value='true'  type="radio"   ng-model="v2Auth.connectorEnabled" name="v2Auth.connectorEnabled" id="v2Auth.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                                                        </label>
+                      </div>
+                      <div class="no-connectors-msg" ng-show="v2Auth.connectorEnabled && connectors.length <=0">{{'active_connectors'| i18nString}}.</div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="helphint-border col-xs-12 marginB20T0">
+                        <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                        <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb509)"></span></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label> {{'subdomain_aka_tenancy_url'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="radioDiv">
+                        <div>
+                          <label for="v2Auth.hastenancy.no" bt-init="v2Auth.hastenancy=false">
+                                                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="v2Auth.hastenancy" name="v2Auth.hastenancy" id="v2Auth.hastenancy.no" ><span class="opt-title">{{'tenancy_bot'| i18nString}}</span> </input>
+                                                          </label>
+                        </div>
+                        <div>
+                          <label for="v2Auth.hastenancy.yes">
+                                                            <input ng-value='true'  type="radio"   ng-model="v2Auth.hastenancy" name="v2Auth.hastenancy" id="v2Auth.hastenancy.yes"><span class="opt-title">{{'tenancy_auth'| i18nString}}</span> </input>
+                                                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-xs-12" ng-if="v2Auth.hastenancy">
+                        <label class="required-field"> {{'base_url'| i18nString}} </label>
+                        <input type="text" class="form-control required-field" placeholder="{{'tenant_place'| i18nString}}" input-note note-description="baseurlDescription"
+                          ng-model="v2Auth.basictenancyUrl" name="basictenancyUrl" required/></label>
+                        <div error-alert ng-show="oauthv2Form.basictenancyUrl.$dirty && oauthv2Form.basictenancyUrl.$error.required" class="text-danger">
+                          {{'subdomain_basic_auth_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field">{{'token_request_url'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input class="form-control" ng-model="v2Auth.tokenURL" id="v1ConsumerSecret" name="tokenURL" placeholder="{{'provide_token_request_url'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv2Form.tokenURL.$dirty && oauthv2Form.tokenURL.$error.required" class="text-danger"> {{'token_request_url_v2_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label>{{'scope_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" ng-model="v2Auth.scope" id="v2scope" name="scope" placeholder="{{'enter_scope_example'| i18nString}}"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="authHeader col-xs-12" ng-if="displayMode !== 'view'"> <label>{{'additional_fields'| i18nString}}</label>
+                      <div ng-hide="showKeyValueForm" class="addAuthBtn pull-right" ng-click="showAdditionalFieldsForm();"><i class="fa  fa-plus "></i> {{'add_additional_field'| i18nString}}</div>
+
+                    </div>
+                    <div class="col-xs-12" ng-if="displayMode !== 'view'">
+                      <div class="helphint-border col-xs-12 marginB20T0">
+                        <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                        <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb513)"></span></div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12" ng-show="getAdditionalFieldsLength()">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th class="text-center">{{'key'| i18nString}}</th>
+                            <th class="text-center">{{'value'| i18nString}}</th>
+                            <th class="text-center">{{'actions'| i18nString}}</th>
+                            <th class="text-center">{{'actions'| i18nString}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="(key,value) in additionalFields">
+                            <td>{{key}}</td>
+                            <td>{{value}}</td>
+                            <td><a href="" ng-click="editAdditionalField(key);"> <i class="fa fa-pencil"></i> </a></td>
+                            <td><a href="" ng-click="removeAdditionalField(key);"> <i class="fa fa-trash"></i> </a></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+
+                  <auth-inner-form mode="displayMode" show-inner-form="showModalInnerForm" inner-form="authorization" ctrl="authFieldsCtrl"
+                    fields="authObj.fields"></auth-inner-form>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class=""> {{'tooltip_desc'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" id="basicdescription" name="basicdescription" ng-model="v2Auth.basicdescription"
+                        placeholder="{{'enter_description_api_key_auth'| i18nString}}">
+                      <div error-alert ng-show="oauthv2Form.basicdescription.$dirty && oauthv2Form.basicdescription.$error.required" class="text-danger">
+                        {{'description_for_v2_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer customFooter form-group" ng-if="displayMode !== 'view'">
+                    <div class="pull-right">
+                      <button type="button" class="btn " ng-click="saveoAuthV2(oauthv2Form.$valid,oauthv2Form,$event)"> {{'save_auth'| i18nString}} </button>
+                      <button type="reset" ng-click="cancelNewAuthForm();" class="btn closeCancle"> {{'close'| i18nString}} </button>
+                    </div>
+                  </div>
+                </ng-form>
+              </div>
+              <div ng-switch-when="oauth2_client_credential">
+                <ng-form name="oauthv2ClientCredentialForm" class="wf-form" novalidate>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'identity_provide'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input ng-disabled="editInOperation" type="text" class="form-control" ng-model="oauth2_client_credential.name" id="oauth2_client_credentialName" name="oauth2_client_credentialName"
+                        placeholder="{{'enter_name_of_identity_provider_placeholder'| i18nString}}" required/>
+                      <div error-alert ng-show="oauthv2ClientCredentialForm.oauth2_client_credentialName.$dirty && oauthv2ClientCredentialForm.oauth2_client_credentialName.$error.required" class="text-danger"> {{'name_for_v2_client_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'clientId_label'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" ng-model="oauth2_client_credential.clientId" id="oauth2_client_credentialClientId" name="clientId" placeholder="{{'enter_clientId_placeholder'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv2ClientCredentialForm.clientId.$dirty && oauthv2ClientCredentialForm.clientId.$error.required" class="text-danger"> {{'client_id_for_v2_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field"> {{'client_secret_key'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" ng-model="oauth2_client_credential.clientSecret" id="v2ClientSecret" name="clientSecret" placeholder="{{'enter_client_secret_key_placeholder'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv2ClientCredentialForm.clientSecret.$dirty && oauthv2ClientCredentialForm.clientSecret.$error.required" class="text-danger">
+                        {{'client_secret_for_v2_client_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group" ng-if="enterpriseLicenseType" ng-init="oauth2_client_credential.connectorEnabled = oauth2_client_credential.connectorEnabled || false">
+                    <div class="col-xs-12">
+                      <label>{{'access_connector'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 radioDiv">
+                      <div>
+                        <label for="oauth2_client_credential.connectorEnabled.no" bt-init="oauth2_client_credential.connectorEnabled=false">
+                                                          <input ng-value='false' ng-checked="true" type="radio"  ng-model="oauth2_client_credential.connectorEnabled" name="oauth2_client_credential.connectorEnabled" id="oauth2_client_credential.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                                                        </label>
+                      </div>
+                      <div>
+                        <label for="oauth2_client_credential.connectorEnabled.yes">
+                                                          <input ng-value='true'  type="radio"   ng-model="oauth2_client_credential.connectorEnabled" name="oauth2_client_credential.connectorEnabled" id="oauth2_client_credential.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                                                        </label>
+                      </div>
+                      <div class="no-connectors-msg" ng-show="oauth2_client_credential.connectorEnabled && connectors.length <=0">{{'active_connectors'| i18nString}}.</div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="helphint-border col-xs-12 marginB20T0">
+                        <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                        <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb509)"></span></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class="required-field">{{'token_request_url'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input class="form-control" ng-model="oauth2_client_credential.tokenURL" id="v1ConsumerSecret" name="tokenURL" placeholder="{{'provide_token_request_url'| i18nString}}"
+                        required/>
+                      <div error-alert ng-show="oauthv2ClientCredentialForm.tokenURL.$dirty && oauthv2ClientCredentialForm.tokenURL.$error.required" class="text-danger"> {{'token_url_for_v2_client_auth_req'| i18nString}} </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label>{{'scope_label'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" ng-model="oauth2_client_credential.scope" id="v2scope" name="scope" placeholder="{{'enter_scope_example'| i18nString}}"
+                      />
+                    </div>
+                  </div>
+                  <auth-inner-form mode="displayMode" show-inner-form="showModalInnerForm" inner-form="authorization" ctrl="authFieldsCtrl"
+                    fields="authObj.fields"></auth-inner-form>
+                  <div class="col-xs-12 form-group">
+                    <div class="col-xs-12">
+                      <label class=""> {{'tooltip_desc'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                      <input type="text" class="form-control" id="basicdescription" name="basicdescription" ng-model="oauth2_client_credential.basicdescription"
+                        placeholder="{{'enter_description_api_key_auth'| i18nString}}">
+                      <div error-alert ng-show="oauthv2ClientCredentialForm.basicdescription.$dirty && oauthv2ClientCredentialForm.basicdescription.$error.required" class="text-danger">
+                        {{'description_for_v2_auth_req'| i18nString}}</div>
+                    </div>
+                  </div>
+                  <div class="modal-footer customFooter form-group" ng-if="displayMode !== 'view'">
+                    <div class="pull-right">
+                      <button type="button" class="btn " ng-click="saveoAuth2_client_credential(oauthv2ClientCredentialForm.$valid,oauthv2ClientCredentialForm,$event)"> {{'save_auth'| i18nString}} </button>
+                      <button type="reset" ng-click="cancelNewAuthForm();" class="btn closeCancle"> {{'close'| i18nString}} </button>
+                    </div>
+                  </div>
+                </ng-form>
+              </div>
+              <div ng-switch-when="basic">
+                <ng-form name="basicForm" class="wf-form" novalidate>
+                  <div>
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class="required-field"> {{'name'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input ng-disabled="editInOperation" type="text" class="form-control" id="basicname" name="basicname" ng-model="basicAuth.basicname"
+                          required placeholder="{{'enter_name_for_basic_auth'| i18nString}}">
+                        <div error-alert ng-show="basicForm.basicname.$dirty && basicForm.basicname.$error.required" class="text-danger"> {{'name_basic_auth_req'| i18nString}} </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label> {{'subdomain_aka_tenancy_url'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12 form-group">
+                        <div class="radioDiv">
+                          <div>
+                            <label for="basicAuth.hastenancy.no" bt-init="basicAuth.hastenancy=false">
+                                  <input ng-value='false' ng-checked="true" type="radio"  ng-model="basicAuth.hastenancy" name="basicAuth.hastenancy" id="basicAuth.hastenancy.no" ><span class="opt-title">{{'tenancy_bot'| i18nString}}</span> </input>
+                                </label>
+                          </div>
+                          <div>
+                            <label for="basicAuth.hastenancy.yes">
+                                  <input ng-value='true'  type="radio"   ng-model="basicAuth.hastenancy" name="basicAuth.hastenancy" id="basicAuth.hastenancy.yes"><span class="opt-title">{{'tenancy_auth'| i18nString}}</span> </input>
+                                </label>
+                          </div>
+
+                        </div>
+                        <div class="" ng-if="basicAuth.hastenancy">
+                          <label class="required-field"> {{'base_url'| i18nString}} </label>
+                          <input type="text" class="form-control required-field" placeholder="{{'tenant_place'| i18nString}}" input-note note-description="baseurlDescription"
+                            ng-model="basicAuth.basictenancyUrl" id="basictenancyUrl" name="basictenancyUrl" required/></label>
+                          <div error-alert ng-show="basicForm.basictenancyUrl.$dirty && basicForm.basictenancyUrl.$error.required" class="text-danger">
+                            {{'subdomain_basic_auth_req'| i18nString}} </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <auth-inner-form mode="displayMode" type="basic" show-inner-form="showModalInnerForm" inner-form="idp" ctrl="authIDPCtrl"
+                      fields="authObj.formfields"></auth-inner-form>
+                    <auth-inner-form mode="displayMode" type="basic" show-inner-form="showModalInnerForm" inner-form="authorization" ctrl="authFieldsCtrl"
+                      fields="authObj.fields"></auth-inner-form>
+
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label>{{'authorization_check_url'| i18nString}}</label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="url" id = "modalAuthorization" class="form-control" name="authCheckUrl" input-note note-description="authCheckurlDescription" ng-model="basicAuth.authCheckUrl"
+                          placeholder="{{'please_provide_authorization_check_url'| i18nString}}" />
+                        <div ng-show="basicForm.authCheckUrl.$error.url">
+                          <div error-alert>
+                            <span>{{'please_provide_valid_url'| i18nString}}</span>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 form-group" ng-if="enterpriseLicenseType" ng-init="basicAuth.connectorEnabled = basicAuth.connectorEnabled || false">
+                      <div class="col-xs-12">
+                        <label>{{'access_connector'| i18nString}}</label>
+                      </div>
+                      <div class="col-xs-12 radioDiv">
+                        <div>
+                          <label for="basicAuth.connectorEnabled.no" bt-init="basicAuth.connectorEnabled=false">
+                                  <input ng-value='false' ng-checked="true" type="radio"  ng-model="basicAuth.connectorEnabled" name="basicAuth.connectorEnabled" id="basicAuth.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                                </label>
+                        </div>
+                        <div>
+                          <label for="basicAuth.connectorEnabled.yes">
+                                  <input ng-value='true'  type="radio"   ng-model="basicAuth.connectorEnabled" name="basicAuth.connectorEnabled" id="basicAuth.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                                </label>
+                        </div>
+                        <div class="no-connectors-msg" ng-show="basicAuth.connectorEnabled && connectors.length <=0">{{'active_connectors'| i18nString}}.</div>
+                        <div class="col-xs-12">
+                          <div class="helphint-border col-xs-12 marginB20T0">
+                            <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                            <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb509)"></span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class=""> {{'tooltip_desc'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="text" class="form-control" id="basicdescription" name="basicdescription" ng-model="basicAuth.basicdescription"
+                          placeholder="{{'enter_description_for_basic_Auth'| i18nString}}">
+                        <div error-alert ng-show="basicForm.basicdescription.$dirty && basicForm.basicdescription.$error.required" class="text-danger">
+                          {{'basic_auth_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer customFooter form-group" ng-if="displayMode !== 'view'">
+                    <div class="pull-right">
+                      <button type="button" class="btn" ng-click="saveBasicAuth($event,basicForm.$valid,basicForm)">{{'save'| i18nString}}</button>
+                      <button type="reset" ng-click="cancelNewAuthForm();" class="btn closeCancle"> {{'cancel'| i18nString}} </button>
+                    </div>
+                  </div>
+                </ng-form>
+              </div>
+              <div ng-switch-when="custom">
+                <ng-form name="basicForm" class="wf-form" novalidate>
+                  <div>
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class="required-field"> {{'name_label'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input ng-disabled="editInOperation" type="text" class="form-control" id="basicname" name="basicname" ng-model="basicAuth.basicname"
+                          required placeholder="{{'enter_name_for_custom_auth'| i18nString}}">
+                        <div error-alert ng-show="basicForm.basicname.$dirty && basicForm.basicname.$error.required" class="text-danger"> {{'name_for_custom_auth_req'| i18nString}} </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                      <label class="col-xs-12"> {{'subdomain_aka_tenancy_url'| i18nString}} </label>
+                      <div class="col-xs-12 form-group">
+                        <div class="radioDiv">
+                          <div>
+                            <label for="basicAuth.hastenancy.no" bt-init="basicAuth.hastenancy=false">
+                                    <input ng-value='false' ng-checked="true" type="radio"  ng-model="basicAuth.hastenancy" name="newStreamData.hasTenant" id="basicAuth.hastenancy.no" ><span class="opt-title">{{'tenancy_bot'| i18nString}}</span> </input>
+                                  </label>
+                          </div>
+                          <div>
+                            <label for="basicAuth.hastenancy.yes">
+                                    <input ng-value='true'  type="radio"   ng-model="basicAuth.hastenancy" name="basicAuth.hastenancy" id="basicAuth.hastenancy.yes"><span class="opt-title">{{'tenancy_auth'| i18nString}}</span> </input>
+                                  </label>
+                          </div>
+                        </div>
+                        <div class="" ng-if="basicAuth.hastenancy">
+                          <label class="required-field"> {{'base_url'| i18nString}} </label>
+                          <input type="text" class="form-control required-field" placeholder="{{'tenant_place'| i18nString}}" ng-model="basicAuth.basictenancyUrl"
+                            id="basictenancyUrl" name="basictenancyUrl" required/></label>
+                          <div error-alert ng-show="basicForm.basictenancyUrl.$dirty && basicForm.basictenancyUrl.$error.required" class="text-danger">
+                            {{'subdomain_url_for_custom_auth_req'| i18nString}} </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <auth-inner-form mode="displayMode" show-inner-form="showModalInnerForm" inner-form="idp" ctrl="authIDPCtrl" fields="authObj.formfields"></auth-inner-form>
+                    <auth-inner-form mode="displayMode" show-inner-form="showModalInnerForm" inner-form="authorization" ctrl="authFieldsCtrl"
+                      fields="authObj.fields"></auth-inner-form>
+
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class="required-field"> {{'token_url'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="text" required class="form-control" name="tokenUrl" ng-model="basicAuth.tokenUrl" placeholder="{{'something_token_placeholder'| i18nString}}">
+                        <div error-alert ng-show="basicForm.tokenUrl.$dirty && basicForm.tokenUrl.$error.required" class="text-danger"> {{'token_url_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class="required-field"> {{'token_url_method'| i18nString}}</label>
+                      </div>
+                      <div class="col-xs-12">
+                        <select name="tokenurlmethod" required class="btnDropdown" ng-model="basicAuth.tokenurlmethod">
+                                <option value="">{{'select_Method'| i18nString}}</option>
+                                <option value="PUT"> {{'put'| i18nString}} </option>
+                                <option value="POST"> {{'bt_request_post'| i18nString}} </option>
+                                <option value="PATCH"> {{'bt_request_patch'| i18nString}} </option>
+                                <option value="DELETE"> {{'bt_request_delete'| i18nString}} </option>
+                                <option value="GET"> {{'get'| i18nString}} </option>
+                              </select>
+                        <div error-alert ng-show="basicForm.tokenurlmethod.$dirty && basicForm.tokenurlmethod.$error.required" class="text-danger">
+                          {{'token_url_method_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class="required-field"> {{'token_url_content_type'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <select class="btnDropdown" required name="tokenUrlContentType" ng-model="basicAuth.tokenUrlContentType">
+                              <option value="">{{'select_content_type_label'| i18nString}}</option>
+                              <option ng-repeat="datatype in datatypes" value="{{datatype.value}}">{{datatype.name}}</option>
+                            </select>
+                        <div error-alert ng-show="basicForm.tokenUrlContentType.$dirty && basicForm.tokenUrlContentType.$error.required" class="text-danger">
+                          {{'token_url_content_type_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 form-group" ng-if="enterpriseLicenseType" ng-init="basicAuth.connectorEnabled = basicAuth.connectorEnabled || false">
+                      <div class="col-xs-12">
+                        <label>{{'access_connector'| i18nString}}</label>
+                      </div>
+                      <div class="col-xs-12 radioDiv">
+                        <div>
+                          <label for="basicAuth.connectorEnabled.no" bt-init="basicAuth.connectorEnabled=false">
+                                <input ng-value='false' ng-checked="true" type="radio"  ng-model="basicAuth.connectorEnabled" name="basicAuth.connectorEnabled" id="basicAuth.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                              </label>
+                        </div>
+                        <div>
+                          <label for="basicAuth.connectorEnabled.yes">
+                                <input ng-value='true'  type="radio"   ng-model="basicAuth.connectorEnabled" name="basicAuth.connectorEnabled" id="basicAuth.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                              </label>
+                        </div>
+                        <div class="no-connectors-msg" ng-show="basicAuth.connectorEnabled && connectors.length <=0">{{'active_connectors'| i18nString}}.</div>
+                        <div class="col-xs-12">
+                          <div class="helphint-border col-xs-12 marginB20T0">
+                            <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                            <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb509)"></span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 form-group" ng-if="newAuth.sso_type.value != 'custom'">
+                      <div class="col-xs-12">
+                        <label>{{'please_provide_valid_url'| i18nString}}</label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="url" class="form-control" name="authCheckUrl" input-note note-description="authCheckurlDescription" ng-model="basicAuth.authCheckUrl"
+                          placeholder="{{'please_provide_authorization_check_url'| i18nString}}" />
+                        <div ng-show="basicForm.authCheckUrl.$error.url">
+                          <div error-alert>
+                            <span>{{'please_provide_valid_url'| i18nString}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--<div class="col-xs-12 form-group" ng-if="newAuth.sso_type.value != 'custom'">
+                          <div class="col-xs-12">
+                            <div class="help-block"> Specify the Auth Check URL with Proper Path Params Fields (if any) <br />
+                              Ex:- https://www.{authfield1 key}.com/{authfield2 key} <br />
+                              Query Fields and other type of fields are added dynamically. </div>
+                            </div>
+                          </div>-->
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class=""> {{'tooltip_desc'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="text" class="form-control" id="basicdescription" name="basicdescription" ng-model="basicAuth.basicdescription"
+                          placeholder="{{'enter_description_for_basic_Auth'| i18nString}}">
+                        <div error-alert ng-show="basicForm.basicdescription.$dirty && basicForm.basicdescription.$error.required" class="text-danger">
+                          {{'description_for_custom_auth_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer customFooter form-group" ng-if="displayMode !== 'view'">
+                    <div class="pull-right">
+                      <button type="button" class="btn" ng-click="saveBasicAuth($event,basicForm.$valid,basicForm,true)">{{'save_auth'| i18nString}} </button>
+                      <button type="reset" ng-click="cancelNewAuthForm();" class="btn closeCancle"> {{'close'| i18nString}} </button>
+                    </div>
+                  </div>
+                </ng-form>
+              </div>
+              <div ng-switch-when="api_key">
+                <ng-form name="apiKeyForm" class="wf-form" novalidate>
+                  <div>
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class="required-field"> {{'name_label'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="text" class="form-control" id="apiname" name="name" ng-model="apiKeyAuth.name" required placeholder="{{'enter_name_api_key_auth'| i18nString}}">
+                        <div error-alert ng-show="apiKeyForm.name.$dirty && apiKeyForm.name.$error.required" class="text-danger"> {{'name_for_api_key_auth_req'| i18nString}} </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label> {{'subdomain_aka_tenancy_url'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12 form-group">
+                        <div class="radioDiv">
+                          <div>
+                            <label for="apiKeyAuth.hastenancy.no" bt-init="apiKeyAuth.hastenancy=false">
+                                  <input ng-value='false' ng-checked="true" type="radio"  ng-model="apiKeyAuth.hastenancy" name="newStreamData.hasTenant" id="apiKeyAuth.hastenancy.no" ><span class="opt-title">{{'tenancy_bot'| i18nString}}</span> </input>
+                                </label>
+                          </div>
+                          <div>
+                            <label for="apiKeyAuth.hastenancy.yes">
+                                  <input ng-value='true'  type="radio"   ng-model="apiKeyAuth.hastenancy" name="apiKeyAuth.hastenancy" id="apiKeyAuth.hastenancy.yes"><span class="opt-title">{{'tenancy_auth'| i18nString}}</span> </input>
+                                </label>
+                          </div>
+                        </div>
+                        <!-- <label class="checkbox-inline"><input class="form-group" type="checkbox" ng-model="apiKeyAuth.hastenancy" id="tenancy" name="apiKeyAuth.hastenancy"> This authorization has subdomains (Tenancy links). </label> -->
+                        <div class="" ng-if="apiKeyAuth.hastenancy">
+                          <label class="required-field"> {{'base_url'| i18nString}} </label>
+                          <input type="text" class="form-control required-field" placeholder="{{'tenant_place'| i18nString}}" input-note note-description="baseurlDescription"
+                            ng-model="apiKeyAuth.basictenancyUrl" name="basictenancyUrl" required/></label>
+                          <div error-alert ng-show="apiKeyForm.basictenancyUrl.$dirty && apiKeyForm.basictenancyUrl.$error.required" class="text-danger">
+                            {{'subdomain_api_key_auth_req'| i18nString}} </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-xs-12 form-group">
+                            <div class="col-xs-12">
+                              <auth-field-form mode ="displayMode" fields="authObj.fields"></auth-field-form>
+                            </div>
+                          </div> -->
+                    <auth-inner-form mode="displayMode" type="api_key" show-inner-form="showModalInnerForm" inner-form="idp" ctrl="authIDPCtrl"
+                      fields="authObj.formfields"></auth-inner-form>
+                    <auth-inner-form mode="displayMode" type="api_key" show-inner-form="showModalInnerForm" inner-form="authorization" ctrl="authFieldsCtrl"
+                      fields="authObj.fields"></auth-inner-form>
+                    <!-- <div class="col-xs-12 form-group">
+                            <div class="col-xs-12">
+                              <auth-form-fields  mode ="displayMode" type="api_key" fields="authObj.formfields"></auth-form-fields>
+                            </div>
+                          </div> -->
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label>{{'please_provide_valid_url'| i18nString}}</label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="url" class="form-control" input-note note-description="authCheckurlDescription" name="authCheckUrl" ng-model="apiKeyAuth.authCheckUrl"
+                          placeholder="{{'please_provide_authorization_check_url'| i18nString}}" />
+                        <div ng-show="apiKeyForm.authCheckUrl.$error.url">
+                          <div error-alert>
+                            <span>{{'please_provide_valid_url'| i18nString}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--<div class="col-xs-12 form-group">
+                            <div class="col-xs-12">
+                              <div class="help-block"> Specify the Auth Check URL with Proper Path Params Fields (if any) <br />
+                                Ex:- https://www.{authfield1 key}.com/{authfield2 key} <br />
+                                Query Fields and other type of fields are added dynamically. </div>
+                              </div>
+                            </div>-->
+                    <div class="col-xs-12 form-group" ng-if="enterpriseLicenseType" ng-init="apiKeyAuth.connectorEnabled = apiKeyAuth.connectorEnabled || false">
+
+
+
+
+                      <!--                            <div class="col-xs-12">
+                              <label tooltip-placement="right" tooltip="If the above URL is behind your enterprise firewall, select to enable access via the connector. Unless checked, Kore will not be able to access this URL">Access using connector</label>
+                            </div>
+                            <div class="col-xs-12" bt-init="apiKeyAuth.connectorEnabled=false">
+                              <input type="checkbox" ng-disabled="connectors.length == 0" ng-model="apiKeyAuth.connectorEnabled" class="checkbox" name="connectorEnabled">
+                              <div class="alert alert-xs alert-warning" ng-hide="connectors.length > 0"> Looks like there are no active connectors available to use. Please contact your administrator if you want access using connector. </div>
+                            </div>-->
+
+
+                      <div class="col-xs-12">
+                        <label>{{'access_connector'| i18nString}}</label>
+                      </div>
+                      <div class="col-xs-12 radioDiv">
+                        <div>
+                          <label for="apiKeyAuth.connectorEnabled.no" bt-init="apiKeyAuth.connectorEnabled=false">
+                                  <input ng-value='false' ng-checked="true" type="radio"  ng-model="apiKeyAuth.connectorEnabled" name="apiKeyAuth.connectorEnabled" id="apiKeyAuth.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                                </label>
+                        </div>
+                        <div>
+                          <label for="apiKeyAuth.connectorEnabled.yes">
+                                  <input ng-value='true'  type="radio"   ng-model="apiKeyAuth.connectorEnabled" name="apiKeyAuth.connectorEnabled" id="apiKeyAuth.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                                </label>
+                        </div>
+                        <div class="no-connectors-msg" ng-show="apiKeyAuth.connectorEnabled && connectors.length <=0">{{'active_connectors'| i18nString}}.</div>
+                        <div class="col-xs-12">
+                          <div class="helphint-border col-xs-12 marginB20T0">
+                            <div class="col-xs-1 bulbicon"><span><img class="layer" ng-src='{{bulbIcon}}'></span></div>
+                            <div class="col-xs-11"><span class="name ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb509)"></span></div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class=""> {{'tooltip_desc'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="text" class="form-control" id="basicdescription" name="basicdescription" ng-model="apiKeyAuth.basicdescription"
+                          placeholder="{{'enter_description_api_key_auth'| i18nString}}">
+                        <div error-alert ng-show="apiKeyForm.basicdescription.$dirty && apiKeyForm.basicdescription.$error.required" class="text-danger">
+                          {{'description_for_api_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer customFooter form-group" ng-if="displayMode !== 'view'">
+                      <div class="pull-right">
+                        <button type="button" class="btn " ng-click="saveApiKeyAuth($event,apiKeyForm.$valid,apiKeyForm)">{{'save_auth'| i18nString}} </button>
+                        <button type="reset" ng-click="cancelNewAuthForm();" class="btn closeCancle"> {{'close'| i18nString}} </button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-form>
+              </div>
+              <div ng-switch-when="none">
+                <ng-form name="noneForm" class="wf-form" novalidate>
+                  <div>
+                    <div class="col-xs-12 form-group">
+                      <div class="col-xs-12">
+                        <label class="required-field"> {{'name_label'| i18nString}} </label>
+                      </div>
+                      <div class="col-xs-12">
+                        <input type="text" class="form-control" id="nonename" name="noneAuth.nonename" ng-model="noneAuth.nonename" required placeholder="{{'enter_name_for_no_authorization'| i18nString}}">
+                        <div error-alert ng-show="noneForm.nonename.$dirty && noneForm.nonename.$error.required" class="text-danger"> {{'name_for_no_auth_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer customFooter form-group" ng-if="displayMode !== 'view'">
+                      <div class="col-xs-12">
+                        <button type="button" class="btn" ng-click="saveNoneAuth(noneForm.$valid,noneForm)">{{'save'| i18nString}} </button>
+                        <button type="reset" ng-click="cancelNewAuthForm();" class="btn closeCancle"> {{'cancel'| i18nString}} </button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-form>
+              </div>
+            </div>
+
+          </fieldset>
+
+        </div>
+        <div class="form-kr col-xs-12 form-group animate-if" ng-if="hideOuterForm || !showOuterForm">
+          <div class="col-xs-12">
+            <auth-form-fields ng-show="innerFormType === 'idp'" hide-outer-form="hideOuterForm" show-outer-form="showOuterForm" type="basic"
+              mode="displayMode" fields="authObj.formfields"></auth-form-fields>
+            <auth-field-form ng-show="innerFormType === 'authorization'" hide-outer-form="hideOuterForm" show-outer-form="showOuterForm"
+              mode="displayMode" fields="authObj.fields"></auth-field-form>
+          </div>
+        </div>
+        <!-- additional filed form -->
+        <div class="form-kr col-xs-12 form-group animate-if" ng-if="showKeyValueForm">
+          <div class="col-xs-12 noPadding">
+            <div class="col-xs-12 form-group noPadding">
+              <div class="col-xs-12 noPadding">
+                <!-- <p> Create a new Authorization Name & Value pair </p> -->
+                <div class="form-container col-xs-12 noPadding">
+                  <ng-form class="wf-form sub-form" name="authinnerform.authAdditionalFieldsForm" novalidate>
+                    <fieldset class="subFormFieldse" ng-if="showKeyValueForm">
+                      <div class="col-xs-12 form-group">
+                        <div class="col-xs-12">
+                          <label class="required-field"> {{'auth_field_key'| i18nString}} </label>
+                        </div>
+                        <div class="col-xs-12">
+                          <input type="text" class="form-control" ng-model="additionalFieldsForm.key" id="key" placeholder="{{'enter_field_key'| i18nString}}" name="key"
+                            required/>
+                          <div ng-show="authinnerform.authAdditionalFieldsForm.key.$dirty">
+                            <div error-alert ng-show="authinnerform.authAdditionalFieldsForm.key.$error.required" class="text-danger form-error-text">
+                              {{'auth_field_req'| i18nString}} </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-12 form-group">
+                        <div class="col-xs-12">
+                          <label class="required-field"> {{'auth_field_value'| i18nString}}</label>
+                        </div>
+                        <div class="col-xs-12">
+                          <input type="text" class="form-control" ng-model="additionalFieldsForm.value" id="addtionalValue" placeholder="{{'enter_field_value'| i18nString}}"
+                            name="value" required/>
+                          <div ng-show="authinnerform.authAdditionalFieldsForm.value.$dirty">
+                            <div error-alert ng-show="authinnerform.authAdditionalFieldsForm.value.$error.required" class="text-danger form-error-text">
+                            .{{'value_for_key_required'| i18nString}} </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-12 form-group" ng-if="false">
+                        <div class="col-xs-12" ng-show="showKeyValueForm">
+                          <span class="pull-right">
+                                                                <button type="button" ng-click="cancelAdditionalFieldsForm()" class="btn closeCancle"> {{'cancel'| i18nString}} </button>
+                                                                <!-- ng-class="{'btn-primary': authinnerform.authAdditionalFieldsForm.$invalid, 'btn-success': authinnerform.authAdditionalFieldsForm.$valid}" -->
+                                                                <button type="button"  class="btn" ng-click="addAdditionalFields(authinnerform.authAdditionalFieldsForm.$valid,authinnerform.authAdditionalFieldsForm,$event)"> {{'add'| i18nString}} </button>
+                                                              </span>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </ng-form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end of additional field form -->
+
+
+      </div>
+      <div class="modal-footer customFooter form-group" ng-if="displayMode === 'view'">
+        <div class="pull-right">
+          <button ng-if="false" type="button" class="btn" ng-click="saveBasicAuth($event,basicForm.$valid,basicForm)">{{'save'| i18nString}}</button>
+          <button type="reset" ng-click="cancelNewAuthForm();" class="btn closeCancle"> {{'close'| i18nString}} </button>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div ng-if="false" class="footer form-group noMargin" ng-hide="wfType === 'serviceNode'">
+  <div class="footerSub">
+    <div class="col-xs-3"><button ng-click="closeTaskModal()" type="button" class="close" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+    <div class="col-xs-6 lineheight">
+      <div class="form-ctrl-div pull-left hide">
+        <a href="/bt">
+              <button class="btn btn-default">Exit</button>
+            </a>
+      </div>
+      <!-- <div class="taskNameHeader textEllipsis">{{resource.name}}</div> -->
+      <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+    </div>
+    <div class="col-xs-3">
+      <div class="help-hint-link hide">
+        <a ng-hide="((wfType == 'alert')||((wfType == 'action')))" href="">{{'help_withpage_label'| i18nString}}</a>
+        <a ng-if="(wfType == 'alert')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ALERT_AUTH}}">{{'help_withpage_label'| i18nString}}</a>
+        <a ng-if="(wfType == 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_AUTH}}">{{'help_withpage_label'| i18nString}}</a>
+      </div>
+      <div class="pull-right form-ctrl-div" ng-if="displayMode!=='view'">
+        <!-- <button type="reset" ng-click="resetAuthForm()" ng-if="!displayMode" class="btn btn-default"> Clear</button> -->
+        <!-- <button type="reset" ng-click="onAuthFormCancel();" ng-if="displayMode==='edit'" class="btn btn-default">Cancel</button> -->
+        <!-- saveInProgress || authForm.$invalid ||(wfType=='action' && !newAuth.selected) -->
+        <button type="button" ng-click="authFormPreviousStep()" ng-if="!displayMode" class="btn btn-default"> {{'previous'| i18nString}}</button>
+        <button type="submit" ng-if="!displayMode" class="btn btn-primary" ng-disabled="saveInProgress || !newAuth.selected">
+              <i ng-if="saveInProgress && !stopNavigation" class="fa fa-spinner fa-spin"></i> {{'next'| i18nString}}
+            </button>
+        <button ng-if="!displayMode || displayMode==='edit'" type="button" ng-click="setAuth(authForm.$valid, true)" class="btn btn-primary"
+          ng-disabled="saveInProgress || !newAuth.selected || !authForm.$dirty">
+              <i ng-if="(displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode==='edit' && saveInProgress) || (saveInProgress && stopNavigation))?('saving'| i18nString): ('save'| i18nString)}}
+            </button>
+        <button type="button" ng-if="displayMode==='edit'" class="btn btn-primary" ng-click="onFinishSetup(wfType)"><i ng-if="isFinishSetupLoading" class="fa fa-spinner fa-spin"></i> {{'finish_setup'| i18nString}}</button>
+      </div>
+      <span class="dhelpLink">
+            <a class="" target="_blank"  ng-if="(wfType == 'alert')" ng-href="{{$root.$root.helpLinks.ALERT_AUTH}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+            <a class="" target="_blank" ng-if="(wfType == 'action')" ng-href="{{$root.$root.helpLinks.ACTIONS_AUTH}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+          </span>
+    </div>
+  </div>
+</div>
+<!-- /.modal -->

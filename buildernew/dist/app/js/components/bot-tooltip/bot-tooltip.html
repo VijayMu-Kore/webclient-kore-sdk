@@ -1,0 +1,5 @@
+<span rel="popover" popover-trigger="hover" ng-class="{'tasklangpopover':!from}" class="circle popovericon"> 
+    <i class="uniqueThisCls"  ng-if="!from" ng-class="{'btx-warning  btx-help':task.state !== 'published', 'btx-warning':task.state === 'published'}"></i>
+    <div class="publishLanguageScroll" perfect-scroll><span ng-bind-html="hoverText" class="circle popovericon" ng-if="from == 'publish'"></span></div>
+    <i class="fa-info-circle ng-scope btx-help cursor-pointer"  ng-if="from =='smartAlert'"></i>
+</span>

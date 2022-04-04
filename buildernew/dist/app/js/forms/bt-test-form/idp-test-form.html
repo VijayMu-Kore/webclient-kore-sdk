@@ -1,0 +1,162 @@
+<ng-form class="wf-form sub-form" name="formHolder.authForm" novalidate>
+  <div class="form-container row">
+    <fieldset ng-if="auth.sso_type == 'api_key' || auth.sso_type == 'basic' || auth.sso_type == 'custom'">
+        <div class="col-xs-12 form-group noPadding">
+            <div class="col-xs-12 noPadding"><label class="required-field"> {{'auth_check'| i18nString}} </label></div>
+            <div class="col-xs-12 noPadding">
+                <input type="text" ng-disabled="custom && auth.authCheckUrl" autocomplete="off" class="form-control" name="authCheckUrl" ng-model="auth.authCheckUrl" required>
+                <div ng-if="formHolder.authForm.authCheckUrl.$dirty">
+                    <br />
+                    <div error-alert ng-if="formHolder.authForm.authCheckUrl.$error.required">
+                        {{'auth_check_url'| i18nString}} 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 form-group noPadding" ng-if="enterpriseLicenseType" ng-init="auth.connectorEnabled = auth.connectorEnabled || false" >
+            <div class="col-xs-12 noPadding">
+                <label tooltip-placement="right" tooltip="{{'url_uncheck'| i18nString}}">{{'access_connector'| i18nString}}</label>
+            </div>
+            <div class="col-xs-12 radioDiv noPadding">
+                <div>
+                    <label for="auth.connectorEnabled.no">
+                        <input ng-value='false' ng-checked="true" type="radio"  ng-model="auth.connectorEnabled" name="auth.connectorEnabled" id="auth.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                    </label>
+                </div>
+                <div>
+                    <label for="auth.connectorEnabled.yes">
+                        <input ng-value='true'  type="radio"   ng-model="auth.connectorEnabled" name="auth.connectorEnabled" id="auth.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                    </label>
+                </div>  
+                <div class="no-connectors-msg" ng-show="auth.connectorEnabled && connectors.length <=0">{{'no_active_conn'| i18nString}}</div>
+            </div>  
+        </div>
+        <div class="col-xs-12 form-group noPadding" ng-if="auth.hasTenancy">
+            <div class="col-xs-12 noPadding"><label class="required-field">{{'tenant'| i18nString}}  </label></div>
+            <div class="col-xs-12 noPadding">
+                <input type="text" class="form-control" name="tenant" autocomplete="off" ng-model="auth.tenant" required>
+                <div ng-if="formHolder.authForm.tenant.$dirty">
+                    <br />
+                    <div error-alert ng-if="formHolder.authForm.tenant.$error.required">
+                        {{'tenant_req'| i18nString}} 
+                    </div>
+                </div>
+            </div>
+        </div>     
+        
+        <dynamic-form ng-if="auth.sso_type === 'basic' || auth.sso_type == 'custom'"
+                      bridge="dynFieldsBridge" 
+                      hide-controls="true" 
+                      fields="auth.dynFields" 
+                      class="col-xs-12 noPadding">
+        </dynamic-form>      
+<!--        <div class="col-xs-12 form-group" ng-if="auth.sso_type === 'basic' || auth.sso_type == 'custom'">
+            <div class="col-xs-12"><label class="required-field"> User Name </label></div>
+            <div class="col-xs-12">
+                <input type="text" class="form-control" required name="username" autocomplete="off" ng-model="auth.userName">
+                <div ng-if="formHolder.authForm.username.$dirty">
+                    <br />
+                    <div error-alert ng-if="formHolder.authForm.username.$error.required">
+                        User Name is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 form-group" ng-if="auth.sso_type === 'basic' || auth.sso_type == 'custom'">
+            <div class="col-xs-12"><label class="required-field"> Password </label></div>
+            <div class="col-xs-12">
+                <input type="password" class="form-control" required name="password" autocomplete="off" ng-model="auth.password">
+                <div ng-if="formHolder.authForm.password.$dirty">
+                    <br />
+                    <div error-alert ng-if="formHolder.authForm.password.$error.required">
+                        Password is required.
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <div class="col-xs-12 form-group noPadding" ng-if="auth.sso_type === 'api_key'">
+            <div class="col-xs-12 noPadding"><label class="required-field">{{'api_key'| i18nString}}  </label></div>
+            <div class="col-xs-12 noPadding">
+                <input type="text" class="form-control" name="apiKey" autocomplete="off" ng-model="auth.apiKey" required>
+                <div ng-if="formHolder.authForm.apiKey.$dirty">
+                    <br />
+                    <div error-alert ng-if="formHolder.authForm.apiKey.$error.required">
+                        {{'api_req'| i18nString}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xs-12 form-group noPadding">
+            <div class="col-xs-12 noPadding"><label class="required-field">{{'content_Type'| i18nString}}</label></div>
+            <div class="col-xs-12 noPadding">
+                <select class=" btn-default btnDropdown" name="contenttype" ng-disabled="auth.contentTypeDefined" ng-model="auth.contentType" ng-options="datatype.name for datatype in datatypes" required>
+                    <option value="">{{'select_content_type'| i18nString}}</option>
+                </select>
+                <div ng-if="formHolder.authForm.contenttype.$dirty">
+                    <br />
+                    <div error-alert ng-if="formHolder.authForm.contenttype.$error.required">
+                        {{'content_type_q'| i18nString}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 form-group noPadding">
+            <div class="col-xs-12 noPadding"><label class="required-field"> {{'method'| i18nString}} </label></div>
+            <div class="col-xs-12 noPadding">
+                <select ng-disabled="auth.methodDefined" required class=" btn-default btnDropdown" name="method" ng-model="auth.method">
+                    <option value="">{{'select_Method'| i18nString}}</option>
+                    <option value="PUT"> {{'put'| i18nString}} </option>
+                    <option value="POST">{{'post'| i18nString}}  </option>
+                    <option value="PATCH">{{'patch'| i18nString}} </option>
+                    <option value="DELETE">{{'delete_caps'| i18nString}}  </option>
+                    <option value="GET"> {{'get'| i18nString}} </option>
+                </select>
+            </div>
+        </div>
+        <div ng-if="idptestresponse" class="col-xs-12 noPadding">
+            <div class="well well-sm overflow-hidden">
+                <div class="col-xs-12 background-white">
+                    <div class="panel panel-default" ng-class="{'panel-success':+idptestresponse.status < 300,'panel-danger':! (+idptestresponse.status < 300)}">
+                      <div class="panel-heading">{{+idptestresponse.status < 300 ? authSuccess:authFailure}}</div>
+                      <div class="panel-body authTestSettings">
+                        <tabset>
+                            <tab>
+                                <tab-heading>
+                                    {{'headers'| i18nString}} 
+                                </tab-heading>
+                                <div class="row">
+                                    <div ng-jsoneditor class="json_editor" ng-model="idptestresponse.headers" options="options"></div>
+                                </div>
+                            </tab>
+                            <tab>
+                                <tab-heading>
+                                    {{'response'| i18nString}} 
+                                </tab-heading>
+                                <div class="row">
+                                    <div ng-jsoneditor class="json_editor" ng-model="idptestresponse.response" options="options"></div>
+                                </div>
+                            </tab>
+                        </tabset>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset ng-if="!(auth.sso_type == 'api_key' || auth.sso_type == 'basic'  || auth.sso_type == 'custom')">
+        <div class="col-xs-12 form-group" ng-if="auth.hasTenancy">
+            <div class="col-xs-12 noPadding"><label class="required-field"> Tenant </label></div>
+            <div class="col-xs-12 noPadding">
+                <input type="text" class="form-control" name="tenant" ng-model="auth.tenant" required>
+                <div ng-if="formHolder.authForm.tenant.$dirty">
+                  <br />
+                  <div error-alert ng-if="formHolder.authForm.tenant.$error.required">
+                      Tenant is required.
+                  </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+  </div>
+</ng-form>

@@ -1,0 +1,367 @@
+
+
+<div ng-init="loaded()" class="right-panel"  ng-class="{'read-only-div':displayMode==='VIEW','customFullHeight':(rightPanel.innerRightPanel.view=='customDashboard'),'containmentFullHeight':(rightPanel.innerRightPanel.view=='containmentDashboard'), 'containmentFullHeight':(rightPanel.innerRightPanel.view=='conversations' || rightPanel.innerRightPanel.view=='performance')}" >
+<!--Right panel with sub container starts here-->
+<div class="rightPanel subMenuLoadIcon noPadding animationIfEnter height-width-100" ng-if="!loadingAllTasks && switchingState">
+    <div class="loadingText"><i class="fa fa-circle-o-notch fa-spin-fast"></i><span class="innerText">{{switchingTo +((streamstate.toggleState==='published')? published : indevelopment)}}</span></div>
+</div>
+<div ng-if="(rightPanel.innerRightPanel.view == 'linkedBotTraining') && showUpgradeUniversal" class="animationIfEnter rightPanel upgradeUniversal">
+	<div ng-include="tmpltPrePath+'templates/bt-streams/upgrade-universal.html'"></div>
+</div>
+
+ <div ng-if='!switchingState || (rightPanel.innerRightPanel.view === "botSummary")' class="rightPanel animationIfEnter height-width-100" ng-show="!showUpgradeUniversal">
+
+			<div class="summaryLoader animationIfLeave fullRightContainrLoader" ng-show="loadingRightPannel || iframeLoding">
+				<span class="spinner-text" id="rightPanelLoadingSpin"> 
+					<i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+					<span class="spinner-text-content" >  {{'loading'| i18nString}}</span>
+				</span>
+			</div>
+			<!-- <div class="hintDiv col-xs-12 showGenericLanguageProtip " ng-show="((rightPanel.innerRightPanel.view === 'languageManagement') ||(rightPanel.innerRightPanel.view === 'storyboard')||(rightPanel.innerRightPanel.view === 'botSummary')) && showGenericProtip">
+				<div class="icon">
+				<i class="btx-warning"></i>
+				</div>
+				<div class="description">
+					There is a change in the Generic Language feature. Please map the Generic Language to one of the regular languages.  
+				</div>
+				<div class="hintActions">
+					<span>Learn More</span>
+					<span ng-click="openLanguageGenericModal()">Add Language</span>
+				</div>
+			</div>
+			<div class="hintDiv col-xs-12 showGenericProtip " ng-show="((rightPanel.innerRightPanel.view === 'languageManagement') ||(rightPanel.innerRightPanel.view === 'storyboard')||(rightPanel.innerRightPanel.view === 'botSummary')) && inputTranslation && !showGenericProtip">
+				<div class="icon">
+				<i class="btx-warning"></i>
+				</div>
+				<div class="description">
+					Input Translation is no longer supported as an independent feature. Please enable all the required languages and choose input translation where required. 
+					
+				</div>
+				<div class="hintActions"><span ng-click="openLanguageSlider()">Configure</span></div>
+			</div>
+			<div class="hintDiv col-xs-12 showGenericProtipPublish " ng-show="(rightPanel.innerRightPanel.view === 'publish') && inputTranslation && !showGenericProtip">
+				<div class="icon">
+				<i class="btx-warning"></i>
+				</div>
+				<div class="description">
+					This bot cannot be published as you have not linked a language for Input Translation. Please configure a language from the Language Management section. 
+					
+				</div>
+				<div class="hintActions"><span ng-click="openLanguageSlider()">Configure</span></div>
+			</div> -->
+			<!-------------------------------------Components with global scroll --------------------------------------------------------------->
+			<div id="rightPanelScrollContents" class="animationIfEnter innerRight" ng-class="{'extraPaddingForSaveBtn':(callbacks.saveBtnCallbacks[rightPanel.innerRightPanel.view] || (rightPanel.innerRightPanel.view == 'botImportExport'))}" ng-show="!innerScrollItems[rightPanel.innerRightPanel.view]"  dynamic-height dynaoffset="canShowFooter() == true ? '-90' : '-62'" perfect-scroll height-property="height">
+			  	<div class="hintDiv col-xs-12 showGenericLanguageProtip " ng-show="((rightPanel.innerRightPanel.view === 'languageManagement') ||(rightPanel.innerRightPanel.view === 'storyboard')||(rightPanel.innerRightPanel.view === 'botSummary')) && showGenericProtip">
+				<div class="icon">
+				<i class="btx-warning"></i>
+				</div>
+				<div class="description">
+					{{'changeGenericLanguage'| i18nString}}
+				</div>
+				<div class="hintActions">
+					<span>{{'learn_more_label'| i18nString}} </span>
+					<span ng-click="openLanguageGenericModal()">{{'add_language'| i18nString}}</span>
+				</div>
+			</div>
+			<div class="hintDiv col-xs-12 showGenericProtip " ng-show="((rightPanel.innerRightPanel.view === 'languageManagement') ||(rightPanel.innerRightPanel.view === 'storyboard')||(rightPanel.innerRightPanel.view === 'botSummary')) && inputTranslation && !showGenericProtip">
+				<div class="icon">
+				<i class="btx-warning"></i>
+				</div>
+				<div class="description">
+					{{'Input_translation_desc'| i18nString}}	
+					
+				</div>
+				<div class="hintActions"><span ng-click="openLanguageSlider()">{{'configure'| i18nString}}</span></div>
+			</div>
+				<div class='koreComponentsPannel' ng-class="{noPadding:fullWidthPanels[rightPanel.innerRightPanel.view]}" ng-if="!innerScrollItems[rightPanel.innerRightPanel.view]">
+				<div class="animationIfEnter extraPaddingForSaveBtn" ng-if="!creationForm && ((rightPanel.innerRightPanel.view=='agentTransfer') || (rightPanel.innerRightPanel.view=='botkitSDK') || (rightPanel.innerRightPanel.view=='manageApps') || (rightPanel.innerRightPanel.view=='apps') || (rightPanel.innerRightPanel.view=='webMobileSDK') ||  (rightPanel.innerRightPanel.view === 'eventsManage'))"><sdk-apps ></sdk-apps></div>
+				<div class="animationIfEnter" ng-if="taskType=='flows' || (creationForm && (taskType !=='dialogTasks') && (taskType !=='alertTasks'))"><bot-tasks-creation-form ></bot-tasks-creation-form></div> <!---- Deprecated  -->
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'IIPMasking'"><bt-iip-masking ></bt-iip-masking></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view !== 'defaultDialogUniversal' && (rightPanel.innerRightPanel.view == 'dialogTasks')" onload="dialogTemplateLoadFlag()" ng-show="rightPanel.innerRightPanel.view == 'dialogTasks'" ng-include="tmpltPrePath+'templates/bt-streams/flowTasks-template.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'alertTasks'" onload="dialogTemplateLoadFlag()" ng-include="tmpltPrePath+'templates/bt-streams/alerts-template.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'informationTasks'" onload="dialogTemplateLoadFlag()"  ng-include="tmpltPrePath+'templates/bt-streams/reports-template.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'actionTasks'" onload="dialogTemplateLoadFlag()" ng-include="tmpltPrePath+'templates/bt-streams/actions-template.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'knowledgeCollection'" onload="dialogTemplateLoadFlag()" ng-include="tmpltPrePath+'templates/bt-streams/knowledge-template.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'smallTalk'" onload="dialogTemplateLoadFlag()" ng-include="tmpltPrePath+'templates/bt-streams/small-talk.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'uiForms'" onload="dialogTemplateLoadFlag()" ng-include="tmpltPrePath+'templates/bt-streams/forms-template.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'linkedBots' && (universalBotVersion() === 1 || !universalBotVersion())" onload="dialogTemplateLoadFlag()" ng-include="tmpltPrePath+'templates/bt-streams/linked-bots-template.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'linkedBots' && (universalBotVersion() === 2)" onload="dialogTemplateLoadFlag()" ng-include="tmpltPrePath+'templates/bt-streams/linked-bots-template-v2.html'"></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'flows'" onload="dialogTemplateLoadFlag()"  ng-if="_constants_.config.KT && !showSolutionBotSetup" ng-include="tmpltPrePath+'templates/bt-streams/flows-template.html'"></div>
+				<div class="animationIfEnter default-dialog-universal"  ng-if="rightPanel.innerRightPanel.view === 'defaultDialogUniversal'"  onload="dialogTemplateLoadFlag()"><div ng-include="tmpltPrePath+'templates/bt-streams/flowTasks-template.html'"></div></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view ==  'languageManagement' "><language-settings  callback="lmmCallback" ></language-settings><div class="hide"><bot-general-settings callback="gsCallback" stream-id="{{stream._id}}" display-mode="displayMode" edit-mode="edit" on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></bot-general-settings></div></div>
+				<div class='animationIfEnter' ng-if="(rightPanel.innerRightPanel.view == 'generalSettings')"><bot-general-settings callback="gsCallback" stream-id="{{stream._id}}" display-mode="displayMode" edit-mode="edit" on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></bot-general-settings></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'botStoreSettings'"><bot-store-settings  callback="bssCallback" stream-id="{{stream._id}}" display-mode="displayMode" edit-mode="edit"  on-cancel="onStreamFormCancel()" on-save="onStreamFormSave()"></bot-store-settings></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'planUsage'"><plan-usage  cb="planSelectionCb" ></plan-usage></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'inVoices'"><bt-invoices callback="planSelectionCb"></bt-invoices></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'authorization'"><bot-authorization wf-type="{{wftype}}" btcallback="authorizationCallback" callbacks="callbacks.auth" is-finish-setup-loading="isFinshSetupLoading" configure="finishSetup(type)" on-complete="onAuthFormResponse()"></bot-authorization></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'variableManagement'"><bt-variable-management  btcallback="variableMngtCallback" context = "'global'"></bt-variable-management></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'variableManagementContent'"><bt-variable-management  btcallback="variableMngtCallback" context = "'content'"></bt-variable-management></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'developerShare'"><bot-user-share  callback="userShareCallback"  ></bot-user-share></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'changeLogs'"><bot-change-log class='animationIfEnter' callback="changeLogCallback" ></bot-change-log></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'botVersion'" ><bot-version callback = "botDetailsCb" bot-version-cb="botVersionCb" full-modal-callback="fullModalCallback"></bot-version></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'manageSessions'"><manage-session  callback="msCallback"></manage-session></div>
+				<!-- <div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'IIPMasking'"><bt-iip-masking ></bt-iip-masking></div> -->
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'botImportExport'"><bt-import-export callback="importExportCb" import-from="'existingBotImport'" ></bt-import-export></div>
+				<!-- <bt-import-bot class='animationIfEnter' callback="userImportCallback" ng-if="rightPanel.innerRightPanel.view == 'importBot'" import-from="'existingBotImport'"></bt-import-bot>
+				<bt-export-bot class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'exportBot'"></bt-export-bot> -->
+				<div class='animationIfEnter extraPaddingForSaveBtn' ng-if="rightPanel.innerRightPanel.view == 'smartBotSettings'"><smart-bot-settings  stream-id="{{stream._id}}"></smart-bot-settings></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'botFunctions'"><bot-functions  callback="asCallback"></bot-functions></div>
+				<div class='animationIfEnter extraPaddingForSaveBtn' ng-if="rightPanel.innerRightPanel.view == 'sampleBotSettings'"><sample-bot-settings   stream-id="{{stream._id}}"></sample-bot-settings></div>
+				<div class='animationIfEnter' ng-if="rightPanel.innerRightPanel.view == 'customLibrary'"><bt-custom-library  stream-id="{{stream._id}}" callback="customLibrary"></bt-custom-library></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'linkedBotTraining'"><linked-bot-training  link-bots="linkedBots"></linked-bot-training></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'settings'"><settings></settings></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'advancedSettings'"><bot-advanced-settings  stream-id="{{stream._id}}" callback="asCallback" ></bot-advanced-settings></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view === 'amendEntity'"><amend-entity  callback="amendEntityCb"></amend-entity></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'ignoreWords'"><intent-entity stream-id="{{stream._id}}"></intent-entity></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view === 'sentimentManagement'" ><sentiment-management callback="sentimentCb"></sentiment-management></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'defaultDialog'"><default-dialog-settings></default-dialog-settings></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'mlThresholds'"><ml-threshold class="animationIfEnter mlThreshold" selected-stream="stream" stream-update-cb="streamUpdateCB" g-search-cb='mlThresCb'></ml-threshold></div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'tryMode'" >
+						<try-mode-form callback="trymodecallback" try-update-in-progress="tryUpdateInProgress"
+						enable-try-mode="enableTryMode" account="account" trymodeid="solutionid"></try-mode-form>
+						<div class="buttonContainer">
+						<button type="button" class="btn btn-primary btn-sm" ng-click="trymodecallback.updateTryMode()"><i
+							ng-if="tryUpdateInProgress"
+							class="fa fa-spinner fa-spin"></i>{{tryUpdateInProgress ? ('saving'| i18nString) : ('save'| i18nString)}}</button>
+						</div>
+				</div>
+				<div class="animationIfEnter panel-body mlThreshold" ng-if="rightPanel.innerRightPanel.view == 'nlAdvancedSettings' || rightPanel.innerRightPanel.view == 'multiIntentDetection'" ng-init="getAccessRight('BOTBUILDER_NATURAL_LANGUAGE')">
+					<div class="form-group mlAutoTrainSettings" ng-class="{'pointer-none':streamstate.toggleState=='published' || accessRight === 'VIEW'}" ng-if="rightPanel.innerRightPanel.view !== 'multiIntentDetection'">
+						<div class="row btnSearchTitle">
+							<div class="col-xs-6 leftTitle">
+								<p class="pageTitle">{{'advanced_settings'| i18nString}}</p>
+							</div>
+							<div class="col-xs-6 rightBTNSearch">
+								<div class="searchComponent displayNone">
+									<input  placeholder="{{'search_name'| i18nString}}">
+									<i class="btx-search"></i>
+									<i class="btx-close displayNone"></i>
+								</div>
+								<div class="creationButton borderBtn displayNone">
+									<button class="titleBTN">button</button>
+								</div>
+								<div class="titleDropdown displayNone">
+					
+									<div class="dropdown">
+										<a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										   Dropdown name
+											<i class="btx-carrot-up"></i>
+										</a>
+											<ul class="dropdown-menu">
+												<li class="dropdown-item">Option One</li>
+												<li class="dropdown-item" >Option Two</li>                       
+								 			</ul>
+									</div>
+								</div>
+								<div class="titleOverflow displayNone">
+									<div class="dropdown">
+										<a href="#" class="ellipsisGray" data-toggle="dropdown">
+											<i class="btx-overflow"></i>
+											</a>
+											<ul class="dropdown-menu">
+														<li class="dropdown-item">Option One</li>
+														<li class="dropdown-item" >Option Two</li>                       
+								 </ul>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 headerLabel noPadding">
+							<p class="autoTrain">{{'Auto_training_ml_label'| i18nString}}</p>
+						</div>
+						<div class="col-xs-12 radioDiv noPadding">
+							<div>
+								<label for="autotrainData.enableAutoUtteranceAddition.yes">
+									<input ng-value='true'  type="radio" ng-change="saveAutoTrainMLStatus()"  ng-model="autotrainData.enableAutoUtteranceAddition" name="autotrainData.enableAutoUtteranceAddition" id="autotrainData.enableAutoUtteranceAddition.yes"><span class="opt-title">{{'Auto_training_ml_yes'| i18nString}}</span> </input>
+									</label>
+							</div>
+							<div>
+								<label for="autotrainData.enableAutoUtteranceAddition.no">
+									<input ng-value='false' ng-checked="true" type="radio" ng-change="saveAutoTrainMLStatus()" ng-model="autotrainData.enableAutoUtteranceAddition" name="autotrainData.enableAutoUtteranceAddition" id="autotrainData.enableAutoUtteranceAddition.no" ><span class="opt-title"> {{'Auto_training_ml_no'| i18nString}}</span> </input>
+									</label>
+							</div>
+						</div>
+					</div>
+					<nl-advanced-settings stream-update-cb="streamUpdateCB" right-pannel-view="rightPanel.innerRightPanel.view"></nl-advanced-settings>
+				</div>
+				<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view=='botDashboard'">
+					<div>
+						<div  ng-include="tmpltPrePath+'templates/bt-streams/dashboard-template.html'"></div>
+					</div>
+				</div>
+				<div class="animationIfEnter"  ng-if="rightPanel.innerRightPanel.view=='channels'">
+					<bot-channels></bot-channels>
+				</div>
+				<!-- <error-form ng-if="rightPanel.innerRightPanel.view == 'errorMessage'" ng-hide="newStreamData.type==='universalbot'" error-for="stream" error="stream.errorCodes"></error-form> -->
+			  </div>
+			</div>
+			<!---------------------------------------------------------------------------------------------------------------------------------->
+
+		   <!-------------------------------------Components with internal scroll-------------------------------------------------------------->
+           <div ng-show="innerScrollItems[rightPanel.innerRightPanel.view]" class="innerScrollComponents animationIfEnter innerRight" ng-class="{'newUIPadding':fullWidthPanels[rightPanel.innerRightPanel.view]}">
+			<div class="animationIfEnter" ng-if="!creationForm && (rightPanel.innerRightPanel.view=='apps')"><sdk-apps class="newPaddingUI" ></sdk-apps></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'synonyms'"><synonyms-manage g-search-cb='gSearch' class="animationIfEnter btSynonymsmodal"></synonyms-manage></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'patterns'"><pattern-manage  class="animationIfEnter btPatternsModal" g-search-cb='gSearch'></pattern-manage></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view === 'negativePatterns'"><negative-patterns  class="animationIfEnter btPatternsModal"></negative-patterns></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'standardResponses'"><bot-channel-response-manage   class="animationIfEnter" stream-id="stream._id" stream-type="stream.type" search-term='searchQry'></bot-channel-response-manage></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'machineLearningUtterances'">
+				<bt-utterances class="animationIfEnter" stream-id="{{stream._id}}" g-search-select='gSearchCb' right-panel-cb="utterancesCb"></bt-utterances>
+			</div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view === 'traits'"><bt-traits class="animationIfEnter btTraits"></bt-traits></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'widgets'"><bt-panels-widgets class="animationIfEnter panelsAndWidgets" onload="dialogTemplateLoadFlag()" ></bt-panels-widgets></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'testTrain'" ><bt-train-bot></bt-train-bot></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'sessionFlow'"><bot-session-flow  ></bot-session-flow></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'batchTesting'"><batch-testing   stream-id="{{stream._id}}"></batch-testing></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'metrics'"><bt-analyze class="analyzePanel"   stream="stream" all-tasks="totalTasks" linked-bots="callbacks.linkedBots"></bt-analyze></div>
+			<div class="animationIfEnter" ng-if="(stream.type === 'universalbot') && (rightPanel.innerRightPanel.view === 'publish')"><div ng-include="tmpltPrePath+'templates/bt-streams/publish-template.html'"></div></div>
+			<div class="animationIfEnter" ng-if="(stream.type !== 'universalbot') && (rightPanel.innerRightPanel.view === 'publish')"><bot-publish></bot-publish></div>
+			<div class="animationIfEnter" ng-if="rightPanel.innerRightPanel.view == 'botSummary'"><bt-summary></bt-summary></div>
+			<div class="animationIfEnter" ng-if="(rightPanel.innerRightPanel.view == 'storyboard')" onload="dialogTemplateLoadFlag()" ng-show="rightPanel.innerRightPanel.view == 'storyboard'" ng-include="tmpltPrePath+'templates/bt-streams/storyboard-template.html'"></div>
+			<div class="full-height full-width animationIfEnter"  ng-if="rightPanel.innerRightPanel.view=='customDashboard'">
+				<div class="full-height full-width" dynamic-height dynaoffset="-61" height-property="height">
+					<bt-custom-dashboard ></bt-custom-dashboard>
+				</div>
+			</div> 
+			<div class="full-height full-width animationIfEnter col-xs-12 noPadding"  ng-if="rightPanel.innerRightPanel.view=='containmentDashboard'">
+				<div class="full-height full-width" dynamic-height dynaoffset="-61" height-property="height">
+					<bt-containment-dashboard ></bt-containment-dashboard>
+				</div>
+			</div>
+			<div class="full-height full-width animationIfEnter col-xs-12 noPadding"  ng-if="rightPanel.innerRightPanel.view=='conversations'">
+				<div class="full-height full-width" dynamic-height dynaoffset="-61" height-property="height">
+					<bt-conversations></bt-conversations>
+				</div>
+			</div>
+			<div class="full-height full-width animationIfEnter col-xs-12 noPadding"  ng-if="rightPanel.innerRightPanel.view=='performance'">
+				<div class="full-height full-width" dynamic-height dynaoffset="-61" height-property="height">
+					<bt-performance></bt-performance>
+				</div>
+			</div> 
+			<div class="full-height full-width animationIfEnter col-xs-12 noPadding"  ng-if="rightPanel.innerRightPanel.view=='conversationTesting'">
+				<div class="full-height full-width" dynamic-height dynaoffset="-61" height-property="height">
+					<conversation-testing cb="conversationTestingCb"></conversation-testing>
+				</div>
+			</div>
+		   </div>
+		    
+		   <!---------------------------------------------------------------------------------------------------------------------------------->
+
+		   <!---------------------------------------------------------Footer for components with save callback------------------------------------------------------->
+			<div class="innerRightFooter" ng-if="callbacks.saveBtnCallbacks[rightPanel.innerRightPanel.view] || hasSaveButton[rightPanel.innerRightPanel.view]">
+				<div class="pull-left btnContainer">
+					<button
+						ng-disabled="isEnabled() || callbacks.modeOfAccess === 'VIEW' || accessRights === 'VIEW' || amendEntityCb.accessRights === 'VIEW' || streamstate.toggleState=='published'"
+						class="btn btnSolidBlue" ng-click="rightPanel.innerRightPanel.doAction($event)"> <i
+							ng-if="callback.saveInprogress || rightPanel.innerRightPanel.saveInprogress"
+							class="fa fa-spinner fa-spin"></i> {{(callback.saveInprogress || rightPanel.innerRightPanel.saveInprogress)
+						? savingLabel : save}} </button>
+						<button class="btn  closeCancel hide" ng-click="boc.hideOntologyQAForm()">{{'cancel'| i18nString}}</button>
+				</div>
+			</div>
+			<div class="innerRightFooter" ng-if="rightPanel.innerRightPanel.view == 'botImportExport'">
+				<div class="btnContainer">
+					<ng-container ng-show="importExportCb.activeTab === 'IMPORT'">
+						<button ng-disabled="!importExportCb.isFormValid() || streamstate.toggleState=='published'"
+							class="btn btnSolidBlue" ng-click="rightPanel.innerRightPanel.doAction($event)"> <i
+								ng-if="callback.saveInprogress || rightPanel.innerRightPanel.saveInprogress"
+								class="fa fa-spinner fa-spin"></i> {{'import'| i18nString}} </button>
+					</ng-container>
+					<ng-container ng-show="importExportCb.activeTab === 'EXPORT'">
+						<!-- <button ng-disabled="callbacks.modeOfAccess === 'VIEW' || streamstate.toggleState=='published'"
+							class="btn btnSolidBlue" ng-click="rightPanel.innerRightPanel.doAction($event)"> <i
+								ng-if="callback.saveInprogress || rightPanel.innerRightPanel.saveInprogress"
+								class="fa fa-spinner fa-spin"></i> {{'Export'}} </button> -->
+						<div class="buttonContainer col-xs-6 noPadding" ng-if="(importExportCb.exporting === 'initial') || (importExportCb.downloadFlag === true && importExportCb.exporting === 'finished')">
+							<button type="button" class="btn btnSolidBlue exportBtn" ng-click="rightPanel.innerRightPanel.doAction($event)"> <span>{{'export'| i18nString}}</span></button>
+						</div>
+						<div class="buttonContainer col-xs-6 noPadding" ng-if="importExportCb.downloadFlag == true  && importExportCb.exporting === 'finished'">
+							<a href = "{{importExportCb.downloadUrl}}" id ="downloadFile" target = "_self" download></a>
+							<p class="downloadStatusText marginTop">{{'version_exported'| i18nString:({dyn:importExportCb.exporttype})}} {{importExportCb.getTime()}} {{importExportCb.getDate()}}</p>
+							<button class="btn marginRight15 downloadBtn pull-right" ng-click="importExportCb.downloadFile($event)">{{'download'| i18nString}}</button>
+						</div>
+						<div class="buttonContainer" ng-if="importExportCb.exporting === 'pending'">
+							<button type="button" class="btn btnSolidBlue buttonExporting"><span class="spinner-text">{{'exporting_label'| i18nString}}<i class="fa fa-spinner fa-spin exporting"></i></span></button>
+							<p class="downloadStatusText">{{'bot_export_in_progress'| i18nString}}</p>
+						</div>
+						<div class="errorContainer" ng-if="importExportCb.exporting === 'failed'">
+							<button type="button" class="btn btnSolidBlue retry-btn" ng-click="rightPanel.innerRightPanel.doAction($event)">{{'retry'| i18nString}}<span class="reload"><img ng-src="{{reloadpng}}"></span></button>
+							<button type="button" class="btn btn-default closeCancel" ng-click="importExportCb.setToInitial()">{{'cancel'| i18nString}}</button>
+							<p class="downloadStatusText">{{'bot_export_could_not_be_completed'| i18nString}}</p>
+						</div>
+						<div class="buttonContainer" ng-if="importExportCb.exporting === 'finished' && importExportCb.downloadFlag == false">
+							<button class="btn marginRight15 downloadBtn pull-right" ng-click="importExportCb.downloadFile($event)">{{'download'| i18nString}}</button>
+							<a href = "{{importExportCb.downloadUrl}}" id ="downloadFile" target = "_self" download></a>
+							<button type="button" class="btn btnSolidBlue buttonExporting" ng-click="rightPanel.innerRightPanel.doAction($event)"><span>{{'new_export'| i18nString}}</span>
+							</button>
+							<p class="downloadStatusText">{{'version_exported'| i18nString:({dyn:importExportCb.exporttype})}} {{importExportCb.getTime()}} {{importExportCb.getDate()}}</p>
+						</div>
+					</ng-container>
+				</div>
+			</div>
+</div> 
+</div> 
+
+
+<div class="taskCreateOrEditModal modal fade version-form fullwidth-dialog height-width-100" tabindex="-1" role="dialog">
+	<div class="modal-dialog height-width-100">
+		<div class="modal-content utterances-modal-content height-width-100">
+				<version-history ng-if="activeTask && showContent && dialogMode==='version'" active-task="activeTask"></version-history>
+				<wf-logs  ng-if="activeTask && showContent && dialogMode==='logs'" active-task="activeTask"></wf-logs>
+				<stream-form ng-if="dialogMode==='newBot'" stream-id="{{streamId}}" display-mode="edit" edit-mode="new" on-save="onStreamFormSave()"></stream-form>
+		</div>
+	</div>
+</div>
+
+<div class="btFullpageModal flowtask-create-form modal height-width-100 taskCreateOverlayModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog height-width-100">
+			<div class="modal-content utterances-modal-content height-width-100">
+				<div class="modal-body utterances-modal-body height-width-100 noPadding" ng-if="activeEntityFlow && showMapping" footer-mappingid=''>
+					<bt-wf-mapping active-entity ="activeEntityFlow" component="false" ></bt-wf-mapping>
+				</div>
+			</div>
+		</div>
+</div>
+<div class="modal fade languageModalGeneric" id="languageModalGeneric" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- <div class="modal-header">                                 
+          <h4 class="modal-title">Please choose a language</h4>
+        </div> -->
+        <div class="modal-body">
+			<div class="languageInfo">
+				<i class="btx-info"></i>
+				<p>{{'genericLanguageEnable'| i18nString}}</p>
+			</div>
+			<img ng-src="{{chooseLang}}" class="chooseLang">
+            <p class="pclTitle">{{'please_choose_lang'| i18nString}}</p>
+          <p class="pclDesc">{{'genericLang_noLong'| i18nString}}</p>
+          <p class="pclDesc">{{'generic_lang_virtual'| i18nString}}	<a href="https://developer.kore.ai/docs/bots/advanced-topics/multi-lingual/building-multi-language-bots/" target="_blank" class="LMLink">{{'learn_more_label'| i18nString}}</a></p>
+          <div class="kr-sg-dropdowns">
+            <div class="dropdown dropdown-open">
+              <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                {{showSelectedLanguage.name?showSelectedLanguage.name:"Select"}}
+              </button>
+              <ul class="dropdown-menu content-menu" style="max-height: 180px;overflow: auto;">
+                <li class="search-box">
+                  <input type="text" ng-model="searchLanguage.languageSelect" placeholder="Search" class="seach-input" ng-blur="searchLanguage.languageSelect = ''"
+                    ng-click="$event.stopPropagation();" autocomplete="off">
+                </li>                                              
+                <li ng-if="lang.value !== 'ge'" ng-repeat="lang in seedDataSupportedLanguages | orderBy: 'name' | filter:searchLanguage.languageSelect" >
+                  <a ng-click="setLanguageCode(lang)" title="{{lang.name}}" >
+                    <span class="name-channel" >{{lang.name}}</span>
+                  </a>
+                </li>
+                </ul>
+            </div>
+          </div>
+          <button class="kr-sg-button-primary btn_md" ng-disabled ="!showSelectedLanguage" ng-class="{'disableProceed':!showSelectedLanguage}" ng-click="proceedLanguageEnable()">Proceed</button>
+          <button class="kr-sg-button-secondary btn_md" data-dismiss="modal">Remind me later</button>
+        </div>
+        <!-- <div class="modal-footer">                               
+          <button class="kr-sg-button-primary btn_md">Ok</button>
+          <button class="kr-sg-button-secondary btn_md" data-dismiss="modal">No</button>
+        </div> -->
+      </div>
+    </div>
+</div>

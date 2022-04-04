@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="53" height="50" viewBox="0 0 53 50">
+    <g fill="none" fill-rule="evenodd" transform="rotate(90 25.582 26.065)">
+        <g transform="translate(0 5.344)">
+            <rect width="10.783" height="10.163" x="4.132" y="15.83" fill="#E0F8EF" fill-rule="nonzero" rx="3"/>
+            <rect width="14.101" height="12.704" x=".814" y="13.289" stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" rx="3"/>
+            <path stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" d="M33.149.585h-4.885c-1.417 0-2.566 1.182-2.566 2.64v33.256c0 1.458 1.149 2.64 2.566 2.64h4.545M15.74 19.641h17.228"/>
+            <rect width="10.783" height="10.163" x="37.846" y="16.227" fill="#E9F1FB" fill-rule="nonzero" rx="3"/>
+            <rect width="15.127" height="11.345" x="33.502" y="14.1" stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" rx="3"/>
+        </g>
+        <rect width="10.688" height="10.688" x="37.407" y="2.138" fill="#E9F1FB" fill-rule="nonzero" rx="3"/>
+        <rect width="14.963" height="11.757" x="33.132" stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" rx="3"/>
+        <rect width="10.688" height="10.688" x="37.407" y="40.49" fill="#E9F1FB" fill-rule="nonzero" rx="3"/>
+        <rect width="14.963" height="11.757" x="33.132" y="38.476" stroke="#7C8495" stroke-linecap="round" stroke-width="1.2" rx="3"/>
+    </g>
+</svg>

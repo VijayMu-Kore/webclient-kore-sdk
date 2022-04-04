@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="15px" viewBox="0 0 14 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>backArrow</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="-0.329066272 3.20363504 9.15445923 3.12977586 9.15445923 4.65358538 0.0116020822 4.65358538"></polygon>
+        <polygon id="path-2" points="-0.397166007 9.08542439 9.16614329 8.95591721 9.16614329 10.4797267 0.0232861496 10.4797267"></polygon>
+        <rect id="path-3" x="2.28571429" y="6.0952381" width="13.7142857" height="1.52380952"></rect>
+    </defs>
+    <g id="backArrow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" transform="translate(1.000000, 1.000000)">
+            <g id="Group">
+                <g id="Rectangle" transform="translate(4.412696, 3.891681) rotate(-45.000000) translate(-4.412696, -3.891681) ">
+                    <use fill="#8A959F" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <path stroke="#8A959F" stroke-width="1" d="M0.300875673,3.69874412 L0.407741419,4.15358538 L8.65445923,4.15358538 L8.65445923,3.6336851 L0.300875673,3.69874412 Z"></path>
+                </g>
+                <g id="Rectangle-Copy" transform="translate(4.384489, 9.717822) scale(1, -1) rotate(-45.000000) translate(-4.384489, -9.717822) ">
+                    <use fill="#8A959F" fill-rule="evenodd" xlink:href="#path-2"></use>
+                    <path stroke="#8A959F" stroke-width="1" d="M0.273124286,9.57639311 L0.394749625,9.97972674 L8.66614329,9.97972674 L8.66614329,9.4627341 L0.273124286,9.57639311 Z"></path>
+                </g>
+            </g>
+            <g id="Rectangle-2">
+                <use fill="#8A959F" fill-rule="evenodd" xlink:href="#path-3"></use>
+                <rect stroke="#8A959F" stroke-width="1" x="2.78571429" y="6.5952381" width="12.7142857" height="1"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

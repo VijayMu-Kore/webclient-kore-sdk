@@ -1,0 +1,116 @@
+<div class="bot-chat-scenarios">
+<!-- Start of new ui elements -->
+<div class="col-xs-12 noPadding">
+ <div class="col-xs-12 standard-response-header">
+    <div class="modal-tab-header"> 
+        <div class="modal-tabs" ng-click="showType('successScenarios')" ng-class="{'modal-tabs-active':views.successScenarios}">
+            {{'success_scenarios'| i18nString}}
+        </div>
+        <div class="modal-tabs" ng-click="showType('failedScenarios')"  ng-class="{'modal-tabs-active':views.failedScenarios}">
+            {{'Learning_Scenarios'| i18nString}}
+        </div>
+    </div> 
+     <div class="search-block">
+         <!--save-ctrl -->
+         <span class="pull-right">
+             <div class="workflows-container">
+                 <div class="search">
+                     <input focus-it tabindex="1" ng-focus="focused=true" ng-blur="focused=false" type="text" ng-keyup="searchChatScenarios($event)" class="form-control" ng-model="search" placeholder="{{focused ? {{'press_enterto_search_label'| i18nString}}: {{'search_here'| i18nString}}}}">
+                 </div>
+             </div>
+         </span>
+     </div>
+ </div>
+ <div class="col-xs-12 noBorderTop" ng-if="!dataLoaded">
+  <div class="log-item">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8">
+                        <div class="alert alert-warning alert-xs text-center" role="alert">
+                            <i class="fa-spin fa fa-circle-o-notch"></i>
+                            {{'loading_chat'| i18nString}}
+                        </div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                </div>
+ </div>
+<div class="col-xs-12 noBorderTop">
+  <div ng-if="views.successScenarios">
+    <div class="row noPadding form-group field-synonyms-list rightPanelContainer" ng-if="dataLoaded">
+          <div class="row ">
+            <div class="col-xs-12 noPadding">
+              <div class="col-xs-12 margintop10">
+
+              	<div class="col-xs-12 scenario noPadding" ng-repeat="scenario in successChatScenarios  track by $index">
+                <div class="col-xs-12 noPadding">
+				     		<p>
+				     			<strong class="col-sm-3 noPadding">{{'user_says'| i18nString}}:</strong> <span  class="col-sm-9 btwordbreakall">{{scenario.input[0]}}</span>
+				     		</p>
+                                                <button class="btn btn-primary btn-sm pull-right train-bot-btn train-bot-btn-success" ng-click="showTrainBot(scenario)">{{'train_bot'| i18nString}}</button>
+                                                </div>
+			     			<div class="col-xs-12 noPadding">
+			     				<p><strong  class="col-sm-3 noPadding">{{'task_recognized'| i18nString}} :</strong> <span class="task col-sm-9 fontSize14">{{scenario.task}}</span></p>
+			     				<p class="fontSize12Unbold">{{scenario.time}}</p>
+			     			</div>
+				     	</div>
+                                            <div ng-show="successChatScenarios.length == 0">
+                                                <br>
+                                                <div class="col-xs-12 text-center">
+                                                    <span class="spinner-text1" ng-show="!dataLoaded">
+                                                        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                                                        <span class="spinner-text-content">{{'loading_success'| i18nString}} </span>    
+                                                    </span>
+                                                    <div class="alert alert-sm alert-warning" ng-show="dataLoaded" >
+                                                        {{'no_scenarios'| i18nString}}
+                                                    </div>
+                                                </div>
+                                            </div>
+				     	<!--<pagination  rotate="false" max-size="5" ng-show="(successChatScenarios | filter : searchFilter({'task':search, 'input':search, 'time':search})).length > 10" class="pagination-sm pull-right" boundary-links="true" direction-links="false"
+				     	total-items="(successChatScenarios | filter : successSearch).length" items-per-page="10" ng-model="successCurrentPage"></pagination>-->
+<div class="col-xs-12 noPadding" ng-show="totalItems>10">
+              <bt-pagination limit="limit" total-items="totalItems"  update-limit="updateLimit(limitToUpdate)" show-num-dropdown="true" get-page-data="getChatScenarios('successintent', offset)"></bt-pagination>
+            </div>
+          
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+  <div ng-if="views.failedScenarios">
+    <div class="row noPadding form-group field-synonyms-list paddingTop10" ng-if="dataLoaded">
+     
+          <div class="row">
+          				<div class="col-xs-12 scenario"
+				    		ng-repeat="scenario in failedChatScenarios track by $index">
+				    		<button class="btn btn-primary btn-sm pull-right train-bot-btn train-bot-btn-fail"  ng-click="showTrainBot(scenario)">{{'train_bot'| i18nString}}</button>
+				     		<div class="row">
+					     		<div class="text-danger input">
+					     			<div class="col-sm-3 noPadding"><strong class="fontSize14Gray">{{'user_says'| i18nString}}:</strong></div><div class="col-sm-9 btwordbreakall" context-menu text=" {{scenario.input[0]}}" context="context.api"></div>
+					     		</div>
+				     		</div>
+				     		<div class="row">
+					     		<p class="fontSize12Unbold">{{scenario.time}}</p>					 
+				     		</div>
+				     	</div>
+
+                                            <div  ng-show="failedChatScenarios.length == 0">
+                                                <br>
+                                                <div class="col-xs-12 text-center">
+                                                    <span class="spinner-text1" ng-show="!dataLoaded">
+                                                        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+                                                        <span class="spinner-text-content"> {{'loading_learning'| i18nString}}</span>    
+                                                    </span>
+                                                    <div class="alert alert-sm alert-warning" ng-show="dataLoaded" >
+                                                        {{'no_learning'| i18nString}} 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 noPadding" ng-show="totalItems>10">
+              <bt-pagination limit="limit" update-limit="updateLimit(limitToUpdate)" total-items="totalItems" show-num-dropdown="true" get-page-data="getChatScenarios('failintent', offset)"></bt-pagination>
+            </div>
+				     	<!--<pagination  rotate="false" max-size="5" ng-show="(failedChatScenarios | filter : searchFilter({'input':search, 'time':search})).length > 10" class="pagination-sm pull-right" boundary-links="true" direction-links="false" total-items="(failedChatScenarios | filter : failSearch).length" items-per-page="10" ng-model="failureCurrentPage"></pagination>-->
+            
+          </div>
+    </div>
+  </div>
+</div>
+</div>

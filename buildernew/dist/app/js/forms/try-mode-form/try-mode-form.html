@@ -1,0 +1,56 @@
+<bt-test-form api="btTestFormApi" status="btTestStatus" ></bt-test-form>
+<div class="col-xs-12 text-center">
+    <span class="spinner-text1" ng-show="!dataloaded">
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+        <span class="spinner-text-content"> {{'loading'| i18nString}}</span>    
+    </span>
+</div>
+<div ng-show="dataloaded" class="col-xs-12 noPadding divCenter"> 
+    <div class="col-xs-12 form-group noPadding radioDiv options-wrap">
+        <div class="col-xs-12 noPadding">
+            <label class="fontSize12 grayTextSyn">{{'try_mode_form_desc'| i18nString}}</label>
+        </div>
+
+              <div>
+                  <label for="{{trymodeid}}.yes">
+                      <input ng-value="true" type="radio" ng-change="updateTryMode()" ng-model="enableTryMode" name="{{trymodeid}}" id="{{trymodeid}}.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'try_mode_form_allow_auth_Developer'| i18nString}}</span> 
+                  </label>
+              </div>
+              <div>
+                  <label for="{{trymodeid}}.no">
+                      <input ng-value="false"  type="radio" ng-change="updateTryMode()" ng-model="enableTryMode" name="{{trymodeid}}" id="{{trymodeid}}.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'try_mode_form_try_capability'| i18nString}}</span> 
+                  </label>
+              </div>
+          </div>
+          <div class="panel-table-heading" ng-show="enableTryMode && needAuth">
+              <h3 ng-show="idpConfigs.length && trymodeid !== 'reviewconfirm'" class="panel-title entity_count_label">{{'add_authorization'| i18nString}}</h3>
+              <h3 ng-show="idpConfigs.length && trymodeid === 'reviewconfirm'" class="panel-title entity_count_label">{{'authorization_details'| i18nString}}</h3>
+              
+              <!-- ngIf: __hide_try_your_bot -->
+              <div class="col-xs-12 noPadding smartBotAddAuth" ng-repeat = "idpConfig in idpConfigs track by $index">
+               <div>
+                <div class="col-xs-9 noPadding"><label>{{idpConfig.name}}</label></div>
+                <div class="col-xs-3 noPadding" ng-hide="trymodeid === 'reviewconfirm'">
+                    <span  class="pull-right addBtn" ng-hide="idpConfig.account.length && idpConfig.account[0].status=='active'"  ng-click="testIdp($index)"><i class="fa fa-plus"></i>{{'add'| i18nString}}</span>
+                </div>
+            </div>
+            <div class="styledDiv" ng-show="idpConfig.account.length && idpConfig.account[0].status=='active'&& enableTryMode">
+                <span class="panel-title entity_count_label account-title">{{idpConfig.account[0].label}}</span>
+                <!-- ngIf: __hide_try_your_bot -->
+                <span ng-hide="trymodeid === 'reviewconfirm'" class="btn-delete-act pull-right" ng-click="deleteAccount(idpConfig.account[0])">{{'delete'| i18nString}}</span>
+            </div>
+            <div ng-hide="idpConfig.account.length && idpConfig.account[0].status=='active'&& enableTryMode">
+                <div class="col-xs-12">
+                    <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert" ng-show="true">
+                        <span class="title">{{'try_mode_no_auth_details_provided'| i18nString}}</span>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="styledDiv" ng-show="false && account1.length && account1[0].status=='active'&& enableTryMode">
+        <span class="panel-title entity_count_label account-title">{{account1[0].label}}</span>
+        <!-- ngIf: __hide_try_your_bot -->
+        <span class="btn-delete-act pull-right" ng-click="deleteAccount()">{{'delete'| i18nString}}</span>
+    </div>
+</div>

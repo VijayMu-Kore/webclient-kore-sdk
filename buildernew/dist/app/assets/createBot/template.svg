@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="38" height="52" viewBox="0 0 38 52">
+    <defs>
+        <path id="a" d="M0 20h18v18H0z"/>
+        <path id="b" d="M6 26h18v18H6z"/>
+        <path id="c" d="M12 32h18v18H12z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(0 1)">
+        <use fill="#FFF" xlink:href="#a"/>
+        <path stroke="#009DAB" d="M.5 20.5h17v17H.5z"/>
+        <use fill="#DAF9FB" xlink:href="#b"/>
+        <path stroke="#009DAB" d="M6.5 26.5h17v17h-17z"/>
+        <path stroke="#FFF" d="M5.5 25.5h19v19h-19z"/>
+        <rect width="14" height="14" x="19" fill="#DAF9FB" stroke="#009DAB" stroke-dasharray="2" rx="7"/>
+        <g>
+            <use fill="#FFF" xlink:href="#c"/>
+            <path stroke="#009DAB" d="M12.5 32.5h17v17h-17z"/>
+            <path stroke="#FFF" d="M11.5 31.5h19v19h-19z"/>
+        </g>
+        <path fill="#009DAB" d="M17 37h8v8h-8z"/>
+        <g>
+            <path stroke="#009DAB" d="M34.886 17.25c.885 4.555-2.206 8.987-6.905 9.9"/>
+            <path fill="#009DAB" d="M38.048 17.908l-3.117-3.01-2.917 3.02"/>
+        </g>
+    </g>
+</svg>

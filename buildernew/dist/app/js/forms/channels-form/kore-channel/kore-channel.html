@@ -1,0 +1,107 @@
+<div class="modalSliderContainer width700">
+    <form name="koreChannelForm" novalidate>
+        <div class="modalHeader channelModalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+                    <i class="btx-close" ng-click="$parent.goToHome(true)"></i>
+                    {{'Bt_chnl_kore_header'| i18nString}}</h4>
+        </div>
+        <div class="modalBody inner-scroll topMargin" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+            <div class="channel-content widthseventy">
+
+                <div class="col-xs-12 noPadding form-group radioDiv">
+
+                    <div>
+                        <label>{{'Bt_chnl_kore_enable_disable_label'| i18nString}}</label>
+                    </div>
+
+                    <div>
+                        <label for="kore.enable.no">
+                            <input ng-value="false" ng-checked="true" type="radio" ng-model="$parent.kore.enable" name="kore.enable" id="kore.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'Disable'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <div>
+                        <label for="kore.enable.yes">
+                            <input ng-value="true" type="radio" ng-model="$parent.kore.enable" name="kore.enable" id="kore.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'Enable'| i18nString}}</span> 
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="panel-group responseAccordion clear-fix responseAccordionContainer" id="botCommandAccordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading collapsed noPadding" role="button" data-toggle="collapse" data-parent="#botCommandAccordion" href="#botcmdpanel" role="tab" id="botcmd">
+                            <div><span class="panel-title entity_count_label ng-binding">{{'Bt_chnl_kore_botcmd_label'| i18nString}}</span>
+
+                                <span class="pull-right length ng-binding"> <!-- {{koreChannelForm._createSlash ? "Enabled":"Disabled"}} --> <i class="btx-carrot-right fa-chevron-right"></i></span>
+                                <p>{{'Bt_chnl_kore_botcmd_desc'| i18nString}}</p>
+                            </div>
+
+
+                            <!-- <div><span class="panel-title entity_count_label"> Authentication</span><span class="pull-right length"> <i class="fa fa-chevron-right"></i></span>
+                              <p>Choose the authentication profile to be used to when accessing this API Call</p>
+                            </div> -->
+
+
+                        </div>
+                        <div id="botcmdpanel" class="panel-collapse collapse trymodepanel" role="tabpanel" aria-labelledby="botcmd">
+                            <div class="panel-body">
+                                <div class="col-xs-12 noPadding">
+
+
+
+                                    <div class="col-xs-12 form-group">
+                                        <slash-commands-form parent-form="koreChannelForm" ctx="commandCtx" of="stream" command="botdata.command" class="advSettingsSlash"></slash-commands-form>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                            <div class="panel-footer"><span class="saveCheck" ng-if="saveSuccess"><i class="fa fa-check "></i>{{'saved_label_lowercase'| i18nString}}</span>
+                                <button ng-click="saveSlashCommand()"
+                                        class="btn btn-sm btn-primary text-info"> <i ng-if="commandSaveInProgress" class="fa fa-spinner fa-spin"></i> {{(commandSaveInProgress) ? savingLabel : save }} </button>
+                            </div>
+
+                        </div>
+                    </div>   
+                </div>
+
+
+
+                <div ng-if="false" class="col-xs-12 noPadding form-group radioDiv options-wrap" ng-init="$parent.kore.enableKore = $parent.kore.enableKore || false">
+                    <div >
+                        <label  tooltip-placement="right" tooltip="{{'bt_chnl_kore_ai_tooltip'| i18nString}}">{{'enable_Access'| i18nString}}</label>
+                    </div>
+                    <div>
+                        <label for="kore.enableKore.no">
+                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="$parent.kore.enableKore" name="kore.enableKore" id="kore.enableKore.no" ><span class="opt-title">{{'bt_chnl_kore_ai_no_not_accessible'| i18nString}}</span> </input>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="kore.enableKore.yes">
+                            <input ng-value='true'  type="radio"   ng-model="$parent.kore.enableKore" name="kore.enableKore" id="kore.enableKore.yes"><span class="opt-title">{{'bt_chnl_kore_ai_yes_users_accesible'| i18nString}}</span> </input>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modalFooter">
+            <button type="button" class="btn" ng-disabled="streamState=='published'" ng-class="{'screenFreeze':streamState=='published'}" ng-click="saveKoreChannel()">{{'save'| i18nString}}</button>
+            <button class="btn closeCancel" ng-click="$parent.goToHome(true)">Cancel</button>
+        </div>
+    </form>
+</div>
+<!--<div class="col-xs-12 text-block">
+
+    Kore Channel
+
+</div>-->
+<!--<div class="col-xs-12">
+    <span class="action">
+        <toggle-switch ng-model="$parent.kore.enableKore" ></toggle-switch>
+    </span>
+
+</div>-->
+
+

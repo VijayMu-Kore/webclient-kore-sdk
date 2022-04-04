@@ -1,0 +1,20 @@
+<div class="header_wyswyg">
+	<span role="group" aria-label="..." class="wyg-btns">
+	  <button id="{{name+'bold'}}" type="button" class="btn fa fa-bold"></button>
+	  <button id="{{name+'italic'}}" type="button" class="btn fa fa-italic"></button>
+	  <button id="{{name+'underline'}}" type="button" class="btn fa fa-underline"></button>
+	</span>
+	<span class="pull-right">
+		<select placeholder="{{'settings_form_select_any_key'| i18nString}}" class="btn keychooser" ng-change="onChange(justabliss.title)" ng-model="justabliss.title">
+			<option value="">{{'settings_form_select_any_key'| i18nString}}</option>
+			<optgroup label="Response Keys" ng-show="keys.length>0">
+			    <option ng-repeat="key in keys  | limitTo : 200 track by $index" value="{{'sample,'+key}}">{{key}}</option>
+			</optgroup>
+			<optgroup label="Variables" ng-show="(vars | keyInCollection:keys).length>0">
+			    <option ng-repeat="key in vars | keyInCollection : keys | limitTo : 200 track by $index" value="{{'variable,'+key}}">{{key}}</option>
+			</optgroup>
+		</select>
+	</span>
+</div>
+
+<div id="{{name}}" class="html_editor" hightlight ng-model="model" contenteditable="false"></div>

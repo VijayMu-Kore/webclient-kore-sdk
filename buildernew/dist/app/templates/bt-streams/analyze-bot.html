@@ -1,0 +1,35 @@
+    <div class="panel-group accordion-streams" id="analyzeAccordion" role="tablist" aria-multiselectable="true">  
+<div class="panel panel-default" ng-if="false">
+    <div class="panel-heading collapsed" role="button" id="headChatHistory" ng-click="loadBotChatScenarios=false" data-toggle="collapse" data-parent="#analyzeAccordion"  href="#chatHistory" >
+     
+      <div><span class="panel-title entity_count_label">{{'chat_history'| i18nString}}</span>
+        <help-link help-link-url="BOT_CHAT_HISTORY_HELP"></help-link>
+        <span class="pull-right length"><i class="fa fa-chevron-right"></i></span>
+      <p>{{'review_chat'| i18nString}}</p>
+      </div>
+    </div>
+    <div id="chatHistory" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headChatHistory">
+      <div class="panel-body noPadding">
+      <bot-chat-history stream-id="{{selectedStream._id}}"></bot-chat-history>
+      </div>
+    </div>
+     
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading collapsed" ng-init="loadBotChatScenarios = false" ng-click="loadBotChatScenarios=!loadBotChatScenarios" role="button" id="headChatLogs" data-toggle="collapse" data-parent="#analyzeAccordion"  href="#chatLogs" >
+     
+      <div><span class="panel-title entity_count_label">{{'chat_logs'| i18nString}}</span>
+        <help-link help-link-url="BOT_CHAT_LOGS_HELP"></help-link>
+        <span class="pull-right length"><i class="fa fa-chevron-right"></i></span>
+      <p>{{'monitor_bot'| i18nString}}</p>
+      </div>
+    </div>
+    <div id="chatLogs" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headChatLogs">
+      <div class="panel-body noPadding">
+      <bot-chat-scenarios ng-if="loadBotChatScenarios" stream="selectedStream"></bot-chat-scenarios>
+      </div>
+    </div>
+     
+  </div>
+    </div>

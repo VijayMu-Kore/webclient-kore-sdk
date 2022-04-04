@@ -1,0 +1,239 @@
+<div class="modalSliderContainer width700">
+        <form name="mattermostForm">
+        <div class="modalHeader channelModalHeader">
+            <h4 class="modal-title" id="gridSystemModalLabel">
+              <i class="btx-close" ng-click="goToHome()"></i>
+                {{'bt_chnl_mattermost_header'| i18nString}}
+              </h4>
+ </div>
+        <div class="modalBody slack-channel-page inner-scroll channelInnerContent" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+          <div class="col-xs-12 step-progress-container">
+            <step-progress steps="steps" on-click="stepClick"></step-progress>
+        </div> 
+          <div ng-repeat="step in steps" ng-show="step.active" class="slcakChannels widthseventy">
+    
+                <div class="col-xs-12 noPadding" ng-show="steps[0].active">
+            <div class="col-xs-12 channel-content">
+    
+              <div class="info">
+                <p>
+                  {{'Bt_chnl_mattermost_instruct_desc'| i18nString}} 
+                </p>
+              </div>
+    
+              <div class="info">
+
+
+
+               <div class="col-xs-12 noPadding radioDiv" >
+                   <div>
+                       <div ng-click='selectRadio("webhook")'>
+                           <label for="webhookIntegration">
+                               <input value='webhook'  type="radio" ng-model="integration.type" name="integrationType" id="webhookIntegration" class='ng-valid ng-dirty ng-touched'><span class="opt-title">{{'bt_chnl_webhook_header'| i18nString}}</span> </input>
+                           </label>
+                       </div>
+                       <div ng-click='selectRadio("webSocket")'>
+                           <label for="webSocketIntegration">
+                               <input value='webSocket'  type="radio" ng-model="integration.type" name="integrationType" id="webSocketIntegration" class='ng-valid ng-dirty ng-touched'><span class="opt-title">{{'Bt_chnl_mattermost_instruct_websocket_label'| i18nString}}</span> </input>
+                           </label>
+                       </div>
+                   </div>
+               </div>
+
+                <div ng-if='integration.type === "webhook"'>
+                  <p class="channelstep marginTop15">{{'Bt_chnl_mattermost_instruct_webhook_step1_label'| i18nString}}</p>
+                  <p>{{'Bt_chnl_mattermost_instruct_webhook_step1_desc'| i18nString}}</p>
+                  <p class="marginLeft15">{{'Bt_chnl_mattermost_instruct_webhook_step1_point1'| i18nString}} </p>
+                  <p class="marginLeft15">{{'Bt_chnl_mattermost_instruct_webhook_step1_point2'| i18nString}}</p>
+                  <p class="marginLeft15">{{'Bt_chnl_mattermost_instruct_webhook_step1_point3'| i18nString}} </p>
+                  <p class="marginLeft15">{{'Bt_chnl_mattermost_instruct_webhook_step1_point4'| i18nString}}</p>
+                  <p class="marginLeft15">{{'Bt_chnl_mattermost_instruct_webhook_step1_point5'| i18nString}}</p>
+                  <img ng-src="{{assetsBase}}images/Mattermost 1.png" class="marginBottom10 width100percent" />
+                  <p>{{'Bt_chnl_mattermost_instruct_webhook_step1_note'| i18nString}}</p>
+                  <img ng-src="{{assetsBase}}images/Mattermost 2.png" class="marginBottom10 width100percent" />
+                  <p class="channelstep marginTop15">{{'Bt_chnl_mattermost_instruct_webhook_step2_label'| i18nString}}</p>
+
+                  <p>{{'Bt_chnl_mattermost_instruct_webhook_step2_desc'| i18nString}}</p> 
+                  <p class="marginLeft15">{{'Bt_chnl_mattermost_instruct_webhook_step2_point1'| i18nString}} </p>
+                  <p class="marginLeft15">{{'Bt_chnl_mattermost_instruct_webhook_step2_point2'| i18nString}} </p>
+                  <p class="marginLeft15">{{'Bt_chnl_mattermost_instruct_webhook_step2_point3'| i18nString}}</p>
+                  
+                  <img ng-src="{{assetsBase}}images/Mattermost 3.png" class="marginBottom10 width100percent" />
+                  <p>
+                    {{'Bt_chnl_mattermost_instruct_webhook_step2_note'| i18nString}}
+                  </p>
+                  <img ng-src="{{assetsBase}}images/Mattermost 4.png" class="marginBottom10 width100percent" />
+                </div>
+                <div ng-if='integration.type === "webSocket"'>
+                  <p class="channelstep marginTop15">{{'Bt_chnl_mattermost_instruct_websocket_step1_label'| i18nString}}</p>
+                  <p>{{'Bt_chnl_mattermost_instruct_websocket_step1_desc'| i18nString}} </p>
+                  <img ng-src="{{assetsBase}}images/Mattermost 5.png" class="marginBottom10 width100percent" />
+
+                  <p class="channelstep marginTop15">{{'Bt_chnl_mattermost_instruct_websocket_step2_label'| i18nString}}</p>
+                  <p>{{'Bt_chnl_mattermost_instruct_websocket_step2_desc'| i18nString}}</p>
+                  <img ng-src="{{assetsBase}}images/Mattermost 6.png" class="marginBottom10 width100percent" />
+                  <p>{{'Bt_chnl_mattermost_instruct_websocket_step2_note'| i18nString}}</p>
+                </div>
+              </div>
+    
+
+            <div class="footer modal-header hide  form-group noMargin" ng-if="displayMode!=='view'">
+              <div class="footerSub">
+                        <div class="col-xs-3"><button type="button"  ng-click="$parent.goToHome()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+                
+                <div  class="col-xs-6 lineheight"><div class="form-ctrl-div pull-left hide">
+                  <button type="button"  class="btn btn-default" ng-click="$parent.goToHome()">{{'exit_label'| i18nString}}</button>
+                </div>
+                <div class="help-hint-link"> <a target="_blank"  ng-href="{{$root.helpLinks.ADD_CHANNEL_WFACEBOOK}}">{{'help_withpage_label'| i18nString}}</a> </div>
+                </div>
+                <div class="col-xs-3">
+                <div class="pull-right form-ctrl-div">
+                  <button type="button"  class="btn btn-primary" ng-click="$parent.next(2)">{{'next'| i18nString}}</button>
+                </div>
+                </div>
+              </div>
+            </div>
+            </div></div>
+         
+          <div class="col-xs-12 noPadding" ng-show="steps[1].active">
+            <div class="col-xs-12 channel-content" ng-if='integration.type === "webhook"'>
+                 <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                    <div class="col-xs-12 noPadding">
+                      <label class="required-field">{{'callback_url_name'| i18nString}}</label>
+                      <p>{{'Bt_chnl_mattermost_config_webhook_callbackurl_desc'| i18nString}}</p>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <div class="input-group">
+                            <input type="text" id="mattermost_webhook_url{{step.step}}" class="form-control" ng-model="channel.webhook_url" ng-readonly="true" name="appName">
+                            <div class="input-group-addon pointer-hand" data-clipboard-target="#mattermost_webhook_url{{step.step}}"> {{'copy'| i18nString}} </div>  
+  
+                        </div> 
+                        <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}</span></div>              
+                    </div>
+                  </div>
+                  <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                    <div class="col-xs-12 noPadding">
+                      <label class="">{{'Bt_chnl_mattermost_config_webhook_outgoingwebhook_label'| i18nString}}</label>
+                      <p>{{'Bt_chnl_mattermost_config_webhook_outgoingwebhook_desc'| i18nString}}</p>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                      <input type="text" class="form-control" ng-model="channel.verification_token" name="app_token" required="">
+                      <div ng-show="mattermostForm.app_token.$dirty || app_tokenRequired">
+                        <div error-alert ng-show="mattermostForm.app_token.$error.required" class="text-danger">
+                          {{'Bt_chnl_mattermost_config_webhook_outgoingwebhook_err'| i18nString}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group noPadding">
+                      <div class="col-xs-12 noPadding">
+                        <label>{{'Bt_chnl_mattermost_config_webhook_incommingwebhook_label'| i18nString}}</label>
+                        <p>{{'Bt_chnl_mattermost_config_webhook_incommingwebhook_desc'| i18nString}}</p>
+                      </div>
+                      <div class="col-xs-12 noPadding">
+                      <input type="text" class="form-control" ng-model="channel.post_url" name="post_url" required="">
+                      <div  ng-show="mattermostForm.post_url.$dirty || post_urlRequired">
+                        <div error-alert ng-show="mattermostForm.post_url.$error.required" class="text-danger">
+                          {{'Bt_chnl_mattermost_config_webhook_incommingwebhook_err'| i18nString}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+                <div class="col-xs-12 noPadding">
+                    <label>{{'enable_chnl'| i18nString}}</label>
+                    <p>{{'Bt_chnl_mattermost_config_webhook_enablechanl_desc'| i18nString}}</p>
+                </div>
+    
+                <div class="col-xs-12 radioDiv noPadding">
+                    <div>
+                        <label for="channel.enable.no" >
+                            <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <div>
+                        <label for="channel.enable.yes">
+                            <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                        </label>
+                    </div>
+                </div>
+            </div>
+          </div>
+    
+          <div class="col-xs-12 channel-content" ng-if='integration.type === "webSocket"'>
+            <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+              <div class="col-xs-12 noPadding">
+                <label class="">{{'Bt_chnl_mattermost_config_websocket_matterurl_label'| i18nString}}</label>
+                <p>{{'Bt_chnl_mattermost_config_websocket_matterurl_desc'| i18nString}} </p>
+              </div>
+              <div class="col-xs-12 noPadding">
+                <input type="text" class="form-control" ng-model="channel.mattermost_hosturl" name="hosturl" required="">
+                <div ng-show="mattermostForm.hosturl.$dirty">
+                  <div error-alert ng-show="mattermostForm.hosturl.$error.required" class="text-danger">
+                    {{'Bt_chnl_mattermost_config_websocket_matterurl_err'| i18nString}}  
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+              <div class="col-xs-12 noPadding">
+                <label class="">{{'Bt_chnl_mattermost_config_webhook_username_label' | i18nString}}</label>
+                <p>{{'Bt_chnl_mattermost_config_webhook_username_desc' | i18nString }}</p>
+              </div>
+              <div class="col-xs-12 noPadding">
+                <input type="text" class="form-control" ng-model="channel.botUserName" name="botUserName" required="">
+                <div ng-show="mattermostForm.botUserName.$dirty || app_tokenRequired">
+                  <div error-alert ng-show="mattermostForm.botUserName.$error.required" class="text-danger">
+                    {{'Bt_chnl_mattermost_config_webhook_username_err' | i18nString}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 row form-group noPadding" ng-class="{'screenFreeze':streamState.state=='published'}">
+              <div class="col-xs-12 noPadding">
+                <label class="">{{'acesstoken_label'| i18nString}}</label>
+                <p>{{'Bt_chnl_mattermost_config_websocket_acessToken_desc'| i18nString}}</p>
+              </div>
+              <div class="col-xs-10 noPadding">
+                <input type="text" class="form-control" ng-model="channel.access_token" name="access_token" required="">
+                <div  ng-show="mattermostForm.access_token.$dirty">
+                  <div error-alert ng-show="mattermostForm.access_token.$error.required" class="text-danger">
+                    {{'Bt_chnl_mattermost_config_websocket_acessToken_err'| i18nString}}
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="col-xs-12 noPadding">
+                  <label>{{'enable_chnl'| i18nString}}</label>
+                  <p>{{'Bt_chnl_mattermost_config_webhook_enablechanl_desc'| i18nString}}</p>
+              </div>
+  
+              <div class="col-xs-12 radioDiv noPadding">
+                  <div>
+                      <label for="channel.enable.no" >
+                          <input ng-value="false" ng-checked="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.no" class="ng-pristine ng-untouched ng-valid" value="false" checked="checked"><span class="opt-title">{{'no'| i18nString}}</span> 
+                      </label>
+                  </div>
+                  <div>
+                      <label for="channel.enable.yes">
+                          <input ng-value="true" type="radio" ng-model="channel.enable" name="channel.enable" id="channel.enable.yes"  class="ng-pristine ng-untouched ng-valid" value="true"><span class="opt-title">{{'yes'| i18nString}}</span> 
+                      </label>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+       
+      </div>
+
+    </div>
+    <div class="modalFooter">
+      <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button>
+      <button type="button" class="btn" ng-click="save(mattermostForm)" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+      <button class="btn closeCancel" ng-click="goToHome()">Cancel</button>
+  </div>
+    </div>
+  </form>
+</div>
+
+    

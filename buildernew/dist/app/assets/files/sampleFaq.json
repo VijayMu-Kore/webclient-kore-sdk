@@ -1,0 +1,10 @@
+{
+    "question": "what is task?",
+    "answer": "task is a process of execution",
+    "subQuestions": [
+        "define task?"
+    ],
+    "subAnswers": [
+        "task is the todo"
+    ]
+}

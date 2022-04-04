@@ -1,0 +1,49 @@
+<bot-modal-slider>
+    <div class="modalSliderContainer width800">
+
+        <div class="header-sec col-xs-12 modalHeader">   
+            <h4 class="modal-title ">
+                {{'manage_var_namespace'| i18nString}}
+                <i class="btx-close" ng-click="cb.close()"></i>
+                <!-- <div class="miHeadBar">
+                    <div class="desc">{{cb.subHeading}}</div>
+                    <div class="heading"></div>
+                </div>                      -->
+            </h4>        
+        </div>
+        <div class="modalBody importModal" perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+            <p>
+                <span ng-if="cb.flagName == 'dialog' || cb.flagName == 'alert' || cb.flagName == 'information' || cb.flagName == 'action'">{{'associ_var_name'| i18nString}}</span>
+                <span ng-if="cb.flagName == 'standardResponse'">{{'associ_var_name_standardresp'| i18nString}}</span>
+                <span ng-if="cb.flagName == 'smallTalk'">{{'associ_var_name_smallTalk'| i18nString}}</span>
+                <span ng-if="cb.flagName == 'events'">{{'associ_var_name_events'| i18nString}}</span>
+                <span ng-if="cb.flagName == 'kg'">{{'associ_var_name_kg'| i18nString}}</span>
+
+                <a href="https://developer.kore.ai/docs/bots/bot-settings/bot-management/managing-namespace/" target="_blank">{{'know_more'| i18nString}}</a>
+            </p>
+            <!-- class  accordion-namespaces-comp has some properties verify before removing it-->
+            <namespaces-search-accordions man-var-cb="cb" class="accordion-namespaces-comp"></namespaces-search-accordions> 
+        </div>
+        <div class="modalFooter">
+            <button class="kr-sg-button-primary btn_md" ng-click="save()" ng-disabled="cb.state == 'published'">{{'save'| i18nString}}</button>
+            <button class="kr-sg-button-secondary btn_md" ng-click="cb.close()">{{'cancel'| i18nString}}</button>
+        </div>
+    </div>
+</bot-modal-slider>
+
+<div id="namespaceLastDelete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">{{'confirm_to_proceed_label'| i18nString}}</h4> 
+            </div>
+            <div class="modal-body">
+                <p>{{'last_del_namespace'| i18nString}}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="kr-sg-button-primary btn_md" id="proceed_removeNs">{{'proceed'| i18nString}}</button>
+                <button class="kr-sg-button-secondary btn_md" ng-click="closeNamespaceLastDel()">{{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>

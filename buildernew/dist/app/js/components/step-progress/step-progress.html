@@ -1,0 +1,9 @@
+<div class="col-xs-12  noPadding">
+	<div class="step-progress-component">
+		<div ng-repeat="step in steps" ng-show="!step.hide" class="step-progress-step" ng-class="{'active':step.active}">
+			<div class="step-name" ng-click="onClick($index+1)">
+				{{step.name}}
+			</div>
+		</div>
+	</div>
+</div>

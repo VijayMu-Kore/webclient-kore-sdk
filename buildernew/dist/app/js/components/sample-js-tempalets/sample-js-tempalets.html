@@ -1,0 +1,17 @@
+<!-- <select class="jsEditorTemplate" style="color:black;" ng-model="selectedTemplate.name" ng-change="selectTemplateJSCode()">
+    <option value="">Select Template</option>
+    <optgroup label="{{taskItem.type}}" ng-repeat="taskItem in channelTempalets">
+        <option ng-repeat="template in taskItem.template" value="{{template.name}}">{{template.name}}</option>
+    </optgroup>
+</select> -->
+
+<div class="dropdown jsTemplates">
+    <input ng-model="selectedTemplate.name" title="{{selectedTemplate.name}}" class="dropdown-toggle" type="text" data-toggle="dropdown" placeholder="Select Template" readonly ng-show='channelTempalets.length > 0'>
+    <i class="fa fa-caret-down" ng-show='channelTempalets.length > 0'></i>
+    <ul class="dropdown-menu" perfect-scroll>
+        <li ng-repeat="taskItem in channelTempalets" class="dropdown-header channelTempalets">
+            <div class="subHeading">{{taskItem.type}}</div>
+            <div class="templateTitle" ng-click = "selectTemplateJSCode(template1)" ng-repeat="template1 in taskItem.template"><span class="templateName" title="{{template1.name}}">{{template1.name}}</span></div>
+        </li>        
+    </ul>
+</div>

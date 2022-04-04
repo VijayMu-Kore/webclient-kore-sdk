@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>comments-white</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="comments-white" transform="translate(-2.000000, -2.000000)" fill-rule="nonzero">
+            <polygon id="Path" fill-opacity="0" fill="#D8D8D8" points="0 0 16 0 16 16 0 16"></polygon>
+            <path d="M12.264,2 L3.734,2 C2.778,2 2,2.777 2,3.735 L2,13.483 L2.002,13.528 C2.037,13.958 2.567,14.162 2.881,13.848 L5.167,11.562 L12.264,11.562 C13.222,11.562 13.999,10.785 13.999,9.827 L13.999,3.735 C13.999,2.777 13.222,2 12.264,2 Z M3.734,3.032 L12.264,3.032 C12.652,3.032 12.967,3.347 12.967,3.735 L12.967,9.827 C12.967,10.215 12.652,10.53 12.264,10.53 L4.954,10.53 L4.902,10.532 C4.784,10.544 4.672,10.596 4.588,10.681 L3.032,12.237 L3.032,3.735 C3.032,3.347 3.347,3.032 3.735,3.032 L3.734,3.032 Z" id="Shape" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

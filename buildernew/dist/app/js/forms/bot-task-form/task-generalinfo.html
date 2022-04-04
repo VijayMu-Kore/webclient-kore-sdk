@@ -1,0 +1,170 @@
+<div ng-if="wfType !== 'knowledge'">
+<div class="modal-header">
+    <button ng-click="closeModal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+    <h4 class="modal-title">{{isReport ?info : wfType === 'action' ? action : alert}}</h4>
+</div>
+<div class="modal-body modalPerfectScroll" perfect-scroll>
+
+    <div class="pageFlow">
+        <form name="taskgen.taskGeneralInfoForm" class="wf-form" ng-submit="saveIntro(taskgen.taskGeneralInfoForm.$valid,taskgen.taskGeneralInfoForm)" novalidate>
+            <fieldset>
+              <div class="col-xs-12 form-group">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{'task_name_casesensitive'| i18nString}}"> {{'task_name_label'| i18nString}} </label>
+                         <div ng-show="introObj.name.length>0" class="pull-right obj-length"> {{60-introObj.name.length+ charRemaining}} </div>
+                    </div>
+                    <div class="col-xs-12">
+                         <input type="text" class="form-control alert-input" remove-one-ascii ng-disabled="(displayMode==='edit' && getEntityStatus()) || displayMode==='view'" ng-blur="checkTaskWordCount();focus=false" ng-focus="focus=true" ng-model="introObj.name" name="name" id="name" placeholder="{{isReport ? infoName:  wfType.toLowerCase()=='action'?actionName:alertName}}" ng-minlength="1" maxlength="60" spellcheck="true" required ng-pattern="validateTaskName" autocomplete="off">
+                         
+
+                        <div ng-show="!focus && taskgen.taskGeneralInfoForm.name.$dirty" class="col-xs-10 noPadding">
+                            <div error-alert ng-show="taskgen.taskGeneralInfoForm.name.$error.required" class="text-danger"> {{isReport ? infoRequired:  wfType.toLowerCase()=='action'?actionRequired:alertRequired}}  </div>
+                            <div error-alert ng-show="taskgen.taskGeneralInfoForm.name.$error.pattern && !botNameMatched" class="text-danger"> {{isReport ? infoAllows:  wfType.toLowerCase()=='action'?actionAllows:alertAllows}} </div>
+                            <div error-alert ng-show="botNameMatched" class="text-danger"> {{isReport ? infoNObot:  wfType.toLowerCase()=='action'?actionNObot:alertNObot}} </div>
+                        </div>
+                    </div>
+                     <div class="col-xs-1 noPadding infodiv">
+                        <i ng-show="!focus && taskgen.taskGeneralInfoForm.name.$dirty && (taskgen.taskGeneralInfoForm.name.$valid && !invalidWordCount) " class="fa fa-check-circle"></i>
+                        <i ng-show="!focus && taskgen.taskGeneralInfoForm.name.$dirty && (!taskgen.taskGeneralInfoForm.name.$valid || invalidWordCount)" tooltip-placement="left"  tooltip-html-unsafe="{{'name_casesensitive'| i18nString}}<br><br>{{'special_character'| i18nString}}" class="fa fa-exclamation-circle"></i></div>
+                </div>
+              
+                <!-- Display Name Block -->
+                <div class="col-xs-12 form-group">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{'display_aim'| i18nString}}"> {{'display_Name'| i18nString}}<!-- Display Name --> </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <textarea rows="2" ng-disabled="displayMode==='view'" ng-model="introObj.shortdescription" placeholder="{{'display_Name'| i18nString}}" class="form-control" name="description" spellcheck="true" required ng-minlength="1" maxlength="100"></textarea>
+                        <div ng-show="taskgen.taskGeneralInfoForm.description.$dirty">
+                            <div error-alert ng-show="taskgen.taskGeneralInfoForm.description.$error.required" class="text-danger">{{isReport ? displayinfoName:  wfType.toLowerCase()=='action'?displayactionName:displayalertName}} </div>
+                            <div ng-show="introObj.shortdescription.length>0" class="pull-right">{{100-introObj.shortdescription.length+ charRemaining}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- connection type and mode -->
+                                <div class="col-xs-12 form-group" ng-hide="wfType == 'action'"  ng-if="wfType !== 'flowTask'">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{isReport ? connInfoName:  wfType.toLowerCase()=='action'?connActionName:connAlertName}}.">{{'connection_type'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <select ng-model="introObj.type" ng-disabled="(displayMode==='edit' || alertid || wfType == 'action') || displayMode==='view'" class="btnDropdown form-control" name="alertType" ng-options="alerttypes.name for alerttypes in alerttypes" ng-change="setAlertspathValue()" required>
+                            <option value=""> {{'select_any'| i18nString}}</option>
+                        </select>
+                        <div  ng-show="taskgen.taskGeneralInfoForm.alertType.$dirty">
+                            <div error-alert ng-show="taskgen.taskGeneralInfoForm.alertType.$error.required" class="text-danger">
+                              {{'select_conn'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 form-group" ng-if="introObj.type.value === 'webservice'">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field" tooltip-placement="right" tooltip="{{isReport ? subtypeInfoName:  wfType.toLowerCase()=='action'?subtypeActionName:subtypeAlertName}}. ">{{'connection_mode'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <select ng-model="introObj.subtype" ng-disabled="(displayMode==='edit' || alertid) || displayMode==='view'" class="btn btn-default btnDropdown form-control" name="alertSubType" required>
+                            <option value=""> {{'select_any'| i18nString}} </option>
+                            <option ng-repeat="subtype in subtypes" value="{{subtype.value}}">{{subtype.name}}</option>}
+                        </select>
+
+                        <div  ng-show="taskgen.taskGeneralInfoForm.alertSubType.$dirty">
+                            <div error-alert ng-show="taskgen.taskGeneralInfoForm.alertSubType.$error.required" class="text-danger">
+                              {{'select_subtype'| i18nString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end of connection mode -->
+
+                <!-- Long Description Block -->
+                <div class="col-xs-12 form-group" ng-if="wfType !== 'flowTask' && false">
+                    <div class="col-xs-12 labelling">
+                        <label class="required-field" tooltip-placement="right" tooltip=" {{isReport ? infoContext:  wfType.toLowerCase()=='action'?actionContext:alertContext}} "> {{'long_desc'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <textarea rows="3" ng-model="introObj.longdescription" ng-disabled="displayMode==='view'" placeholder="{{isReport ? infoDesc:  wfType.toLowerCase()=='action'?actionDesc:alertDesc}} " class="form-control" name="ldescription" required ng-minlength="1" maxlength="2048" spellcheck="true"></textarea>
+                        <div ng-show="taskgen.taskGeneralInfoForm.ldescription.$dirty">
+                            <div error-alert ng-show="taskgen.taskGeneralInfoForm.ldescription.$error.required" class="text-danger"> {{isReport ? infoLong:  wfType.toLowerCase()=='action'?actionLong:alertLong}} </div>
+                            <div ng-show="introObj.longdescription.length>0" class="pull-right"> {{2048-introObj.longdescription.length+ charRemaining}} </div>
+                        </div>
+                    </div>
+                </div>
+                 </fieldset>
+             </form>
+                </div>
+
+</div>
+<div class="modal-footer">
+    
+    <button ng-click="saveIntro(taskgen.taskGeneralInfoForm.$valid,taskgen.taskGeneralInfoForm)" type="button" class="btn btnSolidBlue btn-primary">{{'account_create'| i18nString}}</button>
+    <button type="button" ng-click="closeModal()" class="btn closeCancle btn-default">{{'cancel'| i18nString}} </button>
+</div>
+</div>
+
+
+
+
+              <!-- Knowledge task metadata modal -->
+              <div ng-if="wfType === 'knowledge'">
+                    <div class="modal-header">
+                      <button type="button" class="close" ng-click="closeModal()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                      <h4 class="modal-title" id="gridSystemModalLabel">{{'new_kg'| i18nString}}</h4>
+                    </div>
+
+                    <div class="modal-body wf-form modalPerfectScroll" perfect-scroll>
+                      <form name="kt.streamktform" class="wf-form" novalidate>
+                        <fieldset class="row">
+                          <div class="col-xs-12 form-group">
+
+                            <div class="col-xs-12">
+                              <label class="required-field" tooltip-placement="right" tooltip="">{{'Collection_Name'| i18nString}}  </label>
+                            </div>
+                            <div class="col-xs-12" ng-show="displayMode==='view'">
+                              {{knowledgeData.name}}
+                            </div>
+                            <div class="col-xs-12" ng-show="displayMode!=='view'">
+                              <input type="text" focus-it="" ng-model="knowledgeData.name" name="name" ng-disabled="knowledgeData.isInMarket" class="form-control" ng-minlength="1" maxlength="50" required ng-pattern="validatePattern" placeholder="{{'kg_collection'| i18nString}}" autocomplete="off">
+                              <div  ng-show="kt.streamktform.name.$dirty">
+                                <div error-alert  ng-show="kt.streamktform.name.$error.required" class="text-danger form-error-text">{{'kg_name_req'| i18nString}}  </div>
+                                <div error-alert ng-show="kt.streamktform.name.$error.minlength" class="text-danger form-error-text"> {{'Generalform_name_invalid'| i18nString}} </div>
+                                <div error-alert ng-show="kt.streamktform.name.$error.pattern" class="text-danger form-error-text"> {{'kg_name'| i18nString}}</div>
+                                <div class="pull-right" ng-if="knowledgeData.name.length > 0">{{(50-knowledgeData.name.length)+ charRemaining}}</div>
+                              </div>
+                              <div error-alert ng-show="duplicateKTName" class="text-danger form-error-text"> {{'duplicateStreamName_error'| i18nString}} </div>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 form-group">
+                            <div class="col-xs-12">
+                              <label class="" tooltip-placement="right" tooltip="">{{'tooltip_desc'| i18nString}}  </label>
+                            </div>
+                            <div class="col-xs-12" ng-show="displayMode === 'view'">
+                              {{knowledgeData.description}}
+                            </div>
+                            <div class="col-xs-12" ng-show="displayMode !== 'view'">
+                             <!--  <textarea rows="3" ng-model="knowledgeData.description" placeholder="Describe your {{_constants_.label}} in about 3 to 4 lines" class="form-control" name="description" ng-minlength="1" maxlength="250" required></textarea> -->
+
+                             <input type="text" ng-model="knowledgeData.description" name="description"  class="form-control" ng-pattern="validatePattern" placeholder="{{'optional_name'| i18nString}}" ng-minlength="1" maxlength="250">
+                             <div error-alert ng-show="kt.streamktform.description.$error.pattern" class="text-danger form-error-text"> {{'kg_name'| i18nString}}</div>
+
+
+                           </div>
+                         </div>
+                       </fieldset>
+                     </form>
+
+                   </div>
+
+                   <div class="modal-footer"> 
+
+                    <div class="pull-right">
+                      <button type="reset" data-dismiss="modal" ng-click="closeModal()" class="btn btn-default">{{'cancel'| i18nString}}  </button>
+                      <button type="submit" class="btn btn-primary" ng-click="saveKnowledgeTask(isFormValid(true),kt.streamktform,$event)">{{'add'| i18nString}}</button>
+                    </div>
+
+                  </div>
+<div>
+                  <!-- End of Knowledge task modal -->
+
+        
+           

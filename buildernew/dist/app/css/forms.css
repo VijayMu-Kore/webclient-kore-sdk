@@ -1,0 +1,778 @@
+/* GENERAL */
+.remove-new-date-format{
+	cursor: pointer;
+	margin-top: 10px;
+	font-size: 20px;
+}
+
+.form-title {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #999;
+	margin-bottom: 30px;
+}
+.wf-form label.required-field:after {
+	content: '*';
+	color: #009dab;
+}
+
+.bt-color-blue{
+	color: #008692;
+}
+
+.bt-cursor-pointer{
+	cursor: pointer;
+}
+
+.wf-form .btn-file {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #26344a;
+    background: #f2f3f5;
+    font-weight:bold;
+}
+.wf-form .btn-file input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-width: 100%;
+	min-height: 100%;
+	font-size: 100px;
+	text-align: right;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	background: red;
+	cursor: inherit;
+	display: block;
+}
+.wf-form input[readonly] {
+	/*background-color: white !important;*/
+	cursor: auto !important;
+}
+.wf-form .last-form-group{
+	padding-top: 25px;
+	border-top: 1px solid #EEE;
+	float:right;
+}
+
+/* STREAM FORM */
+.teams label {
+	padding-right: 10px;
+}
+/* Mappings screen css start */
+
+.bt-mapping-container {
+	margin: 0;
+	font-size: 14px;
+	margin-bottom: 100px;
+}
+.bt-mapping-container .row.top-bar{
+    margin:0;
+    }
+.bt-mapping-container .row.header-mapping{
+    padding:30px 0;
+    }
+.li-item-row.row.wrapper .text-center.ng-scope hr{margin:10px;}
+.bt-mapping-container .mapping-header {
+	font-size: 22px;
+	color: #26344a;
+}
+.bt-mapping-container .mapping-step {
+	background-color: #fff;
+	border-radius: 5px;
+	/*padding: 15px 45px;*/
+}
+.bt-mapping-container .step-heading {
+	border-bottom: 1px solid #EAEAEA;
+	padding-bottom: 6px;
+}
+.bt-mapping-container .step-required {
+	color: #26344a;
+}
+.bt-mapping-container .resource-when {
+	color: #BFBCBC;
+	margin-bottom: 20px;
+}
+.bt-mapping-container .wf-form {
+	margin-top: 20px;
+}
+.wf-footer {
+	margin: 10px;
+}
+.bt-mapping-container .bt-step {
+	margin-bottom: 600px;
+	transition: all 0.4s ease;
+}
+.bt-mapping-container .previous-step {
+	font-size: 90%;
+	transition: all 0.4s ease;
+	cursor: pointer;
+	padding: 5px 10px;
+	margin-top: 6px;
+}
+.bt-mapping-container .previous-step:hover {
+	background-color: #009CDE;
+	color: #fff;
+	border-radius: 5px;
+}
+.bt-mapping-container .resource-keeper {
+	width: 300px;
+	height: 80px;
+	border-radius: 8px;
+	border: 1px solid #E1E1E1;
+	padding: 5px;
+	background-color: #fff;
+	text-overflow: ellipsis;
+	cursor: pointer;
+	-webkit-box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.1);
+	-moz-box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.1);
+	box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.1);
+	margin-right: 20px;
+	position: relative;
+}
+.bt-mapping-container .resource-left {
+	padding: 5px;
+	float: left;
+	margin-right: 10px;
+}
+.bt-mapping-container .resource-img-holder {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	border: 1px solid #ddd;
+}
+.bt-mapping-container .resource-img-holder img{
+	width: 58px;
+	height: 58px;
+	border-radius: 50%;
+}
+.bt-mapping-container .no-resource {
+	text-align: center;
+	padding-top: 22px;
+	font-weight: bold;
+}
+.bt-mapping-container .resource-right {
+	overflow: hidden;
+    position: relative;
+    top: 14px;
+}
+.bt-mapping-container .gear {
+	position: absolute;
+	top: 2px;
+	right: 5px;
+        background: none;
+}
+.bt-mapping-container .alert-action-row {
+	margin-bottom: 40px;
+}
+.bt-mapping-container .alert-fields-list {
+	border: 1px solid #D9D9D9;
+	max-height: 380px;
+	width: 300px;
+	overflow-y: auto;
+	padding: 1px;
+}
+.bt-mapping-container .action-fields-list  {
+    border: 1px solid #D9D9D9;
+    overflow-y: auto;
+    padding: 5px;
+    overflow-x: hidden;
+    border-radius: 4px;
+}
+.bt-mapping-container .resource-list-container {
+	padding: 1px;
+}
+.bt-mapping-container .resource-list-item:nth-child(even) {
+	padding: 8px;
+	border: 1px solid #F2F2F2;
+	margin: 1px;
+	border-radius: 5px;
+	background-color: #fff;
+}
+.bt-mapping-container .resource-list-item:nth-child(odd) {
+	padding: 8px;
+	border: 1px solid #F2F2F2;
+	margin: 1px;
+	border-radius: 5px;
+	background-color: #f2f3f5;
+}
+.bt-mapping-container .resource-list-item:hover {
+	background-color: #BDD7EE;
+	border-color: #BDD7EE;
+    cursor: move;
+}
+.bt-mapping-container .action-fields-list .drag {
+}
+.bt-mapping-container .action-fields-list .list-item {
+	padding: 5px;
+	border: 1px solid #F2F2F2;
+	margin: 1px;
+	background-color: #fff;
+}
+.bt-mapping-container .action-fields-list .li-input-ce {
+	background-color: #fff;
+	border: 1px solid lightgray;
+	min-height: 30px;
+	padding: 3px;
+	resize: none;
+}
+.bt-mapping-container .resource-list-item .drag {
+	width: auto;
+}
+.bt-mapping-container .resource-list-item .padding-0 {
+	padding: 0;
+}
+.bt-mapping-container .resource-list-item .vert-line {
+	height: 30px;
+	border: 1px solid gray;
+	width: 2px;
+	margin-left: 38px;
+}
+.col-xs-12.ace-select2.ng-isolate-scope div .select2-container.ng-pristine.ng-untouched.ng-valid{width:100% !important;}
+
+
+/*.uiselect2container .select2-container{ max-width: 922px;}*/
+/* Mappings screen css end */
+
+/**
+ * Synonyms tagbox width changes start
+ */
+
+.synonyms_manage .select2-container{
+	width:100% !important;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice{
+	        padding: 7px 20px 8px 10px;
+    		/*font-weight: bold !important;*/
+    		    margin-top: 7px;
+}
+
+.select2-container-multi .select2-search-choice-close {
+   right : 3px !important;
+   left : initial !important;
+}
+
+.synonyms_table_header{
+	max-width : 195px !important;
+}
+
+.synonyms-manage h3{
+	font-size: 18px;
+    color: #26344a;
+    line-height: 36px;
+    font-weight: bold;
+	display: inline-block;
+}
+
+.synonyms-manage .tab-content{
+	border: none !important;
+}
+
+
+.synonyms-manage tr .codeRed{
+	display: none;
+	vertical-align: middle;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.synonyms-manage tr:hover .codeRed{
+	display: block;
+}
+
+.synonyms-manage .search{
+	margin-right: -30px !important;
+}
+
+
+.fb-channel-page {
+	padding: 10px;
+}
+
+.fb-channel-page .fbChannels .col-xs-12 .info{
+	margin-bottom: 20px;
+	font-size: 16px;
+	display: block;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info img{
+	width: 100%;
+}
+
+.fb-channel-page .fbChannels .col-xs-12 form.info{
+	border:none;
+	padding-bottom:0;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .info{
+	border:none;
+	margin-bottom:0;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info img{
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+	display:block;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .fbBulbIconWrapper{
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #f0f0f0;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .fbBulbIconWrapper2{
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #f0f0f0;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+	margin-top: 10px;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .fbBulbIconWrapper .bulbicon{
+	width: 3%;
+	padding: 0;
+	text-align: center;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .fbBulbIconWrapper .bulbicon img{
+	border: none;
+	margin-top: 0;
+	margin-right: 10px;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .fbBulbIconWrapper .step1Note{
+	margin-bottom: 0;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .fbBulbIconWrapper2 .step2BulbIcon{
+	width: 3%;
+	padding: 0;
+	text-align: center;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .fbBulbIconWrapper2 .step2BulbIcon img{
+	border: none;
+	margin-top: 0;
+	margin-right: 10px;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info .fbBulbIconWrapper2 .step2Note{
+	margin-bottom: 0;
+}
+.fb-channel-page .fbChannels .col-xs-12 .info form{
+    margin-top: 20px;
+}
+.fb-channel-page .btn-default.btn-default{
+	background-color:#EEEEEE !important;
+	    border: 1px solid #eee;
+
+}
+
+ /**
+  * fb-channel
+  */
+
+/**
+* fb-channel
+*/
+/* CISCO*/
+.cisco-channel-page{
+    padding: 0 20px;
+    /*display: table;*/
+    font-size:16px;
+    }
+
+
+.cisco-channel-page h3{
+    font-size:20px;
+    font-weight:400;
+    }
+.cisco-channel-page h4{
+    font-size:16px;
+}
+.cisco-channel-page .btm{
+    margin-bottom:30px;
+    }
+/* CISCO*/
+
+
+/**
+* fb-channel
+*/
+
+.channel-add toggle-switch{
+    position: absolute;
+    left: 131px;
+    top: -20px;
+    margin-right: 0 !important;
+}
+
+
+.intent-entity-form .form-group{
+	margin-bottom:10px !important;
+	overflow:hidden !important;
+}
+
+.accordion-toggle{
+	margin-left:15px ;
+}
+
+ /**
+  * Intent entity edit form css end
+  */
+
+ /**
+  * Pattern related css start
+  */
+
+.pattern-manage-form .editCtrl{
+	text-decoration:none;
+}
+
+.pattern-manage-form .intent-item{
+	cursor:pointer;
+}
+
+.bot-chat-scenarios .divider{
+ 	background-color:#CCC !important;
+}
+
+.bot-chat-scenarios .tab-content{
+	border: none !important;
+}
+
+.bot-chat-scenarios .ctrl-list{
+	display: none;
+}
+
+.bot-chat-scenarios .scenario:hover .ctrl-list{
+	display: block;
+}
+
+.bot-chat-scenarios .ctrl{
+	display: inline-block;
+	margin-left: 10px;
+	/* margin-top : 10px; */
+	text-decoration: none;
+}
+
+.chat-response-menu ul.workflow-sidebar li.pointer-hand{
+	display: block !important;
+}
+
+.chat-response-menu .step-title{
+    padding: 5px 0px 5px 15px !important;
+}
+.chat-response-menu .step-title{
+	border-left: 3px solid #fff;
+}
+
+
+ .chat-response-menu .step-title.active {
+ 	border: none !important;
+    border-left: 3px solid #009dab !important;
+    color: #26344a;
+}
+
+ .bot-chat-scenarios .scenario{
+ 	border-bottom: 1px solid #ddd;
+	    padding-top: 5px !important;
+ }
+
+ .bot-chat-scenarios .input{
+ 	font-size:14px;
+ }
+
+ .bot-chat-scenarios .train-bot-btn-fail{
+    right: 10px;
+    margin-top: 5px;
+	z-index: 1;	
+	position: absolute;
+	}
+
+	.bot-chat-scenarios .train-bot-btn-success{
+    right: 10px;
+    margin-top: -5px;
+	z-index: 1;	
+	position: absolute;
+	}
+
+.bot-chat-scenarios	.scenario:hover .train-bot-btn {
+	display: block;
+}
+
+.bot-chat-scenarios	.scenario .train-bot-btn {
+	display: none;
+}
+
+ .bot-chat-scenarios .task{
+ 	font-size:16px;
+ 	font-weight:600;
+ 	color:#337ab7;
+ }
+ 
+ .classactive{
+     border-bottom:3px solid #009dab !important;
+     font-weight: bold;
+     color:#26344a;
+ }
+ .ul-style-opt{
+    list-style-type: none;
+    margin: 0px;
+    background: white;
+    padding: 4px;
+    border: 1px solid #009dab;
+    cursor: pointer;
+ }
+ .opt-div-style{
+     position:absolute;
+     z-index:100;
+     width: 300px;
+  
+ }
+
+ .nlp-screen .cntrl-list {
+  	visibility: hidden;
+  	cursor: pointer;
+  	float: right;
+ }
+
+ .nlp-screen .cntrl-list i{
+ 	padding-left  : 5px;
+ 	padding-right : 5px;
+ }
+
+.nlp-screen .message{
+	margin-bottom:10px;
+}
+.nlp-screen .bt-utterances .uttrence-view{
+    min-height: 95px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.border-top{
+ 	border-top: 1px solid #EEE;
+}
+
+.nlp-screen .message-text{
+	padding-top: 10px;
+}
+
+.nlp-screen .message:hover .cntrl-list {
+  	visibility: visible;
+}
+/*.nlp-screen ul.pagination-sm.pagination.ng-isolate-scope.ng-valid>li>a, .nlp-screen.pagination>li>span{
+    background: #fafafa;
+}*/
+.nlp-screen .inline-paging{
+margin: 10px;
+}
+
+
+.save-ctrl .form-control{
+	width:250px !important;
+}
+
+.publishForm{
+	padding-bottom: 100px;
+}
+.ui-complete .ui-autocomplete,.ui-complete .ui-widget-content{
+    z-index: 100000 !important;
+    background: white !important;
+    list-style: none;
+    position: absolute;
+}
+.ui-state-active,.ui-state-focus,.ui-state-active,.ui-state-hover{
+    color:#26344a !important;
+    border:none !important;
+    background: white !important;
+}
+.ui-menu-item{
+    margin-left: -40px;
+    padding-left: 10px;
+    line-height: 45px;
+    border-bottom: 1px solid #ddd;
+    font-family: lato !important;
+}
+.ui-state-focus,.ui-menu-item:hover{
+        color: #26344a!important;
+    background: #f2fafb !important;
+    font-weight: normal !important;
+    border-bottom: 1px solid #ddd !important;
+    cursor: pointer;
+}
+
+
+.bot-publish .bt-mapping-container .mapping-step{
+	padding:15px 10px !important;
+}
+
+.bot-publish .well{
+	padding:0px 0px !important;
+}
+.bot-publish .taskType{
+    font-size:16px;
+    font-weight:400;
+    color:#26344a;
+    display: block;
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    float: left;
+    text-align: right;
+    line-height: 18px;
+    height: 20px;
+}
+.bot-publish .styledDiv{
+    background-color: #ffffff;
+    box-shadow: 0 1px 0 0 #f0f0f0;
+    height: 50px;
+    padding-top: 20px;
+}
+
+.bot-publish .account-title {
+    
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    color: #26344a;
+}
+.bot-publish .btn-delete-act{
+    
+    font-size: 13px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.08;
+    text-align: left;
+    color: #ff5d6d;
+    cursor: pointer;
+}
+
+#errorMsgStatus .success-color{
+	color : green;
+	font-size: 15px;
+}
+
+#errorMsgStatus .fail-color{
+	color : red;
+	font-size: 15px;
+}
+.bot-chat-scenarios .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+ 
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs {
+  border-bottom: 0;
+}
+ 
+.bot-chat-scenarios .tab-content > .tab-pane,
+.bot-chat-scenarios .pill-content > .pill-pane {
+  display: none;
+ 
+}
+ 
+.bot-chat-scenarios .tab-content > .active,
+.bot-chat-scenarios .pill-content > .active {
+  display: block;
+}
+ 
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs > li {
+  float: none;
+}
+ 
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+}
+ 
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs {
+  float: left;
+  margin-right: 19px;
+}
+ 
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs > li > a {
+  font-size: 20px;
+  padding: 5px 0px 5px 15px !important
+}
+ 
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs > li > a:hover,
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs > li > a:focus {
+  border-color: #009dab;
+  border-width: 0 0 0 3px;
+  border-radius: 0px;
+  padding: 5px 0px 5px 15px !important
+}
+ 
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs .active > a,
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs .active > a:hover,
+.bot-chat-scenarios .ng-isolate-scope > .nav-tabs .active > a:focus {
+  border-color: #009dab;
+  border-right-color: #009dab;
+  border-width: 0 0 0 3px;
+  border-radius: 0px;
+  padding: 5px 0px 5px 15px !important
+}
+ 
+.bot-chat-scenarios .ng-isolate-scope > .tab-content > .tab-pane .active {
+  border-color: #ddd transparent #ddd #ddd;
+  border-left-color: #ffffff;
+ border-radius: 0px;
+}
+ 
+.bot-chat-scenarios .ng-isolate-scope > .tab-content > .tab-pane > .tab-text {
+  padding-top: 10px;
+}
+
+.bot-chat-scenarios .nav-tabs > li{
+   	background: #fff;    
+}
+
+.bot-chat-scenarios .nav-tabs > li > a{
+	padding:3px;
+}
+
+.bot-chat-scenarios .nav-tabs > li > a:hover{
+	color:#19808f;
+}
+
+/****
+* Chat scenarios tab css end
+****/
+
+.bot-publish .bt-mapping-container .mapping-step{
+	padding:15px 10px !important;
+}
+
+.bot-publish .well{
+	padding:0px 0px !important;
+}
+
+
+#errorMsgStatus .success-color{
+	color : green;
+	font-size: 15px;
+}
+
+#errorMsgStatus .fail-color{
+	color : red;
+	font-size: 15px;
+}
+
+.twitter-form .labelling{
+    top:10px;
+}
+.textareaModal .bootbox-input-textarea{
+	min-height: 285px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+}
+.textareaModal .jsEditorPromptHeader{
+    padding: 8px 16px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background-color: #009dab;
+    color: #a3dce1;
+    font-size: 16px;
+}
+ /**
+  * chat scenarios css start
+  */
+

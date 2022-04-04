@@ -1,0 +1,66 @@
+<div class="actions-row">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="panel-table-heading">
+        <h3 class="panel-title entity_count_label">{{'channels'| i18nString}} <!--({{selectedStream.channels.length || 0}})--></h3>
+        <button ng-click="createChannel()"
+          class="btn btn-sm btn-primary text-info pull-right" ng-class="{'hide':showSolutionBotSetup}">
+          {{'add'| i18nString}} 
+        </button>
+      </div>
+      <div class="panel-table col-xs-12" ng-show="selectedStream.channels.length > 0">
+        <div class="panel-table-header">
+          <div class="row">
+            <div class="col-xs-5">{{'name_label_uppercase'| i18nString}}</div>
+            <div class="col-xs-6">{{'desc_label'| i18nString}}</div>
+            <div class="col-xs-1">{{'settings_uppercase'| i18nString}}</div>
+          </div>
+        </div>
+        <div class="panel-table-body">
+          <div class="row" ng-repeat="channel in selectedStream.channels">
+            <div class="col-xs-3" ng-class="{'boldRight':showSolutionBotSetup}">
+              <div>
+              {{(channel.name && channel.name.toUpperCase()) || channel.type.toUpperCase()}}
+              </div>
+            </div>
+            <div class="col-xs-8" ng-class="{'col-xs-8':!showSolutionBotSetup,'col-xs-9':showSolutionBotSetup}">
+              <div>
+              {{(channel.email || channel.phoneNumber || (channel.app && channel.app.appName)) || '-'}}
+              </div>
+            </div>
+            <div class="col-xs-1 text-center"  ng-class="{'hide':showSolutionBotSetup}" >
+              <div class="dropdown panel-dropdown">
+                <i class="fa fa-cog fa-1 pointer-hand" data-toggle="dropdown"></i>
+                  <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                      <li ng-show="channel.type !== 'kore'">
+                          <a ng-click="editChannel(channel)"> {{'edit'| i18nString}} </a>
+                      </li>
+                      <li ng-show="!channel.enable">
+                          <a ng-click="enableordisableChannel(channel,true)"> {{'enable_name'| i18nString}} </a>
+                      </li>
+                      <li ng-show="channel.enable">
+                          <a ng-click="enableordisableChannel(channel,false)"> {{'Disable'| i18nString}} </a>
+                      </li>
+                      <li>
+                        <a ng-click="deleteChannel($index)"> {{'delete'| i18nString}} </a>
+                      </li>
+                  </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+      <div class="col-xs-12">
+        <div class="alert alert-warning alert-xs text-center alert-msg-home" role="alert" ng-show="!selectedStream.channels.length || selectedStream.channels.length == 0">
+          {{'no_DeliveryChannels'| i18nString}}
+          <p>{{'deployChannels_likeEmail'| i18nString}}</p>
+          <p><a target="_blank"  ng-href="{{$root.helpLinks.NO_CHANNELS}}" >{{'learn_more_label'| i18nString}}</a></p>
+        </div>
+        <div class="alert alert-warning alert-xs text-center" role="alert" ng-show="channels.length == 0">
+          {{'loadingDeliveryChannels'| i18nString}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

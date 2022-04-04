@@ -1,0 +1,12 @@
+<div ng-show="error" class='error-message'>{{errorMsg}}</div>
+<form novalidate name="disableSelfSignup" class="login-form">
+
+    <!-- Text -->
+    <p>{{'disable_selfsignup'| i18nString}}</p>
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <button data-ng-click="showLoginForm()" type="button" class="btn btn-primary">{{'ok'| i18nString}}</button>
+    </div>
+
+</form>

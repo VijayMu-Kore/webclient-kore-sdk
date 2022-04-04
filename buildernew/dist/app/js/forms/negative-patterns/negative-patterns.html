@@ -1,0 +1,154 @@
+<div class="pattern-manage" ng-class="{'read-only-wrap':(displayMode==='VIEW' || flowTaskMode === 'VIEW')}" >
+    <!--  <div class="col-xs-4 move-right pr-30" ng-show="views.negativepatterns && intent.negativePatterns.length">
+           <div class="col-xs-12 search searchUtterance">                   
+                <span class="synSearch callclear" search-expand>
+                        <input type="text" ng-blur="inSearchBox = false" tabindex="1"  ng-model="searchQuery" placeholder="{{'search_here'| i18nString}}" class="input-text"> 
+                        <span class="searchBar uttSearch fa-search">
+                            <img ng-src="{{searchIcon}}" class="searchIconGray">
+                            <img ng-src="{{closeIcon}}" class="searchClose" ng-click="clearSearch()">
+                        </span>
+                </span>
+                             
+            </div>
+    </div> -->
+    
+<div class="synContainer">
+                <div class="synonyms-manage noPadding row col-xs-12">
+                    <div class="col-xs-12 standard-response-header noPadding" ng-if="!cb.loadingNegativePatterns">
+                        <div class="bt-patterns patternsScrollTop positionRelative negative-pattern-body psScrollZindex" ng-class="{'read-only':(displayMode==='VIEW' || flowTaskMode === 'VIEW')}" dynamic-height dynaoffset="showIntentsLabel?-270:showTrain?-200:-170"  height-property="height" perfect-scroll>
+                            <!-- <div class="col-xs-12 noBorderTop noPaddingLeft">
+                                <div class="row" id="intentPatternsDiv">
+                                    <div class="row col-xs-12 noPadding" ng-init="parentIndex = $index" ng-if="filterToggleTask(intent) && intentPatternsObject.length" id="intent{{key}}" ng-repeat="intent in intentPatternsObject | filter : search track by $index">
+                                        <div class="col-xs-12 synonym-holder noPadding synonym-holder-border intentPatterns" ng-class="{'intentParentDiv{{$index}}':$index>=0,'synonym-holder-border':$index !== object.length - 1,'viewOpen':editIntentPatternId == intent._id, 'intentPatternsaddStyleClass':editIntentPatternId == intent._id}"> 
+                                            <div class="block-item" ng-click="editIntentPatternObject(intent,$event,$index)">
+                                                <div class="col-xs-12 synonym-item-label noPadding">
+                                                    <div class="col-xs-2 intentPatternName textEllipsis noPaddingLeft" title="{{intent.intent}}">{{intent.intent || intent.name}}</div>    
+                                                    <div class="noPadding col-xs-10">
+                                                        <span class="tag-label hidePatternNames" ng-repeat="pattern in intent.negativePatterns"><span class="marginRight10"></span><span class="intentPatternNameValue">({{constants.replaceSpecialChar(pattern.original)}})</span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if = "editIntentPatternId == intent._id" class="patternform" ng-class="{'patternformdiv':intent.negativePatterns.length > 0 || filterToggle === 'indevelopment'}">
+                                                <div class="col-xs-12 noPadding" id="tags" ng-if = "filterToggle == 'indevelopment'">
+                                                    <input maxlength="2048" type="text" class="form-control background-field-white patternInput fieldPatternInput intentPatternInput overRideBorder" placeholder="{{'type_and_enter_to_add_pattern'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keydown=" saveIntentPatternsObject($event,intent)" ng-model="iPatterns.newIntentPattern">
+                                                </div>
+                                                <div ui-sortable="sortableOptions1" ng-model="intent.negativePatterns">
+                                                    <div class="col-xs-12 patterns-holder synonym-holder-border" ng-repeat="pattern in intent.negativePatterns track by $index">
+                                                        <div class="col-xs-12 noPadding intentPatternClass hidingIntentPatterns{{parentIndex}}{{$index}}" ng-click = "clickIntentPattern($index,pattern,intent,parentIndex)">
+                                                            <div class="col-xs-1 sortBar1 item1">
+                                                                <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                                                            </div>
+                                                            <div class="col-xs-9 noPadding">
+                                                                <label class="taskPatternOriginalName">{{constants.replaceSpecialChar(pattern.original)}}</label>
+                                                            </div>
+                                                            <div ng-if = "filterToggle == 'indevelopment'" class="col-xs-2 text-right pull-right">
+                                                                <i class="fa fa-pencil"></i>
+                                                                <i class="codeRed fa fa-trash-o" ng-click="deleteComponentPattern(intent, pattern, $event)"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 noPadding inputIntentClass editingIntentPatterns{{parentIndex}}{{$index}} hide" id="tags">
+                                                            <input maxlength="2048" type="text" class="form-control background-field-white patternInput fieldPatternInput intentPatternInput{{$index}} overRideBorder" placeholder="{{'type_and_enter_to_add_pattern'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keydown="saveIntentPatternsObject($event,intent,'',$index,undefined,parentIndex)" ng-blur="removeEditMode(intent,$index,parentIndex)" ng-model="iPatterns.editIntentPattern">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     
+                                        
+                                  
+                                    </div>
+                                    <div class="col-xs-12 text-center"  ng-show=" !intentPatternsObject.length">
+                                        <div class="alert alert-sm alert-warning">
+                                            {{'negative_patterns'| i18nString}}   
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 text-center" ng-show="intentPatternsObject.length!=0 &&(intentPatternsObject| filter : search).length==0">
+                                        <div class="alert alert-sm alert-warning">
+                                            {{'intent_patterns'| i18nString}} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                           <div  class="patternform p-0 pr-30" ng-class="{'patternformdiv':selectedTask.negativePatterns.length > 0 || filterToggle === 'indevelopment','pointer-none':(displayMode==='VIEW' || flowTaskMode === 'VIEW')}">
+                                        <div class="col-xs-12 noPadding negativepattern-textview" id="tags" ng-if = "filterToggle == 'indevelopment'" ng-hide="(displayMode==='VIEW' || flowTaskMode === 'VIEW')">
+                                            <input maxlength="2048" type="text" class="background-field-white patternInput fieldPatternInput intentPatternInput overRideBorder" placeholder="{{'add_pattern_placeholder'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keydown="iPatterns.newIntentPattern.length &&  saveIntentPatternsObject($event,selectedTask)"  autofocus="true" ng-model="iPatterns.newIntentPattern">
+                                             <div class="negativepattern-enter-help" ng-show="iPatterns.newIntentPattern.length"> PRESS [ENTER] TO ADD  </div>
+                            </div>
+                        <div class="emptyStateContainer" ng-show="!selectedTask.negativePatterns || !selectedTask.negativePatterns.length">
+                            <div class="emptyState">
+                                <div class="emptyImage">
+                                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                                </div>  
+                                <span class="mainTitle">No Negative patterns defined yet</span>
+                                <!-- <div class="emptyStateDesc">Description</div>
+                                <div class="generateBtn">
+                                    <button class="btn btnSolidBlue" >Add</button>
+                                    <button class="btn" target="_blank" >learn more</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        
+                             <div ui-sortable="sortableOptions1" class="sortableOption" ng-model="selectedTask.negativePatterns" ng-show="selectedTask.type === 'DialogIntent' && selectedTask.negativePatterns.length">
+                                                    <div class="col-xs-12 patterns-holder synonym-holder-border" focus-in ng-repeat="pattern in selectedTask.negativePatterns | filter:search.searchQuery  track by $index">
+                                                        <div class="noPadding intentPatternClass hidingIntentPatterns{{selectedTask.type}}{{$index}}" ng-click = "clickIntentPattern($index,pattern,selectedTask,parentIndex)">
+                                                            <!-- <div class="col-xs-1 sortBar1 item1">
+                                                                <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                                                            </div> -->
+                                                            <div class="col-xs-10 noPadding">
+                                                                <i class="btx-move sortBar1"></i>
+                                                                <label class="taskPatternOriginalName">{{constants.replaceSpecialChar(pattern.original)}}</label>
+                                                            </div>
+                                                            <div ng-if = "filterToggle == 'indevelopment'" class="text-right pull-right action-delete-edit">
+                                                                <i class="btx-pencil"></i>
+                                                                <i class="codeRed btx-delete-1" ng-click="deleteComponentPattern(selectedTask, pattern, $event)"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 noPadding inputIntentClass editingIntentPatterns{{selectedTask.type}}{{$index}} hide" id="tags">
+                                                            <input maxlength="2048" type="text" class="form-control background-field-white patternInput fieldPatternInput{{selectedTask.type}} intentPatternInput{{$index}} overRideBorder" placeholder="{{'add_pattern_placeholder'| i18nString}}" onkeypress="return this.value.length < 2048" ng-keydown="iPatterns.editIntentPattern.length && saveIntentPatternsObject($event,selectedTask,'',$index,undefined,parentIndex)" ng-blur="removeEditMode(selectedTask,$index,parentIndex)" ng-model="iPatterns.editIntentPattern">
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center searchEmptyResults" ng-show="search.searchQuery.length">
+                                                        <div class="col-xs-12 text-center">
+                                                            <div class="alert alert-xs alert-warning">
+                                                                {{'no_results_forsearch_label'| i18nString}}  
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                            </div>
+                            <div ui-sortable="sortableOptions2" class="sortableOption positionRelative" ng-model="selectedTask.negativePatterns" ng-show="selectedTask.type === 'webservice' && selectedTask.negativePatterns.length">
+                                <div class="col-xs-12 patterns-holder synonym-holder-border" focus-in ng-repeat="pattern in filteredResults = (selectedTask.negativePatterns | filter:search.searchQuery) track by $index">
+                                <div class="col-xs-12 noPadding intentPatternClass hidingIntentPatterns{{selectedTask.type}}{{$index}}" ng-click = "clickIntentPattern($index,pattern,selectedTask,parentIndex)">
+                                   <!--  <div class="col-xs-1 sortBar2 item1">
+                                        <img class="grouping" ng-src="{{assetsBase}}images/grouping.png">
+                                    </div> -->
+                                    <div class="col-xs-10 noPadding">
+                                         <i class="btx-move sortBar2"></i>
+                                        <label class="taskPatternOriginalName">{{constants.replaceSpecialChar(pattern.original)}}</label>
+                                    </div>
+                                    <div ng-if = "filterToggle == 'indevelopment'" class="action-delete-edit text-right pull-right top6">
+                                        <i class="btx-pencil"></i>
+                                        <i class="codeRed btx-delete-1" ng-click="deleteComponentPattern(selectedTask, pattern, $event)"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 noPadding inputIntentClass editingIntentPatterns{{selectedTask.type}}{{$index}} hide" id="tags">
+                                    <input maxlength="2048" type="text" class="form-control background-field-white patternInput fieldPatternInput{{selectedTask.type}} intentPatternInput{{$index}} overRideBorder" placeholder=" {{'add_pattern_placeholder'| i18nString}}" onkeypress="return this.value.length < 2048" ng-blur="removeEditMode($index)" ng-keydown="$event.keyCode == 13 && tPattern.editTaskPattern.length && editTaskPattern(selectedTask,$index)" ng-model="tPattern.editTaskPattern">
+                                </div>
+                               </div>
+                               <div class="text-center searchEmptyResults" ng-show="search.searchQuery.length">
+                                <div class="col-xs-12 text-center">
+                                    <div class="alert alert-xs alert-warning">
+                                        {{'no_results_forsearch_label'| i18nString}}  
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                    </div>
+                </div>
+                
+            </div>
+</div>
+    <footer-info ng-if="updateFooterHeader()">
+        <div class="patternFooter" ng-bind-html="$root.getSanitizedText($root.lableData.bb007)"></div>
+    </footer-info>
+</div>     

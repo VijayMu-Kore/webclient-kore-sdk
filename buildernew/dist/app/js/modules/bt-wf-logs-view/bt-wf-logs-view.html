@@ -1,0 +1,52 @@
+<div class="topBar manageComponentClose">
+    <span class="closeBtn pull-left" ng-click="$parent.closeVersionModal()"><i class="fa fa-chevron-left"></i></span>
+    <!--<p class="text-center title">View Logs</p>-->
+    <bt-modal-title taskname="{{activeTask.name}}" bot="selectedStream"></bt-modal-title>
+   <span class="subTitle">{{'bt_wf_logs_view_logs'| i18nString}}</span>
+</div>
+ <div class="modal-body wf-logs logs-page utterances-modal-body height-width-100"  perfect-scroll dynamic-height dynaoffset="-50" >
+<div class="view-page wrapper "> 
+  <div class="row logsContainer">
+    <div class="col-xs-12">
+      <div class="help-block col-xs-10"> {{'bt_wf_logs_logs_desc'| i18nString}} </div>
+      <div class="col-xs-2">
+        <button type="button" class="btn btn-outline pull-right" ng-click="refreshLogs()">{{'refresh'| i18nString}}</button>
+      </div>
+    </div>
+    <div class="col-xs-12 logs-view">
+          <div class="log-container">
+        <div class="log-item" ng-repeat="log in logs track by $index" ng-hide="loading">
+          <div ng-jsoneditor disable-textarea class="json_editor" ng-model="log" name="log" options="options"></div>
+          <hr>
+        </div>
+        <div class="log-item" ng-hide="!loading">
+          <div class="col-xs-2"></div>
+          <div class="col-xs-8">
+            <div class="alert alert-warning alert-xs text-center" role="alert"> <i class="fa-spin fa fa-circle-o-notch"></i> {{'bt_chanelog_loading_logs'| i18nString}} </div>
+          </div>
+          <div class="col-xs-2"></div>
+        </div>
+        <div ng-show="!loading && logs.length == 0 ">
+          <!-- <div class="alert alert-warning alert-xs text-center"> {{'no_logs_available'| i18nString}} </div> -->
+          <div class="emptyStateContainer">
+            <div class="emptyState">
+                <!-- <div class="emptyImage">
+                    <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                </div>   -->
+                <!-- <span class="mainTitle">Title</span> -->
+                <div class="emptyStateDesc">{{'no_logs_available'| i18nString}}</div>
+                <!-- <div class="generateBtn">
+                    <button class="btn btnSolidBlue" >Add</button>
+                    <button class="btn" target="_blank" >learn more</button>
+                </div> -->
+            </div>
+        </div>
+        </div>
+        <div ng-show="loadingMore" class="col-xs-12">
+            <div class="alert alert-warning alert-xs text-center" role="alert"> <i class="fa-spin fa fa-circle-o-notch"></i> {{'loading'| i18nString}} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

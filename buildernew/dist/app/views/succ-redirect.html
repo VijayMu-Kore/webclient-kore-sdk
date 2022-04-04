@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Authorization Success</title>
+</head>
+<body>
+	<script type="text/javascript">
+		window.onload = function() {
+			var succHash = "success";
+			var locHash  = window.location.hash;
+			if(succHash == getMessage(locHash)){
+				window.opener._succCallback();
+			}else{
+				window.opener._failCallback();
+			}
+		};
+
+		window.onclose = function onclose(){
+		    window.opener._closeCallback();
+		};
+
+		function getMessage(hash){
+			hash = (hash || '').replace("#",'');
+			try{
+				hash = JSON.parse(atob(hash)).event;
+				console.log(hash);
+				return hash;
+			}catch(ex){
+				return '';
+			}
+		}
+
+
+	</script>
+</body>
+</html>

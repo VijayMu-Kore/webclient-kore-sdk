@@ -1,0 +1,113 @@
+{
+   "tags": {
+      "root": {
+         "score": 1000,
+         "unmatched": 0.1,
+         "upos": {
+            "PUNCT": {
+               "score": -1000
+            },
+            "INTJ": {
+               "score": -1000
+            }
+         },
+         "xpos": {
+            "VMFIN": {
+               "score": -800
+            }
+         }
+      },
+      "aux": {
+         "score": 0,
+         "unmatched": 1,
+         "xpos": {
+            "VVINF": {
+               "score": 1000
+            }
+         }
+      },
+      "kon": {
+         "score": 0,
+         "unmatched": 0,
+         "xpos": {
+            "VVFIN": {
+               "score": 800
+            }
+         }
+      },
+      "obja": {
+         "score": 800,
+         "unmatched": 0.5,
+         "xpos": {
+            "PRELS": {
+               "score": -800
+            }
+         },
+         "features": {
+            "Number=Plur": {
+               "matched": -0.5
+            }
+         }
+      },
+      "subj": {
+         "score": 200,
+         "unmatched": 0.5
+      },
+      "pn": {
+         "score": 500,
+         "unmatched": 0.75,
+         "concepts": {
+            "~world_city": {
+               "score": -300
+            },
+            "~world_capitals": {
+               "score": 100
+            }
+         }
+      },
+      "pred": {
+         "score": 500,
+         "unmatched": 0.75
+      },
+      "gmod": {
+         "score": 300,
+         "unmatched": 0.5
+      },
+      "adv": {
+         "score": 0,
+         "unmatched": 0.5,
+         "xpos": {
+            "PTKNEG": {
+               "score": 800
+            }
+         }
+      },
+      "avz": {
+         "score": 500,
+         "unmatched": 0
+      },
+      "app": {
+         "score": 800,
+         "unmatched": 1,
+         "matched": 0
+      }
+   },
+   "static": {
+      "sentence": [
+         1,
+         0.75,
+         0.64,
+         0.58,
+         0.53
+      ],
+      "tasktype": 0.95,
+      "namedbot": 0.33,
+      "recentbot": [
+         1,
+         0.9,
+         0.8,
+         0.7,
+         0.6
+      ]
+   }
+}

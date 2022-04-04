@@ -1,0 +1,128 @@
+<div class="smartAlertsModal animate-show-back">
+    <div class="smartAlertcontainer">
+        <div class="modal-header smartAlertHeader">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeModal()"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+            <h4 class="modal-title">{{'smart_alerts_label'| i18nString}}</h4>
+        </div>
+        <div class="modal-body alertModal background-white modalPerfectScroll container-fluid" perfect-scroll>
+            <form name="smartAlertDetails">
+                <div class="selectingAlerts" ng-hide="alerts.length === 0" >
+                    <label class="smartAlertHeader required-field">{{'smart_alert'| i18nString}}</label>
+                    <p class="smartAlertDescription">{{'smart_alert_desc'| i18nString}}</p>
+                    <select class="smartAlertsNames" ng-model="selectedAlert" ng-change="getAlertFiltersDetails(selectedAlert)" ng-options="alert.name for alert in alerts">
+                        <option value="" selected>{{'smart_alert_Choose_alert'| i18nString}}</option>
+                    </select>
+                </div>
+                <!-- <div class="NoAlerts" ng-show="alerts.length === 0">
+                    <p>'No published alerts found'</p>
+                </div> -->
+                <div class="alertParameters" ng-if="selectedAlert">
+                    <label class="smartAlertHeader required-field">{{'smart_alert_alert_parameter'| i18nString}}</label>
+                    <p class="smartAlertDescription">{{'smart_alert_alert_parameter_desc'| i18nString}}</p>
+                    <div class="row marginBottom10 displayFlex" ng-repeat="(key,value) in alertDefination.alertfields track by $index">
+                        <div class="alertParameterName noPadding col-xs-2 textEllipsis" title="{{key}}">{{key}}</div>
+                        <div class="col-xs-10 noPadding">
+                            <input class="alertParameterValue" name="alertParametersDetails" ng-model="alertDefination.alertfields[key]" type="text" required>
+                            <bot-tooltip format = "getParameterData(selectedAlert.alertFieldsDefinition[$index].fieldType, 'format')" parameter-type ="getParameterData(selectedAlert.alertFieldsDefinition[$index].fieldType, 'parameterType')" from="smartAlert" container="alertModal" ng-if="selectedAlert.alertFieldsDefinition[$index].fieldType == 'location' || selectedAlert.alertFieldsDefinition[$index].fieldType == 'staticDropDown' || selectedAlert.alertFieldsDefinition[$index].fieldType == 'dynamicDropDown'" ></bot-tooltip>
+                            <div ng-show="smartAlertDetails.alertParametersDetails.$dirty">
+                                <div error-alert ng-show="smartAlertDetails.alertParametersDetails.$error.required" class="text-danger"> {{'this_is_required'| i18nString}} </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alertFilters" ng-if="selectedAlert">
+                    <label class="smartAlertHeader">{{'filters'| i18nString}}</label>
+                    <p class="smartAlertDescription">{{'smart_alerts_filter_desc'| i18nString}}</p>
+                    <div class="row marginBottom10 displayFlex" ng-repeat="alertFilter in alertFilters track by $index">
+                        <div class="alertFilterName col-xs-2 textEllipsis noPadding" title="{{alertFilter.name}}">{{alertFilter.name}}</div>
+                        <div class="col-xs-10 noPadding">
+                            <input class="alertFilterValue" name="alertFiltersDetails" ng-model="alertFilter.value" type="text"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="alertFrequency" ng-if="selectedAlert && selectedAlert.type !== 'webhook'">
+                    <label class="smartAlertHeader required-field">{{'smart_alerts_alert_frequency'| i18nString}}</label>
+                    <p class="smartAlertDescription">{{'smart_alerts_alert_frequency_notificationd'| i18nString}}</p>
+                    <div class="row">
+                        <div class="col-xs-4  noPaddingLeft">
+                            <select  ng-disabled="displayMode==='view'"  class="form-control timeInterval" ng-model="pollOptions.day" name="day" required>
+                                <option selected value="">{{'smart_alerts_select_scheme'| i18nString}}</option>
+                                <option ng-repeat="time in intervalConfig.time" value="{{time.value}}">{{time.value}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 noPadding">
+                            <select  ng-disabled="displayMode==='view'"  class="form-control timeInterval" ng-model="pollOptions.frequency" name="frequency" required>
+                                <option selected value="">{{'smart_alerts_select_frequency'| i18nString}}</option>
+                                <option ng-show = "pollOptions.day" ng-repeat="frequency in intervalConfig.frequency" value="{{frequency.value}}">{{frequency.value}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 noPaddingRight ">
+                            <select   ng-disabled="displayMode==='view'"  ng-if="pollOptions.frequency === every" class="form-control timeInterval" name="time" ng-model="pollOptions.interval" required>
+                                <option value="">{{'smart_alerts_select_time'| i18nString}}</option>
+                                <option  ng-show= "pollOptions.frequency" ng-repeat="timeInterval in intervalConfig.timeOptions[pollOptions.frequency]" value="{{timeInterval.value}}">{{timeInterval.value}}</option>
+                            </select>
+                            <select  ng-disabled="displayMode==='view'"  ng-if="pollOptions.frequency !== every" class="form-control timeInterval" name="time" ng-model="pollOptions.interval" required>
+                                <option value="">{{'smart_alerts_select_time'| i18nString}}</option>
+                                <option  ng-show= "pollOptions.frequency" ng-repeat="timeInterval in intervalConfig.timeOptions[pollOptions.frequency]"  value="{{timeInterval.value}}" >{{timeInterval.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="alertPurpose" ng-if="selectedAlert && selectedAlert.type === 'webhook'"> 
+                    <label class="smartAlertHeader required-field">{{'smart_alerts_alert_purpose'| i18nString}}</label>
+                    <p class="smartAlertDescription">{{'smart_alerts_webhook_alert_purpose'| i18nString}}</p>
+                    <div class="webhookAlert">
+                        <div class="radioDiv">
+                            <label for="BroadCast">
+                                <input type="radio" name="alertBroadcast" id="BroadCast" ng-model="alertNotificationType.value" value="broadcast"><span class="alertBroadcastText">Broadcast: All subscribers of this alert will get common alert nofitication.</span>
+                            </label>
+                        </div>
+                        <div class="radioDiv">
+                            <label for="UniCast">
+                                <input type="radio" name="alertBroadcast" id="UniCast" ng-model="alertNotificationType.value" value="unicast"><span class="alertUserSpecificText">User Specific: Individual users will get custom alert nofitication.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="alertPurpose marginTop10" ng-show="selectedAlert">
+                    <label class="smartAlertHeader required-field">{{'small_alert_small_alert_Expiry_label'| i18nString}}</label>
+                    <p class="smartAlertDescription">{{'small_alert_small_alert_Expiry_desc'| i18nString}}</p>
+                    <div class="alertPurposeDropDown col-xs-12 noPadding">
+                        <div class="col-xs-5 noPaddingLeft">
+                            <label for="dropdown">{{'small_alert_small_alert_Expiry_type'| i18nString}}</label>
+                            <select class="alertDropdown" id="dropdown" ng-model="alertExpiry" required><option value="{{type.value}}" ng-repeat="type in expiryType">{{type.key}}</option>
+                                <option ng-hide ="alertExpiry" value="" selected>{{'select_option_label'| i18nString}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-7 noPaddingRight">
+                            <label for="number">{{'limit_uppercase'| i18nString}}</label>
+                            <input id="number" class="alertPurposeText" ng-model="expiryCount" ng-keyup = "onInputKeyup($event)" required><span class="dataText" ng-if ="alertExpiry == 'daycount'">{{'days_label'| i18nString}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="alertUpgrade" ng-show="selectedAlert">
+                    <label class="smartAlertHeader alertUpgradeLabel required-field">{{'small_alert_small_alert_upgrades'| i18nString}}</label>
+                    <p class="smartAlertDescription">{{'small_alert_small_alert_upgrades_Desc'| i18nString}}</p>
+                    <div class="alertUpdrageButtons">
+                        <div class="radioDiv">
+                            <label for="removeExisting">
+                                <input type="radio" name="alertUpgradation" ng-model="alertUpgradeType.value" id="removeExisting" value="deleteinstance"/><span class="RemoveExistingInstancesLabel">{{'remove_Existing_instances'| i18nString}}</span>
+                                <p class="RemoveExistingInstancesText">{{'smart_alerts_existing_subscription'| i18nString}}.</p>
+                            </label>
+                        </div>
+                        <div class="radioDiv">
+                            <label for="ManuallyUpdrade">
+                                <input type="radio" name="alertUpgradation" ng-model="alertUpgradeType.value" id="ManuallyUpdrade" value="none"/><span class="ManuallyUpdradeSubscriptionLabel">{{'smart_alerts_allow_sers_manual_subscription'| i18nString}}</span>
+                                <p class="ManuallyUpdradeSubscriptionText">{{'smart_alerts_allow_sers_manual_subscription_desc'| i18nString}}</p>
+                            </label>    
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn"  ng-click="saveReport()"ng-disabled ="!isFormValid(true)">{{'save'| i18nString}}</button>
+            <button type="button" class="btn closeCancel" data-dismiss="modal" ng-click='closeModal()'>{{'cancel'| i18nString}}</button>
+        </div>
+    </div>    
+</div>

@@ -1,0 +1,249 @@
+<div class="modal fade keys-tree" tabindex="-1" role="dialog">
+  <div class="modal-dialog widthNineHundred modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="closeKeysModal()" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
+          <h4 class="modal-title">{{'request_res'| i18nString}}</h4>
+        </div>
+        <div class="modal-body keyTree modalPerfectScroll" perfect-scroll >
+            <div>
+                <div class="row heading" ng-click="showStandardKeys=!showStandardKeys">
+                    <span>
+                        <i ng-class="{'btx-add':!showStandardKeys,'btx-minus':showStandardKeys}" aria-hidden="true" ></i>
+                    </span>
+                    <span class="title">
+                      {{'standard_keys'| i18nString}}
+                    </span>
+                </div>
+                <div class="col-xs-12" ng-show="showStandardKeys">
+                    <div ng-repeat="key in standardKeys track by $index">
+                        <div class="item" ng-dblclick="keySelected(key);useKey()" ng-click="keySelected(key)"  ng-class="{'active':key === selectedKey}">
+                            {{key}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row heading" ng-click="showResponseKeys=!showResponseKeys">
+                    <span>
+                        <i ng-class="{'btx-add':!showResponseKeys,'btx-minus':showResponseKeys}" aria-hidden="true"></i>
+                    </span>
+                    <span class="title">
+                      {{'response_keys'| i18nString}}
+                    </span>
+                </div>
+                <div class="col-xs-12" ng-show="showResponseKeys">
+                    <div ng-repeat="key in keys track by $index">
+                        <div class="item" ng-click="keySelected(key)" ng-dblclick="keySelected(key);useKey()"  ng-class="{'active':key === selectedKey}">
+                            {{key}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row heading" ng-click="showSessionKeys = !showSessionKeys">
+                        <span>
+                            <i ng-class="{'btx-add':!showSessionKeys,'btx-minus':showSessionKeys}" aria-hidden="true" ></i>
+                        </span>
+                        <span class="title">
+                          {{'session_keys'| i18nString}} 
+                        </span>
+                    </div>
+                    <div class="col-xs-12" ng-show="showSessionKeys">
+                        <div>
+                            <div ng-repeat="(key,value) in sessionKeys track by key">
+                                <div class="item"  ng-click="keySelected(key)" ng-dblclick="keySelected(key); useKey()"  ng-class="{'active':key === selectedKey}">
+                                    {{key}}
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row heading" ng-show="callbackObject.reportIsThere()" ng-click="showReportKeys = !showReportKeys">
+                        <span>
+                            <i ng-class="{'btx-add':!showReportKeys,'btx-minus':showReportKeys}" aria-hidden="true" ></i>
+                        </span>
+                        <span class="title">
+                          {{'report_keys'| i18nString}} 
+                        </span>
+                    </div>
+                    <div class="col-xs-12" ng-show="showReportKeys && callbackObject.reportIsThere()">
+                        <div>
+                            <div ng-repeat="key in reportKeys track by $index">
+                                <div class="item"  ng-click="keySelected(key)" ng-dblclick="keySelected(key); useKey()"  ng-class="{'active':key === selectedKey}">
+                                    {{key}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="row heading" ng-click="showBotVariableKeys = !showBotVariableKeys">
+                      <span>
+                          <i ng-class="{'btx-add':!showBotVariableKeys,'btx-minus':showBotVariableKeys}" aria-hidden="true" ></i>
+                      </span>
+                      <span class="title">
+                        {{'bot_variable'| i18nString}} 
+                      </span>
+                  </div>
+                  <div class="col-xs-12" ng-show="showBotVariableKeys">
+                      <div>
+                        <div ng-repeat="botVariable in botVariablesKeys track by $index">
+                            <div class="item"  ng-show ="botVariable.variableType === 'env'" ng-click="keySelectedVariable(botVariable)" ng-dblclick="keySelectedVariable(botVariable); useKey()"  ng-class="{'active':botVariable.variableType+'.'+botVariable.key === selectedKey}">
+                                {{botVariable.variableType}}.{{botVariable.key}}
+                            </div>
+                            <div class="item"  ng-show ="botVariable.variableType === 'locale'" ng-click="keySelectedVariable(botVariable)" ng-dblclick="keySelectedVariable(botVariable); useKey()"  ng-class="{'active':'content'+'.'+botVariable.key === selectedKey}">
+                                content.{{botVariable.key}}
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">          
+          <button type="button" class="kr-sg-button-primary btn_lg" ng-click="useKey()">{{'ok'| i18nString}}</button>
+          <button type="button" class="kr-sg-button-secondary btn_lg" ng-click="closeKeysModal()">{{'cancel'| i18nString}}</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade response-preview" tabindex="-1" role="dialog">
+  <div class="modal-dialog widthNineHundred modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="closePreview()" aria-label="Close"><span aria-hidden="true">
+          <i class="fa fa-times" aria-hidden="true"></i></span></button>
+          <h4 class="modal-title">{{'preview_name'| i18nString}}</h4>
+        </div>
+        <div class="modal-body keyTree modalPerfectScroll" perfect-scroll>
+            <div>
+                <iframe ng-if="preview && !isError" class="overflow-hidden preview-iframe" safe-iframe-inner sandbox="allow-same-origin" data="preview"></iframe>
+                <div  ng-if="preview && isError" ng-jsoneditor class="json_editor" ng-model="preview" options="options" name="preview"></div>
+                <div ng-if="previewIsOn">
+                    <div class="alert alert-success alert-sm text-center" role="alert">
+                        <i class="fa fa-spinner fa-spin"></i> {{'bot_welcomeMessage_resolving_Value_label'| i18nString}}
+                    </div>
+                </div>     
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-sm" ng-click="closePreview()">{{'close'| i18nString}}</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="kore-ux-editor form-group" style="overflow: hidden;">
+
+  <bt-test-form api="btTestFormApi" status="btTestStatus"></bt-test-form>
+ 
+  <div class="col-xs-12">
+    <div class="col-xs-5 btnsDIV noPadding" ng-if="false">
+      <button type="button" class="btn btn-primary btn-sm pull-right" ng-disabled="!activeChannel || displayMode === 'view'" ng-click="showKeys()">{{'Keys'| i18nString}}</button>
+      <div class="dropdown pull-right" ng-show="channelsHavingPreview[activeChannel]">
+        <button type="button" ng-disabled="spinner.show || !hasKoreUx() || displayMode == 'view'" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{spinner.show ? previewing : preview}} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" >
+          <li ng-disabled="!activeChannel || spinner.preview"><a href="#" ng-click="openPreview()" >{{'test_preview'| i18nString}}</a></li>
+          <li ng-disabled="!activeChannel || spinner.previewResponse"><a href="#" ng-click="openPreviewWithSample()">{{'preview_res'| i18nString}}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-3 side-menu" ng-class="{'col-xs-1':hideSideMenu,'col-xs-3':!hideSideMenu}">
+        <div class="heading">
+          <i class="fa fa-bars pointer-hand" ng-click="hideSideMenu = !hideSideMenu" aria-hidden="true"></i>
+        </div>
+        <div class="channels">
+          <div class="item" ng-click="view('default')" ng-class="{'active': 'default' == activeChannel }">
+            <span ng-show="hideSideMenu">
+              <i class="fa fa-code channel-image"></i>
+            </span>
+            <span ng-show="!hideSideMenu">{{'default_channels'| i18nString}}</span>
+          </div>
+          <div class="item" ng-class="{'active': channel.id == activeChannel }" ng-repeat="channel in addedChannels track by $index" ng-click="view(channel.id)">
+            <span ng-show="hideSideMenu">
+              <span ng-show="channelsIcons[channel.id].class">
+                <i class="{{channelsIcons[channel.id].class}} channel-image"></i>
+              </span>
+              <span ng-show="channelsIcons[channel.id].image">
+                <img class="channel-image" ng-src="{{channelsIcons[channel.id].image}}" />
+              </span>
+            </span>
+            <span ng-show="!hideSideMenu">
+              {{channel.name}}
+            </span>
+            <span ng-show="!hideSideMenu && displayMode !== 'view'" class="pull-right pointer-hand control" ng-click="deleteAddedChannel($index,channel.id)">
+              <i class="fa fa-trash-o color-red" aria-hidden="true"></i>
+            </span>
+          </div>
+        </div>
+        <div class="add-channel" ng-show="(!showList && !hideSideMenu && (channels | filter : { used : false}).length > 0) && displayMode !== 'view' ">
+          <div class="row" ng-click="addChannel()">
+            <span> <i class="btx-add" aria-hidden="true"></i> {{'add_channels'| i18nString}}</span>
+          
+          </div>
+        </div>
+        <div class="channel-list" ng-show="showList && !hideSideMenu && (channels | filter : { used : false}).length > 0">
+          <select class="form-control" ng-model="selectedChannel" ng-change="channelSelected(selectedChannel)">
+            <option value="">{{'choose_channel'| i18nString}}</option>
+            <option ng-repeat="channel in channels" ng-hide="channel.used" value="{{channel.id}}">{{channel.name}}</option>
+          </select>
+        </div>
+    </div>
+    <div class="col-xs-9 editor noPadding" ng-class="{'col-xs-11':hideSideMenu,'col-xs-9':!hideSideMenu, 'responseeditor':!hideSideMenu}">
+      <div class="row">
+        <tabset class="markupTabs">
+          <tab active="tabs.markup" disabled="editors.jscode" ng-click="notifyUser(editors.jscode,'markup')">
+            <tab-heading>
+              {{'standard_text'| i18nString}}
+            </tab-heading>
+            <div class="row" ng-if="!refresh.markup">
+              <markdown-editor active-channel = 'activeChannel' callback='markdownCbs' mode="displayMode === 'view'" tokens="keys" config="markdownConfig" ng-model="editors.markup"></markdown-editor>
+            </div>
+          </tab>
+          <tab active="tabs.jscode" disabled="editors.markup" ng-click="notifyUser(editors.markup,'jscode')">
+            <tab-heading>
+              {{'bot_welcomeMessage_javscript_label'| i18nString}}
+            </tab-heading>
+            <div class="row" ng-if="!refresh.jscode">
+              <div class="btn-group toolbar" role="group" aria-label="...">
+                  <div><sample-tempalets selected-channel="activeChannel" selected-callback="editors.jscode" demo-templates="demoTemplates"></sample-tempalets></div>
+      <button ng-hide="control === 'preview' && !channelsHavingPreview[activeChannel]" ng-class="{'bt-grey':checkForPreviewDisable(control)}" ng-disabled="checkForPreviewDisable(control)"  
+          ng-repeat = "(control,value) in javascriptEditor.controls track by $index"  
+        ng-click  = "onSelected(javascriptEditor.controls[control],control);$event.stopPropagation();" 
+          type      = "button" 
+          class     = "controls {{javascriptEditor.controls[control].btnClass}}" 
+              title     = "{{((control === 'preview' &&!channelsHavingPreview[activeChannel]) ? 'This feature is disabled for '+activeChannel+' channel' : javascriptEditor.controls[control].tooltip)}}"
+        >
+          {{javascriptEditor.controls[control].name}}<span ng-class="javascriptEditor.controls[control].class"></span>
+      </button>
+    </div>
+    <div class="dropdown pull-right" ng-show="channelsHavingPreview[activeChannel]">
+        <button type="button" ng-disabled="spinner.show || !hasKoreUx() || displayMode == 'view'" class="btn btn-primary btn-sm dropdown-toggle hide" id="preview-option-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{spinner.show ? previewing : preview}} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" >
+          <li ng-disabled="!activeChannel || spinner.preview"><a href="#" ng-click="openPreview()" >{{'test_preview'| i18nString}}</a></li>
+          <li ng-disabled="!activeChannel || spinner.previewResponse"><a href="#" ng-click="openPreviewWithSample()">{{'preview_res'| i18nString}}</a></li>
+        </ul>
+      </div>
+              <div id="jseditor" acify mode="displayMode === 'view'" callback='jsEditorCbs' ng-model="editors.jscode"></div>
+            </div>
+          </tab>
+        </tabset>  
+      </div>
+      <div class="" ng-if="callbackObject.reportIsThere()">
+                        <div class="hintDiv">
+                    <span class="icon ">
+                      <img class="layer" ng-src="{{assetsBase}}images/24x29-bulbicon.png"></span>
+            <span class="description"><p class="name noMargin">{{'note'| i18nString}}</p>
+                <p class="description">{{'response_object_note_Desc'| i18nString}}</p></span>
+             
+               
+          </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,346 @@
+<ng-form name="soapreqform">
+    <div class="panel-group responseAccordion" id="soapAccordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default" ng-if="!isWebhook()" >
+            <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#soapAccordion" href="#authPannel" role="tab" id="headingThree">
+                <div><span class="panel-title entity_count_label"> {{'authorization_label'| i18nString}}</span><span class="pull-right length chevron"> <i class="fa fa-chevron-right"></i></span>
+                    <p>{{'soap_request_auth_desc'| i18nString}}</p>
+                </div>
+            </div>
+            <div id="authPannel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div>
+                    <div class="">
+                        <div class="">
+                            <!-- on-complete="onAuthFormResponse()" -->
+                            <auth-form wf-type="{{wfType}}"
+                                       display-mode="{{displayMode}}"
+                                       on-cancel="handleAuthForm()"
+                                       on-complete="handleAuthForm()"
+                                       resource="resource"
+                                       callbacks="authHooks"
+                                       callback="authCB">         
+                            </auth-form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>         
+        <div class="panel panel-default">
+            <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#soapAccordion" href="#wsdl" role="tab" id="headingOne">
+                <div><span class="panel-title entity_count_label"> {{'soap_request_wsdl_url_label'| i18nString}} </span><span class="pull-right length chevron"> <i class="fa fa-chevron-right"></i></span>
+                    <p>{{'soap_request_wsdl_url_desc'| i18nString}}</p>
+                </div>
+            </div>
+            <div id="wsdl" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body wsdlbody">
+                    <div class="row col-xs-9 noPadding" ng-if="displayMode !== 'view'">
+                        <input type="text" url-validate class="form-control" name="wsdlurl" ng-model="soap.wsdlUrl" placeholder="http://www.something.com/wsdlname.asmx?WSDL">
+                        <div ng-show="soapreqform.wsdlurl.$dirty">
+                            <div error-alert ng-show="soapreqform.wsdlurl.$error.url" class="text-danger"> {{'soap_request_wsdl_url_err'| i18nString}} </div>
+                        </div>
+                    </div>
+                    <div ng-if="displayMode == 'view'">
+                        <label>{{soap.wsdlUrl}}</label>
+                    </div>
+                    <div class="col-xs-3" ng-if="displayMode !== 'view'">
+                        <button class="btn btn-primary btnHeight" ng-click="getWsdlDesc()">{{'soap_request_get_wsdl_Desc'| i18nString}}</button>
+                    </div>
+                    <div ng-if="soap.operations.length > 0">
+                        <div class="col-xs-10">
+                            <div class="form-group">
+                                <h3> {{'soap_request_available_operations'| i18nString}}</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td><b>{{'soap_request_service_name'| i18nString}}</b></td>
+                                                <td><b>{{'soap_request_port_name'| i18nString}}</b></td>
+                                                <td><b>{{'soap_request_operation'| i18nString}}</b></td>
+                                                <td ng-if="displayMode !== 'view'"><b>{{'soap_request_input_output'| i18nString}}</b></td>
+                                                <td ng-if="displayMode !== 'view'" class="text-center"><b>{{'action_label'| i18nString}}</b></td>
+                                                <td class="text-center"><b>{{'notes_label'| i18nString}}</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr insert-after prop-name="operation" col-span="6" template-id="'/wsdloperationio.html'" ctx="operation" dom-id="'ioView'" api="operation" ng-repeat="operation in soap.operations track by $index">
+                                                <td>{{operation.service_name}}</td>
+                                                <td>{{operation.port_name}}</td>
+                                                <td>{{operation.name}}</td>
+                                                <td ng-if="displayMode !== 'view'" ng-click="operation.displayIO($index, operation.isUsed)">
+                                                    <a ng-if="operation.isUsed">{{'soap_request_view_input_output'| i18nString}}</a>
+                                                    <span ng-if="!operation.isUsed">{{'soap_request_view_input_output'| i18nString}}</span>
+                                                </td>
+                                                <td ng-if="displayMode !== 'view'" class="text-center">
+                                                    <button  ng-class="{'btn-outline':operation.isUsed}" class="btn btn-xs btn-primary" ng-click="performOperation(operation)">{{operation.isUsed ? selected : select }}</button>
+                                                    <!-- <button ng-if="operation.isUsed"  class="btn btn-xs btn-primary btn-outline"  ng-click="leaveOperation(operation)">Selected</button> -->
+                                                </td>
+                                                <td class="text-center">
+                                                    <span ng-if="operation.isUsed"><b>{{'soap_request_added_to_requst_chain'| i18nString}}</b></span>
+                                                    <span ng-if="!operation.isUsed">--</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-10">
+                        <div class="form-group" ng-if="soapfields.length > 0">
+                            <h3> {{wfType.toLowerCase() == 'action' ? actionTask : alertTask }} {{'fields_label'| i18nString}}</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr ng-repeat="field in soapfields track by $index">
+                                        <td class="col-xs-3">{{field.title}}</td>
+                                        <td class="col-xs-3">{{field.key}}</td>
+                                        <td class="col-xs-3">{{field.type}}</td>
+                                        <td  class="col-xs-3" ng-if="displayMode !== 'view'" align="right" ><button class="btn btn-xs btn-primary" ng-click="editField($index)">{{'edit'| i18nString}}</button></td>
+                                        <!-- <td ng-if="displayMode!=='view'" align="right"><button class="btn btn-xs btn-primary btn-outline" ng-click="deleteField($index)">Delete</button></td> -->
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button ng-if="displayMode !== 'view'" type="button"  class="btn btn-primary btn-sm" ng-click="saveRequestChain($event, soapreqform, true)"><i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div ng-init="soap.connectorEnabled = soap.connectorEnabled || false" class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#soapAccordion" href="#connector" role="tab" id="headingTwo">
+                <div><span class="panel-title entity_count_label">{{'access_connector'| i18nString}} </span><span class="pull-right length chevron"> <i class="fa fa-chevron-right"></i></span>
+                    <p>{{'soap_request_url_desc'| i18nString}}</p>
+                </div>
+            </div>
+            <div id="connector" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    <div class="col-xs-12">
+                        <fieldset ng-disabled="displayMode === 'view'">
+                            <div class="radioDiv">
+                                <div>
+                                    <label for="soap.connectorEnabled.no">
+                                        <input ng-value='false' ng-checked="true" type="radio"  ng-model="soap.connectorEnabled" name="soap.connectorEnabled" id="soap.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="soap.connectorEnabled.yes">
+                                        <input ng-value='true'  type="radio"   ng-model="soap.connectorEnabled" name="soap.connectorEnabled" id="soap.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                                    </label>
+                                </div>  
+                                <div class="no-connectors-msg" ng-show="soap.connectorEnabled && connectors.length <= 0">{{'no_active_conn'| i18nString}}</div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+                </div>
+                <div class="panel-footer">
+                    <button ng-if="displayMode !== 'view'" type="button"  class="btn btn-primary btn-sm" ng-click="saveRequestChain($event, soapreqform, true)"><i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading collapsed" role="button" data-toggle="collapse" data-parent="#soapAccordion" href="#response" role="tab" id="headingThree">
+                <div><span class="panel-title entity_count_label">{{'constants.propertyPanel_sampleResponse'| i18nString}}</span><span class="pull-right length chevron"> <i class="fa fa-chevron-right"></i></span>
+                    <p>{{'sample_json_Desc'| i18nString}}</p>
+                </div>
+            </div>
+            <div id="response" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                    <div class="col-xs-12">
+                        <div ng-jsoneditor class="json_editor" ng-model="soap.sample" options="options" name="sample" options="options" callback="sampleResCB" is-req="{{wfType.toLowerCase() == 'alert'}}"></div>
+                        <br />
+                        <div ng-show="soapreqform.sample.$dirty">
+                            <div error-alert ng-show="soapreqform.sample.$error.invalid" class="text-danger form-error-text">{{'valid_response_required'| i18nString}} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button ng-if="displayMode !== 'view'" type="button"  class="btn btn-primary btn-sm" ng-click="saveRequestChain($event, soapreqform, true)"><i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-form>
+
+<!--<div class="authtestmodal fade modal" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="authFormCancel({chainForm: false})" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Test Authorization</h4>
+            </div>
+            <div class="modal-body overflow-hidden">
+                <auth-test-form test-on-progress="authTestInProgress" callback="getWsdlDesc" type="idp" api="testFormApi" idp="currentIdp">
+                </auth-test-form>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div class="modal fade soapfields" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" ng-click="onSoapFieldCancel({fieldForm: false})"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">{{'set_up'| i18nString}} {{wfType.toLowerCase() == 'action' ? actionTask : alertTask }} {{'fields_label'| i18nString}}</h4>
+            </div>
+            <div class="modal-body modalPerfectScroll" perfect-scroll>
+               <div>
+                 <soap-alert-field  mode="create" parent-wsdl="soap.wsdlUrl" operations="soap.operations" set-field-data="editedField" on-cancel="onSoapFieldCancel({fieldForm : false})"  on-save="onSoapFieldSave(alertFieldDef,showIt)" wf-type="{{wfType}}"></soap-alert-field>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-container">
+    <ng-form name="soapreqform" ng-if="false">
+        <div class="form-group col-xs-10">
+            <div class="col-xs-10 noPadding">
+                <label for="wsdllink" class="required-field">{{'soap_request_wsdl_url_label'| i18nString}} </label>
+            </div>
+
+            <div class="row col-xs-9 noPadding" ng-if="displayMode !== 'view'">
+                <input type="text" url-validate class="form-control" name="wsdlurl" ng-model="soap.wsdlUrl" placeholder="http://www.something.com/wsdlname.asmx?WSDL">
+                <div ng-show="soapreqform.wsdlurl.$dirty">
+                    <div error-alert ng-show="soapreqform.wsdlurl.$error.url" class="text-danger"> {{'soap_request_wsdl_url_err'| i18nString}} </div>
+                </div>
+            </div>
+            <div ng-if="displayMode == 'view'">
+                <label>{{soap.wsdlUrl}}</label>
+            </div>
+            <div class="col-xs-3" ng-if="displayMode !== 'view'">
+                <button class="btn btn-primary btnPadding" ng-click="getWsdlDesc()">{{'soap_request_get_wsdl_Desc'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="form-group radioDiv" ng-if="enterpriseLicenseType && false" ng-init="soap.connectorEnabled = soap.connectorEnabled || false">
+
+            <div class="col-xs-10 labelling">
+                <label tooltip-placement="right" tooltip="{{'soap_request_url_desc'| i18nString}}">{{'access_connector'| i18nString}}</label>
+            </div>
+            <div class="col-xs-12">
+                <fieldset ng-disabled="displayMode === 'view'">
+                    <div>
+                        <label for="soap.connectorEnabled.no">
+                            <input ng-value='false' ng-checked="true" type="radio"  ng-model="soap.connectorEnabled" name="soap.connectorEnabled" id="soap.connectorEnabled.no" ><span class="opt-title">{{'urls_public_domain'| i18nString}}</span> </input>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="soap.connectorEnabled.yes">
+                            <input ng-value='true'  type="radio"   ng-model="soap.connectorEnabled" name="soap.connectorEnabled" id="soap.connectorEnabled.yes"><span class="opt-title">{{'firewall_setup'| i18nString}}</span> </input>
+                        </label>
+                    </div>  
+                    <div class="no-connectors-msg" ng-show="soap.connectorEnabled && connectors.length <= 0">{{'no_active_conn'| i18nString}}</div>
+                </fieldset>
+            </div>
+
+        </div>
+        <div ng-if="soap.operations.length > 0 && false">
+            <div class="col-xs-10">
+                <div class="form-group">
+                    <h3> {{'soap_request_available_operations'| i18nString}}</h3>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <td><b>{{'soap_request_service_name'| i18nString}}</b></td>
+                                    <td><b>{{'soap_request_port_name'| i18nString}}</b></td>
+                                    <td><b>{{'soap_request_operation'| i18nString}}</b></td>
+                                    <td ng-if="displayMode !== 'view'"><b>{{'soap_request_input_output'| i18nString}}</b></td>
+                                    <td ng-if="displayMode !== 'view'" class="text-center"><b>{{'action_label'| i18nString}}</b></td>
+                                    <td class="text-center"><b>{{'notes_label'| i18nString}}</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr insert-after prop-name="operation" col-span="6" template-id="'/wsdloperationio.html'" ctx="operation" dom-id="'ioView'" api="operation" ng-repeat="operation in soap.operations track by $index">
+                                    <td>{{operation.service_name}}</td>
+                                    <td>{{operation.port_name}}</td>
+                                    <td>{{operation.name}}</td>
+                                    <td ng-if="displayMode !== 'view'" ng-click="operation.displayIO($index, operation.isUsed)">
+                                        <a ng-if="operation.isUsed">{{'soap_request_view_input_output'| i18nString}}</a>
+                                        <span ng-if="!operation.isUsed">{{'soap_request_view_input_output'| i18nString}}</span>
+                                    </td>
+                                    <td ng-if="displayMode !== 'view'" class="text-center">
+                                        <button ng-class="{'btn-outline':operation.isUsed}" class="btn btn-xs btn-primary" ng-click="performOperation(operation)">{{operation.isUsed ? selected : select}}</button>
+                                        <!-- <button ng-if="operation.isUsed"  class="btn btn-xs btn-primary btn-outline"  ng-click="leaveOperation(operation)">Selected</button> -->
+                                    </td>
+                                    <td class="text-center">
+                                        <span ng-if="operation.isUsed"><b>{{'soap_request_added_to_requst_chain'| i18nString}}</b></span>
+                                        <span ng-if="!operation.isUsed">--</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-10" ng-if="false">
+            <div class="form-group" ng-if="soapfields.length > 0">
+                <h3> {{wfType.toLowerCase() == 'action' ? actionTask : alertTask }} {{'fields_label'| i18nString}}</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr ng-repeat="field in soapfields track by $index">
+                            <td class="col-xs-3">{{field.title}}</td>
+                            <td class="col-xs-3">{{field.key}}</td>
+                            <td class="col-xs-3">{{field.type}}</td>
+                            <td  class="col-xs-3" ng-if="displayMode !== 'view'" align="right" ><button class="btn btn-xs btn-primary" ng-click="editField($index)">{{'edit'| i18nString}}</button></td>
+                            <!-- <td ng-if="displayMode!=='view'" align="right"><button class="btn btn-xs btn-primary btn-outline" ng-click="deleteField($index)">Delete</button></td> -->
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-10" ng-if="false">
+            <div class="form-group">
+                <div class="labelling">
+                    <label ng-class="{'required-field':wfType.toLowerCase() == 'alert'}"> {{'sample_Response'| i18nString}} </label>
+                    <br />
+                </div>
+                <div>
+                    <div ng-jsoneditor class="json_editor" ng-model="soap.sample" options="options" name="sample" options="options" is-req="{{wfType.toLowerCase() == 'alert'}}"></div>
+                    <br />
+                    <div ng-show="soapreqform.sample.$dirty">
+                        <div error-alert ng-show="soapreqform.sample.$error.invalid" class="text-danger form-error-text"> {{'valid_response_required'| i18nString}} </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ng-form>
+</div>
+<div class="footer form-group noMargin hide">
+    <div class="footerSub">
+        <div class="col-xs-3"><button ng-click="onCancel();$parent.onCancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">+</span></button></div>
+        <div  class="col-xs-6 lineheight">
+            <div class="form-ctrl-div pull-left hide">
+                <button class="btn btn-default" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+            </div>
+
+            <!-- <div class="taskNameHeader textEllipsis">{{resource.name}}</div> -->
+            <div ng-include="tmpltPrePath+'/js/components/task-name-header.html'"></div>
+        </div>
+        <div  class="col-xs-3">
+            <div class="help-hint-link hide">
+                <a ng-hide="((wfType == 'alert') || ((wfType == 'action')))" href="" >{{'help_withpage_label'| i18nString}}</a>
+                <a ng-if="(wfType == 'alert')" class="inline-link" target="_blank"  ng-href="{{$root.helpLinks.ALERT_REQ_SOAP}}">{{'help_withpage_label'| i18nString}}</a>
+                <a ng-if="(wfType == 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_REQ_SOAP}}">{{'help_withpage_label'| i18nString}}</a>
+            </div>
+            <div class="pull-right form-ctrl-div">
+                <!-- <button type="reset" ng-click="cancel()" ng-if="displayMode && displayMode!=='view' && showSave()" class="btn btn-default">
+                   Cancel </button> -->
+                <!-- 	<button type="reset" ng-click="clear()" ng-if="!displayMode && showSave()" class="btn btn-default">Clear</button> -->
+                <button type="button" ng-click="$parent.$parent.previousStep()" ng-if="!displayMode" class="btn btn-default">{{'previous'| i18nString}}</button>
+                <button type="submit" ng-click="saveRequestChain($event, soapreqform)" ng-disabled="saveInProgress || !showSave()" ng-if="!displayMode" class="btn btn-primary"><i ng-if="saveInProgress && !stopNavigation" class="fa fa-spinner fa-spin"></i> {{'next'| i18nString}} </button>
+                <button type="button" ng-click="saveRequestChain($event, soapreqform, true)" ng-disabled="saveInProgress || !showSave()" ng-if="(!displayMode) || (displayMode !== 'view' && showSave())" class="btn btn-primary hide"><i ng-if="(displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)" class="fa fa-spinner fa-spin"></i>{{((displayMode === 'edit' && saveInProgress) || (saveInProgress && stopNavigation)) ? savingLabel : save }}</button>
+                <button type="button" ng-if="displayMode === 'edit' && showSave()" class="btn btn-primary" ng-click="onFinishSetup('alert')"><i class="fa fa-spinner fa-spin" ng-if="isFinishSetupLoading"></i> {{'finish_setup'| i18nString}}</button>
+
+            </div>
+            <span class="dhelpLink">
+                <a class="" target="_blank" ng-if="(wfType == 'alert')"  ng-href="{{$root.helpLinks.ALERT_REQ_SOAP}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                <a class="" target="_blank" ng-if="(wfType == 'action') && !isReport"  ng-href="{{$root.helpLinks.ACTIONS_REQ_SOAP}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+                <a class="" target="_blank" ng-if="(wfType == 'action') && isReport"  ng-href="{{$root.helpLinks.INFORMATION_REQ_SOAP}}"><i class="fa fa-question-circle fa-lg help-link"></i></a>
+            </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+<div class="modalHeader daas-header">
+    <h4 class="modal-title" id="gridSystemModalLabel">
+            <i class="btx-close" ng-click="daasCloseModal()"></i>
+            {{'Data Service Request Definition'}}
+    </h4>
+</div>
+<div class="modalBody data-table-views" perfect-scroll dynamic-height dynaoffset="-108" height-property="height">
+    <form>
+        <!-- VIEW -->
+        <div class="label_text">Choose View Name</div>
+        <div class="desc-info-text">Choose the view you would like to use</div>
+        <div class="kr-sg-dropdowns mb-10">
+            <div class="dropdown dropdown-open">
+                <div class="dropdown-toggle dropdown-input" data-toggle="dropdown" id="dropdownMenuButtonView11">
+                    {{ viewForm.name ||'Select'}}
+                </div>
+                <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButtonView11" perfect-scroll>
+                    <li ng-repeat="view in views" ng-click="onChangeData(view)"><a>{{view.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="filter" ng-if="viewForm.name">
+            <div class="label_text">Choose Filters</div>
+            <div class="desc-info-text">Define the rows to be selected from the data table by configuring the selection criteria using one or more columns.</div>
+            <div class="validation-section">
+                <div class="kr-sg-radiobutton">
+                    <input value='and' ng-model="viewForm.filterRules.condition" name="viewForm.filterRules.condition"
+                        id="and" class="radio-custom" type="radio">
+                    <label for="and" class="radio-custom-label">AND</label>
+                </div>
+                <div class="kr-sg-radiobutton">
+                    <input value='or' ng-model="viewForm.filterRules.condition" name="viewForm.filterRules.condition"
+                        id="or" class="radio-custom" type="radio">
+                    <label for="or" class="radio-custom-label">OR</label>
+                </div>
+                <div class="validation-setting-rules-info">
+                    <div class="col-xs-12 validation-content" ng-repeat="filter in viewForm.filterRules.rules">
+                        <div class="close-minus-btn"><span ng-click="removeSimpleValidation(filter)">-</span></div>
+                        <div class="col-xs-4 pl-10 pr-0 ">
+                            <div class="kr-sg-dropdowns">
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" title="{{ filter.field ||'Select'}}" data-toggle="dropdown"
+                                        id="dropdownMenuButtonTable33">
+                                        {{ filter.field ||'Select'}}
+                                    </button>
+                                    <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton33" perfect-scroll>
+                                        <li ng-repeat="col in selectedFields" ng-click="filter.field = col.tableName + '.' + col.name">
+                                            <a title="{{col.tableName + '.' + col.name}}">{{col.tableName + '.' + col.name}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 pl-10 pr-0 ">
+                            <div class="kr-sg-dropdowns">
+                                <div class="dropdown dropdown-open">
+                                    <button class="dropdown-toggle dropdown-input" data-toggle="dropdown"
+                                        id="dropdownMenuButtonView4">
+                                        {{ (filter.operand | replaceHtmlString) ||'Select'}}</button>
+                                        <ul class="dropdown-menu content-menu" aria-labelledby="dropdownMenuButton44" perfect-scroll>
+                                            <li ng-repeat="col in ['=', '!=', '>', '<']"
+                                                ng-click="filter.operand = col">
+                                                <a>{{col}}</a>
+                                            </li>
+                                        </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 pl-10 pr-0">
+                            <div class="kr-sg-input-text">
+                                <input type="text" placeholder="Enter Value" class="input-text"
+                                    ng-model="filter.value">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 condtion-text">{{viewForm.filterRules.condition | uppercase}}</div>
+                    </div>
+                    <div class="close-minus-btn add-plus"><span ng-class="{'disable-button': !isFilterRuleValid(viewForm)}" ng-click="addSimpleValidation()">+</span></div>
+                </div>
+            </div>
+            <div class="label_text mt-20">Limit<span tooltip-placement="right"
+                    tooltip="The first ten records will be returned if the Limit is not defined"><img
+                        src="{{assetsBase}}icons/helpIcon.svg"></span></div>
+            <div class="desc-info-text">Define the number of records to be returned from the result set</div>
+            <div class="kr-sg-input-text mb-20">
+                <input type="text" placeholder="Enter the number of records to fetch from the view" ng-model="viewForm.limit" class="input-text">
+            </div>
+            <div class="label_text">Offset<span tooltip-placement="right"
+                    tooltip="No records will be skipped if the Offset is not defined"><img
+                        src="{{assetsBase}}icons/helpIcon.svg"></span></div>
+            <div class="desc-info-text">Define the number of records to be skipped before beginning to return the
+                results
+            </div>
+            <div class="kr-sg-input-text">
+                <input type="text" placeholder="Enter the number of records to be skipped from the results" ng-model="viewForm.skip" class="input-text">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modalFooter">
+    <div class="actions-btn">
+        <button type="submit" class="kr-sg-button-primary btn_md" ng-disabled="isFormValid(viewForm)" ng-click="saveView('SAVE')">Save</button>
+        <button class="kr-sg-button-secondary-two btn_md" ng-if="selectedStreamState !== 'published'" ng-disabled="isFormValid(viewForm)" ng-click="saveView('TEST')">Test</button>
+        <button class="kr-sg-button-secondary btn_md" ng-click="daasCloseModal()">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="builderInfoTempaletStyles" ng-if="case=='logout_success' || case=='default'">
+    <div class='msgDiv'>{{'you_have_been_successfully_logged_out'| i18nString}}</div>
+    <button class="btn btn-primary" ng-click="relogin()">{{'login'| i18nString}}</button>
+</div>
+<div class="builderInfoTempaletStyles" ng-if="case=='session_expired'">
+    <div class='msgDiv'>{{'your_current_session_has_expired'| i18nString}}</div>
+    <button class="btn btn-primary" ng-click="relogin()">{{'login'| i18nString}}</button>
+</div>

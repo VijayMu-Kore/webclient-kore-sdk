@@ -1,0 +1,73 @@
+
+<div class="modalSliderContainer width700" id="audioCodesChannel">
+	<div class="modalHeader">
+        <h4 class="modal-title" id="gridSystemModalLabel">
+            <i class="btx-close" ng-click="goToHome()"></i>
+            {{'audiocodes'| i18nString}}
+		</h4>
+	</div>
+	<div class="modalBody audio-codes-channel" perfect-scroll dynamic-height dynaoffset="-100" height-property="height">
+		<div class="col-xs-12 step-progress-container noPadding">
+            <step-progress steps="steps" on-click="stepClick"></step-progress>
+         </div>
+		<div class="col-xs-12 noPadding" ng-show="steps[0].active">
+			<div class="info noMargin">
+				<p>{{'audio_codes_information_initial'| i18nString}}</p>
+			</div>
+			<div class="col-xs-12 paddingLeft0">
+				<div class="info">
+				   <p class="channelstep">{{'audio_codes_step1_head'| i18nString}}</p>
+				   <p>{{'audio_codes_step1_para'| i18nString}}</p>
+				</div>
+			 </div>
+			 <div class="col-xs-12 paddingLeft0">
+				<div class="info">
+				   <p class="channelstep">{{'audio_codes_step2_head'| i18nString}}</p>
+				   <p>{{'audio_codes_step2_para'| i18nString}}</p>
+				</div>
+			 </div>
+			 <div class="col-xs-12 paddingLeft0">
+				<div class="info">
+				   <p class="channelstep">{{'audio_codes_step3_head'| i18nString}}</p>
+				   <p>{{'audio_codes_step3_para'| i18nString}}</p>
+				</div>
+			 </div>
+		</div>
+		<div class="col-xs-12 noPadding" ng-show="steps[1].active">
+			<create-new-app-supp cb="audio_codes_cb"></create-new-app-supp>
+			<div class="col-xs-12 form-group paddingTopBottom10 mb-5">
+				<div class="col-xs-10 noPadding">
+				   <label>{{'Bt_chnl_jabber_config_webhookurl_label'| i18nString}}</label>
+				</div>
+				<p class="info col-xs-12 channel-content sub-head-audio">Configure the following Webhook URL in your AudioCodes application:</p>
+				<div class="col-xs-12 noPadding">
+				   <div class="input-group">
+					  <input type="text" id="webhookaudiocodes" class="form-control" ng-model="channel.oAuthRedirectURI" ng-readonly="true" name="appName">
+					  <div class="input-group-addon pointer-hand" data-clipboard-target="#webhookaudiocodes"> {{'copy'| i18nString}} </div>
+				   </div>
+				   <div ng-show="isSafariwebhook"><span class="pull-right">{{'press_c'| i18nString}}</span></div>
+				</div>
+			 </div>
+			<div class="group-radiobutton" ng-class="{'screenFreeze':streamState=='published'}">
+				<label>Enable Channel</label>
+				<div class="kr-sg-radiobutton d-block">
+					<input id="radio-yes"  ng-model="channel.enable" name="enable-channel" class="radio-custom" type="radio" value=true>
+					<label for="radio-yes" class="radio-custom-label">Yes</label>
+				</div> 
+				<div class="kr-sg-radiobutton d-block">
+					<input id="radio-no" ng-model="channel.enable" name="enable-channel" class="radio-custom" type="radio" value=false>
+					<label for="radio-no" class="radio-custom-label">No</label>
+				</div> 
+			</div>
+
+		</div>
+		<div class="col-xs-12 noPadding" ng-show="steps[2].active">
+			<channel-ivr-settings-supp cb="audio_codes_ivr"></channel-ivr-settings-supp>
+		</div>
+	</div>
+	<div class="modalFooter zIndex paddingLeft20" >
+		<button type="button" class="btn btn-primary" ng-click="saveIVR()" ng-show="steps[2].active" ng-class="{'screenFreeze':streamState =='published'}">{{"save"| i18nString}}</button>
+			<button type="button" class="btn" ng-click="next(2)"  ng-show="steps[0].active">{{'next'| i18nString}}</button>
+			<button type="button" ng-disabled="audio_codes_cb.loadingAppDetails" ng-click="save()" class="btn btn btn-primary" ng-show="steps[1].active" ng-class="{'screenFreeze':streamState =='published'}">{{'save'| i18nString}}</button>
+	 </div>
+</div>

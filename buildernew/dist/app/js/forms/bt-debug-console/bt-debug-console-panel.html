@@ -1,0 +1,72 @@
+   <div class="debugCosoleContainer"> <div class="panel-group" id="debugAccordion" role="tablist" aria-multiselectable="true"> 
+<div class="panel panel-default">
+                  <div class="panel-heading" role="button" id="headDevShare" data-toggle="collapse" data-parent="#debugAccordion"  href="#logicProcess" >
+                    <div>
+                      <i class="fa fa-commenting-o debug-console-fa-bug"></i>
+                      <span class="panel-title">{{'logic_process'| i18nString}}</span>
+                      <span class="pull-right length"> <i class="fa fa-caret-down"></i></span>
+                    </div>
+                  </div>
+                  <div id="logicProcess" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headDevShare">
+                    <div class="panel-body logicprocessbody" dynamic-height dynaoffset = "-170" height-property="height">
+                      <!-- <div ng-jsoneditor class="json_editor" ng-model="debugInfo" ng-model-data="debugInfo" id="reqObjSampleRes" name="debugInfo" options="options" callback="sampleResCB"></div> -->
+
+                      <json-formatter open="1" json="debugInfo" ng-if="true"></json-formatter>
+
+                    </div>
+                    
+                  </div>
+                </div>
+<div class="panel panel-default">
+                  <div class="panel-heading collapsed" role="button" id="headDevShare" data-toggle="collapse" data-parent="#debugAccordion"  href="#jsonRequest" >
+                    <div>
+                      <i class="fa fa-code debug-console-fa-bug"></i>
+                      <span class="panel-title">{{'js_request'| i18nString}}</span>
+                      <span class="pull-right length"> <i class="fa fa-caret-down"></i></span>
+                    </div>
+                  </div>
+                  <div id="jsonRequest" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headDevShare">
+                    <div class="panel-body" dynamic-height dynaoffset = "-170" height-property="height">
+                      <div ng-if="debuggerConsole.requestData" ng-jsoneditor 
+                     ng-model="debuggerConsole.requestData" 
+                     class="json_editor" 
+                     id="requestdebug"
+                     name="requestdebug" 
+                     options="options">
+                </div>
+                      <!--<div id="jsRequesteditor" acify mode="true" callback='jsEditorCbsRequest' ng-model="debuggerConsole.requestData"></div>-->
+                      <div class="reqeust-log-console-body" ng-if="false" ng-class="{true:'log-console-body variables-open',false:'log-console-body'}[isAccordionOpen]">
+            <div class="debugData" ng-repeat="debug in debugInfo.logs track by $index"><i class="fa fa-caret-right"></i>{{debug}}</div>
+        </div>
+                    </div>
+                    
+                  </div>
+                </div>
+ <div class="panel panel-default">
+                  <div class="panel-heading collapsed" role="button" id="headDevShare" data-toggle="collapse" data-parent="#debugAccordion"  href="#jsonResposnse" >
+                    <div>
+                      <i class="fa fa-code debug-console-fa-bug"></i>
+                      <span class="panel-title">{{'js_response'| i18nString}}</span>
+                      <span class="pull-right length"> <i class="fa fa-caret-down"></i></span>
+                    </div>
+                  </div>
+                  <div id="jsonResposnse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headDevShare">
+                    <div class="panel-body" dynamic-height dynaoffset = "-170" height-property="height">
+                      
+                       <div ng-if="debuggerConsole.responseData" ng-jsoneditor 
+                     ng-model="debuggerConsole.responseData" 
+                     class="json_editor" 
+                     id="responsedebug"
+                     name="responsedebug" 
+                     options="options">
+                </div>
+                      <!--<div id="jsResponseeditor" acify mode="true" callback='jsEditorCbsResponse' ng-model="debuggerConsole.responseData"></div>-->
+                     <div class="response-log-console-body" ng-if="false" ng-class="{true:'log-console-body variables-open',false:'log-console-body'}[isAccordionOpen]">
+            <div class="debugData" ng-repeat="debug in debugInfo.logs track by $index"><i class="fa fa-caret-right"></i>{{debug}}</div>
+        </div>
+                    </div>
+                    
+                  </div>
+                </div>
+</div>
+</div>

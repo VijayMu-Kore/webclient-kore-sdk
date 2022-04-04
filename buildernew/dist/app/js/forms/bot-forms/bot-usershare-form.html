@@ -1,0 +1,394 @@
+<!-- SLIDER MODAL ENDS HERE -->
+<bot-modal-slider id="inviteDeveloper">
+   <div class="modalSliderContainer users-list width500">
+     <div class="summaryLoader animationIfLeave" ng-if="loadingUser">
+        <span class="spinner-text">
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+        <span class="spinner-text-content">{{'please_wait'| i18nString}}</span>
+        </span>
+    </div>
+
+<!--Header Starts Here -->
+      <div class="modalHeader">
+            <span aria-hidden="true"></span>
+         <span ng-hide="!showAdvanced" class="advancedLink" ng-click="showAdvanced=false"><i class="fa fa-arrow-left"></i></span>
+         <h4 ng-hide="showAdvanced" class="modal-title"><i  ng-click="closeDevolperList()" class="btx-close"></i>{{'invite'| i18nString}}</h4>
+         <h4 ng-hide="!showAdvanced" class="modal-title">{{'bt_usershare_advanced_sharing_option'| i18nString}}</h4>
+         <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="closeDevolperList()" ></i></span> -->
+      </div>
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+    <div class="modalBody inviteDeveloper" perfect-scroll dynamic-height dynaoffset="-115" height-property="height">
+        <!-- First screen -->
+        <div ng-hide="showAdvanced">
+            <form name="inviteDev">
+                    <label class="roleLabelUser">{{'users_uppercase'| i18nString}}</label>
+            <div>
+                <tag-input placeholder="{{'type_enter_add'| i18nString}}" autocomplete='usersList' taglist='selectedContacts.selectedUsers' callback="callback"></tag-input>
+            </div>
+            <div class="col-xs-12 roleSelectDiv">
+               
+                 <label class="roleLabel">{{'groups_uppercase'| i18nString}}</label>
+                    <sumo-select search=false options="groups" placeholder="{{'select_groups_placeholder'| i18nString}}" title-key="groupName" value-key="groupId" value="group.selectedGroup"></sumo-select>
+                   
+            </div>
+            <div class="col-xs-12 roleSelectDiv">
+                
+                 <label class="roleLabel">{{'role_uppercase'| i18nString}}</label>
+                        <select class="form-control" ng-model="defaultRole.role_id">
+                            <option value="" selected disabled>{{'bt_usershare_select_role'| i18nString}}</option>
+                            <option ng-repeat="individualRole in changeownerList track by $index" value="{{individualRole._id}}">{{individualRole.role}}</option>
+                        </select>
+            </div>
+      
+        </div>
+        <!-- First screen ends -->
+        <!-- Second screen -->
+        <!-- <div ng-hide="!showAdvanced" class="advanceShareInputContainer">
+            <div id="advanceShareInput" contenteditable="true" ng-keyup="inviteOtherDomainUser($event)" placeholder='Type and enter email ID to add'></div>
+            <div ng-repeat="_contact in selectedContacts.selectedUsers track by $index" class="advancedUserList" ng-class="{'invalid': _contact.inValidEmail}">
+                <div class="advancedUserLeftDiv">
+                    <span ng-click="deleteSelectedAdvancedContact($index)" class="fa fa-times"></span>
+                    <div class="imageDiv" tooltip-placement="top" tooltip="{{_contact.emailId}}" ng-if="_contact.profImage && _contact.profImage === 'no-avatar.jpg'" style="background-color:{{_contact.profColor !==''?_contact.profColor:'#6386d9'}};">{{getDisplayName(_contact)}}</div>
+                    <div class="profimageDiv" tooltip-placement="top" tooltip="{{_contact.emailId}}" ng-if="_contact.profImage && _contact.profImage !== 'no-avatar.jpg'"><img ng-src="{{_contact.url}}" alt="profile"/></div>
+                    <div class="imageDiv fa fa-envelope" ng-if="_contact.otherDomain && !_contact.inValidEmail"></div>
+                    <div class="name" tooltip-placement="top" tooltip="{{_contact.emailId}}">{{_contact.fullName || _contact.emailId}}</div>
+                </div>
+                <div class="advancedUserRightDiv">
+                     <select class="form-control" ng-model="selectedContacts.role" ng-options="key as value for (key,value) in roles">
+                   
+                    </select>
+                </div>
+            </div>
+        </div> -->
+       <!--  <div class="col-xs-12 inviteMemberFooterDiv">
+            <div class="inviteBtn"><button type="button" class="btn btn-primary" ng-disabled="disableInvite()" ng-click="addDeveloper(group,group.selectedGroup
+            ,selectedContacts.selectedUsers)">Invite</button></div>
+            <div ng-hide="showAdvanced" class="advancedLink" ng-click="showAdvanced=true">Advanced <img src="{{assetsBase}}ivrIcons/rightArrow.svg"></div>
+        </div> -->
+        <!-- Second screen ends -->
+        <!--<div class="form-group">
+            <div class="search botShare">
+                <input type="text" id="_inviteBotDev" class="form-control query" name="search" ng-model="query" placeholder="Search here">
+            </div>
+        </div>
+        <div class="col-xs-12 contacts-list" perfect-scroll dynamic-height dynaoffset="-165" height-property="height">
+            <div class="form-group noMarginBottom" ng-repeat="contact in contacts | filter : query" ng-hide="contact.isAdded && !contact.isManullyAdded">
+                <div class="userContainer pointer-hand" ng-click="selectContact(contact)">
+                    <div class="user">
+                        <div class="selected-status ">
+                            <i area-hidden="true" ng-class="{'fa fa-circle-thin':!contact.isAdded,'fa fa-check-circle':contact.isAdded}"></i>
+                        </div>
+                        <profile-pic context="contact"></profile-pic>
+                        <div class="details">
+                            <div class="ciName">{{contact.fullName ? contact.fullName : (contact.firstName + ' ' + contact.lastName)}}</div>
+                            <div class="ciTitle">{{contact.emailId}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="alert alert-sm alert-warning text-center" ng-show="loading">
+                Loading please wait...
+            </div>
+        </div>-->
+     
+      </div>
+  </form>
+<!-- Body Ends Here -->
+
+<!-- Footer Starts Here -->
+       
+      <div class="modalFooter">
+         <div class="col-xs-12">
+            <!-- <button type="button" class="btn btn-default closeCancel" ng-click="closeDevolperList()">Close</button> -->
+            <button type="button" class="btn btn-primary" ng-disabled=" !(callback.enable || group.selectedGroup.length || selectedContacts.selectedUsers.length)" ng-click="addDeveloper(group.selectedGroup,selectedContacts.selectedUsers,defaultRole.role_id)">{{'invite'| i18nString}}</button>
+         </div>
+      </div>
+<!-- Footer Ends Here -->
+
+   </div>
+</bot-modal-slider>
+<!-- SLIDER MODAL ENDS HERE -->
+
+
+<!-- SLIDER MODAL ENDS HERE -->
+<bot-modal-slider id="editDeveloper">
+   <div class="modalSliderContainer users-list width500">
+
+<!--Header Starts Here -->
+      <div class="modalHeader">
+            <!-- <span aria-hidden="true"><img ng-src="{{assetsBase}}settingsIcons/closeCross.png" class="appSliderCloseInvite"></span> -->
+         <div class="imageDiv" tooltip-placement="right" tooltip="{{userAccess.emailId}}" ng-if="userAccess.profImage === 'no-avatar' || userAccess.gI === 'no-avatar.jpg'">{{getFirstLastName(userAccess)}}
+         </div>
+         <div class="profimageDiv displayinline" tooltip-placement="right" tooltip="{{userAccess.emailId}}" ng-if="userAccess.profImage && userAccess.profImage !== 'no-avatar'">
+                <img ng-src="{{getBotOwnerImageurl(userAccess)}}" alt="profile"/>
+         </div>
+
+         <h4 class="modal-title">{{getDisplayName(userAccess)}}
+             <i class="btx-close"  ng-click="closeDevolperPermissions()"></i>
+         </h4>
+         <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="closeDevolperPermissions()"></i></span> -->
+      </div>
+<!-- Header Starts Here -->
+
+<!-- Body Starts Here -->
+    <div class="modalBody" perfect-scroll dynamic-height height-property="height" dynaoffset="-70">
+            <div class="col-xs-12 roleSelectDiv">
+                <label class="roleLabel">{{'role_uppercase'| i18nString}}</label>
+                <div>
+                   <!--  <select class="form-control" name="role"  ng-model="selectedRole" ng-options = "individualRole.role as individualRole.role for individualRole in roles" ng-change="getPermissionsForRole(selectedRole)">
+                    </select> -->
+                    <input class="form-control disabled" name="role" ng-readonly="true" ng-model="selectedRole">
+                </div>
+            </div>
+            <div class="col-xs-12 rolePermissionsDiv">
+                <div class="roleLabel permissionRole col-xs-9">{{'permissions_uppercase'| i18nString}}</div>
+                <div class="roleLabel col-xs-3">{{'access_uppercase'| i18nString}}</div>
+            </div>
+            <div class="col-xs-12 accessControls" ng-repeat = "control in accessControls">
+                <div class="col-xs-9 pColumn">
+                        <p class="pName">{{control.name}}</p>   
+                        <p class="pDesc">{{control.description}}</p> 
+                </div>
+                <div class="col-xs-3 tColoumn">
+                    <!-- <button type="button" class="btn btn-default"><span>{{control.operations[0]}}</span></button> -->
+                    <a href="#" class="accessBtn">{{control.operations[0]}}</a>
+                </div>
+                
+            </div>
+      </div>
+<!-- Body Ends Here -->
+
+<!-- Footer Starts Here -->
+    <!--   <div class="modalFooter">
+         <div class="col-xs-12">
+            <button type="button" class="btn btn-primary" ng-click="savePermissions()">Save</button>
+             <button type="button" class="btn btn-default closeCancel" ng-click="closeDevolperPermissions()">Cancel</button>
+         </div>
+      </div> -->
+<!-- Footer Ends Here -->
+
+   </div>
+</bot-modal-slider>
+<!-- SLIDER MODAL ENDS HERE -->
+
+<div class="panel-default manageDeveloperAccess" ng-class="{'read-only-wrap':displayMode === 'VIEW'}">
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">{{'bot_sharing'| i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            <div class="searchComponent displayNone">
+                <input  placeholder="Search">
+                <i class="btx-search"></i>
+                <i class="btx-close displayNone"></i>
+            </div>
+            <div class="creationButton borderBtn ">
+                <button class="titleBTN" ng-click="callback.showDevolperList()" ng-hide="displayMode === 'VIEW'"> {{'invite'| i18nString}}</button>
+            </div>
+            <div class="titleDropdown displayNone">
+
+                <div class="dropdown">
+                    <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Dropdown name
+                        <i class="btx-carrot-up"></i>
+                    </a>
+                        <ul class="dropdown-menu">
+                                    <li class="dropdown-item">Option One</li>
+                                    <li class="dropdown-item" >Option Two</li>                       
+		 	</ul>
+                </div>
+            </div>
+            <div class="titleOverflow displayNone">
+                <div class="dropdown">
+                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                                    <li class="dropdown-item">Option One</li>
+                                    <li class="dropdown-item" >Option Two</li>                       
+		 	</ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="" >
+        <div class="membersTitle pull-left">{{'members_uppercase'| i18nString}}</div>
+        <button ng-click="callback.showDevolperList()" class="btn btn-sm btn-primary text-info pull-right" ng-hide="displayMode === 'VIEW'"> {{'invite'| i18nString}} </button>
+    </div> -->
+    <div class="botDevelopers">
+        <!--  <div class="col-xs-10 lineHeight">
+             <label tooltip-placement="right" tooltip="Manage user having access to view, edit and test this bot">Bot Developers</label>
+             <but ton type="button" ng-if="false" ng-show="!loading" class="btn btn-primary btn-sm pull-right" ng-click="callback.showDevolperList()">Add</button>
+         </div> -->
+         <!-- <h5 class="botDevelopersSubHeading">{{'members_title'| i18nString}}</h5> -->
+        <div class="col-xs-12 noPadding">
+            <table class="table table-hover developersTable" ng-show="!loading">
+                <tr class="header">
+                    <td class="col-xs-6">{{'name_label_uppercase'| i18nString}}</td>
+                    <td class="col-xs-4">{{'role_uppercase'| i18nString}}</td>
+                    <td class="col-xs-2" align="right"></td>
+                </tr>
+                <tr ng-repeat= "user in codevelopers.users track by $index" class="userRow">
+                    <td class="col-xs-6" ng-click="openSlider(user)">
+                        <div class="avatarDiv">
+                            <div class="imageDiv" tooltip-placement="right" tooltip="{{user.emailId}}" ng-if="user.profImage === 'no-avatar'" style="background-color:'#6386d9'">{{getFirstLastName(user)}}</div>
+                            <div class="profimageDiv" tooltip-placement="right" tooltip="{{user.emailId}}" ng-if="user.profImage !== 'no-avatar'">
+                                <!-- <img src="{{brokenImageSmall}}" id="img" data-original-img="{{getBotOwnerImageurl(user)}}"/> -->
+                                <img ng-src="{{getBotOwnerImageurl(user)}}"  src="{{brokenImageSmall}}" onerror="handleimgLoad(this)" alt="profile">
+                            </div>
+                           <!-- <img  ng-src="{{brokenImageSmall}}" class="brokenImage"> -->
+                           
+                        </div>
+                        <div class="name">{{getDisplayName(user)}}</div>
+                    </td>
+                    <td class="col-xs-4" ng-click="openSlider(user)">{{user.roleInfo[0].role}}</td>
+                    <td class="col-xs-2" align="right">
+                       <div class="dropdown pull-right oval-copy dropdown-toggle" data-toggle="dropdown" ng-show="codevelopers.users.length > 1 && displayMode !== 'VIEW'">
+                                <i ng-click="" class="dropdown-toggle btx-settings" data-toggle="dropdown">
+                                </i>
+                                <ul class="dropdown-menu">
+                                    <li ng-if="user.roleInfo[0].role !== 'Bot Owner'"><a ng-click="promoteToOwner(user,$index)">{{'bt_usershare_promote_as_owner'| i18nString}}</a></li>
+                                    <li ng-if="user.roleInfo[0].role === 'Bot Owner'">
+                                        <a ng-click="changeToOwner(user,$index)">{{'bt_usershare_change_owner'| i18nString}}</a>
+                                    </li>
+                                    <li ng-if="user.roleInfo[0].role !== 'Bot Owner'"><a ng-click="revokeAccess(user,$index)">{{'delete'| i18nString}}</a></li>
+                                </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-repeat= "group in codevelopers.groups track by $index">
+                    <td class="col-xs-6" ng-click="openSlider(group)">
+                        <div class="groupDiv" tooltip-placement="right" tooltip="{{group.gDesc}}" ng-if="group.gI === 'no-avatar.jpg'">{{'group_colon'| i18nString}}</div>
+                        <div class="profimageDiv" tooltip-placement="right" tooltip="{{group.gDesc}}" ng-if="group.gI !== 'no-avatar.jpg'">
+                           <!--  <img ng-src="{{getBotOwnerImageurl(group)}}" alt="profile"/> -->{{'group_colon'| i18nString}}
+                        </div>
+                        <span class="name">{{group.gN}}</span>
+                    </td>
+                    <td class="col-xs-4" ng-click="openSlider(group)">{{group.roleInfo[0].role}}</td>
+                    <td class="col-xs-2" align="right">
+                       <div class="dropdown pull-right oval-copy">
+                                <span ng-click="" class="dropdown-toggle gear" data-toggle="dropdown">
+                                </span>
+                                <ul class="dropdown-menu">
+                                    <!-- <li ng-if="group.roleInfo[0].role !== 'Bot Owner'"><a ng-click="promoteToOwner(group,$index)">Promote as owner</a></li> -->
+                                    <li ng-if="group.roleInfo[0].role === 'Bot Owner'"><a ng-click="changeToOwner(group,$index)">{{'change_owner'| i18nString}}</a>
+                                        
+                                    </li>
+                                    <li><a ng-click="revokeAccess(group,$index)">{{'delete'| i18nString}}</a></li>
+                                </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-mouseenter="user.show = true" ng-mouseleave="user.show = false" ng-show="user._id != botOwner._id" ng-repeat="user in users.slice((currentPage-1)*10,currentPage*10)">
+                    <td class="col-xs-6">
+                        <div class="imageDiv" tooltip-placement="right" tooltip="{{user.emailId}}" ng-if="user.profImage === 'no-avatar.jpg'" style="background-color:{{user.profColor !==''?user.profColor:'#6386d9'}};">{{getDisplayName(user)}}</div>
+                        <div class="profimageDiv" tooltip-placement="right" tooltip="{{user.emailId}}" ng-if="user.profImage !== 'no-avatar.jpg'"><img ng-src="{{user.url}}" alt="profile"/></div>
+                        <div class="name">{{user.fullName || user.emailId}}</div>
+                    </td>
+                    <td class="col-xs-4">{{user.owner ? bot_owner : regular_user}}</td>
+                    <td class="col-xs-2" align="right" ng-show="loggedInUserID === botOwner._id">
+                        <div ng-show="user.show" class="trashDiv"><span class="fa fa-trash-o" ng-click="revokeAccess(user,$index)"></span></div>
+                        <div ng-if="false">
+                            <div class="dropdown pull-right" ng-show="user.show">
+                                <span ng-click="" class="dropdown-toggle pointer-hand" data-toggle="dropdown">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                </span>
+                                <ul class="dropdown-menu">
+                                    <li><a ng-click="revokeAccess(user,$index)">{{'revoke_access'| i18nString}}</a></li>
+                                    <li><a ng-click="promoteToOwner(user,$index)">{{'bt_usershare_promote_bot_to_owner'| i18nString}}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                                    <div class="col-xs-3"></div>
+                                </td>
+                                <td class="col-xs-2" align="right" ng-show="loggedInUserID != botOwner._id"></td>
+                            </tr>
+                        </table>
+                        <pagination rotate="false"  max-size="5" ng-show="users.length > 10" class="pagination-sm" boundary-links="true" direction-links="false" total-items="users.length" items-per-page="10" ng-model="currentPage"></pagination>
+                        <br>
+                        <!-- <div class="alert alert-sm alert-warning text-center" ng-show="!loading && (!stream.codevelopers || stream.codevelopers.length == 0)">
+                            Looks like this bot is not shared with anybody.
+                        </div> -->
+            <div class="alert alert-sm alert-warning text-center" ng-show="loading">
+                {{'loading_please_wait'| i18nString}}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="promoteowner" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <h4 class="modal-title " id="gridSystemModalLabel">{{'bt_usershare_promote_bot_owner'| i18nString}}</h4>
+                <!-- <span aria-hidden="true"><i class="fa fa-close" ng-click="closeNodeVxmlProp(vprop)" ></i></span> -->
+            </div>
+            <form name="promoteownerform">
+            <div class="modal-body " height-property="height">
+                <div class="newVariable">
+                    <div class="col-xs-12  paddingTop10">
+                        <div class="required-field name"><label class="cowner-text">New bot owner</label></div>
+                        <div>
+                            <input class="form-control" ng-readonly="true" ng-model="promoteUser.fullName">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 paddingTop10">
+                        <div class="required-field name">
+                            <label class="cowner-text">{{'bt_usershare_select_role_for_current_bot_owner'| i18nString}}</label>
+                        </div>
+                        <div>
+                            <select class="form-control" ng-model="promoteUser.role_id" ng-required="true">
+                                <option value="" selected disabled>Select role</option>
+                                <option ng-repeat="individualRole in changeownerList track by $index" value="{{individualRole._id}}">{{individualRole.role}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             </form>
+            <div class="modal-footer">
+                <div class="col-xs-12">
+                    <button  class="btn saveSubmit proceedBtn" ng-click="promoteOwnership(promoteUser)" ng-disabled="promoteownerform.$invalid || promoteownerformSave" class="btn">{{'save'| i18nString}}</button>
+                    <button ng-click="closePromoteOwner()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade " id="changetoowner" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <h4 class="modal-title " id="gridSystemModalLabel">{{'bt_usershare_change_bot_owner'| i18nString}}</h4>
+            </div>
+            <form name="changeOwnerform">
+            <div class="modal-body " height-property="height">
+                <div class="newVariable">
+                    <div class="col-xs-12  noPadding">
+                        <label class="cowner-text">{{'bt_usershare_select_new_bot_owner'| i18nString}}</label>
+                           <select class="form-control" ng-model="changeowner.user_id" ng-required="true">
+                            <option value="" selected disabled>{{'bt_usershare_select_new_bot_owner'| i18nString}}</option>
+                            <option ng-repeat="couser in shareDevelopersList track by $index" value="{{couser._id}}">{{getDisplayName(couser)}}</option>
+                            </select>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <label class="cowner-text">{{'bt_usershare_select_role_for_current_bot_owner'| i18nString}}</label>
+                            <select class="form-control" ng-model="changeowner.role_id" ng-required="true">
+                                <option value="" selected disabled>{{'bt_usershare_select_role'| i18nString}}</option>
+                                <option ng-repeat="individualRole in changeownerList track by $index" value="{{individualRole._id}}">{{individualRole.role}}</option>
+                            </select>
+                    </div>
+                </div>
+            </div>
+             </form>
+            <div class="modal-footer">
+                <button  class="btn saveSubmit proceedBtn" ng-click="changeOwnership(changeowner)" ng-disabled="changeOwnerform.$invalid || changeOwnerformSave" class="btn">{{'proceed'| i18nString}}</button>
+                <button ng-click="closeChangeOwner()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+            </div>
+        </div>
+    </div>
+</div>

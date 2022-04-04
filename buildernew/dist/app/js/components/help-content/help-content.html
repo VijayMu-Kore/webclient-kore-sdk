@@ -1,0 +1,72 @@
+<h4 class="tabTitle">{{'faqs'| i18nString}}</h4>
+<p ng-show="cb.showHeader" class="faqSubDesc">{{faqHeader}}</p>
+<div class="questionsContainer" perfect-scroll dynamic-height dynaoffset="-65" height-property="height">
+    <!-- <div ng-if="showVersion" class="animationIfEnter app-version-div">V {{appVersion}}</div> -->
+    <!--<div ng-if="showVersion" class="animationIfEnter app-version-div">V7.0.12</div>-->
+    <div class="dynamicContent">
+        
+    </div>
+    <!--<div class="row helpContentContainer">
+            <div class="col-xs-6 helpQuestionDiv">What is intent?</div>
+            <div class="col-xs-6 helpsassetsDiv">
+                <span>Video</span>
+                <span>Article</span>
+                <span>Guided Help</span>
+            </div>
+        </div>
+        <div class="row helpContentContainer">
+            <div class="col-xs-6 helpQuestionDiv">How to train my intent?</div>
+            <div class="col-xs-6 helpsassetsDiv">
+                <span>Article</span>
+                <span>Guided Help</span>
+            </div>
+        </div> 
+        <div class="row helpContentContainer">
+            <div class="col-xs-6 helpQuestionDiv">What is sub intent?</div>
+            <div class="col-xs-6 helpsassetsDiv">
+                <span>Guided Help</span>
+            </div>
+        </div>
+        <div class="row helpContentContainer">
+            <div class="col-xs-6 helpQuestionDiv">What is Dialog task?</div>
+            <div class="col-xs-6 helpsassetsDiv">
+                <span>Guided Help</span>
+            </div>
+        </div>
+        <div class="row helpContentContainer">
+            <div class="col-xs-6 helpQuestionDiv">What is Alert task?</div>
+            <div class="col-xs-6 helpsassetsDiv">
+                <span>Guided Help</span>
+            </div>
+        </div>
+        <div class="row helpContentContainer">
+            <div class="col-xs-6 helpQuestionDiv">What is Knowledge Collection?</div>
+            <div class="col-xs-6 helpsassetsDiv">
+                <span>Guided Help</span>
+            </div>
+        </div>-->
+</div>
+
+<div class="supportContainer row" style="display: none;">
+    <div class="col-xs-12 noPadding col-xs-12 noPadding paddingBottom20">
+        <div class="col-xs-8 left noPaddingLeft">
+            <p class="title">{{'cant_find'| i18nString}}</p>
+            <div class="inputDiv">
+                <input placeholder="{{'type_search'| i18nString}}" ng-model="searchQuery" ng-keypress="searchkeyPressed($event)">
+                <img ng-src="{{searchIconGray}}" class="searchIconGray"> 
+            </div>
+        </div>
+        <div class="col-xs-4 right">
+            <p class="title">{{'need_support'| i18nString}}</p>
+            <button class="sendMailBtn" ng-click="invokeSupportSite()">{{'ask_us'| i18nString}}</button>
+        </div>
+    </div>
+    <div class="col-xs-12 linksDiv">
+        <span ng-hide="processHelpPage" class="helpKeyboardShortCuts"><a href="javascript:void(0)" ng-click="openShortCut()">{{'keyboard_shortcuts'| i18nString}}</a></span>
+        <span ng-hide="hideProductTour || processHelpPage" kr-show-interactive-help="BOT_WALK_THROUGH" >{{'product_touR'| i18nString}}</span>
+        <span ng-hide="hideProcessAppProductTour() || !processHelpPage" kr-show-interactive-help="PROCESSAPP_WALK_THROUGH" >{{'product_touR'| i18nString}}</span>
+        <span ng-hide="processHelpPage"><a target="_blank" ng-click="linkEvent('document')" href="{{helpLinks.HOME}}">{{'document'| i18nString}}</a></span>
+        <span ng-if="processHelpPage"><a target="_blank"  ng-click="linkEvent('document')" href="{{helpLinks.PROCESS_DOC}}">{{'document'| i18nString}}</a></span>
+        <span><a target="_blank" href="https://community.kore.ai" ng-click="linkEvent('community')">{{'developer_community'| i18nString}}</a></span>
+    </div>
+</div>

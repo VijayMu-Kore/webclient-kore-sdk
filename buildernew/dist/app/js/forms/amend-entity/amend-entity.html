@@ -1,0 +1,135 @@
+<div class="amend-entity position-relative" id="amend-entity" dynamic-height dynaoffset="-160" height-property="height" perfect-scroll ng-class="{'read-only-wrap':accessRights === 'VIEW'}">
+    <div class="row btnSearchTitle">
+        <div class="col-xs-6 leftTitle">
+            <p class="pageTitle">{{'Amend_entity_label'| i18nString}}</p>
+        </div>
+        <div class="col-xs-6 rightBTNSearch">
+            <div class="searchComponent displayNone">
+                <input  placeholder="Search">
+                <i class="btx-search"></i>
+                <i class="btx-close displayNone"></i>
+            </div>
+            <div class="creationButton borderBtn displayNone">
+                <button class="titleBTN">button</button>
+            </div>
+            <div class="titleDropdown displayNone">
+                <div class="dropdown">
+                    <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Dropdown name
+                        <i class="btx-carrot-up"></i>
+                    </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Option One</li>
+                            <li class="dropdown-item" >Option Two</li>                       
+                        </ul>
+                </div>
+            </div>
+            <div class="titleOverflow displayNone">
+                <div class="dropdown">
+                    <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                        <i class="btx-overflow"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item" >Option Two</li>                       
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+      <p class="radioTitle mb-5"> {{'Manage_amend_behaviour_label'| i18nString}}</p>
+      <div class="col-xs-12 noPadding form-group mb-10">
+        <div class="col-xs-12 labelling noPadding radioDiv radioSection">
+            <div class="radioInnerDiv">
+                        <label for="amend-notAllowAmend">
+                            <input value='false' type="radio" data-ng-value="false"  ng-model="amendConfig.enabled" name="notAllowAmend" id="amend-notAllowAmend">
+                            <span class="opt-title"> {{'Donot_allow_amend_label'| i18nString}}</span> 
+                        </label>
+            </div>
+            <div class="radioInnerDiv">
+                        <label for="amend-allowAmend" class="m-0">
+                            <input value='true' type="radio" data-ng-value="true" ng-change="setDefault()"  ng-model="amendConfig.enabled" name="allowAmend" id="amend-allowAmend">
+                            <span class="opt-title"> {{'Allow_amend_label'| i18nString}}</span> 
+                        </label>
+            </div>
+            <div class='row marginleft20 noMarginBottom amendConfig' ng-if="amendConfig.enabled">
+              <p class="radioTitle mb-5"> {{'dialog_options'| i18nString}}</p>
+              <p class="radioTitleDesc noPadding"> {{'resume_dialog_entity'| i18nString}}</p>
+             <div class="col-xs-12 labelling noPadding radioDiv radioSection">
+                  <div class="radioInnerDiv">
+                      <label for="amendNode" class="noMargin">
+                        <input value="continueFromAmendedNode" type="radio" ng-model="amendConfig.postAmend" id="amendNode">
+                        <span> {{'re-execute_dialog'| i18nString}}</span>
+                      </label>
+                       <p class="radioTitleDesc"> {{'dialog_resume'| i18nString}}<p>
+                        <div ng-show="amendConfig.postAmend === 'continueFromAmendedNode'">
+                            <div class="checkbox checkbox-primary styledCSS alwaysResume marginleft20 paddingLeft5">
+                                    <input type="checkbox" id="amend-clearDownstreamEntities" ng-model="amendConfig.clearDownstreamEntities">
+                                    <label for="amend-clearDownstreamEntities" class="alwaysResume"> {{'clear_downstream'| i18nString}}</label>
+                          </div>
+                          <div class="checkbox checkbox-primary styledCSS alwaysResume marginleft20 paddingLeft5">
+                                    <input type="checkbox" id="amend-skipShownMessages" ng-model="amendConfig.skipShownMessages">
+                                    <label for="amend-skipShownMessages" class="alwaysResume">{{'skip_shownmessages'| i18nString}}</label>
+                          </div>
+                        </div>
+                  
+                  </div>
+                  <div class="radioInnerDiv">
+                      <label for="amend-currentNode" class="noMargin">
+                        <input value="continueFromCurrentNode" type="radio" ng-model="amendConfig.postAmend" id="amend-currentNode">
+                        <span> {{'resume_dialog_node'| i18nString}}</span>
+                      </label>
+                       <p class="radioTitleDesc"> {{'amend_description'| i18nString}}</p>
+                  </div>
+                  <div class="hiddenEntityAmend mt-5">
+                        <p class="radioTitle">{{'hidden_amend_input' | i18nString }}</p>
+                        <p class="radioTitleDesc mb-0 noPadding">{{'hidden_amend_input_desc' | i18nString }}</p>
+                        <toggle-switch ng-model="amendConfig.allowHidden" ng-change="toggleHiddenAmend(amendConfig)" class="pull-left adjust-margin-bottom-toggle">
+                        </toggle-switch>
+                    </div>
+             </div>
+        </div>
+        </div>
+       
+      </div>
+      <div class="noteEn" ng-if="currentLanguage !== 'en'">
+          <span class="noteHead"> {{'note_label'| i18nString}}</span>
+          <p class="noteDesc"> {{'note_desc'| i18nString}}</p>
+      </div>
+       <div class="amendExpand">
+            <div ng-click="showContent('expand')" id="expandView">
+                <p class="accordion">{{amendEntityDescription[0].desc}}<span ng-show="!showAllContent" class="accordion"><a ng-click="showContent('expand')"> {{'expand'| i18nString}}</a></span></p>
+
+            </div>
+            <div ng-show="showAllContent" class="expandView">
+                <div class="description" ng-repeat="description in amendEntityDescription.slice(1,amendEntityDescription.length)">
+                     <p>{{description.desc}}</p>
+                </div>
+                <span>
+                    <a ng-click="showContent('collapse')" id="collapse"> {{'collapse'| i18nString}}</a>
+                </span>
+            </div>
+      </div>
+</div>
+<!-- <div class="amendEntity" ng-if="!showAmend">
+<div class="landingPage col-xs-12 text-center">
+    <div class="headingBar">
+        <span class="heading">Manage Amend Behaviour</span>
+        <p class="description">Enabling this feature will allow your bots to understand user's intent to amend previously populated entities.</p>
+    </div>
+    <div class="paddingTop20 descriptionList">
+      <div class="amendDescription" ng-repeat="description in amendEntityDescription">
+            <p>{{description.desc}}</p>
+      </div>
+    </div>
+   <div class="toggle-on-off" ng-click="amendToggleHandler()" >
+       <span class='toggle-disable'>Disable</span>
+       <span class="toggleSwitch">
+       <toggle-switch></toggle-switch>
+       </span>
+       <span class='toggle-enable'>Enable</span>
+    </div>
+</div>
+
+</div> -->

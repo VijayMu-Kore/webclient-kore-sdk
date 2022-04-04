@@ -1,0 +1,89 @@
+<div class="container"dynamic-height dynaoffset="-60"  perfect-scroll>
+	<div class="content" > 
+	      <div class="row">
+	      		<div class="col-xs-12 details">
+				  	<h1 class="name">{{'billing_invoices'| i18nString}}</h1>
+				  	<p class="description">{{'your_usage'| i18nString}}</p>
+	      		</div>
+	      </div>
+	      <!--Form container starts here -->
+	     <div class="row">
+	      		<div class="col-xs-12 cardDetails">
+					  <h2>{{'card_details'| i18nString}}</h2>
+					<!--Card details form container starts here -->
+	      			<div class="col-xs-6 leftPanel">
+					  <form >
+					    <div class="form-group ">
+					      <label f>{{'card_number'| i18nString}}</label>
+					      <input type="text" class="form-control" placeholder="0101010">
+					    </div>
+					    <div class="form-group">
+					    	<div class="col-xs-6 nopaddingLeft">
+					      		<label>MM/YY</label>
+					     		 <input type="text" class="form-control"  placeholder="MM/YY">
+					    	</div>
+					    	<div class="col-xs-6 nopaddingRight">
+					     		 <label >{{'cvv'| i18nString}}</label>
+					      		 <input type="password" class="form-control"  placeholder="***">
+					    	</div>
+					    </div>
+					    <div class="form-group ">
+					      <label >{{'name_label_uppercase'| i18nString}}</label>
+					      <input type="text" class="form-control"  placeholder="{{'name_card'| i18nString}}">
+					    </div>
+					    <div class="form-group ">
+					      <label >{{'zip_caps'| i18nString}}</label>
+					      <input type="text" class="form-control" placeholder="{{'enter_zip'| i18nString}}">
+					    </div>
+					    <button type="submit" class="btn btn-default updateBTN">{{'update'| i18nString}}</button>
+					  </form>
+	      			</div>
+	      			<!--Card details form container ends here -->
+	      			 <!--Form container ends here -->
+
+	      			 <!--Invoices container starts here -->
+	      			<div class="col-xs-6 rightPanel">
+	      				<img scr="">
+	      			</div>
+	      			<!--Invoices container ends here -->
+	     		</div>
+	    </div>
+	    <!--Invoices container starts here -->
+	    <div class="row">
+	    	<div class="col-xs-12 panel-table invoices">
+	    		 <h2>{{'invoices'| i18nString}}</h2>
+                <div class="panel-table-header">
+                    <div class="row">
+                        <div class="col-xs-3">{{'date_label'| i18nString}}</div>
+                        <div class="col-xs-4">{{'details_label'| i18nString}}</div>
+                        <div class="col-xs-2">{{'amount'| i18nString}}</div>
+                        <div class="col-xs-3">{{'mode'| i18nString}}</div>
+                    </div>
+                </div>
+                <div class="panel-table-body">
+                    <div class="row planDetails" >
+                        <div class="col-xs-3 cursor-pointer" >19 Aug 2017</div>
+                        <div class="col-xs-4 cursor-pointer"><span class="plan">{{'small_team'| i18nString}}</span> <span class="planID">ID: 227859674</span></div>
+                        <div class="col-xs-2"> <span class="currency">$</span><span class="amount">60</span></div>
+                        <div class="col-xs-3"> <span class="card">{{'credit_card'| i18nString}}</span> <span class="cardNumber">xxxx1234</span></div>
+            		</div>
+                    <div class="row planDetails" >
+                        <div class="col-xs-3 cursor-pointer" >19 Aug 2017</div>
+                        <div class="col-xs-4 cursor-pointer"><span class="plan">{{'small_team'| i18nString}}</span> <span class="planID">ID: 227859674</span></div>
+                        <div class="col-xs-2"> <span class="currency">$</span><span class="amount">60</span></div>
+                        <div class="col-xs-3"> <span class="card">{{'credit_card'| i18nString}}</span> <span class="cardNumber">xxxx1234</span></div>
+            		</div>
+                    <div class="row planDetails" >
+                        <div class="col-xs-3 cursor-pointer" >19 Aug 2017</div>
+                        <div class="col-xs-4 cursor-pointer"><span class="plan">{{'small_team'| i18nString}}</span> <span class="planID">ID: 227859674</span></div>
+                        <div class="col-xs-2"> <span class="currency">$</span><span class="amount">60</span></div>
+                        <div class="col-xs-3"> <span class="card">{{'credit_card'| i18nString}}</span> <span class="cardNumber">xxxx1234</span></div>
+            		</div>
+	    </div>
+	    <!--Invoices container ends here -->
+		</div>
+	</div>
+	</div>
+</div>
+
+	    

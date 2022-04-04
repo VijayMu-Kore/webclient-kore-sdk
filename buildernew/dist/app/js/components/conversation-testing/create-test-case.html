@@ -1,0 +1,90 @@
+<!-- CREATE TEST CASE MODAL -->
+<div class="modal fade record-test-case-modal" id="recordTestCaseModal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" ng-form name="myForm">
+            <div class="modal-header">
+                <h4 class="modal-title" ng-if="!testCaseCloneMode">{{'create_test_case' | i18nString}}</h4>
+                <h4 class="modal-title" ng-if="testCaseCloneMode">{{'cloning_test_case' | i18nString}}</h4>
+            </div>
+            <div class="modal-body" perfect-scroll dynamic-height dynaoffset="-180" >
+                <form name="testCaseForm" novalidate>
+                    <div class="kr-sg-input-text mb-20">
+                        <div class="label-text">{{'test_case_name' | i18nString}}</div>
+                        <input type="text" name="name" placeholder="Enter name" ng-model="testForm.name"
+                             class="input-text" maxlength="128" required autocomplete="off" id="testCaseNameInput" ng-minlength="1" maxlength="50" required ng-pattern="/^$|^[A-Z a-z 0-9_]+$/" ng-change="resetInlineMsg()">
+                        <div class="error-msg" ng-show="inlineErrorMsg && inlineErrorMsg === ('testcase_name_already_exist' | i18nString)">
+                            <span class="btx-warning pr-1"></span>
+                            <span> {{('testcase_name_already_exist' | i18nString)}}</span>
+                        </div>
+                        <div class="error-msg" ng-show="testCaseForm.name.$dirty">
+                            <span class="btx-warning pr-1" ng-show="testCaseForm.name.$error.required || testCaseForm.name.$error.minlength || testCaseForm.name.$error.pattern"></span>
+                            <span ng-show="testCaseForm.name.$error.required">  {{'test_case_name_is_required'| i18nString}}</span>
+                            <span ng-show="testCaseForm.name.$error.minlength">  {{'testcaseform_name_invalid'| i18nString}}</span>
+                            <span ng-show="testCaseForm.name.$error.pattern">  {{'test_case_allows'| i18nString}}</span>
+                        </div>
+                    </div>
+                    <div class="kr-sg-input-text-area mb-20">
+                        <div class="label-text">{{'Task_description'| i18nString}}</div>
+                        <textarea placeholder="Enter description here" ng-model="testForm.description"
+                            class="input-text" maxlength="512" autocomplete="off"></textarea>
+                    </div>
+                    <div class="kr-sg-dropdowns mb-20 channelsDD" style="display: none;">
+                        <div class="label-text">{{'channel' | i18nString}} <i class="btx-help"></i></div>
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" data-toggle="dropdown">
+                                <img ng-src="{{testForm.channel.icon}}">{{testForm.channel.name}}
+                            </button>
+                            <ul class="dropdown-menu content-menu">
+                                <li class="search-box">
+                                    <input type="text" ng-model="searchChannel" placeholder="Search" class="seach-input" ng-click="$event.stopPropagation();" autocomplete="off">
+                                </li>
+                                <div class="scroll-data" perfect-scroll dynamic-height dynaoffset="-80">
+                                    <ng-container ng-repeat="option in availableChannels | filter:searchChannel">
+                                        <li  ng-click="selectChannel(option)">
+                                            <img ng-src="{{option.icon}}">
+                                            <span class="name-channel">{{option.name}}</span>
+                                        </li>
+                                    </ng-container>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kr-sg-input-text">
+                        <div class="label-text">{{'add_tags' | i18nString}}</div>
+                        <!-- Tags -->
+                        <div class="inputContainer addTags" ng-if="tagsFlag">
+                            <div class="tags row ml-0 mr-0 mb-20">
+                                <!-- <select ui-select2 ng-model="testForm.tags" data-placeholder="Type & Enter">
+                                    <option value=""></option>
+                                    <option ng-repeat="tag in testForm.tags" value="{{tag}}">{{tag}}</option>
+                                </select> -->
+                                <input
+                                type="hidden"
+                                ui-select2="select2Options"
+                                ng-model="testForm.tags"
+                                >                        
+                            </div>
+                        </div>
+                        <!-- Tags -->
+                    </div>
+                    <div class="recent-tags row ml-0 mr-0 mb-20" ng-if="recentTags.length">
+                        <div class="recent-tag-title">{{'recent_tags' | i18nString}}</div>
+                        <div class="r-tag-name" ng-repeat="tag in recentTags" ng-click="addTag(tag)">{{tag}}</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <ng-container ng-if="!testCaseCloneMode">
+                    <button class="kr-sg-button-primary btn_lg mr-2" ng-disabled="isFormValid()" ng-click="createNewTestCase(testCaseForm)">{{'add' | i18nString}}</button>
+                </ng-container>
+                <ng-container ng-if="testCaseCloneMode">
+                    <button class="kr-sg-button-primary btn_lg mr-2" ng-disabled="isFormValid()" ng-click="cloneTestCase(testCaseForm)">{{'clone' | i18nString}}</button>
+                </ng-container>
+                <button class="kr-sg-button-secondary btn_lg" ng-click="closeCustomModal('recordTestCaseModal')">{{'cancel' | i18nString}}</button>
+                <div class="download-jsn" ng-if="!testCaseCloneMode" ng-click="downloadChatJson()">{{'download_as_json' | i18nString}}</div>
+                <div class="download-jsn" ng-if="testCaseCloneMode" ng-click="exportJson()">{{'download_as_json' | i18nString}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CREATE TEST CASE MODAL -->

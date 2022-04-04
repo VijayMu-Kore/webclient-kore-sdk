@@ -1,0 +1,80 @@
+<div class="view-page wrapper logs-page">
+    <!-- Top bar -->
+    <div class="row top-bar selected-stream" style="background:{{stream.color}}">
+        <div class="main-body row">
+            <div class="stream-icon">
+                <a href="/bt" title="">
+                    <img alt="{{stream.name}}" ng-src="{{stream.icon}}">
+                </a>
+            </div>
+            <div class="stream-details">
+              <span class="name">{{stream.name}}</span>
+              <span class="categories">{{}}</span>
+              <span class="alert-action">
+                <span >{{'bt_changelog_chanelog'| i18nString}}</span>
+              </span>
+            </div>
+        </div>
+    </div>
+    <div class="row logsContainer">
+        <div class="col-xs-12">
+            <div class="help-block col-xs-10">
+                {{'bt_chanelog_change_log_desc'| i18nString}}
+            </div>
+            <div class="col-xs-2">
+            <button type="button" class="btn btn-outline pull-right" ng-click="getChanageLogs()">{{'refresh'| i18nString}}</button>
+            </div>
+        </div>
+        <div class="col-xs-12 logs-view">
+            <div class="log-container">
+                <table class="table"  ng-hide="loading">
+                    <tr ng-repeat="log in logs.slice((currentPage-1)*10,currentPage*10) track by $index">
+                        <td class="col-xs-4">{{log.username || log.userId}}</td>
+                        <td class="col-xs-4">{{log.message}}</td>
+                        <td class="col-xs-4">{{log.created}}</td>
+                    </tr>
+                </table>
+                <pagination max-size="5" rotate="false"  ng-show="logs.length > 10" class="pagination-sm" boundary-links="true" direction-links="false" total-items="logs.length" items-per-page="10" ng-model="currentPage"></pagination>
+                <div class="log-item" ng-hide="!loading">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8">
+                        <div class="alert alert-warning alert-xs text-center" role="alert">
+                            <i class="fa-spin fa fa-circle-o-notch"></i>
+                            {{'bt_chanelog_loading_logs'| i18nString}}
+                        </div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                </div>
+                <div ng-show="!loading && logs.length == 0 ">
+                    <!-- <div class="alert alert-warning alert-xs text-center">
+                        {{'bt_channellog_no_chanelogs'| i18nString}}
+                    </div> -->
+                    <div class="emptyStateContainer">
+                        <div class="emptyState">
+                            <!-- <div class="emptyImage">
+                                <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                            </div>   -->
+                            <!-- <span class="mainTitle">Title</span> -->
+                            <div class="emptyStateDesc"> {{'bt_channellog_no_chanelogs'| i18nString}}</div>
+                            <!-- <div class="generateBtn">
+                                <button class="btn btnSolidBlue" >Add</button>
+                                <button class="btn" target="_blank" >learn more</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer form-group noMargin">
+        <div class="footerSub">
+            <div class="form-ctrl-div pull-left">
+                <button class="btn btn-default" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+            </div>
+            <div class="help-hint-link">
+                <a target="_blank"  ng-href="{{$root.helpLinks.VIEW_CHANGE_LOG}}">{{'help_withpage_label'| i18nString}}</a>
+            </div>
+            <div class="pull-right form-ctrl-div"></div>
+        </div>
+    </div>
+</div>

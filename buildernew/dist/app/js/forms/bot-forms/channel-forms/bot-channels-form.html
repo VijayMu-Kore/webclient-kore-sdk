@@ -1,0 +1,393 @@
+
+   <div class="row btnSearchTitle mb-0">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'channels'| i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent">
+            <input  focus-it tabindex="1" placeholder="{{'search'| i18nString}}" type="text" class="focusNameSearch" ng-model="search.nameSearchQuery" ng-keyup="searchResults()" ng-keydown="searchResults()">
+            <i class="btx-search"></i>
+            <i class="btx-close" ng-click="clearSearch();" ng-class="{displayNone: !search.nameSearchQuery.length}"></i>
+        </div>
+        <div class="creationButton borderBtn displayNone">
+            <button class="titleBTN">button</button>
+        </div>
+        <div class="titleDropdown displayNone">
+
+            <div class="dropdown">
+                <a class="viewModalBtn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Dropdown name
+                  <i class="btx-carrot-up"></i>
+                </a>
+                  <ul class="dropdown-menu">
+                      <li class="dropdown-item">Option One</li>
+                      <li class="dropdown-item" >Option Two</li>                       
+               </ul>
+            </div>
+        </div>
+        <div class="titleOverflow displayNone">
+            <div class="dropdown">
+                <a href="#" class="ellipsisGray" data-toggle="dropdown">
+                    <i class="btx-overflow"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Option One</li>
+                        <li class="dropdown-item" >Option Two</li>                       
+                    </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-12 noPadding " >
+  <div class="wf-form channel-add">
+    <div class="col-xs-12 channel noPadding" ng-if="true || sections.channelList">
+      <div class="row">
+        <div class="col-xs-12 paddingTenFive" ng-show="channelsAvailable('Enabled')">
+          <span class="channelState">{{'Configured_chnls'| i18nString}}</span>
+        </div>
+        <div class="noChannels" ng-show="noSearchResults">{{'no_channels_found' | i18nString}}</div>
+        <div class="col-xs-4 alert-default padding5 configured channelContainer {{channel.status}}" ng-repeat="channel in channels | filter:{name:search.nameSearchQuery} | orderBy: 'name'  track by $index" ng-hide="isEligibleToshow(channel) || channel.status == 'Not Setup'">
+          <div class="col-xs-12 containerShadow padding10">
+            <div class="col-xs-12 settings">
+              <span class="testChannel"><span ng-show="showTestBtn(channel)" ng-click="addChannel(channel)" class=" testBtnChannel">{{'test_label'| i18nString}}</span></span>
+              <span class="positionAbl " ng-show="channel.status !== 'Not Setup'" ng-class="{'hide':showSolutionBotSetup }">
+                <span class="dropdown panel-dropdown">
+                  <i class="gear-icon btx-left-menu-generalSettings" data-toggle="dropdown" ng-class="{'screenFreeze':(selectedStreamState=='published')}"></i>
+                  <i class="fa fa-info-circle cursor-pointer" ng-show='channel.id == "rcs"' data-toggle="popover" data-trigger="hover" data-placement="top" data-content="{{rcs.popover}}"></i>
+                    <ul class="dropdown-menu panel-dropdown-menu" ng-mouseleave="onMouseLeaveChannelMenuDiv($event)" role="menu">
+                        <li ng-show="!channel.enable">
+                          <a ng-click="enableordisableChannel(channel,true)">  {{'Enable'| i18nString}} </a>
+                        </li>
+                        <li ng-show="channel.enable">
+                          <a ng-click="enableordisableChannel(channel,false)">  {{'Disable'| i18nString}} </a>
+                        </li>
+                        <li>
+                          <a ng-click="deleteChannel(channel)"> {{'delete'| i18nString}} </a>
+                        </li>
+                    </ul>
+                </span>
+              </span>
+              <img ng-if="(stream.sbStreamId || stream.type === 'default' || stream.type === 'universalbot') && channel.type.startsWith('ivr') && channel.type !== 'ivrVoice' && !channel.app" tooltip-placement="left" tooltip="Channel has not been configured" ng-src="{{errorWarning}}" class="errorWarningForChannel">              
+            </div>
+            <div class="col-xs-12 channelName" ng-click="chooseChannel(channel,createdChannels[channel.id || channel.type])">
+              <span class="icon-holder channelIcon"> 
+                <i ng-hide='channel.icon' class="fa channel-icon" ng-class="channel.class" aria-hidden="true"></i>
+                <img class="img" ng-src="{{channel.icon}}" ng-show='channel.icon' ng-class="channel.class" aria-hidden="true" onerror="handleimgLoad(this)"/>
+              </span>
+              <span class="channel-name transformCapitalize" ng-if="channel.gateway === 'twilio'">{{channel.name}}</span>
+              <span class="channel-name" ng-if="channel.name === 'Webhook'">{{channel.displayName || channel.name}}</span>
+              <span class="channel-name" ng-class="{'transformCapitalize':channel.name !== 'Kore.ai'}" ng-if="channel.gateway !== 'twilio' && channel.name !== 'Webhook'">{{channel.displayName || channel.name}}<!-- <span class="betaClass" ng-if="channel.name == 'Twilio voice' || channel.name =='Amazon Alexa'">&nbsp;&nbsp; (BETA)</span> --></span>
+            </div>
+
+
+          </div>
+        </div>
+  
+        <div class="hintDiv col-xs-12 align-items-center width735" ng-show="channelsAvailable('Enabled')"> 
+          <div class="icon">
+              <i class="bulbIconLayer btx-bulb"></i>
+          </div> 
+          <div class="description">
+            {{'Bot_channels_protip'| i18nString}}
+          </div> 
+      </div>
+      <hr class="clear-fix">
+       <!-- Web / Mobile Client -->
+       <ng-container  ng-show="channelsAvailable('Not Setup','webMobile') && (selectedStreamState!=='published')" >
+        <div class="col-xs-12 paddingTenFive noPaddingTop " ng-if="!(webClientChannels =(channels | filter:{catagory:'webMobile', status: 'Disabled'}).length)" ng-show="channelsAvailable('Not Setup','webMobile') && (selectedStreamState!=='published')">
+          <span class="channelState">{{'webClient' | i18nString}}</span>
+        </div>
+        <div ng-if="webClientChannels.length" class="col-xs-4 alert-default padding5 channelContainer {{channel.status}}" ng-repeat="channel in webClientChannels =(channels | filter:{catagory:'webMobile',name:search.nameSearchQuery}) | orderBy: 'name' track by $index" ng-hide="isEligibleToshow(channel) || channel.status !== 'Not Setup' || (selectedStreamState=='published')">
+          <div class="col-xs-12 containerShadow padding10">
+            <div class="col-xs-12 settings">
+              <span class="testChannel"><span ng-if="showTestBtn(channel)"  ng-click="addChannel(channel)" class=" testBtnChannel">{{'test_label'| i18nString}}</span></span>
+              <span class="positionAbl" ng-if="channel.status !== 'Not Setup'" ng-class="{'hide':showSolutionBotSetup }">
+                <span class="dropdown panel-dropdown">
+                  <i class="fa fa-cog fa-1 pointer-hand" data-toggle="dropdown"></i>
+                  <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                    <li ng-show="!channel.enable">
+                      <a ng-click="enableordisableChannel(channel,true)"> {{'Enable'| i18nString}} </a>
+                    </li>
+                    <li ng-show="channel.enable">
+                      <a ng-click="enableordisableChannel(channel,false)"> {{'Disable'| i18nString}} </a>
+                    </li>
+                    <li>
+                      <a ng-click="deleteChannel(channel)"> {{'delete'| i18nString}} </a>
+                    </li>
+                  </ul>
+                </span>
+              </span>
+            </div>
+            <div class="col-xs-12 channelName" ng-click="chooseChannel(channel,createdChannels[channel.id || channel.type])">
+              <span class="icon-holder channelIcon"> 
+                <i ng-hide='channel.icon' class="fa channel-icon" ng-class="channel.class" aria-hidden="true"></i>
+                <img class="img" ng-src="{{channel.icon}}" ng-show='channel.icon' ng-class="channel.class" aria-hidden="true"/>
+              </span>
+              <span class="channel-name transformCapitalize" ng-if="channel.gateway === 'twilio'">{{channel.name}}</span>
+              <span class="channel-name" ng-class="{'transformCapitalize':channel.name !== 'Kore.ai'}" ng-if="channel.gateway !== 'twilio'">{{ channel.name}}<!-- <span class="betaClass" ng-if="channel.name == 'Twilio voice' || channel.name =='Amazon Alexa'">&nbsp;&nbsp; (BETA)</span> --></span>
+            </div>
+          </div>
+        </div>
+       </ng-container>
+       <!-- Web / Mobile Client -->
+        <div  class="col-xs-12 paddingTenFive noPaddingTop marginTop40" ng-show="channelsAvailable('Not Setup','enterprise') && (selectedStreamState!=='published')">
+          <span class="channelState">{{'Enterprise_channels'| i18nString}}</span>
+        </div>
+        <div class="noChannels" ng-show="(!enterprieChannels.length) ||  (enterprieChannels.length && noSearchEnterpriseResults)">{{'no_channels_found' | i18nString}}</div>
+        <div ng-if="enterprieChannels.length" ng-init="" class="col-xs-4 alert-default padding5 enterprise channelContainer {{channel.status}}" ng-repeat="channel in enterprieChannels =(channels | filter:{catagory:'enterprise',name:search.nameSearchQuery}) | orderBy: 'name' track by $index" ng-hide="isEligibleToshow(channel) || channel.status !== 'Not Setup' || (selectedStreamState=='published')">
+          <div class="col-xs-12 containerShadow padding10">
+            <div class="col-xs-12 settings">
+              <span class="testChannel"><span ng-if="showTestBtn(channel)"  ng-click="addChannel(channel)" class=" testBtnChannel">{{'test_label'| i18nString}}</span></span>
+              <span class="positionAbl" ng-if="channel.status !== 'Not Setup'" ng-class="{'hide':showSolutionBotSetup }">
+                <span class="dropdown panel-dropdown">
+                  <i class="fa fa-cog fa-1 pointer-hand" data-toggle="dropdown"></i>
+                  <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                    <li ng-show="!channel.enable">
+                      <a ng-click="enableordisableChannel(channel,true)"> {{'Enable'| i18nString}} </a>
+                    </li>
+                    <li ng-show="channel.enable">
+                      <a ng-click="enableordisableChannel(channel,false)"> {{'Disable'| i18nString}} </a>
+                    </li>
+                    <li>
+                      <a ng-click="deleteChannel(channel)"> {{'delete'| i18nString}} </a>
+                    </li>
+                  </ul>
+                </span>
+              </span>
+            </div>
+            <div class="col-xs-12 channelName" ng-click="chooseChannel(channel,createdChannels[channel.id || channel.type])">
+              <span class="icon-holder channelIcon"> 
+                <i ng-hide='channel.icon' class="fa channel-icon" ng-class="channel.class" aria-hidden="true"></i>
+                <img class="img" ng-src="{{channel.icon}}" ng-show='channel.icon' ng-class="channel.class" aria-hidden="true"/>
+              </span>
+              <span class="channel-name transformCapitalize" ng-if="channel.gateway === 'twilio'">{{channel.name}}</span>
+              <span class="channel-name" ng-class="{'transformCapitalize':channel.name !== 'Kore.ai'}" ng-if="channel.gateway !== 'twilio'">{{ channel.name}}<!-- <span class="betaClass" ng-if="channel.name == 'Twilio voice' || channel.name =='Amazon Alexa'">&nbsp;&nbsp; (BETA)</span> --></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-12 paddingTenFive marginTop40" ng-show="channelsAvailable('Not Setup','social') && (selectedStreamState!=='published')">
+          <span class="channelState">{{'Social_channels'| i18nString}}</span>
+          <div class="noChannels" ng-show="!socialChannels.length">{{'no_channels_found' | i18nString}}</div>
+        </div>
+        <div class="col-xs-4 alert-default padding5 channelContainer {{channel.status}}" ng-repeat="channel in socialChannels =(channels | filter:{catagory:'social',name:search.nameSearchQuery}) | orderBy: 'name' track by $index" ng-hide="isEligibleToshow(channel) || channel.status !== 'Not Setup' || (selectedStreamState=='published')">
+          <div class="col-xs-12 containerShadow padding10">
+            <div class="col-xs-12 settings">
+              <span class="testChannel"><span ng-if="showTestBtn(channel)"  ng-click="addChannel(channel)" class=" testBtnChannel">{{'test_label'| i18nString}}</span></span>
+              <span class="positionAbl" ng-if="channel.status !== 'Not Setup'" ng-class="{'hide':showSolutionBotSetup }">
+                <span class="dropdown panel-dropdown">
+                  <i class="fa fa-cog fa-1 pointer-hand" data-toggle="dropdown"></i>
+                  <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                    <li ng-show="!channel.enable">
+                      <a ng-click="enableordisableChannel(channel,true)"> {{'Enable'| i18nString}} </a>
+                    </li>
+                    <li ng-show="channel.enable">
+                      <a ng-click="enableordisableChannel(channel,false)"> {{'Disable'| i18nString}} </a>
+                    </li>
+                    <li>
+                      <a ng-click="deleteChannel(channel)"> {{'delete'| i18nString}} </a>
+                    </li>
+                  </ul>
+                </span>
+              </span>
+            </div>
+            <div class="col-xs-12 channelName" ng-click="chooseChannel(channel,createdChannels[channel.id || channel.type])">
+              <span class="icon-holder channelIcon"> 
+                <i ng-hide='channel.icon' class="fa channel-icon" ng-class="channel.class" aria-hidden="true"></i>
+                <img class="img" ng-src="{{channel.icon}}" ng-show='channel.icon' ng-class="channel.class" aria-hidden="true"/>
+              </span>
+              <span class="channel-name transformCapitalize" ng-if="channel.gateway === 'twilio'">{{channel.name}}</span>
+              <span class="channel-name" ng-class="{'transformCapitalize':channel.name !== 'Kore.ai'}" ng-if="channel.gateway !== 'twilio'">{{ channel.name}}<!-- <span class="betaClass" ng-if="channel.name == 'Twilio voice' || channel.name =='Amazon Alexa'">&nbsp;&nbsp; (BETA)</span> --></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 paddingTenFive marginTop40" ng-show="channelsAvailable('Not Setup','voice') && (selectedStreamState!=='published')">
+          <span class="channelState">{{'Voice_channels'| i18nString}}</span>
+          <div class="noChannels" ng-show="!voiceChannels.length">{{'no_channels_found' | i18nString}}</div>
+        </div>
+        <div class="col-xs-4 alert-default padding5 channelContainer {{channel.status}}" ng-repeat="channel in voiceChannels =(channels | filter:{catagory:'voice', name:search.nameSearchQuery}) | orderBy: 'name' track by $index" ng-hide="isEligibleToshow(channel) || channel.status !== 'Not Setup' || (selectedStreamState=='published')">
+          <div class="col-xs-12 containerShadow padding10">
+            <div class="col-xs-12 settings">
+              <span class="testChannel"><span ng-if="showTestBtn(channel)"  ng-click="addChannel(channel)" class=" testBtnChannel">{{'test_label'| i18nString}}</span></span>
+              <span class="positionAbl" ng-if="channel.status !== 'Not Setup'" ng-class="{'hide':showSolutionBotSetup }">
+                <span class="dropdown panel-dropdown">
+                  <i class="fa fa-cog fa-1 pointer-hand" data-toggle="dropdown"></i>
+                  <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                    <li ng-show="!channel.enable">
+                      <a ng-click="enableordisableChannel(channel,true)"> {{'Enable'| i18nString}} </a>
+                    </li>
+                    <li ng-show="channel.enable">
+                      <a ng-click="enableordisableChannel(channel,false)"> {{'Disable'| i18nString}} </a>
+                    </li>
+                    <li>
+                      <a ng-click="deleteChannel(channel)"> {{'delete'| i18nString}} </a>
+                    </li>
+                  </ul>
+                </span>
+              </span>
+            </div>
+            <div class="col-xs-12 channelName" ng-click="chooseChannel(channel,createdChannels[channel.id || channel.type])">
+              <span class="icon-holder channelIcon"> 
+                <i ng-hide='channel.icon' class="fa channel-icon" ng-class="channel.class" aria-hidden="true"></i>
+                <img class="img" ng-src="{{channel.icon}}" ng-show='channel.icon' ng-class="channel.class" aria-hidden="true"/>
+              </span>
+              <span class="channel-name transformCapitalize" ng-if="channel.gateway === 'twilio'">{{channel.name}}</span>
+              <span class="channel-name" ng-class="{'transformCapitalize':channel.name !== 'Kore.ai'}" ng-if="channel.gateway !== 'twilio'">{{ channel.name}}<!-- <span class="betaClass" ng-if="channel.name == 'Twilio voice' || channel.name =='Amazon Alexa'">&nbsp;&nbsp; (BETA)</span> --></span>
+            </div>
+          </div>
+        </div>
+        <div ng-if="otherChannels.length" class="col-xs-12 paddingTenFive marginTop40" ng-show="channelsAvailable('Not Setup','other') && (selectedStreamState!=='published')">
+          <span class="channelState">{{'Chnls_and_more'| i18nString}}</span>
+        </div>
+        <div ng-if="otherChannels.length" class="col-xs-4 alert-default padding5 channelContainer {{channel.status}}" ng-repeat="channel in otherChannels =(channels | filter:{catagory:'other',name:search.nameSearchQuery}) | orderBy: 'name' track by $index" ng-hide="isEligibleToshow(channel) || channel.status !== 'Not Setup' || (selectedStreamState=='published')">
+          <div class="col-xs-12 containerShadow padding10">
+            <div class="col-xs-12 settings">
+              <span class="testChannel"><span ng-if="showTestBtn(channel)"  ng-click="addChannel(channel)" class=" testBtnChannel">{{'test_label'| i18nString}}</span></span>
+              <span class="positionAbl" ng-if="channel.status !== 'Not Setup'" ng-class="{'hide':showSolutionBotSetup }">
+                <span class="dropdown panel-dropdown">
+                  <i class="fa fa-cog fa-1 pointer-hand" data-toggle="dropdown"></i>
+                  <ul class="dropdown-menu panel-dropdown-menu" role="menu">
+                    <li ng-show="!channel.enable">
+                      <a ng-click="enableordisableChannel(channel,true)"> {{'Enable'| i18nString}} </a>
+                    </li>
+                    <li ng-show="channel.enable">
+                      <a ng-click="enableordisableChannel(channel,false)"> {{'Disable'| i18nString}} </a>
+                    </li>
+                    <li>
+                      <a ng-click="deleteChannel(channel)"> {{'delete'| i18nString}} </a>
+                    </li>
+                  </ul>
+                </span>
+              </span>
+            </div>
+            <div class="col-xs-12 channelName" ng-click="chooseChannel(channel,createdChannels[channel.id || channel.type])">
+              <span class="icon-holder channelIcon"> 
+                <i ng-hide='channel.icon' class="fa channel-icon" ng-class="channel.class" aria-hidden="true"></i>
+                <img class="img" ng-src="{{channel.icon}}" ng-show='channel.icon' ng-class="channel.class" aria-hidden="true"/>
+              </span>
+              <span class="channel-name transformCapitalize" ng-if="channel.gateway === 'twilio'">{{channel.name}}</span>
+              <span class="channel-name" ng-class="{'transformCapitalize':channel.name !== 'Kore.ai'}" ng-if="channel.gateway !== 'twilio'">{{ channel.name}}<!-- <span class="betaClass" ng-if="channel.name == 'Twilio voice' || channel.name =='Amazon Alexa'">&nbsp;&nbsp; (BETA)</span> --></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-2"></div>
+    </div>
+  </div>
+    <bot-modal-slider class='sliderBot' id="sliderBotChannels">
+        <div ng-if="isChannelCreateOrEdit()" class="row top-bar selected-stream"></div>
+      <div ng-if="sections.emailCreate" class="margin-top">
+        <email-channel on-save="save" value="email" context="context" wf-type="wfType" close-slider="closeSlider"></email-channel>
+      </div>
+      <div ng-if="sections.smsCreate && false" class="margin-top">
+        <sms-channel on-save="save" value="sms" schema="schema" context="context" wf-type="wfType" close-slider="closeSlider"></sms-channel>
+      </div>
+      <div ng-if="sections.twilioCreate">
+        <twilio-channel on-save="save" value="twilio" context="context" wf-type="wfType" channelsenable="channels" close-slider="closeSlider"></twilio-channel>
+      </div>
+      <div ng-if="sections.fbCreate">
+        <fb-channel on-save="save" value="facebook" context="context" wf-type="wfType" close-slider="closeSlider"></fb-channel>
+      </div>
+      <div ng-if="sections.slackCreate">
+        <slack-channel on-save="save" value="slack" context="context" wf-type="wfType" close-slider="closeSlider"></slack-channel>
+      </div>
+      <div ng-if="sections.sparkCreate">
+        <spark-channel value="spark" context="context" wf-type="wfType" close-slider="closeSlider"></spark-channel>
+      </div>
+      <div ng-if="sections.rtmCreate">
+        <rtm-channel on-save="save" value="rtm" context="context" wf-type="wfType" close-slider="closeSlider"></rtm-channel>
+      </div>
+      <div ng-if="sections.widgetsdkCreate">
+        <widgetsdk-channel on-save="save" value="widgetsdk" context="context" wf-type="wfType" close-slider="closeSlider"></widgetsdk-channel>
+      </div>
+      <div ng-if="sections.koreCreate" class="margin-top">
+        <kore-channel on-save="save" value="kore" context="context" wf-type="wfType" close-slider="closeSlider"></kore-channel>
+      </div>
+      <div ng-if="sections.twitterCreate">
+        <twitter-channel on-save="save" value="twitter" context="context" wf-type="wfType" close-slider="closeSlider"></twitter-channel>
+      </div>
+      <div ng-if="sections.skypeOnPremCreate">
+        <skype-premise on-save="save" value="skypeOnPrem" context="context" wf-type="wfType" close-slider="closeSlider"></skype-premise>
+      </div>
+      <div ng-if="sections.skypeCreate">
+        <skype-channel on-save="save" value="skype" context="context" wf-type="wfType" close-slider="closeSlider"></skype-channel>
+      </div>
+      <div ng-if="sections.msteamsCreate">
+        <ms-channel on-save="save" value="ms" context="context" wf-type="wfType" close-slider="closeSlider"></ms-channel>
+      </div>
+      <div ng-if="sections.syniverseCreate">
+        <syniverse-channel on-save="save" value="syniverse" context="context" wf-type="wfType" close-slider="closeSlider"></syniverse-channel>
+      </div>
+      <div ng-if="sections.rcengageCreate">
+        <ring-central-engage-channel on-save="save" value="rcengage" context="context" wf-type="wfType" close-slider="closeSlider"></ring-central-engage-channel>
+      </div>
+      <div ng-if="sections.ciscoCreate">
+        <cisco-tropo on-save="save" value="cisco" context="context" wf-type="wfType" channelsenable="channels" close-slider="closeSlider"></cisco-tropo>
+      </div>
+      <div ng-if="sections.wfacebookCreate">
+        <fb-workplace on-save="save" value="wfacebook" context="context" wf-type="wfType" close-slider="closeSlider"></fb-workplace>
+      </div>
+      <div ng-if="sections.ringcentralCreate">
+        <ringcentral-channel on-save="save" value="ringcentral" context="context" wf-type="wfType" close-slider="closeSlider"></ringcentral-channel>
+      </div>
+      <div ng-if="sections.skypeBusinessCreate">
+        <skype-business on-save="save" value="skypeforbusiness" context="context" wf-type="wfType" close-slider="closeSlider"></skype-business>
+      </div>
+      <div ng-if="sections.telegramCreate">
+        <telegram-channel on-save="save" value="telegram" context="context" wf-type="wfType" close-slider="closeSlider"></telegram-channel>
+      </div>
+      <div ng-if="sections.yammerCreate">
+        <yammer-channel on-save="save" value="yammer" context="context" wf-type="wfType" close-slider="closeSlider"></yammer-channel>
+      </div>
+      <div ng-if="sections.jabberCreate">
+        <jabber-channel on-save="save" value="jabber" context="context" wf-type="wfType" close-slider="closeSlider"></jabber-channel>
+      </div>
+        <div ng-if="sections.amazonAlexaCreate">
+        <amazon-alexa on-save="save" value="alexa" context="context" wf-type="wfType" close-slider="closeSlider"></amazon-alexa>
+      </div>
+        <div ng-if="sections.twilioVoiceCreate">
+        <twilio-voice on-save="save" value="twiliovoice" context="context" wf-type="wfType" close-slider="closeSlider"></twilio-voice>
+      </div>
+        <div ng-if="sections.lineCreate">
+        <line-channel on-save="save" value="line" context="context" wf-type="wfType" close-slider="closeSlider"></line-channel>
+      </div>
+        <div ng-if="sections.ivrCreate">
+        <ivr-channel on-save="save" value="ivr" context="context" wf-type="wfType" close-slider="closeSlider" ivr-channel-list = "ivrchannels"></ivr-channel>
+      </div>
+        <div ng-if="sections.livePersonCreate">
+        <live-person on-save="save" value="liveperson" context="context" wf-type="wfType" close-slider="closeSlider"></live-person>
+      </div>
+      <div ng-if="sections.ivrVoiceCreate">
+        <ivr-voice on-save="save" value="ivrVoice" context="context" wf-type="wfType" close-slider="closeSlider" callback="asIVRCallback"></ivr-voice>
+      </div>
+      <div ng-if="sections.googleHomeCreate">
+        <google-home on-save="save" value="googleHome" context="context" wf-type="wfType" close-slider="closeSlider"></google-home>
+      </div>
+      <div ng-if="sections.whatsappBusinessCreate">
+        <whatsapp-business on-save="save" value="whatsapp" context="context" wf-type="wfType" close-slider="closeSlider"></whatsapp-business>
+      </div>
+      <div ng-if="sections.weChatCreate">
+        <we-chat-channel on-save="save" value="wechat" context="context" wf-type="wfType" close-slider="closeSlider"></we-chat-channel>
+      </div>
+      <div ng-if="sections.matterMostCreate">
+        <matter-most-channel on-save="save" value="mattermost" context="context" wf-type="wfType" close-slider="closeSlider"></matter-most-channel>
+      </div>
+      <div ng-if="sections.hangoutCreate">
+        <google-hangout on-save="save" value="hangoutchat" context="context" wf-type="wfType" close-slider="closeSlider"></google-hangout>
+      </div>
+      <div ng-if="sections.livebankCreate">
+        <live-bank on-save="save" value="livebank" context="context" wf-type="wfType" close-slider="closeSlider"></live-bank>
+      </div>
+      <div ng-if="sections.unbluCreate">
+        <unblu-channel on-save="save" value="unblu" context="context" wf-type="wfType" close-slider="closeSlider"></unblu-channel>
+      </div>
+      <div ng-if="sections.rcsBusinessCreate">
+        <rcs-business close-slider="closeSlider" state-update='rcs'></rcs-business>
+      </div>
+      <div ng-if="sections.audiocodesCreate">
+        <audio-codes on-save="save" close-slider="closeSlider" value="audiocodes"></audio-codes>
+      </div>
+
+    </bot-modal-slider>
+</div>

@@ -1,0 +1,61 @@
+<!-- Plan Usage -->
+<div class="row btnSearchTitle">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">{{'invoices' | i18nString}}</p>
+    </div>
+    <div class="col-xs-6 rightBTNSearch">
+        <div class="searchComponent">
+            <input placeholder="Search" ng-model="search" >
+            <i class="btx-search"></i>
+            <i class="btx-close" ng-if="search" ng-click="clearSearch()"></i>
+        </div>
+    </div>
+</div>
+
+<div class="content-body">
+    <!-- DATA TABLE START HERE -->
+    <div class="kr-sg-data-table">
+        <section class="table-content">
+            <header class="table-header">
+                <div class="col-xs-2" title="{{'invoice_hash'| i18nString}}">{{'invoice_hash'| i18nString }}</div>
+                <div class="col-xs-2" title="{{'invoice_date'| i18nString}}">{{'invoice_date'| i18nString}}</div>
+                <div class="col-xs-2" title="{{'plan_type' | i18nString}}">{{'plan_type' | i18nString}}</div>
+                <div class="col-xs-2" title="{{'plan'| i18nString}}">{{'plan'| i18nString}}</div>
+                <div class="col-xs-1" title="{{'amount'| i18nString}}">{{'amount'| i18nString}}</div>
+                <div class="col-xs-1" title="{{'download'| i18nString}}">{{'download'| i18nString}}</div>
+            </header>
+            <ng-container ng-if="!isLoading && getInvoices.length">
+                <div class="content-body" ng-repeat="bill in getInvoices | filter:search track by $index">
+                    <div class="col-xs-2" title="{{bill._id}}">{{bill._id || '---'}}</div>
+                    <div class="col-xs-2" title="{{bill.createdAt | date: 'M-dd-yyyy'}}">{{bill.createdAt | date: 'M-dd-yyyy'}}</div>
+                    <div class="col-xs-2" title="{{bill.planType}}">{{bill.planType || '---'}}</div>
+                    <div class="col-xs-2" title="{{bill.planName}}">{{bill.planName || '---'}}</div>
+                    <div class="col-xs-1" title="{{bill.amountPaid}}">${{(bill.amountPaid | localString) || '---'}}</div>
+                    <div class="col-xs-1 download" title="{{'Download'}}"> 
+                        <!-- <i class="btx-carrot-up"></i> -->
+                        <a ng-click="exportBillingSession(bill)"><i alt="icon" class="btx-export" class="btx-export"></i></a>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="alert alert-warning alert-xs text-center" role="alert" ng-if="isLoading">
+                <i class="fa-spin fa fa-circle-o-notch"></i>
+                {{'loading'| i18nString}}
+            </div>
+            <!-- Emtpy state -->
+            <div class="emptyStateContainer" ng-if="!getInvoices.length">
+                <div class="emptyState">
+                    <div class="emptyImage">
+                        <img class="info-icon" ng-src="{{assetsPath}}/empty-state-images/k-folder.svg">
+                        <span class="mainTitle">{{'no_payment_invoices' | i18nString}}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Emtpy state -->
+        </section>
+    </div>
+    <!-- DATA TABLE ENDS HERE -->
+    <div class="pagination-invoices">
+        <bt-pagination ng-if="getInvoices > 10" limit="limit" total-items="total" get-page-data="callback.getInvoices(offset)"
+        ng-hide="!isLoading && getInvoices.length == 0 "></bt-pagination>
+    </div>
+</div>

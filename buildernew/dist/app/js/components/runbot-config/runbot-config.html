@@ -1,0 +1,40 @@
+<div class="runbotConfigContainer">
+    <div class="botConfigDesc">{{_constants_.runbotConfig.runbotConfigDesc}}</div>
+    <div class="col-xs-12 form-group noPadding" >
+        <div class="col-xs-12 labelling">
+            <label class="label">{{'data_sources'| i18nString}}</label> <span class="">{{saveStatus}}<i class="runbotConfigSave" aria-hidden="true"></i></span>
+        </div>
+        <div class="col-xs-12 radioDiv">
+            <div class="radioInnerDiv">
+                <label for="online">
+                    <input ng-value='false' type="radio"  ng-click="saveConfigurations()" ng-model="config.mode" name="online" id="online"><span class="opt-title">{{'get_data_online'| i18nString}}</span> </input>
+                </label>
+            </div>
+            <div class="radioInnerDiv" ng-class="serviceNodes.length === 0?'reduceOpacity':''">
+                <label for="offline">
+                    <input ng-value='true' type="radio" ng-disabled="serviceNodes.length === 0" ng-click="saveConfigurations()" ng-model="config.mode" name="offline" id="offline"><span class="opt-title">{{'use_sample_mode'| i18nString}}</span> </input>
+                </label>
+            </div>  
+        </div>
+    </div>
+    <div ng-if="!config.mode && serviceNodes.length === 0"class="botConfigDesc">{{_constants_.runbotConfig.offlineModeUnavailable}}</div>
+    <div ng-if="config.mode">
+        <div class="col-xs-12 labelling">
+            <label class="label">{{'sample_data'| i18nString}}</label>
+        </div>
+        <div class="dataSelectionDiv col-xs-12">
+            <div class="dataSelectionDesc">{{_constants_.runbotConfig.chooseSampleData}}</div>
+            <div  class="selectContainer" ng-repeat="node in serviceNodes track by $index">
+                <div class="customSelectHeading">{{'service_node'| i18nString}}: {{node.name}}</div>
+                <div class="col-xs-12 radioDiv offlineModeRadioDiv">
+                    <div class="radioInnerDiv" ng-repeat="sampleRes in node.sampleResponse">
+                        <label>
+                            <input ng-value="sampleRes.name" type="radio"  ng-click="saveConfigurations()" ng-model="node.selectedResponse" name="{{sampleRes.name}} {{node._id}}"><span class="opt-title">{{sampleRes.name}}{{sampleRes.isDefault?' (default)':''}}</span> </input>
+                        </label>
+                    </div>  
+                </div>
+            </div>
+            <div class="dataSelectionDesc font12">{{_constants_.runbotConfig.offlineModeNote}}</div>
+        </div>
+    </div>
+</div>

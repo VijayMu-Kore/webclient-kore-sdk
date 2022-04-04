@@ -1,0 +1,472 @@
+<div class="modalSliderContainer width1000 rtmChannel" ng-class='{"rtmThemeContainer":"steps[1].active"}'>
+  <form name="livePersonForm">
+    <div class="modalHeader channelModalHeader">
+      <h4 class="modal-title" id="gridSystemModalLabel">
+        <i class="btx-close" ng-click="goToHome(true)"></i>
+        {{'bt_chnl_web_mobile_header'| i18nString}}</h4>
+      <div class="col-xs-12 step-progress-container">
+            <step-progress steps="steps" on-click="stepClick"></step-progress>
+        </div>
+    </div>
+    <div class="modalBody" ng-show="steps[0].active" perfect-scroll dynamic-height dynaoffset="-125" height-property="height">
+      <div class="col-xs-12 content-loading" ng-show="loadingAddChannel">
+        <span class="spinner-text"><i class="fa fa-circle-o-notch fa-spin-fast"></i>
+          <span class="spinner-text-content ng-binding">{{'loading'| i18nString}}</span></span>
+      </div>
+      <div class="col-xs-12 content-wrap  topMargin webMobileClientChannel top0Imp noPadding"
+        ng-show="!(loadingAddChannel)">
+        <div class="channel-content ">
+          <!-- CONFIGURE TAB -->
+          <div class="row configureTab">
+            <div class="rtmMainAccordion">
+              <div class="rtmLeft">
+                <div class="channelName">
+                  {{'bt_chnl_web_mobile_header' | i18nString}}
+                </div>
+                <div class="channelDesc">
+                  {{'webClientChannelDesc' | i18nString}}
+                </div>
+              </div>
+              <div class="right">
+                <label class="kr-sg-toggle large">
+                  <input type="checkbox" ng-model="$parent.rtm.enable" name="rtm.enable" ng-change="changeChannel()">
+                  <div class="slider"></div>
+                </label>
+              </div>
+            </div>
+            <div class="configureBody" ng-if="$parent.rtm.enable">
+              <!-- ACCORDION START HERE -->
+              <div class="panel-group kr-sg-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel">
+                  <div class="panel-heading" role="tab" id="appDetails">
+                    <h4 class="panel-title">
+                      <a role="button" class="accor-collapse collapsed" data-toggle="collapse" data-parent="#accordion"
+                        href="#appDetailsCol" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="name">{{'app_details' | i18nString}} <span class="check-icon"
+                            ng-show="apps.length"><i class="btx-ok"></i></span></div>
+                        <div class="desc">
+                          {{'app_details_webclient_desc' | i18nString}}
+                        </div>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="appDetailsCol" class="panel-collapse collapse" role="tabpanel" aria-labelledby="appDetails">
+                    <div class="panel-body">
+                      <div class="row form-group ">
+                        <div ng-show="apps.length<1" class="apps-empty">
+                          <div>{{'you_dont_have_any_apps_now'| i18nString}}</div>
+                          <div ng-class="{'screenFreeze':streamState.state=='published'}">
+                            {{'bt_chnl_rtm_chnl_create_app'| i18nString}} <a
+                              ng-click="createApp()">{{'create_app'| i18nString}}</a>
+                          </div>
+                          <div ng-bind-html="'read_app_creation'| i18nString:({link:$root.helpLinks.CREATE_APP})"></div>
+                        </div>
+                        <label class="col-xs-12 noPadding"
+                          ng-show="apps.length>0">{{'Bt_chnl_config_selectApp_label'| i18nString}}</label>
+                        <div class="selectAppInput " ng-show="apps.length>0">
+                          <div class="kr-sg-dropdowns selectapp-dropdown">
+                            <div class="dropdown dropdown-open open">
+                              <button class="dropdown-toggle dropdown-input"
+                                data-toggle="dropdown">{{selectedAppView.appName || 'Choose'}}</button>
+                              <ul class="dropdown-menu content-menu" perfect-scroll style="max-height: 250px;">
+                                <li ng-click="createApp()" ng-class="{'screenFreeze':streamState.state=='published'}">
+                                  <a>{{'create_app'| i18nString}}</a></li>
+                                <li class="selectTitle">{{'select_app'| i18nString}}</li>
+                                <li ng-repeat="app in apps" ng-click="onSelectedApp(app.clientId)"><a
+                                    title="{{app.appName}}">{{app.appName}} <span class="check-icon pull-right"
+                                      ng-if="selectedAppView.clientId === app.clientId"><i
+                                        class="btx-check"></i></span></a></li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div class="appButtonsDiv p-0" ng-hide="isNonEditable"
+                            ng-class="{'screenFreeze':streamState.state=='published'}">
+                            <span class="appButtons displayFlex">
+                              <button ng-show="selectedAppView.clientId" ng-click="editApp()" type="button"
+                                class="btn">{{'edit'| i18nString}}</button>
+                              <button ng-click="createApp()" type="button"
+                                class="btn">{{'add_label'| i18nString}}</button>
+                            </span>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-xs-12 noPadding" ng-show="selectedAppView.clientId">
+                        <div class="edit-appDetailsDiv">
+                          <div class="row form-group">
+                            <div class="form-ele-title ">{{'botName'| i18nString}}</div>
+                            <div class="copyInput">
+                              <input id="botname" readonly class="form-control" ng-model='stream.name' type="text" />
+                              <button data-clipboard-target="#botname" type="button"
+                                class="btn btn-primary btnCopySave">{{'copy'| i18nString}}</button>
+                            </div>
+                          </div>
+                          <div class="row form-group">
+                            <div class="form-ele-title">{{'Bot_id'| i18nString}}</div>
+                            <div class="copyInput">
+                              <input readonly id="botId" class="form-control" ng-model='stream._id' type="text" />
+                              <button data-clipboard-target="#botId" type="button"
+                                class="btn btn-primary btnCopySave">{{'copy'| i18nString}}</button>
+                            </div>
+                          </div>
+                          <div class="row form-group" ng-show="selectedAppView.clientId">
+                            <div class="form-ele-title">{{'clientId_label'| i18nString}}</div>
+                            <div class="copyInput">
+                              <input id="clientId_addChnl" readonly class="form-control"
+                                value='{{selectedAppView.clientId}}' type="text" />
+                              <button data-clipboard-target="#clientId_addChnl" type="button"
+                                class="btn btn-primary btnCopySave">{{'copy'| i18nString}}</button>
+                            </div>
+                          </div>
+                          <div class="row form-group" ng-show="selectedAppView.clientId">
+                            <div class="form-ele-title">{{'clientsecret_label'| i18nString}}</div>
+                            <div class="copyInput">
+                              <div class="inputs">
+                                <input ng-show="secretKeyShown" id="secretKeyId_addChnl" readonly class="form-control"
+                                  value='{{selectedAppView.clientSecret}}' type="text" />
+                                <input ng-hide="secretKeyShown" disabled class="form-control"
+                                  value='{{selectedAppView.clientSecret| mask}}' type="text" />
+                              </div>
+                              <div class="btns">
+                                <button ng-show="secretKeyShown" data-clipboard-target="#secretKeyId_addChnl"
+                                  type="button" class="btn btn-primary btnCopySave">{{'copy'| i18nString}}</button>
+                                <button ng-hide="secretKeyShown" ng-click="showHideSecret()" type="button"
+                                  class="btn btn-primary btnCopySave">View</button>
+                              </div>
+                            </div>
+
+                          </div>
+                          <div class="row form-group" ng-show="selectedAppView.key">
+                            <div class="form-ele-title">{{'public_key_label'| i18nString}}</div>
+                            <div class="copyInput">
+                              <input id="key_addChnl" readonly class="form-control" value='{{selectedAppView.key}}'
+                                type="text" />
+                              <button data-clipboard-target="#key_addChnl" type="button"
+                                class="btn btn-primary btnCopySave">{{'copy'| i18nString}}</button>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 JSONDiv">
+                            <span class="">{{'json_JWE_link'| i18nString}}</span><span data-toggle="modal"
+                              data-target="#JWTToken" class="JSONText"> {{'here'| i18nString}}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="bots option row form-group"
+                        ng-show="(selectedAppView.bots|otherbots:stream).length > 0"
+                        ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <div class="col-sm-12 form-ele-title"> {{'other_bots_associated_with_this_app'| i18nString}}
+                        </div>
+                        <div class="col-sm-12"> {{selectedAppView.bots|otherbots:stream}} </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <div class="panel-heading" role="tab" id="appDetails">
+                    <h4 class="panel-title">
+                      <a role="button" class="accor-collapse collapsed" data-toggle="collapse" data-parent="#accordion"
+                        href="#installationCol" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="name">{{'Web Client Details'}}</div>
+                        <div class="desc">
+                          {{'installation_desc' | i18nString}}
+                        </div>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="installationCol" class="panel-collapse collapse in" role="tabpanel"
+                    aria-labelledby="appDetails">
+                    <div class="panel-body">
+                      <div class="url-input">
+                        <div class="kr-sg-input-text">
+                          <div class="label-text">{{'url' | i18nString}}</div>
+                          <div class="label-desc">
+                            {{'url_desc' | i18nString}}
+                          </div>
+                          <div class="divDeleteCopy"
+                            ng-class="{'disableInput':((stream.visibility.namespace === 'private') || (selectedAppView.algorithm !== 'HS256'))}">
+                            <input type="text" placeholder="{{'http://sampleurl.com/'}}" class="input-text"
+                              ng-model="installation.chatURL" readonly>
+                            <div class="actions">
+                              <span class="copy" ng-click="copyToClipboard(installation.chatURL)"
+                                tooltip-placement="bottom" tooltip="{{'Copy'}}"><i class="btx-copy"></i></span>
+                              <span class="copy" ng-click="redirectToVA(installation.chatURL)"
+                                tooltip-placement="bottom" tooltip="{{'Redirect'}}"><i
+                                  class="btx-external-link"></i></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="hint-bar"
+                          ng-if="(stream.visibility.namespace === 'private') || (selectedAppView.algorithm !== 'HS256')">
+                          <div class="kr-sg-multi-line-notification">
+                            <div class="toast-title"> <span class="icon"><i
+                                  class="btx-info"></i></span>{{'url_sharing_title' | i18nString}}</div>
+                            <div class="toast-text"> <span class="icon"
+                                ng-class="{'active':stream.visibility.namespace !== 'private'}"><i class="btx-ok"></i>
+                              </span>{{'publish_VA' | i18nString}} <a ng-click="saveAndPublish()" class="pl-5"
+                                ng-if="stream.visibility.namespace === 'private'">{{'publish_now' | i18nString}}</a>
+                            </div>
+                            <div class="toast-text"> <span class="icon"
+                                ng-class="{'active':selectedAppView.algorithm === 'HS256'}"><i
+                                  class="btx-ok"></i></span>{{'app_HSalgorith_desc' | i18nString}} <a
+                                ng-click="editApp()" ng-if="selectedAppView.algorithm !== 'HS256'" class="pl-5">
+                                {{'change_app_settings' | i18nString}}</a></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="embedcode">
+                        <div class="label-text">{{'embed_code' | i18nString}}</div>
+                        <div class="label-desc">{{'embed_code_desc' | i18nString}} <a
+                            href="https://developer.kore.ai/docs/bots/sdks/kore-ai-web-sdk-tutorial/"
+                            target="_blank">{{'know_more' | i18nString}}</a></div>
+                        <div class="html-code" perfect-scroll>
+                          <div class="header d-flex align-items-center justify-content-between">
+                            <div class="code">
+                              {{'html_code' | i18nString}}</div>
+                            <div class="copy" ng-click="copyToClipboard(embedCode)">
+                              <i class="btx-copy"></i>
+                              <span>{{'copy' | i18nString}}</span>
+                            </div>
+                          </div>
+                          <div class="scriptTag">
+                            <div class="script" id="embedCode"></div>
+                          </div>
+                        </div>
+                        <div class="hint-bar"
+                          ng-if="(stream.visibility.namespace === 'private') || (selectedAppView.algorithm !== 'HS256')">
+                          <div class="kr-sg-multi-line-notification">
+                            <div class="toast-title"> <span class="icon"><i
+                                  class="btx-info"></i></span>{{'embedCode_title' | i18nString}}</div>
+                            <div class="toast-text"> <span class="icon"
+                                ng-class="{'active':stream.visibility.namespace !== 'private'}"><i class="btx-ok"></i>
+                              </span>{{'publish_VA' | i18nString}} <a ng-click="saveAndPublish()" class="pl-5"
+                                ng-if="stream.visibility.namespace === 'private'"> {{'publish_now' | i18nString}}</a>
+                            </div>
+                            <div class="toast-text"> <span class="icon"
+                                ng-class="{'active':selectedAppView.algorithm === 'HS256'}"><i
+                                  class="btx-ok"></i></span>{{'app_HSalgorith_desc' | i18nString}} <a
+                                ng-click="editApp()" ng-if="selectedAppView.algorithm !== 'HS256'" class="pl-5">
+                                {{'change_app_settings' | i18nString}}</a></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="whitelist-domain" ng-if="installation.domains">
+                        <div class="label-text">{{'whitelist_domain' | i18nString}}</div>
+                        <div class="label-desc">{{'whitelist_domain_desc' | i18nString}} </div>
+                        <div class="kr-sg-input-text d-flex align-items-center justify-content-between"
+                          ng-repeat="domain in installation.domains track by $index">
+                          <input type="text" placeholder="{{'http://sampleurl.com/'}}"
+                            id="installationDomainsInp{{$index}}" class="input-text"
+                            ng-model="installation.domains[$index]" ng-keydown="$event.keyCode === 13 && addDomains()">
+                          <span class="delete-icon" ng-click="deleteDomains($index)" tooltip-placement="bottom"
+                            tooltip="{{'Delete'}}">
+                            <i class="btx-delete-1"></i>
+                          </span>
+                        </div>
+                        <div class="no-domains-found" ng-if="!installation.domains.length">
+                          {{'No whitelist domains found'}}
+                        </div>
+                        <div class="add-domains" ng-click="addDomains()">
+                          <i class="btx-add"></i> {{'add_domain' | i18nString}}
+                        </div>
+                      </div>
+                      <div class="webmobile-sdk">
+                        <div class="label-text">{{'web_mobile_sdk' | i18nString}}</div>
+                        <div class="label-desc">{{'websdk_channel_desc' | i18nString}} </div>
+                        <button class="kr-sg-button-secondary btn_md"
+                          ng-click="downloadSDK()">{{'download_sdk' | i18nString}} <i
+                            class="btx-external-link"></i></button>
+                      </div>
+                      <!-- ALERT OPTION -->
+                      <div class="col-xs-12 form-group noPadding mb-5"
+                        ng-init="$parent.$parent.rtm.isAlertsEnabled=$parent.$parent.rtm.isAlertsEnabled ||false">
+                        <div class="col-xs-12 noPadding">
+                          <label
+                            class="rtm_allow_alert_task_setup">{{'Bt_chnl_web_mobile_client_allowalert_label'| i18nString}}
+                            <span class="tooltip-custom alert-icon"><i class="btx-info"></i><span
+                                class="tooltiptextalert" ng-click="$event.stopPropagation()"
+                                ng-bind-html="'alertTaskChannelTooltip'| i18nString:({link:'https://developer.kore.ai/docs/bots/channel-enablement/adding-the-webmobile-client-channel/'})"></span></span>
+                          </label>
+                        </div>
+                        <div class="col-xs-12 noPadding radioDiv">
+                          <div>
+                            <div>
+                              <label for="isAlertsEnabled.yes"
+                                ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <input ng-value=true type="radio" ng-model="$parent.$parent.rtm.isAlertsEnabled"
+                                  name="isAlertsEnabled" id="isAlertsEnabled.yes"><span
+                                  class="opt-title">{{'Bt_chnl_web_mobile_client_allowalert_label_yes'| i18nString}}</span>
+                                </input>
+                              </label>
+                            </div>
+                            <div>
+                              <label for="isAlertsEnabled.no"
+                                ng-class="{'screenFreeze':streamState.state=='published'}">
+                                <input ng-value=false type="radio" ng-model="$parent.$parent.rtm.isAlertsEnabled"
+                                  name="isAlertsEnabled" id="isAlertsEnabled.no"><span
+                                  class="opt-title">{{'Bt_chnl_web_mobile_client_allowalert_label_no'| i18nString}}</span>
+                                </input>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- ALERT OPTION -->
+                    </div>
+                  </div>
+                </div>
+                <div class="panel custom-panel" ng-if="(!isChannelEnabled && !iswidgetsdkChannelEnabled) && ((widgetsCount > 0) || (panelsCount > 0))">
+                  <div class="rtmLeft">
+                    <div class="channelName">
+                      {{'widget_sdk_channel_title' | i18nString }}
+                      <span class="tooltip-custom alert-icon"><i class="btx-info"></i><span class="tooltiptextalert"
+                        ng-click="$event.stopPropagation()">
+                        {{'widget_sdk_channel_tooltip' | i18nString}}</span></span>
+                    </div>
+                    <div class="channelDesc">
+                      {{'widget_sdk_channel_desc' | i18nString }}
+                    </div>
+                  </div>
+                  <div class="right">
+                    <label class="kr-sg-toggle large">
+                      <input type="checkbox" ng-model="websdk.enable" name="websdk.enable"
+                        ng-change="changeWebsdkChannel()">
+                      <div class="slider"></div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!-- ACCORDION ENDS HERE -->
+              <!-- ALERT OPTION -->
+              <!-- <div class="col-xs-12 form-group noPadding mb-5"
+                ng-init="$parent.$parent.rtm.isAlertsEnabled=$parent.$parent.rtm.isAlertsEnabled ||false">
+                <div class="col-xs-12 noPadding">
+                  <label class="rtm_allow_alert_task_setup">{{'Bt_chnl_web_mobile_client_allowalert_label'| i18nString}}
+                    <span class="tooltip-custom alert-icon"><i class="btx-info"></i><span class="tooltiptextalert"
+                        ng-click="$event.stopPropagation()"
+                        ng-bind-html="'alertTaskChannelTooltip'| i18nString:({link:'https://developer.kore.ai/docs/bots/channel-enablement/adding-the-webmobile-client-channel/'})"></span></span>
+                  </label>
+                </div>
+                <div class="col-xs-12 noPadding radioDiv">
+                  <div>
+                    <div>
+                      <label for="isAlertsEnabled.yes" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <input ng-value=true type="radio" ng-model="$parent.$parent.rtm.isAlertsEnabled"
+                          name="isAlertsEnabled" id="isAlertsEnabled.yes"><span
+                          class="opt-title">{{'Bt_chnl_web_mobile_client_allowalert_label_yes'| i18nString}}</span>
+                        </input>
+                      </label>
+                    </div>
+                    <div>
+                      <label for="isAlertsEnabled.no" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <input ng-value=false type="radio" ng-model="$parent.$parent.rtm.isAlertsEnabled"
+                          name="isAlertsEnabled" id="isAlertsEnabled.no"><span
+                          class="opt-title">{{'Bt_chnl_web_mobile_client_allowalert_label_no'| i18nString}}</span>
+                        </input>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <!-- ALERT OPTION -->
+              <!-- WIDGET SDK CHANNEL OPTION -->
+              <!-- <div class="col-xs-12 form-group noPadding mb-5"
+                ng-init="$parent.$parent.rtm.isAlertsEnabled=$parent.$parent.rtm.isAlertsEnabled || isChannelEnabled">
+                <div class="col-xs-12 noPadding">
+                  <label class="rtm_allow_alert_task_setup">{{'Enable Widget SDK Channel'}}
+                    <span class="tooltip-custom alert-icon"><i class="btx-info"></i><span class="tooltiptextalert"
+                        ng-click="$event.stopPropagation()">
+                        {{'The Widget SDK channel allows presenting Panels and Widgets on the Web Client. You can also enable or disable the Widget SDK channel independently.'}}</span></span>
+                  </label>
+                </div>
+                <div class="col-xs-12 noPadding radioDiv">
+                  <div>
+                    <div>
+                      <label for="widgetSDKChannel.yes" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <input ng-value=true type="radio" ng-model="$parent.$parent.rtm.widgetSDKChannel"
+                          name="widgetSDKChannel" id="widgetSDKChannel.yes"><span
+                          class="opt-title">{{'Yes, enable Widget SDK Channel to interact with widgets and panels.'}}</span>
+                        </input>
+                      </label>
+                    </div>
+                    <div>
+                      <label for="widgetSDKChannel.no" ng-class="{'screenFreeze':streamState.state=='published'}">
+                        <input ng-value=false type="radio" ng-model="$parent.$parent.rtm.widgetSDKChannel"
+                          name="widgetSDKChannel" id="widgetSDKChannel.no"><span
+                          class="opt-title">{{'No, do not enable the Widget SDK Channel.'}}</span>
+                        </input>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <!-- WIDGET SDK CHANNEL OPTION -->
+            </div>
+          </div>
+          <!-- CONFIGURE TAB -->
+        </div>
+      </div>
+    </div>
+    <div class="modalBody themeIframeBody" dynamic-height dynaoffset="-125" height-property="height" ng-show="steps[1].active">
+      <div class="col-xs-12 content-loading" ng-if="loadingAddChannel">
+        <span class="spinner-text"><i class="fa fa-circle-o-notch fa-spin-fast"></i>
+          <span class="spinner-text-content ng-binding">{{'loading'| i18nString}}</span></span>
+      </div>
+      <div class="col-xs-12 content-wrap  topMargin webMobileClientChannel top0Imp noPadding" ng-show="!(loadingAddChannel)">
+        <div class="channel-content ">
+          <div class="customSDKIframe"  >
+            <iframe width="100%" height="100%" id="sdkCustomization" class="iframeContainer"  frameBorder="0" src="{{sdkTeamUrl}}" ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modalFooter" ng-hide="loadingAddChannel" ng-show="steps[0].active">
+      <!-- <button type="button" class="btn" ng-click="next(2)" ng-show="steps[0].active">{{'next'| i18nString}}</button> -->
+      <button type="button" class="btn" ng-disabled="(!$parent.rtm.enable && !isChannelEnabled)" ng-click="saveRTM()"
+        ng-class="{'screenFreeze':streamState.state=='published'}">{{'save'| i18nString}}</button>
+      <button class="btn closeCancel" ng-click="goToHome()">{{'cancel' | i18nString}}</button>
+    </div>
+  </form>
+</div>
+<div id="JWTToken" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'jwe_key'| i18nString}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class='csCode' id="copyJWT">
+          <pre>
+{
+    "e":{{JWEPublicKey.e}}
+    "kid":{{JWEPublicKey.kid}}
+    "kty":{{JWEPublicKey.kty}}
+    "n":{{JWEPublicKey.n}}
+}
+</pre>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="copyJWTToken('copyJWT')">{{'copy'| i18nString}}</button>
+        <button type="button" data-dismiss="modal" class="btn closeCancel">{{'close'| i18nString}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="createEditTheme" class="modal fade createEditRtmTheme" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" >New Theme</h4>
+      </div>
+      <div class="modal-body">
+        <input ng-model ="createEditTheme.name">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="onThemeSave()">Create</button>
+        <button type="button" data-dismiss="modal" class="btn closeCancel">Cancle</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+
+<div class="modalHeader welcomeMessageBody" ng-if="!isLoader">
+    <span aria-hidden="true"><img ng-src="{{rightArrow}}" ng-click="closeModal()" class="appSliderClose rightArrow"></span>
+    <h4 class="modal-title" id="gridSystemModalLabel">{{editMode? editResponse : addResponse}}</h4>
+    <button  ng-if='!textAdd' class="btn btn-sm btn-primary text-info add-app-btn pull-right" ng-click="creatingNewApp()"><span class="fa fa-close" ng-click="closeModal()"></span></button>
+</div>
+<div class="summaryLoader animationIfLeave" ng-if="isLoader">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">  {{'loading'| i18nString}}</span>
+    </span>
+</div>
+<div class="modalBody" perfect-scroll dynamic-height dynaoffset="-117" height-property="height" ng-if="!isLoader">
+    <div class="msglabel" ng-hide='isChannelSpecific'>{{'channel_name'| i18nString}}</div>
+    <div class="channel-list" ng-hide='isChannelSpecific'>
+        <select class="form-control selectChannel" ng-model="selectedChannel.channel" ng-change="channelSelected(selectedChannel.channel)">
+            <option value="default">{{'all_channels'| i18nString}}</option>
+            <option ng-repeat="channel in channels" value="{{channel.id}}">{{channel.name}}</option>
+        </select>
+    </div>
+
+    <!-- Editors starts here -->
+    <div class="msglabel noMargin">{{'response'| i18nString}}</div>
+    <div>
+        <div ng-if="currentTabIndexOfPage2 == 0" class="content-padding">
+            <div class="col-xs-12 standard-label-div noPadding" ng-init="showProtip = true">
+                <markdown-editor [initial-text]="myMarkdownText" callback='markdownCbs' ng-focus="handleEditorPlaceholder($event)" ng-model="editingMessage.markUp"></markdown-editor>
+            </div>
+            <div class="col-xs-12 protipNoPadding">
+                <div class="hintDiv">
+                    <span class="icon"><i class="layer btx-bulb"></i></span>
+                    <span class="description ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb529)"></span>
+                </div>
+            </div>
+        </div>
+        <div ng-if="currentTabIndexOfPage2 == 1" class="content-padding">
+            <div class="form-group jsDiv">
+                <div>
+                    <div class=" prompt-jsEditor container">
+                        <div class="panel panel-default noBorder">
+                            <div class="panel-heading sampleTemplateWelcome">
+                                <h3 ng-click="alterTabsOfPage2(0)" class="panel-title reduceOpacity">{{'plain_text_label'| i18nString}}</h3>
+                                <h3 ng-click="alterTabsOfPage2(1)" class="panel-title">{{'bot_welcomeMessage_javscript_label'| i18nString}}</h3>
+                                <h3 ng-click="alterTabsOfPage2(2)" class="panel-title reduceOpacity">{{'preview_name'| i18nString}}</h3>
+                                <sample-tempalets selected-channel="selectedChannel.channel" reset-temp-cb = 'welcomeMessCallback' selected-callback="editingMessage.jsCode" demo-templates="demoTemplates" tab-index="currentTabIndexOfPage2"></sample-tempalets>
+                            </div>
+                            <div class="panel-body marginBottom10">
+                                <div id="jseditor" class="jseditor" acify callback='jsEditorCbs' ng-model="editingMessage.jsCode" ng-focus="showProtip = !showProtip"></div>
+                            </div>
+                            <div class="col-xs-12 protipNoPadding">
+                                <div class="hintDiv">
+                                    <span class="icon"><i class="layer btx-bulb"></i></span>
+                                    <span class="description ng-binding" ng-bind-html="$root.getSanitizedText($root.lableData.bb537)"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+        <div ng-show="currentTabIndexOfPage2 == 2" class="content-padding">
+            <div class="jsDiv">
+                <div>
+                    <div class=" prompt-jsEditor container">
+                        <div class="panel-default">
+                            <div class="panel-heading">
+                                <h3 ng-click="alterTabsOfPage2(0)" class="panel-title reduceOpacity">{{'plain_text_label'| i18nString}}</h3>
+                                <h3 ng-click="alterTabsOfPage2(1)" class="panel-title reduceOpacity">{{'bot_welcomeMessage_javscript_label'| i18nString}}</h3>
+                                <h3 ng-click="alterTabsOfPage2(2)" class="panel-title">{{'preview_name'| i18nString}}</h3>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+            <span class="previewDesc">{{'bot_welcomeMessage_preview_desc'| i18nString}}</span>
+            <span class="previewHeading">{{'bot_welcomeMessage_preview_heading'| i18nString}}</span>
+            <span class="previewHint"><b>{{'hint_label'| i18nString}} </b>{{'bot_welcomeMessage_previewhint_desc1'| i18nString}} <b>{{'bot_welcomeMessage_previewhint_desc2'| i18nString}}</b>{{'bot_welcomeMessage_previewhint_desc3'| i18nString}}&lt;{{'bot_welcomeMessage_previewhint_desc4'| i18nString}}&gt;.&lt;{{'bot_welcomeMessage_previewhint_desc4'| i18nString}}&gt;</span>
+            <div class="col-xs-12 noPadding" ng-class="{'canDelete': contextCondition.length > 1}">
+                <div class="contextCond row col-xs-12 noPadding" ng-repeat="cond in contextCondition">
+                    <span class="col-xs-6 noPaddingLeft"><input class="form-control condKey" placeholder="{{'key'| i18nString}}" type="text" ng-model="cond.key" ng-focus="addContextCond($index)" context-typeahead/></span>
+                    <span class="col-xs-6"><input class="form-control condVal" placeholder="{{'value'| i18nString}}" type="text" ng-model="cond.value" ng-focus="addContextCond($index)"/>
+                        <span class="removeCond"><i class="fa fa-minus-circle" ng-click="onRemoveCond($index)"></i></span>
+                    </span>
+
+                </div>
+            </div>
+            <button class="btn btn-primary pull-right previewBtn" ng-click="getPreviewData()" ng-disabled="disablePreviewBtn">{{'preview_name'| i18nString}}</button>
+            <div class="col-xs-12 noPadding">
+                <div class="col-xs-5 line-info"></div>
+                <div class="col-xs-2 messagePreviewLabel"><label>{{'bot_welcomeMessage_message_preview_uppercase'| i18nString}}</label></div>
+                <div class="col-xs-5 line-info"></div>
+            </div>
+            <div class="preview-box clear-fix">
+                <div class="preview-message" ng-class="{'previewError': isError}" ng-bind-html="preview"></div>
+            </div>
+            <div ng-if="previewIsOn" class="alert-preview">
+                <div class="alert alert-success alert-sm text-center" role="alert">
+                    <i class="fa fa-spinner fa-spin"></i> {{'bot_welcomeMessage_resolving_Value_label'| i18nString}}
+                </div>
+            </div> 
+        </div>
+
+    </div>
+    <!-- Editors ends here -->
+</div>
+
+<div class='modalFooter set-done-button' ng-if="!isLoader">
+    <div class=" clear-fix">
+        <button ng-if='!textAdd' ng-class="{'pointer-none': selectedState === 'published'}" ng-click="saveMessage()" class="btn" ng-disabled="disableSaveBtn()"> {{(saving)? savingLabel : save}}</button>
+        <button ng-if='textAdd' ng-class="{'pointer-none': selectedState === 'published'}" ng-click="saveMessage()" class="btn" ng-disabled="disableSaveBtn()">{{'done'| i18nString}}</button>
+        <button ng-if='!textAdd' ng-class="{'pointer-none': selectedState === 'published'}" ng-click="closeModal()" class="btn closeCancel"> {{'cancel'| i18nString}}</button>
+    </div>
+</div>

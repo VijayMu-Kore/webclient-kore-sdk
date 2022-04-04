@@ -1,0 +1,179 @@
+<div class="modalHeader posRelative">
+    <help-button  help-id="'manageInterruption'" class="pull-right" ></help-button>
+    <h4 class="modal-title ">
+        <i  class="top25 btx-close" ng-click="goToHome()"></i>
+        <div class="miHeadBar">
+            <div class="desc">{{configData.dialogObj.name}}</div>
+            <div class="heading">{{'manage_behave'| i18nString}}</div>
+        </div>                     
+    </h4>
+</div>
+
+<div class="modalBody" perfect-scroll dynamic-height dynaoffset="-70" height-property="height" >
+    <div class="row col-xs-12 noPadding">
+     <div class="pageContainer" >
+            <label class="inputLabel">{{'Interruptions_label'| i18nString}}</label>
+            <!-- Hold & Resume options  -->
+            <div class='holdResumeInnerContainer' ng-hide="stream.type === 'universalbot'">
+                <div class="col-xs-12 radioDiv radioSection marginLeft10">
+                    <div class="radioInnerDiv">
+                        <label for="priorityBot">
+                            <input ng-disabled="cb.viewMode" value='bot' type="radio" ng-change="onInterruptOptionsChange('bot')" ng-model="interruptOptions.priority"  name="priorityBot" id="priorityBot"/> <span class="opt-title">{{'bot_level_settings'| i18nString}}</span> 
+                        </label>
+                    </div>
+                   <div ng-show="interruptOptions.priority=='bot'" class="col-xs-12 marginLeft10">
+                        <div ng-if="!stream.interruptOptions.interruptsEnabled" class="botInterruptOptions marginBottom10-imp">{{'Interruptions_label'| i18nString}} - <span class="optionText">{{allInterruptOptions[stream.interruptOptions.interruptsEnabled]}}</span></div>
+                        <div ng-if="stream.interruptOptions.interruptsEnabled" class="botInterruptOptions marginBottom10-imp">{{'Interruptions_label'| i18nString}} - <span class="optionText">{{allInterruptOptions[stream.interruptOptions.type.option]}}</span></div>
+                        <div class="botInterruptOptions marginBottom10-imp" ng-show="stream.interruptOptions.interruptsEnabled && stream.interruptOptions.type.option==='developer'">{{'Interruptions_label'| i18nString}} - <span class="optionText">{{allInterruptOptions[stream.interruptOptions.holdUxOptions.option]}}</span></div>
+                        <div class="botInterruptOptions marginBottom10-imp" ng-show="stream.interruptOptions.interruptsEnabled && ((stream.interruptOptions.type.option==='developer' && stream.interruptOptions.holdUxOptions.option==='holdCurrTask') || stream.interruptOptions.type.option==='endUser')">{{'resume_option'| i18nString}} - <span class="optionText">{{allInterruptOptions[stream.interruptOptions.resumeUxOptions.option]}}</span></div>
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="priorityTask">
+                            <input ng-disabled="cb.viewMode" value='task' type="radio" ng-change="onInterruptOptionsChange('task')"  ng-model="interruptOptions.priority" name="priorityTask" id="priorityTask"/> <span class="opt-title">{{'customize_task'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div ng-show="interruptOptions.priority=='task'" class="col-xs-12 marginLeft10">
+                    <div class="radioInnerDiv">
+                        <label for="developerNode">
+                            <input ng-disabled="cb.viewMode" value='developer' type="radio" ng-change="onInterruptOptionsChange()" ng-model="interruptOptions.type.option" name="developerNode" id="developerNode"/> <span class="opt-title">{{'allinterruptoptions_developer'| i18nString}}</span> 
+                        </label>
+                    </div>
+                    <!-- Hold options -->
+                    <div ng-show="interruptOptions.type.option === 'developer'" class="linkedTaskLabel darkColor marginLeft10 col-xs-12">{{'Interruption_and_hold_label'| i18nString}}</div>
+                    <div ng-show="interruptOptions.type.option === 'developer'" class="col-xs-12 marginLeft10">
+                        <div class="radioInnerDiv">
+                            <label for="holdCurrTaskNode">
+                                <input ng-disabled="cb.viewMode" value='holdCurrTask' type="radio" ng-change="onInterruptOptionsChange()" ng-model="interruptOptions.holdUxOptions.option"  name="holdCurrTaskNode" id="holdCurrTaskNode"/> <span class="opt-title">{{'Hold_the_curr_label'| i18nString}}</span> 
+                            </label>
+                        </div>
+                        <div class="radioInnerDiv">
+                            <label for="discardCurrTaskNode">
+                                <input ng-disabled="cb.viewMode" value='discardCurrTask' type="radio" ng-change="onInterruptOptionsChange()"  ng-model="interruptOptions.holdUxOptions.option" name="discardCurrTaskNode" id="discardCurrTaskNode"/> <span class="opt-title">{{'Discard_the_curr_label'| i18nString}} <span class="manageResponse" ng-click="openManageResponse('discardCurrentTask', $event)">{{'manageResponse'| i18nString}}</span></span>
+                            </label>
+                        </div>
+                         <div class="radioInnerDiv ">
+                                    <label for="switchToNewManageIntrr">
+                                        <input ng-disabled="cb.viewMode" value='discardCurrTaskNoNotify' type="radio" ng-change="onInterruptOptionsChange()" ng-model="interruptOptions.holdUxOptions.option" name="switchToNewManageIntrr" id="switchToNewManageIntrr"/> <span class="opt-title">{{'Switch_to_new_task_label'| i18nString}}</span>
+                                    </label>
+                         </div>
+                        <div class="radioInnerDiv">
+                            <label for="continueCurrTaskNode">
+                                <input ng-disabled="cb.viewMode" value='continueCurrTask' type="radio" ng-change="onInterruptOptionsChange()"  ng-model="interruptOptions.holdUxOptions.option" name="continueCurrTaskNode" id="continueCurrTaskNode"/>
+                                 <span class="opt-title">{{'Conti_the_curr_label'| i18nString}}
+                                    <span class="manageResponse m-0" ng-click="openManageResponse('continueCurrentTask', $event)">{{'manageResponse'| i18nString}}</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Hold options ends -->
+
+                    <!-- Resume options -->
+                    <div ng-if="interruptOptions.holdUxOptions.option === 'holdCurrTask' && interruptOptions.type.option === 'developer'" class="animateOptions">
+                        <div class="linkedTaskLabel paddingTop10 darkColor col-xs-12 marginLeft10">{{'resume_option'| i18nString}}</div>
+                        <div class="col-xs-12  marginLeft10">
+                            <div class="radioInnerDiv">
+                                <label for="confFromUserNode11">
+                                    <input ng-disabled="cb.viewMode" value='confFromUser' type="radio" ng-change="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option"  name="confFromUserNode11" id="confFromUserNode11"/> <span class="opt-title">{{'allinterruptions_conffromuser'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('getConfirmatonWithUser', $event)">{{'manageResponse'| i18nString}}</span></span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="notifyUserNode11">
+                                    <input ng-disabled="cb.viewMode" value='notifyUser' type="radio" ng-change="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option" name="notifyUserNode11" id="notifyUserNode11"/> <span class="opt-title">{{'allinterruptions_notifyuser'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('notifyUserWithMessage', $event)">{{'manageResponse'| i18nString}}</span></span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="noConfFromUserNode11">
+                                    <input ng-disabled="cb.viewMode" value='noConfFromUser' type="radio" ng-change="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option" name="noConfFromUserNode11" id="noConfFromUserNode11"/> <span class="opt-title">{{'allinterruptions_noconffromuser'| i18nString}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="checkbox checkbox-primary styledCSS  marginLeft10">
+                            <input ng-disabled="cb.viewMode" type="checkbox" id="checkboxIDNode" ng-change="onInterruptOptionsChange()" ng-model="interruptOptions.resumeUxOptions.neverNotify">
+                            <label for="checkboxIDNode" class="alwaysResume">{{'resume_specific'| i18nString}} </label>
+                        </div>
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="midoNotAllowHoldResume">
+                            <input ng-disabled="cb.viewMode" value='doNotAllowHoldResume' type="radio" ng-change="onInterruptOptionsChange()"  ng-model="interruptOptions.type.option" name="midoNotAllowHoldResume" id="midoNotAllowHoldResume"/> <span class="opt-title">{{'Donot_allow_interrptions_label'| i18nString}}</span>
+                        </label>
+                    </div>
+                    <div class="radioInnerDiv">
+                        <label for="endUserNode">
+                            <input ng-disabled="cb.viewMode" value='endUser' type="radio" ng-change="onInterruptOptionsChange()" ng-model="interruptOptions.type.option" name="endUserNode" id="endUserNode"/> <span class="opt-title">{{'Allow_the_end_user'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('allowEndUser', $event)">{{'manageResponse'| i18nString}}</span></span>
+                        </label>
+                    </div>
+                    <div ng-if="interruptOptions.type.option === 'endUser'" class="animateOptions endUser">
+                        <div class="linkedTaskLabel darkColor marginLeft10">{{'resume_option'| i18nString}}</div>
+                        <div class="col-xs-12 radioDiv radioSection marginLeft10">
+                            <div class="radioInnerDiv">
+                                <label for="confFromUserNode122">
+                                    <input ng-disabled="cb.viewMode" value='confFromUser' type="radio" ng-change="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option"  name="confFromUserNode122" id="confFromUserNode122"/> <span class="opt-title">{{'allinterruptions_conffromuser'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('getConfirmatonWithUser', $event)">{{'manageResponse'| i18nString}}</span></span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="notifyUserNode122">
+                                    <input ng-disabled="cb.viewMode" value='notifyUser' type="radio" ng-change="onInterruptOptionsChange()"  ng-model="interruptOptions.resumeUxOptions.option" name="notifyUserNode122" id="notifyUserNode122"/> <span class="opt-title">{{'allinterruptions_notifyuser'| i18nString}}<span class="manageResponse" ng-click="openManageResponse('notifyUserWithMessage', $event)">{{'manageResponse'| i18nString}}</span></span>
+                                </label>
+                            </div>
+                            <div class="radioInnerDiv">
+                                <label for="noConfFromUserNode122">
+                                    <input ng-disabled="cb.viewMode" value='noConfFromUser' type="radio" ng-change="onInterruptOptionsChange()" ng-model="interruptOptions.resumeUxOptions.option" name="noConfFromUserNode122" id="noConfFromUserNode122"/> <span class="opt-title">{{'allinterruptions_noconffromuser'| i18nString}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="checkbox checkbox-primary styledCSS  marginLeft10">
+                            <input ng-disabled="cb.viewMode" type="checkbox" id="checkboxIDNode" ng-change="onInterruptOptionsChange()" ng-model="interruptOptions.resumeUxOptions.neverNotify">
+                            <label for="checkboxIDNode" class="alwaysResume">{{'resume_specific'| i18nString}} </label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+                <!-- Hold & Resume ends -->
+            </div>
+     </div>
+        <div class="listMode col-xs-12 noPadding marginTop15" ng-class="{'linkedTasksView':cb.viewMode}">
+            <label class="inputLabel ">{{'manage_subIntent'| i18nString}}</label>
+            <p class="descExceptions">{{'associate_subintents'| i18nString}}</p>
+            <div class='manageInterruptsInfo' ng-if="hasContextConditions">
+                <img  class="warnIcon" ng-src={{warnIcon}} />
+                <p class=>{{'customize_interruptions'| i18nString}}</p>
+            </div>
+            <!-- <button ng-if="!cb.tasksList.length"type="button" class="btn btn-primary noMargin" ng-click="addTask()">Add</button> -->
+            <p ng-if="!cb.tasksList.length && !intentSuggestions.length" ng-class="{'pointer-none':cb.viewMode}" type="button" class="addSubIntentsLink" ng-click="addTask()">{{'sub_intents_interruptions'| i18nString}}</p>
+                <div ng-if="cb.tasksList.length || intentSuggestions.length" class="col-xs-12 noPadding displayFlex">
+                    <div class="col-xs-3 tableHeader">
+                        {{'task_name_caps'| i18nString}}
+                    </div>
+                    <div class="col-xs-7 tableHeader">
+                        {{'pre_condition_caps'| i18nString}}
+                    </div>
+                    <div class="col-xs-2 tableHeader btnHeader">
+                            <button ng-if="cb.tasksList.length || intentSuggestions.length" type="button" class="btn btn-primary pull-right" ng-click="addTask()">{{'add_label'| i18nString}}</button>
+                    </div>
+                </div>
+            <!-- Body with scroll starts here -->
+            <div ng-if="cb.tasksList.length || intentSuggestions.length" class="tasksBody col-xs-12 noPadding">
+                <div class="col-xs-12 task noPaddingRight"  ng-repeat="task in intentSuggestions track by $index" ng-class="{'pointer-none':cb.viewMode}">
+                            <span class="col-xs-3 noPadding nameEllipsis">{{task.name}}</span>
+                            <span class="col-xs-7 noPadding conditionEllipsis"> ---</span>
+                            <span ng-if="hasContextConditions" class="col-xs-2 noPadding messageDefine" ng-click="defineSuggestedIntent(task,$index)">{{'define'| i18nString}}<img  class="warnIcon" ng-src={{warnIcon}} /></span>
+                </div>
+                <div class="col-xs-12 task noPaddingRight" tooltip="{{((taskStateKeys[cb.currFlowTask.state] === 'published') && !taskskByState[taskStateKeys[cb.currFlowTask.state]][task.refId])?'linkedFollowUpNotAvailableInPublishedState':'' | i18nString}}" ng-class="{'disabled':(taskStateKeys[cb.currFlowTask.state] === 'published') && !(task && cb && cb.currFlowTask && taskStateKeys[cb.currFlowTask.state] && taskskByState[taskStateKeys[cb.currFlowTask.state]] && taskskByState[taskStateKeys[cb.currFlowTask.state]][task.refId])}" ng-click="openEditLinkedTask(task,$index)" ng-repeat="task in cb.tasksList track by $index">
+                    <span class="col-xs-3 noPadding nameEllipsis">{{getDialogTaskName(task.refId)}}
+                        <i title="{{((taskStateKeys[cb.currFlowTask.state] === 'published') && !taskskByState[taskStateKeys[cb.currFlowTask.state]][task.refId])?'linkedFollowUpNotAvailableInPublishedState':'' | i18nString}}" ng-if="(taskStateKeys[cb.currFlowTask.state] === 'published') && !taskskByState[taskStateKeys[cb.currFlowTask.state]][task.refId]"  class="fa fa-question-circle item-icon" tooltip-placement="right"></i>
+                    </span>
+                    <span class="col-xs-7 noPadding conditionEllipsis"><span ng-if="!task.transitions.length">---</span> <span ng-if="task.transitions.length" ng-repeat="transition in task.transitions">{{getTransitionText(transition,task)}}<span ng-show="{{task.transitions.length-1!==$index}}" class="andIf"> {{'and'| i18nString}} </span></span></span>
+                    <!-- <span ng-if="hasContextConditions" class="col-xs-2 noPadding messageDefine">Define  <img  class="warnIcon" ng-src={{warnIcon}} /></span> -->
+                    <span class="col-xs-1 noPadding pull-right"><i type="button" class="fa fa-trash-o color-red col-xs-2 marginRight10" aria-hidden="true" ng-click="removeLinkedTask(task,$event,$index)"></i></span>  
+                </div>
+                <!--<div class="closeBtn paddingTop20"><button type="button" class="btn closeCancel" ng-click="closeModal()"> Close </button></div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<bt-standard-response class="manageResponseIndexDiv" ng-if="showStandardResponses" cb="manageResponseCB"></bt-standard-response>
+
+<!--<div class="modalFooter">
+ 
+</div>-->

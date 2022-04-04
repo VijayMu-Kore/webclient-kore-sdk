@@ -1,0 +1,354 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13 Jul, 2016, 5:47:11 PM
+    Author     : Rajasekhar
+*/
+
+/*TITLE: MODAL CSS*/
+/* @media (min-height: 700px) {
+  .modal.modal-kr:not(.kr-exception) .modal-content .modal-body {
+    max-height: 370px !important;
+  }
+  .modal.terms-conditions.modal-kr:not(.kr-exception) .modal-content .modal-body {
+    max-height: none !important;
+}
+}
+@media (min-height: 800px) {
+  .modal.modal-kr:not(.kr-exception) .modal-content .modal-body {
+    max-height: 470px !important;
+  }
+  .modal.terms-conditions.modal-kr:not(.kr-exception) .modal-content .modal-body  {
+    max-height: none !important;
+}
+}
+@media (min-height: 900px) {
+  .modal.modal-kr:not(.kr-exception) .modal-content .modal-body {
+    max-height: 570px !important;
+  }
+  .modal.terms-conditions.modal-kr:not(.kr-exception) .modal-content .modal-body  {
+    max-height: none !important;
+}
+}
+.modal.modal-kr {
+  font-size: 14px;
+  overflow: overlay;
+  opacity: 1;
+  -webkit-transition: all 0.35s ease-in-out;
+  -moz-transition: all 0.35s ease-in-out;
+  -o-transition: all 0.35s ease-in-out;
+  transition: all 0.35s ease-in-out;
+}
+.modal.modal-kr.child-modal {
+  z-index: 1100;
+}
+.modal.modal-kr .modal-content {
+  background-color: #f9f9fb;
+  border: 0px;
+}
+.modal.modal-kr .modal-content .modal-header {
+  padding: 13px 0;
+  background-color: #f2f3f5;
+  border-bottom: 1px solid #eee;
+  z-index: 1;
+  text-align: center;
+}
+.modal.modal-kr .modal-content .modal-header .modal-title {
+  font-size: 24px;
+  color: #26344a;
+  font-weight: 300;
+  margin: 0 85px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.modal.modal-kr .modal-content .modal-header .close {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  color: #FFF;
+  opacity: 0.7;
+  margin: -2px 0;
+}
+.modal.modal-kr .modal-content .modal-header .close:hover {
+  opacity: 1;
+  color: #FFF;
+}
+.modal.modal-kr .modal-content .modal-header .btnDone {
+  position: absolute;
+  top: 44px;
+  right: 40px;
+  font-size: 14px;
+  opacity: 0;
+  z-index: 0;
+  color: #aaa;
+  cursor: default;
+  font-weight: 600;
+  -webkit-transition: opacity 0.5s ease-in;
+  -moz-transition: opacity 0.5s ease-in;
+  -o-transition: opacity 0.5s ease-in;
+  transition: opacity 0.5s ease-in;
+  pointer-events: none;
+}
+.modal.modal-kr .modal-content .modal-header .btnBack {
+  position: relative;
+  float: left;
+  font-size: 18px;
+  top: 14px;
+  left: 38px;
+  opacity: 0;
+  z-index: 0;
+  color: #AAA;
+  -webkit-transition: opacity 0.5s ease-in;
+  -moz-transition: opacity 0.5s ease-in;
+  -o-transition: opacity 0.5s ease-in;
+  transition: opacity 0.5s ease-in;
+  pointer-events: none;
+}
+.modal.modal-kr .modal-content .modal-body {
+  min-height: 0;
+  background-color: #ffffff;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  max-height: 350px;
+  overflow-y: scroll;
+}
+.modal.modal-kr .modal-content .modal-body .control-label {
+  text-align: left;
+  padding: 14px 0;
+  width: 50%;
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+.modal.modal-kr .modal-content .modal-body .control-label-full {
+  text-align: left;
+  padding: 14px 0;
+  width: auto;
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+.modal.modal-kr .modal-content .modal-body .form-group .form-group-info {
+  font-size: 14px;
+  color: #aaa;
+}
+.modal.modal-kr .modal-content .modal-body .form-control {
+  background-color: #f9f9fb;
+}
+.modal.modal-kr .modal-content .modal-body .form-group-block {
+  min-height: 50px;
+  border-bottom: 1px solid #eee;
+}
+.modal.modal-kr .modal-content .modal-body .checkbox.icon-tick-v1 {
+  position: absolute;
+  right: 65px;
+  margin-top: -25px;
+}
+.modal.modal-kr .modal-content .modal-body .checkbox.icon-tick-v1:before {
+  content: "";
+  cursor: pointer;
+  display: inline-block;
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  top: -8px;
+  margin-left: 0px;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background-color: #fff;
+  -moz-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+.modal.modal-kr .modal-content .modal-body .checkbox.icon-tick-v1.checked:before {
+  border: 1px solid #007eff;
+  background-color: #007eff;
+  -moz-transition: border 0.15s ease-in-out, color0 0.15s ease-in-out;
+  -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+.modal.modal-kr .modal-content .modal-body .checkbox.icon-tick-v1.checked:after {
+  display: inline-block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: -7px;
+  margin-left: 0px;
+  padding-left: 3px;
+  padding-top: 1px;
+  font-size: 11px;
+  color: #fff;
+  font-family: 'FontAwesome';
+  content: "\f00c";
+  cursor: pointer;
+}
+.modal.modal-kr .modal-content .modal-body .radio:before, .modal.modal-kr .modal-content .modal-body .radio:after {
+  margin-left: -2px;
+}
+.modal.modal-kr .modal-content .modal-body .clickableEle {
+  cursor: pointer;
+}
+.modal.modal-kr .modal-content .modal-body .clickableEle * {
+  cursor: pointer;
+}
+.modal.modal-kr .modal-content .modal-footer {
+  opacity: 1;
+  max-height: 100px;
+  background-color: #f2f3f5;
+  padding: 15px 40px;
+  overflow: hidden;
+  -webkit-transition: all 0.6s ease-out;
+  -moz-transition: all 0.6s ease-out;
+  -o-transition: all 0.6s ease-out;
+  transition: all 0.6s ease-out;
+  text-align: center;
+  border: none;
+} */
+/*.modal.modal-kr .modal-content .modal-footer .btn {
+  min-width: 115px;
+  height: 40px;
+  padding: 6px 25px;
+  font-weight: 400;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*TITLE:KORA LOGS*/
+
+
+.kora-logs-modal ul {
+  list-style: none;
+  padding:0px;
+}
+.kora-logs-modal .bubble-wrapper {
+  width: 100%;
+  display: table;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left, .kora-logs-modal .bubble-wrapper.bottom-right {
+  border: none;
+  min-width: 250px;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .profile-photo, .kora-logs-modal .bubble-wrapper.bottom-right .profile-photo {
+  position: absolute;
+  z-index: 10;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .profile-photo .avatar, .kora-logs-modal .bubble-wrapper.bottom-right .profile-photo .avatar {
+  backgroububble-containernd-size: 100%;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .bubble, .kora-logs-modal .bubble-wrapper.bottom-right .bubble {
+  border-radius: 12px;
+  width: 100%;
+  position: relative;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .bubble.message, .kora-logs-modal .bubble-wrapper.bottom-right .bubble.message {
+  font-size: 16px;
+  background-color: #F1F0F0;
+  padding: 12px 15px;
+  word-break: break-word;
+  line-height: 20px;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .bubble.img span, .kora-logs-modal .bubble-wrapper.bottom-right .bubble.img span {
+  background-position: 0 50%;
+  background-size: cover;
+  width: 320px;
+  height: 210px;
+  border-radius: 20px;
+  image-rendering: -webkit-optimize-contrast;
+  display: block;
+  margin-left: -40px;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .bubble img, .kora-logs-modal .bubble-wrapper.bottom-right .bubble img {
+  max-width: 300px;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  padding-right: 40px;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .profile-photo {
+  bottom: 0;
+  left: 0;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .bubble-container {
+  float: left;
+  padding-left: 20px;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .bubble {
+  border-bottom-left-radius: 2px;
+}
+.kora-logs-modal .bubble-wrapper.bottom-left .extra-info {
+  padding-left: 69px;
+  padding-right: 0;
+  text-align: left;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .profile-photo {
+  bottom: 0;
+  right: 0;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .bubble-container {
+  float: right;
+  padding-right: 20px;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .bubble-container .time {
+  position: relative;
+  padding-left: 0;
+  margin-left: 0;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .bubble-container .time:before {
+  display: none;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .bubble {
+  border-bottom-right-radius: 2px;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .bubble.message {
+  background-color: #009DAB;
+  color: #fff;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .extra-info {
+  padding-right: 20px;
+  text-align: right;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .extra-info .time {
+  position: relative;
+}
+.kora-logs-modal .bubble-wrapper.bottom-right .extra-info .time:before {
+  display: none;
+}
+.kora-logs-modal .bubble-wrapper .bubble-container {
+  position: relative;
+  padding: 0;
+  margin: 0 0 20px 0;
+  max-width: 60%;
+}
+.kora-logs-modal .bubble-wrapper .extra-info {
+  color: #999;
+  font-size: 12px;
+  position: relative;
+  margin: 0;
+  padding: 0 0 5px 0;
+  white-space: nowrap;
+}
+.kora-logs-modal .bubble-wrapper .extra-info .name {
+  text-transform: capitalize;
+}
+
+
+.taskCreateOrEditModal markdown-editor .modal-dialog .modal-body.modalPerfectScroll{padding:20px !important;}

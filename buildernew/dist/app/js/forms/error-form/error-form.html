@@ -1,0 +1,169 @@
+<div ng-class="{'read-only-wrap':advancedDisplayMode === 'VIEW'}">
+<div class="overflow-hidden" ng-class="{'form-container':!insideStream}">
+  <form class="wf-form">
+    <div class="col-xs-12 form-group noPadding">
+      <div class="row">
+        <div class="col-xs-12  head-label noPadding">
+          <label tooltip-placement="right" tooltip="{{'status_code_customize'| i18nString}}" class="errorMsg">{{'error_msgs'| i18nString}}  </label>
+          <span  class="addErrorMsg pointerEventNone" ng-if="!view" ng-click="showErrorForm()">{{'add_error_msg'| i18nString}}</span>
+        </div>
+        <div class="col-xs-12 noPadding">
+          <div class="table-responsive pointerEventNone">
+            <table class="table table-hover" ng-if="totalErrors.length>0">
+              <thead>
+                <tr>
+                  <th>{{'status_Code'| i18nString}}</th>
+                  <th>{{'configurable_msg_name'| i18nString}}</th>
+                  <th>{{'action_label'| i18nString}}</th>
+                  <th class="text-center" ng-if="!view">{{'edit'| i18nString}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="error in totalErrors.slice((currentPage-1)*5,currentPage*5)" ng-class="{'success':error.insert}">
+                  <td>{{error.statusCode}}</td>
+                  <td class="wrap" ng-if="error.messageType==='custom'">{{error.customMessage || '---------'}}</td>
+                  <td class="wrap" ng-if="error.messageType==='default'">{{error.message || '---------'}}</td>
+                  <td class="wrap" ng-if="error.messageType==='source'">{{'---------'}}</td>
+                  <td>{{error.actionsview.join(',')}}</td>
+                  <td class="text-center pointer-hand" ng-if="!view" ng-click="editError(error)"><i class="btx-pencil" ></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination ng-show="totalErrors.length > 5" class="pagination-sm" max-size="maxSize"  rotate="false" total-items="totalErrors.length" items-per-page="5" ng-model="currentPage"></pagination>
+        </div>
+      </div>
+     <!-- <br />
+      <div class="row">
+        <div class="col-xs-4">
+          <label class=""></label>
+        </div>
+      </div>-->
+      <div class="modal fade errorModal modal-top-margin" role="dialog" aria-labelledby="gridSystemModalLabel"
+            aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content" ng-if="errorFrm">
+            <div class="modal-header">
+              <h4 class="modal-title" id="gridSystemModalLabel"><i class="btx-close" ng-click="closeErrorModal()"></i>{{'setup_msg'| i18nString}}</h4>
+            </div>
+            <div class="modal-body errorMessage modalPerfectScroll" isNotPropogateWheel="true" perfect-scroll>
+              <div class="row">
+                <ng-form name="errorForm" class="formContainer" novalidate > 
+                  <!-- <fieldset> -->
+                  <div class="form-group col-xs-12 noPadding">
+                    <label for="statuscode" class="required-field" tooltip-placement="right" tooltip="{{'returned_res'| i18nString}}">{{'status_Code'| i18nString}}</label>
+                    <div class="col-xs-12 noPadding">
+                      <input type="number" class="form-control" only-number name="statuscode" ng-model="pollError.statusCode"  placeholder="{{'status_Code'| i18nString}}" required>
+                      <div ng-if="errorForm.statuscode.$dirty">
+                        <div error-alert class="text-danger" ng-show="(pollError.statusCode+'') && (pollError.statusCode<400 || pollError.statusCode>599)"> {{'valid_status_code'| i18nString}} </div>
+                        <div error-alert class="text-danger" ng-show="errorForm.statuscode.$error.required"> {{'status_code_req'| i18nString}} </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-xs-12 noPadding">
+                    <label for="message-type" class="required-field" tooltip-placement="right" tooltip="{{'specifies_error'| i18nString}}"> {{'message_type'| i18nString}} </label>
+                    <div class="col-xs-12 noPadding">
+                      <div class="row radioDiv"> <span ng-repeat="message in messageTypes" class="radioSpanPaddingRT">
+                        <label for="{{message.name}}" >
+                          <input type="radio" name="messagetype" ng-model="pollError.messageType" required value="{{message.value}}" id="{{message.name}}" />
+                          <span>{{message.name}}</span> </label>
+                        </span> </div>
+                      <!-- <select class="btn btn-default btnDropdown form-control" name="messagetype" ng-options="message.name for message in messageTypes" required ng-model="pollError.messageType"  placeholder="Message Type">
+                                                        <option value=''>Select Message Type</option>
+                                                    </select> -->
+                      <div ng-if="errorForm.messagetype.$dirty">
+                        <div error-alert class="text-danger" ng-show="errorForm.messagetype.$error.required">{{'select_message'| i18nString}}  </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-xs-12 noPadding">
+                    <label class="required-field" tooltip-placement="right" tooltip="{{'specifies_action'| i18nString}}">{{'action_label'| i18nString}}</label>
+                    <div class="col-xs-12 noPadding">
+                      <!-- required -->
+                      <select class="full-width" multiple ui-select2 name="action" required ng-model="pollError.action" placeholder="{{'select'| i18nString}}">
+                        <option ng-repeat="action in actions" value="{{action.value}}">{{action.name}}</option>
+                      </select>
+                      <div ng-if="errorForm.action.$dirty">
+                        <div error-alert class="text-danger" ng-show="errorForm.action.$error.required"> {{'please_action'| i18nString}} </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-xs-12 noPadding" ng-if="pollError.messageType==='default'">
+                    <label tooltip-placement="right" tooltip="{{'specifies_message'| i18nString}}">{{'configurable_msg_name'| i18nString}}</label>
+                    <div class="col-xs-12 noPadding">
+                      <input type="text" class="form-control" placeholder="{{'default_message'| i18nString}}" ng-model="pollError.message" >
+                    </div>
+                  </div>
+                  <div class="form-group col-xs-12 noPadding" ng-if="pollError.messageType==='custom'">
+                    <label class="col-xs-12 noPadding" tooltip-placement="right" tooltip="{{'specifies_custom'| i18nString}}">{{'custom_message'| i18nString}}</label>
+                    <div class="col-xs-12 noPadding">
+                      <input type="text" class="form-control" placeholder="{{'custom_message'| i18nString}}" ng-model="pollError.customMessage" >
+                    </div>
+                  </div>
+                  <div class="form-group col-xs-12  noPadding" ng-if="pollError.messageType==='source'">
+                    <label class="col-xs-12 noPadding" tooltip-placement="right" tooltip="{{'specifies_json'| i18nString}}">{{'error_paths'| i18nString}}</label>
+                    <div class="col-xs-12 noPadding">
+                      <input type="text" class="form-control" ng-model="pollError.errorsPath"  placeholder="{{'error_paths'| i18nString}}">
+                    </div>
+                  </div>
+                  <div class="form-group col-xs-12 noPadding">
+                    <label class="col-xs-12 required-field noPadding" tooltip-placement="right" tooltip="{{'no_error_occur'| i18nString}}">{{'error_recurrence'| i18nString}}</label>
+                    <div class="col-xs-12 noPadding">
+                      <input  type="number" min="1" ng-min="1" name="threshold" ng-model="pollError.threshold" class="form-control" required placeholder="Ex:- 2">
+                      <div ng-if="errorForm.threshold.$dirty">
+                        <div error-alert class="text-danger" ng-show="errorForm.threshold.$error.required"> {{'error_recurrence_req'| i18nString}} </div>
+                        <div error-alert class="text-danger" ng-show="errorForm.threshold.$error.min">{{'error_recurrence_not'| i18nString}} </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-xs-12 noPadding" ng-if="isScheduled()">
+                    <label class="col-xs-12 noPadding" tooltip-placement="right" tooltip="{{'time_inetrval'| i18nString}}">{{'retry_interval'| i18nString}}</label>
+                    <div class="col-xs-12 noPadding">
+                      <input  type="text" ng-model="pollError.retryInterval" class="form-control" placeholder="{{'retry_interval'| i18nString}}">
+                    </div>
+                  </div>
+                  <!-- </fieldset> --> 
+                </ng-form>
+              </div>
+            </div>
+            
+                  <div class="modal-footer">
+                      <button type="button" class="btn" ng-click="savePollError($event,errorForm.$valid,errorForm)">{{'add'| i18nString}}</button>
+                      <button type="button" class="btn closeCancel" ng-click="clear()">{{'clear_label'| i18nString}}</button>
+                  </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="!insideStream && false">
+      <div class="footer form-group noMargin">
+        <div class="footerSub">
+          <div class="form-ctrl-div pull-left">
+            <button type="button" class="btn btn-default" ng-click="exit()">{{'exit_label'| i18nString}}</button>
+          </div>
+          <div class="help-hint-link"> 
+              <a ng-hide="((wfType == 'alert')||((wfType == 'action')))" href="" >{{'help_withpage_label'| i18nString}}</a> 
+              <a ng-if="(wfType == 'alert')" class="inline-link" target="_blank"  ng-href="{{$root.helpLinks.ALERT_ERROR}}">{{'help_withpage_label'| i18nString}}</a> 
+              <a ng-if="(wfType == 'action')" class="inline-link" target="_blank" ng-href="{{$root.helpLinks.ACTIONS_ERROR}}">{{'help_withpage_label'| i18nString}}</a> 
+          </div>
+          <div class="pull-right form-ctrl-div">
+            <button type="button" ng-if="!displayMode || displayMode ==='edit'" class="btn btn-default" ng-click="cancel()">{{'cancel'| i18nString}}</button>
+            <button type="button" class="btn btn-primary" ng-disabled="saveInProgress" ng-if="displayMode === 'edit'" ng-click="saveErrors()"> <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i>{{saveInProgress? saving:save}}</button>
+            <button type="button" class="btn btn-primary" ng-disabled="saveInProgress" ng-if="!displayMode" ng-click="saveErrors()"> <i ng-if="saveInProgress" class="fa fa-spinner fa-spin"></i> {{'continue'| i18nString}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+   <div class="log-item" ng-hide="!loading">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8">
+                        <div class="alert alert-warning alert-xs text-center" role="alert">
+                            <i class="fa-spin fa fa-circle-o-notch"></i>
+                            {{'loading_error_msg'| i18nString}} 
+                        </div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                </div>
+</div>
+</div>

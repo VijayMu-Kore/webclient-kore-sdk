@@ -1,0 +1,14 @@
+<button type="button" ng-click="closeModal()" class="close workplaceModalClose" aria-label="Close"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+<!-- Add Bot Welcome -->
+<div class="add-bot">
+
+    <div class="image-header" perfect-scroll dynamic-height dynaoffset="-200">
+        <img ng-src="{{assetsBase}}images/MatterMost.svg"/>
+        <div class="description" ng-if='intergrationType === "webhook"'>
+            {{'bt_add_to_mattermost_webhook_desc'| i18nString}}
+         </div>
+        <div class="description" ng-if='intergrationType === "websocket"' >
+            {{'bt_add_to_mattermost_websocket_desc'| i18nString}}
+         </div>
+    </div>
+</div>

@@ -1,0 +1,1161 @@
+<div class="summaryLoader animationIfLeave" ng-if="loaders.fetchingWidgets && loaders.fetchingPanels">
+    <span class="spinner-text"> 
+        <i class="fa fa-circle-o-notch fa-spin-fast"></i> 
+        <span class="spinner-text-content">  {{'loading_panels_widgets'| i18nString}}</span>
+    </span>
+</div>
+<div ng-if="loaders.loadingWidgets && loaders.loadingPanels" class="widgetsLoaders">
+  <div><span>{{'loading_panels_widgets'| i18nString}}</span></div>
+</div>
+<bot-modal-slider class="createPanellider" id="pannelsWidgetsSlider" ng-class="{'fullWidthSlider': showDialogContainer,'panels_widgetsViewMode':(streamState ==='published' || accessRights ==='VIEW')}">
+  <!-- panel and widget modal slide starts-->
+  <div class="modalSliderContainer widthNewWidget floatRight" ng-class="{'width40percent':(showDialogContainer),'panels_widgetsViewMode':(streamState ==='published' || accessRights ==='VIEW')}">
+   
+     <div ng-show="selectedSlider==='createPanel' || selectedSlider==='editPanel'">
+        <div class="modalHeader">
+            <h4 class="modal-title"><i class="btx-close"
+                ng-click="cleanSliderVariablesVariables(true,createPanelForm,createPanelObj)" ></i>{{(displayMode==='view')?sliderViewHeader[selectedSlider]:sliderHeader[selectedSlider]}}</h4>
+          </div>
+      <div class="modalBody setupSolBotBody" perfect-scroll dynamic-height dynaoffset="-60" height-property="height">
+        <div class="row col-xs-12 noPadding">
+          <section class="widget">
+            <form name="createPanelForm" class="wf-form" novalidate>
+              <fieldset class="row">
+                <div>
+                  <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 noPadding">
+                      <label class="required-field">{{'panel_name'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                      <input required type="text" ng-model="createPanelObj.name" id="arabicInput" name="name"
+                        class="form-control alert-input" ng-minlength="1" maxlength="128"
+                        placeholder="{{'enter_panel_name'| i18nString}}" autocomplete="off">
+                      <div ng-show="createPanelForm.name.$dirty">
+                        <div error-alert ng-show="createPanelForm.name.$error.required"
+                          class="text-danger form-error-text"> {{'panel_name_req'| i18nString}} </div>
+                        <div error-alert ng-show="createPanelForm.name.$error.minlength"
+                          class="text-danger form-error-text"> {{'invalid_panel'| i18nString}} </div>
+                        <div error-alert ng-show="createPanelForm.name.$error.pattern"
+                          class="text-danger form-error-text"> {{'panel_name_special'| i18nString}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 noPadding">
+                      <label class="required-field">{{'panel_display_name'| i18nString}} </label>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                      <input required type="text" ng-model="createPanelObj.title" id="arabicInput"
+                        name="title" class="form-control alert-input" ng-minlength="1" maxlength="128"
+                        placeholder="{{'enter_display_name'| i18nString}}" autocomplete="off">
+                      <div ng-show="createPanelForm.title.$dirty">
+                        <div error-alert ng-show="createPanelForm.title.$error.required"
+                          class="text-danger form-error-text"> {{'panel_display_name_req'| i18nString}} </div>
+                        <div error-alert ng-show="createPanelForm.title.$error.minlength"
+                          class="text-danger form-error-text"> {{'invalid_display'| i18nString}} </div>
+                        <div error-alert ng-show="createPanelForm.title.$error.pattern"
+                          class="text-danger form-error-text"> {{'panel_name_special'| i18nString}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group noPadding">
+                    <div class="col-xs-12 noPadding">
+                      <label class="required-field">{{'panel_icon'| i18nString}}</label>
+                    </div>
+                    <div class="col-xs-12 noPadding" ng-show="displayMode === 'view'"> <img class="img-thumbnail"
+                        width="70px" height="70px" src="{{brokenImageSmall}}" ng-src="{{createPanelObj.icon.url}}" onerror='handleimgLoad(this)' /> </div>
+                    <div class="col-xs-12 noPadding" ng-show="displayMode !== 'view'">
+                      <div class="input-group col-xs-12">
+                        <!-- <input name="iconFile" type="text" class="form-control"
+                          placeholder="Upload an icon for your panel" readonly ng-model="createPanelObj.iconInfo.fileName">  -->
+                          <input name="iconFile" type="text" class="form-control"
+                          placeholder="{{'provide_icon'| i18nString}}"  ng-model="createPanelObj.icon" ng-change="checkImageValidations(createPanelObj.icon)">
+                        <!-- <div class="input-group-addon btn-file"> Browse <i class="fa fa-spinner fa-spin"
+                            ng-show="iconUploading"></i>
+                          <input type="file" file-model="createPanelObj.iconFile" id="iconFile" name="iconFile" required
+                            ng-disabled="iconUploading || createPanelObj.iconInfo.fileId"
+                            on-file-change="uploadStreamIcon" />
+                        </div> -->
+                      </div>
+                      <div ng-show="createPanelObj.invalidImage">
+                        <div error-alert
+                          class="text-danger form-error-text">{{'provide_img_url'| i18nString}}</div>
+                      </div>
+                      <!-- <div ng-show="createPanelObj.checkingUrl" class="extra-info">Checking for valid Image</div> -->
+                      <!-- <div ng-show="iconRequiredError" class="text-danger form-error-text">Icon is required. </div> -->
+                      <!-- <div class="uploads" ng-show="createPanelObj.icon.fileName">
+                        <div class="alert alert-success alert-sm"> <span class="pointer-hand"
+                            ng-click="deleteStreamIcon()"><i class="fa fa-times"></i></span> <span class="content">
+                            {{createPanelObj.icon.fileName}} </span> </div>
+                      </div> -->
+                    </div>
+                  </div>
+                  <div class="col-xs-12 form-group noPadding">
+                    <!-- <div class="col-xs-12 noPadding toggleStitchTitle">
+                      <label class="required-field"> Auto
+                        Refresh </label>
+                      <div class="toggleDiv">
+                          <toggle-switch class="details-toggle-switch" ng-model="createPanelObj.autoRefresh.enabled">
+                              <input type="checkbox" class="switch">
+                              <label> </label>
+                          </toggle-switch>
+                          <span class="toggleText">
+                              <span>{{createPanelObj.autoRefresh.enabled?'Enable':'Disable'}}</span>
+                          </span>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 noPadding">
+                        <select class="full-width" ng-model="createPanelObj.autoRefresh.interval" id="category"
+                        name="category" required placeholder="Select interval">
+                        <option class="hide"  selected disabled>for every 2
+                          mins</option>
+                        <option ng-repeat="interval in autoRefereshIntervals" value="{{interval}}">for every
+                          {{interval}} mins</option>
+                      </select>
+                      <div ng-show="createPanelForm.category.$dirty">
+                        <div error-alert ng-show="createPanelForm.category.$error.required"
+                          class="text-danger form-error-text"> Auto refresh is required. </div>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </section>
+        </div>
+      </div>
+      <div class="modalFooter">
+          <button type="button" class=btn bt ng-disabled="savingPannel" ng-click="savePannel(createPanelForm)">
+            <span ng-show="!savingPannel">{{'save'| i18nString}}</span>
+            <span ng-show="savingPannel">{{'saving'| i18nString}}</span>
+          </button>
+          <button class="btn closeCancel"  ng-click="cleanSliderVariablesVariables(true,createPanelForm,createPanelObj)">{{'cancel'| i18nString}}</button>
+      </div>
+    </div>
+    <div ng-show="((selectedSlider==='createWidget') || (selectedSlider === 'editWidget'))" class="createWidgetSlider" ng-class="{'panels_widgetsViewMode':universalBot}">
+              <div class="modalHeader">
+                  <h4 class="modal-title">
+                      <span ng-if="(selectedPanelToEdit && selectedPanelToEdit._id)" class="pull-left closeBtn" ng-click="switchSliderStep('panelManagement',createWidgetForm,createWidgetObj)">
+                          <span aria-hidden="true"><i class="fa fa-chevron-left"></i></span>
+                      </span>
+                    <i ng-if="!(selectedPanelToEdit && selectedPanelToEdit._id)" class="btx-close"  ng-click="cleanSliderVariablesVariables(true,createWidgetForm,createWidgetObj)" ></i>{{((displayMode==='view') || (universalBot && (selectedSlider ==='editWidget')))?sliderViewHeader[selectedSlider]:sliderHeader[selectedSlider]}}</h4>
+                </div>
+                <div>
+                  <div class="modalBody " perfect-scroll dynamic-height dynaoffset="-110" height-property="height">
+                    <div class="row col-xs-12 noPadding" >
+                      <section class="widget">
+                        <form name="createWidgetForm" class="wf-form" novalidate>
+                          <fieldset class="row ">
+                            <div>
+                              <div class="col-xs-12 form-group noPadding" ng-if="universalBot">
+                                <div class="col-xs-12 noPadding">
+                                  <label class="required-field">{{'linked_bot_name'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                  <input type="text" ng-model="botsObj[linkedUbWidgets[createWidgetObj.refId]].botName" id="arabicInput" name="linkedBotName"
+                                    class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                    placeholder="{{'linked_bot_name'| i18nString}}" autocomplete="off">
+                                </div>
+                              </div>
+                              <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12 noPadding">
+                                  <label class="required-field">{{'widget_name'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                  <input required type="text" ng-model="createWidgetObj.name" id="arabicInput" name="createWidgetObjname"
+                                    class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                    placeholder="{{'widget_name_place'| i18nString}}" autocomplete="off">
+                                  <div ng-show="createWidgetForm.createWidgetObjname.$dirty">
+                                    <div error-alert ng-show="createWidgetForm.createWidgetObjname.$error.required"
+                                      class="text-danger form-error-text"> {{'widget_name_req'| i18nString}} </div>
+                                    <div error-alert ng-show="createWidgetForm.name.$error.pattern"
+                                      class="text-danger form-error-text"> {{'widget_name_special'| i18nString}}</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xs-12 form-group noPadding">
+                                <div class="col-xs-12 noPadding">
+                                  <label class="required-field">{{'widget_display'| i18nString}}  </label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                  <input required type="text" ng-model="createWidgetObj.title" id="arabicInput"
+                                    name="title" class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                    placeholder="{{'widget_display_name'| i18nString}} " autocomplete="off">
+                                  <div ng-show="createWidgetForm.title.$dirty">
+                                    <div error-alert ng-show="createWidgetForm.title.$error.required"
+                                      class="text-danger form-error-text">{{'widget_display_name_req'| i18nString}}  </div>
+                                    <div error-alert ng-show="createWidgetForm.title.$error.minlength"
+                                      class="text-danger form-error-text"> {{'invalid_display_name'| i18nString}} </div>
+                                    <div error-alert ng-show="createWidgetForm.title.$error.pattern"
+                                      class="text-danger form-error-text"> {{'widget_name_special'| i18nString}} </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xs-12 form-group noPadding" ng-class='{"panelsDisableElement":createWidgetObj.source.type==="form"}'>
+                                <div class="col-xs-12 noPadding toggleStitchTitle">
+                                  <label class="required-field">{{'auto_refresh_caps'| i18nString}}  </label>
+                                    <div class="toggleDiv">
+                                        <toggle-switch class="details-toggle-switch" ng-model="createWidgetObj.autoRefresh.enabled">
+                                            <!-- <input type="checkbox" class="switch">
+                                            <label> </label> -->
+                                        </toggle-switch>
+                                        <!-- <span class="toggleText">
+                                            <span>{{createWidgetObj.autoRefresh.enabled?enable:disable}}</span>
+                                        </span> -->
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                  <select class="full-width" ng-model="createWidgetObj.autoRefresh.interval" id="category"
+                                    name="category" required placeholder="{{'select_interval'| i18nString}}">
+                                    <option class="hide"  selected disabled>{{'for_every_2'| i18nString}}</option>
+                                    <option ng-repeat="interval in autoRefereshIntervals" value="{{interval}}">{{'for_every_interval'| i18nString:({interval:interval})}}</option>
+                                  </select>
+                                  <div ng-show="createWidgetForm.category.$dirty">
+                                    <div error-alert ng-show="createWidgetForm.category.$error.required"
+                                      class="text-danger form-error-text"> {{'auto_refresh_req'| i18nString}} </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xs-12 form-group noPadding" ng-class='{"panelsDisableElement":createWidgetObj.source.type==="form"}'>
+                                <div class="col-xs-12 noPadding">
+                                  <label class="required-field">{{'template_hint'| i18nString}} <img ng-src="{{helpIcon}}" class="helpIcon hintHelpIcon" tooltip-placement="right"
+                                    tooltip="{{'please_ensure'| i18nString}}"></label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="col-xs-12 noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <select class="full-width" ng-model="createWidgetObj.templateType" id="widgetDialogtask"
+                                            name="selectedWidgetType" placeholder="Select interval">
+                                            <option selected class="hide" value="">{{'select_hint'| i18nString}}</option>
+                                            <option class="hide" value="standard">{{'select_hint'| i18nString}}</option>
+                                            <option ng-repeat="widgetType in supportedWidgetTYpes" value="{{widgetType.type}}">{{widgetType.name || widgetType.name}}</option>
+                                          </select>
+                                          <!-- <div ng-show="createWidgetForm.selectedTask.$dirty">
+                                            <div error-alert ng-show="createWidgetForm.selectedTask.$error.required"
+                                              class="text-danger form-error-text">Please select hint </div>
+                                          </div> -->
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                              <div class="animateOptions endUser">
+                                  <div class="col-xs-12 noPadding">
+                                      <label class="required-field" tooltip-placement="right"> {{'source'| i18nString}} </label>
+                                      <p class="grayDesc">{{'choose_source'| i18nString}}</p>
+                                    </div>
+                                  <div class="col-xs-12 radioDiv radioSection noPaddingLeft">
+                                      <div class="radioInnerDiv">
+                                          <label for="sourceDialog">
+                                              <input value='dialog' type="radio" ng-click="selectWidgetSourceType('dialog')" ng-model="createWidgetObj.source.type"  name="dialog" id="sourceDialog"/><span class="opt-title">{{'constants.flowTask'| i18nString}}</span>
+                                          </label>
+                                      </div>
+                                      <div class="radioInnerDiv">
+                                          <label for="sourceJson">
+                                              <input value='json' type="radio"  ng-click="selectWidgetSourceType('json')" ng-model="createWidgetObj.source.type" name="json" id="sourceJson"/><span class="opt-title">{{'json_label'| i18nString}}</span>
+                                          </label>
+                                      </div>
+                                      <div class="radioInnerDiv">
+                                        <label for="sourceform">
+                                            <input value='form' type="radio"  ng-click="selectWidgetSourceType('form')" ng-model="createWidgetObj.source.type" name="form" id="sourceform"/><span class="opt-title">{{'ui_forms_label'| i18nString}}</span>
+                                        </label>
+                                      </div>
+                                      <!-- <div class="radioInnerDiv">
+                                          <label for="sourceSysWidget">
+                                              <input value='sysWidget' type="radio"  ng-model="createWidgetObj.source.type" name="sysWidget" id="sourceSysWidget"/><span class="opt-title">System Widget</span>
+                                          </label>
+                                      </div> -->
+                                  </div>
+                              </div>
+                              <div class="col-xs-12 form-group noPadding"  ng-if="createWidgetObj.source.type==='form'">
+                                <div class="col-xs-12 noPadding">
+                                  <label class="required-field">{{'Add_Form'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="col-xs-12 noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <select class="full-width" ng-model="createWidgetObj.source.resource" id="webFormSelect"
+                                            name="selectedform" ng-change='selectIntigrationDilaog("edit")' required placeholder="{{'Select_Form' | i18nString}}">
+                                            <option selected class="hide" value="">{{'Select_Form' | i18nString}}</option>
+                                            <option ng-repeat="form in webforms[streamState]" value="{{form.refId}}">{{form.name}}</option>
+                                          </select>
+                                          <div ng-show="createWidgetForm.selectedform.$dirty">
+                                            <div error-alert ng-show="createWidgetForm.selectedform.$error.required"
+                                              class="text-danger form-error-text">{{'please_select_form'| i18nString}} </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="col-xs-12 form-group noPadding" ng-if="createWidgetObj.source.type==='form'">
+                                <div class="col-xs-12 noPadding">
+                                  <label class="required-field" tooltip="{{'Dialog_to_Invoke_on_Submit_tooltip' | i18nString}}">{{'Dialog_to_Invoke_on_Submit'| i18nString}}</label>
+                                </div>
+                                <div class="col-xs-12 noPadding">
+                                    <div class="col-xs-12 noPadding">
+                                        <div class="col-xs-12 noPadding">
+                                            <select class="full-width" ng-model="createWidgetObj.formDialogIntegration" id="widgetFormDialogtask"
+                                            name="selectedFormTask" required placeholder="{{'select_interval'| i18nString}}">
+                                            <option selected class="hide" value="">{{'select_dialog_name'| i18nString}}</option>
+                                            <option ng-repeat="intent in dialogTasksforWidget" value="{{intent.refId}}">{{intent.intent || intent.name}}</option>
+                                          </select>
+                                          <div ng-show="createWidgetForm.selectedFormTask.$dirty">
+                                            <div error-alert ng-show="createWidgetForm.selectedFormTask.$error.required"
+                                              class="text-danger form-error-text">{{'please_select_Dialog'| i18nString}} </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </div>
+                                  <!-- <div class="helphint-border-tip mt-15">
+                                      <div class="bulbicon">
+                                          <img class="layer" ng-src='{{bulbIcon}}'>
+                                      </div>
+                                      <div class="content-text">{{'submit_dialog_protip' | i18nString}}</div>
+                                  </div> -->
+                                  <div class="helphint-border mb-15 col-xs-12">
+                                    <div class="col-xs-1 bulbicon"><i class="btx-bulb"></i></div>
+                                    <div class="col-xs-11 text-justify">
+                                      <span class="name ng-binding">{{'submit_dialog_protip' | i18nString}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                              <div class="col-xs-12 form-group noPadding" ng-if="createWidgetObj.source.type==='dialog'">
+                                  <div class="col-xs-12 noPadding">
+                                    <label class="required-field">{{'select_dialog_task'| i18nString}}</label>
+                                  </div>
+                                  <div class="col-xs-12 noPadding">
+                                      <div class="col-xs-12 noPadding">
+                                          <div class="col-xs-11 selectDialog noPadding">
+                                              <select class="full-width" ng-model="createWidgetObj.source.resource" id="widgetDialogtask" ng-change="getComponents(createWidgetObj.source.resource)"
+                                              name="selectedTask" required placeholder="{{'select_interval'| i18nString}}">
+                                              <option selected class="hide" value="">{{'select_dialog_name'| i18nString}}</option>
+                                              <option ng-repeat="intent in dialogTasksforWidget" value="{{intent.refId}}">{{intent.intent || intent.name}}</option>
+                                            </select>
+                                            <div ng-show="createWidgetForm.selectedTask.$dirty">
+                                              <div error-alert ng-show="createWidgetForm.selectedTask.$error.required"
+                                                class="text-danger form-error-text">{{'please_select_Dialog'| i18nString}} </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-xs-1 noPadding openDialogmodal" ng-class="{'pointer-none': !createWidgetObj.source.resource || (universalBot)}" ng-disabled="!createWidgetObj.source.resource || (universalBot)" ng-click="openDialogFlow(createWidgetObj.source.resource)">
+                                            <span class="expandGreenDiv" tooltip="{{'open_dialog_task'| i18nString}}">
+                                                <!-- <img ng-src="{{expandGray}}" class="expandGray">
+                                                <img ng-src="{{expandGreen}}" class="expandGreen"> -->
+                                                <i class="btx-minimize"></i>
+                                            </span>
+                                          </div>
+                                        </div>
+                                  </div>
+                              </div>
+                              <div class="col-xs-12 form-group noPadding" ng-show="createWidgetObj.source.type==='json'">
+                                <div class="override-message">
+                                    <div>
+                                        <!-- <label class="marginTop10 noMarginBottom"><b>JSON</b></label> -->
+                                        <span class="pos-relative floatRight" ng-show="!prompt.isMarkDown"><sample-tempalets selected-channel="prompt.channel" selected-callback="prompt.jsEditorValue" demo-templates="demoTemplates"></sample-tempalets></span>
+                                    </div>
+                                    <div class="editorMenus hide">
+                                        <div class="menuHeader" ng-class="{active: createWidgetObj.source.resource.type==='basic'}" ng-click="selectJsonEditor('basic')">{{'standard_text'| i18nString}}</div>
+                                        <div class="menuHeader moveLeft" ng-class="{active: createWidgetObj.source.resource.type==='uxmap'}" ng-click="selectJsonEditor('uxmap')">{{'advanced_mode'| i18nString}}</div>
+                                    </div>
+                                    <markdown-editor no-focus="nofocus" callback="markdownCbs" ng-model="createWidgetObj.source.resource.markUp" ng-if="createWidgetObj.source.resource.type==='basic'"></markdown-editor>
+                                    <div class="jsEditorDummyHeaderBlock" role="group" ng-if="createWidgetObj.source.resource.type==='uxmap'">{{'js_editor'| i18nString}}</div>
+                                    <div class="jseditorblock srJsEditorBlock" acify  id="jseditor" callback='jsEditorCbs' ng-model="createWidgetObj.source.resource.jsCode" ng-if="createWidgetObj.source.resource.type==='uxmap'"></div>
+                                    
+                                </div>
+                            </div>
+                              <div class="col-xs-12 form-group noPadding entityPreAssignment" ng-if="createWidgetObj.source.type==='dialog'">
+                                  <div class="col-xs-12 noPadding">
+                                      <label class="required-field withHelpIcon">{{'entity_assignment'| i18nString}} <img ng-src="{{helpIcon}}" class="helpIcon" tooltip-placement="right"
+                                        tooltip="{{'def_populated'| i18nString}}"></label>
+                                        <p class="grayDesc">{{'entity_dialog'| i18nString}}</p>
+                                    </div>
+                                    <div class="col-xs-12 contaner">
+                                      <div class="headerDiv col-xs-12">
+                                        <div class="header col-xs-12" > 
+                                            <!-- <div class="col-xs-3 headerText noPadding">Type<img ng-src="{{helpIcon}}" class="helpIcon" tooltip-placement="right"
+                                              tooltip="Define how an entity should be populated."></div> -->
+                                            <div class="col-xs-6 headerText noPadding">{{'entity_name_caps'| i18nString}} <img ng-src="{{helpIcon}}" class="helpIcon" tooltip-placement="right"
+                                              tooltip="{{'entity_name_tooltip'| i18nString}}"></div>
+                                            <div class="col-xs-5 headerText noPadding">{{'entity_value_label'| i18nString}}<img ng-src="{{helpIcon}}" class="helpIcon" tooltip-placement="left"
+                                              tooltip="{{'entity_value_tooltip'| i18nString}} "></div>
+                                            <div class="col-xs-1 headerText noPadding"></div>
+                                        </div>
+                                        <div class="addEntityAssign col-xs-12"> 
+                                          <!-- <div class="col-xs-2  spacingFive">
+                                            <select class="full-width" ng-model="tempObj.addPreAssighment.fieldType" id="fieldType" name="fieldType" required >
+                                                  <option  selected  value="preAssign">Pre-assign</option>
+                                                  <option   value="before">Before</option>
+                                                  <option    value="runTime">Run-time</option>
+                                            </select>
+                                          </div> -->
+                                          <div class="col-xs-6 spacingFive autocomplete">
+                                            <input type="text" id="autocompleteInput_New" ng-focus='autocomplete($event,null,$index)' ng-keyup="entityPreAssignInputEevents('existing',tempObj.addPreAssighment.label,$index)" ng-model="tempObj.addPreAssighment.label" id="arabicInput" name="name" class="form-control alert-input" ng-minlength="1" maxlength="128" placeholder="{{'key'| i18nString}}" autocomplete="off">
+                                          </div>
+                                          <div class="col-xs-5 spacingFive">
+                                            <input type="text" ng-model="tempObj.addPreAssighment.defaultValue" id="arabicInput" name="name" class="form-control alert-input" ng-minlength="1" maxlength="128" placeholder="{{'value'| i18nString}}" autocomplete="off">
+                                          </div>
+                                          <div class="col-xs-1  addBtn" ng-click="addEditEntityPreAssignment('new')"> <button class="btn">{{'add'| i18nString}}</button></div>
+                                      </div>
+                                      </div>
+                                      <!-- <div class="bodyEntityAssignment" >
+                                        <div class="addEntityAssign" ng-repeat="entity in tempObj.entityPreAssign track by $index"> 
+                                          <div class="col-xs-3 noPadding">{{entityTypes[entity.fieldType]}}</div>
+                                          <div class="col-xs-5 listingName" title="{{entity.label}}">{{entity.label}}</div>
+                                          <div class="col-xs-5 listingValue" title="{{entity.defaultValue}}">{{entity.defaultValue}}</div>
+                                          <div class="col-xs-1 noPadding">
+                                            <span class="editTrashContainer" >
+                                            <img ng-src="{{pencilIcon}}" class="pencilIcon">
+                                            <img ng-src="{{trashIcon}}" class="trashIcon" ng-click="deleteEntityPreAssignments($index,'new')">
+                                            </span>
+                                        </div>
+                                      </div>
+                                      </div> -->
+                                      <!-- <div class="bodyEntityAssignment" >
+                                        <div class="addEntityAssign" ng-repeat="entity in createWidgetObj.fields track by $index"> 
+                                            <div class="col-xs-3 noPadding">{{entityTypes[entity.fieldType]}}</div>
+                                            <div class="col-xs-5 listingName" title="{{entity.label}}">{{entity.label}}</div>
+                                            <div class="col-xs-5 listingValue" title="{{entity.defaultValue}}">{{entity.defaultValue}}</div>
+                                            <div class="col-xs-1 noPadding">
+                                              <span class="editTrashContainer" >
+                                                <img ng-src="{{pencilIcon}}" class="pencilIcon">
+                                                <img ng-src="{{trashIcon}}" class="trashIcon" ng-click="deleteEntityPreAssignments($index,'existing')">
+                                                </span>
+                                          </div>
+                                      </div>
+                                      </div> -->
+                                    </div>
+                                    <div class="col-xs-12 noPadding inputValuesCOntainer" ng-repeat="entity in createWidgetObj.fields track by $index">
+                                      <div class="selectEntityContainer autocomplete">
+                                        <input type="text" id="autocompleteInput{{$index}}" ng-focus='autocomplete($event,createWidgetObj.fields,$index)' ng-keyup="entityPreAssignInputEevents('existing',entity.label,$index)" ng-model="entity.label" id="arabicInput" name="name"
+                                          class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                          placeholder="{{'value'| i18nString}}" autocomplete="off">
+                                      </div>
+                                      <div class="selectValueContainer">
+                                          <input type="text" ng-model="entity.defaultValue" id="arabicInput" name="name"
+                                          class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                          placeholder="{{'value'| i18nString}}" autocomplete="off">
+
+                                          <span class="trashContainer" ng-click="deleteEntityPreAssignments($index,'existing')">
+                                            <i class="btx-delete-1"></i>
+                                            <!-- <img ng-src="{{trashIcon}}" class="trashIcon"> -->
+                                          </span>
+                                      </div>
+
+                                    </div>
+                                  <div class="col-xs-12 noPadding inputValuesCOntainer" ng-repeat="entity in tempObj.entityPreAssign track by $index">
+                                    <div class="selectEntityContainer autocomplete">
+                                      <input type="text" id="autocompleteInput_{{$index}}" ng-focus='autocomplete($event,tempObj.entityPreAssign,$index)' ng-keyup="entityPreAssignInputEevents('new',entity.label,$index)" ng-model="entity.label" id="arabicInput" name="name"
+                                      class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                      placeholder="{{'value'| i18nString}}" autocomplete="off">
+                                    </div>
+                                    <div class="selectValueContainer">
+                                          <input type="text" ng-model="entity.defaultValue" id="arabicInput" name="name"
+                                          class="form-control alert-input " ng-minlength="1" maxlength="128"
+                                          placeholder="{{'value'| i18nString}}" autocomplete="off">
+
+                                        <span class="trashContainer" ng-click="deleteEntityPreAssignments($index,'new')">
+                                          <i class="btx-delete-1"></i>
+                                            <!-- <img ng-src="{{trashIcon}}" class="trashIcon"> -->
+                                        </span>
+                                    </div>
+                                  </div>
+                              </div>
+                              <div class="col-xs-12 form-group noPadding contextVariable" ng-if="false && createWidgetObj.source.type==='dialog'">
+                                <div class="col-xs-12 noPadding">
+                                  <label class="required-field withHelpIcon">{{'context_variable'| i18nString}} 
+                                    <!-- <img ng-src="{{helpIcon}}" class="helpIcon" tooltip-placement="right"
+                                    tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur suscipit aliquam."> -->
+                                  </label>
+                                    <p class="grayDesc">{{'def_variable'| i18nString}}</p>
+                                </div>
+                                <div class="col-xs-12 noPadding inputValuesCOntainer" ng-repeat="context in contextVariable track by $index">
+                                  <div class="selectEntityContainer">
+                                      <input type="text" ng-model="context.key" id="arabicInput" name="name"  ng-keyup="contextPreAssignInputEevents('existing',context.key,$index)" 
+                                      class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                     placeholder="{{'key'| i18nString}}" autocomplete="off">
+                                  </div>
+                                  <div class="selectValueContainer">
+                                      <input type="text" ng-model="context.value" id="arabicInput" name="name"
+                                      class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                      placeholder="{{'value'| i18nString}}" autocomplete="off">
+
+                                      <span class="trashContainer" ng-click="deleteContextPreAssignments($index,'existing')">
+                                        <i class="btx-delete-1"></i>
+                                          <!-- <img ng-src="{{trashIcon}}" class="trashIcon"> -->
+                                      </span>
+                                  </div>
+
+                                </div>
+                                <div class="col-xs-12 noPadding inputValuesCOntainer" ng-repeat="context in tempObj.contextMap track by $index">
+                                    <div class="selectEntityContainer">
+                                        <input type="text" ng-model="context.key" id="createContextkey" name="contextKey" ng-keyup="contextPreAssignInputEevents('new',context.key,$index)" 
+                                        class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                       placeholder="{{'key'| i18nString}}" autocomplete="off">
+                                    </div>
+                                    <div class="selectValueContainer">
+                                        <input type="text" ng-model="context.value" id="createContextValue" name="contextValue" 
+                                        class="form-control alert-input" ng-minlength="1" maxlength="128"
+                                        placeholder="{{'value'| i18nString}}" autocomplete="off">
+
+
+                                      <span class="trashContainer activeTrash" ng-click="deleteContextPreAssignments($index,'new')">
+                                        <i class="btx-delete-1"></i>
+                                          <!-- <img ng-src="{{trashIcon}}" class="trashIcon"> -->
+                                      </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group noPadding" ng-if="createWidgetObj.source.type==='dialog'">
+                                <div class="col-xs-12 noPadding">
+                                  <label class="required-field"> {{'auth_profile'| i18nString}}</label>
+                                  <p class="grayDesc">{{'auth_desc'| i18nString}}</p>
+                                </div>
+                                <div class="col-xs-12 noPadding authTable text-center" ng-if="!(dialogTasksforWidget && authProfiles && authProfiles.length)">
+                                  <span class="text-center">{{'auth_profiles'| i18nString}}</span>
+                                </div>
+                                <div class="col-xs-12 noPadding authTable" ng-if="dialogTasksforWidget && authProfiles && authProfiles.length">
+                                  <div class="row authHeader">
+                                      <div class="col-xs-8 noPadding">{{'name_label'| i18nString}}</div>
+                                      <div class="col-xs-4 noPadding">{{'type'| i18nString}}</div>
+                                  </div>
+                                  <div class="row authBody">
+                                    <div class="rowColumns col-xs-12" ng-repeat="authProfile in authProfiles">
+                                      <div class="col-xs-8 noPadding">{{authProfile.name}}</div>
+                                      <div class="col-xs-4 noPadding">{{authProfile.sso_type || "---"}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            </div>
+                          </fieldset>
+                        </form>
+                      </section>
+                    </div>
+                  </div>
+                  <div class="modalFooter width500" ng-class="{'width40percent':(showDialogContainer),'footerRight':showDialogContainer}">
+                     <div class="mainButtons">
+                      <button type="button" class="btn" ng-disabled="savingWidgetPreview || savingWidget" ng-if="!universalBot" ng-click="saveWidget(createWidgetForm)">
+                        <span ng-show="!savingWidget">{{'save'| i18nString}}</span>
+                        <span ng-show="savingWidget">{{'saving'| i18nString}}</span>
+                      </button>
+                      <span class="runPreview filter" ng-if="createWidgetObj._id" ng-click="runPreview()">{{'run_preview'| i18nString}}</span>
+                     </div>
+                     <div class="readOnlyModeBtns">
+                      <button type="button" class="btn runPreview"  ng-if="createWidgetObj._id" ng-click="runPreview()">
+                        <span ng-show="!savingWidget">{{'run_preview'| i18nString}}</span>
+                      </button>
+                      <span class="btn closeCancel" ng-if="createWidgetObj._id" ng-click="cleanSliderVariablesVariables(true,createWidgetForm,createWidgetObj)">{{'cancel'| i18nString}}</span>
+                     </div>
+                  </div>
+                </div>
+               
+    </div>
+    <div ng-show="selectedSlider==='panelManagement' || selectedSlider==='addForm' || selectedSlider==='addExistingWidget'" class='panelManagementSlider'>
+        <div class="modalHeader" >
+            <h4 class="modal-title">
+                <span ng-if="(selectedSlider==='addExistingWidget') || ((selectedSlider==='addForm') &&  panelManagementInProgress)" class="pull-left closeBtn" ng-click="switchTopanel()">
+                    <span aria-hidden="true"><i class="btx-carrot-left fa-chevron-left"></i></span>
+                </span>
+              <i ng-if="(selectedSlider!=='addExistingWidget' && selectedSlider!=='addForm') || ((selectedSlider==='addForm') &&  !panelManagementInProgress)" class="btx-close" 
+                ng-click="cleanSliderVariablesVariables(true,createPanelForm,selectedPanelToEdit)" ></i>{{(displayMode==='view')?sliderViewHeader[selectedSlider]:sliderHeader[selectedSlider]}}</h4>
+          </div>
+      <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-60" height-property="height">
+        <div class="info-tooltip-btn-add" ng-show="selectedSlider==='panelManagement' && (selectedPanelToEdit.widgets.length)"> 
+          <button ng-if="showForms" class="btn createWBtn noMargin" ng-show="displayMode !== 'view'" ng-click='sliderAction("open","addForm",selectedPanelToEdit)'>{{'Add_Form'| i18nString}}</button>   
+          <button class="btn   noMargin" ng-show="displayMode !== 'view'" ng-click='sliderAction("open","addExistingWidget",selectedPanelToEdit)'>{{'add_Widget'| i18nString}}</button>        
+          <i ng-if="universalBot" tooltip-placement="left-bottom" tooltip="{{'ub_widget_endUser_desc' | i18nString}}" class="btx-info ubWidgetInfo"></i>
+        </div>   
+        <div ng-if="!(selectedPanelToEdit.widgets.length) && selectedSlider !== 'addExistingWidget' && (selectedSlider !== 'addForm')" class="emptyWidgets">
+                <!-- <div class="emptyImgOrinfoDiv row noWidgetPanelManagement">
+                  <div class="imageDiv">
+                    <img ng-src="{{iconContextPath}}/empty-illustration.svg">
+                  </div>
+                  <div class="createInfoDiv">
+                      <div class='noWidget'><span class='infoHeader'>{{'no_Widgets'| i18nString}}</span>
+                        <p class='noWidgetInfo'>{{'widgets_actions'| i18nString}}</p>
+                        <div>
+                          <button class='addExistingWidget btn marginLeft10' ng-click='sliderAction("open","addExistingWidget",selectedPanelToEdit)'>{{'add_Widget'| i18nString}}</button>
+                          <button ng-if="showForms" class='createNewW btn noMargin' ng-click='sliderAction("open","addForm",selectedPanelToEdit)'>{{'Add_Form'| i18nString}}</button>
+                        </div>
+                      </div>
+                  </div>
+                </div> -->
+
+                <div class="emptyStateContainer">
+                  <div class="emptyState">
+                      <div class="emptyImage">
+                          <img ng-src="{{emptyStateIcon}}" class="emptyImg">           
+                      </div>  
+                      <span class="mainTitle">{{'no_Widgets'| i18nString}}</span>
+                      <div class="emptyStateDesc" ng-click="!universalBot">{{'widgets_actions'| i18nString}}</div>
+                      <div class="emptyStateDesc" ng-click="universalBot">{{'widgets_actions_ub'| i18nString}}</div>
+                      <div class="generateBtn">
+                          <button class="btn btnSolidBlue" ng-show="displayMode !== 'view'" ng-click='sliderAction("open","addExistingWidget",selectedPanelToEdit)'>{{'add_Widget'| i18nString}}</button>
+                          <button class="btn btnSolidBlue" ng-show="displayMode !== 'view'"  ng-if="showForms" ng-click='sliderAction("open","addForm",selectedPanelToEdit)'>{{'Add_Form'| i18nString}}</button>
+                      </div>
+                  </div>
+              </div>
+                <!-- <div class="row helpPoints">
+                  <div class="grayBGContainer">
+                      <div class="pointsContainer">
+                          <p class="questionTag">What is widget?</p>
+                          <p class="answerTag">Widgets are individual components that can communicate with the bot (or external system, via Widget SDK) for presenting information to the end-users </p>
+                       </div>
+                       <div class="pointsContainer">
+                          <p class="questionTag">How to create widget?</p>
+                          <p class="answerTag">Bot Builder should allow the developers to define panels and widgets to be associated with a bot. End-users can consume the information from the widgets after setting them up.</p>
+                       </div>
+                   </div>
+                </div> -->
+         </div>
+        <div ng-if="selectedPanelToEdit.widgets.length || selectedSlider === 'addForm' || (selectedSlider==='addExistingWidget')" class="addOrViewWidgets" >
+        <div class="addWidgetDiv" ng-if="(selectedSlider === 'addNewWidget') || (selectedSlider==='addExistingWidget')">
+                <div ng-if="universalBot">
+                      <div class="col-xs-12 noPadding" >
+                        <label class="required-field" tooltip-placement="right"> {{'select_linked_bot'| i18nString}}</label>
+                      </div>
+                      <div class="kr-sg-dropdowns w-100"  ng-if="universalBot">
+                        <div class="dropdown dropdown-open">
+                            <button class="dropdown-toggle dropdown-input" ng-disabled="!linkedBots.length" data-toggle="dropdown">
+                            <span ng-if="linkedBots.length">{{selectedBot._id?selectedBot.botName:('choose_an_option' | i18nString)}}</span>
+                            <span ng-if="!linkedBots.length">{{'noLinkedBotsAdd' | i18nString}}</span>
+                            </button>                                            
+                            <ul class="dropdown-menu content-menu">
+                              <li ng-repeat="bot in linkedBots" ng-click="selectBot(bot)"><a>{{bot.botName}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 noPadding paddingTop10" >
+                      <label class="required-field" tooltip-placement="right"> {{'select_widget'| i18nString}}</label>
+                    </div>
+                    <div class="kr-sg-dropdowns w-100">
+                      <div class="dropdown dropdown-open">
+                          <button class="dropdown-toggle dropdown-input" ng-disabled="!(selectedBot && linkedbotWidgets[selectedBot._id].length)" data-toggle="dropdown">
+                          <span ng-if="(selectedBot && linkedbotWidgets[selectedBot._id].length) || loaders.loadingLinkedBotWidgets">{{selectedWidget.refId?selectedWidget.name:('choose_an_option' | i18nString)}}</span>
+                          <span ng-if="!(selectedBot && linkedbotWidgets[selectedBot._id].length) && !loaders.loadingLinkedBotWidgets">{{noWidgetsAdd}}</span>
+                          </button>                                            
+                          <ul class="dropdown-menu content-menu">
+                             <li ng-if="loaders.loadingLinkedBotWidgets"><a>{{'loading' | i18nString}}</a></li>
+                            <li ng-repeat="widget in linkedbotWidgets[selectedBot._id]" ng-click="selectWidgetFromDropDown(widget)"><a>{{widget.name}}</a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+                
+              <div class="kr-sg-dropdowns w-100" ng-if="!universalBot">
+                <div class="dropdown dropdown-open">
+                    <button class="dropdown-toggle dropdown-input" ng-disabled="!selectedPanelToEdit.availableWidgetsToAdd.length" data-toggle="dropdown">
+                    <span ng-if="selectedPanelToEdit.availableWidgetsToAdd.length">{{selectedWidget.refId?selectedWidget.name:('choose_an_option' | i18nString)}}</span>
+                    <span ng-if="!selectedPanelToEdit.availableWidgetsToAdd.length">{{noWidgetsAdd}}</span>
+                    </button>                                            
+                    <ul class="dropdown-menu content-menu">
+                      <li ng-if="(widget.state === 'configured') || (widget.state === 'awaitingApproval') || ((widget.state === 'rejected'))" ng-repeat="widget in selectedPanelToEdit.availableWidgetsToAdd" ng-click="selectWidgetFromDropDown(widget)"><a>{{widget.name}}</a></li>
+                    </ul>
+                </div>
+             </div>
+             <div class="newWidgetToAddPreview" ng-if="universalBot">
+               <div class="NoWidgetSelected" ng-if="!(selectedWidget && selectedWidget.refId)">
+                Please select a widget to generate the preview
+               </div>
+              <div class="widgetTopContent widgetContParent" id="{{selectedWidget._id}}" ng-if="(selectedWidget && selectedWidget.refId)" ng-init="resetWidgetPreviw(selectedWidget)">
+                <div ng-if="selectedWidget.preview && !selectedWidget.loadingPreview" class="widgetPreviewDiv kr-wiz-content-css " ng-bind-html="selectedWidget.preview | trustit"></div>
+                <span  ng-if="selectedWidget.loadingPreview" class="noPreview">{{'loading_preview'| i18nString}}</span>
+                  <img  ng-if="!selectedWidget.preview && !selectedWidget.loadingPreview" ng-src="{{emptyPreview}}" class="emptyPreview">
+                  <span  ng-if="!selectedWidget.preview && !selectedWidget.loadingPreview" class="noPreview">{{'no_preview'| i18nString}}</span>
+                </div>
+             </div>
+              <div class="col-xs-12 noPadding">
+                <div class="addCancelBtn paddingTop10">
+                    <button class="btn btnSolidBlue btn-primary" ng-disabled="!(selectedWidget && selectedWidget.refId)" ng-click="addExistingWidgets(selectedWidget.refId)">{{'add'| i18nString}}</button>
+                    <button class="btn closeCancel" ng-click="cleanSliderVariablesVariables(true)">{{'cancel'| i18nString}}</button>
+                </div>
+              </div>
+        </div>
+        <form name="addWebForm" ng-if="(selectedSlider === 'addForm')" class="wf-form addFormsBG" novalidate>
+          <div class="col-xs-12 form-group noPadding">
+            <div class="col-xs-12 noPadding">
+              <label class="required-field">{{'Add_Form'| i18nString}}</label>
+            </div>
+            <div class="col-xs-12 noPadding">
+                <div class="col-xs-12 noPadding">
+                    <div class="col-xs-12 selectDialog noPadding">
+                        <select class="full-width" ng-model="webFormIntigration.formId" id="webFormSelect"
+                        name="selectedform"  ng-change='selectIntigrationDilaog("create")' required placeholder="{{'Select_Form' | i18nString}}">
+                        <option selected class="hide" value="">{{'Select_Form' | i18nString}}</option>
+                        <option ng-repeat="form in webforms[streamState]" value="{{form.refId}}">{{form.name}}</option>
+                      </select>
+                      <div ng-show="addWebForm.selectedform.$dirty">
+                        <div error-alert ng-show="addWebForm.selectedform.$error.required"
+                          class="text-danger form-error-text">{{'please_select_Form'| i18nString}} </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-xs-12 form-group noPadding">
+            <div class="col-xs-12 noPadding">
+              <label class="required-field" tooltip="{{'Dialog_to_Invoke_on_Submit_tooltip' | i18nString}}">{{'Dialog_to_Invoke_on_Submit' | i18nString}}</label>
+            </div>
+            <div class="col-xs-12 noPadding">
+              <!-- <div class="col-xs-12 selectDialog noPadding"> -->
+              <div class="col-xs-12 selectDialog noPadding">
+                  <select class="full-width" ng-model="webFormIntigration.formDialogIntegration" id="dilaogSelect"
+                  name="selectedTask" required placeholder="{{'select_dialog_name'| i18nString}}">
+                  <option selected class="hide" value="">{{'select_dialog_name'| i18nString}}</option>
+                  <option ng-repeat="task in dialogTasksforWidget" value="{{task.refId}}">{{task.name || task.name}}</option>
+                </select>
+                <div ng-show="addWebForm.selectedTask.$dirty">
+                  <div error-alert ng-show="addWebForm.selectedTask.$error.required"
+                    class="text-danger form-error-text">{{'please_select_Dialog'| i18nString}} </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <!-- <div class="helphint-border-tip mb-15">
+                <div class="bulbicon">
+                   <img class="layer" ng-src='{{bulbIcon}}'>
+                </div>
+                <div class="content-text">{{'submit_dialog_protip' | i18nString}}</div>
+            </div> -->
+            <div class="helphint-border mb-15 col-xs-12">
+              <div class="col-xs-1 bulbicon"><i class="btx-bulb"></i></div>
+              <div class="col-xs-11 text-justify">
+                <span class="name ng-binding"> {{'submit_dialog_protip' | i18nString}}</span>
+              </div>
+          </div>
+          <div class="col-xs-12  noPadding">
+            <button type="button" class="btn btnSolidBlue" ng-disabled="addWebForm.selectedTask.$error.required || savingIntigration" ng-click="intigrateWebForm(addWebForm)">
+              <span ng-show="!savingIntigration">{{'save'| i18nString}}</span>
+              <span ng-show="savingIntigration">{{'saving'| i18nString}}</span>
+            </button>
+            <button type="button" class="btn closeCancel" ng-click="cleanSliderVariablesVariables(true,addWebForm)">{{'cancel'| i18nString}}</button>
+         </div>
+        </form>
+        <div class="widgetListing noPaddingLeft noPaddingRight">
+        <div ng-if="visibleStates[widgetObj[streamState][widget].state]"  ng-repeat="widget in selectedPanelToEdit.widgets track by $index" class="widgetBlock">
+            <div class="widgetTopContent widgetContParent" id="{{widgetObj[streamState][widget]._id}}" ng-click="sliderAction('open','editWidget',widgetObj[streamState][widget]);triggerLock('editWidget',widgetObj[streamState][widget])">
+              <div class="hide" ng-init="resetWidgetPreviw(widgetObj[streamState][widget])"></div>
+                <div ng-if="widgetObj[streamState][widget].preview && !widgetObj[streamState][widget].loadingPreview" class="widgetPreviewDiv kr-wiz-content-css" ng-bind-html="widgetObj[streamState][widget].preview | trustit"></div>
+                <span  ng-if="widgetObj[streamState][widget].loadingPreview" class="noPreview">{{'loading_preview'| i18nString}}</span>
+                  <img  ng-if="!widgetObj[streamState][widget].preview && !widgetObj[streamState][widget].loadingPreview" ng-src="{{emptyPreview}}" class="emptyPreview">
+                  <span  ng-if="!widgetObj[streamState][widget].preview && !widgetObj[streamState][widget].loadingPreview" class="noPreview">{{'no_preview'| i18nString}}</span>
+              </div>
+            <div class="widgetBottomContent">
+                <div class="topRow">
+                    <div class="topTitleDesc" ng-click="sliderAction('open','editWidget',widgetObj[streamState][widget]);triggerLock('editWidget',widgetObj[streamState][widget])">
+                      <p class="widgetName" title="{{widgetObj[streamState][widget].name}}">{{widgetObj[streamState][widget].name}}</p>
+                      <p class="widgetDesc" title="{{widgetObj[streamState][widget].title}}">{{widgetObj[streamState][widget].title}}</p>
+                    </div>
+                    <div class="widgetStatus">{{panelWidgetState[selectedPanelToEdit.state].displayState}}
+                        <div class="dropdown">
+                            <a class="dialogMenuIcon dropdown-toggle"  data-toggle="dropdown">
+                                <i class="btx-overflow fa-ellipsis-v"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li ng-if="universalBot || displayMode === 'view'" class="subMenuOptions editBtn" ng-click="sliderAction('open','editWidget',widgetObj[streamState][widget]);triggerLock('editWidget',widgetObj[streamState][widget])">{{'view_details' | i18nString}}</li>
+                                <li ng-if="!universalBot" ng-show="displayMode !== 'view'" class="subMenuOptions editBtn" ng-click="triggerLock('editWidget',widgetObj[streamState][widget])">{{'edit'| i18nString}}</li>
+                                <li ng-if="displayMode !== 'view'" class="subMenuOptions deleteBtn" ng-if="(panelWidgetState[selectedPanelToEdit.state].displayMode== 'edit')" ng-click="deleteConfirmation(widgetObj[streamState][widget]._id,$index,'removePanelWidget',widgetObj[streamState][widget])">{{'remove'| i18nString}}</li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        </div>
+      </div>
+   
+    </div>
+  </div>
+  <!-- panel and widget modal slide ends-->
+
+  <!-- Dialog modal slide starts-->
+  <div class="modalSliderContainer width70percent " ng-if="showDialogContainer">
+        <flowtask-form wf-type="{{wftype}}" display-mode="{{'view'}}"  call-back="flowtaskBridge" configure="finishSetup(type)"></flowtask-form>
+  </div>
+  <!-- Dialog modal slide ends-->
+  <div ng-show="widgetPreviewObj.testPreview" class="widthNewWidget widgetPreview modalSliderContainer widgetContParent" id="{{createWidgetObj._id}}">
+    <div class="modalHeader">
+      <h4 class="modal-title"><i class="btx-close" ng-click="closeRunPreview()" ></i>{{'widget_Preview'| i18nString}}</h4>
+          <span class="resetBtn" ng-click="runPreview()">
+            {{'reset'| i18nString}}            
+            <i class="btx-return refreshIconGreen"></i>
+          </span>          
+    </div>
+    <div class="modalBody" perfect-scroll dynamic-height dynaoffset="-70" height-property="height">
+      <div class="menuMainCntr defaultTheme-kore" ng-show="!widgetPreviewObj.loadingPreview">
+          <!-- <div class="menuMainCntr" ng-if="widgetPreviewObj.requiredEntities && widgetPreviewObj.requiredEntities.length"> -->
+
+              <div class="widgetSetupGrid" ng-if="!widgetPreviewObj.preview && !widgetPreviewObj.authorizationNeeded">
+                <div class="gridTitle header">{{createWidgetObj.name}}</div>
+                  <img ng-src="{{iconContextPath}}/empty-illustration-noDots.svg" class="emptyPreview">
+                  <p class="gridNoPreviewTitle f20">{{'oops_wrong'| i18nString}}</p>
+                  <!-- <p class="gridNoPreviewDesc">Looks like there is no data availble to show it to you.</p> -->
+                  <div class="refreshBtn"><button class="btn" ng-click="runPreview()"><span class="fa fa-refresh marginRight5"></span>{{'refresh'| i18nString}}</button></div>
+                </div>
+              
+              <div class="widgetSetupGrid" ng-if="widgetPreviewObj.authorizationNeeded">
+                  <p class="gridTitle">{{'widget_setup'| i18nString}}</p>
+                  <p class="gridSubTitle">{{'authorization_needed'| i18nString}}</p>
+                  <p class="gridDesc">{{'third_party'| i18nString}}</p>
+                  <button class="btn" ng-click="authorization()">{{'next'| i18nString}}</button>
+              </div>
+
+          <div class="widgetSetupGrid" ng-if="widgetPreviewObj.authorizationSuccess">
+            <p class="gridTitle">{{'widget_setup'| i18nString}}</p>
+            <p class="gridSubTitle">{{'auth_complete'| i18nString}}</p>
+            <p class="gridDesc">{{'third_party'| i18nString}}</p>
+            <button class="btn">{{'done'| i18nString}}</button>
+          </div>
+
+          <div class="widgetSetupGrid" ng-if="widgetPreviewObj.requiredEntities && widgetPreviewObj.requiredEntities.length">
+              <p class="gridTitle">{{'widget_setup'| i18nString}}</p>
+              <div class="col-xs-12 form-group noPadding">
+                  <div class="col-xs-12 noPadding">
+                    <label class="required-field">{{'label_1'| i18nString}}</label>
+                  </div>
+                  <div class="col-xs-12 noPadding">
+                    <!-- <input required="" type="text" class="form-control"placeholder="Select a value"> -->
+                    <select>
+                      <option>{{'select_value'| i18nString}}</option>
+                    </select>
+                  </div>
+              </div>
+              <div class="col-xs-12 form-group noPadding">
+                  <div class="col-xs-12 noPadding">
+                    <label class="required-field">{{'label_2'| i18nString}}</label>
+                  </div>
+                  <div class="col-xs-12 noPadding">
+                    <input required="" type="text" class="form-control"placeholder="{{'Vprop_value_placehol'| i18nString}}">
+                  </div>
+              </div>
+              <div class="col-xs-12 form-group noPadding">
+                  <div class="col-xs-12 noPadding">
+                    <label class="required-field">{{'label_3'| i18nString}}</label>
+                  </div>
+                  <div class="col-xs-12 noPadding">
+                    <input required="" type="text" class="form-control"placeholder="{{'type_enter_add'| i18nString}}">
+                  </div>
+              </div>
+              <button class="btn">{{'next'| i18nString}}</button>
+              <p class="gridClickDesc">{{'third_party'| i18nString}}</p>
+            </div>
+            <div class="widgetWindow kr-wiz-content-css" ng-show="widgetPreviewObj.preview && !widgetPreviewObj.loadingPreview && !widgetPreviewObj.formData"  class="widgetPreviewDiv kr-wiz-content-css">
+              <div ng-bind-html="widgetPreviewObj.preview | trustit"></div>
+            </div>
+      </div>
+      <div ng-if="widgetPreviewObj.loadingPreview" class="previewLoading">
+        <span class="">{{'running_widget'| i18nString}}</span>
+      </div>
+    </div>
+  <div class="modalFooter" ng-class="{'hide':widgetPreviewObj.disableSave}" ng-if="widgetPreviewObj.preview && !widgetPreviewObj.loadingPreview && (createWidgetObj.source.type!=='form')">
+    <div class="col-xs-12">
+      <button type="button" ng-hide="universalBot"  class=btn ng-disabled="savingWidgetPreview || savingWidget" ng-click="saveWidgetPreview(createWidgetForm)">
+        <span ng-show="!savingWidgetPreview">{{'save_preview'| i18nString}}</span>
+        <span ng-show="savingWidgetPreview">{{'saving'| i18nString}}</span>
+      </button>
+    </div>
+  </div>
+</div>
+</bot-modal-slider>
+
+
+<div ng-show="!(loaders.loadingWidgets || loaders.loadingPanels)" ng-class="{'panels_widgetsViewMode':(streamState ==='published' || accessRights ==='VIEW')}" class="col-xs-12 panelsWidgetsListing">
+  <div class="row btnSearchTitle" style="display: none;">
+    <div class="col-xs-6 leftTitle">
+        <p class="pageTitle">Digital Views</p>
+    </div>
+  </div>
+  <div ng-if="!(panels.length || widgets.length)" class="emptyPanelWidget" perfect-scroll dynamic-height dynaoffset="-63" height-property="height">
+    <div class="emptyPanelWidgetContainer">
+      <div class="emptyImgOrinfoDiv row">
+        <div class="imageDiv col-xs-6">
+          <img ng-src="{{emptyStateIcon}}" class="emptyImg">
+        </div>
+        <div class="createInfoDiv col-xs-6">
+            <div class='noPWInfo'><span class='infoHeader'>{{'digital_views'| i18nString}}</span>
+              <p class='infoPW'>{{'design_panels_widgets'| i18nString}}</p>
+              <div ng-show="displayMode !== 'view'">
+                <button class='createNewPW btn btnSolidBlue' ng-click='sliderAction("open","createPanel")' title="{{'create_panel'| i18nString}}">{{'create_panel'| i18nString}}</button>
+                <button class='createNewPW btn btnSolidBlue' ng-if="!universalBot" ng-click='sliderAction("open","createWidget")' title="{{'create_widget'| i18nString}}">{{'create_widget'| i18nString}}</button>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="info-headind-container">
+        <div class="questionTag">{{'use_panels_widgets'| i18nString}}</div>
+        <div class="answerTag"> {{'widget_channel'| i18nString}}  </div>
+      </div>
+
+      <div class="grayBGContainer col-xs-12">
+        <div class="col-xs-3">
+          <div class="pointsContainer">
+            <div class="steps-title-sec">
+              <div class="steps_title">{{'step_1'| i18nString}}</div>
+              <p class="questionTag">{{'step1'| i18nString}}</p>
+            </div>              
+            <p class="answerTag">{{'setup_desc'| i18nString}}</p>
+         </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="pointsContainer">
+            <div class="steps-title-sec">
+              <div class="steps_title">{{'step_2'| i18nString}}</div>
+              <p class="questionTag">{{'step2'| i18nString}}</p>
+            </div>              
+            <p class="answerTag">{{'configure_desc'| i18nString}}</p>
+         </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="pointsContainer">
+            <div class="steps-title-sec">
+              <div class="steps_title">{{'step_3'| i18nString}}</div>
+              <p class="questionTag">{{'step3'| i18nString}}</p>
+            </div>              
+            <p class="answerTag">{{'preview_widgets'| i18nString}}</p>
+         </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="pointsContainer">
+            <div class="steps-title-sec">
+              <div class="steps_title">{{'step_4'| i18nString}}</div>
+              <p class="questionTag">{{'step4'| i18nString}}</p>
+            </div>              
+            <p class="answerTag">{{'configure_sdk_desc'| i18nString}}</p>
+         </div>
+        </div>                                       
+      </div>
+    </div>
+  </div>
+
+
+  <div ng-show="(panels.length || widgets.length)">
+    <!-- Panels Starts Here-->
+    <div class="panelsMainDiv col-xs-6">
+      <div class='panelsHeader'><span class="panelTitle">{{'panels'| i18nString}}</span>
+        <span class="panelCount" ng-if="newfilteredPanels.length && newfilteredPanels.length < 10">(0{{newfilteredPanels.length}})</span>
+        <span class="panelCount" ng-if="newfilteredPanels.length && newfilteredPanels.length >= 10">({{newfilteredPanels.length}})</span>
+        <span class="panelCount" ng-if="!newfilteredPanels.length && searchItem.filteredPanels.length < 10">(0{{searchItem.filteredPanels.length}})</span>
+        <span class="panelCount"ng-if="!newfilteredPanels.length && searchItem.filteredPanels.length >= 10">({{searchItem.filteredPanels.length}})</span>
+        <span ng-show="panels.length" class="actionsContainer">
+          <div class="languageSettingsdropdown dropdown pull-right" id="korePanelSearchDropdown">
+            <div class="searchComponent">
+              <input class="panelSearchInput" type="text" placeholder="Search" ng-model="searchItem.panelSearch"
+                ng-change="scrollToTop('panelsListing')" ng-click="$event.stopPropagation();" ng-blur="focusOutViewsInput('panelValue')" ng-focus="focusOnViewsInput('panelValue')" style="">
+              <!-- <input class="panelSearchInput" ng-model="searchItem.panelSearch" ng-change="scrollToTop('panelsListing')" placeholder="Search"> -->
+              <i class="btx-search" ng-click="$event.stopPropagation();"></i>
+              <i class="btx-close" ng-click="clearSearch('panelValue')"
+                ng-class="{displayNone: !searchItem.panelSearch.length}"></i>
+            </div>
+          </div>
+          <button class='btn testpanelBTN' ng-hide="((streamState ==='published') && !panelsCountByState.length)" ng-click='sliderAction("open","testPreview")'>{{'test'| i18nString}}</button>
+          <button class='createNewPW btnSolidBlue btn' ng-hide="((streamState ==='published') && !panelsCountByState.length)" ng-click='sliderAction("open","createPanel")'>{{'create_panel'| i18nString}}</button>
+        </span>
+          </div>
+        <div ng-if="!panels.length || (streamState==='indevelopment' && !panelsCountByState.length)" class="emptyPanelsDiv emptyPWDiv" perfect-scroll dynamic-height dynaoffset="-119" height-property="height">
+          <!-- <img ng-src="{{iconContextPath}}/empty-illustration.svg">
+          <div class='noPWInfo'><span class='infoHeader'>{{'panels'| i18nString}}</span>
+            <p class='infoPW'>{{'setup_desc'| i18nString}}</p>
+            <button class='createNewPW btnSolidBlue btn' ng-click='sliderAction("open","createPanel")'>{{'create_panel'| i18nString}}</button>
+          </div>    -->
+          <div class="emptyState">
+            <div class="emptyImage">
+                <img ng-src="{{emptyStatePanelIcon}}" class="emptyImg">           
+            </div>  
+            <span class="mainTitle">{{'no_panels_available' | i18nString}}</span>
+            <div class="emptyStateDesc">{{'setup_desc'| i18nString}}</div>
+            <div class="generateBtn">
+                <button class="btn btnSolidBlue" ng-click='sliderAction("open","createPanel")'>{{'create_panel'| i18nString}}</button>                
+            </div>
+          </div>      
+        </div>
+      <div ng-if="panels.length && (streamState==='published' && !panelsCountByState.length)" class="emptyPanelsDiv emptyPWDiv noPaddingRight" perfect-scroll dynamic-height dynaoffset="-75"
+      height-property="height">
+      <div class='noPWInfo'>
+        <span class='emptyByState'>{{'panels_available'| i18nString}}</span>
+      </div>
+    </div>
+    <div ng-if="panels.length && searchItem.panelSearch && !searchItem.filteredPanels.length" class="emptyPanelsDiv emptyPWDiv noPaddingRight" perfect-scroll dynamic-height dynaoffset="-75"
+    height-property="height">
+    <div class='noPWInfo'>
+      <span class='emptyByState'>{{'no_results'| i18nString}}</span>
+    </div>
+  </div>
+      <div ng-if="panels.length && panelsCountByState.length" class="panelsListing" perfect-scroll dynamic-height dynaoffset="-127" height-property="height">
+        <div ng-click="editPanel($event,panel,'panelManagement')" ng-class="{'panels_widgetsViewMode':(panelWidgetState[panel.state].displayMode ==='view')}" ng-if="visibleStates[panel.state]" ng-repeat="panel in searchItem.filteredPanels = (panels | filter:{name:searchItem.panelSearch}) | orderBy:('-lMod') track by $index" class="panelBlock">
+          <div class="topContent">
+            <div class="topRow">
+                <div class="topImg"><img src="{{brokenImageSmall}}" ng-src="{{panel.icon}}" onerror='handleimgLoad(this)'  class="panelIcon"></div>
+                <div class="topTitleDesc">
+                  <p class="panelName" title="{{panel.name}}">{{panel.name}}</p>
+                  <p class="panelDesc" title="{{panel.title}}">{{panel.title}}</p>
+                </div>
+                <div class="panelStatus">{{panelWidgetState[panel.state].displayState}}
+                  <div class="dropdown">
+                    <a id='panelEditDropdownAnchor' class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                        <i id='panelEditDropdown' class="btx-overflow fa-ellipsis-v"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right" >
+                        <li class="subMenuOptions editBtn" id='button_1' ng-click="triggerLock('editPanel',panel)">{{((streamState==='indevelopment') && (panelWidgetState[panel.state].displayMode !=='view'))?edit:view}}</li>
+                        <li ng-show="displayMode !== 'view'" class="subMenuOptions" ng-if="showForms" id='button_2' ng-click="sliderAction('open','addForm',panel)">{{'Add_Form'| i18nString}}</li>
+                        <li ng-show="displayMode !== 'view'" class="subMenuOptions" id='button_3' ng-click="sliderAction('open','addExistingWidget',panel)">{{'add_Widget'| i18nString}}</li>
+                        <li ng-show="displayMode !== 'view'" class="subMenuOptions" id='button_4' ng-click="sliderAction('open','panelManagement',panel)">{{'panel_manage'| i18nString}}</li>
+                        <!-- <li class="subMenuOptions" ng-if="panelWidgetState[panel.state].displayMode== 'edit'" ng-click="sliderAction('open','editPanel',panel)">Edit</li> -->
+                        <!-- <li class="subMenuOptions cloneBtn" id='button_3' ng-if="panelWidgetState[panel.state].displayMode== 'edit'" >Clone</li> -->
+                        <li class="subMenuOptions" id='button_5' ng-click='sliderAction("open","testPreview",panel._id)'>{{'test'| i18nString}}</li>
+                        <li ng-show="displayMode !== 'view'" class="subMenuOptions deleteColor deleteBtn disa" id='button_4' ng-if="(panelWidgetState[panel.state].displayMode== 'edit')" ng-click="deleteConfirmation(panel._id, $index,'panelDelete',panel)">{{'delete'| i18nString}}<i ng-if="(panelObj.published[panel.refId])"  class="fa fa-info-circle marginLeft10" tooltip="{{'cannot_delete'| i18nString}}" tooltip-placement="top"></i></li>
+                    
+                    </ul>
+                </div>
+                </div>
+            </div>
+          </div>
+          <div class="panelBottomContent">
+            <button class="btn plus-btn" ng-if="panel.widgets.length && panelWidgetState[panel.state].displayMode== 'edit'"  ng-click='$event.stopPropagation();editPanel($event,panel,"panelManagement")'> <i class="btx-add noMargin"></i></button>
+            <button class="btn widgetTag" ng-if="widgetObj[streamState][widget] && widgetObj[streamState][widget].name" ng-repeat="widget in panel.widgets track by $index">
+            <i ng-if="widgetObj[streamState][widget].source.type !=='form'" ng-src="{{grid}}" class="grid btx-grid-view"></i>
+            <img ng-if="widgetObj[streamState][widget].source.type ==='form'" ng-src="{{formIcon}}" class="grid">
+             {{widgetObj[streamState][widget].name}}
+            </button>
+            <button class="btn addWidgetBtn" ng-if="!panel.widgets.length && panelWidgetState[panel.state].displayMode== 'edit'"  ng-click='$event.stopPropagation();sliderAction("open","addExistingWidget", panel )'> <i class="btx-add"></i> {{'add_Widget'| i18nString}}</button>
+            <button ng-show="showForms" class="btn addFormBtn" ng-if="!panel.widgets.length && panelWidgetState[panel.state].displayMode== 'edit'"  ng-click='$event.stopPropagation();sliderAction("open","addForm", panel )'> <i class="btx-add"></i> {{'Add_Form'| i18nString}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Panels Ends Here-->
+
+
+    <!-- Widgets Starts Here-->
+    <div class="widgetsMainDiv col-xs-6">
+      <div class='widgetsHeader'>
+        <span class="widgetTitle">{{'widgets'| i18nString}}</span>
+        <span class="widgetCount" ng-if="newfilteredWidgets.length && newfilteredWidgets.length < 10">(0{{newfilteredWidgets.length}})</span>
+        <span class="widgetCount" ng-if="newfilteredWidgets.length && newfilteredWidgets.length >= 10">({{newfilteredWidgets.length}})</span>
+        <span class="widgetCount" ng-if="!newfilteredWidgets.length && searchItem.filteredWidgets.length < 10">(0{{searchItem.filteredWidgets.length}})</span>
+        <span class="widgetCount"ng-if="!newfilteredWidgets.length && searchItem.filteredWidgets.length >= 10">({{searchItem.filteredWidgets.length}})</span>
+        <span ng-show="widgets.length" class="actionsContainer">
+          <div class="languageSettingsdropdown dropdown pull-right" id="koreWidgetSearchDropdown">
+            <div class="searchComponent">
+              <input class="widgetSearchInput" type="text" placeholder="Search" ng-model="searchItem.widgetSearch"
+                ng-change="scrollToTop('widgetListing')" ng-click="$event.stopPropagation();" ng-blur="focusOutViewsInput('widgetsValue')" ng-focus="focusOnViewsInput('widgetsValue')"> <!--clearSearch('widgetsValue')-->
+              <!-- <input class="panelSearchInput" ng-model="searchItem.panelSearch" ng-change="scrollToTop('panelsListing')" placeholder="Search"> -->
+              <i class="btx-search" ng-click="$event.stopPropagation();"></i>
+              <i class="btx-close" ng-click="clearSearch('widgetsValue')"
+                ng-class="{displayNone: !searchItem.widgetSearch.length}"></i>
+            </div>
+          </div>
+          <div class="languageSettingsdropdown filter-dropdown- dropdown pull-right" id="koreWidgetFilerDropdown" ng-if="universalBot && linkedBots.length">
+            <button  class="btn dropdown-toggle" type="button" id="filerWidgets" data-toggle="dropdown" aria-haspopup="true"aria-expanded="true"><i class="btx-filters"></i></button>
+            <ul class="dropdown-menu" aria-labelledby="filerWidgets" perfect-scroll dynamic-height dynaoffset="-330">
+              <li ng-repeat="bot in linkedBots track by $index" ng-click="$event.stopPropagation();filterByWidget(bot)">
+                <div class="kr-sg-checkbox m-0 p-0">
+                  <input id="{{$index}}filetrByLinkedBot" ng-model="appliedFilterObj[bot._id]" class="checkbox-custom" type="checkbox" ng-change="filterByWidget(bot)">
+                  <label for="{{$index}}filetrByLinkedBot" class="checkbox-custom-label">{{bot.botName}}</label>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- <span class="search-small-block">
+            <i class="btx-search"></i>
+          </span>
+            <div class="searchComponent">
+              <input class="widgetSearchInput" ng-model="searchItem.widgetSearch" ng-change="scrollToTop('widgetListing')" placeholder="Search">
+              <i class="btx-search"></i>
+              <i class="btx-close" ng-click="clearSearch('widgetsValue')" ng-class="{displayNone: !searchItem.widgetSearch.length}"></i>
+            </div> -->
+            <button ng-hide="((streamState ==='published') && !widgetsCountByState.length) || universalBot" class='createNewPW btn btnSolidBlue' ng-click='sliderAction("open","createWidget")'>{{'create_widget'| i18nString}}</button>
+          </span>
+      </div>
+
+      <div class="emptyStateContainer emptyWidgetssDiv emptyPWDiv" ng-if="!widgets.length || ((streamState ==='indevelopment') && !widgetsCountByState.length)" perfect-scroll dynamic-height dynaoffset="-77" height-property="height">
+        <div class="emptyState">
+            <div class="emptyImage">
+                <img ng-src="{{emptyStateWidgetIcon}}" class="emptyImg">           
+            </div>  
+            <span class="mainTitle">{{'no_widgets_available'| i18nString}}</span>
+            <div class="emptyStateDesc" ng-if="!universalBot">{{'widgets_info'| i18nString}}</div>
+            <div class="emptyStateDesc" ng-if="universalBot">{{'widgets_actions_ub'| i18nString}}</div>
+            <div class="generateBtn">
+                <button class="btn btnSolidBlue" ng-if="!universalBot" ng-click='sliderAction("open","createWidget")'>{{'create_widget'| i18nString}}</button>                
+            </div>
+        </div>
+      </div>
+
+      <div ng-if="widgets.length && ((streamState ==='published') && !widgetsCountByState.length)" class="emptyWidgetssDiv emptyPWDiv" perfect-scroll dynamic-height dynaoffset="-75"
+        height-property="height">
+        <div class='noPWInfo'>
+          <span class='emptyByState'>{{'widgets_notAval'| i18nString}}</span>
+        </div>
+      </div>
+      <div ng-if="widgets.length && searchItem.widgetSearch && !searchItem.filteredWidgets.length" class="emptyWidgetssDiv emptyPWDiv" perfect-scroll dynamic-height dynaoffset="-75"
+        height-property="height">
+        <div class='noPWInfo'>
+          <span class='emptyByState'>{{'no_results'| i18nString}}.</span>
+        </div>
+      </div>
+      <div ng-if="widgets.length && widgetsCountByState.length" class="widgetListing "  perfect-scroll dynamic-height dynaoffset="-125"
+      height-property="height">
+      <div ng-if="visibleStates[widget.state] && !(universalBot && !appliedFilterObj[linkedUbWidgets[widget.refId]])" ng-class="{'panels_widgetsViewMode':(panelWidgetState[widget.state].displayMode ==='view') || universalBot}" ng-repeat="widget in searchItem.filteredWidgets = (widgets | filter:{name:searchItem.widgetSearch}) | orderBy:('-lMod') track by $index" class="widgetBlock">
+          <div class="widgetTopContent widgetContParent" id="{{widget._id}}" ng-click="editWidget($event,widget,'editWidget')">
+            <div class="hide" ng-if="!selectedSlider" ng-init="resetWidgetPreviw(widget)"></div>
+            <div ng-if="widget.preview && !panelManagementInProgress && !widget.loadingPreview" class="widgetPreviewDiv kr-wiz-content-css" ng-bind-html="widget.preview | trustit"></div>
+            <span  ng-if="widget.loadingPreview" class="noPreview">{{'loading_preview'| i18nString}}</span>
+              <img  ng-if="!widget.preview && !widget.loadingPreview" ng-src="{{emptyPreview}}" class="emptyPreview">
+              <span  ng-if="!widget.preview && !widget.loadingPreview" class="noPreview">{{'no_preview'| i18nString}}</span>
+            </div>
+            <div class="widgetBottomContent">
+              <div class="topRow">
+                  <div class="topTitleDesc" ng-click="editWidget($event,widget,'editWidget')">
+                    <p class="widgetName" title="{{widget.name}}">{{widget.name}}</p>
+                    <p class="widgetDesc" title="{{widget.title}}">{{widget.title}}</p>
+                  </div>
+                  <div class="linked-pannels-items">
+                    <div class="title" ng-if="panelWidgetMapping[widget.refId] && panelWidgetMapping[widget.refId][streamState] && panelWidgetMapping[widget.refId][streamState].length">{{'linked_panels' | i18nString}}</div>
+                    <div class="img-link-bot" ng-if="$index < 2" tooltip="{{panel.name}}" tooltip-placement="top-center" ng-repeat="panel in panelWidgetMapping[widget.refId][streamState] track by $index">
+                      <img ng-if="panel.icon" src="{{brokenImageSmall}}" ng-src="{{panel.icon}}" onerror='handleimgLoad(this)'>
+                      <img ng-if="!panel.icon" src="{{bluePanelIcon}}">
+                    </div>
+                    <div class="kr-sg-dropdowns" ng-if="panelWidgetMapping[widget.refId][streamState].length > 2">                   
+                      <div class="dropdown dropdown-open">
+                          <button class="dropdown-toggle dropdown-input more-link-pannels" data-toggle="dropdown">+{{panelWidgetMapping[widget.refId][streamState].length - 2}}</button>                                            
+                          <ul class="dropdown-menu content-menu" perfect-scroll dynamic-height dynaoffset="-425">                                                                       
+                            <li ng-repeat="panel in panelWidgetMapping[widget.refId][streamState] track by $index" ng-if="$index > 1">
+                              <a>
+                                <div class="img-block">
+                                  <img ng-if="panel.icon" src="{{brokenImageSmall}}" ng-src="{{panel.icon}}" onerror='handleimgLoad(this)'>
+                                  <img ng-if="!panel.icon" src="{{bluePanelIcon}}">
+                                </div>
+                                <div class="title">{{panel.name}}</div>
+                              </a>
+                            </li>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="widgetStatus" ng-click="editWidget($event,widget,'editWidget')">{{panelWidgetState[widget.state].displayState}}
+                      <div class="dropdown" ng-if="!universalBot">
+                          <a id='widgetEditDropdownAnchor' class="dialogMenuIcon dropdown-toggle" data-toggle="dropdown">
+                              <i id="widgetEditDropdown" class="btx-overflow fa-ellipsis-v"></i>
+                          </a>
+                          <ul class="dropdown-menu pull-right">
+                              <li class="subMenuOptions editBtn" id='button_1' ng-click="triggerLock('editWidget',widget)">{{((panelWidgetState[widget.state].displayMode !=='view') && (streamState==='indevelopment') && (displayMode!=='view'))?edit:view}}</li>
+                              <!-- <li class="subMenuOptions" ng-if="panelWidgetState[widget.state].displayMode== 'edit'" ng-click="sliderAction('open','editWidget',widget)">Edit</li> -->
+                              <!-- <li class="subMenuOptions cloneBtn" id='button_2' ng-if="panelWidgetState[widget.state].displayMode== 'edit'" >Clone</li> -->
+                              <li class="subMenuOptions deleteColor deleteBtn" id='button_3' ng-if="(panelWidgetState[widget.state].displayMode== 'edit') && (displayMode!=='view')" ng-click="deleteConfirmation(widget._id,$index,'widgetDelete',widget)">{{'delete'| i18nString}}<i ng-if="(widgetObj.published[widget.refId])"  class="fa fa-info-circle marginLeft10" tooltip="{{'cannot_delete_widget'| i18nString}}" tooltip-placement="top"></i></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+            </div>              
+       </div>
+       <div ng-if="universalBot && widgets.length && !searchItem.widgetSearch" class="divBlockEmptylastChild">
+        <div class='noPWInfo'>
+          <span class='emptyByState'>{{'no_filter_results'| i18nString}}.</span>
+        </div>
+      </div> 
+      </div>
+    </div>
+    <!-- Widgets Starts Here-->
+  </div>
+
+  
+</div>

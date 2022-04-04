@@ -1,0 +1,68 @@
+.geolocator input {
+  width: 70%;
+  float: left;
+  margin-right: 10px;
+}
+
+.geolocator button {
+  width: 25%;
+  height: 34px;
+  /* background-color: #009cde; */
+  /* color: #fff; */
+  outline: none;
+  border: 1px solid #009cde;
+  border-radius: 4px;
+}
+
+.geolocator .searching {
+  height: 34px;
+  padding-top: 6px;
+}
+
+.geolocator .loc-spinner {
+  padding-top: 15px;
+  color: #009cde;
+}
+
+.geolocator .loc-spinner i {
+  width: 12px;
+  height: 12px;
+  border-bottom: 1px solid #009cde;
+  border-left: 1px solid #009cde;
+  border-radius: 50%;
+  -webkit-animation: spin 400ms infinite linear;
+  -moz-animation: spin 400ms infinite linear;
+  -o-animation: spin 400ms infinite linear;
+  animation: spin 400ms infinite linear;
+}
+
+.geolocator .locs {
+  border: 1px solid #d2d2d2;
+  -webkit-box-shadow: 2px 2px 5px 0px #d2d2d2;
+  -moz-box-shadow: 2px 2px 5px 0px #d2d2d2;
+  box-shadow: 2px 2px 5px 0px #d2d2d2;
+  position: absolute;
+  z-index: 1;
+  background: #EEE;
+  max-height: 250px;
+  overflow-y: scroll;
+}
+
+.geolocator .locs .loc {
+  border-bottom: 1px solid #d2d2d2;
+  padding: 10px;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 2px 0px #d2d2d2 inset;
+  -moz-box-shadow: 0px 0px 2px 0px #d2d2d2 inset;
+  box-shadow: 0px 0px 2px 0px #d2d2d2 inset;
+}
+
+.geolocator .locs .loc:hover {
+  background-color: #009cde;
+  color: white;
+}
+
+.geolocator .locs .loc:last-child {
+  border-bottom: none;
+}
+
