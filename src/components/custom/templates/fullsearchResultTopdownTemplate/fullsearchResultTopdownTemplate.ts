@@ -66,6 +66,7 @@ class FullSearchResultTopdownTemplate {
       });
       $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
       FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,tabsHtml,msgData.message[0].component.payload.tabsList,'all results');
+      FullSearchResultTopdownTemplate.prototype.facetReset(me,messageHtml,msgData);
   }
   getTemplateString(type: any) {
     
@@ -218,6 +219,439 @@ class FullSearchResultTopdownTemplate {
               }, 300);
           })
       });
+  }
+  facetReset(me:any, messageHtml:any, msgData:any) {
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    let facetObj:any={};
+    let facetData = msgData.message[0].component.payload.filterFacetData || [];
+    facetObj['position'] = msgData.message[0].component.payload.facetPosition;
+    facetObj['show'] = true;
+    if(facetData.length){
+      FullSearchResultTopdownTemplate.prototype.facetsAlignTopdownClass(msgData.message[0].component.payload.facetPosition,messageHtml);
+      if(facetObj.position == 'top'){
+        facetData.forEach((f:any) => {
+          if (f["maxCount"] !== null) {
+            f["maxCount"] = 5;
+          }
+        });
+        var dataHTML = $(FullSearchResultTopdownTemplate.prototype.getSearchFacetsTopDownTemplate('top')).tmpl({
+          searchFacets: facetData,
+          position: "top"
+        });
+        $(messageHtml).find("#filters-center-sec")
+          .empty()
+          .append(dataHTML);
+          if (facetObj.show) {
+            if (!$(".iffilteristop").hasClass("isTopAlignFilterAdded")) {
+              $(".iffilteristop").addClass("isTopAlignFilterAdded");
+            }
+          } else {
+            $(".iffilteristop").removeClass("isTopAlignFilterAdded");
+          }
+      } else{
+        var dataHTML = $(FullSearchResultTopdownTemplate.prototype.getSearchFacetsTopDownTemplate('left')).tmpl({
+          searchFacets: facetData,
+          position: "left",
+        });
+        $(messageHtml).find("#filters-left-sec")
+          .empty()
+          .append(dataHTML);
+          
+      }
+
+      FullSearchResultTopdownTemplate.prototype.bindFacetTriggerEvents(me,messageHtml,msgData);
+      hostWindowInstance.markSelectedFilters();
+    }
+    
+  };
+  bindFacetTriggerEvents(me:any,messageHtml:any,msgData:any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml)
+    .off("click",".sdk-facet-filter-data")
+    .on("click", ".sdk-facet-filter-data", function (event:any) {
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    });
+      // SDK checkbox
+  $(messageHtml)
+  .off("change",".sdk-filter-checkbox-top-down")
+  .on("change",".sdk-filter-checkbox-top-down", function (event:any) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    hostWindowInstance.topdownFacetCheckBoxClick(event).then((response: any) => {
+      if(response.isFilterAlignedTop){
+        FullSearchResultTopdownTemplate.prototype.applyFiltersFun(me, messageHtml);
+      }else{
+        let selectedFacet = $(messageHtml).find(".tab-name.facet.active-tab").attr('id');
+        if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+          let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+                if(index>-1){
+                  response.result.splice(index,1)
+                }
+      }
+      FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+      let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({facets:response.facets});
+                $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+                FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,tabHtml,response.facets,selectedFacet);
+      // let filterCountHtml = $(FullSearchResultTopdownTemplate.prototype.getFilterCountTemplate()).tmpl({count:response.filterCount});
+      // $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
+      FullSearchResultTopdownTemplate.prototype.searchFacetsList(me,messageHtml,hostWindowInstance.vars.selectedFacetsList,response.isFilterAlignedTop);
+      }
+    });
+  });
+   // SDK radio
+  $(messageHtml)
+  .off("change",".sdk-filter-radio-top-down")
+  .on("change",".sdk-filter-radio-top-down", function (event:any) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    hostWindowInstance.topdownFacetRadioClick(event).then((response: any) => {
+      if(response.isFilterAlignedTop){
+        FullSearchResultTopdownTemplate.prototype.applyFiltersFun(me, messageHtml);
+      }else{
+        let selectedFacet = $(messageHtml).find(".tab-name.facet.active-tab").attr('id');
+        if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+          let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+                if(index>-1){
+                  response.result.splice(index,1)
+                }
+      }
+      FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+      let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({facets:response.facets});
+                $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+                FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,tabHtml,response.facets,selectedFacet);
+      // let filterCountHtml = $(FullSearchResultTopdownTemplate.prototype.getFilterCountTemplate()).tmpl({count:response.filterCount});
+      // $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
+      FullSearchResultTopdownTemplate.prototype.searchFacetsList(me,messageHtml,hostWindowInstance.vars.selectedFacetsList,response.isFilterAlignedTop);
+      }
+    });
+  });
+  $(messageHtml)
+  .off("click",".apply-btn")
+  .on("click", ".apply-btn" , function () {
+    FullSearchResultTopdownTemplate.prototype.applyFiltersFun(me, messageHtml);
+  });
+  $(messageHtml)
+  .off("click",".sdk-clear-all-facet-top")
+  .on("click",".sdk-clear-all-facet-top", function (event:any) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    $("#filter-count-container").empty();
+      $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
+      hostWindowInstance.clearAllFilters().then((response: any) => {
+        let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+              if(index>-1){
+                response.result.splice(index,1)
+              }
+    }
+    FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+    let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
+      facets: response.facets
+  });
+    $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
+    FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,tabsHtml,response.facets,'all results');
+      })
+  });
+    //SDK Top Facet
+    $(messageHtml)
+    .off("click", ".sdk-top-facet-drop")
+    .on("click", ".sdk-top-facet-drop", function (event:any) {
+      if ($(event.target).siblings("#myDropdown").is(":visible")) {
+        $(event.target).siblings("#myDropdown").hide();
+        $(event.target).find(".down-arrow").show();
+        $(event.target).find(".up-arrow").hide();
+        FullSearchResultTopdownTemplate.prototype.bindFacetTriggerEvents(me,messageHtml,msgData)
+      } else {
+        $(event.target).find(".down-arrow").hide();
+        $(event.target).find(".up-arrow").show();
+        $(".dropdown-content").hide();
+        $(event.target).siblings("#myDropdown").show();
+        FullSearchResultTopdownTemplate.prototype.bindFacetTriggerEvents(me,messageHtml,msgData)
+      }
+    });
+    $(messageHtml)
+    .off("click", ".filters-reset-anchor")
+    .on("click", ".filters-reset-anchor", function (event:any) {
+        $(".sdk-filter-checkbox-top-down").prop("checked", false);
+        $(".sdk-filter-radio-top-down").prop("checked", false);
+      hostWindowInstance.clearAllFilterTopdownEvent(event).then((res:any)=>{
+        let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
+          facets: res.facets
+      });
+      $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
+      FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,tabsHtml,res.facets,'all results');
+      FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,res.result);
+      if(res.isUnselectedFilter){
+        FullSearchResultTopdownTemplate.prototype.searchFacetsList(me,messageHtml,res.selectedFacetsList,res.isFilterAlignedTop);
+      }
+      })
+    });
+  }
+  fullResultTemplateDataBind(me:any, messageHtml:any,result:any){
+    let formatedTemplatesData: any = result;
+    setTimeout(() => {
+        $(messageHtml).find('.full-search-data-container').empty();
+        if (formatedTemplatesData && formatedTemplatesData.length) {
+            formatedTemplatesData.forEach((d: any) => {
+                var showAllHTML;
+                if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+                    showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+                } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+                    showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+                } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+                    showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+                }
+                $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+            })
+        }
+
+        if (!$(".full-search-data-container").children().length) {
+            $(".empty-full-results-container").removeClass("hide");
+        } else {
+            if (!$(".empty-full-results-container").hasClass("hide")) {
+                $(".empty-full-results-container").addClass("hide");
+            }
+        }
+        $(messageHtml).find(".content-data-sec").scrollTop(0);
+    }, 300);
+  }
+  applyFiltersFun(me:any, messageHtml:any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(".filter-data").hide();
+    hostWindowInstance.getSearchByFacetFilters().then((response: any) => {
+      let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+              if(index>-1){
+                response.result.splice(index,1)
+              }
+    }
+    FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+    // let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
+    //           $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+    //           FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
+    // let filterCountHtml = $(FullSearchResultTopdownTemplate.prototype.getFilterCountTemplate()).tmpl({count:response.filterCount});
+    // $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
+    });
+    $(messageHtml).find('#filter-count-container')
+    .off("click",".clsoe-filter")
+    .on("click",".clsoe-filter", function () {
+      $("#filter-count-container").empty();
+      $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
+      hostWindowInstance.clearAllFilters().then((response: any) => {
+        let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+              if(index>-1){
+                response.result.splice(index,1)
+              }
+    }
+    FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+    // let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
+    // $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+    // FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
+      })
+    });
+  }
+  getSearchFacetsTopDownTemplate (type:any) {
+    var leftSearchFacetsTemplate =
+      '<script id="search_facets_tmpl" type="text/x-jqury-tmpl"> \
+  <div class="filters-sec {{if position == "right"}} float-right{{/if}}">\
+   {{if searchFacets.length}}\
+    <div class="heading-sec">\
+      <div class="title-main">FILTERS</div>\
+      <div class="clear-all filters-reset-anchor" >Clear All</div>\
+    </div>\
+    {{each(i, searchFacet) searchFacets}}\
+    <div class="category-wise-container">\
+      <div class="group-checkbox filters-content-top-down" data-facetType="${searchFacet.subtype}" data-facetName="${searchFacet.name}" data-fieldName="${searchFacet.fieldName}">\
+        <div class="heading-title {{if searchFacet.showSearch == true}}d-none{{/if}}"">${searchFacet.name}<span class="float-right d-none  {{if searchFacet.maxCount && searchFacet.buckets.length > searchFacet.maxCount}}d-block{{/if}}"><img class="facet-search-icon display-none" facetFacetName="${searchFacet.name}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFYSURBVHgBrVNLUsJAEO2eiLoTbhBuQE6g3gC3UJSZhViUi8gJ9AaWCyuFLhqLApbiCcQbcAM5QtiJMmk7VsoKDPFT8jZdk+735r3MDMA/gXmNkMgF2HJ3YTHRWke/Fri97wfAcJm2E6IrQ+MFz3VL6+nqvFoid4cEjL7h+Kjp10tNv1Yu8LwUMz87uPPSoUE110FIfd9BvBCCt85ySL0DB50H6Zez/S8HCdmw0Xl5W7oxljJ+g+1zK0JIQ1dKMR3KhWF+ZFAVS8CB16KUCH5EPHWQ9yyBAsBUiktExe/oCrBiGGeWQJrbyrcKRBUoiEeWQIJ35jYiBjfUr6wj33UHV1Kipq53l0Sziw71qrILie6I5YfFYKLEtnw7TgZZYspGh2e6PrEcJDjVjZFh5QHzTCEEcu4k5H1ZX5/4NU9OoV1AfMq6zH0LeUgvHIkTL+vkjyKf92Yz+ADa8Y5Ak9HPCwAAAABJRU5ErkJggg=="><span></div>\
+        <div class="input-div {{if searchFacet.showSearch !== true}}d-none{{/if}}"><input type="text" class="searchFacetInput" id="${searchFacet.name}"> <span class="float-right d-none" id="${searchFacet.name}-close"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACGSURBVHgB3ZK9DYAgEIURjY2RWVzFEWgtYBvXcBTcwClsFIg5osmZgEjoeNVxx/v4ySOkLDFpVTcdQ2gOMyaswj2KF+bUnDb14oNAD2ZGa06+BBt7YTYM8fUeVSEInGa1Gd0173qf2/UXAEOgDpkdnGQq+wlec8onRs1JEAhJNEjyHaQCdAGUc1yB6RityQAAAABJRU5ErkJggg=="></span></div>\
+        {{each(j, bucket) searchFacet.buckets.slice(0, (searchFacet.maxCount?searchFacet.maxCount:searchFacet.buckets.length))}}\
+            {{if (searchFacet.subtype == "value" || searchFacet.subtype == "range") && searchFacet.multiselect }}\
+            <div class="kr-sg-checkbox d-block">\
+            <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down c-1" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
+            <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
+                <span class="count">(${bucket.doc_count})</span>\
+              </div>\
+              {{/if}}\
+                {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
+                <div class="kr-sg-radiobutton d-block">\
+                  <input id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                    <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
+                    <span class="count">(${bucket.doc_count})</span>\
+                  </div>\
+                  {{/if}}\
+                  {{if searchFacet.subtype == "range" &&  !searchFacet.multiselect}}\
+                  <div class="kr-sg-radiobutton d-block">\
+                    <input  id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                      <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
+                      <span class="count">(${bucket.doc_count})</span>\
+                    </div>\
+                    {{/if}}\
+            {{/each}}\
+            {{if searchFacet.maxCount && searchFacet.buckets.length > searchFacet.maxCount}}\
+            <div class="more-data" name="${searchFacet.name}">+ ${searchFacet.buckets.length-searchFacet.maxCount} More</div> \
+            {{/if}}\
+            </div>\
+          </div>\
+          {{/each}}\
+          {{/if}}\
+          </div>\
+         </script>';
+  
+    var topSearchFacetsTemplate =
+      '<script id="top-search_facets_tmpl" type="text/x-jqury-tmpl"> \
+        {{if searchFacets.length}}\
+        <div class="horizantal-filter-sec">\
+        {{each(i, searchFacet) searchFacets}}\
+        <div class="dropdown_custom_filter">\
+        <div  class="openDropdownFacets dropbtn">${searchFacet.name}{{if searchFacet.selectedFieldsCount && searchFacet.selectedFieldsCount>0}} <span class="count">${searchFacet.selectedFieldsCount}</span> {{/if}} <img class="down-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBbY6xDYMwEEX/yQuc5QUOmfRZIRskEyQjZJyU6VJmBGoqREcHJVT2AsiAhQRGvO7+vdM/JVleMevBe9fgBBF7Z21+itmUIPzZ6N47VyeStU+APgj0WK8uV8lsK5K/99Lc5pbdMtNWIQJSBYi+MQjhhTDeuplETOQobhLOn4/wMZ8As5kn7D+3/a0AAAAASUVORK5CYII="><img class="up-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACQSURBVHgBhY7BDYJQDIb/ggM8wgI14llXYBJ1A48e3YAVvHpyBHUC4gCYTmDeAGrpAw48LnxJk+bv16aEEczskKRV6OXdHMazJJJocccfFIqXRd1lAxRJqi+RZt9nqwuINtBvKSKeTGKTbiY9TTrGrxRnkO6gvzJ1WV5D6WrSCRO8/zycyzO7XNnWeosZgtMCupEtrTPwmiYAAAAASUVORK5CYII="></div>\
+        <div id="myDropdown" class="dropdown-content filters-content-top-down myDropdown-${i}" data-facetType="${searchFacet.subtype}" data-facetName="${searchFacet.name}" data-fieldName="${searchFacet.fieldName}">\
+        {{each(j, bucket) searchFacet.buckets}}\
+        <div class="option-text">\
+        {{if (searchFacet.subtype == "value" || searchFacet.subtype == "range" ) && searchFacet.multiselect }}\
+        <div class="kr-sg-checkbox d-block">\
+        <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
+        <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
+            <span class="count">(${bucket.doc_count})</span>\
+          </div>\
+          {{/if}}\
+            {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
+            <div class="kr-sg-radiobutton d-block">\
+              <input id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}">\
+                <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
+                <span class="count">(${bucket.doc_count})</span>\
+              </div>\
+              {{/if}}\
+              {{if searchFacet.subtype == "range" && !searchFacet.multiselect }}\
+              <div class="kr-sg-radiobutton d-block">\
+                <input  id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}">\
+                  <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
+                  <span class="count">(${bucket.doc_count})</span>\
+                </div>\
+                {{/if}}\
+        </div>\
+        {{/each}}\
+        <div class="action-bar">\
+        {{if !searchFacet.multiselect}}<button class="btn clear-btn">Clear</button>{{/if}}\
+        {{if searchFacet.multiselect}}<button class="btn apply-btn">Apply</button>{{/if}}\
+      </div>\
+        </div>\
+        </div>\
+        {{/each}}\
+        {{if searchFacets.length>4}}\
+        <div class="h-scroll-filter">\
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAYAAACulacQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB9SURBVHgBpZDBDUBAEEX/EvcVDQzLXQk6EBUoRTtuzk5qUAFHJ7YAybISEmvFwT9MJnl/MjMfdCjOYJEDeBwMDQlRmtCVcp44D9q9r3ngT3JZ+gvq8mZwT5fNwMw9REkKpjooFM7zRJUDSgLreJ+K4opCMejn/oI9HSv40gaMjzPqJ5ysbwAAAABJRU5ErkJggg==">\
+        </div>\
+        {{/if}}\
+        </div>\
+        {{/if}}\
+               </script>';
+    switch (type) {
+      case "left":
+        return leftSearchFacetsTemplate;
+      case "top":
+        return topSearchFacetsTemplate;
+      case "right":
+        return leftSearchFacetsTemplate;
+    }
+  };
+  facetsAlignTopdownClass(type:any,messageHtml:any) {
+    if (type === "top") {
+      // center align facets top down//
+      $(messageHtml).addClass("center-align-filter");
+      $(messageHtml).removeClass("left-align-filter");
+      $(messageHtml).removeClass("right-align-filter");
+      //center align facets top down//
+    } else {
+      // left align facets top down//
+      $(messageHtml).addClass("left-align-filter");
+      $(messageHtml).removeClass("center-align-filter");
+      $(messageHtml).removeClass("right-align-filter");
+      //left align facets top down//
+    }
+  };
+   searchFacetsList(me:any, messageHtml:any,selectedFacetsList:any,isTopFacet:any) {
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    var dataHTML = $(FullSearchResultTopdownTemplate.prototype.getSelectedFactedListTopDownTemplate()).tmplProxy({
+      selectedFacets: selectedFacetsList,
+      isTopFacets:isTopFacet
+    });
+    $(messageHtml).find("#show-filters-added-data").empty().append(dataHTML);
+    if ((selectedFacetsList || []).length) {
+      $(messageHtml).find("#show-filters-added-data").show();
+      $(messageHtml).find("#show-filters-added-data").removeClass("display-none");
+      $(messageHtml).find(".content-data-sec").addClass("filter-added");
+    } else {
+      hostWindowInstance.vars.selectedFiltersArr = [];
+      hostWindowInstance.vars.filterObject = [];
+      $(messageHtml).find("#show-filters-added-data").hide();
+      $(messageHtml).find("#show-filters-added-data").addClass("display-none");
+      $(messageHtml).find(".content-data-sec").removeClass("filter-added");
+    }
+  
+    if ($(messageHtml).find("#show-filters-added-data").height() > 55) {
+      $(messageHtml).find(".content-data-sec").addClass("facets-height-isMore");
+    } else {
+      $(messageHtml).find(".content-data-sec").removeClass("facets-height-isMore");
+    }
+    FullSearchResultTopdownTemplate.prototype.bindRemoveFilterClickEvent(me,messageHtml);
+  };
+  getSelectedFactedListTopDownTemplate(){
+    var selectedFacetTemplate =
+    '<script id="selected_facet_tmpl" type="text/x-jqury-tmpl"> \
+      {{if selectedFacets.length}} \
+        <div class="{{if isTopFacets}}top-down-top-facets-list {{/if}} {{if !isTopFacets}}facets-padding{{/if}}">\
+        {{each(index, facet) selectedFacets}} \
+        <div class="filter-tag-content filters-content-top-down" data-facetType="${facet.fieldType}" data-facetName="${facet.name}" data-fieldName="${facet.fieldName}">\
+        <span class="filter-tag-name">${facet.name}</span>\
+          <span class="close-filter-tag" id="${facet.id}" >\
+              <img name="${facet.name}" value="${facet.name}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBbZHRDcIwDERju+zTSizSCWgl8sFM+Ug26AwsUDIGO9A05AChprV/osjPd2eZLtfbg2gZg3PRKDUMts3SeAaUV5kGa1sVYpkoLaPEeX525+4OGC/+FbSmPgQX6T9dFAETp968jNlC6FNl9YNNLo0NhOIqVFEC9Bk/1Xn5ELwowX6/oGjBtQVpD2mZ4cBZ2GsQCkf4xmj8GzsLeh0gnVcbAAAAAElFTkSuQmCC">\
+                </span>\
+                </div>\
+        {{/each}} \
+        </div>\
+        {{if isTopFacets}}\
+        <div class="filters-reset" style="padding: 4px 10px;">\
+              <div class="filters-reset-anchor">Clear all</div>\
+        </div>\
+        {{/if}}\
+      {{/if}} \
+      </script>';
+  return selectedFacetTemplate;
+  }
+  bindRemoveFilterClickEvent(me:any,messageHtml:any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml).find("#show-filters-added-data")
+    .off("click", ".close-filter-tag")
+    .on("click", ".close-filter-tag", function (event:any) {
+      hostWindowInstance.removeFilterClickEvent(event).then((res:any)=>{
+        if(res.isUnselectedFilter){
+          FullSearchResultTopdownTemplate.prototype.searchFacetsList(me,messageHtml,res.selectedFacetsList,res.isFilterAlignedTop);
+        }
+        let selectedFacet = $(messageHtml).find(".tab-name.facet.active-tab").attr('id');
+        if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+          let index = res.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+                if(index>-1){
+                  res.result.splice(index,1)
+                }
+      }
+      FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,res.result);
+      let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({facets:res.facets});
+                $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+                FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me,messageHtml,tabHtml,res.facets,selectedFacet);
+      // let filterCountHtml = $(FullSearchResultTopdownTemplate.prototype.getFilterCountTemplate()).tmpl({count:response.filterCount});
+      // $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
+      })
+    });
   }
 }
 

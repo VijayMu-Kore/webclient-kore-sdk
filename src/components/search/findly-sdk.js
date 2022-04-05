@@ -5814,6 +5814,7 @@ FindlySDK.prototype.filterResultsTopDown = function (
 
   var _self = this;
   var fieldMatches = false;
+  return new Promise((resolve, reject) => {
   if ($(".topdown-search-main-container").length) {
     var _filterContainer = $(event.target).closest(".filters-content-top-down");
   } else {
@@ -5992,12 +5993,16 @@ FindlySDK.prototype.filterResultsTopDown = function (
     }
   }
   if (!isTopFacets) {
-    _self.searchByFacetFilters(
-      _self.vars.filterObject,
-      _self.vars.selectedFiltersArr,
-      _self.vars.selectedFacetsList
-    );
+    _self.getSearchByFacetFilters().then((res) => {
+      resolve(res);
+    })
+    .catch((error) => {
+      reject(error);
+    })
+  }else{
+    resolve({isFilterAlignedTop:true});
   }
+});
 };
 FindlySDK.prototype.filterResults = function (
   event,
@@ -8423,7 +8428,9 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                   groupData: _self.vars.mergedData,
                   searchType: 'isFullResults',
                   helpers: helpers,
-                  tabsList: _self.vars.tabsList
+                  tabsList: _self.vars.tabsList,
+                  facetPosition:_self.vars.filterConfiguration.aligned,
+                  filterFacetData: searchFacets||[]
                 }
               }
 
@@ -10906,41 +10913,7 @@ FindlySDK.prototype.addSearchFacets = function (config) {
   var _self = this;
   _self.pubSub.unsubscribe("sa-search-facets");
   _self.pubSub.subscribe("sa-search-facets", (msg, data) => {
-    if (config.templateId) {
-      var dataHTML = $("#" + config.templateId).tmplProxy({
-        searchFacets: data,
-      });
-      $("#" + config.container)
-        .empty()
-        .append(dataHTML);
-    } else if (config.template) {
-      var dataHTML = $(config.template).tmplProxy({ searchFacets: data });
-      $("#" + config.container)
-        .empty()
-        .append(dataHTML);
-    } else {
-      var dataHTML = $(_self.getSearchFacetsTemplate()).tmplProxy({
-        searchFacets: data,
-      });
-      $("#" + config.container)
-        .empty()
-        .append(dataHTML);
-    }
-    //top-down-search-filter-start//
-    _self.getSearchFacetsTopDown(data, config);
-    //top-down-search-filter-end//
-    $("#openFacetFilterControl")
-      .off("click")
-      .on("click", function (event) {
-        if ($(".filters-container").css("display") == "block") {
-          $(".filters-container").hide();
-        } else {
-          $(".filters-container").show();
-        }
-      });
-    _self.bindFacetsToggle();
-    _self.bindAllResultsView();
-    _self.markSelectedFilters();
+   
   });
 };
 FindlySDK.prototype.markSelectedFilters = function () {
@@ -22758,25 +22731,6 @@ FindlySDK.prototype.getSearchFacetsTopDown = function (data, config) {
               .off("keyup", ".searchFacetInput")
               .on("keyup", ".searchFacetInput", function (event) {
                 var id = $(this).attr("id");
-                // var facetSearchRegex =  new RegExp($('#'+id).val(), "g");
-                //   if($('#'+id).val()){
-                //   var facetsData = _self.vars.searchFacetFilters;
-                //   facetsData.forEach((f)=>{
-                //     if(id === f.facetName){
-
-                //      f.buckets = f.buckets.filter(function (field){
-                //       if ( field.key.match(facetSearchRegex) && field.key.match(facetSearchRegex).length) return field;
-                //     });
-                //     }
-                //   })
-                //      var topDownDataHTML = $(_self.getSearchFacetsTopDownTemplate()).tmplProxy({
-                //     searchFacets : facetsData,
-                //     position:'left'
-                //   });
-                //   $('#' + config.container).empty().append(topDownDataHTML);
-                //   _self.markSelectedFilters();
-                //   _self.sdkFiltersCheckboxClick();
-                // }
                 if ($("#" + id).val()) {
                   $("#" + id + "-close").show();
                 } else {
@@ -25541,7 +25495,6 @@ FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
 FindlySDK.prototype.facetCheckBoxClick = function(event){
   // SDK checkbox
   var  _self = this;
-  return new Promise((resolve, reject) => {
       if ($(event.target).is(":checked")) {
         _self.vars.selectedFiltersArr.push($(event.target).attr("id"));
 
@@ -25576,11 +25529,15 @@ FindlySDK.prototype.facetCheckBoxClick = function(event){
           resolve({isFilterAlignedTop:false});
         }
       });
-    })
-
 }
 FindlySDK.prototype.getSearchByFacetFilters = function() {
 var  _self = this;
+if ($("body").hasClass("top-down")) {
+  _self.vars.tempSelectedFiltersArr = _self.vars.selectedFiltersArr;
+  _self.vars.tempSelectedFacetsList = _self.vars.selectedFacetsList;
+  _self.vars.tempFilterObject = _self.vars.filterObject;
+  _self.vars.scrollPageNumber = 0;
+}
 var filterObject = _self.vars.filterObject;
 var url = _self.API.searchUrl;
   var payload = {
@@ -25791,6 +25748,220 @@ FindlySDK.prototype.countFunction = function(){
         resolve({facetData:facetData});
       })
     // _self.facetReset(_self.vars["facetObjectGlobal"], facetData);
+}
+
+FindlySDK.prototype.topdownFacetCheckBoxClick = function(event){
+var _self = this;
+return new Promise((resolve, reject) => {
+        _self.vars.isTopFacets =
+          _self.vars.filterConfiguration.aligned === "top" ? true : false;
+        if (
+          $(".topdown-search-main-container").length &&
+          !_self.vars.isTopFacets
+        ) {
+          // $('#loaderDIV').show();
+        }
+
+        if ($(event.target).is(":checked")) {
+          _self.vars.selectedFiltersArr.push($(event.target).attr("id"));
+          /* top -down -search -experience -start */
+          _self.vars.selectedFacetsList.push({
+            id: $(event.target).attr("id"),
+            name: $(event.target).attr("name"),
+            fieldName: $(event.target).attr("fieldName"),
+            fieldType: $(event.target).attr("fieldType"),
+          });
+          /* top -down -search -experience -end*/
+          _self.vars.countOfSelectedFilters += 1;
+          _self.filterResultsTopDown(
+            event,
+            true,
+            false,
+            _self.vars.isTopFacets
+          ).then((res)=>{
+            res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            resolve(res);
+          });
+        } else {
+          var unselectedFilterID = $(event.target).attr("id");
+          _self.vars.selectedFiltersArr.slice(0).forEach(function (filter) {
+            if (filter == unselectedFilterID) {
+              var index = _self.vars.selectedFiltersArr.indexOf(filter);
+              _self.vars.selectedFiltersArr.splice(index, 1);
+              /* top -down -search -experience -start */
+              _self.vars.selectedFacetsList.splice(index, 1);
+              /* top -down -search -experience -end */
+            }
+          });
+
+          _self.vars.countOfSelectedFilters -= 1;
+
+          _self.filterResultsTopDown(
+            event,
+            false,
+            false,
+            _self.vars.isTopFacets
+          ).then((res)=>{
+            res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            resolve(res);
+          });
+        }
+      
+      })
+  
+}
+FindlySDK.prototype.topdownFacetRadioClick = function(event){
+  var _self = this;
+  return new Promise((resolve, reject) => {
+          event.stopImmediatePropagation();
+          $("#loaderDIV").show();
+          if (_self.vars.selectedFacetsList.length) {
+            var facetIndex = _self.vars.selectedFacetsList.findIndex(
+              (x) => x.value === $(event.target).attr("name")
+            );
+            if (facetIndex > -1) {
+              _self.vars.selectedFiltersArr.splice(
+                facetIndex,
+                1,
+                $(event.target).attr("id")
+              );
+              _self.vars.selectedFacetsList.splice(facetIndex, 1, {
+                id: $(event.target).attr("id"),
+                value:
+                  $(event.target).attr("type") == "radio"
+                    ? $(event.target).attr("name")
+                    : $(event.target).attr("value"),
+                name:
+                  $(event.target).attr("type") == "radio"
+                    ? $(event.target).attr("value")
+                    : $(event.target).attr("name"),
+                fieldName: $(event.target).attr("fieldName"),
+                fieldType: $(event.target).attr("fieldType"),
+              });
+              _self.filterResultsTopDown(event, false).then((res)=>{
+                res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+                resolve(res);
+              });
+            } else {
+              _self.vars.selectedFiltersArr.push($(event.target).attr("id"));
+              _self.vars.selectedFacetsList.push({
+                id: $(event.target).attr("id"),
+                value:
+                  $(event.target).attr("type") == "radio"
+                    ? $(event.target).attr("name")
+                    : $(event.target).attr("value"),
+                name:
+                  $(event.target).attr("type") == "radio"
+                    ? $(event.target).attr("value")
+                    : $(event.target).attr("name"),
+                fieldName: $(event.target).attr("fieldName"),
+                fieldType: $(event.target).attr("fieldType"),
+              });
+              _self.vars.countOfSelectedFilters += 1;
+              _self.filterResultsTopDown(event, true).then((res)=>{
+                res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+                resolve(res);
+              });
+            }
+          } else {
+            _self.vars.selectedFiltersArr.push($(event.target).attr("id"));
+            _self.vars.selectedFacetsList.push({
+              id: $(event.target).attr("id"),
+              value:
+                $(event.target).attr("type") == "radio"
+                  ? $(event.target).attr("name")
+                  : $(event.target).attr("value"),
+              name:
+                $(event.target).attr("type") == "radio"
+                  ? $(event.target).attr("value")
+                  : $(event.target).attr("name"),
+              fieldName: $(event.target).attr("fieldName"),
+              fieldType: $(event.target).attr("fieldType"),
+            });
+            _self.vars.countOfSelectedFilters += 1;
+            _self.filterResultsTopDown(event, true).then((res)=>{
+              res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+              resolve(res);
+            });
+          }
+        })
+      // $(".horizantal-filter-sec")
+      //   .off("click", ".apply-btn")
+      //   .on("click", ".apply-btn", function (event) {
+      //     // $('#loaderDIV').show();
+      //     _self.searchByFacetFilters(
+      //       _self.vars.filterObject,
+      //       _self.vars.selectedFiltersArr,
+      //       _self.vars.selectedFacetsList
+      //     );
+      //     if (
+      //       $(".topdown-search-main-container").length &&
+      //       _self.vars.isTopFacets
+      //     ) {
+      //       if ($(".sdk-filter-radio-top-down").length) {
+      //         _self.getTopDownFacetsAddedList(true);
+      //       } else {
+      //         _self.getTopDownFacetsAddedList();
+      //       }
+      //       $(".dropdown-content").hide();
+      //     }
+      //     $("#loaderDIV").hide();
+      //   });
+    
+  }
+FindlySDK.prototype.removeFilterClickEvent = function(event,isRadioBtn=false) {
+return new Promise((resolve, reject) => {
+  var _self = this;
+  var unselectedFilterID = $(event.currentTarget).attr("id");
+  // $('#loaderDIV').show();
+  var isUnselectedFilter = false;
+  _self.vars.selectedFiltersArr.slice(0).forEach(function (filter) {
+    if (filter == unselectedFilterID) {
+      isUnselectedFilter = true;
+      var index1 = _self.vars.selectedFiltersArr.indexOf(filter);
+      _self.vars.selectedFiltersArr.splice(index1, 1);
+      _self.vars.selectedFacetsList.splice(index1, 1);
+      // _self.searchFacetsList(_self.vars.selectedFacetsList);
+      $(".sdk-filter-checkbox-top-down").prop("checked", false);
+      $(".sdk-filter-radio-top-down").prop("checked", false);
+      _self.markSelectedFilters();
+    }
+  });
+  _self.vars.countOfSelectedFilters -= 1;
+  _self.filterResultsTopDown(event, false, isRadioBtn).then((res)=>{
+    res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+    res.isUnselectedFilter = isUnselectedFilter;
+    res.selectedFacetsList = _self.vars.selectedFacetsList
+    resolve(res);
+  })
+  .catch((error) => {
+    reject(error);
+  })
+});
+}
+FindlySDK.prototype.clearAllFilterTopdownEvent = function(event){
+  var _self = this;
+  return new Promise((resolve, reject) => {
+  _self.vars.filterObject = [];
+      _self.vars.selectedFiltersArr = [];
+      _self.vars.tempSelectedFiltersArr = [];
+      _self.vars.tempSelectedFacetsList = [];
+      _self.vars.tempFilterObject = [];
+      _self.vars.selectedFacetsList = [];
+      _self.vars.isTopFacets =
+        _self.vars.filterConfiguration.aligned === "top" ? true : false;
+      _self.vars.countOfSelectedFilters = 0;
+
+      _self.getSearchByFacetFilters().then((res) => {
+        res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+        res.isUnselectedFilter = true;
+        res.selectedFacetsList = _self.vars.selectedFacetsList
+        resolve(res);
+      })
+    .catch((error) => {
+      reject(error);
+    })
+  });
 }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
