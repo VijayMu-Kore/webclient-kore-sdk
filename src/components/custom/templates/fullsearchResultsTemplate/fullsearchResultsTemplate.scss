@@ -262,6 +262,29 @@
                 }
             }
         }
+        .kr-sg-radiobutton{
+            .radio-custom {
+                +.radio-custom-label{
+                    display: inline-block;
+                    vertical-align: middle;
+                    cursor: pointer;
+                    position: relative;
+                    font-size: 14px;
+                    color: #202124;
+                    margin: 0;
+                    font-weight: 400;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    padding-right: 0;
+                    max-width: 86%;
+                    text-transform: capitalize;
+                    padding: 4px 0px 14px 28px !important;
+                    margin-bottom: 0px !important;
+                    line-height: 14px;
+                }
+            }
+        }
     }
     .data-body-sec {
         padding: 10px 20px;
