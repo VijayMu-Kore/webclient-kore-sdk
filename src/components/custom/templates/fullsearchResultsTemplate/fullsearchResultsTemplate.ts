@@ -426,9 +426,9 @@ class FullSearchResultsTemplate {
     event.stopPropagation();
     event.stopImmediatePropagation();
     hostWindowInstance.facetCheckBoxClick(event).then((response: any) => {
-      if(response.isFilterAlignedTop){
-        FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
-      }
+      // if(response.isFilterAlignedTop){
+      //   FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
+      // }
     });
   });
    // SDK radio
@@ -453,6 +453,7 @@ class FullSearchResultsTemplate {
   .on("click",".sdk-clear-all-facet-top", function (event:any) {
     event.stopPropagation();
     event.stopImmediatePropagation();
+    $(messageHtml).find(".filters-content").hide()
     $("#filter-count-container").empty();
       $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
       hostWindowInstance.clearAllFilters().then((response: any) => {
@@ -473,35 +474,11 @@ class FullSearchResultsTemplate {
     $(messageHtml)
     .off("click", ".sdk-top-facet-drop")
     .on("click", ".sdk-top-facet-drop", function (event:any) {
-      if ($(event.target).siblings("#myDropdown").is(":visible")) {
-        $(event.target).siblings("#myDropdown").hide();
-        $(event.target).find(".down-arrow").show();
-        $(event.target).find(".up-arrow").hide();
-        FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml)
-      } else {
-        $(event.target).find(".down-arrow").hide();
-        $(event.target).find(".up-arrow").show();
-        $(".dropdown-content").hide();
-        $(event.target).siblings("#myDropdown").show();
-        FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml)
-      }
+       hostWindowInstance.dropdownFilterClickEvent(event);
+      FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml)
+
     });
-  // $(".horizantal-filter-sec")
-  //   .off("click", ".apply-btn")
-  //   .on("click", ".apply-btn", function () {
-  //     $(".filter-data").hide();
-  //     // $('#loaderDIV').show();
-  //     _self.searchByFacetFilters(_self.vars.filterObject);
-  //     if (_self.vars.filterConfiguration.aligned == "top") {
-  //       countFunc();
-  //     }
-  //     //_self.facetFilter(facetObj);
-  //   });
-  // $(".sdk-top-facet-drop")
-  //   .off("change")
-  //   .on("change", function (event) {
-  //     var optionId = $(e.target).closest(".sdk-top-facet-option").attr("id");
-  //   });
+
   }
   fullResultTemplateDataBind(me:any, messageHtml:any,result:any){
     let formatedTemplatesData: any = result;

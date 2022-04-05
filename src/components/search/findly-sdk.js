@@ -6222,12 +6222,12 @@ FindlySDK.prototype.searchByFacetFilters = function (
   selectedFacetsList = []
 ) {
   var _self = this;
-  if ($("body").hasClass("top-down")) {
+  // if ($("body").hasClass("top-down")) {
     _self.vars.tempSelectedFiltersArr = selectedFiltersArr;
     _self.vars.tempSelectedFacetsList = selectedFacetsList;
     _self.vars.tempFilterObject = filterObject;
     _self.vars.scrollPageNumber = 0;
-  }
+  // }
   // var activeFacet = '';
   var facetActive = "";
   var url = _self.API.searchUrl;
@@ -11117,9 +11117,9 @@ FindlySDK.prototype.addSearchResult = function (config) {
     structuredDataContainer = config.structuredDataContainer;
   }
   if (structuredDataContainer) {
-    _self.pubSub.subscribe("sa-register-all-template", (msg, data) => {
-      _self.registerAllTemplateConfig(data, _self.customConfig);
-    });
+    // _self.pubSub.subscribe("sa-register-all-template", (msg, data) => {
+    //   _self.registerAllTemplateConfig(data, _self.customConfig);
+    // });
   }
   var handle = setInterval(function () {
     if (_self.bot.options.accessToken) {
@@ -11297,9 +11297,9 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
     _self.initKoreSDK(config);
   }
   _self.setAPIDetails();
-  _self.pubSub.subscribe("sa-register-all-template", (msg, data) => {
-    _self.registerAllTemplateConfig(data, _self.customConfig);
-  });
+  // _self.pubSub.subscribe("sa-register-all-template", (msg, data) => {
+  //   _self.registerAllTemplateConfig(data, _self.customConfig);
+  // });
   var handle = setInterval(function () {
     if (_self.bot.options.accessToken) {
       _self.unlockBot();
@@ -18418,304 +18418,6 @@ FindlySDK.prototype.bindSearchContainerViewHadler = function () {
   }
 };
 
-var mockData = {
-  settings: [
-    {
-      _id: "fsrv-fb47f1fd-bee4-5e19-8f0d-9f963f501c30",
-      resultClassification: {
-        isEnabled: true,
-        sourceType: "dataContentType",
-      },
-      view: "custom",
-      maxResultsAllowed: 10,
-      interface: "search",
-      appearance: [
-        {
-          type: "action",
-        },
-        {
-          type: "faq",
-          templateId: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithImage",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate1",
-            mapping: {
-              heading: "question",
-              description: "answer",
-              img: "pageImageUrl",
-              url: "url",
-            },
-          },
-        },
-        {
-          type: "web",
-          templateId: "fsrt-7162e7e0-7387-5264-be88-dddfd0fb5342",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithText",
-              isClickable: false,
-              behaviour: "webpage",
-            },
-            type: "listTemplate1",
-            mapping: {
-              heading: "pageTitle",
-              description: "pageSearchResultPreview",
-              img: "pageImageUrl",
-              url: "url",
-            },
-          },
-        },
-        {
-          type: "file",
-          templateId: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithText",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate1",
-            mapping: {
-              heading: "pageTitle",
-              description: "pageSearchResultPreview",
-              img: "pageImageUrl",
-              url: "url",
-            },
-          },
-        },
-        {
-          type: "structuredData",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithText",
-              isClickable: false,
-              behaviour: "webpage",
-            },
-            type: "listTemplate3",
-            mapping: {
-              heading: "message",
-              description: "role",
-              img: "streamId",
-              url: "urlLink",
-            },
-          },
-          createdBy: "u-310c9be5-73c0-553a-baca-cd9268cf791c",
-          createdOn: "2021-01-25T07:49:42.192Z",
-          searchIndexId: "sidx-09009ef2-41b2-5c41-acd7-08d7df464b91",
-          streamId: "st-6b897f13-4e5b-5b55-9571-d2d50249e8a6",
-          __v: 0,
-        },
-      ],
-      referInterface: "search | fullsearch | livesearch",
-      streamId: "st-6c6fbeb5-9794-5427-ae8e-e1310ca8d85a",
-      searchIndexId: "sidx-67aead24-d1e7-5857-842c-dec254c516e7",
-      createdOn: "2021-01-27T10:50:46.981Z",
-      __v: 0,
-    },
-    {
-      _id: "fsrv-fb47f1fd-bee4-5e19-8f0d-9f963f501c30",
-      resultClassification: {
-        isEnabled: true,
-        sourceType: "dataContentType",
-      },
-      view: "custom",
-      maxResultsAllowed: 10,
-      interface: "livesearch",
-      appearance: [
-        {
-          type: "structuredData",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithImage",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate1",
-            mapping: {
-              heading: "message",
-              description: "role",
-              img: "streamId",
-              url: "urlLink",
-            },
-          },
-          createdBy: "u-310c9be5-73c0-553a-baca-cd9268cf791c",
-          createdOn: "2021-01-25T07:49:42.192Z",
-          searchIndexId: "sidx-09009ef2-41b2-5c41-acd7-08d7df464b91",
-          streamId: "st-6b897f13-4e5b-5b55-9571-d2d50249e8a6",
-          __v: 0,
-        },
-        {
-          type: "faq",
-          templateId: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithImage",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate2",
-            mapping: {
-              heading: "question",
-              description: "answer",
-              img: "streamId",
-              url: "urlLink",
-            },
-          },
-        },
-        {
-          type: "web",
-          templateId: "fsrt-7162e7e0-7387-5264-be88-dddfd0fb5342",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithText",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate1",
-            mapping: {
-              heading: "pageTitle",
-              description: "pageSearchResultPreview",
-              img: "pageImageUrl",
-              url: "url",
-            },
-          },
-        },
-        {
-          type: "file",
-          templateId: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithText",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate1",
-            mapping: {
-              heading: "pageTitle",
-              description: "pageSearchResultPreview",
-              img: "pageImageUrl",
-              url: "url",
-            },
-          },
-        },
-      ],
-      referInterface: "search | fullsearch | livesearch",
-      streamId: "st-6c6fbeb5-9794-5427-ae8e-e1310ca8d85a",
-      searchIndexId: "sidx-67aead24-d1e7-5857-842c-dec254c516e7",
-      createdOn: "2021-01-27T10:50:46.981Z",
-      __v: 0,
-    },
-    {
-      _id: "fsrv-fb47f1fd-bee4-5e19-8f0d-9f963f501c30",
-      resultClassification: {
-        isEnabled: true,
-        sourceType: "dataContentType",
-      },
-      view: "custom",
-      maxResultsAllowed: 10,
-      interface: "fullsearch",
-      appearance: [
-        {
-          type: "structuredData",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithCenteredContent",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate1",
-            mapping: {
-              heading: "message",
-              description: "role",
-              img: "streamId",
-              url: "urlLink",
-            },
-          },
-          createdBy: "u-310c9be5-73c0-553a-baca-cd9268cf791c",
-          createdOn: "2021-01-25T07:49:42.192Z",
-          searchIndexId: "sidx-09009ef2-41b2-5c41-acd7-08d7df464b91",
-          streamId: "st-6b897f13-4e5b-5b55-9571-d2d50249e8a6",
-          __v: 0,
-        },
-        {
-          type: "faq",
-          templateId: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithCenteredContent",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate2",
-            mapping: {
-              heading: "question",
-              description: "answer",
-              img: "streamId",
-              url: "urlLink",
-            },
-          },
-        },
-        {
-          type: "web",
-          templateId: "fsrt-7162e7e0-7387-5264-be88-dddfd0fb5342",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithText",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "grid",
-            mapping: {
-              heading: "pageTitle",
-              description: "pageSearchResultPreview",
-              img: "pageImageUrl",
-              url: "url",
-            },
-          },
-        },
-        {
-          type: "file",
-          templateId: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-          template: {
-            _id: "fsrt-4bad8f4a-d9e5-5382-96f0-895636dbf405",
-            layout: {
-              layoutType: "tileWithText",
-              isClickable: true,
-              behaviour: "webpage",
-            },
-            type: "listTemplate1",
-            mapping: {
-              heading: "pageTitle",
-              description: "pageSearchResultPreview",
-              img: "pageImageUrl",
-              url: "url",
-            },
-          },
-        },
-      ],
-      referInterface: "search | fullsearch | livesearch",
-      streamId: "st-6c6fbeb5-9794-5427-ae8e-e1310ca8d85a",
-      searchIndexId: "sidx-67aead24-d1e7-5857-842c-dec254c516e7",
-      createdOn: "2021-01-27T10:50:46.981Z",
-      __v: 0,
-    },
-  ],
-};
 
 var maxSearchResultsAllowed = 5;
 var structuredDataConfig = {
@@ -18831,30 +18533,30 @@ FindlySDK.prototype.saveCustomizationConfig = function () {
 
           //_self.vars.filterConfiguration = {aligned: "top",isEnabled: true};
           // for top down filter alignment //
-          if ($("body").hasClass("top-down")) {
-            if (_self.vars.filterConfiguration.isEnabled) {
-              if (_self.vars.filterConfiguration.aligned === "top") {
-                _self.addSearchFacets({
-                  container: "filters-center-sec",
-                });
-                _self.facetsAlignTopdownClass(
-                  _self.vars.filterConfiguration.aligned
-                );
-              } else {
-                _self.addSearchFacets({
-                  container: "filters-left-sec",
-                });
-                _self.facetsAlignTopdownClass(
-                  _self.vars.filterConfiguration.aligned
-                );
-              }
-              $(".content-data-sec").removeClass("facets-disabled");
-            } else {
-              $(".content-data-sec").addClass("facets-disabled");
-              _self.facetsAlignTopdownClass("top");
-              $("#filters-left-sec").hide();
-            }
-          }
+          // if ($("body").hasClass("top-down")) {
+          //   if (_self.vars.filterConfiguration.isEnabled) {
+          //     if (_self.vars.filterConfiguration.aligned === "top") {
+          //       _self.addSearchFacets({
+          //         container: "filters-center-sec",
+          //       });
+          //       _self.facetsAlignTopdownClass(
+          //         _self.vars.filterConfiguration.aligned
+          //       );
+          //     } else {
+          //       _self.addSearchFacets({
+          //         container: "filters-left-sec",
+          //       });
+          //       _self.facetsAlignTopdownClass(
+          //         _self.vars.filterConfiguration.aligned
+          //       );
+          //     }
+          //     $(".content-data-sec").removeClass("facets-disabled");
+          //   } else {
+          //     $(".content-data-sec").addClass("facets-disabled");
+          //     _self.facetsAlignTopdownClass("top");
+          //     $("#filters-left-sec").hide();
+          //   }
+          // }
           // if(interface.groupResults){
           //   var resultGroups = {
           //     "group": {
@@ -18885,708 +18587,708 @@ FindlySDK.prototype.addCustomTemplateConfig = function (customConfig) {
     _self.vars.customConfig = customConfig;
   }
 };
-FindlySDK.prototype.registerAllTemplateConfig = function (data, customConfig) {
-  var _self = this;
-  var selected = {};
-  if (data && data.length) {
-    data.forEach((config) => {
-      var availableGroupNames = [];
-      if (config.groupResults) {
-        availableGroupNames = config.groupSetting.conditions.map(function (
-          group
-        ) {
-          return group.fieldValue;
-        });
-        if (config.interface === "fullSearch") {
-          _self.vars.availableGroupsList = {
-            filter: {
-              fieldName: config.groupSetting.fieldName,
-              facetValue: availableGroupNames,
-            },
-          };
-        }
-      }
+// FindlySDK.prototype.registerAllTemplateConfig = function (data, customConfig) {
+//   var _self = this;
+//   var selected = {};
+//   if (data && data.length) {
+//     data.forEach((config) => {
+//       var availableGroupNames = [];
+//       if (config.groupResults) {
+//         availableGroupNames = config.groupSetting.conditions.map(function (
+//           group
+//         ) {
+//           return group.fieldValue;
+//         });
+//         if (config.interface === "fullSearch") {
+//           _self.vars.availableGroupsList = {
+//             filter: {
+//               fieldName: config.groupSetting.fieldName,
+//               facetValue: availableGroupNames,
+//             },
+//           };
+//         }
+//       }
 
-      availableGroupNames.push("defaultTemplate");
-      availableGroupNames.forEach((group) => {
-        if (!_self[group + "Config"]) {
-          _self[group + "Config"] = {
-            liveSearchInterface: {
-              layout: {},
-            },
-            conversationalSearchInterface: {
-              layout: {},
-            },
-            fullSearchInterface: {
-              layout: {},
-            },
-          };
-        }
-      });
-      // Irrespective of config from AJAX, the customConfig interface will override the config.
-      if (customConfig && customConfig.interface.length) {
-        config.interface = customConfig.interface;
-      }
-      _self.designTemplateConfig(config, customConfig);
-      setTimeout(function () {
-        availableGroupNames.forEach((group) => {
-          _self.initilizeTemplateConfig(
-            _self[group + "Config"],
-            customConfig,
-            config.interface,
-            selected,
-            group
-          );
-        });
-      }, 200);
-      _self.initilizeActionTemplateConfig();
-    });
-    console.log(_self);
-  }
-};
+//       availableGroupNames.push("defaultTemplate");
+//       availableGroupNames.forEach((group) => {
+//         if (!_self[group + "Config"]) {
+//           _self[group + "Config"] = {
+//             liveSearchInterface: {
+//               layout: {},
+//             },
+//             conversationalSearchInterface: {
+//               layout: {},
+//             },
+//             fullSearchInterface: {
+//               layout: {},
+//             },
+//           };
+//         }
+//       });
+//       // Irrespective of config from AJAX, the customConfig interface will override the config.
+//       if (customConfig && customConfig.interface.length) {
+//         config.interface = customConfig.interface;
+//       }
+//       _self.designTemplateConfig(config, customConfig);
+//       setTimeout(function () {
+//         availableGroupNames.forEach((group) => {
+//           _self.initilizeTemplateConfig(
+//             _self[group + "Config"],
+//             customConfig,
+//             config.interface,
+//             selected,
+//             group
+//           );
+//         });
+//       }, 200);
+//       _self.initilizeActionTemplateConfig();
+//     });
+//     console.log(_self);
+//   }
+// };
 
-FindlySDK.prototype.initilizeActionTemplateConfig = function () {
-  var _self = this;
-  _self.pubSub.unsubscribe("sa-action-full-search");
-  _self.pubSub.subscribe("sa-action-full-search", (msg, data) => {
-    var actionContainer = "#actions-full-search-container";
-    if (
-      data.isFullResults &&
-      data.dataObj &&
-      data.dataObj.tasks &&
-      (data.dataObj.tasks.length || data.dataObj.tasks.length == 0)
-    ) {
-      var viewType = _self.vars.customizeView ? "Customize" : "Preview";
-      var devMode = _self.isDev ? true : false;
-      var dataHTML = $(_self.getTopDownActionTemplate()).tmplProxy({
-        selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
-        tasks: data.dataObj.tasks,
-        isFullResults: data.isFullResults,
-        appearanceType: "task",
-        devMode: devMode,
-        viewType: viewType,
-      });
-      $(actionContainer).empty().append(dataHTML);
-      _self.bindCarouselForActionsTemplate(actionContainer);
-    } else if (data.isSearch) {
-      if (data.container) {
-        actionContainer = data.container;
-      }
-      var viewType = "Preview";
-      var devMode = false;
-      var dataHTML = $(_self.getTopDownActionTemplate()).tmplProxy({
-        selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
-        tasks: data.dataObj.tasks,
-        isFullResults: data.isFullResults,
-        appearanceType: "task",
-        devMode: devMode,
-        viewType: viewType,
-      });
-      $(actionContainer).last().empty().append(dataHTML);
-      _self.bindCarouselForActionsTemplate(actionContainer);
-    }
-  });
-};
-FindlySDK.prototype.initilizeTemplateConfig = function (
-  templateConfig,
-  customTemplateConfig,
-  templateInterface,
-  selected,
-  groupName
-) {
-  var _self = this;
-  if (!selected[groupName + templateInterface + "TemplateType"]) {
-    selected[groupName + templateInterface + "TemplateType"] = "";
-    selected[groupName + templateInterface + "LayoutType"] = "";
-  }
+// FindlySDK.prototype.initilizeActionTemplateConfig = function () {
+//   var _self = this;
+//   _self.pubSub.unsubscribe("sa-action-full-search");
+//   _self.pubSub.subscribe("sa-action-full-search", (msg, data) => {
+//     var actionContainer = "#actions-full-search-container";
+//     if (
+//       data.isFullResults &&
+//       data.dataObj &&
+//       data.dataObj.tasks &&
+//       (data.dataObj.tasks.length || data.dataObj.tasks.length == 0)
+//     ) {
+//       var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+//       var devMode = _self.isDev ? true : false;
+//       var dataHTML = $(_self.getTopDownActionTemplate()).tmplProxy({
+//         selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
+//         tasks: data.dataObj.tasks,
+//         isFullResults: data.isFullResults,
+//         appearanceType: "task",
+//         devMode: devMode,
+//         viewType: viewType,
+//       });
+//       $(actionContainer).empty().append(dataHTML);
+//       _self.bindCarouselForActionsTemplate(actionContainer);
+//     } else if (data.isSearch) {
+//       if (data.container) {
+//         actionContainer = data.container;
+//       }
+//       var viewType = "Preview";
+//       var devMode = false;
+//       var dataHTML = $(_self.getTopDownActionTemplate()).tmplProxy({
+//         selectedFacet: _self.vars.selectedFacetFromSearch || "all results",
+//         tasks: data.dataObj.tasks,
+//         isFullResults: data.isFullResults,
+//         appearanceType: "task",
+//         devMode: devMode,
+//         viewType: viewType,
+//       });
+//       $(actionContainer).last().empty().append(dataHTML);
+//       _self.bindCarouselForActionsTemplate(actionContainer);
+//     }
+//   });
+// };
+// FindlySDK.prototype.initilizeTemplateConfig = function (
+//   templateConfig,
+//   customTemplateConfig,
+//   templateInterface,
+//   selected,
+//   groupName
+// ) {
+//   var _self = this;
+//   if (!selected[groupName + templateInterface + "TemplateType"]) {
+//     selected[groupName + templateInterface + "TemplateType"] = "";
+//     selected[groupName + templateInterface + "LayoutType"] = "";
+//   }
 
-  var searchTemplate = "";
-  var fullSearchTemplate = "";
-  var liveSearchTemplate = "";
+//   var searchTemplate = "";
+//   var fullSearchTemplate = "";
+//   var liveSearchTemplate = "";
 
-  if (
-    templateConfig &&
-    templateConfig[templateInterface + "Interface"] &&
-    templateConfig[templateInterface + "Interface"].layout
-  ) {
-    // will take the templateType and layoutType from AJAX config
-    if (
-      templateConfig[templateInterface + "Interface"].layout.templateType &&
-      templateConfig[templateInterface + "Interface"].layout.templateType.length
-    ) {
-      selected[groupName + templateInterface + "TemplateType"] =
-        templateConfig[templateInterface + "Interface"].layout.templateType;
-      selected[groupName + templateInterface + "LayoutType"] =
-        templateConfig[templateInterface + "Interface"].layout.layoutType;
-    }
-  }
+//   if (
+//     templateConfig &&
+//     templateConfig[templateInterface + "Interface"] &&
+//     templateConfig[templateInterface + "Interface"].layout
+//   ) {
+//     // will take the templateType and layoutType from AJAX config
+//     if (
+//       templateConfig[templateInterface + "Interface"].layout.templateType &&
+//       templateConfig[templateInterface + "Interface"].layout.templateType.length
+//     ) {
+//       selected[groupName + templateInterface + "TemplateType"] =
+//         templateConfig[templateInterface + "Interface"].layout.templateType;
+//       selected[groupName + templateInterface + "LayoutType"] =
+//         templateConfig[templateInterface + "Interface"].layout.layoutType;
+//     }
+//   }
 
-  // Custom templateType and layoutType by user from index.html - overrides the AJAX config
-  if (customTemplateConfig && Object.keys(customTemplateConfig).length) {
-    if (customTemplateConfig.interface) {
-      selected[groupName + templateInterface + "TemplateType"] =
-        customTemplateConfig.templateType
-          ? customTemplateConfig.templateType
-          : selected[groupName + templateInterface + "TemplateType"]; // assign defalt in false case
-      selected[groupName + templateInterface + "LayoutType"] =
-        customTemplateConfig.layoutType
-          ? customTemplateConfig.layoutType
-          : selected[groupName + templateInterface + "LayoutType"]; // assign defalt in false case
-      if (
-        customTemplateConfig.template &&
-        customTemplateConfig.template.length
-      ) {
-        _self.searchTemplateObj
-          .resultTemplates()
-          .structuredData.forEach((item) => {
-            if (
-              item.templateType ===
-              selected[groupName + templateInterface + "TemplateType"] &&
-              item.layoutType ===
-              selected[groupName + templateInterface + "LayoutType"]
-            ) {
-              item.template = customTemplateConfig.template;
-            }
-          });
-      }
-    }
-  }
+//   // Custom templateType and layoutType by user from index.html - overrides the AJAX config
+//   if (customTemplateConfig && Object.keys(customTemplateConfig).length) {
+//     if (customTemplateConfig.interface) {
+//       selected[groupName + templateInterface + "TemplateType"] =
+//         customTemplateConfig.templateType
+//           ? customTemplateConfig.templateType
+//           : selected[groupName + templateInterface + "TemplateType"]; // assign defalt in false case
+//       selected[groupName + templateInterface + "LayoutType"] =
+//         customTemplateConfig.layoutType
+//           ? customTemplateConfig.layoutType
+//           : selected[groupName + templateInterface + "LayoutType"]; // assign defalt in false case
+//       if (
+//         customTemplateConfig.template &&
+//         customTemplateConfig.template.length
+//       ) {
+//         _self.searchTemplateObj
+//           .resultTemplates()
+//           .structuredData.forEach((item) => {
+//             if (
+//               item.templateType ===
+//               selected[groupName + templateInterface + "TemplateType"] &&
+//               item.layoutType ===
+//               selected[groupName + templateInterface + "LayoutType"]
+//             ) {
+//               item.template = customTemplateConfig.template;
+//             }
+//           });
+//       }
+//     }
+//   }
 
-  if (
-    !selected[groupName + templateInterface + "TemplateType"] ||
-    !selected[groupName + templateInterface + "TemplateType"].length
-  ) {
-    // default case
-    selected[groupName + templateInterface + "TemplateType"] = "list";
-    selected[groupName + templateInterface + "LayoutType"] = "l1";
-  }
+//   if (
+//     !selected[groupName + templateInterface + "TemplateType"] ||
+//     !selected[groupName + templateInterface + "TemplateType"].length
+//   ) {
+//     // default case
+//     selected[groupName + templateInterface + "TemplateType"] = "list";
+//     selected[groupName + templateInterface + "LayoutType"] = "l1";
+//   }
 
-  // MATCH TEMPLATE with 'templateType' and 'layoutType'
-  var templates = _self.searchTemplateObj.resultTemplates().structuredData;
-  for (let i = 0; i < templates.length; i++) {
-    // search
-    if (
-      templates[i].templateType ===
-      selected[groupName + templateInterface + "TemplateType"] &&
-      templates[i].layoutType ===
-      selected[groupName + templateInterface + "LayoutType"]
-    ) {
-      // check for templateId from CustomTemplateConfig and it should onle be give for matched Template
-      // Even user sends both templte string and templateId, will consider templateId as final template
-      if (
-        customTemplateConfig &&
-        customTemplateConfig.templateId &&
-        customTemplateConfig.templateId.length
-      ) {
-        templates[i].templateId = customTemplateConfig.templateId;
-      }
-      if (templates[i].templateId && templates[i].templateId.length) {
-        searchTemplate = "#" + templates[i].templateId;
-      } else {
-        searchTemplate = templates[i].template;
-      }
-    }
-  }
-  // Till now, the code selects one template through the config from Ajax or from CustomConfig.
-  // From now, the container and data will be managed.
+//   // MATCH TEMPLATE with 'templateType' and 'layoutType'
+//   var templates = _self.searchTemplateObj.resultTemplates().structuredData;
+//   for (let i = 0; i < templates.length; i++) {
+//     // search
+//     if (
+//       templates[i].templateType ===
+//       selected[groupName + templateInterface + "TemplateType"] &&
+//       templates[i].layoutType ===
+//       selected[groupName + templateInterface + "LayoutType"]
+//     ) {
+//       // check for templateId from CustomTemplateConfig and it should onle be give for matched Template
+//       // Even user sends both templte string and templateId, will consider templateId as final template
+//       if (
+//         customTemplateConfig &&
+//         customTemplateConfig.templateId &&
+//         customTemplateConfig.templateId.length
+//       ) {
+//         templates[i].templateId = customTemplateConfig.templateId;
+//       }
+//       if (templates[i].templateId && templates[i].templateId.length) {
+//         searchTemplate = "#" + templates[i].templateId;
+//       } else {
+//         searchTemplate = templates[i].template;
+//       }
+//     }
+//   }
+//   // Till now, the code selects one template through the config from Ajax or from CustomConfig.
+//   // From now, the container and data will be managed.
 
-  // Search call back
-  _self.pubSub.unsubscribe("sa-" + groupName + "-search-data");
-  _self.pubSub.subscribe("sa-" + groupName + "-search-data", (msg, data) => {
-    var _self = this;
-    var container;
-    var structuredData = [];
-    var config = {};
-    var finalTemplate = "";
-    var isMapping = "";
-    var templateConfiguration = {};
-    var templateInterfaceType = "";
-    var groupName = data.dataObj.groupName;
-    var doc_count = data.dataObj.doc_count;
-    if (data.isLiveSearch) {
-      templateInterfaceType = "liveSearch";
-      templateConfiguration =
-        _self[groupName + "Config"][templateInterfaceType + "Interface"];
-    } else if (data.isSearch) {
-      templateInterfaceType = "conversationalSearch";
-      templateConfiguration =
-        _self[groupName + "Config"][templateInterfaceType + "Interface"];
-    } else {
-      templateInterfaceType = "fullSearch";
-      templateConfiguration =
-        _self[groupName + "Config"][templateInterfaceType + "Interface"];
-    }
-    finalTemplate = liveSearchTemplate;
-    structuredData = _self.designDataWithMappings(
-      data.dataObj.data,
-      templateConfiguration.mapping
-    );
-    if (templateConfiguration && templateConfiguration.layout) {
-      data["isClickable"] = templateConfiguration.layout.isClickable;
-      data["behaviour"] = templateConfiguration.layout.behaviour;
-      data["listType"] = templateConfiguration.layout.listType;
-      data["titleName"] = templateConfiguration.layout.title;
-      data["textAlignment"] = templateConfiguration.layout.textAlignment;
-      data["renderTitle"] = templateConfiguration.layout.renderTitle;
-      data["groupResults"] = templateConfiguration.groupResults;
-      data["fieldName"] = templateConfiguration.fieldName;
-      config = templateConfiguration;
-    }
-    isMapping = templateConfiguration.mapping;
-    if (!data.isShowAllBtn) {
-      data.isShowAllBtn = false;
-    }
-    // this should only be applied for 'search' interface
-    data["structuredData"] = [];
-    data["structuredData"] = structuredData;
-    var viewType = _self.vars.customizeView ? "Customize" : "Preview";
-    var devMode = _self.isDev ? true : false;
-    var templates = _self.searchTemplateObj.resultTemplates().structuredData;
-    for (let i = 0; i < templates.length; i++) {
-      // search
-      if (
-        templates[i].templateType ===
-        selected[groupName + templateInterfaceType + "TemplateType"] &&
-        templates[i].layoutType ===
-        selected[groupName + templateInterfaceType + "LayoutType"]
-      ) {
-        // check for templateId from CustomTemplateConfig and it should onle be give for matched Template
-        // Even user sends both templte string and templateId, will consider templateId as final template
-        if (
-          customTemplateConfig &&
-          customTemplateConfig.templateId &&
-          customTemplateConfig.templateId.length
-        ) {
-          templates[i].templateId = customTemplateConfig.templateId;
-        }
-        if (templates[i].templateId && templates[i].templateId.length) {
-          finalTemplate = "#" + templates[i].templateId;
-        } else {
-          finalTemplate = templates[i].template;
-        }
-      }
-    }
-    if (viewType === "Customize" && devMode && data.isFullResults) {
-      finalTemplate =
-        _self.searchTemplateObj.resultTemplates().structuredData[0].template;
-      data.isClickable = true;
-    }
-    if (!data.selectedFacet) {
-      viewType = "Preview";
-    }
+//   // Search call back
+//   _self.pubSub.unsubscribe("sa-" + groupName + "-search-data");
+//   _self.pubSub.subscribe("sa-" + groupName + "-search-data", (msg, data) => {
+//     var _self = this;
+//     var container;
+//     var structuredData = [];
+//     var config = {};
+//     var finalTemplate = "";
+//     var isMapping = "";
+//     var templateConfiguration = {};
+//     var templateInterfaceType = "";
+//     var groupName = data.dataObj.groupName;
+//     var doc_count = data.dataObj.doc_count;
+//     if (data.isLiveSearch) {
+//       templateInterfaceType = "liveSearch";
+//       templateConfiguration =
+//         _self[groupName + "Config"][templateInterfaceType + "Interface"];
+//     } else if (data.isSearch) {
+//       templateInterfaceType = "conversationalSearch";
+//       templateConfiguration =
+//         _self[groupName + "Config"][templateInterfaceType + "Interface"];
+//     } else {
+//       templateInterfaceType = "fullSearch";
+//       templateConfiguration =
+//         _self[groupName + "Config"][templateInterfaceType + "Interface"];
+//     }
+//     finalTemplate = liveSearchTemplate;
+//     structuredData = _self.designDataWithMappings(
+//       data.dataObj.data,
+//       templateConfiguration.mapping
+//     );
+//     if (templateConfiguration && templateConfiguration.layout) {
+//       data["isClickable"] = templateConfiguration.layout.isClickable;
+//       data["behaviour"] = templateConfiguration.layout.behaviour;
+//       data["listType"] = templateConfiguration.layout.listType;
+//       data["titleName"] = templateConfiguration.layout.title;
+//       data["textAlignment"] = templateConfiguration.layout.textAlignment;
+//       data["renderTitle"] = templateConfiguration.layout.renderTitle;
+//       data["groupResults"] = templateConfiguration.groupResults;
+//       data["fieldName"] = templateConfiguration.fieldName;
+//       config = templateConfiguration;
+//     }
+//     isMapping = templateConfiguration.mapping;
+//     if (!data.isShowAllBtn) {
+//       data.isShowAllBtn = false;
+//     }
+//     // this should only be applied for 'search' interface
+//     data["structuredData"] = [];
+//     data["structuredData"] = structuredData;
+//     var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+//     var devMode = _self.isDev ? true : false;
+//     var templates = _self.searchTemplateObj.resultTemplates().structuredData;
+//     for (let i = 0; i < templates.length; i++) {
+//       // search
+//       if (
+//         templates[i].templateType ===
+//         selected[groupName + templateInterfaceType + "TemplateType"] &&
+//         templates[i].layoutType ===
+//         selected[groupName + templateInterfaceType + "LayoutType"]
+//       ) {
+//         // check for templateId from CustomTemplateConfig and it should onle be give for matched Template
+//         // Even user sends both templte string and templateId, will consider templateId as final template
+//         if (
+//           customTemplateConfig &&
+//           customTemplateConfig.templateId &&
+//           customTemplateConfig.templateId.length
+//         ) {
+//           templates[i].templateId = customTemplateConfig.templateId;
+//         }
+//         if (templates[i].templateId && templates[i].templateId.length) {
+//           finalTemplate = "#" + templates[i].templateId;
+//         } else {
+//           finalTemplate = templates[i].template;
+//         }
+//       }
+//     }
+//     if (viewType === "Customize" && devMode && data.isFullResults) {
+//       finalTemplate =
+//         _self.searchTemplateObj.resultTemplates().structuredData[0].template;
+//       data.isClickable = true;
+//     }
+//     if (!data.selectedFacet) {
+//       viewType = "Preview";
+//     }
 
-    if (!structuredData || !structuredData.length) {
-      structuredData = [];
-    }
+//     if (!structuredData || !structuredData.length) {
+//       structuredData = [];
+//     }
 
-    var maxSearchResultsAllowed = 2;
-    if (data.isLiveSearch) {
-      maxSearchResultsAllowed =
-        searchConfigurationCopy.liveSearchResultsLimit ||
-          searchConfigurationCopy.liveSearchResultsLimit == 0
-          ? searchConfigurationCopy.liveSearchResultsLimit
-          : 2;
-    } else if (data.isSearch) {
-      if (
-        selected[groupName + templateInterfaceType + "TemplateType"] === "grid"
-      ) {
-        maxSearchResultsAllowed = 4;
-      } else if (
-        selected[groupName + templateInterfaceType + "TemplateType"] ===
-        "carousel"
-      ) {
-        maxSearchResultsAllowed = structuredData.length
-          ? structuredData.length
-          : 1;
-      } else {
-        maxSearchResultsAllowed = 2;
-      }
-    } else if (
-      data.isFullResults &&
-      _self.vars.selectedFacetFromSearch == "all results"
-    ) {
-      maxSearchResultsAllowed = 5;
-    } else {
-      maxSearchResultsAllowed = structuredData.length
-        ? structuredData.length
-        : 1;
-    }
+//     var maxSearchResultsAllowed = 2;
+//     if (data.isLiveSearch) {
+//       maxSearchResultsAllowed =
+//         searchConfigurationCopy.liveSearchResultsLimit ||
+//           searchConfigurationCopy.liveSearchResultsLimit == 0
+//           ? searchConfigurationCopy.liveSearchResultsLimit
+//           : 2;
+//     } else if (data.isSearch) {
+//       if (
+//         selected[groupName + templateInterfaceType + "TemplateType"] === "grid"
+//       ) {
+//         maxSearchResultsAllowed = 4;
+//       } else if (
+//         selected[groupName + templateInterfaceType + "TemplateType"] ===
+//         "carousel"
+//       ) {
+//         maxSearchResultsAllowed = structuredData.length
+//           ? structuredData.length
+//           : 1;
+//       } else {
+//         maxSearchResultsAllowed = 2;
+//       }
+//     } else if (
+//       data.isFullResults &&
+//       _self.vars.selectedFacetFromSearch == "all results"
+//     ) {
+//       maxSearchResultsAllowed = 5;
+//     } else {
+//       maxSearchResultsAllowed = structuredData.length
+//         ? structuredData.length
+//         : 1;
+//     }
 
-    var isDropdownEnabled = true;
-    var isTopDown = false;
-    if ($("body").hasClass("top-down")) {
-      isDropdownEnabled = false;
-      isTopDown = true;
-    }
-    var isMapped = true;
-    if ((data.dataObj.data || []).length && !isMapping) {
-      isMapped = false;
-    }
-    let gridLayoutType = '';
-    if (config?.type === 'grid') {
-      if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
-        gridLayoutType = 'img_common'
-      }
-      else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l5') {
-        gridLayoutType = 'img_large'
-      }
-      else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l6') {
-        gridLayoutType = 'img_left'
-      }
-      else if (['l7', 'l8', 'l9'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
-        gridLayoutType = 'img_top'
-      }
-    }
-    const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
+//     var isDropdownEnabled = true;
+//     var isTopDown = false;
+//     if ($("body").hasClass("top-down")) {
+//       isDropdownEnabled = false;
+//       isTopDown = true;
+//     }
+//     var isMapped = true;
+//     if ((data.dataObj.data || []).length && !isMapping) {
+//       isMapped = false;
+//     }
+//     let gridLayoutType = '';
+//     if (config?.type === 'grid') {
+//       if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+//         gridLayoutType = 'img_common'
+//       }
+//       else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l5') {
+//         gridLayoutType = 'img_large'
+//       }
+//       else if (selected[groupName + templateInterfaceType + "LayoutType"] === 'l6') {
+//         gridLayoutType = 'img_left'
+//       }
+//       else if (['l7', 'l8', 'l9'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+//         gridLayoutType = 'img_top'
+//       }
+//     }
+//     const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
 
-    // Temp Object 
-    var msgData = {
-      message: [{
-        component: {
-          type: 'template',
-          payload: {
-            template_type: "search" + searchTemplateType + "Template",
-            // template_type: selected[groupName + templateInterfaceType + "TemplateType"]+"Template"+selected[groupName + templateInterfaceType + "LayoutType"],
-            isClickable: data.isClickable,
-            structuredData: structuredData,
-            config: config,
-            viewType: viewType,
-            isFullResults: data.isFullResults,
-            selectedFacet: data.selectedFacet,
-            isSearch: data.isSearch,
-            devMode: devMode,
-            isLiveSearch: data.isLiveSearch,
-            appearanceType: "data",
-            maxSearchResultsAllowed: maxSearchResultsAllowed,
-            isDropdownEnabled: isDropdownEnabled,
-            tour: _self.vars.customTourResultRank,
-            helpers: helpers,
-            renderTitle: data.renderTitle,
-            titleName: data.titleName,
-            listType: data.listType,
-            textAlignment: data.textAlignment,
-            behaviour: data.behaviour,
-            groupResults: data.groupResults,
-            groupName: groupName,
-            doc_count: doc_count || 0,
-            pageNumber: 0,
-            templateName: groupName.replaceAll(" ", ""),
-            fieldName: data.fieldName,
-            gridLayoutType: gridLayoutType,
-            isButtonTemplate: false
-          }
-        }
-      }]
-    }
-    var dataHTML = _self.customTemplateObj.renderMessage(msgData);
-    //var dataHTML = $(finalTemplate).tmplProxy({
-    // isClickable: data.isClickable,
-    // structuredData: structuredData,
-    // config: config,
-    // viewType: viewType,
-    // isFullResults: data.isFullResults,
-    // selectedFacet: data.selectedFacet,
-    // isSearch: data.isSearch,
-    // devMode: devMode,
-    // isLiveSearch: data.isLiveSearch,
-    // appearanceType: "data",
-    // maxSearchResultsAllowed: maxSearchResultsAllowed,
-    // isDropdownEnabled: isDropdownEnabled,
-    // tour: _self.vars.customTourResultRank,
-    // isTopdown: isTopDown,
-    // helpers: helpers,
-    // isMapping: isMapped,
-    // renderTitle: data.renderTitle,
-    // titleName: data.titleName,
-    // listType: data.listType,
-    // textAlignment: data.textAlignment,
-    // behaviour: data.behaviour,
-    // groupResults: data.groupResults,
-    // groupName: groupName,
-    // doc_count: doc_count || 0,
-    // pageNumber: 0,
-    // templateName: groupName.replaceAll(" ", ""),
-    // fieldName: data.fieldName,
-    //});
+//     // Temp Object 
+//     var msgData = {
+//       message: [{
+//         component: {
+//           type: 'template',
+//           payload: {
+//             template_type: "search" + searchTemplateType + "Template",
+//             // template_type: selected[groupName + templateInterfaceType + "TemplateType"]+"Template"+selected[groupName + templateInterfaceType + "LayoutType"],
+//             isClickable: data.isClickable,
+//             structuredData: structuredData,
+//             config: config,
+//             viewType: viewType,
+//             isFullResults: data.isFullResults,
+//             selectedFacet: data.selectedFacet,
+//             isSearch: data.isSearch,
+//             devMode: devMode,
+//             isLiveSearch: data.isLiveSearch,
+//             appearanceType: "data",
+//             maxSearchResultsAllowed: maxSearchResultsAllowed,
+//             isDropdownEnabled: isDropdownEnabled,
+//             tour: _self.vars.customTourResultRank,
+//             helpers: helpers,
+//             renderTitle: data.renderTitle,
+//             titleName: data.titleName,
+//             listType: data.listType,
+//             textAlignment: data.textAlignment,
+//             behaviour: data.behaviour,
+//             groupResults: data.groupResults,
+//             groupName: groupName,
+//             doc_count: doc_count || 0,
+//             pageNumber: 0,
+//             templateName: groupName.replaceAll(" ", ""),
+//             fieldName: data.fieldName,
+//             gridLayoutType: gridLayoutType,
+//             isButtonTemplate: false
+//           }
+//         }
+//       }]
+//     }
+//     var dataHTML = _self.customTemplateObj.renderMessage(msgData);
+//     //var dataHTML = $(finalTemplate).tmplProxy({
+//     // isClickable: data.isClickable,
+//     // structuredData: structuredData,
+//     // config: config,
+//     // viewType: viewType,
+//     // isFullResults: data.isFullResults,
+//     // selectedFacet: data.selectedFacet,
+//     // isSearch: data.isSearch,
+//     // devMode: devMode,
+//     // isLiveSearch: data.isLiveSearch,
+//     // appearanceType: "data",
+//     // maxSearchResultsAllowed: maxSearchResultsAllowed,
+//     // isDropdownEnabled: isDropdownEnabled,
+//     // tour: _self.vars.customTourResultRank,
+//     // isTopdown: isTopDown,
+//     // helpers: helpers,
+//     // isMapping: isMapped,
+//     // renderTitle: data.renderTitle,
+//     // titleName: data.titleName,
+//     // listType: data.listType,
+//     // textAlignment: data.textAlignment,
+//     // behaviour: data.behaviour,
+//     // groupResults: data.groupResults,
+//     // groupName: groupName,
+//     // doc_count: doc_count || 0,
+//     // pageNumber: 0,
+//     // templateName: groupName.replaceAll(" ", ""),
+//     // fieldName: data.fieldName,
+//     //});
 
-    // _self.vars.customizeView = true;
-    if (data && data.container && data.container.length) {
-      container = data.container;
-    }
-    // overrides the default container with custom container
-    if (
-      templateConfiguration &&
-      templateConfiguration.layout &&
-      templateConfiguration.layout.container &&
-      templateConfiguration.layout.container.length
-    ) {
-      container = templateConfiguration.layout.container;
-    }
+//     // _self.vars.customizeView = true;
+//     if (data && data.container && data.container.length) {
+//       container = data.container;
+//     }
+//     // overrides the default container with custom container
+//     if (
+//       templateConfiguration &&
+//       templateConfiguration.layout &&
+//       templateConfiguration.layout.container &&
+//       templateConfiguration.layout.container.length
+//     ) {
+//       container = templateConfiguration.layout.container;
+//     }
 
-    if (!container && data.isSearch) {
-      container = ".search-data-container";
-    } else if (!container && data.isLiveSearch) {
-      container = ".live-search-data-container";
-    } else if (!container && data.isFullResults) {
-      container = ".full-search-data-container";
-    }
+//     if (!container && data.isSearch) {
+//       container = ".search-data-container";
+//     } else if (!container && data.isLiveSearch) {
+//       container = ".live-search-data-container";
+//     } else if (!container && data.isFullResults) {
+//       container = ".full-search-data-container";
+//     }
 
-    if (data.isLiveSearch) {
-      $(container).append(dataHTML);
-    } else if (data.isSearch) {
-      $(container).last().append(dataHTML);
-    } else {
-      if (data.dataObj.ShowMoreData) {
-        if (viewType === "Customize" && devMode && data.isFullResults) {
-          $(dataHTML).find(".show-more-list").remove();
-          $(
-            ".full-search-data-container [templateName=" +
-            data.dataObj.ShowMoreData.templateName +
-            "]"
-          ).before($(dataHTML).find(".tile-with-text-parent").children());
-        } else {
-          $(dataHTML).children(".show-more-list").remove();
-          $(
-            ".full-search-data-container [templateName=" +
-            data.dataObj.ShowMoreData.templateName +
-            "]"
-          ).before($(dataHTML).children());
-        }
+//     if (data.isLiveSearch) {
+//       $(container).append(dataHTML);
+//     } else if (data.isSearch) {
+//       $(container).last().append(dataHTML);
+//     } else {
+//       if (data.dataObj.ShowMoreData) {
+//         if (viewType === "Customize" && devMode && data.isFullResults) {
+//           $(dataHTML).find(".show-more-list").remove();
+//           $(
+//             ".full-search-data-container [templateName=" +
+//             data.dataObj.ShowMoreData.templateName +
+//             "]"
+//           ).before($(dataHTML).find(".tile-with-text-parent").children());
+//         } else {
+//           $(dataHTML).children(".show-more-list").remove();
+//           $(
+//             ".full-search-data-container [templateName=" +
+//             data.dataObj.ShowMoreData.templateName +
+//             "]"
+//           ).before($(dataHTML).children());
+//         }
 
-        if (
-          (Number(
-            $(
-              ".full-search-data-container [templateName=" +
-              data.dataObj.ShowMoreData.templateName +
-              "]"
-            ).attr("pageNumber")
-          ) +
-            1) *
-          5 >=
-          doc_count
-        ) {
-          $(
-            ".full-search-data-container [templateName=" +
-            data.dataObj.ShowMoreData.templateName +
-            "]"
-          ).hide();
-        }
-      } else {
-        $(container).append(dataHTML);
-      }
-    }
-    if (
-      selected[groupName + templateInterfaceType + "TemplateType"] ===
-      "carousel"
-    ) {
-      _self.bindCarouselActions(dataHTML);
-    }
-    if (!$("body").hasClass("top-down")) {
-      _self.bindStructuredDataTriggeringOptions();
-      setTimeout(() => {
-        if (_self.vars.customizeView) {
-          $(".query-analytics-control-container").show();
-        } else {
-          $(".query-analytics-control-container").hide();
-        }
-      }, 200);
-    }
-    _self.showMoreClick();
-    setTimeout(() => {
-      _self.bindAllResultRankingOperations();
-    }, 200);
-    _self.clickNavigateToUrl();
-  });
+//         if (
+//           (Number(
+//             $(
+//               ".full-search-data-container [templateName=" +
+//               data.dataObj.ShowMoreData.templateName +
+//               "]"
+//             ).attr("pageNumber")
+//           ) +
+//             1) *
+//           5 >=
+//           doc_count
+//         ) {
+//           $(
+//             ".full-search-data-container [templateName=" +
+//             data.dataObj.ShowMoreData.templateName +
+//             "]"
+//           ).hide();
+//         }
+//       } else {
+//         $(container).append(dataHTML);
+//       }
+//     }
+//     if (
+//       selected[groupName + templateInterfaceType + "TemplateType"] ===
+//       "carousel"
+//     ) {
+//       _self.bindCarouselActions(dataHTML);
+//     }
+//     if (!$("body").hasClass("top-down")) {
+//       _self.bindStructuredDataTriggeringOptions();
+//       setTimeout(() => {
+//         if (_self.vars.customizeView) {
+//           $(".query-analytics-control-container").show();
+//         } else {
+//           $(".query-analytics-control-container").hide();
+//         }
+//       }, 200);
+//     }
+//     _self.showMoreClick();
+//     setTimeout(() => {
+//       _self.bindAllResultRankingOperations();
+//     }, 200);
+//     _self.clickNavigateToUrl();
+//   });
 
-  _self.vars.customizeTemplates = templates;
-};
-FindlySDK.prototype.designDataWithMappings = function (data, mapping) {
-  var dataArr = [];
-  if (data && data.length && mapping && Object.values(mapping).length) {
-    data.forEach((obj) => {
-      var item = {};
-      if (obj[mapping.heading]) {
-        item.heading = obj[mapping.heading];
-      }
-      if (obj[mapping.description]) {
-        item.description = obj[mapping.description];
-      }
-      if (obj[mapping.img]) {
-        item.img = obj[mapping.img];
-      }
-      if (obj[mapping.url]) {
-        item.url = obj[mapping.url];
-      }
-      if (!item.heading || !item.heading.toString().length) {
-        item.heading = "";
-      }
-      if (!item.description || !item.description.toString().length) {
-        item.description = "";
-      }
-      if (!item.img || !item.img.length) {
-        item.img = "";
-      }
-      if (!item.url || !item.url.length) {
-        item.url = "";
-      }
-      item.config = obj.config;
-      item.feedback = obj.feedback;
-      item.customization = null;
-      item.sys_content_type = obj.sys_content_type;
-      item.contentId = obj.contentId;
-      item.addedResult =
-        obj.addedResult || obj.addedResult == false ? obj.addedResult : false;
-      item.bestMatch =
-        obj.bestMatch || obj.bestMatch == false ? obj.bestMatch : false;
-      if (item.heading || item.description || item.img || item.url) {
-        dataArr.push(item);
-      }
-    });
-    return dataArr;
-  }
-};
+//   _self.vars.customizeTemplates = templates;
+// };
+// FindlySDK.prototype.designDataWithMappings = function (data, mapping) {
+//   var dataArr = [];
+//   if (data && data.length && mapping && Object.values(mapping).length) {
+//     data.forEach((obj) => {
+//       var item = {};
+//       if (obj[mapping.heading]) {
+//         item.heading = obj[mapping.heading];
+//       }
+//       if (obj[mapping.description]) {
+//         item.description = obj[mapping.description];
+//       }
+//       if (obj[mapping.img]) {
+//         item.img = obj[mapping.img];
+//       }
+//       if (obj[mapping.url]) {
+//         item.url = obj[mapping.url];
+//       }
+//       if (!item.heading || !item.heading.toString().length) {
+//         item.heading = "";
+//       }
+//       if (!item.description || !item.description.toString().length) {
+//         item.description = "";
+//       }
+//       if (!item.img || !item.img.length) {
+//         item.img = "";
+//       }
+//       if (!item.url || !item.url.length) {
+//         item.url = "";
+//       }
+//       item.config = obj.config;
+//       item.feedback = obj.feedback;
+//       item.customization = null;
+//       item.sys_content_type = obj.sys_content_type;
+//       item.contentId = obj.contentId;
+//       item.addedResult =
+//         obj.addedResult || obj.addedResult == false ? obj.addedResult : false;
+//       item.bestMatch =
+//         obj.bestMatch || obj.bestMatch == false ? obj.bestMatch : false;
+//       if (item.heading || item.description || item.img || item.url) {
+//         dataArr.push(item);
+//       }
+//     });
+//     return dataArr;
+//   }
+// };
 
 var newCarouselTemplateCount = 0;
 var newCarouselEles = [];
-FindlySDK.prototype.bindCarouselActions = function (dataHTML) {
-  var _self = this;
-  newCarouselTemplateCount += 1;
-  dataHTML
-    .find(".carousel:last")
-    .addClass("carouselTemplate" + newCarouselTemplateCount);
-  var count = dataHTML
-    .find(".carouselTemplate" + newCarouselTemplateCount)
-    .children().length;
-  if (count > 1) {
-    var carouselOneByOne = new PureJSCarousel({
-      carousel: ".carouselTemplate" + newCarouselTemplateCount,
-      slide: ".slide",
-      oneByOne: true,
-      jq: $,
-    });
-    $(".carousel" + newCarouselTemplateCount)
-      .parent()
-      .show();
-    newCarouselEles.push(carouselOneByOne);
-    if (
-      $(".carouselTemplate" + newCarouselTemplateCount).width() >=
-      $(
-        ".carouselTemplate" +
-        newCarouselTemplateCount +
-        " .purejscarousel-slides-container"
-      ).children().length *
-      $(
-        ".carouselTemplate" +
-        newCarouselTemplateCount +
-        " .purejscarousel-slides-container .slide:first"
-      ).width()
-    ) {
-      $(
-        ".carouselTemplate" +
-        newCarouselTemplateCount +
-        " .purejscarousel-btn-prev"
-      ).hide();
-      $(
-        ".carouselTemplate" +
-        newCarouselTemplateCount +
-        " .purejscarousel-btn-next"
-      ).hide();
-    }
-    $(
-      ".carouselTemplate" +
-      newCarouselTemplateCount +
-      " .purejscarousel-btn-prev::after"
-    ).css(
-      "height",
-      $(
-        ".carouselTemplate" +
-        newCarouselTemplateCount +
-        ".purejscarousel-slides-container"
-      ).height() + "px"
-    );
-    $(
-      ".carouselTemplate" +
-      newCarouselTemplateCount +
-      " .purejscarousel-btn-next::after"
-    ).css(
-      "height",
-      $(
-        ".carouselTemplate" +
-        newCarouselTemplateCount +
-        ".purejscarousel-slides-container"
-      ).height() + "px"
-    );
-    $("body").append(
-      "<style>.carouselTemplate" +
-      newCarouselTemplateCount +
-      " .purejscarousel-btn-next::after,.carouselTemplate" +
-      newCarouselTemplateCount +
-      " .purejscarousel-btn-prev::after {height:" +
-      ($(
-        ".carouselTemplate" +
-        newCarouselTemplateCount +
-        " .purejscarousel-slides-container"
-      ).height() -
-        8) +
-      "px !important; top:-" +
-      ($(
-        ".carouselTemplate" +
-        newCarouselTemplateCount +
-        " .purejscarousel-btn-next"
-      ).position().top -
-        27.5) +
-      "px !important;}</style>"
-    );
+// FindlySDK.prototype.bindCarouselActions = function (dataHTML) {
+//   var _self = this;
+//   newCarouselTemplateCount += 1;
+//   dataHTML
+//     .find(".carousel:last")
+//     .addClass("carouselTemplate" + newCarouselTemplateCount);
+//   var count = dataHTML
+//     .find(".carouselTemplate" + newCarouselTemplateCount)
+//     .children().length;
+//   if (count > 1) {
+//     var carouselOneByOne = new PureJSCarousel({
+//       carousel: ".carouselTemplate" + newCarouselTemplateCount,
+//       slide: ".slide",
+//       oneByOne: true,
+//       jq: $,
+//     });
+//     $(".carousel" + newCarouselTemplateCount)
+//       .parent()
+//       .show();
+//     newCarouselEles.push(carouselOneByOne);
+//     if (
+//       $(".carouselTemplate" + newCarouselTemplateCount).width() >=
+//       $(
+//         ".carouselTemplate" +
+//         newCarouselTemplateCount +
+//         " .purejscarousel-slides-container"
+//       ).children().length *
+//       $(
+//         ".carouselTemplate" +
+//         newCarouselTemplateCount +
+//         " .purejscarousel-slides-container .slide:first"
+//       ).width()
+//     ) {
+//       $(
+//         ".carouselTemplate" +
+//         newCarouselTemplateCount +
+//         " .purejscarousel-btn-prev"
+//       ).hide();
+//       $(
+//         ".carouselTemplate" +
+//         newCarouselTemplateCount +
+//         " .purejscarousel-btn-next"
+//       ).hide();
+//     }
+//     $(
+//       ".carouselTemplate" +
+//       newCarouselTemplateCount +
+//       " .purejscarousel-btn-prev::after"
+//     ).css(
+//       "height",
+//       $(
+//         ".carouselTemplate" +
+//         newCarouselTemplateCount +
+//         ".purejscarousel-slides-container"
+//       ).height() + "px"
+//     );
+//     $(
+//       ".carouselTemplate" +
+//       newCarouselTemplateCount +
+//       " .purejscarousel-btn-next::after"
+//     ).css(
+//       "height",
+//       $(
+//         ".carouselTemplate" +
+//         newCarouselTemplateCount +
+//         ".purejscarousel-slides-container"
+//       ).height() + "px"
+//     );
+//     $("body").append(
+//       "<style>.carouselTemplate" +
+//       newCarouselTemplateCount +
+//       " .purejscarousel-btn-next::after,.carouselTemplate" +
+//       newCarouselTemplateCount +
+//       " .purejscarousel-btn-prev::after {height:" +
+//       ($(
+//         ".carouselTemplate" +
+//         newCarouselTemplateCount +
+//         " .purejscarousel-slides-container"
+//       ).height() -
+//         8) +
+//       "px !important; top:-" +
+//       ($(
+//         ".carouselTemplate" +
+//         newCarouselTemplateCount +
+//         " .purejscarousel-btn-next"
+//       ).position().top -
+//         27.5) +
+//       "px !important;}</style>"
+//     );
 
-    var evt = document.createEvent("HTMLEvents");
-    evt.initEvent("resize", true, false);
-    window.dispatchEvent(evt);
-  }
-};
+//     var evt = document.createEvent("HTMLEvents");
+//     evt.initEvent("resize", true, false);
+//     window.dispatchEvent(evt);
+//   }
+// };
 
 FindlySDK.prototype.bindStructuredDataTriggeringOptions = function () {
   var _self = this;
-  $(".show-all")
-    .off("click")
-    .on("click", function (e) {
-      if ($(".topdown-search-main-container").length) {
-        _self.vars.searchObject.searchText = $("body").hasClass("top-down")
-          ? $(".search-top-down").val()
-          : $(".bottom-up-search").val();
-        $("#suggestion").val(
-          $("body").hasClass("top-down")
-            ? $(".search-top-down").val()
-            : $(".bottom-up-search").val()
-        );
-        _self.vars.showingMatchedResults = true;
-        _self.searchFacetsList([]);
-        _self.invokeSearch();
-        $(".all-result-container").show();
-        $("#live-search-result-box").hide();
-        $("#frequently-searched-box").hide();
-        // $('#loaderDIV').show();
-      }
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      $(".show-all-results").trigger("click");
-      // total-structured-data-wrap
-      var appearanceType = $(e.target)
-        .closest(".total-structured-data-wrap")
-        .attr("appearanceType");
-      setTimeout(function () {
-        if (appearanceType) {
-          if (appearanceType === "faq") {
-            $("#faq").trigger("click");
-          }
-          if (appearanceType === "data") {
-            $("#data").trigger("click");
-          }
-          if (appearanceType == "web") {
-            $("#web").trigger("click");
-          }
-        }
-      }, 3000);
-    });
+  // $(".show-all")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     if ($(".topdown-search-main-container").length) {
+  //       _self.vars.searchObject.searchText = $("body").hasClass("top-down")
+  //         ? $(".search-top-down").val()
+  //         : $(".bottom-up-search").val();
+  //       $("#suggestion").val(
+  //         $("body").hasClass("top-down")
+  //           ? $(".search-top-down").val()
+  //           : $(".bottom-up-search").val()
+  //       );
+  //       _self.vars.showingMatchedResults = true;
+  //       _self.searchFacetsList([]);
+  //       _self.invokeSearch();
+  //       $(".all-result-container").show();
+  //       $("#live-search-result-box").hide();
+  //       $("#frequently-searched-box").hide();
+  //       // $('#loaderDIV').show();
+  //     }
+  //     e.preventDefault();
+  //     e.stopImmediatePropagation();
+  //     $(".show-all-results").trigger("click");
+  //     // total-structured-data-wrap
+  //     var appearanceType = $(e.target)
+  //       .closest(".total-structured-data-wrap")
+  //       .attr("appearanceType");
+  //     setTimeout(function () {
+  //       if (appearanceType) {
+  //         if (appearanceType === "faq") {
+  //           $("#faq").trigger("click");
+  //         }
+  //         if (appearanceType === "data") {
+  //           $("#data").trigger("click");
+  //         }
+  //         if (appearanceType == "web") {
+  //           $("#web").trigger("click");
+  //         }
+  //       }
+  //     }, 3000);
+  //   });
 
   // if (_self.vars.showingMatchedResults == true) {
   $("a.structured-data-wrp-content")
@@ -19654,145 +19356,145 @@ FindlySDK.prototype.bindStructuredDataTriggeringOptions = function () {
       showMore(e);
     });
 
-  $(".sdk-show-classification")
-    .off("click")
-    .on("click", function (e) {
-      if ($("body").hasClass("top-down")) {
-        _self.showAllClickEventTopDown(e);
-      }
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      showMore(e);
-    });
-  window.showMore = function (e) {
-    var appearanceType = $(e.target)
-      .closest(".total-structured-data-wrap")
-      .attr("appearanceType");
-    var selectedFacet = "";
-    if (appearanceType) {
-      if (appearanceType === "faq") {
-        selectedFacet = "faq";
-      }
-      if (appearanceType === "data") {
-        selectedFacet = "data";
-      }
-      if (appearanceType == "web") {
-        selectedFacet = "web";
-      }
-      if (appearanceType == "all results") {
-        selectedFacet = "all results";
-      }
-      if (appearanceType == "task") {
-        selectedFacet = "task";
-      }
-      if (appearanceType == "file") {
-        selectedFacet = "file";
-      }
-      _self.vars["selectedFacetFromSearch"] = selectedFacet;
-      // _self.showAllResults();
-      if (!$("body").hasClass("top-down")) {
-        _self.invokeSearch();
-        $("#loaderDIV").show();
-      }
+  // $(".sdk-show-classification")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     if ($("body").hasClass("top-down")) {
+  //       _self.showAllClickEventTopDown(e);
+  //     }
+  //     e.stopPropagation();
+  //     e.stopImmediatePropagation();
+  //     showMore(e);
+  //   });
+  // window.showMore = function (e) {
+  //   var appearanceType = $(e.target)
+  //     .closest(".total-structured-data-wrap")
+  //     .attr("appearanceType");
+  //   var selectedFacet = "";
+  //   if (appearanceType) {
+  //     if (appearanceType === "faq") {
+  //       selectedFacet = "faq";
+  //     }
+  //     if (appearanceType === "data") {
+  //       selectedFacet = "data";
+  //     }
+  //     if (appearanceType == "web") {
+  //       selectedFacet = "web";
+  //     }
+  //     if (appearanceType == "all results") {
+  //       selectedFacet = "all results";
+  //     }
+  //     if (appearanceType == "task") {
+  //       selectedFacet = "task";
+  //     }
+  //     if (appearanceType == "file") {
+  //       selectedFacet = "file";
+  //     }
+  //     _self.vars["selectedFacetFromSearch"] = selectedFacet;
+  //     // _self.showAllResults();
+  //     if (!$("body").hasClass("top-down")) {
+  //       _self.invokeSearch();
+  //       $("#loaderDIV").show();
+  //     }
 
-      // $('.show-all-results').trigger("click");
-    }
-  };
+  //     // $('.show-all-results').trigger("click");
+  //   }
+  // };
 };
 //Template New Approach
-FindlySDK.prototype.designTemplateConfig = function (config, customConfig) {
-  var _self = this;
-  _self.maxSearchResultsAllowed = config.maxResultsAllowed;
-  var conditions = [];
-  if (config.groupResults) {
-    conditions = config.groupSetting.conditions;
-  }
-  conditions.push({
-    fieldValue: "defaultTemplate",
-    template: config.defaultTemplate,
-  });
-  conditions.forEach((condition) => {
-    var template = condition.template || {};
-    // writing conditions only for StructuredData
-    if (template && template.layout) {
-      _self[condition.fieldValue + "Config"][config.interface + "Interface"] =
-        template;
-      if (template.layout && template.layout.layoutType) {
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.templateType = template.type;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.template = "";
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.maxSearchResultsAllowed = 5;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.layoutType = template.layout.layoutType;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.textAlignment = template.layout.textAlignment;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.listType = template.layout.listType;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.isClickable = template.layout.isClickable;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.behaviour = template.layout.behaviour;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.renderTitle = template.layout.renderTitle;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].layout.title = template.layout.title;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].mapping = template.mapping;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].groupResults =
-          condition.fieldValue == "defaultTemplate"
-            ? false
-            : config.groupResults;
-        _self[condition.fieldValue + "Config"][
-          config.interface + "Interface"
-        ].fieldName =
-          condition.fieldValue == "defaultTemplate"
-            ? ""
-            : config.groupSetting.fieldName;
-      }
-    } else {
-      // need to handle if no template is coming from AJAX response.
-      _self[condition.fieldValue + "Config"][
-        config.interface + "Interface"
-      ].layout.templateType = "list";
-      _self[condition.fieldValue + "Config"][
-        config.interface + "Interface"
-      ].layout.layoutType = "l1";
-      _self[condition.fieldValue + "Config"][
-        config.interface + "Interface"
-      ].layout.template = "";
-      _self[condition.fieldValue + "Config"][
-        config.interface + "Interface"
-      ].layout.maxSearchResultsAllowed = _self.maxSearchResultsAllowed;
-      _self[condition.fieldValue + "Config"][
-        config.interface + "Interface"
-      ].layout.behaviour = "webpage";
-      _self[condition.fieldValue + "Config"][
-        config.interface + "Interface"
-      ].layout.isClickable = false;
-      _self[condition.fieldValue + "Config"][
-        config.interface + "Interface"
-      ].layout.listType = "classic";
-      _self[condition.fieldValue + "Config"][
-        config.interface + "Interface"
-      ].layout.renderTitle = false;
-    }
-  });
-};
+// FindlySDK.prototype.designTemplateConfig = function (config, customConfig) {
+//   var _self = this;
+//   _self.maxSearchResultsAllowed = config.maxResultsAllowed;
+//   var conditions = [];
+//   if (config.groupResults) {
+//     conditions = config.groupSetting.conditions;
+//   }
+//   conditions.push({
+//     fieldValue: "defaultTemplate",
+//     template: config.defaultTemplate,
+//   });
+//   conditions.forEach((condition) => {
+//     var template = condition.template || {};
+//     // writing conditions only for StructuredData
+//     if (template && template.layout) {
+//       _self[condition.fieldValue + "Config"][config.interface + "Interface"] =
+//         template;
+//       if (template.layout && template.layout.layoutType) {
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.templateType = template.type;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.template = "";
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.maxSearchResultsAllowed = 5;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.layoutType = template.layout.layoutType;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.textAlignment = template.layout.textAlignment;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.listType = template.layout.listType;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.isClickable = template.layout.isClickable;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.behaviour = template.layout.behaviour;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.renderTitle = template.layout.renderTitle;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].layout.title = template.layout.title;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].mapping = template.mapping;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].groupResults =
+//           condition.fieldValue == "defaultTemplate"
+//             ? false
+//             : config.groupResults;
+//         _self[condition.fieldValue + "Config"][
+//           config.interface + "Interface"
+//         ].fieldName =
+//           condition.fieldValue == "defaultTemplate"
+//             ? ""
+//             : config.groupSetting.fieldName;
+//       }
+//     } else {
+//       // need to handle if no template is coming from AJAX response.
+//       _self[condition.fieldValue + "Config"][
+//         config.interface + "Interface"
+//       ].layout.templateType = "list";
+//       _self[condition.fieldValue + "Config"][
+//         config.interface + "Interface"
+//       ].layout.layoutType = "l1";
+//       _self[condition.fieldValue + "Config"][
+//         config.interface + "Interface"
+//       ].layout.template = "";
+//       _self[condition.fieldValue + "Config"][
+//         config.interface + "Interface"
+//       ].layout.maxSearchResultsAllowed = _self.maxSearchResultsAllowed;
+//       _self[condition.fieldValue + "Config"][
+//         config.interface + "Interface"
+//       ].layout.behaviour = "webpage";
+//       _self[condition.fieldValue + "Config"][
+//         config.interface + "Interface"
+//       ].layout.isClickable = false;
+//       _self[condition.fieldValue + "Config"][
+//         config.interface + "Interface"
+//       ].layout.listType = "classic";
+//       _self[condition.fieldValue + "Config"][
+//         config.interface + "Interface"
+//       ].layout.renderTitle = false;
+//     }
+//   });
+// };
 
 FindlySDK.prototype.hideBottomUpAllResults = function () {
   var _self = this;
@@ -23498,72 +23200,72 @@ FindlySDK.prototype.getEndTaskMsgTopDownTemplate = function () {
   return endTaskMsgTemplate;
 };
 
-FindlySDK.prototype.showAllClickEventTopDown = function (e) {
-  var _self = this;
-  if ($(".topdown-search-main-container").length) {
-    _self.vars.searchObject.searchText = $("body").hasClass("top-down")
-      ? $(".search-top-down").val()
-      : $(".bottom-up-search").val();
-    $("#suggestion").val(
-      $("body").hasClass("top-down")
-        ? $(".search-top-down").val()
-        : $(".bottom-up-search").val()
-    );
-    $(".top-down-suggestion").val(
-      $("body").hasClass("top-down")
-        ? $(".search-top-down").val()
-        : $(".bottom-up-search").val()
-    );
-    _self.vars.scrollPageNumber = 0;
-    _self.vars.showingMatchedResults = true;
-    _self.searchFacetsList([]);
-    // _self.invokeSearch();
-    // var event = $.Event("keydown", { which: 13 });
-    // $('#search').trigger(event);
-    if (_self.isDev) {
-      if ($(".top-down-search-background-div")) {
-        $(".top-down-search-background-div").addClass("if-full-results");
-        $(".top-down-wrapper").addClass("top-down-wrapper-height");
-      }
-    }
-    $(".all-result-container").show();
-    $("#live-search-result-box").hide();
-    $("#frequently-searched-box").hide();
-    // $('#loaderDIV').show();
-  }
-  // total-structured-data-wrap
-  var appearanceType = $(e.target)
-    .closest(".total-structured-data-wrap")
-    .attr("appearanceType");
-  setTimeout(function () {
-    var selectedFacet = "";
-    if (appearanceType) {
-      if (appearanceType === "faq") {
-        selectedFacet = "faq";
-      }
-      if (appearanceType === "data") {
-        selectedFacet = "data";
-      }
-      if (appearanceType == "web") {
-        selectedFacet = "web";
-      }
-      if (appearanceType == "all results") {
-        selectedFacet = "all results";
-      }
-      if (appearanceType == "task") {
-        selectedFacet = "task";
-      }
-      if (appearanceType == "file") {
-        selectedFacet = "file";
-      }
-      _self.vars["selectedFacetFromSearch"] = selectedFacet;
-      _self.invokeSpecificSearch(selectedFacet);
-      // _self.prepAllSearchData(selectedFacet);
-      $(".content-data-sec").scrollTop(0);
-      _self.pubSub.publish("facet-selected", { selectedFacet: selectedFacet });
-    }
-  }, 3000);
-};
+// FindlySDK.prototype.showAllClickEventTopDown = function (e) {
+//   var _self = this;
+//   if ($(".topdown-search-main-container").length) {
+//     _self.vars.searchObject.searchText = $("body").hasClass("top-down")
+//       ? $(".search-top-down").val()
+//       : $(".bottom-up-search").val();
+//     $("#suggestion").val(
+//       $("body").hasClass("top-down")
+//         ? $(".search-top-down").val()
+//         : $(".bottom-up-search").val()
+//     );
+//     $(".top-down-suggestion").val(
+//       $("body").hasClass("top-down")
+//         ? $(".search-top-down").val()
+//         : $(".bottom-up-search").val()
+//     );
+//     _self.vars.scrollPageNumber = 0;
+//     _self.vars.showingMatchedResults = true;
+//     _self.searchFacetsList([]);
+//     // _self.invokeSearch();
+//     // var event = $.Event("keydown", { which: 13 });
+//     // $('#search').trigger(event);
+//     if (_self.isDev) {
+//       if ($(".top-down-search-background-div")) {
+//         $(".top-down-search-background-div").addClass("if-full-results");
+//         $(".top-down-wrapper").addClass("top-down-wrapper-height");
+//       }
+//     }
+//     $(".all-result-container").show();
+//     $("#live-search-result-box").hide();
+//     $("#frequently-searched-box").hide();
+//     // $('#loaderDIV').show();
+//   }
+//   // total-structured-data-wrap
+//   var appearanceType = $(e.target)
+//     .closest(".total-structured-data-wrap")
+//     .attr("appearanceType");
+//   setTimeout(function () {
+//     var selectedFacet = "";
+//     if (appearanceType) {
+//       if (appearanceType === "faq") {
+//         selectedFacet = "faq";
+//       }
+//       if (appearanceType === "data") {
+//         selectedFacet = "data";
+//       }
+//       if (appearanceType == "web") {
+//         selectedFacet = "web";
+//       }
+//       if (appearanceType == "all results") {
+//         selectedFacet = "all results";
+//       }
+//       if (appearanceType == "task") {
+//         selectedFacet = "task";
+//       }
+//       if (appearanceType == "file") {
+//         selectedFacet = "file";
+//       }
+//       _self.vars["selectedFacetFromSearch"] = selectedFacet;
+//       _self.invokeSpecificSearch(selectedFacet);
+//       // _self.prepAllSearchData(selectedFacet);
+//       $(".content-data-sec").scrollTop(0);
+//       _self.pubSub.publish("facet-selected", { selectedFacet: selectedFacet });
+//     }
+//   }, 3000);
+// };
 
 FindlySDK.prototype.bindPlaceholderStyle = function (config) {
   var canvas = document.createElement("canvas");
@@ -24538,18 +24240,18 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
   }
 };
 
-FindlySDK.prototype.bindCarouselForActionsTemplate = function (
-  actionContainer
-) {
-  var _self = this;
-  var type = "grid";
-  if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
-    type = searchConfigurationCopy.botConfig.botActionTemplate;
-  }
-  if ((type = "carousel")) {
-    _self.bindCarouselActions($(actionContainer));
-  }
-};
+// FindlySDK.prototype.bindCarouselForActionsTemplate = function (
+//   actionContainer
+// ) {
+//   var _self = this;
+//   var type = "grid";
+//   if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
+//     type = searchConfigurationCopy.botConfig.botActionTemplate;
+//   }
+//   if ((type = "carousel")) {
+//     _self.bindCarouselActions($(actionContainer));
+//   }
+// };
 
 FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
   if ($("body").hasClass("top-down")) {
@@ -24846,19 +24548,6 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
         })
     })
   }
-  // $(".full-search-data-container")
-  //   .off("click", ".show-more-list")
-  //   .on("click", ".show-more-list", function (e) {
-  //     var showMoreData = {
-  //       groupName: $(this).attr("groupName"),
-  //       templateName: $(this).attr("templateName"),
-  //       pageNumber: Number($(this).attr("pageNumber")) + 1,
-  //       fieldName: $(this).attr("fieldName"),
-  //     };
-  //     $(this).attr("pageNumber", Number($(this).attr("pageNumber")) + 1);
-  //     _self.vars.showingMatchedResults = true;
-  //     _self.invokeSearch(showMoreData);
-  //   });
 };
 
 FindlySDK.prototype.rearrangeTabsList = function (facets) {
@@ -25532,12 +25221,12 @@ FindlySDK.prototype.facetCheckBoxClick = function(event){
 }
 FindlySDK.prototype.getSearchByFacetFilters = function() {
 var  _self = this;
-if ($("body").hasClass("top-down")) {
+// if ($("body").hasClass("top-down")) {
   _self.vars.tempSelectedFiltersArr = _self.vars.selectedFiltersArr;
   _self.vars.tempSelectedFacetsList = _self.vars.selectedFacetsList;
   _self.vars.tempFilterObject = _self.vars.filterObject;
   _self.vars.scrollPageNumber = 0;
-}
+// }
 var filterObject = _self.vars.filterObject;
 var url = _self.API.searchUrl;
   var payload = {
@@ -25568,12 +25257,6 @@ var url = _self.API.searchUrl;
     _self.vars.selectedFacetFromSearch &&
     _self.vars.selectedFacetFromSearch !== "all results"
   ) {
-    // selectedTopFacet = {
-    //   fieldName: contentTypeFilter.fieldName,
-    //   subtype: contentTypeFilter.subtype,
-    //   facetValue: [_self.vars.selectedFacetFromSearch],
-    //   name: contentTypeFilter.name,
-    // };
     var tabConfig = {
       filter: {
         fieldName: _self.vars.tabFacetFieldName,
@@ -25628,7 +25311,7 @@ return new Promise((resolve, reject) => {
       filterCount = _self.vars.selectedFiltersArr.length;
     }
     _self.getMergedData(_self.vars.resultSettings, data, 'isFullResults').then((res) => {
-        resolve({result:res,facets:_self.vars.tabsList,filterCount:filterCount});
+        resolve({result:res,facets:_self.vars.tabsList,filterCount:filterCount,isFilterAlignedTop:_self.vars.filterConfiguration.aligned == "top"?true:false});
       })
     })
     .catch((error) => {
@@ -25747,7 +25430,6 @@ FindlySDK.prototype.countFunction = function(){
     return new Promise((resolve, reject) => {
         resolve({facetData:facetData});
       })
-    // _self.facetReset(_self.vars["facetObjectGlobal"], facetData);
 }
 
 FindlySDK.prototype.topdownFacetCheckBoxClick = function(event){
@@ -25885,29 +25567,6 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
             });
           }
         })
-      // $(".horizantal-filter-sec")
-      //   .off("click", ".apply-btn")
-      //   .on("click", ".apply-btn", function (event) {
-      //     // $('#loaderDIV').show();
-      //     _self.searchByFacetFilters(
-      //       _self.vars.filterObject,
-      //       _self.vars.selectedFiltersArr,
-      //       _self.vars.selectedFacetsList
-      //     );
-      //     if (
-      //       $(".topdown-search-main-container").length &&
-      //       _self.vars.isTopFacets
-      //     ) {
-      //       if ($(".sdk-filter-radio-top-down").length) {
-      //         _self.getTopDownFacetsAddedList(true);
-      //       } else {
-      //         _self.getTopDownFacetsAddedList();
-      //       }
-      //       $(".dropdown-content").hide();
-      //     }
-      //     $("#loaderDIV").hide();
-      //   });
-    
   }
 FindlySDK.prototype.removeFilterClickEvent = function(event,isRadioBtn=false) {
 return new Promise((resolve, reject) => {
@@ -25962,6 +25621,95 @@ FindlySDK.prototype.clearAllFilterTopdownEvent = function(event){
       reject(error);
     })
   });
+}
+FindlySDK.prototype.displayDropdownFilterCount = function(){
+  var _self = this;
+  _self.vars.searchFacetFilters.forEach((s) => {
+    s["selectedFieldsCount"] = 0;
+    _self.vars.selectedFacetsList.forEach((d) => {
+      if (s.fieldName === d.fieldName) {
+        s["selectedFieldsCount"] = s["selectedFieldsCount"] + 1;
+      }
+    });
+    if((s["selectedFieldsCount"])>0){
+      $('.'+s.fieldName).show();
+      $('.'+s.fieldName).html(s["selectedFieldsCount"]);
+    }else{
+      $('.'+s.fieldName).hide();
+      $('.'+s.fieldName).html('');
+    }
+  });
+}
+FindlySDK.prototype.dropdownFilterClickEvent = function(event){
+  var _self = this;
+  if ($(event.currentTarget).siblings("#myDropdown").is(":visible")) {
+    $(event.currentTarget).siblings("#myDropdown").hide();
+    $(event.currentTarget).find(".down-arrow").show();
+    $(event.currentTarget).find(".up-arrow").hide();
+    _self.vars.filterObject = [..._self.vars.tempFilterObject];
+    _self.vars.selectedFiltersArr = [
+      ..._self.vars.tempSelectedFiltersArr,
+    ];
+    _self.vars.selectedFacetsList = [
+      ..._self.vars.tempSelectedFacetsList,
+    ];
+  
+  } else {
+    $(event.currentTarget).find(".down-arrow").hide();
+    $(event.currentTarget).find(".up-arrow").show();
+    _self.vars.filterObject = [..._self.vars.tempFilterObject];
+    _self.vars.selectedFiltersArr = [
+      ..._self.vars.tempSelectedFiltersArr,
+    ];
+    _self.vars.selectedFacetsList = [
+      ..._self.vars.tempSelectedFacetsList,
+    ];
+    $(".dropdown-content").hide();
+    $(event.currentTarget).siblings("#myDropdown").show();
+  }
+  if($(event.currentTarget).siblings("#myDropdown").hasClass('filters-content-top-down')){
+    $(".sdk-filter-checkbox-top-down").prop("checked", false);
+    $(".sdk-filter-radio-top-down").prop("checked", false);
+  }else{
+    $(".sdk-filter-checkbox").prop("checked", false);
+    $(".sdk-filter-radio").prop("checked", false);
+  }
+  _self.markSelectedFilters();
+
+}
+FindlySDK.prototype.clearRadioSelectedFacets = function(event){
+  var _self = this;
+  return new Promise((resolve, reject) => {
+  var _dropdownContainer = $(event.currentTarget).closest(
+    ".filters-content-top-down"
+  );
+  var _fieldName = _dropdownContainer.attr("data-fieldName");
+  _self.vars.selectedFacetsList.forEach((d) => {
+    if (d.fieldName === _fieldName) {
+      let index = _self.vars.selectedFiltersArr.indexOf(d.id);
+      _self.vars.selectedFiltersArr.splice(index, 1);
+      _self.vars.selectedFacetsList.splice(index, 1);
+    }
+  });
+  _self.vars.filterObject.forEach((d)=>{
+    if(d.fieldName === _fieldName){
+      let index2 = _self.vars.filterObject.indexOf(d.fieldName);
+      _self.vars.filterObject.splice(index2, 1);
+    }
+  })
+  // _self.searchFacetsList(_self.vars.selectedFacetsList);
+  _self.markSelectedFilters();
+  _self.vars.countOfSelectedFilters -= 1;
+  _self.filterResultsTopDown(event, false, true).then((res)=>{
+    res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+    res.isUnselectedFilter = true;
+    res.selectedFacetsList = _self.vars.selectedFacetsList
+    resolve(res);
+  })
+  .catch((error) => {
+    reject(error);
+  })
+});
 }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
