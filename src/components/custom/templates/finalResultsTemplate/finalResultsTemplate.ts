@@ -66,7 +66,30 @@ class FinalResultsTemplate {
           hostWindowInstance.seeAllBtnClickEvent(e);
         }
         else {
-          me.fullSearchTemplateObj.renderMessage.bind(msgData);
+          let fullSearchMsgData = {
+            message: [{
+              component: {
+                type: 'template',
+                payload: {
+                  template_type: "fullSearchResultsTemplate",
+                  facets: [],
+                  count: msgData.message[0].component.payload.totalSearchResults,
+                  view: "Preview",
+                  isDev: msgData.message[0].component.payload.isDev,
+                  isFilterEnabled: false,
+                  devMode: msgData.message[0].component.payload.devMode,
+                  viewType: msgData.message[0].component.payload.viewType,
+                  facetPosition:'left',
+                  filterFacetData: [],
+                  groupData: msgData.message[0].component.payload.groupData
+                }
+              }
+            }]
+          };
+         let fullSearchHtml =  me.fullSearchTemplateObj.renderMessage.bind(me,fullSearchMsgData);
+         $('body').find('.full-search-results-container').remove();
+         $('body').append(`<div class="full-search-results-container"></div>`);
+         $('full-search-results-container').append(fullSearchHtml);
         }
       });
     }, 300)
