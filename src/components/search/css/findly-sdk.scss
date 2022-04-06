@@ -3723,6 +3723,7 @@ a.tile-heading{
     /* border-radius: 6px; */
     z-index: 1;
     }
+
     .kr-sg-radiobutton .radio-custom {
         position: absolute;
         cursor: pointer;
@@ -3731,21 +3732,7 @@ a.tile-heading{
     }
    
     
-    #topFacetFilterId .horizantal-filter-sec .kr-sg-radiobutton{
-        padding: 7px 12px 0px 10px !important;
-    }
-    #topFacetFilterId .horizantal-filter-sec .kr-sg-radiobutton .radio-custom+.radio-custom-label{
-        padding: 3px 0px 7px 28px !important;
-    }
-    .kr-sg-radiobutton .associated-filter-count{
-        color: var(--sdk-dusty-gray-color);
-        position: absolute;
-        margin-left: 2px;
-        top: 1px;
-      }
-      .kr-sg-radiobutton {
-        position: relative;
-    }
+    
 
       .tile-description img{
         max-width: 100% !important;
@@ -3759,29 +3746,8 @@ a.tile-heading{
     /* border-radius: 6px; */
     z-index: 1;
     }
-    .kr-sg-radiobutton .radio-custom {
-        position: absolute;
-        cursor: pointer;
-        margin: 3px;
-        height: auto;
-    }
-   
-    
-    #topFacetFilterId .horizantal-filter-sec .kr-sg-radiobutton{
-        padding: 7px 12px 0px 10px !important;
-    }
-    #topFacetFilterId .horizantal-filter-sec .kr-sg-radiobutton .radio-custom+.radio-custom-label{
-        padding: 3px 0px 7px 28px !important;
-    }
-    .kr-sg-radiobutton .associated-filter-count{
-        color: var(--sdk-dusty-gray-color);
-        position: absolute;
-        margin-left: 2px;
-        top: 1px;
-      }
-      .kr-sg-radiobutton {
-        position: relative;
-    }
+
+
 
       .tile-description img{
         max-width: 100% !important;

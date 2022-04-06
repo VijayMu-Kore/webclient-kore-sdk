@@ -313,16 +313,20 @@ class FullSearchResultsTemplate {
                     {{/if}}\
                     {{if !searchFacet.multiselect}}\
                       {{if searchFacet.subtype == "value"}}\
+                      <div class="option-text">\
                         <div class="custom_checkbox kr-sg-radiobutton d-block">\
-                            <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
-                            <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                          <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                          <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
                         </div>\
+                      </div>\
                       {{/if}}\
                       {{if searchFacet.subtype == "range"}}\
-                          <div class="custom_checkbox kr-sg-radiobutton d-block">\
-                            <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
-                            <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label> <span class="associated-filter-count">(${bucket.doc_count})</span>\
-                          </div>\
+                      <div class="option-text">\
+                        <div class="custom_checkbox kr-sg-radiobutton d-block">\
+                          <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                          <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label> <span class="associated-filter-count">(${bucket.doc_count})</span>\
+                        </div>\
+                      </div>\
                       {{/if}}\
                     {{/if}}\
                 {{/each}}\
@@ -380,16 +384,20 @@ class FullSearchResultsTemplate {
                         {{/if}}\
                         {{if !searchFacet.multiselect}}\
                           {{if searchFacet.subtype == "value"}}\
-                            <div class="custom_checkbox kr-sg-radiobutton d-block">\
-                                <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
-                                <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
-                            </div>\
-                          {{/if}}\
-                          {{if searchFacet.subtype == "range"}}\
+                            <div class="option-text">\
                               <div class="custom_checkbox kr-sg-radiobutton d-block">\
                                 <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
                                 <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
                               </div>\
+                            </div>\
+                          {{/if}}\
+                          {{if searchFacet.subtype == "range"}}\
+                            <div class="option-text">\
+                              <div class="custom_checkbox kr-sg-radiobutton d-block">\
+                                <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                                <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
+                              </div>\
+                            </div>\
                           {{/if}}\
                         {{/if}}\
                     {{/each}}\
