@@ -8,23 +8,23 @@ import KRPerfectScrollbar from 'perfect-scrollbar';
 import './../../libs/perfectscroll/css/perfect-scrollbar.min.css'
 import './chatWindow.scss';
 import chatConfig from './config/kore-config'
-
+import SearchAssistTemplatesPlugin from '../../plugins/searchAssistTemplatesPlugin'
 const bot = requireKr('/KoreBot.js').instance();
 
 /**
  * chatWindow is the UI chat widget to send and receive messages from Kore.ai platform 
  * @class
  */
-class chatWindow extends EventEmitter{
+class chatWindow extends EventEmitter {
   chatEle;
-  constructor(config){
+  constructor(config) {
     super();
     const me = this;
-    this.config={};
+    this.config = {};
     //EventEmitter.call(this);
     me.init(config);
   }
-  EVENTS={
+  EVENTS = {
     /**
      * jwtSuccess will be triggered once the jwt token received from API.
      *
@@ -32,7 +32,7 @@ class chatWindow extends EventEmitter{
      * @type {Object}
      * @property {String} jwt - jwt token from server response .
      */
-    JWT_SUCCESS:'jwtSuccess',
+    JWT_SUCCESS: 'jwtSuccess',
     /**
      * beforeViewInit will be triggered before the chat window dom element is attached to provided container.
      *
@@ -40,7 +40,7 @@ class chatWindow extends EventEmitter{
      * @type {object}
      * @property {Object} chatEle - chat window dom element .
      */
-    BEFORE_VIEW_INIT:'beforeViewInit',
+    BEFORE_VIEW_INIT: 'beforeViewInit',
     /**
      * viewInit will be triggered once the chat window dom element is attached to provided container.
      *
@@ -48,7 +48,7 @@ class chatWindow extends EventEmitter{
      * @type {object}
      * @property {Object} chatEle - chat window dom element .
      */
-    VIEW_INIT:'viewInit',
+    VIEW_INIT: 'viewInit',
     /**
      * beforeRenderMessage will be triggered before appending the message html to chatwindow
      *
@@ -57,30 +57,30 @@ class chatWindow extends EventEmitter{
      * @property {Object} messageHtml message bubble html content
      * @property {Object} msgData message data
     */
-    BEFORE_RENDER_MSG:'beforeRenderMessage',
-     /**
-     * afterRenderMessage will be triggered after appending the message html to chatwindow
-     *
-     * @event chatWindow#afterRenderMessage
-     * @type {object}
-     * @property {Object} messageHtml message bubble html content
-     * @property {Object} msgData message data
-     */
-    AFTER_RENDER_MSG:'afterRenderMessage',
+    BEFORE_RENDER_MSG: 'beforeRenderMessage',
+    /**
+    * afterRenderMessage will be triggered after appending the message html to chatwindow
+    *
+    * @event chatWindow#afterRenderMessage
+    * @type {object}
+    * @property {Object} messageHtml message bubble html content
+    * @property {Object} msgData message data
+    */
+    AFTER_RENDER_MSG: 'afterRenderMessage',
     /**
      * onWSOpen will be triggered on new websocket connection open
      *
      * @event chatWindow#onWSOpen
      */
-    ON_WS_OPEN:'onWSOpen',
-     /**
-     * onWSMessage will be triggered on new message received from websocket
-     *
-     * @event chatWindow#onWSMessage
-     * @type {object}
-     * @property {Object} messageData - message data received from websocket
-     */
-    ON_WS_MESSAGE:'onWSMessage',
+    ON_WS_OPEN: 'onWSOpen',
+    /**
+    * onWSMessage will be triggered on new message received from websocket
+    *
+    * @event chatWindow#onWSMessage
+    * @type {object}
+    * @property {Object} messageData - message data received from websocket
+    */
+    ON_WS_MESSAGE: 'onWSMessage',
     /**
      * onWSMessage will be triggered on new message received from websocket
      *
@@ -88,15 +88,15 @@ class chatWindow extends EventEmitter{
      * @type {object}
      * @property {Object} messageToBot - message data to be sent to to websocket
      */
-     BEFORE_WS_SEND_MESSAGE:'beforeWSSendMessage',
-     /**
-     * onChatHistoryResponse will be triggered on chatHistory API response
-     *
-     * @event chatWindow#onChatHistoryResponse
-     * @type {object}
-     * @property {Object} historyResponse - chatHistory API response
-     */
-      ON_CHAT_HISTORY_RESPONSE:'onChatHistoryResponse'
+    BEFORE_WS_SEND_MESSAGE: 'beforeWSSendMessage',
+    /**
+    * onChatHistoryResponse will be triggered on chatHistory API response
+    *
+    * @event chatWindow#onChatHistoryResponse
+    * @type {object}
+    * @property {Object} historyResponse - chatHistory API response
+    */
+    ON_CHAT_HISTORY_RESPONSE: 'onChatHistoryResponse'
 
 
   }
@@ -104,24 +104,25 @@ class chatWindow extends EventEmitter{
 
 chatWindow.prototype.init = function () {
   const me = this;
-  me.config=me.extend(me.config,chatConfig);
+  me.config = me.extend(me.config, chatConfig);
   me.plugins = {};
-  me.bot=bot;
-  me.vars={};
-  me.vars._escPressed=0;
-  me.helpers=KoreHelpers.helpers;
+  me.bot = bot;
+  me.vars = {};
+  me.vars._escPressed = 0;
+  me.helpers = KoreHelpers.helpers;
   //chatInitialize = me//new chatWindow(cfg);
   //me.config.botOptions.test = false;
   me.customTemplateObj = new customTemplate(me);
-  me.messageTemplate=new MessageTemplate();
-  me.messageTemplate.hostInstance=me;
+  me.messageTemplate = new MessageTemplate();
+  me.messageTemplate.hostInstance = me;
   me.installCallbackForPlugins();
+  me.installPlugin(new SearchAssistTemplatesPlugin());
 };
 
-chatWindow.prototype.installCallbackForPlugins = function(){
+chatWindow.prototype.installCallbackForPlugins = function () {
   const me = this;
-  Object.keys(me.plugins).forEach(function(pluginName){
-    if(me.plugins[pluginName].onHostCreate) { 
+  Object.keys(me.plugins).forEach(function (pluginName) {
+    if (me.plugins[pluginName].onHostCreate) {
       me.plugins[pluginName].onHostCreate();
     }
   });
@@ -132,9 +133,9 @@ chatWindow.prototype.show = function (config) {
   const me = this;
   me.initShow(config);
   const cfg = me.config;
-   if ($('body').find('.kore-chat-window').length > 0) {
-       return false;
-   }
+  if ($('body').find('.kore-chat-window').length > 0) {
+    return false;
+  }
   //cfg.chatHistory = this.chatHistory;
   //cfg.handleError = this.showError;
   if (cfg.widgetSDKInstace) {
@@ -147,13 +148,13 @@ chatWindow.prototype.show = function (config) {
 };
 chatWindow.prototype.initShow = function (config) {
   const me = this;
-  me.config=me.extend(chatConfig,config);
-  this.config = me.extend(me.config,{
+  me.config = me.extend(chatConfig, config);
+  this.config = me.extend(me.config, {
     chatTitle: 'Kore.ai Bot Chat',
     allowIframe: false,
     botOptions: me.config.botOptions,
   });
-  me.messagesQueue=[];
+  me.messagesQueue = [];
 
   me.config.chatTitle = 'Kore.ai Bot Chat';
   me.config.allowIframe = false;
@@ -254,17 +255,17 @@ chatWindow.prototype.findSortedIndex = function (array, value) {
   return low;
 };
 
-chatWindow.prototype.extend=function(target, source) {
-  let me=this;
+chatWindow.prototype.extend = function (target, source) {
+  let me = this;
   for (var prop in source) {
-      if (source.hasOwnProperty(prop)) {
-          if (target[prop] && typeof source[prop] === 'object') {
-              me.extend(target[prop], source[prop]);
-          }
-          else {
-              target[prop] = source[prop];
-          }
+    if (source.hasOwnProperty(prop)) {
+      if (target[prop] && typeof source[prop] === 'object') {
+        me.extend(target[prop], source[prop]);
       }
+      else {
+        target[prop] = source[prop];
+      }
+    }
   }
   return target;
 }
@@ -278,8 +279,8 @@ chatWindow.prototype.reWriteWebHookURL = function (chatConfig) {
   }
 };
 // iframe of child window events //
-chatWindow.prototype.attachEventListener =function() {
-  let me=this;
+chatWindow.prototype.attachEventListener = function () {
+  let me = this;
   // Create IE + others compatible event handler
   const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
   const eventer = window[eventMethod];
@@ -298,7 +299,7 @@ chatWindow.prototype.attachEventListener =function() {
     }
   }, false);
 }
-chatWindow.prototype.postMessageToChildIframes=function(iframe, postPayload) {
+chatWindow.prototype.postMessageToChildIframes = function (iframe, postPayload) {
   if (iframe && iframe.length && iframe[0] && iframe[0].contentWindow && postPayload) {
     iframe[0].contentWindow.postMessage(postPayload, '*');
   }
@@ -306,8 +307,8 @@ chatWindow.prototype.postMessageToChildIframes=function(iframe, postPayload) {
 // iframe of child window events ends//
 
 // inline model for iframes starts here//
-chatWindow.prototype.openModal=function(template, showClose) {
-  let me=this;
+chatWindow.prototype.openModal = function (template, showClose) {
+  let me = this;
   const chatBodyModal = $('#chatBodyModal');
   const close = document.getElementsByClassName('closeChatBodyModal')[0];
   close.onclick = function () {
@@ -353,8 +354,8 @@ chatWindow.prototype.openModal=function(template, showClose) {
 // inline model for iframes starts ends//
 
 // form event actions starts here //
-chatWindow.prototype.formAction=function(event) {
-  let me=this;
+chatWindow.prototype.formAction = function (event) {
+  let me = this;
   if (event && event.action === 'formSubmit') {
     me.openModal();
     if ($('.kore-chat-body .uiformComponent').length) {
@@ -384,7 +385,7 @@ chatWindow.prototype.renderWebForm = function (msgData, returnTemplate) {
       //   helpers: me.helpers,
       //   link_url: msgData.message[0].component.payload.formData.formLink,
       // });
-      const popupHtml =  me.customTemplateObj.renderMessage(msgData)
+      const popupHtml = me.customTemplateObj.renderMessage(msgData)
       if (returnTemplate) {
         return popupHtml;
       }
@@ -401,7 +402,7 @@ chatWindow.prototype.addBottomSlider = function () {
   $('.kore-chat-window').append(actionSheetTemplate);
 };
 chatWindow.prototype.updateOnlineStatus = function () {
-  let me=this;
+  let me = this;
   if (typeof (navigator.onLine) === 'boolean') {
     if (navigator.onLine) {
       me.hideError();
@@ -469,77 +470,77 @@ chatWindow.prototype.isMobile = function () {
     return false;
   }
 };
-chatWindow.prototype.setCollapsedModeStyles = function (){
-  $('.kore-chat-window').css({left:$('body').width()-400,width:'400px'});
+chatWindow.prototype.setCollapsedModeStyles = function () {
+  $('.kore-chat-window').css({ left: $('body').width() - 400, width: '400px' });
 }
 chatWindow.prototype.onWindowResize = function (event) {
-  let me=this;
+  let me = this;
   me.setCollapsedModeStyles();
-    if (event.target == window) {
-      //const _width = $('#chatContainer').width() - 400;
-      // $('.kore-chat-window').attr('style','left: '+_width+'+px');
-    }
-    if (($('.kore-chat-window').width() > 400) || (document.getElementsByClassName('kore-chat-window').length && document.getElementsByClassName('kore-chat-window')[0].classList.contains('expanded'))) {
-      const _koreChatWindowHeight = $('.kore-chat-window').width();
-      $('.carousel').attr('style', `width: ${_koreChatWindowHeight - 85}px !important`);
-    } else {
-      $('.carousel').attr('style', 'width: 300px !important');
-    }
-    // for (var i = 0; i < carouselEles.length; i++) {
-    //   carouselEles[i].computeResize();
-    // }
-  
-    // handling quick replies
-    // const quickReplyDivs = document.querySelectorAll('.quickReplies');
-    // for (var i = 0; i < quickReplyDivs.length; i++) {
-    //   const btnsParentDiv = quickReplyDivs[i].querySelectorAll('.quick_replies_btn_parent');
-    //   const leftScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyLeftIcon');
-    //   const rightScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyRightIcon');
-    //   if (btnsParentDiv[0].hasChildNodes()) {
-    //     if (btnsParentDiv[0].scrollLeft > 0) {
-    //       leftScrollBtn[0].classList.remove('hide');
-    //     } else {
-    //       leftScrollBtn[0].classList.add('hide');
-    //     }
-    //     if (btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
-    //       rightScrollBtn[0].classList.remove('hide');
-    //     } else {
-    //       rightScrollBtn[0].classList.add('hide');
-    //     }
-    //   }
-    // }
-  
-    /* Handling for full size table */
-    if ($('.kore-chat-window').width() > 460) {
-      $('.accordionTable').each(function () {
-        if ($(this).hasClass('responsive')) {
-          $(this).addClass('hide');
-        }
-      });
-      $('.tablechartDiv').each(function () {
-        if (!$(this).hasClass('regular')) {
-          $(this).removeClass('hide');
-        }
-      });
-    } else {
-      $('.accordionTable').each(function () {
-        if ($(this).hasClass('responsive')) {
-          $(this).removeClass('hide');
-        }
-      });
-      $('.tablechartDiv').each(function () {
-        if (!$(this).hasClass('regular')) {
-          $(this).addClass('hide');
-        }
-      });
-    }
-    /* Handling for table ends */
-    /* Handling expand and collapse chat-container height */
-    $('.chat-container').scrollTop($('.chat-container')[0].scrollHeight);
-    if (me.chatPSObj && me.chatPSObj.update) {
-      me.chatPSObj.update();
-    }
-    /* Handling expand and collapse chat-container height */
+  if (event.target == window) {
+    //const _width = $('#chatContainer').width() - 400;
+    // $('.kore-chat-window').attr('style','left: '+_width+'+px');
+  }
+  if (($('.kore-chat-window').width() > 400) || (document.getElementsByClassName('kore-chat-window').length && document.getElementsByClassName('kore-chat-window')[0].classList.contains('expanded'))) {
+    const _koreChatWindowHeight = $('.kore-chat-window').width();
+    $('.carousel').attr('style', `width: ${_koreChatWindowHeight - 85}px !important`);
+  } else {
+    $('.carousel').attr('style', 'width: 300px !important');
+  }
+  // for (var i = 0; i < carouselEles.length; i++) {
+  //   carouselEles[i].computeResize();
+  // }
+
+  // handling quick replies
+  // const quickReplyDivs = document.querySelectorAll('.quickReplies');
+  // for (var i = 0; i < quickReplyDivs.length; i++) {
+  //   const btnsParentDiv = quickReplyDivs[i].querySelectorAll('.quick_replies_btn_parent');
+  //   const leftScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyLeftIcon');
+  //   const rightScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyRightIcon');
+  //   if (btnsParentDiv[0].hasChildNodes()) {
+  //     if (btnsParentDiv[0].scrollLeft > 0) {
+  //       leftScrollBtn[0].classList.remove('hide');
+  //     } else {
+  //       leftScrollBtn[0].classList.add('hide');
+  //     }
+  //     if (btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
+  //       rightScrollBtn[0].classList.remove('hide');
+  //     } else {
+  //       rightScrollBtn[0].classList.add('hide');
+  //     }
+  //   }
+  // }
+
+  /* Handling for full size table */
+  if ($('.kore-chat-window').width() > 460) {
+    $('.accordionTable').each(function () {
+      if ($(this).hasClass('responsive')) {
+        $(this).addClass('hide');
+      }
+    });
+    $('.tablechartDiv').each(function () {
+      if (!$(this).hasClass('regular')) {
+        $(this).removeClass('hide');
+      }
+    });
+  } else {
+    $('.accordionTable').each(function () {
+      if ($(this).hasClass('responsive')) {
+        $(this).removeClass('hide');
+      }
+    });
+    $('.tablechartDiv').each(function () {
+      if (!$(this).hasClass('regular')) {
+        $(this).addClass('hide');
+      }
+    });
+  }
+  /* Handling for table ends */
+  /* Handling expand and collapse chat-container height */
+  $('.chat-container').scrollTop($('.chat-container')[0].scrollHeight);
+  if (me.chatPSObj && me.chatPSObj.update) {
+    me.chatPSObj.update();
+  }
+  /* Handling expand and collapse chat-container height */
 
 };
 chatWindow.prototype.setLocalStoreItem = function (key, value) {
@@ -604,7 +605,7 @@ chatWindow.prototype.seti18n = function (lang) {
   const me = this;
   let botMessages;
   me.i18n.selectedLanguage = lang;
-  botMessages=me.config.botMessages  = me.i18n.langFiles[me.i18n.selectedLanguage];
+  botMessages = me.config.botMessages = me.i18n.langFiles[me.i18n.selectedLanguage];
   botMessages.availableLanguages = (me.config.i18n && me.config.i18n.availableLanguages) || false;
   botMessages.selectedLanguage = me.i18n.selectedLanguage;
 
@@ -670,8 +671,8 @@ chatWindow.prototype.resetWindow = function () {
   me.bot.init(me.config.botOptions);
 };
 
-chatWindow.prototype.sendMessageWithWithChatInput=function(chatInput){
-  let me=this;
+chatWindow.prototype.sendMessageWithWithChatInput = function (chatInput) {
+  let me = this;
   if (chatInput.text().trim() === '') {
     return;
   }
@@ -1277,8 +1278,8 @@ chatWindow.prototype.bindSDKEvents = function () {
     }
 
     let tempData = JSON.parse(message.data);
-    me.emit(me.EVENTS.ON_WS_MESSAGE,{
-      messageData:tempData,
+    me.emit(me.EVENTS.ON_WS_MESSAGE, {
+      messageData: tempData,
     });
 
     if (tempData.from === 'bot' && tempData.type === 'bot_response') {
@@ -1437,9 +1438,9 @@ chatWindow.prototype.bindIframeEvents = function (authPopup) {
 
 chatWindow.prototype.render = function (chatWindowHtml) {
   const me = this;
-  me.emit(me.EVENTS.BEFORE_VIEW_INIT,{chatEle:chatWindowHtml});
+  me.emit(me.EVENTS.BEFORE_VIEW_INIT, { chatEle: chatWindowHtml });
   $(me.config.container).append(chatWindowHtml);
-  me.emit(me.EVENTS.VIEW_INIT,{chatEle:chatWindowHtml});
+  me.emit(me.EVENTS.VIEW_INIT, { chatEle: chatWindowHtml });
   if (me.config.container !== 'body') {
     $(me.config.container).addClass('pos-relative');
     $(me.chatEle).addClass('pos-absolute');
@@ -1456,36 +1457,36 @@ chatWindow.prototype.render = function (chatWindowHtml) {
 
 
 
-chatWindow.prototype.sendMessageToBot = function (messageText, options, serverMessageObject,clientMessageObject) {
+chatWindow.prototype.sendMessageToBot = function (messageText, options, serverMessageObject, clientMessageObject) {
   const me = this;
   const clientMessageId = new Date().getTime();
   let msgData = {
     type: 'currentUser',
     message: [{
       type: 'text',
-      cInfo: { 
-        body: messageText 
+      cInfo: {
+        body: messageText
       },
       clientMessageId,
     }],
     createdOn: clientMessageId,
   };
   let messageToBot = {
-    clientMessageId:clientMessageId,
-    resourceid :'/bot.message',
-    message:{
-      body:messageText
+    clientMessageId: clientMessageId,
+    resourceid: '/bot.message',
+    message: {
+      body: messageText
     }
   };
-  
+
 
   if (options && options.renderMsg && typeof options.renderMsg === 'string') {
     msgData.message[0].cInfo.body = options.renderMsg;
     messageToBot.message.renderMsg = options.renderMsg;
   }
 
-  if(serverMessageObject){
-    me.extend(messageToBot,serverMessageObject);
+  if (serverMessageObject) {
+    me.extend(messageToBot, serverMessageObject);
   }
   // if (msgObject && msgObject.customdata) {
   //   messageToBot.message.customdata = msgObject.customdata;
@@ -1512,8 +1513,8 @@ chatWindow.prototype.sendMessageToBot = function (messageText, options, serverMe
       me.attachmentInfo ? { attachments: [me.attachmentInfo] } : null,
     );
   } else {
-    me.emit(me.EVENTS.BEFORE_WS_SEND_MESSAGE,{
-      messageToBot:messageToBot,
+    me.emit(me.EVENTS.BEFORE_WS_SEND_MESSAGE, {
+      messageToBot: messageToBot,
     });
     me.bot.sendMessage(messageToBot, (err) => {
       if (err && err.message) {
@@ -1523,17 +1524,17 @@ chatWindow.prototype.sendMessageToBot = function (messageText, options, serverMe
       }
     });
   }
-  
+
   me.resetPingMessage();
   me.postSendMessageToBot();
-  if(clientMessageObject){
-    me.extend(msgData,clientMessageObject);
+  if (clientMessageObject) {
+    me.extend(msgData, clientMessageObject);
   }
   me.renderMessage(msgData);
 };
 
 chatWindow.prototype.postSendMessageToBot = function () {
-  let me=this;
+  let me = this;
   const _bodyContainer = $(me.chatEle).find('.kore-chat-body');
   const _footerContainer = $(me.chatEle).find('.kore-chat-footer');
   _footerContainer.find('.sendButton').addClass('disabled');
@@ -1549,7 +1550,7 @@ chatWindow.prototype.postSendMessageToBot = function () {
 }
 
 chatWindow.prototype.handleWebHookResponse = function (msgsData) {
-  let me=this;
+  let me = this;
   const SUBSEQUENT_RENDER_DELAY = 500;
   if (msgsData && msgsData.length) {
     msgsData.forEach((msgData, index) => {
@@ -1621,17 +1622,17 @@ chatWindow.prototype.closeConversationSession = function () {
 };
 
 chatWindow.prototype.showTypingIndicator = function () {
-  let me=this;
+  let me = this;
   $('.typingIndicatorContent').css('display', 'block');
 };
 chatWindow.prototype.hideTypingIndicator = function () {
   $('.typingIndicatorContent').css('display', 'none');
 };
 chatWindow.prototype.renderMessage = function (msgData) {
-  const me = this; 
+  const me = this;
   const { helpers } = me;
   const _chatContainer = $(me.chatEle).find('.chat-container');
-  let messageHtml = ''; 
+  let messageHtml = '';
   let extension = '';
   msgData.createdOnTimemillis = new Date(msgData.createdOn).valueOf();
   me.customTemplateObj.helpers = me.helpers;
@@ -1667,10 +1668,10 @@ chatWindow.prototype.renderMessage = function (msgData) {
       me.waiting_for_message = true;
       me.showTypingIndicator();
       return;
-    } 
+    }
 
-    messageHtml=me.messageTemplate.renderMessage(msgData);
-    
+    messageHtml = me.messageTemplate.renderMessage(msgData);
+
     // For Agent presence
     if (msgData.type === 'bot_response') {
       if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'live_agent') {
@@ -1683,9 +1684,9 @@ chatWindow.prototype.renderMessage = function (msgData) {
   _chatContainer.find('li').attr('aria-live', 'off');
   // _chatContainer.find('li').attr('aria-hidden','true');//for mac voiceover bug with aria-live
 
-  me.emit(me.EVENTS.BEFORE_RENDER_MSG,{
-    messageHtml:messageHtml,
-    msgData:msgData
+  me.emit(me.EVENTS.BEFORE_RENDER_MSG, {
+    messageHtml: messageHtml,
+    msgData: msgData
   });
 
 
@@ -1729,9 +1730,9 @@ chatWindow.prototype.renderMessage = function (msgData) {
   _chatContainer.animate({
     scrollTop: _chatContainer.prop('scrollHeight'),
   }, 100);
-  me.emit(me.EVENTS.AFTER_RENDER_MSG,{
-    messageHtml:messageHtml,
-    msgData:msgData
+  me.emit(me.EVENTS.AFTER_RENDER_MSG, {
+    messageHtml: messageHtml,
+    msgData: msgData
   });
 };
 
@@ -1796,8 +1797,8 @@ chatWindow.prototype.openExternalLink = function (link_url) {
 };
 
 chatWindow.prototype.getChatTemplate = function (tempType) {
-     var chatFooterTemplate =
-     '<div class="footerContainer pos-relative"> \
+  var chatFooterTemplate =
+    '<div class="footerContainer pos-relative"> \
          {{if userAgentIE}} \
          <div role="textbox" class="chatInputBox inputCursor" aria-label="Message" aria-label="Message" contenteditable="true" placeholder="${botMessages.message}"></div> \
          {{else}} \
@@ -1828,7 +1829,7 @@ chatWindow.prototype.getChatTemplate = function (tempType) {
      {{if !(isSendButton)}}<div class="chatSendMsg">${botMessages.entertosend}</div>{{/if}} \
  </div>';
 
- var chatWindowTemplate = '<script id="chat_window_tmpl" type="text/x-jqury-tmpl"> \
+  var chatWindowTemplate = '<script id="chat_window_tmpl" type="text/x-jqury-tmpl"> \
      <div class="kore-chat-window droppable liteTheme-one"> \
      <div class="kr-wiz-menu-chat defaultTheme-kore">\
      </div>	\
@@ -1887,21 +1888,21 @@ chatWindow.prototype.getChatTemplate = function (tempType) {
          </div>\
      </div> \
  </script>';
- var popupTemplate = '<script id="kore_popup_tmpl" type="text/x-jquery-tmpl"> \
+  var popupTemplate = '<script id="kore_popup_tmpl" type="text/x-jquery-tmpl"> \
          <div class="kore-auth-layover">\
              <div class="kore-auth-popup"> \
                  <div class="popup_controls"><span class="close-popup" title="Close">&times;</span></div> \
                  <iframe id="authIframe" src="${link_url}"></iframe> \
              </div> \
          </div>\
- </script>'; 
- if (tempType === "popup") {
-     return popupTemplate;
- } 
- else {
-     return chatWindowTemplate;
- }
- };
+ </script>';
+  if (tempType === "popup") {
+    return popupTemplate;
+  }
+  else {
+    return chatWindowTemplate;
+  }
+};
 
 chatWindow.prototype.historyLoadingComplete = function () {
   const me = this;
@@ -1917,8 +1918,8 @@ chatWindow.prototype.historyLoadingComplete = function () {
 
 chatWindow.prototype.chatHistory = function (res) {
   const me = this;
-  me.emit(me.EVENTS.ON_CHAT_HISTORY_RESPONSE,{
-    historyResponse:res,
+  me.emit(me.EVENTS.ON_CHAT_HISTORY_RESPONSE, {
+    historyResponse: res,
   });
   if (res[2] === 'historysync') {
     // setTimeout(function () {
@@ -2016,7 +2017,7 @@ chatWindow.prototype.chatHistory = function (res) {
 };
 chatWindow.prototype.carouselTemplateCount = 0;
 
-chatWindow.prototype.insertHtmlData=function (_txtBox, _html) {
+chatWindow.prototype.insertHtmlData = function (_txtBox, _html) {
   const _input = _txtBox;
   var sel;
   var range;
@@ -2058,7 +2059,7 @@ chatWindow.prototype.getJWTByAPIKey = function (API_KEY_CONFIG) {
   //   isAnonymous: false,
   // };
   return $.ajax({
-    url: API_KEY_CONFIG.bootstrapURL||'http://localhost:9000/examples/bootstrap.json',
+    url: API_KEY_CONFIG.bootstrapURL || 'http://localhost:9000/examples/bootstrap.json',
     type: 'get',
     // data: jsonData,
     dataType: 'json',
@@ -2093,41 +2094,41 @@ chatWindow.prototype.getJWT = function (options, callback) {
   });
 };
 
-chatWindow.prototype.JWTSetup = function(){
-  let me=this;
+chatWindow.prototype.JWTSetup = function () {
+  let me = this;
   me.config.botOptions.assertionFn = me.assertionFn.bind(me);
-  if(!(me.config && me.config.JWTAsertion)){
-    if(me.config && me.config.API_KEY_CONFIG && me.config.API_KEY_CONFIG.KEY && me.config.API_KEY_CONFIG.KEY!='YOUR_API_KEY'){
+  if (!(me.config && me.config.JWTAsertion)) {
+    if (me.config && me.config.API_KEY_CONFIG && me.config.API_KEY_CONFIG.KEY && me.config.API_KEY_CONFIG.KEY != 'YOUR_API_KEY') {
       me.setupInternalAssertionFunctionWithAPIKey();
-    }else{
+    } else {
       me.setupInternalAssertionFunction();
     }
 
-  } 
+  }
 }
-chatWindow.prototype.setupInternalAssertionFunction=function (){
+chatWindow.prototype.setupInternalAssertionFunction = function () {
   const me = this;
-  me.getJWT(me.config.botOptions).then(function(res){
+  me.getJWT(me.config.botOptions).then(function (res) {
     me.emit(me.EVENTS.JWT_SUCCESS, res);
     me.setJWT(res.jwt);
     me.config.botOptions.callback(null, me.config.botOptions);
-  },function(errRes){
-      console.log(errRes);
+  }, function (errRes) {
+    console.log(errRes);
   });
 }
 
-chatWindow.prototype.setupInternalAssertionFunctionWithAPIKey=function (){
+chatWindow.prototype.setupInternalAssertionFunctionWithAPIKey = function () {
   const me = this;
-  me.getJWTByAPIKey(me.config.botOptions).then(function(res){
+  me.getJWTByAPIKey(me.config.botOptions).then(function (res) {
     me.emit(me.EVENTS.JWT_SUCCESS, res);
     me.setJWT(res.jwt);
-    if(res.botInfo){
-      me.config.botOptions.botInfo.chatBot=res.botInfo.name;
-      me.config.botOptions.botInfo.taskBotId=res.botInfo._id;
+    if (res.botInfo) {
+      me.config.botOptions.botInfo.chatBot = res.botInfo.name;
+      me.config.botOptions.botInfo.taskBotId = res.botInfo._id;
     }
     me.config.botOptions.callback(null, me.config.botOptions);
-  },function(errRes){
-      console.log(errRes);
+  }, function (errRes) {
+    console.log(errRes);
   });
 }
 
@@ -2142,12 +2143,12 @@ chatWindow.prototype.assertionFn = function (options, callback) {
   options.handleError = me.showError;
   options.chatHistory = me.chatHistory.bind(me);
   options.botDetails = me.botDetails;
-  if(me.config && me.config.JWTAsertion){
+  if (me.config && me.config.JWTAsertion) {
     me.config.JWTAsertion(me.SDKcallbackWraper.bind(me));
-  }else if(options.assertion){//check for reconnect case
-    if(me.config && me.config.API_KEY_CONFIG){
+  } else if (options.assertion) {//check for reconnect case
+    if (me.config && me.config.API_KEY_CONFIG) {
       me.setupInternalAssertionFunctionWithAPIKey();
-    }else{
+    } else {
       me.setupInternalAssertionFunction();
     }
   }
@@ -2158,17 +2159,17 @@ chatWindow.prototype.SDKcallbackWraper = function () {
 }
 
 chatWindow.prototype.addWidgetEvents = function (cfg) {
-  let me=this;
+  let me = this;
   if (cfg) {
     var wizSDK = cfg.widgetSDKInstace;
-    wizSDK.events.onPostback = function (data) { 
-      me.sendMessageToBot(data.payload,{renderMsg:data.utterance});
+    wizSDK.events.onPostback = function (data) {
+      me.sendMessageToBot(data.payload, { renderMsg: data.utterance });
     };
   }
 };
 
 chatWindow.prototype.setWidgetInstance = function (widgetSDKInstace) {
-  let me=this;
+  let me = this;
   if (widgetSDKInstace) {
     me.config.widgetSDKInstace = widgetSDKInstace;
     me.addWidgetEvents(me.config);
@@ -2242,7 +2243,7 @@ chatWindow.prototype.installPlugin = function (plugin) {
   const me = this;
   me.plugins[plugin.name] = plugin;
   plugin.hostInstance = this;
-  if(plugin.onHostCreate) { 
+  if (plugin.onHostCreate) {
     plugin.onHostCreate();
   }
 };
@@ -2281,11 +2282,11 @@ chatWindow.prototype.focusInputTextbox = function () {
  * @param {Object} clientMessageObject.message.cInfo.body nlMeta to send bot
  * @param clientMessageObject.____ and more
 */
-chatWindow.prototype.sendMessage = function (messageText,options, serverMessageObject,clientMessageObject) {
+chatWindow.prototype.sendMessage = function (messageText, options, serverMessageObject, clientMessageObject) {
   const me = this;
   // const _chatContainer = me.chatEle;
   // const _chatInput = _chatContainer.find('.kore-chat-footer .chatInputBox');
-  me.sendMessageToBot(messageText, options, serverMessageObject,clientMessageObject);
+  me.sendMessageToBot(messageText, options, serverMessageObject, clientMessageObject);
 };
 
 // chatWindow.prototype.appendPickerHTMLtoFooter = function(HTML){
