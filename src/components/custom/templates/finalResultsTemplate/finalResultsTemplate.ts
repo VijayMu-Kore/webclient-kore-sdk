@@ -4,6 +4,7 @@ import customTemplate from '../../customTemplate';
 import searchListViewTemplate from '../../templates/searchListViewTemplate/searchListViewTemplate';
 import searchGridViewTemplate from '../../templates/searchGridViewTemplate/searchGridViewTemplate';
 import searchCarouselViewTemplate from '../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+import FullSearchResultsTemplate from '../../templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
 import korejquery from "../../../../libs/korejquery";
 const $ = korejquery;
 
@@ -13,7 +14,6 @@ class FinalResultsTemplate {
     let me: any = this;
     let $ = me.hostInstance.$;
     me.helpersObj = helpers?.helpers;
-    console.log("msgData", msgData)
     if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'finalResultsTemplate') {
       if (msgData?.message[0].component?.payload?.helpers) {
         me.helpersObj = msgData.message[0].component.payload.helpers
@@ -26,7 +26,7 @@ class FinalResultsTemplate {
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
       me.carouselTemplateObj = new searchCarouselViewTemplate();
-
+      me.fullSearchTemplateObj = new FullSearchResultsTemplate();
       FinalResultsTemplate.prototype.bindEvents(me, me.messageResultHtml, msgData);
       return me.messageResultHtml;
     }
@@ -61,7 +61,13 @@ class FinalResultsTemplate {
     }
     setTimeout(() => {
       $(".show-all-results").off("click").on("click", function (e: any) {
-        hostWindowInstance.seeAllBtnClickEvent(e);
+        const isSearchSDK = document.body.className.match('sdk-body');
+        if (isSearchSDK !== null) {
+          hostWindowInstance.seeAllBtnClickEvent(e);
+        }
+        else {
+          me.fullSearchTemplateObj.renderMessage.bind(msgData);
+        }
       });
     }, 300)
 
