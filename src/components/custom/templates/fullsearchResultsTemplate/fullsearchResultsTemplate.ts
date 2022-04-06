@@ -52,7 +52,16 @@ class FullSearchResultsTemplate {
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
     FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,'all results');
     FullSearchResultsTemplate.prototype.facetReset(me,messageHtml,msgData);
-
+    $(messageHtml)
+    .off("click", "#btn-close-show-all")
+    .on("click", "#btn-close-show-all", function () {
+      $("#show-all-results-container").css("display", "none");
+      $(".show-all-results-outer-wrap").css("display", "none");
+      $(".search-container").removeClass("bottom-up-results-showing");
+      $("#searchChatContainer").removeClass("bgfocus");
+      $(".search-body").addClass("hide");
+      $("#show-all-results-container").attr("isCached", "false");
+    });
   }
   getTemplateString(type: any) {
     var fullSearchResultsTemplate = '<script type="text/x-jqury-tmpl">\

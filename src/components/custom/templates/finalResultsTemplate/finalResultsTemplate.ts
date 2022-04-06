@@ -79,7 +79,7 @@ class FinalResultsTemplate {
         {{/if}}\
         <div class="finalResults">\
         {{if taskPrefix === "SUGGESTED"}}\
-        <span class="live-search-close-icon">See All Results</span>\
+        <span class="live-search-close-icon show-all-results">See All Results</span>\
         {{/if}}\
         <div class="resultsOfSearch">\
             {{if taskPrefix !== "SUGGESTED"}}\
