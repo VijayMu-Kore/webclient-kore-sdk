@@ -11,7 +11,7 @@ class FullSearchResultsTemplate {
   renderMessage(msgData: any) {
     let me: any = this;
     let $ = me.hostInstance.$;
-    me.helpersObj = helpers;
+    me.helpersObj = helpers?.helpers;
     if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'fullSearchResultsTemplate') {
       if (!msgData.message[0].component.payload.helpers) {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
@@ -36,7 +36,7 @@ class FullSearchResultsTemplate {
       $(messageHtml).find('.full-search-data-container').empty();
       if (formatedTemplatesData && formatedTemplatesData.length) {
         formatedTemplatesData.forEach((d: any) => {
-          var showAllHTML ;
+          var showAllHTML:any ;
           if (d.message[0].component.payload.template_type == 'searchListTemplate') {
             showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
@@ -44,7 +44,10 @@ class FullSearchResultsTemplate {
           } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
             showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
           }
-          $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+          // setTimeout(showAllHTML, 300)
+          // setTimeout(()=>{
+            $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+          // },500)
         })
       }
     }, 300);
