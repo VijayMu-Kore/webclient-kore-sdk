@@ -52,7 +52,16 @@ class FullSearchResultsTemplate {
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
     FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,'all results');
     FullSearchResultsTemplate.prototype.facetReset(me,messageHtml,msgData);
-
+    $(messageHtml)
+    .off("click", "#btn-close-show-all")
+    .on("click", "#btn-close-show-all", function () {
+      $("#show-all-results-container").css("display", "none");
+      $(".show-all-results-outer-wrap").css("display", "none");
+      $(".search-container").removeClass("bottom-up-results-showing");
+      $("#searchChatContainer").removeClass("bgfocus");
+      $(".search-body").addClass("hide");
+      $("#show-all-results-container").attr("isCached", "false");
+    });
   }
   getTemplateString(type: any) {
     var fullSearchResultsTemplate = '<script type="text/x-jqury-tmpl">\
@@ -249,15 +258,20 @@ class FullSearchResultsTemplate {
     .on("click","#facetRightIconId", function (event:any) {
       event.stopPropagation();
       event.stopImmediatePropagation();
-      if($(messageHtml).find(".sdk-facet-filter-data").css('display')=='none'){
-        $(messageHtml).find(".sdk-facet-filter-data").css('display','block');
+      if($(messageHtml).find(".filter-data").css('display')=='none'){
+        if($(messageHtml).find('.horizantal-filter-sec.filter-data').length){
+          $(messageHtml).find(".filter-data").css('display','inline-block');
+        }else{
+        $(messageHtml).find(".filter-data").css('display','block');
+        }
         $(messageHtml).find("#facetRightIconId").addClass('active-open');
-      }else{
-        $(messageHtml).find(".sdk-facet-filter-data").css('display','none');
+      } else {
+        $(messageHtml).find(".filter-data").css('display','none');
         $(messageHtml).find("#facetRightIconId").removeClass('active-open');
       }
       FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml);
     });
+    FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml);
       hostWindowInstance.markSelectedFilters();
     }
     
@@ -420,7 +434,11 @@ class FullSearchResultsTemplate {
   .on("change",".sdk-filter-checkbox", function (event:any) {
     event.stopPropagation();
     event.stopImmediatePropagation();
-    hostWindowInstance.facetCheckBoxClick(event);
+    hostWindowInstance.facetCheckBoxClick(event).then((response: any) => {
+      // if(response.isFilterAlignedTop){
+      //   FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
+      // }
+    });
   });
    // SDK radio
   $(messageHtml)
@@ -428,31 +446,24 @@ class FullSearchResultsTemplate {
   .on("change",".sdk-filter-radio", function (event:any) {
     event.stopPropagation();
     event.stopImmediatePropagation();
-    hostWindowInstance.facetRadioClick(event);
+    hostWindowInstance.facetRadioClick(event).then((response: any) => {
+      if(response.isFilterAlignedTop){
+        FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
+      }
+    });
   });
   $(messageHtml)
   .off("click",".apply-btn")
   .on("click", ".apply-btn" , function () {
-    $(".filter-data").hide();
-    hostWindowInstance.getSearchByFacetFilters().then((response: any) => {
-      let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
-      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
-        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
-              if(index>-1){
-                response.result.splice(index,1)
-              }
-    }
-    FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
-    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
-              $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
-    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
-    let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({count:response.filterCount});
-    $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
-    });
-    $(messageHtml).find('#filter-count-container')
-    .off("click",".clsoe-filter")
-    .on("click",".clsoe-filter", function () {
-      $("#filter-count-container").empty();
+    FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
+  });
+  $(messageHtml)
+  .off("click",".sdk-clear-all-facet-top")
+  .on("click",".sdk-clear-all-facet-top", function (event:any) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    $(messageHtml).find(".filters-content").hide()
+    $("#filter-count-container").empty();
       $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
       hostWindowInstance.clearAllFilters().then((response: any) => {
         let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
@@ -467,8 +478,16 @@ class FullSearchResultsTemplate {
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
     FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
       })
-    });
   });
+    //SDK Top Facet
+    $(messageHtml)
+    .off("click", ".sdk-top-facet-drop")
+    .on("click", ".sdk-top-facet-drop", function (event:any) {
+       hostWindowInstance.dropdownFilterClickEvent(event);
+      FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml)
+
+    });
+
   }
   fullResultTemplateDataBind(me:any, messageHtml:any,result:any){
     let formatedTemplatesData: any = result;
@@ -508,6 +527,45 @@ class FullSearchResultsTemplate {
     {{/if}}\
     </script>';
     return filterCountContainer;
+  }
+  applyFiltersFun(me:any, messageHtml:any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(".filter-data").hide();
+    hostWindowInstance.getSearchByFacetFilters().then((response: any) => {
+      let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+              if(index>-1){
+                response.result.splice(index,1)
+              }
+    }
+    FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
+              $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
+    let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({count:response.filterCount});
+    $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
+    });
+    $(messageHtml).find('#filter-count-container')
+    .off("click",".clsoe-filter")
+    .on("click",".clsoe-filter", function () {
+      $("#filter-count-container").empty();
+      $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
+      hostWindowInstance.clearAllFilters().then((response: any) => {
+        let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
+        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
+              if(index>-1){
+                response.result.splice(index,1)
+              }
+    }
+    FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
+    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
+    $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
+      })
+    });
   }
   $ = $;
 
