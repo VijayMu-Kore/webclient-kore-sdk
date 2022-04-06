@@ -7481,7 +7481,7 @@ FindlySDK.prototype.searchEventBinding = function (
                                 component: {
                                   type: 'template',
                                   payload: {
-                                    text:'',
+                                    infoText:'',
                                     template_type: "finalResultsTemplate",
                                     isDev: _self.isDev,
                                     devMode: devMode,
@@ -8359,7 +8359,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 component: {
                   type: 'template',
                   payload: {
-                    text: 'Sure, please find the matched results below',
+                    infoText: 'Sure, please find the matched results below',
                     template_type: "finalResultsTemplate",
                     isDev: _self.isDev,
                     devMode: devMode,
