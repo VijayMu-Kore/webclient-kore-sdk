@@ -26,7 +26,7 @@ class FullSearchResultsTemplate {
       return me.messageHtml;
     }
   }
-  bindEvents(me:any, messageHtml: any, msgData: any) {
+  bindEvents(me: any, messageHtml: any, msgData: any) {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
@@ -36,7 +36,7 @@ class FullSearchResultsTemplate {
       $(messageHtml).find('.full-search-data-container').empty();
       if (formatedTemplatesData && formatedTemplatesData.length) {
         formatedTemplatesData.forEach((d: any) => {
-          var showAllHTML:any ;
+          let showAllHTML: any;
           if (d.message[0].component.payload.template_type == 'searchListTemplate') {
             showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
@@ -44,27 +44,28 @@ class FullSearchResultsTemplate {
           } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
             showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
           }
-          // setTimeout(showAllHTML, 300)
-          // setTimeout(()=>{
-            $(messageHtml).find('.full-search-data-container').append(showAllHTML);
-          // },500)
+          $(messageHtml).find('.full-search-data-container').append(showAllHTML);
         })
       }
+      const isSearchSDK = document.body.className.match('sdk-body');
+      if (isSearchSDK === null) {
+        $('.show-all-results-outer-wrap').css({ 'left': '200px', 'box-shadow': '0 10px 25px 0 rgb(0 0 0 / 20%)' });
+      }
     }, 300);
-    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:msgData.message[0].component.payload.facets});
+    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: msgData.message[0].component.payload.facets });
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
-    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,'all results');
-    FullSearchResultsTemplate.prototype.facetReset(me,messageHtml,msgData);
+    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, 'all results');
+    FullSearchResultsTemplate.prototype.facetReset(me, messageHtml, msgData);
     $(messageHtml)
-    .off("click", "#btn-close-show-all")
-    .on("click", "#btn-close-show-all", function () {
-      $("#show-all-results-container").css("display", "none");
-      $(".show-all-results-outer-wrap").css("display", "none");
-      $(".search-container").removeClass("bottom-up-results-showing");
-      $("#searchChatContainer").removeClass("bgfocus");
-      $(".search-body").addClass("hide");
-      $("#show-all-results-container").attr("isCached", "false");
-    });
+      .off("click", "#btn-close-show-all")
+      .on("click", "#btn-close-show-all", function () {
+        $("#show-all-results-container").css("display", "none");
+        $(".show-all-results-outer-wrap").css("display", "none");
+        $(".search-container").removeClass("bottom-up-results-showing");
+        $("#searchChatContainer").removeClass("bgfocus");
+        $(".search-body").addClass("hide");
+        $("#show-all-results-container").attr("isCached", "false");
+      });
   }
   getTemplateString(type: any) {
     var fullSearchResultsTemplate = '<script type="text/x-jqury-tmpl">\
@@ -180,7 +181,7 @@ class FullSearchResultsTemplate {
     }
 
   }
-  getBottomupTab(){
+  getBottomupTab() {
     var tabContainer = '<script type="text/x-jqury-tmpl">\
                       {{each(key,facet) facets}}\
                       <div class="tab-name see-all-result-nav  {{= facet.className}}"  title="{{= facet.name}}" id="{{= facet.key}}" classification="{{= facet.key}}">{{= facet.name}} <span class="count sdk-facet-count">({{= facet.doc_count}})</span></div>\
@@ -188,37 +189,37 @@ class FullSearchResultsTemplate {
                       </script>';
     return tabContainer;
   }
-  bindTabsClickEvent(me:any, messageHtml:any , facetSelected:any){
+  bindTabsClickEvent(me: any, messageHtml: any, facetSelected: any) {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
-    $(messageHtml).find("[id='" + facetSelected + "']").addClass('active-tab'); 
-    $(messageHtml).off("click",".see-all-result-nav").on("click",".see-all-result-nav", function (e:any) {
-          var selectedFacet = $(e.target).closest(".see-all-result-nav")
-      .attr("classification");
-          $(messageHtml).find(".tab-name.see-all-result-nav.active-tab")
-              .removeClass("active-tab")
-    //           .addClass('un-selected-type');
-    $(e.target).closest(".see-all-result-nav").addClass('active-tab');
+    $(messageHtml).find("[id='" + facetSelected + "']").addClass('active-tab');
+    $(messageHtml).off("click", ".see-all-result-nav").on("click", ".see-all-result-nav", function (e: any) {
+      var selectedFacet = $(e.target).closest(".see-all-result-nav")
+        .attr("classification");
+      $(messageHtml).find(".tab-name.see-all-result-nav.active-tab")
+        .removeClass("active-tab")
+      //           .addClass('un-selected-type');
+      $(e.target).closest(".see-all-result-nav").addClass('active-tab');
 
-          hostWindowInstance.tabFacetTrigger(e,selectedFacet).then((result: any) => {
-              if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
-                  let index = result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
-                        if(index>-1){
-                            result.splice(index,1)
-                        }
-              }
-              FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,result);
-          })
-      });
+      hostWindowInstance.tabFacetTrigger(e, selectedFacet).then((result: any) => {
+        if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
+          let index = result.findIndex((d: any) => d.message[0].component.payload.appearanceType == "task")
+          if (index > -1) {
+            result.splice(index, 1)
+          }
+        }
+        FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, result);
+      })
+    });
   }
-  facetReset(me:any, messageHtml:any, msgData:any) {
+  facetReset(me: any, messageHtml: any, msgData: any) {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
-    let facetObj:any={};
+    let facetObj: any = {};
     let facetData = msgData.message[0].component.payload.filterFacetData || [];
     facetObj['position'] = msgData.message[0].component.payload.facetPosition;
     facetObj['show'] = true;
-    if(facetData.length){
+    if (facetData.length) {
       var facetTemplate = $(FullSearchResultsTemplate.prototype.facetFilter()).tmpl({
         position: facetObj.position,
         show: facetObj.show,
@@ -257,29 +258,29 @@ class FullSearchResultsTemplate {
         }
       }
       $(messageHtml)
-    .off("click","#facetRightIconId")
-    .on("click","#facetRightIconId", function (event:any) {
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      if($(messageHtml).find(".filter-data").css('display')=='none'){
-        if($(messageHtml).find('.horizantal-filter-sec.filter-data').length){
-          $(messageHtml).find(".filter-data").css('display','inline-block');
-        }else{
-        $(messageHtml).find(".filter-data").css('display','block');
-        }
-        $(messageHtml).find("#facetRightIconId").addClass('active-open');
-      } else {
-        $(messageHtml).find(".filter-data").css('display','none');
-        $(messageHtml).find("#facetRightIconId").removeClass('active-open');
-      }
-      FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml);
-    });
-    FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml);
+        .off("click", "#facetRightIconId")
+        .on("click", "#facetRightIconId", function (event: any) {
+          event.stopPropagation();
+          event.stopImmediatePropagation();
+          if ($(messageHtml).find(".filter-data").css('display') == 'none') {
+            if ($(messageHtml).find('.horizantal-filter-sec.filter-data').length) {
+              $(messageHtml).find(".filter-data").css('display', 'inline-block');
+            } else {
+              $(messageHtml).find(".filter-data").css('display', 'block');
+            }
+            $(messageHtml).find("#facetRightIconId").addClass('active-open');
+          } else {
+            $(messageHtml).find(".filter-data").css('display', 'none');
+            $(messageHtml).find("#facetRightIconId").removeClass('active-open');
+          }
+          FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me, messageHtml);
+        });
+      FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me, messageHtml);
       hostWindowInstance.markSelectedFilters();
     }
-    
+
   };
-  facetFilter () {
+  facetFilter() {
     var facet =
       '<script type="text/x-jqury-tmpl">\
         <div>\
@@ -339,7 +340,7 @@ class FullSearchResultsTemplate {
   </script>';
     return facet;
   };
-  facetFilterTop () {
+  facetFilterTop() {
     var facet =
       '<script type="text/x-jqury-tmpl">\
           <div>\
@@ -422,104 +423,104 @@ class FullSearchResultsTemplate {
         </script>';
     return facet;
   };
-  bindFacetTriggerEvents(me:any,messageHtml:any){
+  bindFacetTriggerEvents(me: any, messageHtml: any) {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     $(messageHtml)
-    .off("click",".sdk-facet-filter-data")
-    .on("click", ".sdk-facet-filter-data", function (event:any) {
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-    });
-      // SDK checkbox
-  $(messageHtml)
-  .off("change",".sdk-filter-checkbox")
-  .on("change",".sdk-filter-checkbox", function (event:any) {
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    hostWindowInstance.facetCheckBoxClick(event).then((response: any) => {
-      // if(response.isFilterAlignedTop){
-      //   FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
-      // }
-    });
-  });
-   // SDK radio
-  $(messageHtml)
-  .off("change",".sdk-filter-radio")
-  .on("change",".sdk-filter-radio", function (event:any) {
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    hostWindowInstance.facetRadioClick(event).then((response: any) => {
-      if(response.isFilterAlignedTop){
+      .off("click", ".sdk-facet-filter-data")
+      .on("click", ".sdk-facet-filter-data", function (event: any) {
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+      });
+    // SDK checkbox
+    $(messageHtml)
+      .off("change", ".sdk-filter-checkbox")
+      .on("change", ".sdk-filter-checkbox", function (event: any) {
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        hostWindowInstance.facetCheckBoxClick(event).then((response: any) => {
+          // if(response.isFilterAlignedTop){
+          //   FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
+          // }
+        });
+      });
+    // SDK radio
+    $(messageHtml)
+      .off("change", ".sdk-filter-radio")
+      .on("change", ".sdk-filter-radio", function (event: any) {
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        hostWindowInstance.facetRadioClick(event).then((response: any) => {
+          if (response.isFilterAlignedTop) {
+            FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
+          }
+        });
+      });
+    $(messageHtml)
+      .off("click", ".apply-btn")
+      .on("click", ".apply-btn", function () {
         FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
-      }
-    });
-  });
-  $(messageHtml)
-  .off("click",".apply-btn")
-  .on("click", ".apply-btn" , function () {
-    FullSearchResultsTemplate.prototype.applyFiltersFun(me, messageHtml);
-  });
-  $(messageHtml)
-  .off("click",".sdk-clear-all-facet-top")
-  .on("click",".sdk-clear-all-facet-top", function (event:any) {
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    $(messageHtml).find(".filters-content").hide()
-    $("#filter-count-container").empty();
-      $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
-      hostWindowInstance.clearAllFilters().then((response: any) => {
-        let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
-      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
-        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
-              if(index>-1){
-                response.result.splice(index,1)
-              }
-    }
-    FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
-    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
-    $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
-    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
-      })
-  });
+      });
+    $(messageHtml)
+      .off("click", ".sdk-clear-all-facet-top")
+      .on("click", ".sdk-clear-all-facet-top", function (event: any) {
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        $(messageHtml).find(".filters-content").hide()
+        $("#filter-count-container").empty();
+        $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
+        hostWindowInstance.clearAllFilters().then((response: any) => {
+          let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+          if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
+            let index = response.result.findIndex((d: any) => d.message[0].component.payload.appearanceType == "task")
+            if (index > -1) {
+              response.result.splice(index, 1)
+            }
+          }
+          FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+          let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets });
+          $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+          FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
+        })
+      });
     //SDK Top Facet
     $(messageHtml)
-    .off("click", ".sdk-top-facet-drop")
-    .on("click", ".sdk-top-facet-drop", function (event:any) {
-       hostWindowInstance.dropdownFilterClickEvent(event);
-      FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me,messageHtml)
+      .off("click", ".sdk-top-facet-drop")
+      .on("click", ".sdk-top-facet-drop", function (event: any) {
+        hostWindowInstance.dropdownFilterClickEvent(event);
+        FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me, messageHtml)
 
-    });
+      });
 
   }
-  fullResultTemplateDataBind(me:any, messageHtml:any,result:any){
+  fullResultTemplateDataBind(me: any, messageHtml: any, result: any) {
     let formatedTemplatesData: any = result;
     setTimeout(() => {
-        $(messageHtml).find('.full-search-data-container').empty();
-        if (formatedTemplatesData && formatedTemplatesData.length) {
-            formatedTemplatesData.forEach((d: any) => {
-                var showAllHTML;
-                if (d.message[0].component.payload.template_type == 'searchListTemplate') {
-                    showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
-                } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
-                    showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
-                } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
-                    showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
-                }
-                $(messageHtml).find('.full-search-data-container').append(showAllHTML);
-            })
-        }
+      $(messageHtml).find('.full-search-data-container').empty();
+      if (formatedTemplatesData && formatedTemplatesData.length) {
+        formatedTemplatesData.forEach((d: any) => {
+          var showAllHTML;
+          if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+            showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+          } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+            showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+          } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+            showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+          }
+          $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+        })
+      }
 
-        if (!$(".full-search-data-container").children().length) {
-            $(".empty-full-results-container").removeClass("hide");
-        } else {
-            if (!$(".empty-full-results-container").hasClass("hide")) {
-                $(".empty-full-results-container").addClass("hide");
-            }
+      if (!$(".full-search-data-container").children().length) {
+        $(".empty-full-results-container").removeClass("hide");
+      } else {
+        if (!$(".empty-full-results-container").hasClass("hide")) {
+          $(".empty-full-results-container").addClass("hide");
         }
+      }
     }, 300);
   }
-  getFilterCountTemplate(){
+  getFilterCountTemplate() {
     var filterCountContainer = '<script type="text/x-jqury-tmpl">\
     {{if count > 0 }}\
     <div class="filter-updated-count">\
@@ -531,44 +532,44 @@ class FullSearchResultsTemplate {
     </script>';
     return filterCountContainer;
   }
-  applyFiltersFun(me:any, messageHtml:any){
+  applyFiltersFun(me: any, messageHtml: any) {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     $(".filter-data").hide();
     hostWindowInstance.getSearchByFacetFilters().then((response: any) => {
       let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
-      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
-        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
-              if(index>-1){
-                response.result.splice(index,1)
-              }
-    }
-    FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
-    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
-              $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
-    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
-    let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({count:response.filterCount});
-    $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
+      if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
+        let index = response.result.findIndex((d: any) => d.message[0].component.payload.appearanceType == "task")
+        if (index > -1) {
+          response.result.splice(index, 1)
+        }
+      }
+      FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+      let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets });
+      $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+      FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
+      let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: response.filterCount });
+      $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
     });
     $(messageHtml).find('#filter-count-container')
-    .off("click",".clsoe-filter")
-    .on("click",".clsoe-filter", function () {
-      $("#filter-count-container").empty();
-      $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
-      hostWindowInstance.clearAllFilters().then((response: any) => {
-        let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
-      if(selectedFacet !== 'task'  && selectedFacet !== 'all results'){
-        let index = response.result.findIndex((d:any)=> d.message[0].component.payload.appearanceType == "task")
-              if(index>-1){
-                response.result.splice(index,1)
-              }
-    }
-    FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me,messageHtml,response.result);
-    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({facets:response.facets});
-    $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
-    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me,messageHtml,selectedFacet);
-      })
-    });
+      .off("click", ".clsoe-filter")
+      .on("click", ".clsoe-filter", function () {
+        $("#filter-count-container").empty();
+        $(messageHtml).find(".sdk-filter-checkbox").prop("checked", false);
+        hostWindowInstance.clearAllFilters().then((response: any) => {
+          let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
+          if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
+            let index = response.result.findIndex((d: any) => d.message[0].component.payload.appearanceType == "task")
+            if (index > -1) {
+              response.result.splice(index, 1)
+            }
+          }
+          FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+          let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets });
+          $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+          FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
+        })
+      });
   }
   $ = $;
 

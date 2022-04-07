@@ -19,6 +19,7 @@ class SearchListViewTemplate {
       }
       me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString(msgData?.message[0].component?.payload?.template_type)).tmpl(msgData?.message[0].component?.payload);
       SearchListViewTemplate.prototype.bindEvents(me, me.messageListHtml);
+      console.log("me.messageListHtml",me.messageListHtml)
       return me.messageListHtml;
     }
   }
@@ -466,6 +467,7 @@ class SearchListViewTemplate {
     // </script>';
     var searchListTemplates = '<script type="text/x-jqury-tmpl">\
     {{if isButtonTemplate == false}}\
+    <div>\
     {{if structuredData?.length }}\
     {{if renderTitle}}\
     <div class="title-list-heading">${titleName}</div>\
@@ -520,6 +522,7 @@ class SearchListViewTemplate {
         {{/if}}\
     </div>\
     {{/if}}\
+    </div>\
     {{/if}}\
     {{if isButtonTemplate}}\
     {{if structuredData?.length}}\

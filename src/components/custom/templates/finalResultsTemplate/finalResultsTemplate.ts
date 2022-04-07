@@ -59,48 +59,50 @@ class FinalResultsTemplate {
 
       })
     }
-      $(messageHtml).off("click",".show-all-results").on("click",".show-all-results", function (e: any) {
-        const isSearchSDK = document.body.className.match('sdk-body');
-        if (isSearchSDK !== null) {
-          hostWindowInstance.seeAllBtnClickEvent(e);
-        }
-        else {
-          let modifyGroupData = msgData.message[0].component.payload.groupData;
-          modifyGroupData.forEach((d:any)=>{
-            d.message[0].component.payload.isSearch=false;
-            d.message[0].component.payload.isFullResults=true;
-          })
-          let fullSearchMsgData = {
-            message: [{
-              component: {
-                type: 'template',
-                payload: {
-                  template_type: "fullSearchResultsTemplate",
-                  facets: [],
-                  count: msgData.message[0].component.payload.totalSearchResults,
-                  view: "Preview",
-                  isDev: msgData.message[0].component.payload.isDev,
-                  isFilterEnabled: false,
-                  devMode: msgData.message[0].component.payload.devMode,
-                  viewType: msgData.message[0].component.payload.viewType,
-                  facetPosition:'left',
-                  filterFacetData: [],
-                  groupData: modifyGroupData
-                }
+    $(messageHtml).off("click", ".show-all-results").on("click", ".show-all-results", function (e: any) {
+      const isSearchSDK = document.body.className.match('sdk-body');
+      if (isSearchSDK !== null) {
+        hostWindowInstance.seeAllBtnClickEvent(e);
+      }
+      else {
+        let modifyGroupData = msgData.message[0].component.payload.groupData;
+        modifyGroupData.forEach((d: any) => {
+          d.message[0].component.payload.isSearch = false;
+          d.message[0].component.payload.isFullResults = true;
+          d.message[0].component.payload.isSearchSDK = true;
+          d.message[0].component.payload.maxSearchResultsAllowed = 10;
+        })
+        let fullSearchMsgData = {
+          message: [{
+            component: {
+              type: 'template',
+              payload: {
+                template_type: "fullSearchResultsTemplate",
+                facets: [],
+                count: msgData.message[0].component.payload.totalSearchResults,
+                view: "preview",
+                isDev: msgData.message[0].component.payload.isDev,
+                isFilterEnabled: false,
+                devMode: msgData.message[0].component.payload.devMode,
+                viewType: msgData.message[0].component.payload.viewType,
+                facetPosition: 'left',
+                filterFacetData: [],
+                groupData: modifyGroupData
               }
-            }]
-          };
-          let fullSearchHtml =  me.fullSearchTemplateObj.renderMessage.bind(me,fullSearchMsgData);
-          setTimeout(fullSearchHtml, 500)
-         setTimeout(() => {
+            }
+          }]
+        };
+        // let fullSearchHtml = me.fullSearchTemplateObj.renderMessage.bind(me, fullSearchMsgData);
+        // setTimeout(fullSearchHtml, 500)
+        setTimeout(() => {
           $('body').find('.full-search-results-container').remove();
           $('body').append(`<div class="full-search-results-container"></div>`);
-          $('.full-search-results-container').append(fullSearchHtml);
-         }, 1000);
-        
-         
-        }
-      });
+          $('.full-search-results-container').append(me.fullSearchTemplateObj.renderMessage.bind(me, fullSearchMsgData));
+        }, 1000);
+
+
+      }
+    });
 
   }
   getTemplateString(type: any) {
