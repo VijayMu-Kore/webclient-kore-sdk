@@ -3653,10 +3653,25 @@ body{
         margin: 0;
         border-radius: 2px;
         padding: 0px !important;
+        position: relative;
         .radio-custom{
+            position: absolute;
+            cursor: pointer;
+            margin: 0;
+            height: auto;
+            opacity: 0;
+            left: 0;
+            top: 0;
             + .radio-custom-label{
                 margin-bottom: 0px !important;
             }
+        }
+        .associated-filter-count{
+            color: var(--sdk-dusty-gray-color);
+            position: absolute;
+            margin-left: 2px;
+            top: 1px;
+            font-size: 12px;
         }
     }
     .horizantal-filter-sec{
@@ -3664,7 +3679,34 @@ body{
             // padding: 8px 12px 8px 10px!important;
             margin-bottom: 0px !important;
             .associated-filter-count{
-                top: 7px!important;
+                top: 4px!important;
+            }
+        }
+    }
+    #topFacetFilterId {
+        background-color: red;
+        .horizantal-filter-sec{
+            .kr-sg-radiobutton {
+                .radio-custom {
+                    +.radio-custom-label{
+                        display: inline-block;
+                        vertical-align: middle;
+                        cursor: pointer;
+                        position: relative;
+                        font-size: 14px;
+                        color: #202124;
+                        margin: 0;
+                        font-weight: 400;
+                        margin-bottom: 7px;
+                        padding: 0px 0px 0px 28px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        padding-right: 0;
+                        max-width: 86%;
+                        text-transform: capitalize;
+                    }
+                }
             }
         }
     }
