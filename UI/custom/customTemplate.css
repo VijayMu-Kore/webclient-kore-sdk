@@ -6438,3 +6438,21 @@
     position: absolute;
     right: 4px;
 }
+
+.noty_bar.noty_type__info{
+	background-color: #5198ff !important;
+}
+.noty_bar{
+	margin-left: 23px !important;
+}
+.noty_bar .noty_progressbar{
+	opacity: 1 !important;
+	background-color: #ffffff !important;
+}
+.noty_buttons button{
+	padding: 5px 10px 5px 10px !important;
+    margin: 3px 10px 3px 0px !important;
+}
+.noty_buttons{
+    margin-bottom: 10px !important;
+}

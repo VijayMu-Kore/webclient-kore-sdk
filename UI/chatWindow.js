@@ -2876,6 +2876,46 @@
                             'helpers': helpers,
                             'extension': extension
                         });
+                    }
+                    else if(msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "notificationTemplate" && !msgData.fromHistory){
+                        var _notiPayload=msgData.message[0].component.payload;
+                        var notyConfig={
+                            text: _notiPayload.text,
+                            type: 'info',
+                            layout: 'topRight',
+                            container: '.kore-chat-body',
+                            closeWith: ['click', 'button'],
+                            timeout:10000,
+                            progressBar:true,
+                            buttons: [
+                                
+                            ]
+                        };
+                        if(_notiPayload.timeout){
+                            notyConfig.timeout=parseInt(_notiPayload.timeout)
+                        }
+                        if(_notiPayload.buttons && _notiPayload.buttons.length){
+                            _notiPayload.buttons.forEach(function(buttonObj,index){
+                                var actionBtn=Noty.button(buttonObj.title, 'btn btn-success', function () {
+                                    var clickedIndex=parseInt(this.id.substr(1,this.id.length));
+                                    var buttonObj=_notiPayload.buttons[clickedIndex];
+
+                                    if(buttonObj.type==='postback'){
+                                        $('.chatInputBox').text(buttonObj.payload);
+                                        me.sendMessage($('.chatInputBox'), buttonObj.renderMsg||buttonObj.payload);
+                                    }
+
+                                  
+                                    console.log('button 1 clicked'+buttonObj);
+                                    n.close();
+                                },{id:"b"+index, 'data-status': 'ok',test:"abc",xyz:index})
+                                notyConfig.buttons.push(actionBtn);
+                            });
+                        }
+                        var n=new Noty(notyConfig)
+                        n.show();
+
+
                     } else {
                         messageHtml = $(me.getChatTemplate("message")).tmpl({
                             'msgData': msgData,

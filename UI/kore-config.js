@@ -11,17 +11,15 @@
     botOptions.koreAnonymousFn = koreAnonymousFn;
     botOptions.recorderWorkerPath = '../libs/recorderWorker.js';
 
-    botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";
-    botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';// Provide users email id here
-    botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
+	botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
+    botOptions.userIdentity = 'rajasekhar.balla@kore.com';// Provide users email id here
+    botOptions.botInfo = { name: "AsyncBot", "_id": "st-aeb59527-8c16-596f-b183-ea9151f1c342" }; // bot name is case sensitive
+    botOptions.clientId = "cs-32af7c18-57e8-5c01-995e-0c27ed49735f";
+    botOptions.clientSecret = "z2otclDRmyg+7OmlHwtp1LLtIJus+2g60bisPypU26Y=";
 
-    /* 
-    Important Note: These keys are provided here for quick demos to generate JWT token at client side but not for Production environment.
-    Refer below document for JWT token generation at server side. Client Id and Client secret should maintained at server end.
-    https://developer.kore.ai/docs/bots/sdks/user-authorization-and-assertion/
-    **/
-    botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
-    botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+
+
+
     botOptions.brandingAPIUrl = botOptions.koreAPIUrl +'websdkthemes/'+  botOptions.botInfo._id+'/activetheme';
     botOptions.enableThemes = true;
 // for webhook based communication use following option 
