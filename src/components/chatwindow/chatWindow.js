@@ -115,14 +115,14 @@ class chatWindow extends EventEmitter{
      */
       ON_KEY_DOWN: 'onKeyDown',
       /**
-     * jwtGrantSuccess will be triggered on jwt grant success API response
+     * jwtGrantSuccessAPI will be triggered on jwt grant success API response
      *
-     * @event chatWindow#jwtGrantSuccess
+     * @event chatWindow#jwtGrantSuccessAPI
      * @type {object}
-     * @property {Object} jwtgrantsuccess -  jwt grant success API response
+     * @property {Object} jwtGrantSuccessAPI -  jwt grant success API response
      * @property {Object} chatWindowEvent
      */
-       JWT_GRANT_SUCCESS : 'jwtGrantSuccess'
+       JWT_GRANT_SUCCESS_API : 'jwtGrantSuccessAPI'
   }
 }
 
@@ -1439,6 +1439,7 @@ chatWindow.prototype.bindSDKEvents = function () {
   me.bot.on('jwtgrantsuccess', (response) => {
     me.config.jwtGrantSuccessInformation = response.jwtgrantsuccess;
     me.getBrandingInformation(response.jwtgrantsuccess);
+    me.emit(me.EVENTS.JWT_GRANT_SUCCESS_API, response.jwtgrantsuccess);
   });
 };
 chatWindow.prototype.bindCustomEvents = function () {

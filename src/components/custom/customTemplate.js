@@ -15,6 +15,7 @@ import ListWidgetTemplate from './templates/listWidgetTemplate/listWidgetTemplat
 import MiniTableChartTemplate from './templates/miniTableTemplate/miniTableTemplate';
 import CarouselTemplate from './templates/carouselTemplate/carouselTemplate';
 import ListViewTemplate from './templates/listViewTemplate/listViewTemplate';
+import SystemTemplate from './templates/systemTemplate/systemTemplate'
 
 
 //import MessageTemplate from './templates/messageTemplate/messageTemplate';
@@ -56,6 +57,7 @@ import '../../../libs/purejscarousel.css';
 		this.installTemplate(new CarouselTemplate());
 		this.installTemplate(new MiniTableChartTemplate());
 		this.installTemplate(new ListViewTemplate());
+		this.installTemplate(new SystemTemplate());
 	
 		// this.installTemplate(new PieChartTemplate());
 		// this.installTemplate(new BarChartTemplate());
