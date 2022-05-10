@@ -5,7 +5,7 @@ class KoreHelpers{
         'nl2br': function (str, runEmojiCheck) {
              //todo:raj
                 if (runEmojiCheck) {
-                    str = window.emojione.shortnameToImage(str);
+                    str = emojione.shortnameToImage(str);
                 }
             str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
             return str;
