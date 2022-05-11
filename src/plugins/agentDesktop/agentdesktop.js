@@ -33,11 +33,20 @@ class AgentDesktopPlugin extends EventEmitter {
     }
     onInit() {
         let me = this;
+        this.appendVideoAudioElemnts()
         this.koreCoBrowse = me.koreCoBrowse({});
         this.rrweb = me.rrweb({});
     }
 
-
+    appendVideoAudioElemnts(){
+        let me = this;
+        let cwInstance = me.hostInstance;
+        let chatEle = cwInstance.chatEle;
+        let localVideoElement ='<video id="kore_local_video" autoplay="autoplay" playsinline style="width:0px;height:0px"></video>';
+        let remoteVideoElement ='<video id="kore_remote_video" autoplay="autoplay" playsinline style="width:0px;height:0px"></video>';
+        chatEle.append(localVideoElement);
+        chatEle.append(remoteVideoElement);
+    }
 
     AgentDesktop = function (uuId, aResponse) {
         let me = this;
