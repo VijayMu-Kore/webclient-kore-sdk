@@ -11,21 +11,24 @@ import AudioCodesUA from './ac_webrtc';
 import * as koreJquery from '../../libs/korejquery';
 import requireKr from '../../../kore-bot-sdk-client';
 import './agentdesktop.css';
-import EventEmitter from '../../utils/EventEmiter';
 import moment from 'moment';
 
-class AgentDesktopPlugin extends EventEmitter {
+class AgentDesktopPlugin  {
     name = 'AgentDesktopPlugin';
+    config ={};
     koreCoBrowse;
     rrweb;
     authResponse;
-    constructor() {
-        super();
+    constructor(config) {
+        this.config = {
+            ...this.config,
+            ...config
+        }
     }
     onHostCreate() {
         let me = this;
         let cwInstance = me.hostInstance;
-        cwInstance.on("jwtGrantSuccessAPI", (response) => {
+        cwInstance.on("jwtGrantSuccess", (response) => {
             me.onInit();
             me.AgentDesktop(response.userInfo.userId, response)
         });
