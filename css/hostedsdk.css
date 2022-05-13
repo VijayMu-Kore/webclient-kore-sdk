@@ -131,6 +131,9 @@ body{
 .kore-chat-window .kore-chat-footer .recordingMicrophone .recordingGif{
     display: none;
 }
+.kore-chat-window.has-panels{
+    box-shadow: 9px 0 14px 0 rgba(138, 149, 159, 2.5);
+}
 .loading .kr-loader{
     display: table;
 }
