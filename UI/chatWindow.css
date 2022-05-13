@@ -81,7 +81,7 @@
 
     --sdk-chat-window-bg-color:#000000;
     --sdk-chat-window-font-style:"Inter";
-    --sdk-chat-window-box-shadow:0 10px 25px 0 rgba(0, 0, 0, 0.1);
+    --sdk-chat-window-box-shadow:0 10px 25px 0 rgba(0, 0, 0, 0.2);
     --sdk-chat-window-border-color:#e5e8ec;
 
     /* Bot message variable */

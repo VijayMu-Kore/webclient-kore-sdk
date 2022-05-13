@@ -132,7 +132,7 @@ body{
     display: none;
 }
 .kore-chat-window.has-panels{
-    box-shadow: 9px 0px 14px 0 rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 9px 0px 14px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .loading .kr-loader{
     display: table;
