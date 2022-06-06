@@ -137,11 +137,11 @@ class KorePickersPlugin {
     installPickerTemplates(){
         let me=this;
         let templateManager = me.hostInstance.customTemplateObj;
-        templateManager.installTemplate(new DatePickerTemplate());
-		templateManager.installTemplate(new DateRangePickerTemplate());
-		templateManager.installTemplate(new ClockPickerTemplate());
-		templateManager.installTemplate(new RadioOptionPickerTemplate());
-		templateManager.installTemplate(new TaskPickerTemplate());
+        templateManager.installTemplate('dateTemplate',new DatePickerTemplate());
+		templateManager.installTemplate('daterange', new DateRangePickerTemplate());
+		templateManager.installTemplate('clockTemplate', new ClockPickerTemplate());
+		templateManager.installTemplate('radioOptionTemplate', new RadioOptionPickerTemplate());
+		templateManager.installTemplate('taskPickerTemplate', new TaskPickerTemplate());
     }
     appendPickersToChatWindow() {
         let me = this;
