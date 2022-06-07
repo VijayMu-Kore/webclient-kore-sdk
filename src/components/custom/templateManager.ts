@@ -18,14 +18,12 @@ import ListViewTemplate from './templates/listViewTemplate/listViewTemplate';
 import IframeTemplate from './templates/iframeTemplate/iframeTemplate';
 import SystemTemplate from './templates/systemTemplate/systemTemplate';
 
-import './customTemplate.css';
+import './templates.css';
 import '../../../libs/purejscarousel.css';
 
-class customTemplate {
+class TemplateManager {
 	hostInstance: any;
 	templates = new Map();
-	chatInitialize: any;
-	helpers: any;
 	constructor(hostInstance: any) {
 		this.hostInstance = hostInstance;
 		this.installDefaultTemplates();
@@ -64,9 +62,9 @@ class customTemplate {
  * input  : Bot Message
  * output : Custom template HTML
  */
-	renderMessage(msgData: any) { 
+	renderMessage(msgData: any) {
 		var messageHtml = '';
-		if(msgData.message && msgData.message[0].type == 'text' && (!msgData.message[0].component || !msgData.message[0].component.type ) ){
+		if (msgData.message && msgData.message[0].type == 'text' && (!msgData.message[0].component || !msgData.message[0].component.type)) {
 			return messageHtml;
 		}
 		else if (msgData.message && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type) {
@@ -82,16 +80,16 @@ class customTemplate {
 		else if (msgData.message && msgData.message[0].component && (msgData.message[0].component.type == 'audio' || msgData.message[0].component.type == 'image' || msgData.message[0].component.type == 'video')) {
 			let templateInstance = this.templates.get('attachments');
 			return templateInstance.renderMessage.call(templateInstance, msgData);
-		}else {
+		} else {
 			console.warn('Template type not defined');
 		}
 
 
 		return messageHtml;
-	} 
+	}
 
 
 }
 
 
-export default customTemplate;
+export default TemplateManager;

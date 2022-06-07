@@ -28,7 +28,7 @@ class GraphTemplatesPlugin {
     }
     installPickerTemplates(){
         let me=this;
-        let templateManager = me.hostInstance.customTemplateObj;
+        let templateManager = me.hostInstance.templateManager;
         templateManager.installTemplate('linechart',new LineChartTemplate());
 		templateManager.installTemplate('barchart',new BarChartTemplate());
 		templateManager.installTemplate('piechart',new PieChartTemplate());

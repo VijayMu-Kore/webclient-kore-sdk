@@ -136,7 +136,7 @@ class KorePickersPlugin {
     }
     installPickerTemplates(){
         let me=this;
-        let templateManager = me.hostInstance.customTemplateObj;
+        let templateManager = me.hostInstance.templateManager;
         templateManager.installTemplate('dateTemplate',new DatePickerTemplate());
 		templateManager.installTemplate('daterange', new DateRangePickerTemplate());
 		templateManager.installTemplate('clockTemplate', new ClockPickerTemplate());
