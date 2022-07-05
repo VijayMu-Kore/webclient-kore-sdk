@@ -3848,3 +3848,18 @@ display: none !important;
 .sdk-body .kore-chat-window .slide {
     border: 5px solid var(--sdk-chat-widow-default-white);
 }
+.start-search-icon-div {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    z-index: 1000;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+    background-color: #fff;
+    box-shadow: 14px 4px 64px 12px rgb(18 61 101 / 40%), -16px -16px 64px 0 rgb(255 255 255 / 80%), inset -8px -6px 80px 0 rgb(255 255 255 / 18%);
+}
