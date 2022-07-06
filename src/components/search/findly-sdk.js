@@ -7499,7 +7499,11 @@ FindlySDK.prototype.searchEventBinding = function (
                               }]
                             }
                             var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
-                            $(".search-body").empty().append(showAllHTML);
+                            if (!$("body").hasClass("top-down")) {
+                              $(".search-body").empty().append(showAllHTML);
+                            }else{
+                              $(".live-search-data-container").empty().append(showAllHTML);
+                            }
                           });
                           // var tmplData = {
                           //   faqs: [],
@@ -9030,13 +9034,15 @@ FindlySDK.prototype.handleSearchRes = function (res) {
   }
   if ($("body").hasClass("top-down")) {
     var conversationContainerHtml = $("#conversation-container");
-    _self.bindPerfectScroll(
-      conversationContainerHtml,
-      "#searchChatContainer",
-      null,
-      "y",
-      "conversationContainer"
-    );
+    if($('#searchChatContainer').length){
+      _self.bindPerfectScroll(
+        conversationContainerHtml,
+        "#searchChatContainer",
+        null,
+        "y",
+        "conversationContainer"
+      );
+    }
   }
   $(".parent-search-live-auto-suggesition").hide();
 };
@@ -11107,7 +11113,7 @@ FindlySDK.prototype.addSearchResult = function (config) {
                   $("#" + actionContainer).empty();
                 }
                 $("#" + actionContainer).append(dataHTML);
-                _self.bindCarouselForActionsTemplate("#" + actionContainer);
+                // _self.bindCarouselForActionsTemplate("#" + actionContainer);
               } else {
                 var dataHTML = $("#" + config.actionTemplateId).tmplProxy(data);
                 if (
@@ -24356,5 +24362,7 @@ FindlySDK.prototype.clearRadioSelectedFacets = function(event){
   })
 });
 }
+FindlySDK.prototype.bindStructuredDataTriggeringOptions = function () {
+};
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
