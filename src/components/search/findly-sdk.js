@@ -8258,7 +8258,9 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     }
     if (res.payload == undefined) {
       if (res.cInfo) {
-        (res.text || {}).cInfo = res.cInfo;
+        if((res.text || {}).cInfo){
+          (res.text || {}).cInfo = res.cInfo;
+        }
       }
 
       botResponse = res.text;
