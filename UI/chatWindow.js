@@ -41,6 +41,11 @@
                 OPEN_OVERRIDE:"cw:open:override",
                 MESSAGE_OVERRIDE:"cw:message:override"
             };
+            var sendFailedMessage={
+                messageId:null,
+                MAX_RETRIES:3,
+                retryCount:0
+            };
             /******************* Mic variable initilization *******************/
             var _exports = {},
                 _template, _this = {};
@@ -920,7 +925,9 @@
                 }, me._pingTime);
             }
             window.onresize = function (event) {
-                if (event.target == window) {
+                var me=chatInitialize;
+                if (event.target === window) {
+                     chatInitialize.setCollapsedModeStyles();
                     var _width = $('#chatContainer').width() - 400;
                     //$('.kore-chat-window').attr('style','left: '+_width+'+px');
                 }
@@ -988,11 +995,6 @@
                     me.chatPSObj.update()
                 }
                 /* Handling expand and collapse chat-container height */
-            };
-            window.onresize = function(event) {
-                if(event.target===window){
-                    chatInitialize.setCollapsedModeStyles();
-                }
             };
             chatWindow.prototype.handleImagePreview= function() {
                 var modal = document.getElementById('myModal');
@@ -1070,6 +1072,9 @@
                 var me = this;
                 me.initi18n();
                 me.seti18n((me.config && me.config.i18n && me.config.i18n.defaultLanguage) || 'en');
+                if(me.config && me.config.sendFailedMessage && me.config.sendFailedMessage.hasOwnProperty('MAX_RETRIES')){
+                    sendFailedMessage.MAX_RETRIES=me.config.sendFailedMessage.MAX_RETRIES
+                }
                 window.chatContainerConfig = me;
                 me.config.botOptions.botInfo.name = me.config.botOptions.botInfo.name.escapeHTML();
                 me._botInfo = me.config.botOptions.botInfo;
@@ -1303,7 +1308,16 @@
                     _escPressed = 0;
                 });
                 _chatContainer.off('click', '.botResponseAttachments').on('click', '.botResponseAttachments', function (event) {
-                    window.open($(this).attr('fileid'), '_blank');
+                    var thisEle = this;
+                    if($(event.currentTarget).attr('download')==='true'){
+                        var dlink = document.createElement('a');
+                        dlink.download = $(event.currentTarget).find('.botuploadedFileName').text();
+                        dlink.href = $(thisEle).attr('fileid');
+                        dlink.click();
+                        dlink.remove();
+                    }else{
+                        window.open($(thisEle).attr('fileid'), '_blank');
+                    } 
                 });
                 /*_chatContainer.off('click', '.attachments').on('click', '.attachments', function (event) {
                     var attachFileID = $(this).attr('fileid');
@@ -1653,6 +1667,15 @@
                         me.chatPSObj.update()
                     }
                 });
+
+                _chatContainer.off('click', '.retry').on('click', '.retry', function (event) {
+                    var target=$(event.target);
+                    _chatContainer.find(".failed-text").remove();  
+                    _chatContainer.find(".retry-icon").remove();
+                    _chatContainer.find(".retry-text").text('Retrying...');
+                    sendFailedMessage.messageId=target.closest('.fromCurrentUser').attr('id');
+                    _chatContainer.find(".reload-btn").trigger('click',{isReconnect:true});
+                });
                 /*$('body').on('click', '.kore-chat-overlay, .kore-chat-window .minimize-btn', function () {
                     if (me.expanded === true) {
                         $('.kore-chat-window .expand-btn').trigger('click');
@@ -1964,6 +1987,14 @@
                         $('.disableFooter').removeClass('disableFooter');
                     });
                 }
+                if(sendFailedMessage.messageId){
+                    var msgEle=_chatContainer.find('#'+sendFailedMessage.messageId);
+                    msgEle.find('.errorMsg').remove();
+                    var msgTxt=msgEle.find('.messageBubble').text().trim();
+                    _chatContainer.find('.chatInputBox').text(msgTxt);
+                    msgEle.remove();
+                    me.sendMessage($('.chatInputBox'));
+                }
             }
             chatWindow.prototype.bindIframeEvents = function (authPopup) {
                 var me = this;
@@ -2010,6 +2041,10 @@
                 var _bodyContainer = $(me.config.chatContainer).find('.kore-chat-body');
                 var _footerContainer = $(me.config.chatContainer).find('.kore-chat-footer');
                 var clientMessageId = new Date().getTime();
+                if(sendFailedMessage.messageId){
+                    clientMessageId=sendFailedMessage.messageId;
+                    sendFailedMessage.messageId=null;
+                }
                 var msgData = {};
                 fileUploaderCounter = 0;
                 //to send \n to server for new lines
@@ -2077,8 +2112,15 @@
                             me.handleWebHookResponse(msgsData);
                         }, function (err) {
                             setTimeout(function () {
-                                $('.typingIndicatorContent').css('display', 'none');
-                                $('.kore-chat-window [data-time="' + clientMessageId + '"]').find('.messageBubble').append('<div class="errorMsg">Send Failed. Please resend.</div>');
+                                var failedMsgEle=$('.kore-chat-window [id="' + clientMessageId + '"]');
+                                failedMsgEle.find('.messageBubble').append('<div class="errorMsg hide"><span class="failed-text">Send Failed </span><div class="retry"><span class="retry-icon"></span><span class="retry-text">Retry</span></div></div>');
+                                if(sendFailedMessage.retryCount<sendFailedMessage.MAX_RETRIES){
+                                    failedMsgEle.find('.retry').trigger('click');
+                                    sendFailedMessage.retryCount++;
+                                }else{
+                                    failedMsgEle.find('.errorMsg').removeClass('hide');
+                                    $('.typingIndicatorContent').css('display', 'none');
+                                }
                             }, 350);
                         },
                         me.attachmentInfo?{attachments:[me.attachmentInfo]}:null
@@ -2087,7 +2129,15 @@
                     me.bot.sendMessage(messageToBot, function messageSent(err) {
                         if (err && err.message) {
                             setTimeout(function () {
-                                $('.kore-chat-window [data-time="'+clientMessageId+'"]').find('.messageBubble').append('<div class="errorMsg">Send Failed. Please resend.</div>');
+                                var failedMsgEle=$('.kore-chat-window [id="' + clientMessageId + '"]');
+                                failedMsgEle.find('.messageBubble').append('<div class="errorMsg hide"><span class="failed-text">Send Failed </span><div class="retry"><span class="retry-icon"></span><span class="retry-text">Retry</span></div></div>');
+                                if(sendFailedMessage.retryCount<sendFailedMessage.MAX_RETRIES){
+                                    failedMsgEle.find('.retry').trigger('click');
+                                    sendFailedMessage.retryCount++;
+                                }else{
+                                    failedMsgEle.find('.errorMsg').removeClass('hide');
+                                    $('.typingIndicatorContent').css('display', 'none');
+                                }
                             }, 350);
                         }
                     });    
@@ -2196,6 +2246,7 @@
                 me.customTemplateObj.extension = extension;
                 graphLibGlob = me.config.graphLib || "d3";
                 if (msgData.type === "bot_response") {
+                    sendFailedMessage.retryCount=0;
                     waiting_for_message = false;
                     setTimeout(function () {
                         $('.typingIndicator').css('background-image', "url(" + msgData.icon + ")");
@@ -2218,7 +2269,12 @@
                 }
                 if (msgData.message && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.url) {
                     extension = strSplit(msgData.message[0].component.payload.url);
-                    _extractedFileName = msgData.message[0].component.payload.url.replace(/^.*[\\\/]/, '');
+                    _extractedFileName = msgData.message[0].component.payload.name ? msgData.message[0].component.payload.name : msgData.message[0].component.payload.url.replace(/^.*[\\\/]/, '');
+                    // _extractedFileName = msgData.message[0].component.payload.url.replace(/^.*[\\\/]/, '');
+                    if(msgData.message[0].component.payload.fileName){
+                        _extractedFileName=msgData.message[0].component.payload.fileName;
+                        extension=strSplit(_extractedFileName);
+                    }
                 }
 
                 /* checking for matched custom template */
@@ -3177,7 +3233,7 @@
                                 {{if msgData.icon}}<div class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
                                 <div class="messageBubble">\
                                     {{if msgItem.component.payload.url}} \
-                                        <div class="msgCmpt botResponseAttachments" fileid="${msgItem.component.payload.url}"> \
+                                        <div class="msgCmpt botResponseAttachments"  download="${msgItem.component.payload.download}" fileid="${msgItem.component.payload.url}"> \
                                             <div class="uploadedFileIcon"> \
                                                 {{if msgItem.component.type == "image"}} \
                                                     <span class="icon cf-icon icon-photos_active"></span> \
@@ -4058,6 +4114,13 @@
                 }
             }
             this.botDetails = function (response, botInfo) {
+                if(window.KoreAgentDesktop){
+                    if (response && response.userInfo) {
+                        KoreAgentDesktop(response.userInfo.userId, response);
+                    } else {
+                        console.log("AgentDesktop initialization - did not receive authResponse")
+                    }    
+                }
                 /* Remove hide class for tts and speech if sppech not enabled for this bot */
                 /*setTimeout(function () {
                     fetchBotDetails(response,botInfo);

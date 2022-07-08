@@ -2783,7 +2783,7 @@ var advancedListTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-tm
 			e.preventDefault();
 			e.stopPropagation();
 			$(".chatInputBox").text(this.value)
-			var k = jQuery.Event('keydown', { which: 13 });
+			var k = $.Event('keydown', { which: 13 });
 			k.keyCode = 13
 			$('.chatInputBox').trigger(k);
 	
@@ -3168,7 +3168,6 @@ var advancedListTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-tm
 			$(".kore-action-sheet .list-template-sheet .displayMonth .tabs").on('click', function (e) {
 				var _selectedTab = $(e.target).text();
 	
-				// var msgData = $("li.fromOtherUsers.with-icon.listView").data();
 				var viewTabValues = $(customTemplate.prototype.getChatTemplate("actionSheetTemplate")).tmpl({
 					'msgData': msgData,
 					'dataItems': msgData.message[0].component.payload.moreData[_selectedTab],

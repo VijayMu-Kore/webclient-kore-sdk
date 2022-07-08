@@ -3925,13 +3925,12 @@
 
 .card-template .card-body .card-title-block .card-block .title-text.card-text-overflow {
 	overflow: hidden;
-    text-overflow: ellipsis;
-    /* width: 176px; */
-    /* width: calc(100% - 190px); */
-    white-space: nowrap;
-    padding-right: 10px;
-    /* padding-right: 10px; */
-    padding-right: 110px;
+	text-overflow: ellipsis;
+	/* width: 176px; */
+	/* width: calc(100% - 190px); */
+	white-space: nowrap;
+	/* padding-right: 10px; */
+	padding-right: 110px;
 }
 
 .card-template .card-body .card-title-block .card-block .title-desc {
