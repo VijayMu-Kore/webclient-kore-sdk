@@ -23189,6 +23189,9 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
     return new Promise((resolve, reject) => {
       _self
         .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
+          data.showMore = true;
+          data.pageNumber = showMoreData.pageNumber;
+          data.groupName = showMoreData.groupName;
           _self.getMergedData(_self.vars.resultSettings, data, 'isFullResults').then((res) => {
             resolve(res);
           })
@@ -23341,8 +23344,11 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               return group.fieldValue;
             })
           }
-
-          availableGroupNames.push('defaultTemplate');
+          // var agIndex  = availableGroupNames.findIndex((d)=> d =='defaultTemplate');
+          // if(agIndex>-1){
+            availableGroupNames.push('defaultTemplate');
+          // }
+         
           availableGroupNames.forEach((group) => {
             if (!configurationSettings[group + 'Config']) {
               configurationSettings[group + 'Config'] = {
@@ -23388,6 +23394,9 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
           });
           //design template config end//
           // setTimeout(function () {
+            if(responseData.showMore){
+              availableGroupNames = [responseData.groupName];
+            }
           availableGroupNames.forEach((group) => {
             //initialize template config start//
             var templateInterface = config.interface;
@@ -23421,6 +23430,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             var templateInterfaceType = '';
             var groupName = data.dataObj.groupName;
             var doc_count = data.dataObj.doc_count;
+            var pageNumber = data.dataObj.pageNumber || 0;
             if (isLiveSearch) {
               templateInterfaceType = 'liveSearch';
               templateConfiguration = configurationSettings[groupName + 'Config'][templateInterfaceType + 'Interface'];
@@ -23526,7 +23536,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'groupResults': data.groupResults,
                       'groupName': groupName,
                       'doc_count': doc_count || 0,
-                      'pageNumber': 0,
+                      'pageNumber': pageNumber || 0,
                       'templateName': groupName.replaceAll(' ', ''),
                       'fieldName': data.fieldName,
                       'gridLayoutType': gridLayoutType,
@@ -23607,11 +23617,17 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               var results = response.results.data;
               var dataObj = {
                 data: results,
-                groupName: 'defaultTemplate',
-                doc_count: response.results.doc_count
+                groupName: responseData.showMore?responseData.groupName:'defaultTemplate',
+                doc_count: response.results.doc_count,
+                pageNumber: responseData.showMore?responseData.pageNumber:0
               }
               if (results && results.length) {
                 const final_result = _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
+                if(responseData.showMore){
+                  _self.vars.mergedData = final_result;
+                  resolve(_self.vars.mergedData);
+                  return _self.vars.mergedData;
+                }
                 console.log("final_result", final_result);
                 // resolve(final_result);
               }
