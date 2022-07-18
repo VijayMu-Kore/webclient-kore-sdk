@@ -23792,6 +23792,11 @@ FindlySDK.prototype.botActionTrigger = function (e) {
   }
 }
 FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
+  if ($("body").hasClass("top-down")) {
+    $(".content-data-sec").scrollTop(0);
+  }else{
+    $(".data-body-sec").scrollTop(0);
+  }
   var _self = this;
   var selectedFacet = facetSelected;
   _self.vars.selectedFacetFromSearch = selectedFacet;
