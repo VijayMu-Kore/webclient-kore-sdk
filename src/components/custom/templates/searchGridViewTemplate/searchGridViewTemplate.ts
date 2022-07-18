@@ -19,7 +19,7 @@ class SearchGridViewTemplate {
     bindEvents(me: any, messageHtml: any) {
         let hostWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(".full-search-data-container")
+        $(messageHtml)
         .off("click", ".show-more-list")
         .on("click", ".show-more-list", function (e: any) {
         const showMoreData = {

@@ -245,7 +245,7 @@ class SearchListViewTemplate {
     //Tour RR 
     //}
     //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
-    $(".full-search-data-container")
+    $(messageHtml)
     .off("click", ".show-more-list")
     .on("click", ".show-more-list", function (e: any) {
     const showMoreData = {
