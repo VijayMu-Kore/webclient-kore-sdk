@@ -62,7 +62,8 @@ class FullSearchResultTopdownTemplate {
     }, 300);
 
     let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
-      facets: msgData.message[0].component.payload.tabsList
+      facets: msgData.message[0].component.payload.tabsList,
+      truncateText: truncateText
     });
     $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
     FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, msgData.message[0].component.payload.tabsList, 'all results');
@@ -72,21 +73,6 @@ class FullSearchResultTopdownTemplate {
 
     var fullSearchResultTopdownTemplate = '<script type="text/x-jqury-tmpl">\
     <div class="all-result-container">\
-                <div id="conversation-container" class="conversation-container">\
-                    <div class="conversation-title">\
-                        <div class="custom-header-container-left searchAssist" style="padding-left: 20px;">\
-                            <div class="searchAssistHeader"> Search Assist </div>\
-                        </div>\
-                        <div class="close-conv">\
-                            <img class="close-conv-icon"\
-                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBbZHRDcIwDERju+zTSizSCWgl8sFM+Ug26AwsUDIGO9A05AChprV/osjPd2eZLtfbg2gZg3PRKDUMts3SeAaUV5kGa1sVYpkoLaPEeX525+4OGC/+FbSmPgQX6T9dFAETp968jNlC6FNl9YNNLo0NhOIqVFEC9Bk/1Xn5ELwowX6/oGjBtQVpD2mZ4cBZ2GsQCkf4xmj8GzsLeh0gnVcbAAAAAElFTkSuQmCC" />\
-                        </div>\
-                    </div>\
-                    <div id="conversations" class="conversations">\
-                        <div id="conversation-body"></div>\
-                    </div>\
-                    <div id="conversation-box-container" class="conv"></div>\
-                </div>\
                     <div class="full-results-data-container">\
                         <div class="back-search" style="cursor: pointer;position: absolute;right: 34px;z-index: 100000;">\
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII="/>\
@@ -142,7 +128,7 @@ class FullSearchResultTopdownTemplate {
       '<script id="top-down-tabs-template" type="text/x-jqury-tmpl">\
                                   <div class="tab-sec">\
                                     {{each(key, facet) facets }}\
-                                     <div class="tab-name capital un-selected-type facet {{= facet.className}}" id="{{= facet.key}}" apperance="{{= facet.key}}" title="{{= facet.name}} ({{= facet.doc_count}})"><span class="tab-title text-truncate one-line-height"> {{= facet.name}}</span> <span class="tab-count text-truncate one-line-height"> ({{= facet.doc_count}}</span><span class="tab-count-right-bracket">)</span></div>\
+                                     <div class="tab-name capital un-selected-type facet {{= facet.className}}" id="{{= facet.key}}" apperance="{{= facet.key}}" title="{{= facet.name}} ({{= facet.doc_count}})"><span class="tab-title one-line-height"> {{html truncateText(facet.name)}}</span> <span class="tab-count text-truncate one-line-height"> (<span class="count-text">{{= facet.doc_count}}</span></span><span class="tab-count-right-bracket">)</span></div>\
                                     {{/each}}\
                                     </div>\
                                 </script>';
@@ -293,7 +279,7 @@ class FullSearchResultTopdownTemplate {
               }
             }
             FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-            let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets });
+            let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
@@ -318,7 +304,7 @@ class FullSearchResultTopdownTemplate {
               }
             }
             FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-            let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets });
+            let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets, truncateText: truncateText });
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
@@ -334,7 +320,8 @@ class FullSearchResultTopdownTemplate {
         $(".sdk-filter-radio-top-down").prop("checked", false);
         hostWindowInstance.clearAllFilterTopdownEvent(event).then((res: any) => {
           let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
-            facets: res.facets
+            facets: res.facets,
+            truncateText: truncateText
           });
           $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
           FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, res.facets, 'all results');
@@ -365,7 +352,7 @@ class FullSearchResultTopdownTemplate {
                 }
               }
               FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, res.result);
-              let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets });
+              let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets,truncateText: truncateText });
               $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
               FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, res.facets, selectedFacet);
               if (res.isFilterAlignedTop) {
@@ -421,7 +408,7 @@ class FullSearchResultTopdownTemplate {
         }
       }
       FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-      let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets });
+      let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets, truncateText: truncateText });
       $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
       FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
       FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
@@ -615,7 +602,7 @@ class FullSearchResultTopdownTemplate {
             }
           }
           FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, res.result);
-          let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets });
+          let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets ,truncateText: truncateText});
           $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
           FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, res.facets, selectedFacet);
           if (res.isFilterAlignedTop) {
@@ -624,7 +611,36 @@ class FullSearchResultTopdownTemplate {
         })
       });
   }
+   truncateText(val:any) {
+    var textMsg = val;
+    textMsg = textMsg.split(' ');
+    var truncatedText = '';
+    textMsg.every((text:any) => {
+      if ((truncatedText + (truncatedText ? ' ' : '') + text).length > 20) {
+        if (!truncatedText.length) {
+          truncatedText = text.slice(0, 19) + ' ...';
+        } else {
+          truncatedText = truncatedText + ' ...';
+        }
+        return false;
+      } else {
+        if (truncatedText && truncatedText.length > 20) {
+          truncatedText = truncatedText + ' ...';
+          return false;
+        } else {
+          if ((truncatedText + (truncatedText ? ' ' : '') + text).length > 20) {
+            truncatedText = truncatedText + ' ...';
+            return false;
+          } else {
+            truncatedText = truncatedText + (truncatedText ? ' ' : '') + text;
+          }
+        }
+      }
+      return true;
+    })
+    return truncatedText;
+  }
 }
-
+var truncateText = FullSearchResultTopdownTemplate.prototype.truncateText;
 export default FullSearchResultTopdownTemplate;
 

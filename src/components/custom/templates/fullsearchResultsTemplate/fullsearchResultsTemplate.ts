@@ -52,7 +52,7 @@ class FullSearchResultsTemplate {
         $('.show-all-results-outer-wrap').css({ 'left': '200px', 'box-shadow': '0 10px 25px 0 rgb(0 0 0 / 20%)' });
       }
     }, 300);
-    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: msgData.message[0].component.payload.facets });
+    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: msgData.message[0].component.payload.facets, truncateText: truncateText  });
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
     FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, 'all results');
     FullSearchResultsTemplate.prototype.facetReset(me, messageHtml, msgData);
@@ -184,7 +184,7 @@ class FullSearchResultsTemplate {
   getBottomupTab() {
     var tabContainer = '<script type="text/x-jqury-tmpl">\
                       {{each(key,facet) facets}}\
-                      <div class="tab-name see-all-result-nav  {{= facet.className}}"  title="{{= facet.name}}" id="{{= facet.key}}" classification="{{= facet.key}}">{{= facet.name}} <span class="count sdk-facet-count">({{= facet.doc_count}})</span></div>\
+                      <div class="tab-name see-all-result-nav  {{= facet.className}}"  title="{{= facet.name}}" id="{{= facet.key}}" classification="{{= facet.key}}">{{html truncateText(facet.name)}} <span class="count sdk-facet-count">({{= facet.doc_count}})</span></div>\
                       {{/each}}\
                       </script>';
     return tabContainer;
@@ -486,7 +486,7 @@ class FullSearchResultsTemplate {
             }
           }
           FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-          let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets });
+          let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText });
           $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
           FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
         })
@@ -553,7 +553,7 @@ class FullSearchResultsTemplate {
         }
       }
       FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-      let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets });
+      let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText  });
       $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
       FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
       let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: response.filterCount });
@@ -573,15 +573,45 @@ class FullSearchResultsTemplate {
             }
           }
           FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-          let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets });
+          let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText  });
           $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
           FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
         })
       });
   }
+  
+  truncateText(val:any) {
+    var textMsg = val;
+    textMsg = textMsg.split(' ');
+    var truncatedText = '';
+    textMsg.every((text:any) => {
+      if ((truncatedText + (truncatedText ? ' ' : '') + text).length > 20) {
+        if (!truncatedText.length) {
+          truncatedText = text.slice(0, 19) + ' ...';
+        } else {
+          truncatedText = truncatedText + ' ...';
+        }
+        return false;
+      } else {
+        if (truncatedText && truncatedText.length > 20) {
+          truncatedText = truncatedText + ' ...';
+          return false;
+        } else {
+          if ((truncatedText + (truncatedText ? ' ' : '') + text).length > 20) {
+            truncatedText = truncatedText + ' ...';
+            return false;
+          } else {
+            truncatedText = truncatedText + (truncatedText ? ' ' : '') + text;
+          }
+        }
+      }
+      return true;
+    })
+    return truncatedText;
+  }
   $ = $;
-
 }
+var truncateText = FullSearchResultsTemplate.prototype.truncateText;
 FullSearchResultsTemplate.prototype.$ = $;
 
 export default FullSearchResultsTemplate;

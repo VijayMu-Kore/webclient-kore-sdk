@@ -52,11 +52,11 @@ class SearchGridViewTemplate {
         });
         $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
             hostWindowInstance?.captureClickAnalytics(e,
-                $(e.currentTarget).closest(".faqs-shadow").attr("contentType"),
+                $(e.currentTarget).closest(".click-log-metrics").attr("contentType"),
                 "click",
-                $(e.currentTarget).closest(".faqs-shadow").attr("contentId"),
-                $(e.currentTarget).closest(".faqs-shadow").attr("id"),
-                $(e.currentTarget).attr("title"));
+                $(e.currentTarget).closest(".click-log-metrics").attr("contentId"),
+                $(e.currentTarget).closest(".click-log-metrics").attr("id"),
+                $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
         });
     }
     getTemplateString(type: any) {
@@ -70,9 +70,9 @@ class SearchGridViewTemplate {
             <div class="search-list-template-grid-img-title">\
             {{each(key, data) structuredData.slice(0, 5)}}\
             {{if isClickable == true}}\
-            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}}  click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}}  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
             {{else}}\
-            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}} click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}} click-log-metrics" contentId="${data.contentId}" data-title="${data.heading}" contentType="${data.sys_content_type}" id="${key}">\
             {{/if}}\
                 <div class="content-info-grid">\
                 {{if data.heading.length}}\
@@ -101,9 +101,9 @@ class SearchGridViewTemplate {
         <div class="search-list-template-grid-img">\
         {{each(key, data) structuredData.slice(0, 5)}}\
         {{if isClickable == true}}\
-        <div class="grid-item-col  click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class="grid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         {{else}}\
-        <div class="grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+        <div class="grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
         {{/if}}\
                 <div class="content-info-grid">\
                     <div class="img-block-data">\
@@ -122,9 +122,9 @@ class SearchGridViewTemplate {
         <div class="search-list-template-grid-title-img-desc">\
         {{each(key, data) structuredData.slice(0, 5)}}\
         {{if isClickable == true}}\
-        <div class="grid-item-col  click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class="grid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         {{else}}\
-        <div class="grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+        <div class="grid-item-col click-log-metrics" contentId="${data.contentId}" data-title="${data.heading}" contentType="${data.sys_content_type}" id="${key}">\
         {{/if}}\
             <div class="content-info-grid">\
                 <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
@@ -149,9 +149,9 @@ class SearchGridViewTemplate {
         <div class="search-list-template-grid-title-img-card">\
         {{each(key, data) structuredData.slice(0, 5)}}\
         {{if isClickable == true}}\
-        <div class="grid-item-col  click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class="grid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         {{else}}\
-        <div class="grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+        <div class="grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
         {{/if}}\
             <div class="content-info-grid">\
                 <div class="main-img-block">\
@@ -193,7 +193,7 @@ class SearchGridViewTemplate {
         <div class="new-grid-search-data">\
             {{each(key, task) structuredData}}\
                 <div class="title-box-data">\
-                    <div id="${key}" class="search-grid-item text-truncate" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">\
+                    <div id="${key}" class="search-task search-grid-item text-truncate" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">\
                         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJ1BMVEUAAAAAVaoEbq4DbK8GbK4Gbq8Gba0Fba8Fba4Fbq4Eba4Fba7////SVqJwAAAAC3RSTlMAA0hJVYKDqKmq4875bAAAAAABYktHRAyBs1FjAAAAP0lEQVQI12NgwACMJi5A4CzAwLobDBIYOCaAxDknMLCvnAkEsyYwcECkkBicMDV4GGwQxQEMjCogK5wEMC0HALyTIMofpWLWAAAAAElFTkSuQmCC" class="credit-card display-none">\
                         <div class="name-title">${task.titleText}</div>\
                         {{if task.childBotName !=="" && task.childBotName !== undefined}}\

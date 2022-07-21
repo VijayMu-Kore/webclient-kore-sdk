@@ -140,7 +140,7 @@ class SearchCarouselViewTemplate {
                 "click",
                 $(e.currentTarget).closest(".faqs-shadow").attr("contentId"),
                 $(e.currentTarget).closest(".faqs-shadow").attr("id"),
-                $(e.currentTarget).attr("title"));
+                $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
         });
     }
 
@@ -156,9 +156,9 @@ class SearchCarouselViewTemplate {
             <div class="carousel">\
             {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
             {{if isClickable == true}}\
-            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
             {{else}}\
-            <div class="slide grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
             {{/if}}\
                     <div class="content-info-grid">\
                         <div class="heading-title text_overflow">\
@@ -181,9 +181,9 @@ class SearchCarouselViewTemplate {
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                 {{if isClickable == true}}\
-            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
             {{else}}\
-            <div class="slide grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
             {{/if}}\
                     <div class="content-info-grid">\
                         <div class="img-block-data">\
@@ -200,9 +200,9 @@ class SearchCarouselViewTemplate {
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                 {{if isClickable == true}}\
-            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
             {{else}}\
-            <div class="slide grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
             {{/if}}\
                     <div class="content-info-grid">\
                         <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
@@ -223,9 +223,9 @@ class SearchCarouselViewTemplate {
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                 {{if isClickable == true}}\
-            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
             {{else}}\
-            <div class="slide grid-item-col click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
             {{/if}}\
                     <div class="content-info-grid">\
                         <div class="main-img-block">\

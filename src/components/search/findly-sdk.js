@@ -3198,11 +3198,11 @@ FindlySDK.prototype.bindSearchAccordion = function () {
         }
         _self.captureClickAnalytics(
           evet,
-          $(evet.currentTarget).closest(".faqs-shadow").attr("contenttype"),
+          $(evet.currentTarget).closest(".faqs-shadow").attr("contenttype") || $(evet.currentTarget).closest(".accordion").attr("contenttype"),
           "click",
-          $(evet.currentTarget).closest(".faqs-shadow").attr("contentId"),
-          $(evet.currentTarget).closest(".faqs-shadow").attr("id"),
-          $(evet.currentTarget).closest(".accordion").text()
+          $(evet.currentTarget).closest(".faqs-shadow").attr("contentId") || $(evet.currentTarget).closest(".accordion").attr("contentId"),
+          $(evet.currentTarget).closest(".faqs-shadow").attr("id") || $(evet.currentTarget).closest(".accordion").attr("id"),
+          $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text()
         );
         return;
       }
@@ -3266,11 +3266,11 @@ FindlySDK.prototype.bindSearchAccordion = function () {
         }
         _self.captureClickAnalytics(
           evet,
-          $(evet.currentTarget).closest(".faqs-shadow").attr("contenttype"),
+          $(evet.currentTarget).closest(".faqs-shadow").attr("contenttype") || $(evet.currentTarget).closest(".accordion").attr("contenttype"),
           "click",
-          $(evet.currentTarget).closest(".faqs-shadow").attr("contentId"),
-          $(evet.currentTarget).closest(".faqs-shadow").attr("id"),
-          $(evet.currentTarget).closest(".accordion").text()
+          $(evet.currentTarget).closest(".faqs-shadow").attr("contentId") || $(evet.currentTarget).closest(".accordion").attr("contentId"),
+          $(evet.currentTarget).closest(".faqs-shadow").attr("id") || $(evet.currentTarget).closest(".accordion").attr("id"),
+          $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text()
         );
       }
 
@@ -9182,7 +9182,9 @@ FindlySDK.prototype.clickOutsideSearch = (function () {
         )
       ) {
         $("#frequently-searched-box").hide();
-        $("#live-search-result-box").hide();
+        if(!$("#conversation-container").is(":visible")){
+          $("#live-search-result-box").hide();
+        }
       }
       // out side click for live search and frequent search dropdown close//
       $("#live-search-result-box")
@@ -11856,7 +11858,10 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject) {
     $(".top-down-suggestion").val("");
   }
   $("#frequently-searched-box").hide();
-  $("#live-search-result-box").hide();
+  if(!$("#conversation-container").is(":visible")){
+    $("#live-search-result-box").hide();
+  }
+  
 
   // debugger;
 
@@ -11947,7 +11952,9 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject) {
     messageToBot["botInfo"].taskBotId = _self.bot.options.botInfo.taskBotId;
     messageToBot["botInfo"].customData = {};
   }
-
+  if (_self.config.botOptions.searchIndexID) {
+    messageToBot["searchIndexId"] = _self.config.botOptions.searchIndexID;
+  }
   if (renderMsg && typeof renderMsg === "string") {
     messageToBot["message"].renderMsg = renderMsg;
   }
@@ -21393,6 +21400,21 @@ FindlySDK.prototype.configureSearchInterface = function (botOptions) {
 FindlySDK.prototype.getTopDownTemplate = function () {
   var topDownTemplate = `<div>
   <div class="top-down-wrapper searchAssist-kore-chat-window">
+  <div id="conversation-container" class="conversation-container">\
+                    <div class="conversation-title">\
+                        <div class="custom-header-container-left searchAssist" style="padding-left: 20px;">\
+                            <div class="searchAssistHeader"> Search Assist </div>\
+                        </div>\
+                        <div class="close-conv">\
+                            <img class="close-conv-icon"\
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBbZHRDcIwDERju+zTSizSCWgl8sFM+Ug26AwsUDIGO9A05AChprV/osjPd2eZLtfbg2gZg3PRKDUMts3SeAaUV5kGa1sVYpkoLaPEeX525+4OGC/+FbSmPgQX6T9dFAETp968jNlC6FNl9YNNLo0NhOIqVFEC9Bk/1Xn5ELwowX6/oGjBtQVpD2mZ4cBZ2GsQCkf4xmj8GzsLeh0gnVcbAAAAAElFTkSuQmCC" />\
+                        </div>\
+                    </div>\
+                    <div id="conversations" class="conversations">\
+                        <div id="conversation-body"></div>\
+                    </div>\
+                    <div id="conversation-box-container" class="conv"></div>\
+                </div>\
       <div class="topdown-search-main-container">
           <div id="heading" class="search-input-box">
               <div id="search-box-container" class="search-box-container-data">
@@ -21548,6 +21570,11 @@ FindlySDK.prototype.initializeTopDown = function (
     $("#conversation-container").hide();
     $("#action-title").empty();
     $("#searchChatContainer").empty();
+    if($("#conversation-container").hasClass("live-search-action-chat-container")){
+      $('#search').focus();
+      $("#conversation-container").removeClass("live-search-action-chat-container");
+
+    }
   }
   function focusHandler() {
     if ($("body").hasClass("top-down")) {
@@ -23702,7 +23729,9 @@ FindlySDK.prototype.botActionTrigger = function (e) {
     $("#searchChatContainer").scrollTop() +
     $("#searchChatContainer").height();
   $("#searchChatContainer").animate({ scrollTop: scrollBottom });
-  _self.pubSub.publish("sa-action-clicked", e);
+  if ($("body").hasClass("top-down")) {
+    _self.actionHandler(e);
+  }
   var taskName = e.currentTarget.title.toLowerCase();
   var payload;
   if (
@@ -23778,6 +23807,8 @@ FindlySDK.prototype.botActionTrigger = function (e) {
     );
     _self.resetPingMessage();
     _self.resetSocketDisconnection();
+  } else {
+    _self.appendTextToSearchContainer('user', e.currentTarget.title);
   }
   if (_self.isDev || _self.vars.loggedInUser) {
     _self.vars.searchObject.searchText =
@@ -24387,5 +24418,40 @@ FindlySDK.prototype.clearRadioSelectedFacets = function(event){
 }
 FindlySDK.prototype.bindStructuredDataTriggeringOptions = function () {
 };
+FindlySDK.prototype.appendTextToSearchContainer = function (type, text) {
+  var _self = this;
+  var messageData = {
+    'text': text,
+    'from': type,
+  }
+  var devMode = _self.isDev ? 'true' : 'false';
+  var viewType = _self.vars.customizeView ? 'Customize' : 'Preview';
+  var template = $(_self.getSearchTemplate('messageBubbles')).tmplProxy({
+    msgData: messageData,
+    devMode: devMode,
+    viewType: viewType,
+    helpers: helpers
+  });
+  $('#searchChatContainer').append(template);
+}
+FindlySDK.prototype.actionHandler = function(e) {
+  var _self = this;
+  if($(e.target).closest('.live-search-data-container').length){{}
+  $("#live-search-result-box").show();
+    if(!$("#conversation-container").hasClass("live-search-action-chat-container")){
+    $("#conversation-container").addClass("live-search-action-chat-container");
+  }
+  } else{
+    $("#conversation-container").removeClass("live-search-action-chat-container");
+  }
+  $("#conversation-container").show();
+  if ($(".search-container").hasClass("no-history")) {
+    $(".search-container").removeClass("no-history");
+  }
+  $("#sa-conversation-box").prop("disabled", false);
+  $("#sa-conversation-box").attr("placeholder", "Type message...");
+  $("#action-title").empty();
+  _self.setActionTitle(e.target.getAttribute("title"), "action-title");
+}
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

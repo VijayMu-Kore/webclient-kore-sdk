@@ -279,11 +279,11 @@ class SearchListViewTemplate {
     });
     $(messageHtml).off("click",".click-log-metrics").on("click",".click-log-metrics", function (e: any) {
       hostWindowInstance?.captureClickAnalytics(e,
-        $(e.currentTarget).closest(".faqs-shadow").attr("contentType"),
+        $(e.currentTarget).closest(".click-log-metrics").attr("contentType"),
         "click",
-        $(e.currentTarget).closest(".faqs-shadow").attr("contentId"),
-        $(e.currentTarget).closest(".faqs-shadow").attr("id"),
-        $(e.currentTarget).attr("title"));
+        $(e.currentTarget).closest(".click-log-metrics").attr("contentId"),
+        $(e.currentTarget).closest(".click-log-metrics").attr("id"),
+        $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
     });
   }
   getTemplateString(type: any) {
@@ -475,7 +475,7 @@ class SearchListViewTemplate {
     <div class="search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}{{if gridLayoutType==""&&groupResults==true }}-group{{/if}}{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
         {{if isClickable == true}}\
         {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-        <div class="content-info {{if isSearchSDK&&textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class="content-info {{if isSearchSDK&&textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
             {{if data.img.length}}\
             <div class="img_block">\
                 <img src="${data.img}">\
@@ -493,7 +493,7 @@ class SearchListViewTemplate {
         {{if isClickable == false}}\
         {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
         <div class="accordion-content-info">\
-            <div class="content-info accordion" id="1">\
+            <div class="content-info accordion" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
                 {{if data.heading.length}}\
                 <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                 {{/if}}\
