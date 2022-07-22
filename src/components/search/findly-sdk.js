@@ -8381,7 +8381,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         : ".search-data-container";
 
       if (!$("body").hasClass("top-down")) {
-        _self.countTotalResults(res, totalResultsCount);
+        _self.countTotalResults(res, 0);
         var dataObj = {
           faqs: [],
           web: [],
@@ -8481,7 +8481,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           // $("#searchChatContainer").append(searchData);
         }
       } else {
-        _self.countTotalResults(res, totalResultsCount);
+        _self.countTotalResults(res, 0);
         if ($("body").hasClass("top-down")) {
           // _self.showMoreClick();
           facets.push({
@@ -24213,7 +24213,7 @@ return new Promise((resolve, reject) => {
       _self.vars.tabFacetFieldName = data.template.tabFacet.fieldName;
     }
     totalResultsCount = totalResultsCount;
-    _self.countTotalResults(data.template, totalResultsCount);
+    _self.countTotalResults(data.template, 0);
     let facets = [];
     facets.push({
       key: "all results",
