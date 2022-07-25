@@ -1,15 +1,13 @@
-# Browser TTS Plugin
+## Installation Sample for Browser TTS Speech
 
-The Browser TTS is to integrate text to speech capability into chatwindow.This plugin uses [SpeechSynthesis API](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis).
-Refer browser compatability [here](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis#browser_compatibility)  
+The Web Speech API is used to incorporate voice data into SDK.The Web Speech API has: SpeechSynthesis (Text-to-Speech)
 
-## Installation
 
 ```js
 import { BrowserTTS } from 'kore-web-sdk';
 
 
-chatWindowInstance.installPlugin(new BrowserTTSPlugin());
+chatWindowInstance.installPlugin(new TtsSpeechPlugin());
 ```
 
 ## For UMD Installations
