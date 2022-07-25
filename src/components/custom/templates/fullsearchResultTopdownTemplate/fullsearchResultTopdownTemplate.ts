@@ -68,6 +68,10 @@ class FullSearchResultTopdownTemplate {
     $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
     FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, msgData.message[0].component.payload.tabsList, 'all results');
     FullSearchResultTopdownTemplate.prototype.facetReset(me, messageHtml, msgData);
+    let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: msgData.message[0].component.payload.sortableFacetList,
+      displaySortable: msgData.message[0].component.payload.displaySortable});
+    $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+    FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,msgData.message[0].component.payload.sortableFacetList)
   }
   getTemplateString(type: any) {
 
@@ -89,6 +93,7 @@ class FullSearchResultTopdownTemplate {
                                 </ul>\
                             </div>\
                             <div id="top-down-tab-sec"></div>\
+                            <div id="sa-sdk-sortable-dropdown"></div>\
                             <div id="filters-center-sec" > </div>\
                             <div class="filters-added-data display-none" id="show-filters-added-data"></div>\
                             <div class="content-data-sec">\
@@ -283,6 +288,10 @@ class FullSearchResultTopdownTemplate {
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
+            let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+              displaySortable: response.displaySortable});
+            $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+            FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
           }
         });
       });
@@ -308,6 +317,10 @@ class FullSearchResultTopdownTemplate {
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
+            let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+              displaySortable: response.displaySortable});
+            $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+            FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
           }
         });
       });
@@ -330,6 +343,10 @@ class FullSearchResultTopdownTemplate {
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, res.selectedFacetsList, res.isFilterAlignedTop);
           }
           hostWindowInstance.displayDropdownFilterCount();
+          let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: res.sortableFacetList,
+            displaySortable: res.displaySortable});
+          $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+          FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,res.sortableFacetList)
         })
       });
     $(messageHtml)
@@ -358,6 +375,10 @@ class FullSearchResultTopdownTemplate {
               if (res.isFilterAlignedTop) {
                 hostWindowInstance.displayDropdownFilterCount();
               }
+              let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: res.sortableFacetList,
+                displaySortable: res.displaySortable});
+              $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+              FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,res.sortableFacetList)
             });
           });
         $(messageHtml)
@@ -413,6 +434,10 @@ class FullSearchResultTopdownTemplate {
       FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
       FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
       hostWindowInstance.displayDropdownFilterCount();
+      let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+        displaySortable: response.displaySortable});
+      $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+      FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
     });
   }
   getSearchFacetsTopDownTemplate(type: any) {
@@ -640,6 +665,73 @@ class FullSearchResultTopdownTemplate {
     })
     return truncatedText;
   }
+  getTopDownSortableFacetsTabs() {
+    var sortableFacets = '<script id="top-down-sortable-tabs-template" type="text/x-jqury-tmpl">\
+                              <div class="dropdown_sortable_filter">\
+                                <div  class="sa-sortable-dropbtn"><span id="sa-select-sort-option">{{if displaySortable && displaySortable.name}} {{= displaySortable.name}}  {{else}} Sort By {{/if}}</span></div>\
+                                <div id="myDropdown" class="sa-sortable-dropdown">\
+                                {{each(key, facet) sortablefacets }}\
+                                  <div class="option-text sa-sortable-facet-options text-truncate" value="{{= JSON.stringify(facet)}}" name="{{= facet.name}}">{{= facet.name}}</div>\
+                                  {{/each}}\
+                                </div>\
+                              </div>\
+                            </script>'
+    return sortableFacets;
+  }
+  bindSortableFacetClickEvent(me: any, messageHtml: any, sortableHtml: any, facets: any) {
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(sortableHtml).off('click','.clear-sort-by').on('click','.clear-sort-by', function (event:any) {
+      event.stopPropagation();
+      $(sortableHtml).find('#sa-select-sort-option').html('');
+      hostWindowInstance.sortableFacetClick(event,'').then((response: any) => {
+        if (!response.isFilterAlignedTop) {
+          let selectedFacet = $(messageHtml).find(".tab-name.facet.active-tab").attr('id');
+          if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
+            let index = response.result.findIndex((d: any) => d.message[0].component.payload.appearanceType == "task")
+            if (index > -1) {
+              response.result.splice(index, 1)
+            }
+          }
+          FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+          let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
+          $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+          FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+          FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
+        }
+      });
+      $(sortableHtml).find('.sa-sortable-dropdown').hide();
+    })
+    $(sortableHtml).off('click','.sa-sortable-dropbtn').on('click','.sa-sortable-dropbtn', function (e:any) {
+      $(sortableHtml).find('.sa-sortable-dropdown').show();
+
+      setTimeout(() => {
+        $(sortableHtml).off('click','.sa-sortable-facet-options').on('click','.sa-sortable-facet-options', function (event:any) {
+          event.stopPropagation();
+          $(sortableHtml).find('#sa-select-sort-option').html($(event.currentTarget).closest('.sa-sortable-facet-options').attr('name'));
+          let displaySortable = JSON.parse($(event.currentTarget).closest('.sa-sortable-facet-options').attr('value'));
+          hostWindowInstance.sortableFacetClick(event,displaySortable).then((response: any) => {
+            if (!response.isFilterAlignedTop) {
+              let selectedFacet = $(messageHtml).find(".tab-name.facet.active-tab").attr('id');
+              if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
+                let index = response.result.findIndex((d: any) => d.message[0].component.payload.appearanceType == "task")
+                if (index > -1) {
+                  response.result.splice(index, 1)
+                }
+              }
+              FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+              let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
+              $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+              FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+              FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
+            }
+          });
+          $(sortableHtml).find('.sa-sortable-dropdown').hide();
+        })
+      }, 1000)
+
+    });
+   }
 }
 var truncateText = FullSearchResultTopdownTemplate.prototype.truncateText;
 export default FullSearchResultTopdownTemplate;
