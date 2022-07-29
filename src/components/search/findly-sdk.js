@@ -315,6 +315,7 @@ FindlySDK.prototype.initVariables = function () {
   vars.customizeView = false;
   vars.showingMatchedResults = false;
   vars.isSocketInitialize = false;
+  vars.isHostedSdk = false;
   vars.isSocketReInitialize = true;
   vars.locationObject = {};
   vars.botConfig = {};
@@ -11615,6 +11616,7 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
 };
 FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
+  _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
   _self
     .configureSearchInterface(findlyConfig.botOptions)
@@ -24862,5 +24864,114 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
   }
  })
 }
+FindlySDK.prototype.getJWTWithoutAPIKey = function (options, callback) {
+  var jsonData = {
+    "clientId": options.clientId,
+    "clientSecret": options.clientSecret,
+    "identity": options.userIdentity,
+    "aud": "",
+    "isAnonymous": false
+  };
+  return $.ajax({
+    url: options.JWTUrl,
+    type: 'post',
+    data: jsonData,
+    dataType: 'json',
+    success: function (data) {
+      options.assertion = data.jwt;
+      if (callback) {
+        callback(null, options);
+      }
+    },
+    error: function (err) {
+    }
+  });
+}
+FindlySDK.prototype.getJWTByAPIKey = function (options, callback) {
+  var _self = this;
+  var apiKey = '';
+  if (options.apiKey) {
+    apiKey = options.apiKey;
+  }
+  var jsonData = {};
+  return $.ajax({
+    url: options.koreAPIUrl + 'websdk/' + apiKey,
+    type: 'post',
+    data: jsonData,
+    dataType: 'json',
+    success: function (data) {
+
+      options.assertion = data.jwt;
+
+      if (callback) {
+        callback(null, options);
+      }
+    },
+    error: function (err) {
+    }
+  });
+}
+FindlySDK.prototype.setupInternalAssertionFunction = function () {
+  var _self = this;
+  _self.getJWTWithoutAPIKey(_self.config.botOptions).then(function (res) {
+    _self.config.botOptions.callback(null, _self.config.botOptions);
+    // _self.emit(_self.EVENTS.JWT_SUCCESS, res);
+    _self.setJWT(res.jwt);
+    if (_self.vars.isHostedSdk) {
+      _self.initSearchAssistSDK(_self.config);
+      _self.vars.isHostedSdk = false;
+    }
+  }, function (errRes) {
+    console.log(errRes);
+  });
+}
+FindlySDK.prototype.setJWT = function (jwtToken) {
+  var _self = this;
+  const options = _self.config.botOptions;
+  options.assertion = jwtToken;
+};
+FindlySDK.prototype.setupInternalAssertionFunctionWithAPIKey = function () {
+  var _self = this;
+  _self.getJWTByAPIKey(_self.config.botOptions).then(function (res) {
+    _self.config.botOptions.callback(null, _self.config.botOptions);
+    // _self.emit(_self.EVENTS.JWT_SUCCESS, res);
+    _self.setJWT(res.jwt);
+    _self.config.botOptions.searchIndexID = res.botInfo.searchIndexId;
+    if (res.botInfo) {
+      _self.config.botOptions.botInfo.chatBot = res.botInfo.name;
+      _self.config.botOptions.botInfo.taskBotId = res.botInfo._id;
+      _self.config.botOptions.clientId = res.botInfo.clientId;
+      _self.config.botOptions.clientSecretId = res.botInfo.clientSecretId;
+    }
+    if (res.identity) {
+      _self.config.botOptions.userIdentity = res.identity;
+    }
+    if (_self.vars.isHostedSdk) {
+      _self.initSearchAssistSDK(_self.config);
+      _self.vars.isHostedSdk = false;
+    }
+  }, function (errRes) {
+    console.log(errRes);
+  });
+}
+FindlySDK.prototype.show = function (config) {
+  var _self = this;
+  _self.vars.isHostedSdk = true;
+  if (config && config.API_KEY_CONFIG && config.API_KEY_CONFIG.KEY != 'YOUR_API_KEY') {
+    _self.config.botOptions["apiKey"] = config["API_KEY_CONFIG"].KEY;
+  }
+  _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
+  _self.initKoreSDK();
+};
+FindlySDK.prototype.getAssertionToken = function (options, callback) {
+  var _self = this;
+  options.callback = callback;
+  if (_self.config && _self.config.API_KEY_CONFIG && _self.config.API_KEY_CONFIG.KEY !== 'YOUR_API_KEY') {
+    _self.setupInternalAssertionFunctionWithAPIKey();
+  } else {
+    _self.setupInternalAssertionFunction();
+  }
+}
+
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

@@ -71,6 +71,7 @@ findlyConfig = {
     showTaskMenuPickerIcon: true, //set true to show TaskMenu Template icon
     showradioOptionMenuPickerIcon: false, //set true to show Radio Option Template icon
   },
+  API_KEY_CONFIG:{'KEY':"YOUR_API_KEY"}
 };
 
 export default findlyConfig;

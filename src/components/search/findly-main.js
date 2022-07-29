@@ -26,7 +26,38 @@
             });
         }
 
+//Get Assertion Token api call//
+function getAssertionToken(options, callback) {
+    var apiKey='';
+    if (options.apiKey) {
+        apiKey = options.apiKey;
+    } else {
+        apiKey = window.location.href.split('/')[window.location.href.split('/').length - 1];
+    }
+    var jsonData = {};
+    console.log('apiKey',apiKey);
+    return $.ajax({
+        url: options.koreAPIUrl+'websdk/'+apiKey,
+        type: 'post',
+        data: jsonData,
+        dataType: 'json',
+        success: function (data) {
+            findlyConfig.botOptions.botInfo={
+                chatBot:data.botInfo.name,
+                "taskBotId":data.botInfo._id
+            };
+            findlyConfig.botOptions.searchIndexID = data.botInfo.searchIndexID;
 
+            options.assertion = data.jwt;
+            fsdk.initSearchAssistSDK(findlyConfig);
+            if (callback) {
+                callback(null, options);
+            }
+        },
+        error: function (err) {
+        }
+    });
+}
 
 
         // var findlyConfig=window.KoreSDK.findlyConfig;
@@ -43,14 +74,15 @@
         // });
 
         var findlyConfig = window.KoreSDK.findlyConfig;
-        findlyConfig.botOptions.assertionFn = getJWT;
+        // findlyConfig.botOptions.assertionFn = getJWT;
+        findlyConfig.botOptions.assertionFn = getAssertionToken;
 
         var fSdk = new FindlySDK(findlyConfig);
         window.fsdk = fSdk;
-        fsdk.initKoreSDK();
+        // fsdk.initKoreSDK();
        
         $('.openSearchSDK').click(function () {
-            fsdk.initKoreSDK();
+            fsdk.show(apiKey);
         });
     });
 
