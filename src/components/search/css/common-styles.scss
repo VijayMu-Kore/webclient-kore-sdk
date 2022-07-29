@@ -803,6 +803,28 @@ body{
                     color: var(--sdk-shark-black-color);
                     font-size: 14px;
                 }
+                .recent-search-delete {
+					right: 28px;
+					position: absolute;
+					width: 16px;
+					height: 16px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					border-radius: 100%;
+					background: #E4E5E7;
+					top: 8px;
+					display: none;
+					z-index: 9;
+					img {
+						position: relative !important;
+						border: 0px solid var(--sdk-border-malibu-color);
+						box-sizing: border-box;
+						border-radius: 5px;
+						padding: 6px 30px 6px 30px;
+						margin: 0px;
+					}
+				}
             }
             .carrot-Right {
                 width: 9px;
@@ -864,6 +886,15 @@ body{
             width: 100%;
         }
     }
+    .search-recent-column {
+		.recentSearch.tile_with_header {
+			&:hover {
+				.recent-search-delete {
+					display: flex;
+				}
+			}
+		}
+	}
     .search-logo{
         font-weight: bold;
         font-size: 16px;

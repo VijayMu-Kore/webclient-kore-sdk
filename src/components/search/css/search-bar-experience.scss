@@ -222,6 +222,42 @@ body::-webkit-scrollbar {
 }
 
 
+// top down CSS for delete
+.sdk-top-down-interface {
+	.templates-data {
+		.tile_with_header.recentText {
+			&:hover {
+        .tile-title{
+          position: relative;
+        }
+				.recent-search-delete {
+					display: flex;
+				}
+			}
+			.recent-search-delete {
+				position: absolute;
+				right: 15px;
+				top: 13px;
+				cursor: pointer;
+				width: 16px;
+				height: 16px;
+				background: #E4E5E7;
+				border-radius: 100%;
+				display: none;
+				align-items: center;
+				justify-content: center;
+				img {
+					width: auto;
+					height: auto;
+				}
+			}
+		}
+	}
+}
+
+//delete recent search ends
+
+
 /* product styles */
 
 

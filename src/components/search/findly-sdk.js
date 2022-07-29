@@ -487,6 +487,7 @@ FindlySDK.prototype.setAPIDetails = function () {
   var businessTooBaseURLForPinning =
     baseAPIServer.split("businessapp")[0] + "findly/";
   var searchResultsConfigAPIURL = baseAPIServer + "searchsdk/stream/";
+  var deleteRecentType = _self.isDev ? "businessapp/" : "searchsdk/";
   _self.API = {
     baseUrl: baseUrl,
     // livesearchUrl: baseUrl + "/liveSearch/" + SearchIndexID,
@@ -548,6 +549,8 @@ FindlySDK.prototype.setAPIDetails = function () {
       "/" +
       SearchIndexID +
       "/recentSearches",
+    deleteRecentSearch: 
+    baseAPIServer + deleteRecentType + "stream/" + streamId + '/' + SearchIndexID + "/deleteRecentSearches",
     indexpipelineId: indexpipelineId,
     pipelineId: pipelineId,
     autoSuggestionsURL:
@@ -2392,13 +2395,16 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
             <div class="search-recent-column" >\
               {{each(key, recent) recents }}\
                 {{if recent}}\
-                  <div class="recentSearch hide">\
+                  <!--<div class="recentSearch hide">\
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACmSURBVHgBdY+9DcIwEIXvHYJQZgVGYAPYgDoUkSUEJWyA2ABKJCSTJjVMAKuwAa358WEXSIZcvso+f767h72tJxRYmOJECtba/MX9JffIXQFaH6q61KQnsot4f0NaYNB2VhZVWiOR3dxMj/j/HeWOd+dUiu/QRoVjHqTNV4owtcAM+bk3uoVxXXFDL7RKA0JbXAsITdIC8oOykSZFjDH3sMb47WXwASvra91JumNaAAAAAElFTkSuQmCC" id="${key}" class="recentCloseIon hide">\
                     <span id="${recent}" action-type="textTask" class="pointer recentText">${recent}</span>\
-                  </div>\
+                  </div>-->\
                   <div class="recentSearch tile_with_header">\
-                    <span id="${recent}" action-type="textTask" class="pointer recentText"> <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjI5NzYgMC44MDAwMDNDMy4yNjEzNiAwLjgwMDAwMyAwLjgwMDAwMyAzLjI2Nzk0IDAuODAwMDAzIDYuMzEyMjlDMC44MDAwMDMgOS4zNTY2NCAzLjI2MTM2IDExLjgyNDYgNi4yOTc2IDExLjgyNDZDNy42MjUzOCAxMS44MjQ2IDguODQzMjEgMTEuMzUyNiA5Ljc5MzM0IDEwLjU2NjlMMTIuMzQyMiAxMy4wOTExTDEyLjM4MDIgMTMuMTI1NEMxMi41ODk0IDEzLjI5NjQgMTIuODk4IDEzLjI4MyAxMy4wOTE2IDEzLjA4NjVDMTMuMjk3MiAxMi44Nzc3IDEzLjI5NTEgMTIuNTQxMyAxMy4wODY5IDEyLjMzNTFMMTAuNTQyNSA5LjgxNTI5QzExLjMyNTIgOC44NjI5MyAxMS43OTUyIDcuNjQyNjQgMTEuNzk1MiA2LjMxMjI5QzExLjc5NTIgMy4yNjc5NCA5LjMzMzg0IDAuODAwMDAzIDYuMjk3NiAwLjgwMDAwM1pNNi4yOTc2IDEuODYyNjFDOC43NDg1NCAxLjg2MjYxIDEwLjczNTQgMy44NTQ4IDEwLjczNTQgNi4zMTIyOUMxMC43MzU0IDguNzY5NzcgOC43NDg1NCAxMC43NjIgNi4yOTc2IDEwLjc2MkMzLjg0NjY2IDEwLjc2MiAxLjg1OTc4IDguNzY5NzcgMS44NTk3OCA2LjMxMjI5QzEuODU5NzggMy44NTQ4IDMuODQ2NjYgMS44NjI2MSA2LjI5NzYgMS44NjI2MVoiIGZpbGw9IiM5QUEwQTYiLz4KPC9zdmc+Cg==" />${recent}</span>\
-                  </div>\
+                    <span id="${recent}" action-type="textTask" class="pointer recentText"><img class="RecentIcon-bottomUp" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYuNSAwQzIuOTE0MDYgMCAwIDIuOTE0MDYgMCA2LjVDMCAxMC4wODU5IDIuOTE0MDYgMTMgNi41IDEzQzEwLjA4NTkgMTMgMTMgMTAuMDg1OSAxMyA2LjVDMTMgNi4yMjM4NiAxMi43NzYxIDYgMTIuNSA2QzEyLjIyMzkgNiAxMiA2LjIyMzg2IDEyIDYuNUMxMiA5LjU0Mjk3IDkuNTQyOTcgMTIgNi41IDEyQzMuNDU3MDMgMTIgMSA5LjU0Mjk3IDEgNi41QzEgMy40NTcwMyAzLjQ1NzAzIDEgNi41IDFDOC4xNDA2MiAxIDkuNTk3NjYgMS43MjI2NiAxMC42MDU1IDIuODU5MzhMOS45NzY5OCAzLjQ4Nzg3QzkuNzg3OTkgMy42NzY4NiA5LjkyMTg0IDQgMTAuMTg5MSA0SDEyLjdDMTIuODY1NyA0IDEzIDMuODY1NjkgMTMgMy43VjEuMTg5MTFDMTMgMC45MjE4MzcgMTIuNjc2OSAwLjc4Nzk4NyAxMi40ODc5IDAuOTc2OTc2TDExLjMxMjUgMi4xNTIzNEMxMC4xMjExIDAuODM1OTM4IDguNDEwMTYgMCA2LjUgMFpNNi41IDJDNi4yMjM4NiAyIDYgMi4yMjM4NiA2IDIuNVY2SDQuNUM0LjIyMzg2IDYgNCA2LjIyMzg2IDQgNi41QzQgNi43NzYxNCA0LjIyMzg2IDcgNC41IDdINi43MjcyN0M2Ljg3NzkgNyA3IDYuODc3OSA3IDYuNzI3MjdWMi41QzcgMi4yMjM4NiA2Ljc3NjE0IDIgNi41IDJaIiBmaWxsPSIjMjAyMTI0Ii8+Cjwvc3ZnPgo=" alt="Recent search Icon">\${recent}</span>\
+                    <span id="${recent}" class="recent-search-delete">\
+                      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZD0iTTQuNDM0NzUgNC4wMDAxTDYuOTg2NDUgMS40NDgzOUM3LjEwNjYyIDEuMzI4MjMgNy4xMDY2MiAxLjEzMzQxIDYuOTg2NDUgMS4wMTMyNUM2Ljg2NjI5IDAuODkzMDg2IDYuNjcxNDcgMC44OTMwODYgNi41NTEzMSAxLjAxMzI1TDMuOTk5NTkgMy41NjQ5N0wxLjQ0Nzk5IDEuMDEzNDdDMS4zMjc4MyAwLjg5MzMxNCAxLjEzMzAxIDAuODkzMzE4IDEuMDEyODUgMS4wMTM0OEMwLjg5MjY5MiAxLjEzMzY1IDAuODkyNjk2IDEuMzI4NDcgMS4wMTI4NiAxLjQ0ODYyTDMuNTY0NDUgNC4wMDAxMUwxLjAxMjg1IDYuNTUxNzJDMC44OTI2ODkgNi42NzE4OCAwLjg5MjY4OSA2Ljg2NjcgMS4wMTI4NSA2Ljk4Njg2QzEuMTMzMDEgNy4xMDcwMiAxLjMyNzgzIDcuMTA3MDIgMS40NDc5OSA2Ljk4Njg2TDMuOTk5NiA0LjQzNTI1TDYuNTUxMzIgNi45ODY4NkM2LjY3MTQ5IDcuMTA3MDIgNi44NjYzMSA3LjEwNzAyIDYuOTg2NDYgNi45ODY4NUM3LjEwNjYyIDYuODY2NjkgNy4xMDY2MiA2LjY3MTg3IDYuOTg2NDYgNi41NTE3MUw0LjQzNDc1IDQuMDAwMVoiIGZpbGw9IiMyMDIxMjQiLz4NCjwvc3ZnPg0K" alt="close-icon"/>\
+                    </span>\
+                    </div>\
                 {{/if}}\
               {{/each}}\
             </div>\
@@ -5063,7 +5069,39 @@ FindlySDK.prototype.recentClick = function () {
       var e = $.Event("keydown", { which: 13 });
       $("#search").trigger(e);
     });
+    $('.search-container').off('click', '.recent-search-delete').on('click', '.recent-search-delete', function (e) {
+      var recentSearch = $(this).attr('id');
+      _self.deleteRecentSearches(recentSearch).then(data => {
+        $(this).parent().remove();
+        if (!$('.search-recent-column').children().length) {
+          $('.searchBox.Search-BG-Copy').remove();
+          $('.search-body').hide();
+          $('.parent-search-live-auto-suggesition').hide();
+        }
+      })
+    })
 };
+  FindlySDK.prototype.deleteRecentSearches = function (search) {
+    var _self = this;
+    var url = _self.API.deleteRecentSearch;
+    var payload = { "searches": [search] };
+    var headers = {};
+    var bearer = "bearer " + this.bot.options.accessToken;
+    headers["Authorization"] = bearer;
+    headers["Content-Type"] = "application/json";
+    headers.auth = _self.config.botOptions.assertion;
+    return $.ajax({
+      url: url,
+      type: 'delete',
+      headers: headers,
+      data: JSON.stringify(payload),
+      success: function (data) {
+      },
+      error: function (err) {
+      }
+    })
+  };
+
 
 FindlySDK.prototype.deleteRecents = function () {
   var _self = this;
@@ -21980,17 +22018,20 @@ FindlySDK.prototype.getFrequentlySearchTemplate = function () {
     '<script id="frequently-searched-template" type="text/x-jqury-tmpl">\
                                         {{if recents && recents.length && searchConfig.showSearchesEnabled == true}}\
                                         <div class="templates-data freq-data-p">\
-                                            <div class="main-title"> {{if searchConfig.showSearches == "frequent"}} FREQUENT {{else}} RECENT {{/if}} SEARCHES</div>\
-                                            <div class="tile_with_header">\
-                                                {{each(key, recent) recents }}\
-                                                {{if recent}}\
-                                                <a class="tile-title recentText" id="${recent}">${recent}</a>\
-                                                {{/if}}\
-                                                {{/each}}\
+                                            <div class="main-title"> {{if searchConfig.showSearches == "frequent"}}\ FREQUENT {{else}} RECENT {{/if}}\ SEARCHES</div>\
+                                            {{each(key, recent) recents }}\
+                                            {{if recent}}\
+                                              <div class="tile_with_header recentText recent-list-container">\
+                                              <a class="tile-title" id="${recent}"><img class="RecentIcon-topDown" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYuNSAwQzIuOTE0MDYgMCAwIDIuOTE0MDYgMCA2LjVDMCAxMC4wODU5IDIuOTE0MDYgMTMgNi41IDEzQzEwLjA4NTkgMTMgMTMgMTAuMDg1OSAxMyA2LjVDMTMgNi4yMjM4NiAxMi43NzYxIDYgMTIuNSA2QzEyLjIyMzkgNiAxMiA2LjIyMzg2IDEyIDYuNUMxMiA5LjU0Mjk3IDkuNTQyOTcgMTIgNi41IDEyQzMuNDU3MDMgMTIgMSA5LjU0Mjk3IDEgNi41QzEgMy40NTcwMyAzLjQ1NzAzIDEgNi41IDFDOC4xNDA2MiAxIDkuNTk3NjYgMS43MjI2NiAxMC42MDU1IDIuODU5MzhMOS45NzY5OCAzLjQ4Nzg3QzkuNzg3OTkgMy42NzY4NiA5LjkyMTg0IDQgMTAuMTg5MSA0SDEyLjdDMTIuODY1NyA0IDEzIDMuODY1NjkgMTMgMy43VjEuMTg5MTFDMTMgMC45MjE4MzcgMTIuNjc2OSAwLjc4Nzk4NyAxMi40ODc5IDAuOTc2OTc2TDExLjMxMjUgMi4xNTIzNEMxMC4xMjExIDAuODM1OTM4IDguNDEwMTYgMCA2LjUgMFpNNi41IDJDNi4yMjM4NiAyIDYgMi4yMjM4NiA2IDIuNVY2SDQuNUM0LjIyMzg2IDYgNCA2LjIyMzg2IDQgNi41QzQgNi43NzYxNCA0LjIyMzg2IDcgNC41IDdINi43MjcyN0M2Ljg3NzkgNyA3IDYuODc3OSA3IDYuNzI3MjdWMi41QzcgMi4yMjM4NiA2Ljc3NjE0IDIgNi41IDJaIiBmaWxsPSIjMjAyMTI0Ii8+Cjwvc3ZnPgo=" alt="Recent search Icon">\
+                                              ${recent}</span>\
+                                                <span id="${recent}" class="recent-search-delete"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZD0iTTQuNDM0NzUgNC4wMDAxTDYuOTg2NDUgMS40NDgzOUM3LjEwNjYyIDEuMzI4MjMgNy4xMDY2MiAxLjEzMzQxIDYuOTg2NDUgMS4wMTMyNUM2Ljg2NjI5IDAuODkzMDg2IDYuNjcxNDcgMC44OTMwODYgNi41NTEzMSAxLjAxMzI1TDMuOTk5NTkgMy41NjQ5N0wxLjQ0Nzk5IDEuMDEzNDdDMS4zMjc4MyAwLjg5MzMxNCAxLjEzMzAxIDAuODkzMzE4IDEuMDEyODUgMS4wMTM0OEMwLjg5MjY5MiAxLjEzMzY1IDAuODkyNjk2IDEuMzI4NDcgMS4wMTI4NiAxLjQ0ODYyTDMuNTY0NDUgNC4wMDAxMUwxLjAxMjg1IDYuNTUxNzJDMC44OTI2ODkgNi42NzE4OCAwLjg5MjY4OSA2Ljg2NjcgMS4wMTI4NSA2Ljk4Njg2QzEuMTMzMDEgNy4xMDcwMiAxLjMyNzgzIDcuMTA3MDIgMS40NDc5OSA2Ljk4Njg2TDMuOTk5NiA0LjQzNTI1TDYuNTUxMzIgNi45ODY4NkM2LjY3MTQ5IDcuMTA3MDIgNi44NjYzMSA3LjEwNzAyIDYuOTg2NDYgNi45ODY4NUM3LjEwNjYyIDYuODY2NjkgNy4xMDY2MiA2LjY3MTg3IDYuOTg2NDYgNi41NTE3MUw0LjQzNDc1IDQuMDAwMVoiIGZpbGw9IiMyMDIxMjQiLz4NCjwvc3ZnPg0K" alt="close-icon" height="15"/>\
+                                                </a>\
                                               </div>\
+                                              {{/if}}\
+                                              {{/each}}\
                                         </div>\
                                         {{/if}}\
-                                      </script>';
+                                      </script>'
   return frequentlySearchTemplate;
 };
 
@@ -22163,56 +22204,63 @@ FindlySDK.prototype.appendActionsContainerForBottomUp = function (from) {
 };
 FindlySDK.prototype.frequentlySearchedRecentTextClickEvent = function () {
   var _self = this;
-  $("#frequently-searched-box")
-    .off("click", ".recentText")
-    .on("click", ".recentText", function (e) {
-      var recentText = $(this).attr("id");
-      $("#search").val(recentText);
-      $("#suggestion").val(recentText);
-      $(".top-down-suggestion").val(recentText);
-      $(".search-top-down").val(recentText);
-      $("#frequently-searched-box").hide();
-      if (_self.isDev) {
-        if ($(".top-down-search-background-div")) {
-          $(".top-down-search-background-div").addClass("if-full-results");
-          $(".top-down-wrapper").addClass("top-down-wrapper-height");
-        }
+  $('.tile_with_header').off('click', '.tile-title').on('click', '.tile-title', function (e) {
+    var recentText = $(this).attr('id');
+    $("#search").val(recentText);
+    $("#suggestion").val(recentText);
+    $(".top-down-suggestion").val(recentText);
+    $(".search-top-down").val(recentText);
+    $('#frequently-searched-box').hide();
+    if (_self.isDev) {
+      if ($('.top-down-search-background-div')) {
+        $('.top-down-search-background-div').addClass('if-full-results');
+        $('.top-down-wrapper').addClass('top-down-wrapper-height');
       }
-      //     e.preventDefault();
-      // e.stopImmediatePropagation();
-      _self.vars.searchObject.searchText = recentText;
-      _self.vars.showingMatchedResults = true;
-      _self.searchFacetsList([]);
-      // _self.invokeSearch();
-      var e = $.Event("keydown", { which: 13 });
-      $("#search").trigger(e);
-      // _self.pubSub.publish('sa-search-facets', _self.vars.searchFacetFilters);
-      //$('#search').trigger("keyup");
-      setTimeout(function () {
-        //   var e = $.Event( "keydown", { which: 13 } );
-        // $('#search').trigger(e);
-        // $('#loaderDIV').show();
-        $(".all-result-container").show();
-        //top-down-searc-facets active -start//
-        _self.pubSub.publish("facet-selected", {
-          selectedFacet: "all results",
-        });
-        //top-down-search-facets active -end//
-        $("#live-search-result-box").hide();
-        $("#frequently-searched-box").hide();
-        $("#loaderDIV").hide();
-      }, 600);
-      if (
-        $("body").hasClass("top-down")
-          ? $(".search-top-down").val()
-          : $(".bottom-up-search").val()
-      ) {
-        $(".cancel-search").show();
-      } else {
-        $(".cancel-search").hide();
-        $("#live-search-result-box").hide();
+    }
+    //     e.preventDefault();
+    // e.stopImmediatePropagation();
+    _self.vars.searchObject.searchText = recentText;
+    _self.vars.showingMatchedResults = true;
+    _self.searchFacetsList([]);
+    // _self.invokeSearch();
+    var e = $.Event("keydown", { which: 13 });
+    $('#search').trigger(e);
+    // _self.pubSub.publish('sa-search-facets', _self.vars.searchFacetFilters);
+    //$('#search').trigger("keyup");
+    setTimeout(function () {
+      //   var e = $.Event( "keydown", { which: 13 } );
+      // $('#search').trigger(e);
+      // $('#loaderDIV').show();
+      $('.all-result-container').show();
+      //top-down-searc-facets active -start//
+      _self.pubSub.publish('facet-selected', { selectedFacet: 'all results' });
+      //top-down-search-facets active -end//
+      $('#live-search-result-box').hide();
+      $('#frequently-searched-box').hide();
+      $('#loaderDIV').hide();
+
+    }, 600);
+    if (($('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val())) {
+      $('.cancel-search').show();
+    } else {
+      $('.cancel-search').hide();
+      $('#live-search-result-box').hide();
+    }
+  });
+  $('.recent-list-container').off('click', '.recent-search-delete').on('click', '.recent-search-delete', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    e.stopPropagation()
+    var recentText = $(this).attr('id');
+    _self.deleteRecentSearches(recentText).then(data => {
+      $(this).parent().remove();
+      if (!$('.recent-list-container').children().length) {
+        $('#frequently-searched-box').hide();
+        $('.live-search-result-box').hide();
       }
-    });
+      ;
+    })
+  })
 };
 
 // function xssAttack(txtStr) {
