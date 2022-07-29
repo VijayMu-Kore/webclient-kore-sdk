@@ -403,7 +403,7 @@
                     top: 6px;
                 }
                 .desc_text_info{
-                    display: block;
+                    display: none;
                     white-space: normal;
                 }
             }
@@ -418,10 +418,22 @@
                 font-size: 12px;
                 line-height: 18px;
                 color: #5F6368;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
         }
         .panel{
-
+            padding: 0px 16px;
+            .inner-content-panel-data{
+                .desc-text-info-img{
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 18px;
+                    color: #5F6368;
+                }
+            }
+            
         }
     }
 }

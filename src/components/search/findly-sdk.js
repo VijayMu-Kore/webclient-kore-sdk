@@ -335,6 +335,8 @@ FindlySDK.prototype.initVariables = function () {
   vars.historySkip=0;
   vars.loadingHistory = false;
   vars.historyLimit=50;
+  vars.isFilterModified = false;
+  vars.deselectedAutoFilters = [];
   vars.experimentsObject = {}; // Local Object for Storing Experiments-Related Data (QueryPipelineID, Relay, RequestID)
   vars.sdkInitialized= false;
   var IPBasedLocationURL = "http://ip-api.com/json";
@@ -3949,6 +3951,9 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
     isDev: _self.isDev,
     searchRequestId: _self.vars.requestId,
   };
+  if (_self.vars.isFilterModified) {
+    payload['isFilterModified'] = true;
+  }
   if (_self.isDev) {
     payload["customize"] = _self.vars.customizeView;
   }
@@ -6281,6 +6286,7 @@ FindlySDK.prototype.searchByFacetFilters = function (
   selectedFacetsList = []
 ) {
   var _self = this;
+  _self.vars.isFilterModified = true;
   // if ($("body").hasClass("top-down")) {
     _self.vars.tempSelectedFiltersArr = selectedFiltersArr;
     _self.vars.tempSelectedFacetsList = selectedFacetsList;
@@ -6302,12 +6308,18 @@ FindlySDK.prototype.searchByFacetFilters = function (
   if (_self.vars.displaySortable) {
     payload['sortableFacets'] = [_self.vars.displaySortable];
   }
+  if (_self.vars.isFilterModified) {
+    payload['isFilterModified'] = true;
+  }
   if (_self.isDev) {
     payload["customize"] = _self.vars.customizeView;
   }
 
   if (filterObject.length > 0) {
     payload.filters = JSON.parse(JSON.stringify(filterObject));
+  }
+  if ((_self.vars.deselectedAutoFilters || []).length) {
+    payload['deselectedAutoFilters'] = _self.vars.deselectedAutoFilters || [];
   }
   var contentTypeFilter = {
     fieldName: "sys_content_type",
@@ -8340,6 +8352,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     }
   }
   if (res.templateType === "search") {
+    _self.vars.isFilterModified = false;
+    _self.vars.deselectedAutoFilters = [];
     _self.vars.requestId = res.requestId;
     if (res.queryPipelineId && res.relay) {
       _self.vars.experimentsObject = {};
@@ -10320,6 +10334,7 @@ FindlySDK.prototype.getFrequentlySearched = function (url, type, payload) {
 
   payload.streamId = this.bot.options.botInfo.taskBotId;
   var _self = this;
+  _self.vars.deselectedAutoFilters = [];
   if (!$("body").hasClass("demo")) {
     payload.indexPipelineId = _self.API.indexpipelineId;
     payload.queryPipelineId = _self.API.pipelineId;
@@ -18722,6 +18737,9 @@ FindlySDK.prototype.showAllResults = function () {
   _self.pubSub.unsubscribe("sa-search-full-results");
   _self.pubSub.subscribe("sa-search-full-results", (msg, data) => {
     // _self.vars.scrollPageNumber = 0;
+    if (!_self.vars.isFilterModified) {
+      _self.autoSelectFacetFilter();
+    }
     _self.vars["selectedFiltersRadio"] = [];
     var facetCount = {};
     var facetData = [];
@@ -18982,7 +19000,9 @@ FindlySDK.prototype.invokeSpecificSearch = function (selectedFacet) {
     filters: [],
     searchRequestId: _self.vars.requestId,
   };
-
+  if (_self.vars.isFilterModified) {
+    payload['isFilterModified'] = true;
+  }
   if (_self.isDev) {
     payload["customize"] = _self.vars.customizeView;
   }
@@ -21109,6 +21129,11 @@ FindlySDK.prototype.getSearchFacetsTopDown = function (data, config) {
           $(".content-data-sec").addClass("facets-disabled");
         }
       }
+      /** auto_Select Facet Filter Array Codes */
+      if (!_self.vars.isFilterModified) {
+        _self.autoSelectFacetFilter();
+      }
+      /** auto_Select Facet Filter Array Codes */
       var topDownDataHTML = $(
         _self.getSearchFacetsTopDownTemplate(
           _self.vars.filterConfiguration.aligned
@@ -23394,6 +23419,9 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
       isDev: _self.isDev,
       searchRequestId: _self.vars.requestId,
     };
+    if (_self.vars.isFilterModified) {
+      payload['isFilterModified'] = true;
+    }
     if (_self.isDev) {
       payload["customize"] = _self.vars.customizeView;
     }
@@ -24093,6 +24121,9 @@ FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
     isDev: _self.isDev,
     searchRequestId: _self.vars.requestId,
   };
+  if (_self.vars.isFilterModified) {
+    payload['isFilterModified'] = true;
+  }
   if (_self.isDev) {
     payload["customize"] = _self.vars.customizeView;
   }
@@ -24149,6 +24180,7 @@ FindlySDK.prototype.facetCheckBoxClick = function(event){
 
         _self.filterResults(event, true);
       } else {
+        _self.removeSelectFacetFilter(event, { id: $(event.target).attr("id"), name: $(event.target).attr("name"), facetName: $(event.target).attr("facetName"), fieldName: $(event.target).attr("fieldName"), fieldType: $(event.target).attr("fieldType") });
         var unselectedFilterID = $(event.target).attr("id");
         _self.vars.selectedFiltersArr.slice(0).forEach(function (filter) {
           if (filter == unselectedFilterID) {
@@ -24185,6 +24217,7 @@ var  _self = this;
   _self.vars.tempFilterObject = _self.vars.filterObject;
   _self.vars.scrollPageNumber = 0;
 // }
+_self.vars.isFilterModified = true;
 var filterObject = _self.vars.filterObject;
 var url = _self.API.searchUrl;
   var payload = {
@@ -24196,9 +24229,14 @@ var url = _self.API.searchUrl;
     isDev: _self.isDev,
     searchRequestId: _self.vars.requestId,
   };
-
+  if (_self.vars.isFilterModified) {
+    payload['isFilterModified'] = true;
+  }
   if (_self.isDev) {
     payload["customize"] = _self.vars.customizeView;
+  }
+  if ((_self.vars.deselectedAutoFilters || []).length) {
+    payload['deselectedAutoFilters'] = _self.vars.deselectedAutoFilters || [];
   }
   if (_self.vars.displaySortable) {
     payload['sortableFacets'] = [_self.vars.displaySortable];
@@ -24425,6 +24463,7 @@ return new Promise((resolve, reject) => {
             resolve(res);
           });
         } else {
+          _self.removeSelectFacetFilter(event, { id: $(event.target).attr("id"), name: $(event.target).attr("name"), facetName: $(event.target).attr("facetName"), fieldName: $(event.target).attr("fieldName"), fieldType: $(event.target).attr("fieldType") });
           var unselectedFilterID = $(event.target).attr("id");
           _self.vars.selectedFiltersArr.slice(0).forEach(function (filter) {
             if (filter == unselectedFilterID) {
@@ -24766,6 +24805,9 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
     "isDev": _self.isDev,
     "searchRequestId": _self.vars.requestId
   }
+  if (_self.vars.isFilterModified) {
+    payload['isFilterModified'] = true;
+  }
   if (_self.isDev) {
     payload['customize'] = _self.vars.customizeView;
   }
@@ -24973,5 +25015,158 @@ FindlySDK.prototype.getAssertionToken = function (options, callback) {
   }
 }
 
+FindlySDK.prototype.autoSelectFacetFilter = function () {
+  var _self = this;
+  //_self.vars.selectedFiltersArr = [];
+  _self.vars.selectedFacetsList = [];
+  if (_self.vars.searchFacetFilters) {
+    for (var i = 0; i < _self.vars.searchFacetFilters.length; i++) {
+      if (_self.vars.searchFacetFilters[i].buckets) {
+        for (var j = 0; j < _self.vars.searchFacetFilters[i].buckets.length; j++) {
+          if (_self.vars.searchFacetFilters[i].buckets[j].auto_select) {
+            if (_self.vars.selectedFiltersArr.indexOf("checkbox-" + i + j) !== -1) {// Id of the facet filter
+              //console.log("Value exist") 
+            } else {
+              _self.vars.selectedFiltersArr.push("checkbox-" + i + j)
+            }
+            var obj = {
+              fieldName: _self.vars.searchFacetFilters[i].facetName,
+              fieldType: _self.vars.searchFacetFilters[i].facetType,
+              id: "checkbox-" + i + j,
+              name: _self.vars.searchFacetFilters[i].buckets[j].key
+            };
+            _self.vars.selectedFacetsList.push(obj);
+
+            //filter object pushing autoseletFacets starts//
+            var responsePayload = {};
+            var fieldMatches = false;
+            responsePayload.fieldName = _self.vars.searchFacetFilters[i].fieldName;
+            responsePayload.subtype = _self.vars.searchFacetFilters[i].subtype;
+            responsePayload.name = _self.vars.searchFacetFilters[i].name;
+            if (_self.vars.searchFacetFilters[i].subtype == 'value') {
+              responsePayload.facetValue = [];
+              responsePayload.facetValue[0] = _self.vars.searchFacetFilters[i].buckets[j].key;
+            }
+            else {
+              // var from = $(event.target).attr('data-from');
+              // var to = $(event.target).attr('data-to');
+              responsePayload.facetRange = [];
+              // key = { 'from': 0, 'to': 100 };
+              // key = { 'from': parseInt(from), 'to': parseInt(to) };
+              responsePayload.facetRange[0] = _self.vars.searchFacetFilters[i].buckets[j].key;
+            }
+            if (_self.vars.filterObject.length == 0) {
+              _self.vars.filterObject.push(responsePayload);
+              fieldMatches = true;
+            }
+            if (_self.vars.filterObject.length > 0 && fieldMatches == false) {
+              _self.vars.filterObject.forEach(function (element) {
+                if (responsePayload.fieldName == element.fieldName && responsePayload.subtype == element.subtype) {
+                  if (element.subtype == 'value') {
+                    var index = element.facetValue.findIndex((d) => d == _self.vars.searchFacetFilters[i].buckets[j].key)
+                    if (index == -1) {
+                      element.facetValue.push(_self.vars.searchFacetFilters[i].buckets[j].key);
+                    }
+                  }
+                  else {
+                    var index = element.facetRange.findIndex((d) => d == _self.vars.searchFacetFilters[i].buckets[j].key)
+                    if (index == -1) {
+                      element.facetRange.push(_self.vars.searchFacetFilters[i].buckets[j].key);
+                    }
+                  }
+                  fieldMatches = true;
+                }
+              })
+
+            }
+            if (fieldMatches == false) {
+              _self.vars.filterObject.push(responsePayload);
+            }
+            //filter object pushing autoseletFacets ends//
+          }
+        }
+      }
+    }
+  }
+  
+
+}
+FindlySDK.prototype.removeAutoselectedFilterFacets = function (event) {
+  var _self = this;
+  _self.vars.searchFacetFilters.forEach((facet) => {
+    facet['buckets'].forEach((d) => {
+      if (d.auto_select) {
+        var index = _self.vars.deselectedAutoFilters.findIndex((d) => d.fieldName == facet.fieldName);
+        if (index == -1) {
+          _self.vars.deselectedAutoFilters.push(
+            {
+              "fieldName": facet.fieldName,
+              "subtype": facet.subtype,
+              "name": facet.name,
+              "facetValue": [d.key]
+            }
+
+          );
+        } else {
+          _self.vars.deselectedAutoFilters[index].facetValue.push(d.key)
+        }
+        d.auto_select = false;
+      }
+    })
+  })
+}
+FindlySDK.prototype.removeSelectFacetFilter = function (event, selectedFacet) {
+  var _self = this;
+  var key = $(event.target).attr('name');
+  if ($('.topdown-search-main-container').length) {
+    if ($('.sdk-filter-radio-top-down').length && $(event.target).hasClass('sdk-filter-radio-top-down')) {
+      key = $(event.target).attr('value');
+    }
+  }
+  var facetMatched = false;
+  if (_self.vars.deselectedAutoFilters.length) {
+    for (var i = 0; i < _self.vars.deselectedAutoFilters.length; i++) {
+      if (_self.vars.deselectedAutoFilters[i].fieldName == selectedFacet.fieldName && _self.vars.deselectedAutoFilters[i].subtype == selectedFacet.fieldType && _self.vars.deselectedAutoFilters[i].name == selectedFacet.facetName) {
+        facetMatched = true;
+        var keyMatched = false;
+        for (var j = 0; j < _self.vars.deselectedAutoFilters[i].facetValue.length; j++) {
+          if (key == _self.vars.deselectedAutoFilters[i].facetValue[j]) {
+            keyMatched = true;
+          }
+        }
+        if (!keyMatched) {
+          _self.vars.deselectedAutoFilters[i].facetValue.push(key);
+        }
+      }
+    }
+
+  }
+  if (!facetMatched) {
+    _self.vars.deselectedAutoFilters.push(
+      {
+        "fieldName": selectedFacet.fieldName,
+        "subtype": selectedFacet.fieldType,
+        "name": selectedFacet.facetName,
+        "facetValue": [key]
+      }
+
+    );
+  }
+
+  if (_self.vars.searchFacetFilters) {
+    for (var i = 0; i < _self.vars.searchFacetFilters.length; i++) {
+      if (_self.vars.searchFacetFilters[i].buckets) {
+        for (var j = 0; j < _self.vars.searchFacetFilters[i].buckets.length; j++) {
+          if (selectedFacet.fieldName = _self.vars.searchFacetFilters[i].fieldName && _self.vars.searchFacetFilters[i].buckets[j].auto_select && key == _self.vars.searchFacetFilters[i].buckets[j].key) {
+            //filter object removing autoseletFacets starts//
+            delete _self.vars.searchFacetFilters[i].buckets[j].auto_select
+            //filter object pushing autoseletFacets ends//
+          }
+        }
+      }
+    }
+  }
+
+}
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

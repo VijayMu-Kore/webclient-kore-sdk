@@ -498,18 +498,18 @@ class SearchListViewTemplate {
                 <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                 {{/if}}\
                 {{if data.description.length}}\
-                <div class="desc_text_info clamp-text">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                <div class="desc_text_info">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 {{/if}}\
             </div>\
             <div class="panel">\
-                {{if data.img.length}}\
                 <div class="inner-content-panel-data">\
+                {{if data.img.length}}\
                     <div class="img_content">\
                         <img src="${data.img}">\
                     </div>\
+                    {{/if}}\
                     <div class="desc-text-info-img">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 </div>\
-                {{/if}}\
             </div>\
         </div>\
         {{/each}}\

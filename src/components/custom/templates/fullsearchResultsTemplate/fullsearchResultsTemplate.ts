@@ -286,6 +286,9 @@ class FullSearchResultsTemplate {
           FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me, messageHtml);
         });
       FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me, messageHtml);
+      if (!hostWindowInstance.vars.isFilterModified) {
+        hostWindowInstance.autoSelectFacetFilter();
+      }
       hostWindowInstance.markSelectedFilters();
     }
 
@@ -311,13 +314,13 @@ class FullSearchResultsTemplate {
                     {{if searchFacet.multiselect}}\
                       {{if searchFacet.subtype == "value"}}\
                         <div class="custom_checkbox kr-sg-checkbox d-block">\
-                            <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox" type="checkbox" name="${bucket.key}" value="true" data-from="${bucket.from}" data-to="${bucket.to}">\
+                            <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox" type="checkbox" name="${bucket.key}" value="true" data-from="${bucket.from}" data-to="${bucket.to}">\
                             <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
                         </div>\
                       {{/if}}\
                       {{if searchFacet.subtype == "range"}}\
                           <div class="kr-sg-checkbox d-block custom_checkbox">\
-                            <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox" type="checkbox" name="${bucket.key}" value="true" data-from="${bucket.from}" data-to="${bucket.to}">\
+                            <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox" type="checkbox" name="${bucket.key}" value="true" data-from="${bucket.from}" data-to="${bucket.to}">\
                             <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
                           </div>\
                       {{/if}}\
@@ -326,7 +329,7 @@ class FullSearchResultsTemplate {
                       {{if searchFacet.subtype == "value"}}\
                       <div class="option-text">\
                         <div class="custom_checkbox kr-sg-radiobutton d-block">\
-                          <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                          <input {{if bucket.auto_select}}checked{{/if}} id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
                           <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label><span class="associated-filter-count">(${bucket.doc_count})</span>\
                         </div>\
                       </div>\
@@ -334,7 +337,7 @@ class FullSearchResultsTemplate {
                       {{if searchFacet.subtype == "range"}}\
                       <div class="option-text">\
                         <div class="custom_checkbox kr-sg-radiobutton d-block">\
-                          <input id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                          <input {{if bucket.auto_select}}checked{{/if}} id="radio-${i}${j}" class="radio-custom sdk-filter-radio" type="radio" name="radio-${i}" value="${bucket.key}" data-from="${bucket.from}" data-to="${bucket.to}">\
                           <label for="radio-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key} </label> <span class="associated-filter-count">(${bucket.doc_count})</span>\
                         </div>\
                       </div>\

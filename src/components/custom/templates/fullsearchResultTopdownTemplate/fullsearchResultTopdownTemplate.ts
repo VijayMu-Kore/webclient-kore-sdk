@@ -68,6 +68,7 @@ class FullSearchResultTopdownTemplate {
     $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
     FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, msgData.message[0].component.payload.tabsList, 'all results');
     FullSearchResultTopdownTemplate.prototype.facetReset(me, messageHtml, msgData);
+    FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, msgData.message[0].component.payload.facetPosition);
     let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: msgData.message[0].component.payload.sortableFacetList,
       displaySortable: msgData.message[0].component.payload.displaySortable});
     $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
@@ -255,6 +256,9 @@ class FullSearchResultTopdownTemplate {
       }
 
       FullSearchResultTopdownTemplate.prototype.bindFacetTriggerEvents(me, messageHtml, msgData);
+      if (!hostWindowInstance.vars.isFilterModified) {
+        hostWindowInstance.autoSelectFacetFilter();
+      }
       hostWindowInstance.markSelectedFilters();
     }
 
@@ -457,21 +461,21 @@ class FullSearchResultTopdownTemplate {
         {{each(j, bucket) searchFacet.buckets.slice(0, (searchFacet.maxCount?searchFacet.maxCount:searchFacet.buckets.length))}}\
             {{if (searchFacet.subtype == "value" || searchFacet.subtype == "range") && searchFacet.multiselect }}\
             <div class="kr-sg-checkbox d-block">\
-            <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down c-1" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
+            <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down c-1" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
             <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
                 <span class="count">(${bucket.doc_count})</span>\
               </div>\
               {{/if}}\
                 {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
                 <div class="kr-sg-radiobutton d-block">\
-                  <input id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                  <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
                     <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
                     <span class="count">(${bucket.doc_count})</span>\
                   </div>\
                   {{/if}}\
                   {{if searchFacet.subtype == "range" &&  !searchFacet.multiselect}}\
                   <div class="kr-sg-radiobutton d-block">\
-                    <input  id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
+                    <input  {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
                       <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
                       <span class="count">(${bucket.doc_count})</span>\
                     </div>\
@@ -499,21 +503,21 @@ class FullSearchResultTopdownTemplate {
         <div class="option-text">\
         {{if (searchFacet.subtype == "value" || searchFacet.subtype == "range" ) && searchFacet.multiselect }}\
         <div class="kr-sg-checkbox d-block">\
-        <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
+        <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
         <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
             <span class="count">(${bucket.doc_count})</span>\
           </div>\
           {{/if}}\
             {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
             <div class="kr-sg-radiobutton d-block">\
-              <input id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}">\
+              <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}">\
                 <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
                 <span class="count">(${bucket.doc_count})</span>\
               </div>\
               {{/if}}\
               {{if searchFacet.subtype == "range" && !searchFacet.multiselect }}\
               <div class="kr-sg-radiobutton d-block">\
-                <input  id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}">\
+                <input {{if bucket.auto_select}}checked{{/if}}  id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}">\
                   <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
                   <span class="count">(${bucket.doc_count})</span>\
                 </div>\
