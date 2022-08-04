@@ -12,9 +12,11 @@ import FinalResultsTemplate from "../custom/templates/finalResultsTemplate/final
 import FullSearchResultsTemplate from "../custom/templates/fullsearchResultsTemplate/fullsearchResultsTemplate";
 import FullSearchResultTopdownTemplate from "../custom/templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate";
 import moment from "moment";
-import './css/findly-sdk.scss'
-import './css/common-styles.scss'
-import './css/search-bar-experience.scss'
+import './css/findly-sdk.scss';
+import './css/common-styles.scss';
+import './css/search-bar-experience.scss';
+import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // import './findly-demo.scss'
@@ -22984,7 +22986,8 @@ FindlySDK.prototype.positionContainer = function (position) {
 FindlySDK.prototype.calculateContainerPosition = function (position) {
   var containerPosition = { x: position.x, y: position.y };
   var cWidth = $(".search-container").outerWidth();
-  containerHeight = $("body").height() - 64 || containerHeight;
+  containerHeight = $("body").height() - 64 || containerHeight;$(window). height()
+  // containerHeight = $(window). height() - 64 || containerHeight;
   var cHeight = containerHeight;
   var widthFactor = 20;
   var heightFactor = 10;
@@ -23129,6 +23132,7 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
 var isDragging = false;
 var position = {};
 var containerHeight = $("body").height() - 64 || 550;
+// var containerHeight = $(window). height() - 64 || 550;
 var avatarDisplayedOnce = false;
 
 FindlySDK.prototype.configureSearchAvatar = function (config) {
@@ -23187,37 +23191,37 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
     if ($(".start-search-icon-div")) {
       let element;
       element = $(".start-search-icon-div")[0];
-      // $(element).draggable({
-      //   drag: (event) => {
-      //     _self.isDragging = true;
-      //     $('#introText').css('display', 'none');
-      //     if (event.clientX > window.outerWidth) {
-      //       console.log("greater");
-      //     }
-      //   },
-      //   stop: (event, ui) => {
-      //     console.log("drag stop event", event);
-      //     // set ClientX and ClientY
-      //     var position = {};
-      //     if (event.clientX) {
-      //       position['x'] = event.clientX - 25;
-      //     }
-      //     if (event.clientY) {
-      //       position['y'] = event.clientY - 23;
-      //     }
-      //     if (position.y < 50) {
-      //       position.y = 50;
-      //     }
-      //     _self.position = position;
-      //     setTimeout(function () {
-      //       _self.isDragging = false;
-      //       window.localStorage.setItem('avatarPosition', JSON.stringify(position));
-      //       _self.positionAvatar(position); // set position to avatar
+      $(element).draggable({
+        drag: (event) => {
+          _self.isDragging = true;
+          $('#introText').css('display', 'none');
+          if (event.clientX > window.outerWidth) {
+            console.log("greater");
+          }
+        },
+        stop: (event, ui) => {
+          console.log("drag stop event", event);
+          // set ClientX and ClientY
+          var position = {};
+          if (event.clientX) {
+            position['x'] = event.clientX - 25;
+          }
+          if (event.clientY) {
+            position['y'] = event.clientY - 23;
+          }
+          if (position.y < 50) {
+            position.y = 50;
+          }
+          _self.position = position;
+          setTimeout(function () {
+            _self.isDragging = false;
+            window.localStorage.setItem('avatarPosition', JSON.stringify(position));
+            _self.positionAvatar(position); // set position to avatar
 
-      //     }, 100);
-      //   },
-      //   containment: 'body'
-      // });
+          }, 100);
+        },
+        containment: 'body'
+      });
     }
 };
 
