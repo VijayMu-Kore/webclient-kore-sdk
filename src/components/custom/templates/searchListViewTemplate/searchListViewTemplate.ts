@@ -255,7 +255,7 @@ class SearchListViewTemplate {
       fieldName: $(e.currentTarget).attr("fieldName"),
     };
     hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
-      const listHTML = $(me.getTemplateString(result?.message[0].component.payload.template_type)).tmpl(result?.message[0].component.payload);
+      const listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type)).tmpl(result?.message[0].component.payload);
       $(listHTML).find(".show-more-list").remove();
       $(
         ".full-search-data-container [templateName=" +
@@ -472,7 +472,7 @@ class SearchListViewTemplate {
     {{if renderTitle}}\
     <div class="title-list-heading">${titleName}</div>\
     {{/if}}\
-    <div class="search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}{{if gridLayoutType==""&&groupResults==true }}-group{{/if}}{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
+    <div class="parent-list-template search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}{{if gridLayoutType==""&&groupResults==true }}-group{{/if}}{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
         {{if isClickable == true}}\
         {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
         <div class="content-info {{if isSearchSDK&&textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
