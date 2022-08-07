@@ -23914,10 +23914,10 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               data.forEach((obj) => {
                 var item = {};
                 if (obj[mapping.heading]) {
-                  item.heading = obj[mapping.heading];
+                  item.heading = obj[mapping.heading].toString();
                 }
                 if (obj[mapping.description]) {
-                  item.description = obj[mapping.description];
+                  item.description = obj[mapping.description].toString();
                 }
                 if (obj[mapping.img]) {
                   item.img = obj[mapping.img];
