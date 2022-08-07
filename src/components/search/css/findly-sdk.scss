@@ -1802,8 +1802,9 @@ margin-bottom: 15px !important;
     width: 100%;
     height: auto;
     bottom: 40px;
-    background: #F8F9FA;
+    background: transparent;
     border-radius: 6px;
+    z-index: 999;
  }
 
 .text-truncate-overflow {
@@ -3704,16 +3705,6 @@ a.tile-heading{
     padding: 10px 10px 10px 20px;
 }
 
-
- /* .live-seach-auto-suggestion-parent{
-    position: absolute;
-    width: 100%;
-    height: calc(100% - 101px);
-    bottom: 40px;
-    background: rgba(32,33,36,0.4);
-    border-radius: 6px;
-    z-index: 1;
-   } */
   .parent-search-live-auto-suggesition{
     position: absolute;
     width: 100%;
@@ -3743,8 +3734,7 @@ a.tile-heading{
     height: calc(100% - 101px);
     bottom: 40px;
     background: rgba(32,33,36,0.4);
-    /* border-radius: 6px; */
-    z-index: 1;
+    z-index: 999;
     }
 
 
