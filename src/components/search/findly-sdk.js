@@ -7865,9 +7865,11 @@ FindlySDK.prototype.searchEventBinding = function (
                       }
                     });
                 } else {
+                  $('.searchBox.Search-BG-Copy').remove();
                   $(".search-container").addClass("active");
                   $(".search-body").removeClass("hide");
-                  $(".search-body").show();
+                  $('.search-body').empty();
+                  // $(".search-body").show();
                 }
               }
             } else {
