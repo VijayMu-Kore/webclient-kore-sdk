@@ -485,7 +485,7 @@ class SearchListViewTemplate {
             <div class="heading-title" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
             {{/if}}\
             {{if data.description.length}}\
-            <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+            <div class="desc_text_info four-line-description {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
             {{/if}}\
         </div>\
         {{/each}}\
@@ -498,7 +498,7 @@ class SearchListViewTemplate {
                 <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                 {{/if}}\
                 {{if data.description.length}}\
-                <div class="desc_text_info">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                <div class="desc_text_info text-truncate">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 {{/if}}\
             </div>\
             <div class="panel">\
