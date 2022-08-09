@@ -73,6 +73,7 @@ class FullSearchResultTopdownTemplate {
       displaySortable: msgData.message[0].component.payload.displaySortable});
     $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
     FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,msgData.message[0].component.payload.sortableFacetList)
+    FullSearchResultTopdownTemplate.prototype.bindBackToSearchClickEvent(me,messageHtml);
   }
   getTemplateString(type: any) {
 
@@ -736,6 +737,13 @@ class FullSearchResultTopdownTemplate {
 
     });
    }
+   bindBackToSearchClickEvent(me: any, messageHtml: any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml).off("click", ".back-search").on("click", ".back-search", function (e: any) {
+    hostWindowInstance.backToSearchClickEvent();
+    });
+  }
 }
 var truncateText = FullSearchResultTopdownTemplate.prototype.truncateText;
 export default FullSearchResultTopdownTemplate;

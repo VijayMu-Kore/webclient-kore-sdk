@@ -341,16 +341,33 @@ FindlySDK.prototype.initVariables = function () {
   vars.deselectedAutoFilters = [];
   vars.experimentsObject = {}; // Local Object for Storing Experiments-Related Data (QueryPipelineID, Relay, RequestID)
   vars.sdkInitialized= false;
-  var IPBasedLocationURL = "http://ip-api.com/json";
-  $.ajax({
-    url: IPBasedLocationURL,
-    type: "GET",
-    success: function (res) {
-      vars.locationObject.location = res.city;
-      vars.locationObject.country = res.country;
-    },
-    error: function (error) { },
-  });
+  // var IPBasedLocationURL = "http://ip-api.com/json";
+  // $.ajax({
+  //   url: IPBasedLocationURL,
+  //   type: "GET",
+  //   success: function (res) {
+  //     vars.locationObject.location = res.city;
+  //     vars.locationObject.country = res.country;
+  //   },
+  //   error: function (error) { },
+  // });
+  setTimeout(function () {
+    var IPBasedLocationURL = "https://api.ipregistry.co/?key=tryout"
+    $.ajax({
+      url: IPBasedLocationURL,
+      type: 'GET',
+      success: function (res) {
+        if (res && res.location && res.location.city) {
+          vars.locationObject.location = res.location.city;
+        }
+        if (res && res.location && res.location.country && res.location.country.name) {
+          vars.locationObject.country = res.location.country.name;
+        }
+      },
+      error: function (error) {
+      }
+    })
+  }, 500);
 
   vars.countOfSelectedFilters = 0;
   vars.resultRankingActionPerformed = false;
@@ -25221,6 +25238,18 @@ FindlySDK.prototype.removeSelectFacetFilter = function (event, selectedFacet) {
     }
   }
 
+}
+FindlySDK.prototype.backToSearchClickEvent = function (event) {
+  var _self = this;
+  $(".all-result-container").hide();
+      $("body").removeClass("showFullResults");
+      $("#search").val("");
+      $("#suggestion").val("");
+      $(".top-down-suggestion").val("");
+      $(".search-top-down").val("");
+      $(".full-search-data-container").empty();
+      $(".skelton-load-img").hide();
+      _self.destroy();
 }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
