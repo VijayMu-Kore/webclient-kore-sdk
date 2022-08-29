@@ -87,7 +87,9 @@ class FinalResultsTemplate {
                 viewType: msgData.message[0].component.payload.viewType,
                 facetPosition: 'left',
                 filterFacetData: [],
-                groupData: modifyGroupData
+                groupData: modifyGroupData,
+                displayFeedback:null,
+                feedbackData: null
               }
             }
           }]
