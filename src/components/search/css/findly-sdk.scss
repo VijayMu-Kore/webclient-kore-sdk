@@ -3854,6 +3854,40 @@ display: none !important;
     box-shadow: 14px 4px 64px 12px rgb(18 61 101 / 40%), -16px -16px 64px 0 rgb(255 255 255 / 80%), inset -8px -6px 80px 0 rgb(255 255 255 / 18%);
 }
 //Feedback CSS Starts
+.feedback-template-positions {
+    background: #F3F8FF;
+    border: 1px solid #F3F8FF;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 4px rgba(13, 110, 253, 0.2);
+    border-radius: 4px;
+    position: fixed;
+    padding: 7px 18px 14px;
+    display: inline-flex;
+    align-items: center;
+    right: 30px;
+    bottom: 10px;
+    z-index: 1;
+
+    .helpfull-title {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 17px;
+        color: #9AA0A6;
+    }
+
+    img {
+        cursor: pointer;
+
+        &.thumbs-up-top-down-blue,
+        &.thumbs-up-top-down-red {
+            display: none;
+        }
+    }
+
+    img.thumb-up {
+        margin: 0px 20px 0 13px;
+    }
+}
 .feedback-template-positions.if-live-search-top-down {
     position: absolute;
     width: 100%;

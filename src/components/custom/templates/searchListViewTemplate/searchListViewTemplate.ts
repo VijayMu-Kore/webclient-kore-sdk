@@ -418,6 +418,7 @@ class SearchListViewTemplate {
               .position().top
           ) {
             $(".more-results").css("display", "none");
+            $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'flex');
           }
         }
       }, 500);

@@ -8876,11 +8876,14 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 }
                 if ($('#searchChatContainer').prop('offsetHeight') >= $('.finalResults .resultsOfSearch .bottom-search-show-all-results').last().position().top) {
                   $('.more-results').css('display', 'none');
+                  $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'flex');
                 } else {
                   $('.more-results').css('display', 'block');
+                  $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'none');
                 }
               });
               $('.more-results').css('display', 'block');
+              $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'none');
             }
           }
           if (!$('.search-data-container').last().children().length) {
@@ -9496,6 +9499,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
   var devMode = _self.isDev ? "true" : "false";
   var viewType = _self.vars.customizeView ? "Customize" : "Preview";
   $(".more-results").css("display", "none");
+  $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'flex');
   if (
     type === "user" &&
     ($("body").hasClass("top-down")
@@ -11643,6 +11647,7 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
     .off("click", ".more-results")
     .on("click", ".more-results", function (e) {
       $(".more-results").css("display", "none");
+      $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'flex');
       $("#searchChatContainer").animate(
         { scrollTop: $("#searchChatContainer").prop("scrollHeight") },
         300
@@ -23672,6 +23677,7 @@ FindlySDK.prototype.fullResultsScrollTop = function () {
       .on("click", function () {
         $(".data-body-sec").scrollTop(0);
       });
+      
   }
 };
 FindlySDK.prototype.extractTime = function (timeStamp) {
