@@ -2,7 +2,12 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=1.0">
-		<script src="libs/kore-no-conflict-start.js" type="text/javascript"></script>		
+		<meta http-equiv="Content-Security-Policy"  content="script-src 'self' 'sha256-1ywG1b9wcQBipkKXtT++0ML/u+NWtOeG0HZ0nrphDfY=';">
+
+		<script src="libs/kore-no-conflict-start.js" type="text/javascript"></script>	
+
+		<!-- <script src="pre-compiled-templates.js" type="text/javascript"></script>	
+		 -->
 		<script src="libs/jquery.js" type="text/javascript"></script>
 		<script src="libs/jquery.tmpl.min.js" type="text/javascript"></script>
 		<script src="libs/jquery-ui.min.js" type="text/javascript"></script>
@@ -56,6 +61,7 @@
 		
 		<script src="kore-config.js" type="text/javascript"></script>
 		<!-- <script src="kore-118n-config.js" type="text/javascript"></script> --> <!-- Uncomment for i18n support -->
+			
 		<script src="kore-main.js" type="text/javascript"></script>	
 		<script src="libs/kore-no-conflict-end.js" type="text/javascript"></script>
 		
