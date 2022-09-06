@@ -1206,7 +1206,7 @@ body{
     }
     .widget-icon {
         position: absolute;
-        bottom: 11px;
+        bottom: 8px;
         left: 16px;
         z-index: 1;
         img{
@@ -4912,9 +4912,9 @@ li{
                         }
                         .bot_Img{
                             position: absolute;
-                            left: 11px;
-                            margin-top: 2px;
-                            display: none;
+                            z-index: 1;
+                            bottom: 0px;
+                            left: -31px;
                         }
                     } 
                 }
