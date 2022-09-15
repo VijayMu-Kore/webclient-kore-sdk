@@ -6663,10 +6663,7 @@ FindlySDK.prototype.captureClickAnalytics = function (
     resultName = $(event.currentTarget).find("[title]").attr("title");
   }
   if (
-    resultType == "web" ||
-    resultType == "faq" ||
-    resultType == "data" ||
-    resultType == "file"
+    resultType != "task"
   ) {
     var experimentObjectProps = Object.getOwnPropertyNames(
       _self.vars.experimentsObject
@@ -23908,6 +23905,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
             }
             let gridLayoutType = '';
+            let isDemoTemplate;
             if (config?.type === 'grid' || config?.type === 'carousel') {
               if (['l1', 'l2', 'l3', 'l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
                 gridLayoutType = 'img_common'
@@ -23925,6 +23923,15 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             if (config?.type === 'list') {
               if (['l4'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
                 gridLayoutType = 'img_left'
+              }
+              if (['l10'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+                isDemoTemplate = 'serviceNowTemplate'
+              }
+              if (['l11'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+                isDemoTemplate = 'cosmeticsTemplate'
+              }
+              if (['l12'].includes(selected[groupName + templateInterfaceType + "LayoutType"])) {
+                isDemoTemplate = 'bankingTemplate'
               }
             }
             const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
@@ -23961,7 +23968,8 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'templateName': groupName.replaceAll(' ', ''),
                       'fieldName': data.fieldName,
                       'gridLayoutType': gridLayoutType,
-                      "isButtonTemplate": false
+                      "isButtonTemplate": false,
+                      "isDemoTemplate":isDemoTemplate
                     }
                   }
                 }

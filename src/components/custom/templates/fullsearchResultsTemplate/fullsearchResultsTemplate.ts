@@ -63,10 +63,12 @@ class FullSearchResultsTemplate {
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
     FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, 'all results');
     FullSearchResultsTemplate.prototype.facetReset(me, messageHtml, msgData);
-    let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: msgData.message[0].component.payload.sortableFacetList,
-      displaySortable: msgData.message[0].component.payload.displaySortable});
-    $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-    FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, 'all results');
+    if(msgData.message[0].component.payload.sortableFacetList && msgData.message[0].component.payload.sortableFacetList.length){
+      let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: msgData.message[0].component.payload.sortableFacetList,
+        displaySortable: msgData.message[0].component.payload.displaySortable});
+      $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+      FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, 'all results');   
+    }
     $(messageHtml)
       .off("click", "#btn-close-show-all")
       .on("click", "#btn-close-show-all", function () {
@@ -518,10 +520,12 @@ class FullSearchResultsTemplate {
           let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText });
           $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
           FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
-          let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
-            displaySortable: response.displaySortable});
-          $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-          FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+          if(response.sortableFacetList && response.sortableFacetList.length){
+            let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+              displaySortable: response.displaySortable});
+            $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+            FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+          }
         })
       });
     //SDK Top Facet
@@ -591,10 +595,12 @@ class FullSearchResultsTemplate {
       FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
       let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: response.filterCount });
       $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
-      let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
-        displaySortable: response.displaySortable});
-      $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-      FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+      if(response.sortableFacetList && response.sortableFacetList.length){
+        let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+          displaySortable: response.displaySortable});
+        $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+        FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet); 
+      }
     });
     $(messageHtml).find('#filter-count-container')
       .off("click", ".clsoe-filter")
@@ -613,10 +619,12 @@ class FullSearchResultsTemplate {
           let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText  });
           $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
           FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
-          let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
-            displaySortable: response.displaySortable});
-          $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-          FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+          if(response.sortableFacetList && response.sortableFacetList.length){
+            let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+              displaySortable: response.displaySortable});
+            $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+            FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+          }
         })
       });
   }
@@ -696,10 +704,12 @@ class FullSearchResultsTemplate {
       let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: response.filterCount });
       $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
         }
-        let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
-          displaySortable: response.displaySortable});
-        $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-        FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+        if(response.sortableFacetList && response.sortableFacetList.length){
+          let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+            displaySortable: response.displaySortable});
+          $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+          FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+        }
       });
       $(sortableHtml).find('.sa-sortable-dropdown').hide();
     })
@@ -728,10 +738,12 @@ class FullSearchResultsTemplate {
           let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: response.filterCount });
           $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
             }
-            let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
-              displaySortable: response.displaySortable});
-            $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-            FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+            if(response.sortableFacetList && response.sortableFacetList.length){
+              let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+                displaySortable: response.displaySortable});
+              $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+              FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+            }
           });
           $(sortableHtml).find('.sa-sortable-dropdown').hide();
         })

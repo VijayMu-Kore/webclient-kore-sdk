@@ -607,10 +607,11 @@ class SearchListViewTemplate {
     {{if isButtonTemplate == false}}\
     <div>\
     {{if structuredData?.length }}\
+    {{if !isDemoTemplate}}\
     {{if renderTitle}}\
     <div class="title-list-heading">${titleName}</div>\
     {{/if}}\
-    <div class="parent-list-template search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}{{if gridLayoutType==""&&groupResults==true }}-group{{/if}}{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
+    <div class="parent-list-template search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}{{if gridLayoutType=="" && renderTitle==true }}-group{{/if}}{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
         {{if isClickable == true}}\
         {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
         <div class="content-info {{if isSearchSDK&&textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
@@ -661,6 +662,113 @@ class SearchListViewTemplate {
     </div>\
     {{/if}}\
     </div>\
+    {{/if}}\
+    {{if isDemoTemplate == "serviceNowTemplate"}}\
+<div class="parent-list-template siemens-template">\
+<div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
+{{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+  <div class="siemens-list-template">\
+    <div class="icon-with-title">\
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xLjMzMzMzIDAuNjY2NjI2QzAuNTk2NjY3IDAuNjY2NjI2IDAgMS4yNjMyOSAwIDEuOTk5OTZWMy45OTk5NlYxNC42NjY2QzEuNzY3NzllLTA1IDE0Ljg0MzQgMC4wNzAyNjEyIDE1LjAxMyAwLjE5NTI4MiAxNS4xMzhDMC4zMjAzMDIgMTUuMjYzIDAuNDg5ODYxIDE1LjMzMzMgMC42NjY2NjcgMTUuMzMzM0gxNS4zMzMzQzE1LjUxMDEgMTUuMzMzMyAxNS42Nzk3IDE1LjI2MyAxNS44MDQ3IDE1LjEzOEMxNS45Mjk3IDE1LjAxMyAxNiAxNC44NDM0IDE2IDE0LjY2NjZWMy4zMzMyOVYxLjk5OTk2QzE2IDEuMjYzMjkgMTUuNDAzMyAwLjY2NjYyNiAxNC42NjY3IDAuNjY2NjI2SDEuMzMzMzNaTTEuMzMzMzMgMy45OTk5NkgxNC42NjY3VjE0SDEuMzMzMzNWMy45OTk5NlpNMy4zMzMzMyA1Ljk5OTk2QzMuMjQ0OTkgNS45OTg3MSAzLjE1NzI4IDYuMDE1MDMgMy4wNzUzIDYuMDQ3OTdDMi45OTMzMyA2LjA4MDkyIDIuOTE4NzEgNi4xMjk4MiAyLjg1NTggNi4xOTE4NUMyLjc5Mjg5IDYuMjUzODggMi43NDI5MyA2LjMyNzggMi43MDg4MyA2LjQwOTNDMi42NzQ3MyA2LjQ5MDgxIDIuNjU3MTcgNi41NzgyOCAyLjY1NzE3IDYuNjY2NjNDMi42NTcxNyA2Ljc1NDk4IDIuNjc0NzMgNi44NDI0NSAyLjcwODgzIDYuOTIzOTVDMi43NDI5MyA3LjAwNTQ2IDIuNzkyODkgNy4wNzkzNyAyLjg1NTggNy4xNDE0QzIuOTE4NzEgNy4yMDM0MyAyLjk5MzMzIDcuMjUyMzQgMy4wNzUzIDcuMjg1MjhDMy4xNTcyOCA3LjMxODIyIDMuMjQ0OTkgNy4zMzQ1NCAzLjMzMzMzIDcuMzMzMjlINkM2LjA4ODM0IDcuMzM0NTQgNi4xNzYwNSA3LjMxODIyIDYuMjU4MDMgNy4yODUyOEM2LjM0MDAxIDcuMjUyMzQgNi40MTQ2MiA3LjIwMzQzIDYuNDc3NTMgNy4xNDE0QzYuNTQwNDUgNy4wNzkzNyA2LjU5MDQgNy4wMDU0NiA2LjYyNDUgNi45MjM5NUM2LjY1ODYgNi44NDI0NSA2LjY3NjE2IDYuNzU0OTggNi42NzYxNiA2LjY2NjYzQzYuNjc2MTYgNi41NzgyOCA2LjY1ODYgNi40OTA4MSA2LjYyNDUgNi40MDkzQzYuNTkwNCA2LjMyNzggNi41NDA0NSA2LjI1Mzg4IDYuNDc3NTMgNi4xOTE4NUM2LjQxNDYyIDYuMTI5ODIgNi4zNDAwMSA2LjA4MDkyIDYuMjU4MDMgNi4wNDc5N0M2LjE3NjA1IDYuMDE1MDMgNi4wODgzNCA1Ljk5ODcxIDYgNS45OTk5NkgzLjMzMzMzWk04LjY2NjY3IDUuOTk5OTZDOC4yOTg2NyA1Ljk5OTk2IDggNi4yOTg2MyA4IDYuNjY2NjNWMTJDOCAxMi4zNjggOC4yOTg2NyAxMi42NjY2IDguNjY2NjcgMTIuNjY2NkgxMi42NjY3QzEzLjAzNDcgMTIuNjY2NiAxMy4zMzMzIDEyLjM2OCAxMy4zMzMzIDEyVjYuNjY2NjNDMTMuMzMzMyA2LjI5ODYzIDEzLjAzNDcgNS45OTk5NiAxMi42NjY3IDUuOTk5OTZIOC42NjY2N1pNMy4zMzMzMyA4LjY2NjYzQzMuMjQ0OTkgOC42NjUzOCAzLjE1NzI4IDguNjgxNyAzLjA3NTMgOC43MTQ2NEMyLjk5MzMzIDguNzQ3NTggMi45MTg3MSA4Ljc5NjQ5IDIuODU1OCA4Ljg1ODUyQzIuNzkyODkgOC45MjA1NSAyLjc0MjkzIDguOTk0NDYgMi43MDg4MyA5LjA3NTk3QzIuNjc0NzMgOS4xNTc0NyAyLjY1NzE3IDkuMjQ0OTQgMi42NTcxNyA5LjMzMzI5QzIuNjU3MTcgOS40MjE2NCAyLjY3NDczIDkuNTA5MTEgMi43MDg4MyA5LjU5MDYyQzIuNzQyOTMgOS42NzIxMiAyLjc5Mjg5IDkuNzQ2MDQgMi44NTU4IDkuODA4MDdDMi45MTg3MSA5Ljg3MDEgMi45OTMzMyA5LjkxOSAzLjA3NTMgOS45NTE5NUMzLjE1NzI4IDkuOTg0ODkgMy4yNDQ5OSAxMC4wMDEyIDMuMzMzMzMgOS45OTk5Nkg2QzYuMDg4MzQgMTAuMDAxMiA2LjE3NjA1IDkuOTg0ODkgNi4yNTgwMyA5Ljk1MTk1QzYuMzQwMDEgOS45MTkgNi40MTQ2MiA5Ljg3MDEgNi40Nzc1MyA5LjgwODA3QzYuNTQwNDUgOS43NDYwNCA2LjU5MDQgOS42NzIxMiA2LjYyNDUgOS41OTA2MkM2LjY1ODYgOS41MDkxMSA2LjY3NjE2IDkuNDIxNjQgNi42NzYxNiA5LjMzMzI5QzYuNjc2MTYgOS4yNDQ5NCA2LjY1ODYgOS4xNTc0NyA2LjYyNDUgOS4wNzU5N0M2LjU5MDQgOC45OTQ0NiA2LjU0MDQ1IDguOTIwNTUgNi40Nzc1MyA4Ljg1ODUyQzYuNDE0NjIgOC43OTY0OSA2LjM0MDAxIDguNzQ3NTggNi4yNTgwMyA4LjcxNDY0QzYuMTc2MDUgOC42ODE3IDYuMDg4MzQgOC42NjUzOCA2IDguNjY2NjNIMy4zMzMzM1pNMy4zMzMzMyAxMS4zMzMzQzMuMjQ0OTkgMTEuMzMyIDMuMTU3MjggMTEuMzQ4NCAzLjA3NTMgMTEuMzgxM0MyLjk5MzMzIDExLjQxNDIgMi45MTg3MSAxMS40NjMyIDIuODU1OCAxMS41MjUyQzIuNzkyODkgMTEuNTg3MiAyLjc0MjkzIDExLjY2MTEgMi43MDg4MyAxMS43NDI2QzIuNjc0NzMgMTEuODI0MSAyLjY1NzE3IDExLjkxMTYgMi42NTcxNyAxMkMyLjY1NzE3IDEyLjA4ODMgMi42NzQ3MyAxMi4xNzU4IDIuNzA4ODMgMTIuMjU3M0MyLjc0MjkzIDEyLjMzODggMi43OTI4OSAxMi40MTI3IDIuODU1OCAxMi40NzQ3QzIuOTE4NzEgMTIuNTM2OCAyLjk5MzMzIDEyLjU4NTcgMy4wNzUzIDEyLjYxODZDMy4xNTcyOCAxMi42NTE2IDMuMjQ0OTkgMTIuNjY3OSAzLjMzMzMzIDEyLjY2NjZINkM2LjA4ODM0IDEyLjY2NzkgNi4xNzYwNSAxMi42NTE2IDYuMjU4MDMgMTIuNjE4NkM2LjM0MDAxIDEyLjU4NTcgNi40MTQ2MiAxMi41MzY4IDYuNDc3NTMgMTIuNDc0N0M2LjU0MDQ1IDEyLjQxMjcgNi41OTA0IDEyLjMzODggNi42MjQ1IDEyLjI1NzNDNi42NTg2IDEyLjE3NTggNi42NzYxNiAxMi4wODgzIDYuNjc2MTYgMTJDNi42NzYxNiAxMS45MTE2IDYuNjU4NiAxMS44MjQxIDYuNjI0NSAxMS43NDI2QzYuNTkwNCAxMS42NjExIDYuNTQwNDUgMTEuNTg3MiA2LjQ3NzUzIDExLjUyNTJDNi40MTQ2MiAxMS40NjMyIDYuMzQwMDEgMTEuNDE0MiA2LjI1ODAzIDExLjM4MTNDNi4xNzYwNSAxMS4zNDg0IDYuMDg4MzQgMTEuMzMyIDYgMTEuMzMzM0gzLjMzMzMzWiIgZmlsbD0iIzA3Mzc3RiIvPg0KPC9zdmc+DQo=" class="siemens-icon-blue">\
+      <span class="name-title">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+      <span class="redirecting-link click-to-navigate-url click-log-metrics isClickable" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <img class="siemens-link-icon" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik01LjYzNTAyIDEyQzUuMzQ0ODcgMTIgNS4xMDk2NiAxMS43NjQ4IDUuMTA5NjYgMTEuNDc0NkM1LjEwOTY2IDExLjIwMDYgNS4zMTk0NyAxMC45NzU2IDUuNTg3MjEgMTAuOTUxNEw1LjYzNTAyIDEwLjk0OTNIMTAuMDE0N0MxMC41MTI0IDEwLjk0OTMgMTAuOTE5MyAxMC41NjAyIDEwLjk0NzcgMTAuMDY5NkwxMC45NDkzIDEwLjAxNDdWMS45ODUyN0MxMC45NDkzIDEuNDg3NTcgMTAuNTYwMiAxLjA4MDc0IDEwLjA2OTYgMS4wNTIzMUwxMC4wMTQ3IDEuMDUwNzNIMS45ODUyN0MxLjQ4NzU3IDEuMDUwNzMgMS4wODA3NCAxLjQzOTc4IDEuMDUyMzEgMS45MzAzNkwxLjA1MDczIDEuOTg1MjdWNi4zNjQ5OEMxLjA1MDczIDYuNjU1MTMgMC44MTU1MTMgNi44OTAzNCAwLjUyNTM2MyA2Ljg5MDM0QzAuMjUxMzMyIDYuODkwMzQgMC4wMjYzMDQxIDYuNjgwNTMgMC4wMDIxNDY3MiA2LjQxMjc5TDAgNi4zNjQ5OFYxLjk4NTI3QzAgMC45MTM3NTMgMC44NDg4OTEgMC4wNDA1MDg5IDEuOTEwODQgMC4wMDEzNjk0OEwxLjk4NTI3IDBIMTAuMDE0N0MxMS4wODYyIDAgMTEuOTU5NSAwLjg0ODg5MSAxMS45OTg2IDEuOTEwODRMMTIgMS45ODUyN1YxMC4wMTQ3QzEyIDExLjA4NjIgMTEuMTUxMSAxMS45NTk1IDEwLjA4OTIgMTEuOTk4NkwxMC4wMTQ3IDEySDUuNjM1MDJaIiBmaWxsPSIjQkRDMUM2Ii8+DQo8cGF0aCBkPSJNOC4wMDI5IDMuNjAzOThDOC4yNzY5MyAzLjYwMzk4IDguNTAxOTYgMy44MTM3OSA4LjUyNjEyIDQuMDgxNTNMOC41MjgyNiA0LjEyOTM0TDguNTI4MjYgNy4wNDkxNUM4LjUyODI2IDcuMzM5MyA4LjI5MzA1IDcuNTc0NTEgOC4wMDI5IDcuNTc0NTFDNy43Mjg4NyA3LjU3NDUxIDcuNTAzODQgNy4zNjQ3MSA3LjQ3OTY4IDcuMDk2OTdMNy40Nzc1NCA3LjA0OTE1TDcuNDc3MzMgNS40MDM5TDIuMzgwMzggMTAuNTAwOEMyLjE3NTIxIDEwLjcwNiAxLjg0MjU3IDEwLjcwNiAxLjYzNzQgMTAuNTAwOEMxLjQ0NDMgMTAuMzA3NyAxLjQzMjk0IDEwLjAwMTcgMS42MDMzMyA5Ljc5NTM1TDEuNjM3NCA5Ljc1Nzg3TDYuNzQwNzkgNC42NTQ0OUw1LjA4MzA5IDQuNjU0NzFDNC44MDkwNiA0LjY1NDcxIDQuNTg0MDMgNC40NDQ5IDQuNTU5ODggNC4xNzcxNkw0LjU1NzczIDQuMTI5MzRDNC41NTc3MyAzLjg1NTMxIDQuNzY3NTMgMy42MzAyOSA1LjAzNTI3IDMuNjA2MTNMNS4wODMwOSAzLjYwMzk4SDguMDAyOVoiIGZpbGw9IiNCREMxQzYiLz4NCjwvc3ZnPg0K">\
+      </span>\
+    </div>\
+    <div class="info-test-content four-line-description">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+    <div class="author-updates-sec">\
+      <div class="author-names">\
+        <span class="author-title">Author:</span>\
+        <span class="author_name">{{html helpers.convertMDtoHTML(data.scm_author)}}</span>\
+      </div>\
+      <div class="updates-on">\
+        <span class="title">Updated on:</span>\
+        <span class="time-updates">{{html helpers.convertMDtoHTML(data.scm_createdAt)}}</span>\
+      </div>\
+    </div>\
+    <div class="button-chips">\
+    {{each(key, chip) data.chips}}\
+    <button class="btn-chip" style="color:${chip.color};background:${chip.background};border:1px solid ${chip.color}">{{html helpers.convertMDtoHTML(chip.name)}}</button>\
+    {{/each}}\
+    </div>\
+    </div>\
+    {{/each}}\
+    <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+     <div>Show more <img src="iVBORw0KGgoAAAANSUhEUgAAAB8AAAATCAYAAABobNZCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAALJSURBVEiJ5ZU/TBNhGId/75090gIV6z8SIQSDRKJCKSA6sIBRExnE2BhJW0sLpZQFB9SFpFEHlaCDJtALLQUc1AYHwTSAQGKiixCwQx2VSeNAIsZCgN7nAAdHEWwVJ9/xed/v97xf7i5HFnvDdQJaQOxl5JvaGgg8mMM/KqPxqlqzc84PRueI2G1ebygOAkgBcGSHsHQy/2heXygUWtxusdlsTlapqZ+ASgACgFKOgFF5gAjlnJActNlsqdspttlsqZyQHCRCuQKPcQIvVYPwSgHLoiSMWSyNu7dDbLU2pUVJGAJQpsCvebZg4kRRjGjVqkqA+hXNIlJFhy87HHv+Rlzd0LCL8fODAE7IjBgGI7Pqsz6f7zvJ0Gg0Chqt7ilA5xXnP0R5qeKxKH5OVGx2OvdxixgGkK/AQYrOX/D7/fMAwMk0EAgsRGZnLjHQc8VwHhflxiwW54FExFarK51bxMg6McOAVqOqksUAQLEHjUYjr9Hq/ACZFPiTREvlvZ2dH38nrqlxZUqcNALg0CokPEviJJMoiuu+Ij72cDgcZrk5B18ISZosAPoVnEbgqo4Zjg+EJt/NbCa22xuzoiSNAshR4CfTmemmvra2pdj5DTdX9qx25yMGuBTsCyexiq4uTzh22FJXl0sSPwIgYy2BvNkZ+x1ut1v6lWDDzZU1NTkeLCgq0RFQuoJSGNHFwgLD4NTUxFd5zupwHIbEjwJYezcYE7Mz052biYGtb746c6W2/j4YNSnYjMTYmV6fZ9xa59IzSRoCsFfRb+/2djQCYFsGxyEHAFhq6+8Ro2blAgQ0M6AVgE6GjFhrT6fnWjyZccsBYPknxO5sHsbu+r2eG/HmbfnMY+v95PibAkPJPAGnYnuMwd3t87QkkpeQXF5Abyj6AdDpNUotPb6OW4lmJSxfXmDibWFh8TQ4pDDQzR5v+8M/yfl/6ycjUebLjIBgoQAAAABJRU5ErkJggg==" height="6" width="10" /></div>\
+  </div>\
+    </div>\
+    {{/if}}\
+    {{if isDemoTemplate == "cosmeticsTemplate"}}\
+    <div class="cosmetics-grid-template2">\
+                <div class="arrivals-grids-template">\
+                {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+                  <div class="slide-gride cosmetics-product-view" style="width:100%">\
+                    <div class="inner-content-data">\
+                      <div class="img-block">\
+                        <img class="banner-img" src="${data.ecommerce_image}">\
+                      </div>\
+                      <div class="content-block">\
+                        <div class="type-tag {{if data.ecommerce_bestseller == true}} display-inline-block{{else}}display-none{{/if}}">Best Seller</div>\
+                        <div class="type-tag offer">${data.ecommerce_percentage_offer}</div>\
+                        <div class="title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                        <div class="text-desc">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                        <div class="price-and-rating">\
+                        <div>\
+                        <div class="amount-info">${data.ecommerce_price}</div>\
+                        <div class="amount-info strike-text">${data.ecommerce_original_price}</div>\
+                        </div>\
+                        <div class="rating-flex">{{each(key, review) data.ecommerce_ratingArr}}\{{if review == "fill"}}\
+                        <div class="rating-star-pd"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxMCAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAuMzUwMjc4IDMuNTI0TDMuMzk1ODkgMy4xOTMwNkw0LjYzOTgyIDAuMjM5OTE0QzQuNzc0NTYgLTAuMDc5OTcxNCA1LjIyNzg1IC0wLjA3OTk3MTQgNS4zNjI1OSAwLjIzOTkxNEw2LjYwNjUyIDMuMTkzMDZMOS42NDk3NiAzLjUyNEM5Ljk4MjMgMy41NjAxNiAxMC4xMTk4IDMuOTY5MzMgOS44NzY1NyA0LjE5ODk3TDcuNTg2ODcgNi4zNjA4TDguMjMxNzkgOS41MzAyNkM4LjMwMDA0IDkuODY1NjkgNy45MzU4NSAxMC4xMjE0IDcuNjQzNTIgOS45NDMzNUw1LjAwMTIxIDguMzMzNzRMMi4zNTYzNiA5Ljk0MzQ0QzIuMDYzOSAxMC4xMjE0IDEuNjk5NzcgOS44NjU0NCAxLjc2ODI4IDkuNTNMMi40MTU1NSA2LjM2MDhMMC4xMjM1ODIgNC4xOTkxMUMtMC4xMTk4NDQgMy45Njk1MyAwLjAxNzYyMDkgMy41NjAxNCAwLjM1MDI3OCAzLjUyNFoiIGZpbGw9IiNGNUIyNEQiLz4KPC9zdmc+Cg==" /></div>\
+                        {{else}}\
+                        <div class="rating-star-pd"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuMzYyNTkgMC4yMzk5MjNDNS4yMjc4MiAtMC4wNzk5NDAzIDQuNzc0NDggLTAuMDc5OTg3MiA0LjYzOTY3IDAuMjM5ODU5QzQuMTUzNjkgMS4zOTI5MyAzLjM5NTc2IDMuMTkyNzEgMy4zOTU3NiAzLjE5MjcxTDAuMzUwNjAxIDMuNTIzNTJDMC4wMTc2Mzc5IDMuNTU5NjkgLTAuMTE5OTU0IDMuOTY5MzUgMC4xMjM2OTYgNC4xOTkxTDIuNDE1MzMgNi4zNTk5N0wxLjc2ODE2IDkuNTI3OTZDMS42OTk1OSA5Ljg2MzYzIDIuMDY0MDUgMTAuMTE5OCAyLjM1Njc4IDkuOTQxNjhMNS4wMDEyIDguMzMyNjJMNy42NDMwOSA5Ljk0MTU5QzcuOTM1NyAxMC4xMTk4IDguMzAwMjIgOS44NjM4OCA4LjIzMTkgOS41MjgyMkw3LjU4NzA4IDYuMzU5OTdMOS44NzY0NSA0LjE5ODk2QzEwLjExOTkgMy45NjkxNiA5Ljk4MjI4IDMuNTU5NzEgOS42NDk0MyAzLjUyMzUyTDYuNjA2NjUgMy4xOTI3MUw1LjM2MjU5IDAuMjM5OTIzWk01LjAwMTIgMS40MDA3OEw2LjA2NDM1IDMuOTIxNzNMOC43MjM3NiA0LjIwOTY2TDYuNzMyMjcgNi4wOTA0Mkw3LjI4Mzc2IDguODA0MzRMNS4wMDEyIDcuNDEzNjhMMi43MTU1OSA4LjgwNDM0TDMuMjcwMTQgNi4wOTA0MkwxLjI4MTcxIDQuMjA5NjZMMy45MzgwNiAzLjkyMTczTDUuMDAxMiAxLjQwMDc4WiIgZmlsbD0iI0Y1QjI0RCIvPgo8L3N2Zz4K" /></div>\
+                        {{/if}}\
+                        {{/each}}\</div>\
+                        </div>\
+                      </div>\
+                    </div>\
+                  </div>\
+                {{/each}}\
+                </div>\
+                </div>\
+    {{/if}}\
+    {{if isDemoTemplate == "bankingTemplate"}}\
+    <div class="banking-demo-list">\
+              <div class="banking-list-template">\
+                <div class="title-heading-banking {{if data.subtitle}}display-block{{else}}display-none{{/if}}">${data.subtitle}</div>\
+                <div class="banking-carousel-template-data">\
+                  <div class="carousel bankCarouselId${key+1}">\
+                      <div class="slide">\
+                        <div class="inner-content-list">\
+                          <div class="img-block-with-text">\
+                              <div class="img-block">\
+                                  <img src="">\
+                              </div>\
+                              <div class="text-content">\
+                                  <div class="main-heading text-truncate">Luxor Hotel & Casino</div>\
+                                  <div class="stars">\
+                                    <span>4.5</span>\
+                                    <img src="images/banking/star-fill.svg">\
+                                    <img src="images/banking/star-fill.svg">\
+                                    <img src="images/banking/star-fill.svg">\
+                                    <img src="images/banking/star-fill.svg">\
+                                    <img src="images/banking/star-unfil.svg">\
+                                  </div>\
+                                  <div class="info-content two-line-description">Significant reduce time and costs with the U.S Bank purchasing card, a fast, flexible purchasing tool, which offers you an.</div>\
+                              </div>\
+                          </div>\
+                          <div class="chips-data">\
+                            <div class="chip-name">25% off</div>\
+                            <div class="chip-name">Complimentary meals</div>\
+                            <div class="chip-name">No chargeable Reschedule</div>\
+                            <div class="chip-name">3x Reward points</div>\
+                          </div>\
+                        </div>\
+                    </div>\
+                </div>\
+              </div>\
+              </div>\
+            </div>\
+    {{/if}}\
     {{/if}}\
     {{if isButtonTemplate}}\
     {{if structuredData?.length}}\

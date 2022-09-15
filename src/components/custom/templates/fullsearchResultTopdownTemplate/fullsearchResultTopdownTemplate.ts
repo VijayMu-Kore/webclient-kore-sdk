@@ -72,10 +72,12 @@ class FullSearchResultTopdownTemplate {
     FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, msgData.message[0].component.payload.tabsList, 'all results');
     FullSearchResultTopdownTemplate.prototype.facetReset(me, messageHtml, msgData);
     FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, msgData.message[0].component.payload.facetPosition);
-    let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: msgData.message[0].component.payload.sortableFacetList,
-      displaySortable: msgData.message[0].component.payload.displaySortable});
-    $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
-    FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,msgData.message[0].component.payload.sortableFacetList)
+    if(msgData.message[0].component.payload.sortableFacetList && msgData.message[0].component.payload.sortableFacetList.length){
+      let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: msgData.message[0].component.payload.sortableFacetList,
+        displaySortable: msgData.message[0].component.payload.displaySortable});
+      $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+      FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,msgData.message[0].component.payload.sortableFacetList)
+    }
     FullSearchResultTopdownTemplate.prototype.bindBackToSearchClickEvent(me,messageHtml);
   }
   getTemplateString(type: any) {
@@ -305,10 +307,12 @@ class FullSearchResultTopdownTemplate {
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
-            let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
-              displaySortable: response.displaySortable});
-            $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
-            FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
+            if(response.sortableFacetList && response.sortableFacetList.length){
+              let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+                displaySortable: response.displaySortable});
+              $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+              FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
+            }
           }
         });
       });
@@ -334,10 +338,12 @@ class FullSearchResultTopdownTemplate {
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
-            let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
-              displaySortable: response.displaySortable});
-            $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
-            FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
+            if(response.sortableFacetList && response.sortableFacetList.length){
+              let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+                displaySortable: response.displaySortable});
+              $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+              FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
+            }
           }
         });
       });
@@ -360,10 +366,13 @@ class FullSearchResultTopdownTemplate {
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, res.selectedFacetsList, res.isFilterAlignedTop);
           }
           hostWindowInstance.displayDropdownFilterCount();
-          let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: res.sortableFacetList,
-            displaySortable: res.displaySortable});
-          $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
-          FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,res.sortableFacetList)
+          if(res.sortableFacetList && res.sortableFacetList.length){
+            let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: res.sortableFacetList,
+              displaySortable: res.displaySortable});
+            $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+            FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,res.sortableFacetList)
+          }
+          
         })
       });
     $(messageHtml)
@@ -451,10 +460,13 @@ class FullSearchResultTopdownTemplate {
       FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
       FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
       hostWindowInstance.displayDropdownFilterCount();
-      let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
-        displaySortable: response.displaySortable});
-      $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
-      FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
+      if(response.sortableFacetList && response.sortableFacetList.length){
+        let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
+          displaySortable: response.displaySortable});
+        $(messageHtml).find('#sa-sdk-sortable-dropdown').empty().append(sortableHtml);
+        FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,response.sortableFacetList)
+      }
+      
     });
   }
   getSearchFacetsTopDownTemplate(type: any) {
