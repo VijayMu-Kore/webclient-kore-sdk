@@ -224,6 +224,11 @@ body::-webkit-scrollbar {
 
 // top down CSS for delete
 .sdk-top-down-interface {
+  .live-search-data-container{
+    .live-search-close-icon{
+      display: none !important;
+    }
+  }
 	.templates-data {
 		.tile_with_header.recentText {
 			&:hover {
