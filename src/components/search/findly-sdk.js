@@ -7411,7 +7411,8 @@ FindlySDK.prototype.searchEventBinding = function (
                                     totalSearchResults: _self.vars.totalNumOfResults,
                                     groupData: _self.vars.mergedData,
                                     searchType: 'isLiveSearch',
-                                    helpers: helpers
+                                    helpers: helpers,
+                                    snippetData:{}
                                   }
                                 }
                               }]
@@ -8248,6 +8249,18 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         : ".search-data-container";
 
       if (!$("body").hasClass("top-down")) {
+        var snippetObj={};
+              if(res?.graph_answer?.payload?.center_panel){
+                if(Object.keys(res.graph_answer.payload.center_panel).length>0){
+                  snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer),page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.page_url}; 
+                }
+                else{
+                  snippetObj={};
+                }
+              }
+              else{
+                snippetObj={};
+              }
         _self.countTotalResults(res, 0);
         var dataObj = {
           faqs: [],
@@ -8307,7 +8320,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                     totalSearchResults: _self.vars.totalNumOfResults,
                     groupData: _self.vars.mergedData,
                     searchType: 'isSearch',
-                    helpers: helpers
+                    helpers: helpers,
+                    snippetData:snippetObj
                   }
                 }
               }]
