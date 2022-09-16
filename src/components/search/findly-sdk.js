@@ -23880,7 +23880,9 @@ FindlySDK.prototype.seeAllBtnClickEvent = function (e) {
   var _self = this;
   _self.vars.scrollPageNumber = 0;
   _self.vars.selectedFacetFromSearch = "all results";
-  _self.vars.searchObject.searchText = $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
+  if($(e.target).hasClass("live-search-close-icon")){
+    _self.vars.searchObject.searchText = $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
+  }
   _self.vars.showingMatchedResults = true;
   e.preventDefault();
   e.stopImmediatePropagation();
