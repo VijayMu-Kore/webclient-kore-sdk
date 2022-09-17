@@ -8874,6 +8874,56 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             },
           });
         } else {
+          facets = []
+          facets.push({
+            key: "all results",
+            doc_count: _self.vars.totalNumOfResults,
+            name: "ALL",
+          });
+          facets = facets.concat((res.tabFacet || {}).buckets || []);
+          facets = _self.rearrangeTabsList(facets);
+          if ((res.tasks || []).length) {
+            facets.push({
+              key: "task",
+              doc_count: (res.tasks || []).length,
+              name: "Actions",
+            });
+          }
+          facets.forEach((tab) => {
+            if (tab && tab.key) {
+              tab["className"] = tab.key.replaceAll(" ", "-");
+            }
+          });
+          _self.vars.tabsList = facets;
+          var devMode = _self.isDev ? true : false;
+          var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+          var msgData = {
+            message: [{
+              component: {
+                type: 'template',
+                payload: {
+                  template_type: "fullSearchResultTopdownTemplate",
+                  isDev: _self.isDev,
+                  devMode: devMode,
+                  viewType: viewType,
+                  totalSearchResults: 0,
+                  groupData: [],
+                  searchType: 'isFullResults',
+                  helpers: helpers,
+                  tabsList: _self.vars.tabsList,
+                  facetPosition:_self.vars.filterConfiguration.aligned,
+                  filterFacetData: searchFacets||[],
+                  sortableFacetList: _self.vars.sortableFacetList || [],
+                  displaySortable: _self.vars.displaySortable,
+                  displayFeedback:_self.vars.feedBackExperience
+                }
+              }
+
+            }]
+          }
+          var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
+          $("#top-down-full-results-container").empty().append(showAllHTML);
+          $(".skelton-load-img").hide();
           $(".empty-full-results-container").removeClass("hide");
           $(".no-templates-defined-full-results-container").hide();
         }
