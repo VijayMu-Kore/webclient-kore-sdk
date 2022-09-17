@@ -22,7 +22,7 @@
             border-radius: 4px;
             padding: 12px 15px;
             .heading-title{
-                font-weight: 600;
+                font-weight: 500;
                 font-size: 14px;
                 line-height: 20px;
                 color: #202124;
@@ -60,7 +60,7 @@
             padding: 12px 15px;
             height: 100%;
             .heading-title{
-                font-weight: 600;
+                font-weight: 500;
                 font-size: 14px;
                 line-height: 20px;
                 color: #202124;
@@ -148,7 +148,7 @@
             border-radius: 4px;
             padding: 12px 15px;
             .heading-title{
-                font-weight: 600;
+                font-weight: 500;
                 font-size: 14px;
                 line-height: 18px;
                 color: #202124;
@@ -171,8 +171,9 @@
                     font-weight: 400;
                     font-size: 12px;
                     line-height: 16px;
-                    color: #5F6368;
-                }
+                    // color: #5F6368;
+                    color: #9AA0A6;
+            }
             }
         }
     }
@@ -213,7 +214,7 @@
                 }
             }
             .heading-title{
-                font-weight: 600;
+                font-weight: 500;
                 font-size: 14px;
                 line-height: 18px;
                 color: #202124;
@@ -224,7 +225,8 @@
                 font-weight: 400;
                 font-size: 12px;
                 line-height: 14px;
-                color: #5F6368;
+                // color: #5F6368;
+                color: #9AA0A6;
                 margin: 12px 0;
                 padding: 0 5px;
             }
@@ -308,7 +310,7 @@
 }
 
 .title-list-heading{
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     line-height: 17px;
     color: #202124;
