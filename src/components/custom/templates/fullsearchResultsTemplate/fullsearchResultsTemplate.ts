@@ -67,7 +67,10 @@ class FullSearchResultsTemplate {
       let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: msgData.message[0].component.payload.sortableFacetList,
         displaySortable: msgData.message[0].component.payload.displaySortable});
       $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-      FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, 'all results');   
+      let sortableAddedListHtml =  $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsAddedlist()).tmpl({
+        displaySortable: msgData.message[0].component.payload.displaySortable});
+      $(messageHtml).find('#sa-sdk-sortable-facets-added-list').empty().append(sortableAddedListHtml);
+      FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, 'all results',sortableAddedListHtml);
     }
     $(messageHtml)
       .off("click", "#btn-close-show-all")
@@ -113,6 +116,12 @@ class FullSearchResultsTemplate {
                     <!-- Tab container-->\
                     <div id="sdk-bottomup-tab-container"></div>\
                     <!-- Tab container-->\
+                    <!-- Sortable Facet start-->\
+                    <div class="sortable-facets-bottom-up">\
+                        <div id="sa-sdk-sortable-dropdown-bottom-up" class="">\
+                        </div>\
+                      </div>\
+                    <!-- Sortable Facet end-->\
                     <!-- Facet right-->\
                     <div  id="rightFacetFilterId" class="{{if isFilterEnabled == false}}display-none{{/if}}"> </div>\
                     <!-- Facet right Icon -->\
@@ -122,13 +131,10 @@ class FullSearchResultsTemplate {
                     <!--Filter count-->\
                     <div id="filter-count-container"></div>\
                     <!--Filter Count-->\
+                    <!--sortable facet added list-->\
+                    <div id="sa-sdk-sortable-facets-added-list"></div>\
+                    <!--sortable facet added list-->\
           </div>\
-          <!-- Sortable Facet start-->\
-          <div class="sortable-facets-bottom-up">\
-              <div id="sa-sdk-sortable-dropdown-bottom-up" class="">\
-              </div>\
-            </div>\
-            <!-- Sortable Facet end-->\
           <!-- Facet top-->\
           <div  id="topFacetFilterId"> </div>\
           <!-- Facet top-->\
@@ -524,7 +530,10 @@ class FullSearchResultsTemplate {
             let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
               displaySortable: response.displaySortable});
             $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-            FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+            let sortableAddedListHtml =  $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsAddedlist()).tmpl({
+              displaySortable: response.displaySortable});
+            $(messageHtml).find('#sa-sdk-sortable-facets-added-list').empty().append(sortableHtml);
+            FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet,sortableAddedListHtml);
           }
         })
       });
@@ -599,7 +608,10 @@ class FullSearchResultsTemplate {
         let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
           displaySortable: response.displaySortable});
         $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-        FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet); 
+        let sortableAddedListHtml =  $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsAddedlist()).tmpl({
+          displaySortable: response.displaySortable});
+        $(messageHtml).find('#sa-sdk-sortable-facets-added-list').empty().append(sortableHtml);
+        FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet,sortableAddedListHtml);
       }
     });
     $(messageHtml).find('#filter-count-container')
@@ -622,8 +634,11 @@ class FullSearchResultsTemplate {
           if(response.sortableFacetList && response.sortableFacetList.length){
             let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
               displaySortable: response.displaySortable});
-            $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-            FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+              $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+              let sortableAddedListHtml =  $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsAddedlist()).tmpl({
+                displaySortable: response.displaySortable});
+              $(messageHtml).find('#sa-sdk-sortable-facets-added-list').empty().append(sortableAddedListHtml);
+              FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet,sortableAddedListHtml);
           }
         })
       });
@@ -660,30 +675,37 @@ class FullSearchResultsTemplate {
   }
   getBottomUpSortableFacetsTabs () {
     var sortableFacets = '<script id="bottom-up-sortable-tabs-template" type="text/x-jqury-tmpl">\
-                               <div class="sortable-dropdown-filter added-dropdown-filters">\
-                               {{if displaySortable && displaySortable.name}}\
+                              <div class="sortable-dropdown-filter added-dropdown-filters">\
+                              <div class="icon-block sa-sortable-dropbtn">\
+                             <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxNCAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0zLjQ4ODM0IDAuODA5ODk3TDAuOTQwODE3IDMuMjI0NzNMMC45MDc3ODMgMy4yNTg5OUMwLjczMTEyMiAzLjQ1OTU0IDAuNzMzNjUgMy43NjU0IDAuOTIxMDc0IDMuOTYzMTJMMC45NTUzMjkgMy45OTYxNkMxLjE1NTg4IDQuMTcyODIgMS40NjE3NCA0LjE3MDI5IDEuNjU5NDcgMy45ODI4N0wzLjM4MTY4IDIuMzUwMDlWMTAuODYwOEwzLjM4MzgyIDEwLjkwODNDMy40MDc4NCAxMS4xNzQ1IDMuNjMxNTYgMTEuMzgzMSAzLjkwMzk5IDExLjM4MzFDNC4xOTI0NiAxMS4zODMxIDQuNDI2MyAxMS4xNDkyIDQuNDI2MyAxMC44NjA4VjIuNDU3MjNMNi4wMzU4NSAzLjk4Mjg3TDYuMDcxODMgNC4wMTQwMkM2LjI4MTUzIDQuMTc5NzIgNi41ODY4MiA0LjE2MDg1IDYuNzc0MjUgMy45NjMxMkM2Ljk3MjcgMy43NTM3NyA2Ljk2Mzg2IDMuNDIzMTggNi43NTQ1IDMuMjI0NzNMNC4yMDY5OCAwLjgwOTg5N0w0LjE3MDI5IDAuNzc4MTc2QzMuOTY4NzYgMC42MTk1NyAzLjY3Nzk3IDAuNjMwMTQ0IDMuNDg4MzQgMC44MDk4OTdaIiBmaWxsPSIjMjAyMTI0Ii8+DQo8cGF0aCBkPSJNOS42ODY0NyA5Ljk3OTlWMS40NjkyN0w5LjY4ODYxIDEuNDIxNzNDOS43MTI2MiAxLjE1NTU1IDkuOTM2MzQgMC45NDY5NjQgMTAuMjA4OCAwLjk0Njk2NEMxMC40OTcyIDAuOTQ2OTY0IDEwLjczMTEgMS4xODA4MSAxMC43MzExIDEuNDY5MjdWOS44NzI4TDEyLjM0MDYgOC4zNDczN0wxMi4zNzY2IDguMzE2MjJDMTIuNTg2MyA4LjE1MDUyIDEyLjg5MTYgOC4xNjkzOSAxMy4wNzkgOC4zNjcxMkMxMy4yNzc1IDguNTc2NDcgMTMuMjY4NiA4LjkwNzA2IDEzLjA1OTMgOS4xMDU1MUwxMC41MTE4IDExLjUyMDNMMTAuNDc1MSAxMS41NTIxQzEwLjI3MzUgMTEuNzEwNyA5Ljk4Mjc1IDExLjcwMDEgOS43OTMxMiAxMS41MjAzTDcuMjQ1NiA5LjEwNTUxTDcuMjEyNTcgOS4wNzEyNUM3LjAzNTkxIDguODcwNyA3LjAzODQ0IDguNTY0ODQgNy4yMjU4NiA4LjM2NzEyTDcuMjYwMTIgOC4zMzQwOEM3LjQ2MDY3IDguMTU3NDIgNy43NjY1MyA4LjE1OTk1IDcuOTY0MjUgOC4zNDczN0w5LjY4NjQ3IDkuOTc5OVoiIGZpbGw9IiMyMDIxMjQiLz4NCjwvc3ZnPg0K">\
+                            </div>\
+                            <div class="content-dropdown-sortable sa-sortable-dropdown">\
+                              <div class="title-text">SORT BY</div>\
+                              {{each(key, facet) sortablefacets }}\
+                                                          <div class="option-text sa-sortable-facet-options text-truncate" value="{{= JSON.stringify(facet)}}" name="{{= facet.name}}">{{= facet.name}}</div>\
+                                                          {{/each}}\
+                            </div>\
+                          </div>\
+                            </script>'
+    return sortableFacets;
+  }
+  getBottomUpSortableFacetsAddedlist() {
+    var sortableFacetsAddedList = '<script id="bottom-up-sortable-tabs-template" type="text/x-jqury-tmpl">\
+                          {{if displaySortable && displaySortable.name}}\
+                          <div class="added-dropdown-filters">\
                                <div class="add-list">\
                                <span class="title"><span id="sa-select-sort-option"> {{= displaySortable.name}}</span></span>\
                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik01LjcwNzAzIDUuMDAwMDlMOS44NTM1NSAwLjg1MzU1M0MxMC4wNDg4IDAuNjU4MjkxIDEwLjA0ODggMC4zNDE3MDkgOS44NTM1NSAwLjE0NjQ0N0M5LjY1ODI5IC0wLjA0ODgxNTcgOS4zNDE3MSAtMC4wNDg4MTU0IDkuMTQ2NDUgMC4xNDY0NDdMNC45OTk5MSA0LjI5M0wwLjg1MzU1NSAwLjE0NjgxNEMwLjY1ODI4OCAtMC4wNDg0NDQ0IDAuMzQxNzA2IC0wLjA0ODQzOCAwLjE0NjQ0OCAwLjE0NjgyOEMtMC4wNDg4MTA0IDAuMzQyMDk0IC0wLjA0ODgwNCAwLjY1ODY3NyAwLjE0NjQ2MiAwLjg1MzkzNUw0LjI5MjggNS4wMDAxTDAuMTQ2NDQ3IDkuMTQ2NDZDLTAuMDQ4ODE1NyA5LjM0MTczIC0wLjA0ODgxNTUgOS42NTgzMSAwLjE0NjQ0NyA5Ljg1MzU3QzAuMzQxNzA5IDEwLjA0ODggMC42NTgyOTIgMTAuMDQ4OCAwLjg1MzU1MyA5Ljg1MzU3TDQuOTk5OTIgNS43MDcyTDkuMTQ2NDYgOS44NTM1N0M5LjM0MTczIDEwLjA0ODggOS42NTgzMSAxMC4wNDg4IDkuODUzNTcgOS44NTM1NUMxMC4wNDg4IDkuNjU4MjkgMTAuMDQ4OCA5LjM0MTcxIDkuODUzNTUgOS4xNDY0NUw1LjcwNzAzIDUuMDAwMDlaIiBmaWxsPSIjNUY2MzY4Ii8+DQo8L3N2Zz4NCg==" class="close-filter clear-sort-by">\
                              </div>\
+                             </div>\
                              {{/if}}\
-                              <div class="icon-block sa-sortable-dropbtn">\
-                             <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxNCAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0zLjQ4ODM0IDAuODA5ODk3TDAuOTQwODE3IDMuMjI0NzNMMC45MDc3ODMgMy4yNTg5OUMwLjczMTEyMiAzLjQ1OTU0IDAuNzMzNjUgMy43NjU0IDAuOTIxMDc0IDMuOTYzMTJMMC45NTUzMjkgMy45OTYxNkMxLjE1NTg4IDQuMTcyODIgMS40NjE3NCA0LjE3MDI5IDEuNjU5NDcgMy45ODI4N0wzLjM4MTY4IDIuMzUwMDlWMTAuODYwOEwzLjM4MzgyIDEwLjkwODNDMy40MDc4NCAxMS4xNzQ1IDMuNjMxNTYgMTEuMzgzMSAzLjkwMzk5IDExLjM4MzFDNC4xOTI0NiAxMS4zODMxIDQuNDI2MyAxMS4xNDkyIDQuNDI2MyAxMC44NjA4VjIuNDU3MjNMNi4wMzU4NSAzLjk4Mjg3TDYuMDcxODMgNC4wMTQwMkM2LjI4MTUzIDQuMTc5NzIgNi41ODY4MiA0LjE2MDg1IDYuNzc0MjUgMy45NjMxMkM2Ljk3MjcgMy43NTM3NyA2Ljk2Mzg2IDMuNDIzMTggNi43NTQ1IDMuMjI0NzNMNC4yMDY5OCAwLjgwOTg5N0w0LjE3MDI5IDAuNzc4MTc2QzMuOTY4NzYgMC42MTk1NyAzLjY3Nzk3IDAuNjMwMTQ0IDMuNDg4MzQgMC44MDk4OTdaIiBmaWxsPSIjMjAyMTI0Ii8+DQo8cGF0aCBkPSJNOS42ODY0NyA5Ljk3OTlWMS40NjkyN0w5LjY4ODYxIDEuNDIxNzNDOS43MTI2MiAxLjE1NTU1IDkuOTM2MzQgMC45NDY5NjQgMTAuMjA4OCAwLjk0Njk2NEMxMC40OTcyIDAuOTQ2OTY0IDEwLjczMTEgMS4xODA4MSAxMC43MzExIDEuNDY5MjdWOS44NzI4TDEyLjM0MDYgOC4zNDczN0wxMi4zNzY2IDguMzE2MjJDMTIuNTg2MyA4LjE1MDUyIDEyLjg5MTYgOC4xNjkzOSAxMy4wNzkgOC4zNjcxMkMxMy4yNzc1IDguNTc2NDcgMTMuMjY4NiA4LjkwNzA2IDEzLjA1OTMgOS4xMDU1MUwxMC41MTE4IDExLjUyMDNMMTAuNDc1MSAxMS41NTIxQzEwLjI3MzUgMTEuNzEwNyA5Ljk4Mjc1IDExLjcwMDEgOS43OTMxMiAxMS41MjAzTDcuMjQ1NiA5LjEwNTUxTDcuMjEyNTcgOS4wNzEyNUM3LjAzNTkxIDguODcwNyA3LjAzODQ0IDguNTY0ODQgNy4yMjU4NiA4LjM2NzEyTDcuMjYwMTIgOC4zMzQwOEM3LjQ2MDY3IDguMTU3NDIgNy43NjY1MyA4LjE1OTk1IDcuOTY0MjUgOC4zNDczN0w5LjY4NjQ3IDkuOTc5OVoiIGZpbGw9IiMyMDIxMjQiLz4NCjwvc3ZnPg0K">\
-    </div>\
-    <div class="content-dropdown-sortable sa-sortable-dropdown">\
-      <div class="title-text">SORT BY</div>\
-      {{each(key, facet) sortablefacets }}\
-                                  <div class="option-text sa-sortable-facet-options text-truncate" value="{{= JSON.stringify(facet)}}" name="{{= facet.name}}">{{= facet.name}}</div>\
-                                  {{/each}}\
-    </div>\
-  </div>\
                             </script>'
-    return sortableFacets;
+    return sortableFacetsAddedList;
   }
-  bindSortableFacetClickEvent(me: any, messageHtml: any, sortableHtml: any, facets: any) {
+  bindSortableFacetClickEvent(me: any, messageHtml: any, sortableHtml: any, facets: any,sortableFacetAddedHtml:any) {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
-    $(sortableHtml).off('click','.clear-sort-by').on('click','.clear-sort-by', function (event:any) {
+    $(sortableFacetAddedHtml).off('click','.clear-sort-by').on('click','.clear-sort-by', function (event:any) {
       event.stopPropagation();
       $(".filter-data").hide();
       $(sortableHtml).find('#sa-select-sort-option').html('');
@@ -707,8 +729,11 @@ class FullSearchResultsTemplate {
         if(response.sortableFacetList && response.sortableFacetList.length){
           let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
             displaySortable: response.displaySortable});
-          $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-          FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+            $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+            let sortableAddedListHtml =  $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsAddedlist()).tmpl({
+              displaySortable: response.displaySortable});
+            $(messageHtml).find('#sa-sdk-sortable-facets-added-list').empty().append(sortableAddedListHtml);
+            FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet,sortableAddedListHtml);
         }
       });
       $(sortableHtml).find('.sa-sortable-dropdown').hide();
@@ -741,8 +766,11 @@ class FullSearchResultsTemplate {
             if(response.sortableFacetList && response.sortableFacetList.length){
               let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
                 displaySortable: response.displaySortable});
-              $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
-              FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet);
+                $(messageHtml).find('#sa-sdk-sortable-dropdown-bottom-up').empty().append(sortableHtml);
+                let sortableAddedListHtml =  $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsAddedlist()).tmpl({
+                  displaySortable: response.displaySortable});
+                $(messageHtml).find('#sa-sdk-sortable-facets-added-list').empty().append(sortableAddedListHtml);
+                FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet,sortableAddedListHtml);
             }
           });
           $(sortableHtml).find('.sa-sortable-dropdown').hide();
