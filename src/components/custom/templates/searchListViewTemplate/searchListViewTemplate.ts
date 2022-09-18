@@ -298,6 +298,9 @@ class SearchListViewTemplate {
       .children(".desc_text_info")[0].scrollHeight == "18" &&
         $(evet.target).closest(".accordion").hasClass("best-match") && !panel.find('.img_content').length
       ) {
+        if($(evet.target)
+        .closest(".accordion").height() !== $(evet.target)
+        .closest(".accordion").next().children('.inner-content-panel-data').height()){
         $(evet.target)
           .closest(".accordion")
           .children(".desc_text_info")
@@ -306,6 +309,8 @@ class SearchListViewTemplate {
         if (!panel[0].classList.contains("carousel")) {
           panel[0].style.overflow = "initial";
         }
+        }
+        
         hostWindowInstance.captureClickAnalytics(
           evet,
           $(evet.currentTarget).closest(".accordion").attr("contenttype"),
@@ -324,13 +329,17 @@ class SearchListViewTemplate {
       .children(".desc_text_info")[0].scrollHeight == "18" &&
         !$(evet.target).closest(".accordion").hasClass("best-match")  && !panel.find('.img_content').length
       ) {
-         $(evet.target)
+        if($(evet.target)
+        .closest(".accordion").height() !== $(evet.target)
+        .closest(".accordion").next().children('.inner-content-panel-data').height()){
+          $(evet.target)
           .closest(".accordion")
           .children(".desc_text_info")
           .show();
         $(evet.target)
           .closest(".accordion").next()
           .hide();
+        }
           hostWindowInstance.captureClickAnalytics(
             evet,
             $(evet.currentTarget).closest(".accordion").attr("contenttype"),
@@ -372,6 +381,9 @@ class SearchListViewTemplate {
           panel[0].style.maxHeight = null;
         }, 150);
       } else if (panel.length) {
+        if($(evet.target)
+        .closest(".accordion").height() !== $(evet.target)
+        .closest(".accordion").next().children('.inner-content-panel-data').height()){
         $(evet.target)
           .closest(".accordion")
           .children(".desc_text_info")
@@ -381,6 +393,8 @@ class SearchListViewTemplate {
         if (!panel[0].classList.contains("carousel")) {
           panel[0].style.overflow = "initial";
         }
+        }
+       
         hostWindowInstance.captureClickAnalytics(
           evet,
           $(evet.currentTarget).closest(".accordion").attr("contenttype"),
@@ -637,7 +651,7 @@ class SearchListViewTemplate {
                 <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                 {{/if}}\
                 {{if data.description.length}}\
-                <div class="desc_text_info text-truncate">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                <div class="desc_text_info {{if !data.heading || !data.heading.length}}two-line-desc{{else}}text-truncate{{/if}}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 {{/if}}\
             </div>\
             <div class="panel">\

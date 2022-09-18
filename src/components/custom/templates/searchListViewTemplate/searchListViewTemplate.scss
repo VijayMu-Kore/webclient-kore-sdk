@@ -31,6 +31,12 @@
                 // color: #5F6368;
         }
     }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
+    }
 }
 
 // Classic List Group
@@ -68,6 +74,12 @@
                 color: #9AA0A6;
                 // color: #5F6368;
         }
+    }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
     }
 }
 
@@ -117,6 +129,12 @@
                 // color: #5F6368;
         }
     }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
+    }
 }
 
 // Plain List
@@ -147,6 +165,12 @@
                 color: #9AA0A6;
                 // color: #5F6368;
         }
+    }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
     }
 }
 
@@ -193,6 +217,12 @@
             color: #9AA0A6;
         }
     }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
+    }
 }
 
 // Plain List Group
@@ -230,6 +260,12 @@
     }
     .show-more-data{
         margin: 10px 0 5px 0;
+    }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
     }
 }
 
@@ -287,7 +323,7 @@
             }
         }
         .panel{
-            padding: 0px 16px;
+            padding: 0px 0px 0px 16px;
             .inner-content-panel-data{
                 .desc-text-info-img{
                     font-weight: 400;
@@ -297,6 +333,12 @@
                 }
             }
         }
+    }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
     }
 }
 
@@ -378,6 +420,12 @@
             }
         }
     }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
+    }
 }
 
 // Classic List Accordion Group
@@ -453,6 +501,12 @@
             
         }
     }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
+    }
 }
 
 // Plain List Accordion
@@ -516,6 +570,12 @@
             }
            }
         }
+    }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
     }
 }
 
@@ -594,6 +654,12 @@
             }
         }
     }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
+    }
 }
 
 // Plain List Accordion Group
@@ -670,6 +736,12 @@
     .show-more-data{
         margin: 10px 0 5px 0;
     }
+    .text-truncate{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 18px;
+    }
 }
 
 
@@ -716,6 +788,14 @@
     overflow: hidden;
     margin-bottom: 5px;
     max-height: 64px;
+}
+.two-line-desc{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-bottom: 5px;
+    max-height: 36px;
 }
 
 /* scm template css */

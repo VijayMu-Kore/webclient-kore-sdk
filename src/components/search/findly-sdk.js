@@ -23588,6 +23588,14 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               return group.fieldValue;
             })
           }
+          if (config.interface === "fullSearch") {
+            _self.vars.availableGroupsList = {
+              'filter': {
+                'fieldName': config.groupSetting.fieldName,
+                'facetValue': availableGroupNames
+              }
+            }
+          }
           // var agIndex  = availableGroupNames.findIndex((d)=> d =='defaultTemplate');
           // if(agIndex>-1){
             availableGroupNames.push('defaultTemplate');
@@ -23863,8 +23871,11 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                     doc_count: response.results[group].doc_count
                   }
                   const final_result = _self.getConfigData({ isFullResults: isFullResults, selectedFacet: 'all results', isLiveSearch: isLiveSearch, isSearch: isSearch, dataObj });
-                  console.log("final_result", final_result);
-                  // resolve(final_result);
+                  if(responseData.showMore){
+                    _self.vars.mergedData = final_result;
+                    resolve(_self.vars.mergedData);
+                    return _self.vars.mergedData;
+                  }
                 });
 
               }
@@ -23883,8 +23894,6 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                   resolve(_self.vars.mergedData);
                   return _self.vars.mergedData;
                 }
-                console.log("final_result", final_result);
-                // resolve(final_result);
               }
             }
           }
