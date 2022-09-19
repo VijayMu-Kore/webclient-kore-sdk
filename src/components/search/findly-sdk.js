@@ -1486,6 +1486,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               <div class="contest_variables_dropdown hide">\
               <div class="actions-link">Context</div>\
               </div>\
+            <div class="parent-data-scroll">\
               <div id="searchChatContainer" class="sdk-chat-container">\
               <div class="history-chat-tag-info" id="histroybutton">\
                 <div class="history-tag-click">\
@@ -1508,7 +1509,9 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                   <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzExIiBoZWlnaHQ9Ijg2IiB2aWV3Qm94PSIwIDAgMzExIDg2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB4PSI0NCIgd2lkdGg9IjI2NyIgaGVpZ2h0PSI0OCIgcng9IjgiIGZpbGw9IiNFRkYwRjEiLz4KPHJlY3QgeD0iNDQiIHdpZHRoPSIyNjciIGhlaWdodD0iNDgiIHJ4PSI4IiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfNDJfNDI4KSIgZmlsbC1vcGFjaXR5PSIwLjIiLz4KPHJlY3QgeD0iNDQiIHk9IjU4IiB3aWR0aD0iMTkzIiBoZWlnaHQ9IjI4IiByeD0iMSIgZmlsbD0iI0VGRjBGMSIvPgo8Y2lyY2xlIGN4PSIxNy41IiBjeT0iMjMuNSIgcj0iMTcuNSIgZmlsbD0iI0VGRjBGMSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzQyXzQyOCIgeDE9IjQ0IiB5MT0iMjQiIHgyPSIyMzkuNSIgeTI9IjI0IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM5QUEwQTYiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjhGOUZBIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==">\
                 </div>\
              </div>\
-            </div>\</div>\
+            </div>\
+            </div>\
+          </div>\
             <div id="" class="default-data-show-not-loaded">\
               <div class="defalut-message-babble">\
                 <div class="icon-block">\
