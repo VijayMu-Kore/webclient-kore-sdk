@@ -23822,6 +23822,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             if (data && data.length && mapping && Object.values(mapping).length) {
               data.forEach((obj) => {
                 var item = {};
+                var chips = [];
                 if (obj[mapping.heading]) {
                   item.heading = obj[mapping.heading].toString();
                 }
@@ -23851,6 +23852,70 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                 item.customization = null;
                 item.sys_content_type = obj.sys_content_type;
                 item.contentId = obj.contentId;
+                //connectors fields start//
+          if (obj[mapping.icon]) {
+            item.icon = obj[mapping.icon];
+          }
+          if (obj[mapping.chips]) {
+            item.chips = obj[mapping.chips];
+          }
+          if (obj[mapping.textField1]) {
+            item.textField1 = obj[mapping.textField1];
+          }
+          if (obj[mapping.textField2]) {
+            item.textField2 = obj[mapping.textField2];
+          }
+          if(!obj.icon) {
+            obj.icon = item.icon||'';
+          }
+          if(!obj.chips) {
+            obj.chips = item.chips||'';
+          }
+          if(!obj.createdOn){
+            obj.createdOn = item.textField2 || ''
+          }
+          if(!obj.createdByUser){
+            obj.createdByUser = item.textField1 || '';
+          }
+          // Demo fields start         
+          if (obj.chips) {
+            item.scm_author = obj.createdByUser || '';
+            item.scm_createdAt = obj.createdOn == '' ? '-' : moment(obj.createdOn).format('Do MMM YYYY, ddd [at] h:mm A');
+            if(Array.isArray(obj.chips)){
+              for (var chip of obj.chips) {
+                var background = chip == 'pdf' ? '#FFF6F8' : chip == 'Confluence' ? '#E7F1FF' : chip == 'Gdrive' ? '#FFF9DC' : '#F7FFFF';
+                var color = chip == 'pdf' ? '#DD3646' : chip == 'Confluence' ? '#0D6EFD' : chip == 'Gdrive' ? '#806D16' : '#009999';
+                chips.push({ background: background, color: color, name: chip })
+              }
+            }
+            if( typeof obj.chips === 'string' && obj.chips.length){
+              chips.push({ background: '#e7f1ff', color: '#0d6efd', name: obj.chips });
+            }
+            item.chips = chips;
+          }
+          if (obj.bestseller) {
+            item.ecommerce_bestseller = obj.bestseller;
+          }
+          if (obj.prod_original_price) {
+            item.ecommerce_original_price = obj.prod_original_price;
+          }
+          if (obj.rating) {
+            item.ecommerce_rating = obj.rating;
+            var reviweArr =['n_fill','n_fill','n_fill','n_fill','n_fill'];
+              for(let i=0;i<item.ecommerce_rating;i++){
+                reviweArr[i] = 'fill';
+              } 
+            item.ecommerce_ratingArr = reviweArr;  
+          }
+          if (obj.prod_percentage_offer) {
+            item.ecommerce_percentage_offer = obj.prod_percentage_offer;
+          }
+          if (obj.prod_price) {
+            item.ecommerce_price = obj.prod_price;
+          }
+          if (obj.prod_image) {
+            item.ecommerce_image = obj.prod_image;
+          }
                 item.addedResult = (obj.addedResult || (obj.addedResult == false)) ? obj.addedResult : false;
                 item.bestMatch = (obj.bestMatch || (obj.bestMatch == false)) ? obj.bestMatch : false;
                 if (item.heading || item.description || item.img || item.url) {
