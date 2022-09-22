@@ -24800,8 +24800,8 @@ FindlySDK.prototype.getSortableFacetList = function (url, type) {
       var facet = [];
       if (data) {
         for (var i = 0; i < data.length; i++) {
-          if (data[i].type == 'sortable') {
-            facet.push(data[i])
+          if (data[i].type == 'sortable' && data[i].active) {
+            facet.push(data[i]);
           }
         }
       }
