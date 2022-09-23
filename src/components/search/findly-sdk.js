@@ -24480,6 +24480,8 @@ return new Promise((resolve, reject) => {
             name: $(event.target).attr("name"),
             fieldName: $(event.target).attr("fieldName"),
             fieldType: $(event.target).attr("fieldType"),
+            from:  $(event.target).attr("data-from"),
+            to: $(event.target).attr("data-to")
           });
           /* top -down -search -experience -end*/
           _self.vars.countOfSelectedFilters += 1;
