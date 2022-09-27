@@ -5,7 +5,7 @@ import KoreHelpers from '../../utils/helpers'
 import EventEmitter from '../../utils/EventEmiter'
 import MessageTemplate from '../custom/templates/messageTemplate/messageTemplate';
 import KRPerfectScrollbar from 'perfect-scrollbar';
-import './../../libs/perfectscroll/css/perfect-scrollbar.min.css'
+import './../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 import './chatWindow.scss';
 import chatConfig from './config/kore-config'
 import SearchAssistTemplatesPlugin from '../../plugins/searchAssistTemplatesPlugin'
@@ -39,6 +39,7 @@ class chatWindow extends EventEmitter {
      * @event chatWindow#beforeViewInit
      * @type {object}
      * @property {Object} chatEle - chat window dom element .
+     * @property {Object} chatWindowEvent
      */
     BEFORE_VIEW_INIT: 'beforeViewInit',
     /**
@@ -47,6 +48,7 @@ class chatWindow extends EventEmitter {
      * @event chatWindow#viewInit
      * @type {object}
      * @property {Object} chatEle - chat window dom element .
+     * @property {Object} chatWindowEvent
      */
     VIEW_INIT: 'viewInit',
     /**
@@ -56,49 +58,70 @@ class chatWindow extends EventEmitter {
      * @type {object}
      * @property {Object} messageHtml message bubble html content
      * @property {Object} msgData message data
+     * @property {Object} chatWindowEvent
     */
-    BEFORE_RENDER_MSG: 'beforeRenderMessage',
-    /**
-    * afterRenderMessage will be triggered after appending the message html to chatwindow
-    *
-    * @event chatWindow#afterRenderMessage
-    * @type {object}
-    * @property {Object} messageHtml message bubble html content
-    * @property {Object} msgData message data
-    */
-    AFTER_RENDER_MSG: 'afterRenderMessage',
+    BEFORE_RENDER_MSG:'beforeRenderMessage',
+     /**
+     * afterRenderMessage will be triggered after appending the message html to chatwindow
+     *
+     * @event chatWindow#afterRenderMessage
+     * @type {object}
+     * @property {Object} messageHtml message bubble html content
+     * @property {Object} msgData message data
+     * @property {Object} chatWindowEvent
+     */
+    AFTER_RENDER_MSG:'afterRenderMessage',
     /**
      * onWSOpen will be triggered on new websocket connection open
      *
      * @event chatWindow#onWSOpen
      */
-    ON_WS_OPEN: 'onWSOpen',
-    /**
-    * onWSMessage will be triggered on new message received from websocket
-    *
-    * @event chatWindow#onWSMessage
-    * @type {object}
-    * @property {Object} messageData - message data received from websocket
-    */
-    ON_WS_MESSAGE: 'onWSMessage',
+    ON_WS_OPEN:'onWSOpen',
+     /**
+     * onWSMessage will be triggered on new message received from websocket
+     *
+     * @event chatWindow#onWSMessage
+     * @type {object}
+     * @property {Object} messageData - message data received from websocket
+     * @property {Object} chatWindowEvent
+     */
+    ON_WS_MESSAGE:'onWSMessage',
     /**
      * onWSMessage will be triggered on new message received from websocket
      *
      * @event chatWindow#beforeWSSendMessage
      * @type {object}
      * @property {Object} messageToBot - message data to be sent to to websocket
+     * @property {Object} chatWindowEvent
      */
-    BEFORE_WS_SEND_MESSAGE: 'beforeWSSendMessage',
-    /**
-    * onChatHistoryResponse will be triggered on chatHistory API response
-    *
-    * @event chatWindow#onChatHistoryResponse
-    * @type {object}
-    * @property {Object} historyResponse - chatHistory API response
-    */
-    ON_CHAT_HISTORY_RESPONSE: 'onChatHistoryResponse'
-
-
+     BEFORE_WS_SEND_MESSAGE:'beforeWSSendMessage',
+     /**
+     * onChatHistoryResponse will be triggered on chatHistory API response
+     *
+     * @event chatWindow#onChatHistoryResponse
+     * @type {object}
+     * @property {Object} historyResponse - chatHistory API response
+     * @property {Object} chatWindowEvent
+     */
+      ON_CHAT_HISTORY_RESPONSE:'onChatHistoryResponse',
+     /**
+     * onKeyDownEvent will be triggered on Keydown Event
+     *
+     * @event chatWindow#onKeyDownEvent
+     * @type {object}
+     * @property {Object} keyDownEvent 
+     * @property {Object} chatWindowEvent
+     */
+      ON_KEY_DOWN: 'onKeyDown',
+      /**
+     * jwtGrantSuccess will be triggered on jwt grant success API response
+     *
+     * @event chatWindow#jwtGrantSuccess
+     * @type {object}
+     * @property {Object} jwtgrantsuccess -  jwt grant success API response
+     * @property {Object} chatWindowEvent
+     */
+       JWT_GRANT_SUCCESS : 'jwtGrantSuccess'
   }
 }
 
@@ -769,6 +792,14 @@ chatWindow.prototype.bindEvents = function () {
      }); */
   _chatContainer.off('keydown', '.chatInputBox').on('keydown', '.chatInputBox', function (event) {
     const chatInput = $(this);
+    let chatWindowEvent = {stopFurtherExecution: false};
+    me.emit(me.EVENTS.ON_KEY_DOWN,{
+      event:event,
+      chatWindowEvent: chatWindowEvent
+    });
+    if(chatWindowEvent.stopFurtherExecution){
+      return false;
+    }
     const _footerContainer = $(me.config.container).find('.kore-chat-footer');
     const _bodyContainer = $(me.config.container).find('.kore-chat-body');
     _bodyContainer.css('bottom', _footerContainer.outerHeight());
@@ -1266,8 +1297,12 @@ chatWindow.prototype.sendWebhookOnConnectEvent = function () {
 chatWindow.prototype.bindSDKEvents = function () {
   // hook to add custom events
   const me = this;
+  let chatWindowEvent = {stopFurtherExecution: false};
   me.bot.on('open', (response) => {
-    me.emit(me.EVENTS.ON_WS_OPEN);
+    me.emit(me.EVENTS.ON_WS_OPEN, {messageData:"",chatWindowEvent:chatWindowEvent});
+    if(chatWindowEvent.stopFurtherExecution){
+      return false;
+    }
     me.onBotReady();
   });
 
@@ -1278,9 +1313,14 @@ chatWindow.prototype.bindSDKEvents = function () {
     }
 
     let tempData = JSON.parse(message.data);
-    me.emit(me.EVENTS.ON_WS_MESSAGE, {
-      messageData: tempData,
+    let chatWindowEvent = {stopFurtherExecution: false};
+    me.emit(me.EVENTS.ON_WS_MESSAGE,{
+      messageData:tempData,
+      chatWindowEvent:chatWindowEvent
     });
+    if(chatWindowEvent.stopFurtherExecution){
+      return false;
+    }
 
     if (tempData.from === 'bot' && tempData.type === 'bot_response') {
       if (tempData && tempData.message && tempData.message.length) {
@@ -1395,6 +1435,11 @@ chatWindow.prototype.bindSDKEvents = function () {
   me.bot.on('webhook_reconnected', (response) => {
     me.onBotReady();
   });
+
+  me.bot.on('jwtgrantsuccess', (response) => {
+    me.config.jwtGrantSuccessInformation = response.jwtgrantsuccess;
+    me.getBrandingInformation(response.jwtgrantsuccess);
+  });
 };
 chatWindow.prototype.bindCustomEvents = function () {
   // hook to add custom events
@@ -1438,9 +1483,13 @@ chatWindow.prototype.bindIframeEvents = function (authPopup) {
 
 chatWindow.prototype.render = function (chatWindowHtml) {
   const me = this;
-  me.emit(me.EVENTS.BEFORE_VIEW_INIT, { chatEle: chatWindowHtml });
+  let chatWindowEvent = {stopFurtherExecution: false};
+  me.emit(me.EVENTS.BEFORE_VIEW_INIT,{chatEle:chatWindowHtml,chatWindowEvent:chatWindowEvent});
   $(me.config.container).append(chatWindowHtml);
-  me.emit(me.EVENTS.VIEW_INIT, { chatEle: chatWindowHtml });
+  me.emit(me.EVENTS.VIEW_INIT,{chatEle:chatWindowHtml,chatWindowEvent:chatWindowEvent});
+  if(chatWindowEvent.stopFurtherExecution){
+    return false;
+  }
   if (me.config.container !== 'body') {
     $(me.config.container).addClass('pos-relative');
     $(me.chatEle).addClass('pos-absolute');
@@ -1464,21 +1513,24 @@ chatWindow.prototype.sendMessageToBot = function (messageText, options, serverMe
     type: 'currentUser',
     message: [{
       type: 'text',
-      cInfo: {
-        body: messageText
+      cInfo: { 
+        body: messageText,
+        // 'attachments': serverMessageObject.message.attachments 
       },
       clientMessageId,
     }],
     createdOn: clientMessageId,
   };
   let messageToBot = {
-    clientMessageId: clientMessageId,
-    resourceid: '/bot.message',
-    message: {
-      body: messageText
-    }
+    clientMessageId:clientMessageId,
+    resourceid :'/bot.message',
   };
-
+if(messageText.trim().length){
+  messageToBot["message"] = { 
+    body: messageText.trim()
+  }
+}
+  
 
   if (options && options.renderMsg && typeof options.renderMsg === 'string') {
     msgData.message[0].cInfo.body = options.renderMsg;
@@ -1513,9 +1565,14 @@ chatWindow.prototype.sendMessageToBot = function (messageText, options, serverMe
       me.attachmentInfo ? { attachments: [me.attachmentInfo] } : null,
     );
   } else {
-    me.emit(me.EVENTS.BEFORE_WS_SEND_MESSAGE, {
-      messageToBot: messageToBot,
+    let chatWindowEvent = {stopFurtherExecution: false};
+    me.emit(me.EVENTS.BEFORE_WS_SEND_MESSAGE,{
+      messageToBot:messageToBot,
+      chatWindowEvent:chatWindowEvent
     });
+    if(chatWindowEvent.stopFurtherExecution){
+      return false;
+    }
     me.bot.sendMessage(messageToBot, (err) => {
       if (err && err.message) {
         setTimeout(() => {
@@ -1683,11 +1740,15 @@ chatWindow.prototype.renderMessage = function (msgData) {
   }
   _chatContainer.find('li').attr('aria-live', 'off');
   // _chatContainer.find('li').attr('aria-hidden','true');//for mac voiceover bug with aria-live
-
-  me.emit(me.EVENTS.BEFORE_RENDER_MSG, {
-    messageHtml: messageHtml,
-    msgData: msgData
+  let chatWindowEvent = {stopFurtherExecution: false};
+  me.emit(me.EVENTS.BEFORE_RENDER_MSG,{
+    messageHtml:messageHtml,
+    msgData:msgData,
+    chatWindowEvent:chatWindowEvent
   });
+  if(chatWindowEvent.stopFurtherExecution){
+    return false;
+  }
 
 
   if (msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.sliderView && !msgData.message[0].component.payload.fromHistory) {
@@ -1805,27 +1866,6 @@ chatWindow.prototype.getChatTemplate = function (tempType) {
          <div role="textbox" class="chatInputBox" contenteditable="true" placeholder="${botMessages.message}"></div> \
          {{/if}} \
      <div class="attachment"></div> \
-     {{if isTTSEnabled}} \
-         <div class="sdkFooterIcon ttspeakerDiv ttsOff"> \
-             <button class="ttspeaker" title="Talk to speak"> \
-                 <span class="ttsSpeakerEnable"></span> \
-                 <span class="ttsSpeakerDisable"></span> \
-                 <span style="display:none;"><audio id="ttspeaker" controls="" autoplay="" name="media"><source src="" type="audio/wav"></audio></span>\
-             </button> \
-         </div> \
-     {{/if}} \
-     {{if isSpeechEnabled}}\
-     <div class="sdkFooterIcon microphoneBtn"> \
-         <button class="notRecordingMicrophone" title="Microphone On"> \
-             <i class="microphone"></i> \
-         </button> \
-         <button class="recordingMicrophone" title="Microphone Off" > \
-             <i class="microphone"></i> \
-             <span class="recordingGif"></span> \
-         </button> \
-         <div id="textFromServer"></div> \
-     </div> \
-     {{/if}}\
      {{if !(isSendButton)}}<div class="chatSendMsg">${botMessages.entertosend}</div>{{/if}} \
  </div>';
 
@@ -1918,9 +1958,14 @@ chatWindow.prototype.historyLoadingComplete = function () {
 
 chatWindow.prototype.chatHistory = function (res) {
   const me = this;
-  me.emit(me.EVENTS.ON_CHAT_HISTORY_RESPONSE, {
-    historyResponse: res,
+  let chatWindowEvent = {stopFurtherExecution: false};
+  me.emit(me.EVENTS.ON_CHAT_HISTORY_RESPONSE,{
+    historyResponse:res,
+    chatWindowEvent:chatWindowEvent
   });
+  if(chatWindowEvent.stopFurtherExecution){
+    return false;
+  }
   if (res[2] === 'historysync') {
     // setTimeout(function () {
     if (res && res[1] && res[1].messages.length > 0) {
@@ -2051,20 +2096,15 @@ chatWindow.prototype.insertHtmlData = function (_txtBox, _html) {
 }
 
 chatWindow.prototype.getJWTByAPIKey = function (API_KEY_CONFIG) {
-  // const jsonData = {
-  //   clientId: options.clientId,
-  //   clientSecret: options.clientSecret,
-  //   identity: options.userIdentity,
-  //   aud: '',
-  //   isAnonymous: false,
-  // };
+  const jsonData = {
+    apiKey:API_KEY_CONFIG.KEY
+  };
   return $.ajax({
-    url: API_KEY_CONFIG.bootstrapURL || 'http://localhost:9000/examples/bootstrap.json',
-    type: 'get',
-    // data: jsonData,
+    url: API_KEY_CONFIG.bootstrapURL||'https://bots.kore.ai/api/platform/websdk',
+    type: 'post',
+    data: jsonData,
     dataType: 'json',
     success(data) {
-
     },
     error(err) {
       // chatWindowInstance.showError(err.responseText);
@@ -2097,8 +2137,8 @@ chatWindow.prototype.getJWT = function (options, callback) {
 chatWindow.prototype.JWTSetup = function () {
   let me = this;
   me.config.botOptions.assertionFn = me.assertionFn.bind(me);
-  if (!(me.config && me.config.JWTAsertion)) {
-    if (me.config && me.config.API_KEY_CONFIG && me.config.API_KEY_CONFIG.KEY && me.config.API_KEY_CONFIG.KEY != 'YOUR_API_KEY') {
+  if(!(me.config && me.config.JWTAsertion)){
+    if(me.config && me.config.botOptions.API_KEY_CONFIG && me.config.botOptions.API_KEY_CONFIG.KEY && me.config.botOptions.API_KEY_CONFIG.KEY!='YOUR_API_KEY'){
       me.setupInternalAssertionFunctionWithAPIKey();
     } else {
       me.setupInternalAssertionFunction();
@@ -2119,12 +2159,18 @@ chatWindow.prototype.setupInternalAssertionFunction = function () {
 
 chatWindow.prototype.setupInternalAssertionFunctionWithAPIKey = function () {
   const me = this;
-  me.getJWTByAPIKey(me.config.botOptions).then(function (res) {
+  me.getJWTByAPIKey(me.config.botOptions.API_KEY_CONFIG).then(function(res){
+    if(me.config.widgetSDKInstace && res.botInfo){
+      var widgetsConfig=me.config.widgetSDKInstace.config;
+      widgetsConfig.botOptions.botInfo.name=res.botInfo.name;
+      widgetsConfig.botOptions.botInfo._id=res.botInfo._id;
+      widgetsConfig.botOptions.userIdentity=res.ity;
+    }
     me.emit(me.EVENTS.JWT_SUCCESS, res);
     me.setJWT(res.jwt);
-    if (res.botInfo) {
-      me.config.botOptions.botInfo.chatBot = res.botInfo.name;
-      me.config.botOptions.botInfo.taskBotId = res.botInfo._id;
+    if(res.botInfo){
+      me.config.chatTitle = me.config.botOptions.botInfo.chatBot=res.botInfo.name;
+      me.config.botOptions.botInfo.taskBotId=res.botInfo._id;
     }
     me.config.botOptions.callback(null, me.config.botOptions);
   }, function (errRes) {
@@ -2145,8 +2191,8 @@ chatWindow.prototype.assertionFn = function (options, callback) {
   options.botDetails = me.botDetails;
   if (me.config && me.config.JWTAsertion) {
     me.config.JWTAsertion(me.SDKcallbackWraper.bind(me));
-  } else if (options.assertion) {//check for reconnect case
-    if (me.config && me.config.API_KEY_CONFIG) {
+  }else if(options.assertion){//check for reconnect case
+    if(me.config && me.config.botOptions.API_KEY_CONFIG){
       me.setupInternalAssertionFunctionWithAPIKey();
     } else {
       me.setupInternalAssertionFunction();
@@ -2260,6 +2306,126 @@ chatWindow.prototype.focusInputTextbox = function () {
     _chatInput.focus();
   }, 600);
 };
+chatWindow.prototype.getBrandingInformation = function(options){
+  let me=this;
+  if (me.config && me.config.enableThemes) {
+      var brandingAPIUrl = (me.config.botOptions.brandingAPIUrl || '').replace(':appId', me.config.botOptions.botInfo.taskBotId);
+      $.ajax({
+          url: brandingAPIUrl,
+          type: 'get',
+          headers: {
+            'Authorization': "bearer " + options.authorization.accessToken,
+          },
+          dataType: 'json',
+          success: function (data) {  
+                  me.applySDKBranding(data);
+          },
+          error: function (err) {
+              console.log(err);
+          }
+      });
+  }
+
+}
+chatWindow.prototype.applySDKBranding = function (response) {
+  const me = this;
+  if (response && response.activeTheme) {
+      for (var key in response) {
+      switch (key){
+          case 'generalAttributes':
+          if(key  && typeof response[key] === 'object') {
+              for (var property in response[key]){
+                me.applyVariableValue(property,response[key][property],key);
+              }
+          }
+          break;
+          case 'botMessage':
+          if(key  && typeof response[key] === 'object') {
+              for (var property in response[key]){
+                me.applyVariableValue(property,response[key][property],key);
+              }
+          }
+          break;
+          case 'userMessage':
+          if(key  && typeof response[key] === 'object') {
+              for (var property in response[key]){
+                me.applyVariableValue(property,response[key][property],key);
+              }
+          }
+          break;
+          case 'widgetHeader':
+          if(key  && typeof response[key] === 'object') {
+              for (var property in response[key]){
+                me.applyVariableValue(property,response[key][property],key);
+              }
+          }
+          break;
+          case 'widgetFooter':
+          if(key  && typeof response[key] === 'object') {
+              for (var property in response[key]){
+                me.applyVariableValue(property,response[key][property],key);
+              }
+          }
+          break;
+          case 'widgetBody':
+          if(key  && typeof response[key] === 'object') {
+              for (var property in response[key]){
+                  if(property === 'backgroundImage' && response[key] && response[key]['useBackgroundImage']){
+                      $(".kore-chat-body").css("background-image", "url(" + response[key]['backgroundImage'] + ")");
+                  } else {
+                    me.applyVariableValue(property,response[key][property],key);
+                  }
+              }
+          }
+          case 'buttons':
+              if(key  && typeof response[key] === 'object') {
+                  for (var property in response[key]){
+                    me.applyVariableValue(property,response[key][property],key);
+                  }
+              }
+          break;
+          case 'digitalViews':
+              var defaultTheme = 'defaultTheme-kore';
+              if(response && response[key] && response[key].panelTheme){
+                var digitalViewsThemeMapping = {
+                    'theme_one':"defaultTheme-kore",
+                    'theme_two':"darkTheme-kore",
+                    'theme_three':"defaultTheme-kora",
+                    'theme_four':"darkTheme-kora"
+                }
+                if(digitalViewsThemeMapping[response[key].panelTheme]){
+                  defaultTheme = digitalViewsThemeMapping[response[key].panelTheme];
+                  $('.kr-wiz-menu-chat').addClass(defaultTheme);
+                  $('.kr-wiz-menu-chat').removeClass('defaultTheme-kore');
+                  
+                }
+              }
+          default:
+          break;
+      }
+     }
+      $(".kore-chat-window").addClass('customBranding-theme');
+  }
+};
+chatWindow.prototype.applyVariableValue = function(key,value,type){
+  try{
+      var cssPrefix = "--sdk-chat-custom-";
+      var cssVariable = "";
+      cssVariable = cssPrefix + '-' + type +'-' +key;
+       console.log(cssVariable+":",value);
+      if(value === 'square'){
+          value = '12px 12px 2px 12px'
+      }else if(value === 'circle'){
+          value = '20px 20px 20px 20px'
+      }
+      if(cssVariable){
+          document.documentElement.style.setProperty(cssVariable, value);
+      }
+  } catch(e){
+      console.log(e);
+  }
+  
+}
 // chatWindow.prototype.assignValueToInput = function (value) {
 //   const me = this;
 //   const _chatContainer = me.chatEle;

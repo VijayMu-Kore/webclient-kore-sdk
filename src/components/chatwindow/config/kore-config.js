@@ -4,7 +4,10 @@ var chatConfig = {};
 var botOptions = {};
 botOptions.logLevel = 'debug';
 botOptions.koreAPIUrl = "https://bots.kore.ai/api/";
-// botOptions.koreAPIUrl = "https://qa1-bots.kore.ai/api/";
+botOptions.API_KEY_CONFIG={
+    bootstrapURL:botOptions.koreAPIUrl+'platform/websdk',
+    KEY:'YOUR_API_KEY'
+},
 botOptions.koreSpeechAPIUrl = "";//deprecated
 //botOptions.bearer = "bearer xyz-------------------";
 //botOptions.ttsSocketUrl = '';//deprecated
@@ -60,16 +63,12 @@ botOptions.clientSecret = "YDDzgK9kmUfcp82Jko/3kfTWWfc5rYBWw/P8ZRFADlg=";
 
 chatConfig = {
     botOptions: botOptions,
-    API_KEY_CONFIG: {
-        bootstrapURL: 'http://localhost:9000/examples/bootstrap.json',
-        KEY: 'YOUR_API_KEY'
-    },
-    container: 'body',
+    container:'body',
     allowIframe: false, 			// set true, opens authentication links in popup window, default value is "false"
     isSendButton: false, 			// set true, to show send button below the compose bar
-    isTTSEnabled: false,			// set true, to hide speaker icon
+    isTTSEnabled: true,			// set true, to hide speaker icon
     ttsInterface: 'webapi',        // webapi or awspolly , where default is webapi
-    isSpeechEnabled: false,			// set true, to hide mic icon
+    isSpeechEnabled: true,			// set true, to hide mic icon
     allowGoogleSpeech: true,		// set true, to use Google speech engine instead KORE.AI engine.This feature requires valid Google speech API key. (Place it in 'web-kore-sdk/libs/speech/key.js')
     allowLocation: true,			// set false, to deny sending location to server
     loadHistory: true,				// set true to load recent chat history
@@ -91,9 +90,10 @@ chatConfig = {
         showTaskMenuPickerIcon: false,       //set true to show TaskMenu Template icon
         showradioOptionMenuPickerIcon: false //set true to show Radio Option Template icon
     },
-    pingPong: {
-        interval: 30000 //In milli sec, To keep the websocket alive skd send ping message in this interval      
-    }
+    pingPong:{
+        interval:30000 //In milli sec, To keep the websocket alive skd send ping message in this interval      
+    },
+    enableThemes : true //set true to apply the branding configured
 };
 /* 
    allowGoogleSpeech will use Google cloud service api.
