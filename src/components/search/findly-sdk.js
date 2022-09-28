@@ -16,8 +16,8 @@ import './css/findly-sdk.scss';
 import './css/common-styles.scss';
 import './css/search-bar-experience.scss';
 import './css/fonts/inter.css';
-import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
-
+// import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
+import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // import './findly-demo.scss'
@@ -407,7 +407,7 @@ FindlySDK.prototype.fetchUserLocation = function() {
   }
   }
   var addressComponents = data.results[0].address_components;
-  for(i=0;i<addressComponents.length;i++){
+  for(let i=0;i<addressComponents.length;i++){
   var types = addressComponents[i].types;
   if(types=="locality,political"){
   vars.locationObject.location = addressComponents[i].long_name;
@@ -1432,9 +1432,9 @@ FindlySDK.prototype.getSearchControl = function () {
             {{/if}}\
             {{if searchConfig.searchButtonEnabled}}\
             {{if searchConfig.buttonPlacementPosition== "inside"}}\
-            <button class="submit-button" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 28px; position: absolute; right: 70px;margin: 0;top: -31px;padding: 0px 15px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
+            <button class="submit-button" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 28px; position: absolute; right: 70px;margin: 0;top: -31px;padding: 0px 6px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
            {{else}}\
-              <button class="submit-button submit-button-outside" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 34px; position: absolute; right: -32px;margin:0px;padding: 0px 15px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
+              <button class="submit-button submit-button-outside" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 34px; position: absolute; right: -32px;margin:0px;padding: 0px 6px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
             {{/if}}\
             {{/if}}\
           </div>\
@@ -22073,7 +22073,7 @@ FindlySDK.prototype.bindPlaceholderStyle = function (config) {
   var ctx = canvas.getContext("2d");
   ctx.font = "14px 'Inter', sans-serif";
   var width = ctx.measureText(config.searchConfig.buttonText).width;
-  if (config.searchConfig.buttonPlacementPosition == "inside") {
+  if (config.searchConfig.buttonPlacementPosition == "inside" && config.searchConfig.searchButtonEnabled) {
     let rightPosition = 70 + 31 + 23;
 
     rightPosition = rightPosition + width + 1;
@@ -22086,24 +22086,7 @@ FindlySDK.prototype.bindPlaceholderStyle = function (config) {
     $("body").append("<style>.cancel-search {right: 72px !important;}</style>");
     if (config.searchConfig.buttonPlacementPosition == "outside") {
       let rightPosition = 812;
-      // if(config.searchConfig.buttonText.length==1){
-      //   rightPosition = 12;
-      // }
-      // if(config.searchConfig.buttonText.length==2){
-      //   rightPosition = 6;
-      // }
-      // if(config.searchConfig.buttonText.length==3){
-      //   rightPosition = -6;
-      // }
-      // if(config.searchConfig.buttonText.length==4){
-      //   rightPosition = -16;
-      // }
-      // if(config.searchConfig.buttonText.length==5){
-      //   rightPosition = -26;
-      // }
-      // if(config.searchConfig.buttonText.length==6){
-      //   rightPosition = -32;
-      // }
+     
       $("body").append(
         "<style>.submit-button-outside {left: " +
         rightPosition +
