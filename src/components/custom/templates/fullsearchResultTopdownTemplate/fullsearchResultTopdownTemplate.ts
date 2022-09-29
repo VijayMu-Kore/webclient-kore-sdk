@@ -259,6 +259,9 @@ class FullSearchResultTopdownTemplate {
         } else {
           $(".iffilteristop").removeClass("isTopAlignFilterAdded");
         }
+        if(!$(messageHtml).hasClass('center-align-filter')){
+          $(messageHtml).addClass('center-align-filter');
+        }
       } else {
         var dataHTML = $(FullSearchResultTopdownTemplate.prototype.getSearchFacetsTopDownTemplate('left')).tmpl({
           searchFacets: facetData,
@@ -270,11 +273,20 @@ class FullSearchResultTopdownTemplate {
 
       }
 
+      if($(messageHtml).hasClass('center-align-filter')){
+        $(messageHtml).removeClass('center-align-filter');
+      }
+
       FullSearchResultTopdownTemplate.prototype.bindFacetTriggerEvents(me, messageHtml, msgData);
       if (!hostWindowInstance.vars.isFilterModified) {
         hostWindowInstance.autoSelectFacetFilter();
       }
       hostWindowInstance.markSelectedFilters();
+    }
+    else{
+      if(!$(messageHtml).hasClass('center-align-filter')){
+        $(messageHtml).addClass('center-align-filter');
+      }
     }
 
   };
