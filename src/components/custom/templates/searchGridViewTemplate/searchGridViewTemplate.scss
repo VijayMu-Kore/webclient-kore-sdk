@@ -333,15 +333,16 @@
     display: inline-flex;
     align-items: center;
     cursor: unset;
-    span{
+    .searchassist-show-more-button{
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
         color: #0d6efd;
         cursor: pointer;
+        img{
+            margin-left: 8px;
+            cursor: pointer;
+        }
     }
-    img{
-        margin-left: 8px;
-        cursor: pointer;
-    }
+   
 }
