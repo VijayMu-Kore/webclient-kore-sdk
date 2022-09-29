@@ -95,9 +95,9 @@ body::-webkit-scrollbar {
   width: 800px;
   margin: 0 auto;
   padding-left: 36px;
-  padding-right: 30px;
-  height: 34px;
-  padding-bottom: 3px;
+  padding-right: 35px;
+  height: 40px;
+  padding-bottom: 0px;
 }
 .topdown-search-main-container .search-input-box .search-box-container-data .search-bar .search-input#suggestion {
   color: var(--sdk-top-box-shadow);
@@ -142,7 +142,7 @@ body::-webkit-scrollbar {
 }
 .topdown-search-main-container .search-input-box .live_search_result_box .auto_query_box {
   border-bottom: 1px solid var(--sdk-border-porcelain-color);
-  padding: 1px 25px;
+  padding: 1px 7px;
   margin-bottom: 0px;
   z-index: 2;
   position: relative;
@@ -244,8 +244,8 @@ body::-webkit-scrollbar {
 			}
 			.recent-search-delete {
 				position: absolute;
-				right: 15px;
-				top: 13px;
+        right: 0px;
+        top: 8px;
 				cursor: pointer;
 				width: 16px;
 				height: 16px;
@@ -273,7 +273,7 @@ body::-webkit-scrollbar {
 	.search-input-box {
 		.frequently_searched_box {
 			.freq-data-p {
-				padding: 15px 26px;
+				padding: 10px 16px 10px;
 				background: #fff;
 			}
 			.templates-data {
@@ -289,7 +289,7 @@ body::-webkit-scrollbar {
 		}
 		.live_search_result_box {
 			.data-container {
-				padding: 10px 26px 0px 37px;
+				padding: 10px 18px 0px;
 				background: #fff;
 			}
 		}

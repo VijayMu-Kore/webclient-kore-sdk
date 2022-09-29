@@ -1432,9 +1432,9 @@ FindlySDK.prototype.getSearchControl = function () {
             {{/if}}\
             {{if searchConfig.searchButtonEnabled}}\
             {{if searchConfig.buttonPlacementPosition== "inside"}}\
-            <button class="submit-button" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 28px; position: absolute; right: 70px;margin: 0;top: -31px;padding: 0px 6px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
+            <button class="submit-button" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 32px; position: absolute; right: 70px;margin: 0;top: -36px;padding: 0px 15px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
            {{else}}\
-              <button class="submit-button submit-button-outside" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 34px; position: absolute; right: -32px;margin:0px;padding: 0px 6px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
+              <button class="submit-button submit-button-outside" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 39px; position: absolute; right: -32px;margin:0px;padding: 0px 6px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
             {{/if}}\
             {{/if}}\
           </div>\
@@ -21604,7 +21604,8 @@ FindlySDK.prototype.initializeTopDown = function (
   }
   _self.addSearchText({
     container: "search-box-container",
-    classes: "search-input",
+    classes: (searchConfiguration.searchButtonEnabled && searchConfiguration.buttonPlacementPosition
+      =="inside")?' search-btn-inside search-input':'search-input',
     placeholder: "Search here",
     showGreeting: false,
     microphone: true,
@@ -21957,11 +21958,11 @@ FindlySDK.prototype.getFrequentlySearchTemplate = function () {
     '<script id="frequently-searched-template" type="text/x-jqury-tmpl">\
                                         {{if recents && recents.length && searchConfig.showSearchesEnabled == true}}\
                                         <div class="templates-data freq-data-p">\
-                                            <div class="main-title"> {{if searchConfig.showSearches == "frequent"}}\ FREQUENT {{else}} RECENT {{/if}}\ SEARCHES</div>\
+                                            <div class="main-title display-none"> {{if searchConfig.showSearches == "frequent"}}\ FREQUENT {{else}} RECENT {{/if}}\ SEARCHES</div>\
                                             {{each(key, recent) recents }}\
                                             {{if recent}}\
                                               <div class="tile_with_header recentText recent-list-container">\
-                                              <a class="tile-title" id="${recent}"><img class="RecentIcon-topDown" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYuNSAwQzIuOTE0MDYgMCAwIDIuOTE0MDYgMCA2LjVDMCAxMC4wODU5IDIuOTE0MDYgMTMgNi41IDEzQzEwLjA4NTkgMTMgMTMgMTAuMDg1OSAxMyA2LjVDMTMgNi4yMjM4NiAxMi43NzYxIDYgMTIuNSA2QzEyLjIyMzkgNiAxMiA2LjIyMzg2IDEyIDYuNUMxMiA5LjU0Mjk3IDkuNTQyOTcgMTIgNi41IDEyQzMuNDU3MDMgMTIgMSA5LjU0Mjk3IDEgNi41QzEgMy40NTcwMyAzLjQ1NzAzIDEgNi41IDFDOC4xNDA2MiAxIDkuNTk3NjYgMS43MjI2NiAxMC42MDU1IDIuODU5MzhMOS45NzY5OCAzLjQ4Nzg3QzkuNzg3OTkgMy42NzY4NiA5LjkyMTg0IDQgMTAuMTg5MSA0SDEyLjdDMTIuODY1NyA0IDEzIDMuODY1NjkgMTMgMy43VjEuMTg5MTFDMTMgMC45MjE4MzcgMTIuNjc2OSAwLjc4Nzk4NyAxMi40ODc5IDAuOTc2OTc2TDExLjMxMjUgMi4xNTIzNEMxMC4xMjExIDAuODM1OTM4IDguNDEwMTYgMCA2LjUgMFpNNi41IDJDNi4yMjM4NiAyIDYgMi4yMjM4NiA2IDIuNVY2SDQuNUM0LjIyMzg2IDYgNCA2LjIyMzg2IDQgNi41QzQgNi43NzYxNCA0LjIyMzg2IDcgNC41IDdINi43MjcyN0M2Ljg3NzkgNyA3IDYuODc3OSA3IDYuNzI3MjdWMi41QzcgMi4yMjM4NiA2Ljc3NjE0IDIgNi41IDJaIiBmaWxsPSIjMjAyMTI0Ii8+Cjwvc3ZnPgo=" alt="Recent search Icon">\
+                                              <a class="tile-title" id="${recent}" title="${recent}"><img class="RecentIcon-topDown" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYuNSAwQzIuOTE0MDYgMCAwIDIuOTE0MDYgMCA2LjVDMCAxMC4wODU5IDIuOTE0MDYgMTMgNi41IDEzQzEwLjA4NTkgMTMgMTMgMTAuMDg1OSAxMyA2LjVDMTMgNi4yMjM4NiAxMi43NzYxIDYgMTIuNSA2QzEyLjIyMzkgNiAxMiA2LjIyMzg2IDEyIDYuNUMxMiA5LjU0Mjk3IDkuNTQyOTcgMTIgNi41IDEyQzMuNDU3MDMgMTIgMSA5LjU0Mjk3IDEgNi41QzEgMy40NTcwMyAzLjQ1NzAzIDEgNi41IDFDOC4xNDA2MiAxIDkuNTk3NjYgMS43MjI2NiAxMC42MDU1IDIuODU5MzhMOS45NzY5OCAzLjQ4Nzg3QzkuNzg3OTkgMy42NzY4NiA5LjkyMTg0IDQgMTAuMTg5MSA0SDEyLjdDMTIuODY1NyA0IDEzIDMuODY1NjkgMTMgMy43VjEuMTg5MTFDMTMgMC45MjE4MzcgMTIuNjc2OSAwLjc4Nzk4NyAxMi40ODc5IDAuOTc2OTc2TDExLjMxMjUgMi4xNTIzNEMxMC4xMjExIDAuODM1OTM4IDguNDEwMTYgMCA2LjUgMFpNNi41IDJDNi4yMjM4NiAyIDYgMi4yMjM4NiA2IDIuNVY2SDQuNUM0LjIyMzg2IDYgNCA2LjIyMzg2IDQgNi41QzQgNi43NzYxNCA0LjIyMzg2IDcgNC41IDdINi43MjcyN0M2Ljg3NzkgNyA3IDYuODc3OSA3IDYuNzI3MjdWMi41QzcgMi4yMjM4NiA2Ljc3NjE0IDIgNi41IDJaIiBmaWxsPSIjMjAyMTI0Ii8+Cjwvc3ZnPgo=" alt="Recent search Icon">\
                                               ${recent}</span>\
                                                 <span id="${recent}" class="recent-search-delete"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZD0iTTQuNDM0NzUgNC4wMDAxTDYuOTg2NDUgMS40NDgzOUM3LjEwNjYyIDEuMzI4MjMgNy4xMDY2MiAxLjEzMzQxIDYuOTg2NDUgMS4wMTMyNUM2Ljg2NjI5IDAuODkzMDg2IDYuNjcxNDcgMC44OTMwODYgNi41NTEzMSAxLjAxMzI1TDMuOTk5NTkgMy41NjQ5N0wxLjQ0Nzk5IDEuMDEzNDdDMS4zMjc4MyAwLjg5MzMxNCAxLjEzMzAxIDAuODkzMzE4IDEuMDEyODUgMS4wMTM0OEMwLjg5MjY5MiAxLjEzMzY1IDAuODkyNjk2IDEuMzI4NDcgMS4wMTI4NiAxLjQ0ODYyTDMuNTY0NDUgNC4wMDAxMUwxLjAxMjg1IDYuNTUxNzJDMC44OTI2ODkgNi42NzE4OCAwLjg5MjY4OSA2Ljg2NjcgMS4wMTI4NSA2Ljk4Njg2QzEuMTMzMDEgNy4xMDcwMiAxLjMyNzgzIDcuMTA3MDIgMS40NDc5OSA2Ljk4Njg2TDMuOTk5NiA0LjQzNTI1TDYuNTUxMzIgNi45ODY4NkM2LjY3MTQ5IDcuMTA3MDIgNi44NjYzMSA3LjEwNzAyIDYuOTg2NDYgNi45ODY4NUM3LjEwNjYyIDYuODY2NjkgNy4xMDY2MiA2LjY3MTg3IDYuOTg2NDYgNi41NTE3MUw0LjQzNDc1IDQuMDAwMVoiIGZpbGw9IiMyMDIxMjQiLz4NCjwvc3ZnPg0K" alt="close-icon" height="15"/>\
                                                 </a>\
@@ -22080,6 +22081,8 @@ FindlySDK.prototype.bindPlaceholderStyle = function (config) {
     $("body").append(
       "<style>.cancel-search {right:" +
       rightPosition +
+      "px !important;} .search-btn-inside{padding-right:" +
+      (rightPosition-40) +
       "px !important;}</style>"
     );
   } else {

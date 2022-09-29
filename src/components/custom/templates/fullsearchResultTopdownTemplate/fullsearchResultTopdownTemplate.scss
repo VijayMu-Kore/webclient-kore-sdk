@@ -234,18 +234,24 @@
         }
         .tile_with_header{
             .tile-title {
-                background: var(--sdk-white-bg);
-                box-shadow: 0px 0px 11px rgb(0 0 0 / 10%);
-                border-radius: 6px;
-                padding: 11px 15px;
+                // background: var(--sdk-white-bg);
+                // box-shadow: 0px 0px 11px rgb(0 0 0 / 10%);
+                // border-radius: 6px;
+                padding: 8px 21px 8px 0px;
                 font-style: normal;
-                font-weight: 600;
-                font-size: 14px;
-                line-height: 20px;
-                margin-bottom: 7px;
+                font-weight: 400;
+                font-size: 13px;
+                line-height: 16px;
+                // margin-bottom: 7px;
                 display: block !important;
                 width: 100%;
                 color: var(--sdk-shark-black-color);
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                .RecentIcon-topDown{
+                    margin-right:11px;
+                }
             }
         }
         button{
@@ -471,7 +477,7 @@
                     position: absolute;
                     display: none;
                     right: 72px;
-                    top: -27px;
+                    top: -32px;
                     z-index: 1;
                     padding: 3px 5px;
                     cursor: pointer;
@@ -836,8 +842,12 @@
         }
         .search-bar{
             .widget-icon{
-                bottom: 9px;
-                left: 12px;
+                bottom: 11px;
+                left: 16px;
+                img{
+                    width: 13px;
+                    height: 13px;
+                }
             }
         }
         a{
