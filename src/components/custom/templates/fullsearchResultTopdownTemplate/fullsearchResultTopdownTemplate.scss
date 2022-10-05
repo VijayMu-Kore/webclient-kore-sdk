@@ -286,6 +286,12 @@
                         margin-bottom: 19px;
                     }
                 }
+                &.hide-more-facets div {
+                    display:none;
+                }
+                &.hide-more-facets div:nth-child(-n+7){
+                    display:block;
+                }
             }
             .heading-title{
                 color: var(--sdk-shark-black-color);
@@ -468,6 +474,9 @@
                 &.action-results-container {
                     margin: 0 !important;
                     margin-bottom: 10px !important;
+                }
+                .purejscarousel-slides-container{
+                    display: flex;
                 }
             }
 

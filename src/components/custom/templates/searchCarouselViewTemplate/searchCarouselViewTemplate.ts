@@ -118,12 +118,12 @@ class SearchCarouselViewTemplate {
                         27.5) +
                     "px !important;}</style>"
                 );
-
+                window.dispatchEvent(new Event('resize'));
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("resize", true, false);
                 window.dispatchEvent(evt);
             }
-        }, 500);
+        }, 800);
         $(messageHtml)
             .off("click", ".search-task")
             .on("click", ".search-task", function (event: any) {

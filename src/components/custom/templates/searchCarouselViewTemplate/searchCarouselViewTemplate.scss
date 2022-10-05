@@ -7,6 +7,9 @@
 .search-list-template-carousel{
     margin-bottom: 15px;
     .carousel{
+        .purejscarousel-slides-container{
+            display: flex;
+        }
         .purejscarousel-btn{
             background: #3C4043 !important;
             border-radius: 2px !important;
@@ -86,6 +89,9 @@
 .search-list-template-carousel-img-title{
     margin-bottom: 15px;
     .carousel{
+        .purejscarousel-slides-container{
+            display: flex;
+        }
         display: flex;
         .purejscarousel-btn{
             background: #3C4043 !important;
@@ -180,6 +186,9 @@
 .search-list-template-carousel-grid-img{
     margin-bottom: 15px;
     .carousel{
+        .purejscarousel-slides-container{
+            display: flex;
+        }
         .purejscarousel-btn{
             background: #3C4043 !important;
             border-radius: 2px !important;
@@ -259,6 +268,9 @@
 .search-list-template-carousel-title-img-desc{
     margin-bottom: 15px;
     .carousel{
+        .purejscarousel-slides-container{
+            display: flex;
+        }
         .purejscarousel-btn{
             background: #3C4043 !important;
             border-radius: 2px !important;
@@ -354,6 +366,9 @@
 .search-list-template-carousel-title-img-card{
     margin-bottom: 15px;
     .carousel{
+        .purejscarousel-slides-container{
+            display: flex;
+        }
         .purejscarousel-btn{
             background: #3C4043 !important;
             border-radius: 2px !important;
@@ -489,6 +504,9 @@
     width: 100%;
 }
 .carousel{
+    .purejscarousel-slides-container{
+        display: flex;
+    }
     &.carousel-search-data-items{
         width: 100% !important;
         margin: 10px 0 !important;
