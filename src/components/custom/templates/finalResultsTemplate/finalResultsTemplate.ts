@@ -105,6 +105,10 @@ class FinalResultsTemplate {
 
       }
     });
+    $(messageHtml).off("click", ".know-more-snippet").on("click", ".know-more-snippet", function (e: any) {
+      var url = $(e.target).attr("snippetURL");
+      window.open(url, '_blank','noopener');
+    })
 
   }
   getTemplateString(type: any) {
