@@ -806,16 +806,16 @@ class FullSearchResultsTemplate {
     });
     if (feedbackData === null) {
     $('.thumbs-up-top-down-blue, .thumbs-up-top-down-red').hide();
-    $('.thumbs-up-top-down-black,.thumbs-down-top-down-black').show();
+    $('.thumbs-up-top-down-black,.thumbs-down-top-down-black').css('display','inline');
     }
     else {
     if (feedbackData === 'thumbsUp') {
     $('.thumbs-up-top-down-black, .thumbs-up-top-down-red').hide();
-    $('.thumbs-up-top-down-blue,.thumbs-down-top-down-black').show();
+    $('.thumbs-up-top-down-blue,.thumbs-down-top-down-black').css('display','inline');
     }
     else {
     $('.thumbs-down-top-down-black, .thumbs-up-top-down-blue').hide();
-    $('.thumbs-up-top-down-black,.thumbs-down-top-down-red').show();
+    $('.thumbs-up-top-down-black,.thumbs-up-top-down-red').css('display','inline');
     }
     }
     }

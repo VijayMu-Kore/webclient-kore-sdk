@@ -3915,10 +3915,11 @@ display: none !important;
     width: 31%;
     right: 0 !important;
     background: linear-gradient(180deg,rgba(255,255,255,0.31) 0%,#FFFFFF 38.74%) !important;
+    bottom: 0px;
     }
     }
     .feedback-template-positions.if-live-search-top-down.bottom-up-show-all {
-    bottom: 0px;
+    bottom: 40px;
     width: calc(100% - 10px);
     left: 5px;
     visibility: hidden;
