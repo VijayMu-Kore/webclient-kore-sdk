@@ -8935,7 +8935,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           facets = []
           facets.push({
             key: "all results",
-            doc_count: _self.vars.totalNumOfResults,
+            doc_count: 0,
             name: "ALL",
           });
           facets = facets.concat((res.tabFacet || {}).buckets || []);
