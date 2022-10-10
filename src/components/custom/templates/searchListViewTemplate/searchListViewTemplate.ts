@@ -255,6 +255,16 @@ class SearchListViewTemplate {
       fieldName: $(e.currentTarget).attr("fieldName"),
     };
     hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
+      const isSearchSDK = document.body.className.match('sdk-body');
+      if(result?.message[0].component.payload){
+        if(isSearchSDK!==null){
+          result.message[0].component.payload.isSearchSDK = true;
+        }
+        else{
+          result.message[0].component.payload.isSearchSDK = false;
+        }
+      }
+      
       const listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type)).tmpl(result?.message[0].component.payload);
       $(listHTML).find(".show-more-list").remove();
       $(
