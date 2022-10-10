@@ -237,7 +237,7 @@ class FullSearchResultTopdownTemplate {
     let facetData = msgData.message[0].component.payload.filterFacetData || [];
     facetObj['position'] = msgData.message[0].component.payload.facetPosition;
     facetObj['show'] = true;
-    if (facetData.length) {
+    if (facetData.length && msgData.message[0].component.payload.isFilterEnabled) {
       FullSearchResultTopdownTemplate.prototype.facetsAlignTopdownClass(msgData.message[0].component.payload.facetPosition, messageHtml);
       if (facetObj.position == 'top') {
         facetData.forEach((f: any) => {
@@ -252,10 +252,10 @@ class FullSearchResultTopdownTemplate {
         $(messageHtml).find("#filters-center-sec")
           .empty()
           .append(dataHTML);
-          setTimeout(function () {
-            var facetsDataHTML = $(messageHtml).find("#filters-center-sec");
-            hostWindowInstance.bindPerfectScroll(facetsDataHTML, ".filters-sec");
-          }, 500);
+          // setTimeout(function () {
+          //   var facetsDataHTML = $(messageHtml).find("#filters-center-sec");
+          //   hostWindowInstance.bindPerfectScroll(facetsDataHTML, ".filters-sec");
+          // }, 500);
           $(dataHTML).off("click", ".more-data").on("click", ".more-data", function (e: any) {
             $(e.target).closest('.more-data').parent().removeClass('hide-more-facets');
             $(e.target).closest('.more-data').hide();
@@ -291,12 +291,10 @@ class FullSearchResultTopdownTemplate {
              $(e.target).closest('.more-data').parent().removeClass('hide-more-facets');
             $(e.target).closest('.more-data').hide();
           });
+          if($(messageHtml).hasClass('center-align-filter')){
+            $(messageHtml).removeClass('center-align-filter');
+          }
       }
-
-      if($(messageHtml).hasClass('center-align-filter')){
-        $(messageHtml).removeClass('center-align-filter');
-      }
-
       FullSearchResultTopdownTemplate.prototype.bindFacetTriggerEvents(me, messageHtml, msgData);
       if (!hostWindowInstance.vars.isFilterModified) {
         hostWindowInstance.autoSelectFacetFilter();

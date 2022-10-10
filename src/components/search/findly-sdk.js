@@ -8453,6 +8453,12 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           // _self.pubSub.publish("sa-search-facets", searchFacets);
           // _self.pubSub.publish("facet-selected", { selectedFacet: "all results" });
         }
+        var isFilterEnabled = _self.vars.filterConfiguration.isEnabled;
+        if (isFilterEnabled || isFilterEnabled == false) {
+          isFilterEnabled = isFilterEnabled;
+        } else {
+          isFilterEnabled = false;
+        }
         _self.getMergedData(_self.vars.resultSettings, responseData, 'isFullResults').then((res) => {
           let me = this;
           var devMode = _self.isDev ? true : false;
@@ -8472,6 +8478,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                   helpers: helpers,
                   tabsList: _self.vars.tabsList,
                   facetPosition:_self.vars.filterConfiguration.aligned,
+                  isFilterEnabled: isFilterEnabled,
                   filterFacetData: searchFacets||[],
                   sortableFacetList: _self.vars.sortableFacetList || [],
                   displaySortable: _self.vars.displaySortable,
@@ -8952,6 +8959,12 @@ FindlySDK.prototype.handleSearchRes = function (res) {
               tab["className"] = tab.key.replaceAll(" ", "-");
             }
           });
+          var isFilterEnabled = _self.vars.filterConfiguration.isEnabled;
+        if (isFilterEnabled || isFilterEnabled == false) {
+          isFilterEnabled = isFilterEnabled;
+        } else {
+          isFilterEnabled = false;
+        }
           _self.vars.tabsList = facets;
           var devMode = _self.isDev ? true : false;
           var viewType = _self.vars.customizeView ? "Customize" : "Preview";
@@ -8970,6 +8983,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                   helpers: helpers,
                   tabsList: _self.vars.tabsList,
                   facetPosition:_self.vars.filterConfiguration.aligned,
+                  isFilterEnabled: isFilterEnabled,
                   filterFacetData: searchFacets||[],
                   sortableFacetList: _self.vars.sortableFacetList || [],
                   displaySortable: _self.vars.displaySortable,
