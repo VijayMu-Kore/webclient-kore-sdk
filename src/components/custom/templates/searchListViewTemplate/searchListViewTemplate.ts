@@ -19,7 +19,6 @@ class SearchListViewTemplate {
       }
       me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString(msgData?.message[0].component?.payload?.template_type)).tmpl(msgData?.message[0].component?.payload);
       SearchListViewTemplate.prototype.bindEvents(me, me.messageListHtml);
-      console.log("me.messageListHtml",me.messageListHtml)
       return me.messageListHtml;
     }
   }
@@ -68,7 +67,6 @@ class SearchListViewTemplate {
     $(".template-3-classic-list-collapse")
       .off("click", ".click-here")
       .on("click", ".click-here", function (event: any) {
-        console.log("********")
       });
     $(".customization")
       .off("click", ".visibility")

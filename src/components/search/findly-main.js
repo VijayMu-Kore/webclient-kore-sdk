@@ -35,7 +35,6 @@ function getAssertionToken(options, callback) {
         apiKey = window.location.href.split('/')[window.location.href.split('/').length - 1];
     }
     var jsonData = {};
-    console.log('apiKey',apiKey);
     return $.ajax({
         url: options.koreAPIUrl+'websdk/'+apiKey,
         type: 'post',
