@@ -39,12 +39,13 @@ botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id he
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 
 botOptionsFindly.botInfo = {
-  chatBot: "July 28",
-  taskBotId: "st-87ee469e-2de8-5764-a68f-9053fb3d5996",
+  chatBot: "RevampSDK",
+  taskBotId: "st-57ea21a9-2620-527b-ba42-8cc38e881280",
 };
-botOptionsFindly.clientId = "cs-f2187b93-ba46-5da7-8f81-7a4122635d49";
-botOptionsFindly.clientSecret = "My1UWsDJO+gJutu8+mP8m58Mn+LAXn0/WVFBtdK9ugk=";
-botOptionsFindly.searchIndexID = "sidx-83f307ac-73e1-52f2-a6e0-9b1b657a41eb";
+botOptionsFindly.clientId = "cs-02144ebf-b5fc-53a7-98bf-f5eb5a2dfdd0";
+botOptionsFindly.clientSecret = "zNEcGn24/Oh6udgpDFk2kNADsmAk9ks/ymFb0St6si8=";
+botOptionsFindly.searchIndexID = "sidx-23837c3d-1a0f-538f-9a19-d677037e03ab";
+
 // To modify the web socket url use the following option
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {
