@@ -136,10 +136,10 @@ class SearchCarouselViewTemplate {
         });
         $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
             hostWindowInstance?.captureClickAnalytics(e,
-                $(e.currentTarget).closest(".faqs-shadow").attr("contentType"),
+                $(e.currentTarget).closest(".click-log-metrics").attr("contentType"),
                 "click",
-                $(e.currentTarget).closest(".faqs-shadow").attr("contentId"),
-                $(e.currentTarget).closest(".faqs-shadow").attr("id"),
+                $(e.currentTarget).closest(".click-log-metrics").attr("contentId"),
+                $(e.currentTarget).closest(".click-log-metrics").attr("id"),
                 $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
         });
     }
