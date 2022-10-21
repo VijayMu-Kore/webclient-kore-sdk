@@ -95,7 +95,7 @@ module.exports = function (grunt) {
             'libs/kore-no-conflict-end.js'
         ];
         cssFiles=[
-            'libs/jquery-ui.min.css',
+            // 'libs/jquery-ui.min.css',
             'libs/emojione.sprites.css',
             '../libs/purejscarousel.css',
             '../libs/prefect-scrollbar.css',
