@@ -11177,6 +11177,7 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
+  setTimeout(()=>{
   _self
     .configureSearchInterface(findlyConfig.botOptions)
     .then(function (response) {
@@ -11211,6 +11212,7 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
 
       _self.initKorePicker(findlyConfig);
     });
+  },1000);
 };
 var searchConfigurationCopy = {};
 
@@ -19974,16 +19976,14 @@ FindlySDK.prototype.appendSuggestions = function (autoComplete) {
     isDev: _self.isDev,
   };
   payload.userId = this.bot.userInfo.userInfo.userId;
-  if (!$("body").hasClass("demo")) {
-    payload.indexPipelineId = _self.API.indexpipelineId;
-  }
+  payload.indexPipelineId = _self.API.indexpipelineId;
   var bearer =
     "bearer " + this.bot.options.accessToken ||
     this.API.jstBarrer ||
     "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.wrUCyDpNEwAaf4aU5Jf2-0ajbiwmTU3Yf7ST8yFJdqM";
   var headers = {};
   headers["Authorization"] = bearer;
-
+  headers['Content-Type'] = "application/json";
   if (!_self.isDev) {
     if (_self.config.botOptions.assertion) {
       headers.auth = _self.config.botOptions.assertion;
@@ -20017,7 +20017,7 @@ FindlySDK.prototype.appendSuggestions = function (autoComplete) {
     type: type,
     dataType: "json",
     headers: headers,
-    data: payload,
+    data: JSON.stringify(payload),
     success: function (data) {
       if (!data.isBotLocked) {
         if (searchConfigurationCopy.querySuggestionsLimit) {
@@ -21060,6 +21060,7 @@ FindlySDK.prototype.facetsAlignTopdownClass = function (type) {
 
 // Configuraition of Interface //
 FindlySDK.prototype.configureSearchInterface = function (botOptions) {
+  var _self = this;
   var baseAPIServer = botOptions.koreAPIUrl
     ? botOptions.koreAPIUrl
     : "https://qa.searchassist.ai/searchassistapi/";
@@ -21071,15 +21072,21 @@ FindlySDK.prototype.configureSearchInterface = function (botOptions) {
     botOptions.searchIndexID +
     "/searchInterface";
   var type = "GET";
-
+  var bearer = "bearer " + this.bot.options.accessToken;
   return $.ajax({
     url: searchExperienceAPIUrl,
     type: type,
     headers: {
-      auth: botOptions.assertion,
+      "auth": botOptions.assertion,
+      "Authorization": bearer
     },
     data: {},
-    success: function (data) { },
+    success: function (data) { 
+      _self.vars.indexPipelineId = data.indexPipelineId;
+          if(_self.API){
+            _self.API.indexpipelineId = data.indexPipelineId;
+          }
+    },
     error: function (err) { },
   });
 };
