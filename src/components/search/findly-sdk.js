@@ -2,7 +2,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import requireKr from "../../../kore-bot-sdk-client";
 import korejquery from "../../libs/korejquery";
 import customTemplate from '../custom/customTemplate';
-import searchTemplate from './searchTemplate'
+import searchTemplate from './searchTemplate';
 import _ from 'lodash';
 import PubSub from 'pubsub-js';
 import SearchListViewTemplate from "../custom/templates/searchListViewTemplate/searchListViewTemplate";
@@ -16,6 +16,7 @@ import './css/findly-sdk.scss';
 import './css/common-styles.scss';
 import './css/search-bar-experience.scss';
 import './css/fonts/inter.css';
+import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
 import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1608,7 +1609,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                 <div id="textFromServer"></div> \
             </div> \
           </div>\
-          <div id="myPreviewModal" class="modalImagePreview">\
+          <div id="myPreviewModal" class="modalImagePreview display-none">\
           <span class="closeElePreview">&times;</span>\
          <div class="largePreviewContent"></div>\
        </div>\

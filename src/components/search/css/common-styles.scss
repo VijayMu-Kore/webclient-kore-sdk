@@ -1210,7 +1210,7 @@ body{
     }
     .widget-icon {
         position: absolute;
-        bottom: 8px;
+        bottom: 12px;
         left: 16px;
         z-index: 1;
         img{
@@ -4550,9 +4550,9 @@ li{
             right: 30px !important;
             top: auto !important;
             display: block !important ;
-            #searchbox{
-                display: none;
-            }
+            // #searchbox{
+            //     display: none;
+            // }
         }
     }
     .start-search-icon-div{

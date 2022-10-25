@@ -2,10 +2,17 @@ let findlyConfig:any = {};
 
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
-botOptionsFindly.koreAPIUrl =
-  "https://searchassist-qa.kore.ai/searchassistapi/";
-
-botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
+var serverUrl = window.location.href;
+var paramUrl="searchassist-qa.kore.ai"
+// if(serverUrl && (serverUrl.includes("https"))){ // for installer 
+if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
+    paramUrl=serverUrl.split('/')[2]
+}  
+botOptionsFindly.logLevel = 'debug';
+// botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
+botOptionsFindly.koreAPIUrl = "https://"+paramUrl+"/searchassistapi/";
+// botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
+botOptionsFindly.baseAPIServer = "https://"+paramUrl;
 function koreGenerateUUID() {
   console.info("generating UUID");
   var d = new Date().getTime();
@@ -39,18 +46,18 @@ botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id he
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 
 botOptionsFindly.botInfo = {
-  chatBot: "RevampSDK",
-  taskBotId: "st-57ea21a9-2620-527b-ba42-8cc38e881280",
+  chatBot: "SA demo",
+  taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
 };
-botOptionsFindly.clientId = "cs-02144ebf-b5fc-53a7-98bf-f5eb5a2dfdd0";
-botOptionsFindly.clientSecret = "zNEcGn24/Oh6udgpDFk2kNADsmAk9ks/ymFb0St6si8=";
-botOptionsFindly.searchIndexID = "sidx-23837c3d-1a0f-538f-9a19-d677037e03ab";
-
+botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
+botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
+botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
 // To modify the web socket url use the following option
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {
   protocol: "wss",
-  hostname: "searchassist-qa.kore.ai",
+  // hostname: 'searchassist-qa.kore.ai'
+  hostname:paramUrl
 };
 function clearLocalStorageUserDetails() {
   window.localStorage.setItem("userName", "");
