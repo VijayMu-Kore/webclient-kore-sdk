@@ -123,7 +123,7 @@ class SearchCarouselViewTemplate {
                 evt.initEvent("resize", true, false);
                 window.dispatchEvent(evt);
             }
-        }, 800);
+        });
         $(messageHtml)
             .off("click", ".search-task")
             .on("click", ".search-task", function (event: any) {
