@@ -59,19 +59,6 @@ function getAssertionToken(options, callback) {
 }
 
 
-        // var findlyConfig=window.KoreSDK.findlyConfig;
-        // findlyConfig.botOptions.assertionFn=getJWT;
-        
-        // var fSdk = new FindlySDK(findlyConfig);
-
-        
-        // getJWT(findlyConfig.botOptions).then(function (res) {
-        //     //fSdk.setJWT(res.jwt);
-        //     fSdk.showSearch();
-        // }, function (errRes) {
-        //     console.error("Failed getting JWT " + errRes)
-        // });
-
         var findlyConfig = window.KoreSDK.findlyConfig;
         // findlyConfig.botOptions.assertionFn = getJWT;
         findlyConfig.botOptions.assertionFn = getAssertionToken;
