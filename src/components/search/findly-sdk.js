@@ -224,7 +224,7 @@ FindlySDK.prototype.addPolyFils = function () {
 
     var setFlags = {
       isValid: true,
-      key: "",
+      // key: "",
     };
     try {
       if (

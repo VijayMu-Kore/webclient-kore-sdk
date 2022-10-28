@@ -501,7 +501,7 @@ class KoreHelpers {
 
             const setFlags = {
                 isValid: true,
-                key: "",
+                // key: "",
             };
             try {
                 if (
@@ -585,7 +585,7 @@ class KoreHelpers {
 
             const setFlags = {
                 isValid: true,
-                key: "",
+                // key: "",
             };
             try {
                 if (

@@ -329,7 +329,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 jQuery.extend( {
 
 	// Unique for each copy of jQuery on the page
-	expando: "jQuery" + ( version + Math.random() ).replace( /\D/g, "" ),
+	expando: "jQuery" + ( version + generateRandomNum() ).replace( /\D/g, "" ),
 
 	// Assume jQuery is ready without the ready module
 	isReady: true,
@@ -2683,7 +2683,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				elems = seed || byElement && Expr.find[ "TAG" ]( "*", outermost ),
 
 				// Use integer dirruns iff this is the outermost matcher
-				dirrunsUnique = ( dirruns += contextBackup == null ? 1 : Math.random() || 0.1 ),
+				dirrunsUnique = ( dirruns += contextBackup == null ? 1 : generateRandomNum() || 0.1 ),
 				len = elems.length;
 
 			if ( outermost ) {
@@ -2792,7 +2792,18 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 		markFunction( superMatcher ) :
 		superMatcher;
 }
-
+// Generate Random Number
+function generateRandomNum() {
+	var dateObj = new Date();
+	var month = dateObj.getUTCMonth() + 1; 
+	var day = dateObj.getUTCDate();
+	var year = dateObj.getUTCFullYear();
+	var seconds = dateObj.getSeconds();
+	var minutes = dateObj.getMinutes();
+	var hour = dateObj.getHours();
+	var generatedNum = (year *month * day) * (hour + (minutes * seconds));
+	return generatedNum; 
+  }
 compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
 	var i,
 		setMatchers = [],
