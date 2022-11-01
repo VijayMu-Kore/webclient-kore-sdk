@@ -1,7 +1,7 @@
 import * as d3 from "d3";
-import korejquery from '../src/libs/korejquery';
+import korejquery from '../../libs/korejquery';
 import { GoogleCharts} from 'google-charts';
-import chatConfig from '../src/components/chatwindow/config/kore-config';
+import chatConfig from '../../components/chatwindow/config/kore-config';
 
 var KoreGraphAdapter = (function($,d3) {
     const chartColors = ['#75b0fe', '#f78083', '#99ed9e', '#fde296', '#26344a', '#5f6bf7', '#b3bac8', '#99a1fd', '#9cebf9', '#f7c7f4'];
@@ -426,7 +426,7 @@ var KoreGraphAdapter = (function($,d3) {
         var sum = 0;
         var payload=msgData;//msgData.message[0].component.payload
         var widthDivision=3;
-        legendCenterOffset=0;
+        var legendCenterOffset=0;
         if(msgData.message){
             payload=msgData.message[0].component.payload;
         }else{
@@ -594,7 +594,7 @@ var KoreGraphAdapter = (function($,d3) {
           //  var percent = Math.round(1000 * d.data.count / total) / 10; // calculate percent
           //  tooltip.select('.label').html(d.data.label); // set current label           
             if($('#myPreviewModal').css('display') === 'block') {
-                if(d.data.dispVal) {
+                if(d.data && d.data.dispVal) {
                     tooltip.select('#myPreviewModal .countDonut').html(d.data.dispVal); // set current count
                 }
                 else {
@@ -602,7 +602,7 @@ var KoreGraphAdapter = (function($,d3) {
                 }
             }            
             else {
-                if(d.data.dispVal) {
+                if(d.data && d.data.dispVal) {
                     tooltip.select('.countDonut').html(d.data.dispVal); // set current count       
                 }
                 else {
@@ -837,7 +837,7 @@ var KoreGraphAdapter = (function($,d3) {
             
         var payload=msgData;//msgData.message[0].component.payload
         var widthDivision=3;
-        legendCenterOffset=0;
+        var legendCenterOffset=0;
         if(msgData.message){
             payload=msgData.message[0].component.payload;
         }else{
@@ -1421,7 +1421,7 @@ function createhorizontalGroupBarChartLegend(mainDiv, columnsInfo, colorRange) {
         var groupChartData = [];
         var payload=msgData;//msgData.message[0].component.payload
         var widthDivision=3;
-        legendCenterOffset=0;
+        var legendCenterOffset=0;
         if(msgData.message){
             payload=msgData.message[0].component.payload;
         }else{
@@ -1663,7 +1663,7 @@ function createhorizontalGroupBarChartLegend(mainDiv, columnsInfo, colorRange) {
             g = svg.append("g").attr("transform", "translate(" + 70 + "," + margin.top + ")");
         var payload=msgData;//msgData.message[0].component.payload
         var widthDivision=3;
-        legendCenterOffset=0;
+        var legendCenterOffset=0;
         if(msgData.message){
             payload=msgData.message[0].component.payload;
         }else{
@@ -1707,7 +1707,7 @@ function createhorizontalGroupBarChartLegend(mainDiv, columnsInfo, colorRange) {
 
         for(var i=0; i<data.length; i++) {
             var sum = 0;
-            for(key in data[i]) {
+            for(var key in data[i]) {
                 if(key !== 'xAxis' && key !== 'dispVal') {
                     sum = sum + data[i][key];
                 }
@@ -2178,7 +2178,8 @@ function createhorizontalGroupBarChartLegend(mainDiv, columnsInfo, colorRange) {
 
         }
 
-    function drawlineChartTemplate(msgData, element) {
+    function drawlineChartTemplate(msgData, element,config) {
+        chatConfig.graphLib = config.graphLib;
         if (chatConfig && chatConfig.graphLib === 'google') {
             setTimeout(() => {
                 GoogleCharts.charts.load('current', { packages: ['corechart', 'line'] });
@@ -2284,7 +2285,8 @@ function createhorizontalGroupBarChartLegend(mainDiv, columnsInfo, colorRange) {
         }
     }
 
-    function drawBarChartTemplate(msgData, element) {
+    function drawBarChartTemplate(msgData, element,config) {
+        chatConfig.graphLib = config.graphLib;
         if (chatConfig.graphLib === 'google') {
             setTimeout(() => {
                 GoogleCharts.charts.load('current', { packages: ['corechart', 'bar'] });
@@ -2428,7 +2430,8 @@ function createhorizontalGroupBarChartLegend(mainDiv, columnsInfo, colorRange) {
         }
     }
 
-    function drawPieChartTemplate(msgData, element) {
+    function drawPieChartTemplate(msgData, element,config) {
+        chatConfig.graphLib = config.graphLib;
         if (chatConfig.graphLib === 'google') {
             setTimeout(() => {
                 GoogleCharts.charts.load('current', { packages: ['corechart'] });
