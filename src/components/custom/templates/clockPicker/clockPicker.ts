@@ -2,7 +2,7 @@
 import './clockPicker.scss';
 import installClockPicker from '../../../../../UI/libs/jquery-clockpicker';
 //import '../../../../../UI/libs/jquery-clockpicker.css';
-import '../../../libs/jquery-clockpicker/jquery-clockpicker.css';
+import '../../../../libs/jquery-clockpicker/jquery-clockpicker.css';
 class ClockPickerTemplate {
     defaultClockerPickerConfig: any = {
         title: "",
