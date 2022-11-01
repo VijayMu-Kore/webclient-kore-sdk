@@ -1,5 +1,5 @@
 
-import helpers from '../../../../../src/utils/helpers';
+import helpers from '../../../../utils/helpers';
 import './iframeTemplate.scss';
 
 class IframeTemplate {
@@ -8,7 +8,7 @@ class IframeTemplate {
         let me: any = this;
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "iframe") {
+        if (msgData?.message?.[0]?.component?.payload?.template_type === "iframe") {
             me.messageHtml = $(me.getTemplateString('iframe')).tmpl({
                 'msgData': msgData,
                 'helpers': helpersObj.helpers,

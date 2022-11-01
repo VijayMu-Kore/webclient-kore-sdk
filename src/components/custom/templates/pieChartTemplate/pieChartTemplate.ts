@@ -1,14 +1,24 @@
 
-import helpers from '../../../../../src/utils/helpers';
+import helpers from '../../../../utils/helpers';
 import KoreGraphAdapter from '../../../../../libs/KoreGraphAdapter';
 import './pieChartTemplate.scss';
 
 class PieChartTemplate {
+    config: any={
+        graphLib:'d3'
+    };
+    constructor(config?:any) {
+        config=config ||{};
+        this.config = {
+            ...this.config,
+            ...config
+        }
+    }
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "piechart") {
+        if (msgData?.message?.[0]?.component?.payload?.template_type === "piechart") {
             me.messageHtml = $(me.getTemplateString('pieChartTemplate')).tmpl({
                 'msgData': msgData,
                 'helpers': helpersObj.helpers
@@ -21,7 +31,7 @@ class PieChartTemplate {
     bindEvents(msgData: any) {
         let me: any = this;
         let chatWindowInstance = me.hostInstance;
-        KoreGraphAdapter.drawPieChartTemplate(msgData, me.messageHtml);
+        KoreGraphAdapter.drawPieChartTemplate(msgData, me.messageHtml,me.config);
         setTimeout(() => {
             // $('.chat-container').scrollTop($('.chat-container').prop('scrollHeight'));
             chatWindowInstance.scrollTop();

@@ -1,13 +1,23 @@
 
-import helpers from '../../../../../src/utils/helpers';
+import helpers from '../../../../utils/helpers';
 import KoreGraphAdapter from '../../../../../libs/KoreGraphAdapter';
 import './lineChartTemplate.scss';
 class LineChartTemplate {
+    config: any={
+        graphLib:'d3'
+    };
+    constructor(config?:any) {
+        config=config ||{};
+        this.config = {
+            ...this.config,
+            ...config
+        }
+    }
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "linechart") {
+        if (msgData?.message?.[0]?.component?.payload?.template_type === "linechart") {
             me.messageHtml = $(me.getTemplateString('linechartTemplate')).tmpl({
                 'msgData': msgData,
                 'helpers': helpersObj.helpers
@@ -20,7 +30,7 @@ class LineChartTemplate {
     bindEvents(msgData: any) {
         let me: any = this;
         let chatWindowInstance = me.hostInstance;
-        KoreGraphAdapter.drawlineChartTemplate(msgData,me.messageHtml);
+        KoreGraphAdapter.drawlineChartTemplate(msgData,me.messageHtml,me.config);
 
         setTimeout(() => {
             // $('.chat-container').scrollTop($('.chat-container').prop('scrollHeight'));

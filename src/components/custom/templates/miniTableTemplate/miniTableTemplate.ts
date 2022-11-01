@@ -1,5 +1,5 @@
 
-import helpers from '../../../../../src/utils/helpers';
+import helpers from '../../../../utils/helpers';
 import PureJSCarousel from '../../../../../libs/purejscarousel';
 import './miniTableTemplate.scss';
 class MiniTableChartTemplate {
@@ -8,7 +8,7 @@ class MiniTableChartTemplate {
         let me: any = this;
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "mini_table") {
+        if (msgData?.message?.[0]?.component?.payload?.template_type === "mini_table") {
             if (msgData.message[0].component.payload.layout == 'horizontal') {
                 me.messageHtml = $(me.getTemplateString('miniTableHorizontalTemplate')).tmpl({
                     'msgData': msgData,

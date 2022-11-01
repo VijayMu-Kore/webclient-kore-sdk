@@ -1,5 +1,5 @@
 
-import helpers from '../../../../../src/utils/helpers';
+import helpers from '../../../../utils/helpers';
 import './tableTemplate.scss';
 class TableChartTemplate {
 
@@ -8,7 +8,7 @@ class TableChartTemplate {
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
 
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "table") {
+        if (msgData?.message?.[0]?.component?.payload?.template_type === "table") {
             me.messageHtml = $(me.getTemplateString()).tmpl({
                 'msgData': msgData,
                 'helpers': helpersObj.helpers

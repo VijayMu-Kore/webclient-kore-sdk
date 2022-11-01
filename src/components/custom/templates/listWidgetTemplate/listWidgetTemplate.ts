@@ -1,5 +1,5 @@
 
-import helpers from '../../../../../src/utils/helpers';
+import helpers from '../../../../utils/helpers';
 import './listWidgetTemplate.scss';
 class ListWidgetTemplate {
   renderMessage(msgData: any) {
@@ -7,7 +7,7 @@ class ListWidgetTemplate {
     let $ = me.hostInstance.$;
     let helpersObj = helpers;
 
-    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listWidget") {
+    if (msgData?.message?.[0]?.component?.payload?.template_type === "listWidget") {
       me.messageHtml = $(me.getTemplateString('listWidget')).tmpl({
         'msgData': msgData,
         'helpers': helpersObj.helpers,

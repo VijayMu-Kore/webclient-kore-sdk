@@ -1,5 +1,5 @@
 
-import helpers from '../../../../../src/utils/helpers';
+import helpers from '../../../../utils/helpers';
 import './buttonTemplate.scss';
 class ButtonTemplate {
     renderMessage(msgData: any) {
@@ -7,7 +7,7 @@ class ButtonTemplate {
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
 
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "button") {
+        if (msgData?.message?.[0]?.component?.payload?.template_type === "button") {
             me.messageHtml = $(me.getTemplateString("templatebutton")).tmpl({
                 'msgData': msgData,
                 'helpers': helpersObj.helpers

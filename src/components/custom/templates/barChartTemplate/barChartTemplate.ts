@@ -1,13 +1,24 @@
 import helpers from '../../../../utils/helpers';
 import KoreGraphAdapter from '../../../../../libs/KoreGraphAdapter';
+import './barChartTemplate.scss';
 
 class BarChartTemplate {
+  config: any={
+    graphLib:'d3'
+};
+constructor(config?:any) {
+    config=config ||{};
+    this.config = {
+        ...this.config,
+        ...config
+    }
+}
   renderMessage(msgData: any) {
     const me: any = this;
   let $ = me.hostInstance.$;
     const helpersObj = helpers;
 
-    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type === 'barchart') {
+    if (msgData?.message?.[0]?.component?.payload?.template_type === 'barchart') {
       me.messageHtml = $(me.getTemplateString('barchartTemplate')).tmpl({
         msgData,
         helpers: helpersObj.helpers,
@@ -21,7 +32,7 @@ class BarChartTemplate {
   bindEvents(msgData: any) {
     const me: any = this;
     const chatWindowInstance = me.hostInstance;
-    KoreGraphAdapter.drawBarChartTemplate(msgData, me.messageHtml);
+    KoreGraphAdapter.drawBarChartTemplate(msgData, me.messageHtml,me.config);
     setTimeout(() => {
       chatWindowInstance.scrollTop();
       // $('.chat-container').scrollTop($('.chat-container').prop('scrollHeight'));

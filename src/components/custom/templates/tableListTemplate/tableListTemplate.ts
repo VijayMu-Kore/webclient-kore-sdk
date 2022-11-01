@@ -1,5 +1,5 @@
 
-import helpers from '../../../../../src/utils/helpers';
+import helpers from '../../../../utils/helpers';
 import './tableListTemplate.scss';
 class TableListTemplate {
 	renderMessage(msgData: any) {
@@ -7,7 +7,7 @@ class TableListTemplate {
 		let $ = me.hostInstance.$;
 		let helpersObj = helpers;
 
-		if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "tableList") {
+		if (msgData?.message?.[0]?.component?.payload?.template_type === "tableList") {
 			me.messageHtml = $(me.getTemplateString('tableListTemplate')).tmpl({
 				'msgData': msgData,
 				'helpers': helpersObj.helpers

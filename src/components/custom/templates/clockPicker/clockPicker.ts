@@ -1,8 +1,8 @@
 
 import './clockPicker.scss';
 import installClockPicker from '../../../../../UI/libs/jquery-clockpicker';
-import '../../../../../UI/libs/jquery-clockpicker.css';
-
+//import '../../../../../UI/libs/jquery-clockpicker.css';
+import '../../../libs/jquery-clockpicker/jquery-clockpicker.css';
 class ClockPickerTemplate {
     defaultClockerPickerConfig: any = {
         title: "",
@@ -12,7 +12,7 @@ class ClockPickerTemplate {
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
-        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "clockTemplate") {
+        if (msgData?.message?.[0]?.component?.payload?.template_type === "clockTemplate") {
             me.messageHtml = $(me.getTemplateString());
             me.initiateClockPicker();
             me.bindDataToTemplate(msgData)
@@ -105,8 +105,8 @@ class ClockPickerTemplate {
         }
         $(me.messageHtml).find(".btn.btn-sm.btn-default.btn-block.clockpicker-button").hide();
         setTimeout(function () {
-            $(me.messageHtml).find(".clockpicker-popover").css({ "display": "block", "top": "75px ", "left": "80.5px", });
-            $(me.messageHtml).find(".clockpicker-popover .clockpicker-plate").css({ "margin-left": "25px" });
+            $(me.messageHtml).find(".clockpicker-popover").css({ "display": "block"});
+            $(me.messageHtml).find(".clockpicker-popover .clockpicker-plate").css({ "margin-left": "80px" });
             $(me.messageHtml).find(".btn.btn-sm.btn-default.clockpicker-button.pm-button").css({ "opacity": "0.4" });
         }, 0);
         if (me.defaultClockerPickerConfig && me.defaultClockerPickerConfig.appendTo !== 'slider') {
