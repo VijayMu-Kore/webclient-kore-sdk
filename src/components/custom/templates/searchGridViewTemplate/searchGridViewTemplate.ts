@@ -8,7 +8,8 @@ class SearchGridViewTemplate {
         let $ = me.hostInstance.$;
         me.helpersObj = helpers;
         if (msgData?.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.template_type == 'searchGridTemplate') {
-            if (!msgData.message[0].component.payload.helpers) {
+      console.log(msgData,'searchGridViewTemplate');
+      if (!msgData.message[0].component.payload.helpers) {
                 msgData.message[0].component.payload['helpers'] = me.helpersObj;
             }
             me.messageGridHtml = $(SearchGridViewTemplate.prototype.getTemplateString(msgData?.message[0].component.payload.template_type)).tmpl(msgData?.message[0].component.payload);

@@ -7,6 +7,7 @@ class SearchListViewTemplate {
     let $ = me.hostInstance.$;
     me.helpersObj = helpers?.helpers;
     if (msgData?.message[0] && msgData?.message[0].component && msgData?.message[0].component?.payload && msgData?.message[0].component?.payload?.template_type == 'searchListTemplate') {
+      console.log(msgData,'searchListViewTemplate');
       if (!msgData?.message[0].component?.payload?.helpers) {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
