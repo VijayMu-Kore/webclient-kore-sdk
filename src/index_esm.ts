@@ -1,5 +1,5 @@
-import chatWindow from './components/chatwindow/chatWindow';
-import chatConfig from './components/chatwindow/config/kore-config';
+// import chatWindow from './components/chatwindow/chatWindow';
+// import chatConfig from './components/chatwindow/config/kore-config';
 
 import Korei18nPlugin from './plugins/i18n';
 import KoreFileUploaderPlugin from './plugins/fileUploader';
@@ -17,8 +17,6 @@ import KRSearchConfig from './components/search/config/findly-config';
 
 
 export {
-  chatConfig,
-  chatWindow,
   widgetsConfig,
   KoreWidgetSDK,
   Korei18nPlugin,

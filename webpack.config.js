@@ -107,7 +107,7 @@ let config= {
           // serverSideRender: true,
           writeToDisk: true,
         },
-        open: ['/examples/esm/chat'],
+        open: ['/examples/esm/search'],
       },
 }
 
@@ -128,16 +128,16 @@ module.exports= function(env,argv){
         config.output.path= path.resolve(__dirname,'dist/umd')
         config.output.libraryTarget = "umd";
         config.entry={
-          KoreChatSDK: {
-            import: "./src/index_umd_chat.ts",
-            filename: 'kore-web-sdk-umd-chat.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
-          KoreWidgetsSDK:{
-            import: "./src/index_umd_widgets.ts",
-            filename: 'kore-web-sdk-umd-widgets.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
+          // KoreChatSDK: {
+          //   import: "./src/index_umd_chat.ts",
+          //   filename: 'kore-web-sdk-umd-chat.js',
+          //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
+          // },
+          // KoreWidgetsSDK:{
+          //   import: "./src/index_umd_widgets.ts",
+          //   filename: 'kore-web-sdk-umd-widgets.js',
+          //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
+          // },
           KoreSearchSDK:{
             import: "./src/index_umd_search.ts",
             filename: 'kore-web-sdk-umd-search.js',
@@ -153,16 +153,16 @@ module.exports= function(env,argv){
             filename: 'plugins/kore-graph-templates-plugin-umd.js',
             chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
           },
-          SpeechToTextPluginSDK: {
-            import: "./src/index_plugins/speechtotext_umd.ts",
-            filename: 'plugins/speech-to-text-plugin-umd.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
-          TtsSpeechPluginSDK: {
-            import: "./src/index_plugins/ttsspeech_umd.ts",
-            filename: 'plugins/tts-speech-plugin-umd.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
+          // SpeechToTextPluginSDK: {
+          //   import: "./src/index_plugins/speechtotext_umd.ts",
+          //   filename: 'plugins/speech-to-text-plugin-umd.js',
+          //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
+          // },
+          // TtsSpeechPluginSDK: {
+          //   import: "./src/index_plugins/ttsspeech_umd.ts",
+          //   filename: 'plugins/tts-speech-plugin-umd.js',
+          //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
+          // },
         }
         config.output.library = {
           name: '[name]',
