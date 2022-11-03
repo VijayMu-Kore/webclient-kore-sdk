@@ -4,7 +4,7 @@
         "dictionaries": ["jsdoc"]
     },
     "source": {
-        "include": ["src/components/search/findly-sdk.js"],
+        "include": ["src/components/chatwindow/chatWindow.js"],
         "includePattern": ".js$",
         "excludePattern": "(node_modules/|docs)"
     },
@@ -18,7 +18,7 @@
         "showInheritedInNav": true
     },
     "opts": {
-        "destination": "./docs/search/api",
+        "destination": "./docs/chatwindow/api",
         "encoding": "utf8",
         "private": true,
         "recurse": false

@@ -1,16 +1,15 @@
 import PerfectScrollbar from "perfect-scrollbar";
-import requireKr from "../../../kore-bot-sdk-client";
+import requireKr from "../base-sdk/kore-bot-sdk-client";
 import korejquery from "../../libs/korejquery";
-import customTemplate from '../custom/customTemplate';
-import searchTemplate from './searchTemplate';
+import customTemplate from '../../templatemanager/templateManager';
 import _ from 'lodash';
 import PubSub from 'pubsub-js';
-import SearchListViewTemplate from "../custom/templates/searchListViewTemplate/searchListViewTemplate";
-import SearchGridViewTemplate from "../custom/templates/searchGridViewTemplate/searchGridViewTemplate";
-import SearchCarouselViewTemplate from "../custom/templates/searchCarouselViewTemplate/searchCarouselViewTemplate";
-import FinalResultsTemplate from "../custom/templates/finalResultsTemplate/finalResultsTemplate";
-import FullSearchResultsTemplate from "../custom/templates/fullsearchResultsTemplate/fullsearchResultsTemplate";
-import FullSearchResultTopdownTemplate from "../custom/templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate";
+import SearchListViewTemplate from "../../templatemanager/templates/searchListViewTemplate/searchListViewTemplate";
+import SearchGridViewTemplate from "../../templatemanager/templates/searchGridViewTemplate/searchGridViewTemplate";
+import SearchCarouselViewTemplate from "../../templatemanager/templates/searchCarouselViewTemplate/searchCarouselViewTemplate";
+import FinalResultsTemplate from "../../templatemanager/templates/finalResultsTemplate/finalResultsTemplate";
+import FullSearchResultsTemplate from "../../templatemanager/templates/fullsearchResultsTemplate/fullsearchResultsTemplate";
+import FullSearchResultTopdownTemplate from "../../templatemanager/templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate";
 import moment from "moment";
 import './css/findly-sdk.scss';
 import './css/common-styles.scss';
@@ -10271,7 +10270,6 @@ FindlySDK.prototype.initializeCustomTemplate = function (findlyConfig) {
   _self.customTemplateObj = new customTemplate(_self);
   _self.customTemplateObj.helpers = helpers;
   _self.customTemplateObj.config = findlyConfig;
-  _self.searchTemplateObj = new searchTemplate(_self);
   var searchAssistTemplates = [new SearchListViewTemplate(), new SearchGridViewTemplate(), new SearchCarouselViewTemplate(), new FinalResultsTemplate(), new FullSearchResultsTemplate(), new FullSearchResultTopdownTemplate()]
   searchAssistTemplates.forEach((template)=>{
     _self.customTemplateObj.installTemplate(template);

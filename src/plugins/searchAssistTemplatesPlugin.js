@@ -1,9 +1,9 @@
-import SearchListViewTemplate from '../components/custom/templates/searchListViewTemplate/searchListViewTemplate';
-import SearchGridViewTemplate from '../components/custom/templates/searchGridViewTemplate/searchGridViewTemplate';
-import SearchCarouselViewTemplate from '../components/custom/templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
-import FinalResultsTemplate from '../components/custom/templates/finalResultsTemplate/finalResultsTemplate';
-import FullSearchResultTopdownTemplate from '../components/custom/templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
-import FullSearchResultsTemplate from '../components/custom/templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate';
+import SearchListViewTemplate from '../templatemanager/templates/searchListViewTemplate/searchListViewTemplate';
+import SearchGridViewTemplate from '../templatemanager/templates/searchGridViewTemplate/searchGridViewTemplate';
+import SearchCarouselViewTemplate from '../templatemanager/templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+import FinalResultsTemplate from '../templatemanager/templates/finalResultsTemplate/finalResultsTemplate';
+import FullSearchResultTopdownTemplate from '../templatemanager/templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
+import FullSearchResultsTemplate from '../templatemanager/templates/fullsearchResultTopdownTemplate/fullsearchResultTopdownTemplate';
 
 class SearchAssistTemplatesPlugin {
     name = 'SearchAssistTemplatesPlugin';
@@ -30,7 +30,7 @@ class SearchAssistTemplatesPlugin {
     }
     installPickerTemplates(){
         let me=this;
-        let templateManager = me.hostInstance.customTemplateObj;
+        let templateManager = me.hostInstance.templateManager;
         templateManager.installTemplate(new SearchListViewTemplate());
         templateManager.installTemplate(new SearchGridViewTemplate());
         templateManager.installTemplate(new SearchCarouselViewTemplate());

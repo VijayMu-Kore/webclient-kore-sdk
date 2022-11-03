@@ -7,8 +7,9 @@
 
 // (function($) {
 //   'use strict';
- import $ from '../korejquery';
+ import korejquery from '../korejquery';
  import './purejscarousel.css';
+ const $ = korejquery;
   function PureJSCarousel(settings) {
     this.carousel          = document.querySelector(settings.carousel);
     this.slides            = this.carousel.querySelectorAll(settings.slide);
