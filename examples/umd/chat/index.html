@@ -8,18 +8,27 @@
 </head>
 <body>
     
+<script  src="../../../dist/umd/kore-web-sdk-umd-chat.min.js"></script>
+<script>
+        //chat window declaration
+        var chatConfig=KoreChatSDK.chatConfig;
+        var chatWindow=KoreChatSDK.chatWindow;
+        
+        //create chat window instance
+        var chatWindowInstance = new chatWindow();
+
+        //configure bot configurations
+        var botOptions=chatConfig.botOptions;
+        botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";
+        botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';
+        botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
+        botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
+        botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+
+        //show chatwindow
+        chatWindowInstance.show(chatConfig);
+
+</script>
 </body>
-
-<script  src="https://cdn.jsdelivr.net/gh/RajasekharBa-Kore/web-kore-sdk@KI0546/web-sdk-2.0/dist/umd/plugins/kore-picker-plugin-umd.js"></script>
-<script  src="https://cdn.jsdelivr.net/gh/RajasekharBa-Kore/web-kore-sdk@KI0546/web-sdk-2.0/dist/umd/plugins/kore-graph-templates-plugin-umd.js"></script>
-<script  src="https://cdn.jsdelivr.net/gh/RajasekharBa-Kore/web-kore-sdk@KI0546/web-sdk-2.0/dist/umd/kore-web-sdk-umd-chat.js"></script>
-
-<!-- <script  src="../../../dist/umd/plugins/kore-picker-plugin-umd.js"></script>
-<script  src="../../../dist/umd/plugins/kore-graph-templates-plugin-umd.js"></script>
-<script  src="../../../dist/umd/kore-web-sdk-umd-chat.js"></script> -->
-
-
-<script src="js/index_chat.js"></script>
-
 
 </html>
