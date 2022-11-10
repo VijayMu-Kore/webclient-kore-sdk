@@ -311,6 +311,8 @@ FindlySDK.prototype.initVariables = function () {
   vars.filterObject = [];
   vars.searchFacetFilters = [];
   vars.enterIsClicked = false;
+  vars.isQueryEntered = false;
+  vars.enteredQuery = '';
   vars.requestId = "";
   vars.previousLivesearchData = null;
   vars.previousAutosuggestionData = "";
@@ -6454,7 +6456,24 @@ FindlySDK.prototype.searchEventBinding = function (
         if (code == 9) {
           e.preventDefault();
         }
+        if (code == 27){
+          if ($('body').hasClass('top-down')) {
+            $('.search-top-down').val(_self.vars.enteredQuery);
+          }
+          else {
+            $('.bottom-up-search').val(_self.vars.enteredQuery);
+          }
+          _self.vars.isQueryEntered = false;
+          _self.suggestionSelectedByNavigationKeys(e);
+        }
         if (code == 13) {
+          if ($('body').hasClass('top-down')) {
+            _self.vars.enteredQuery = $('.search-top-down').val();
+          }
+          else {
+            _self.vars.enteredQuery = $('.bottom-up-search').val();
+          }
+          _self.vars.isQueryEntered = false;
           $(".suggestion-box.highlightSuggestion").removeClass(
             "highlightSuggestion"
           );
@@ -22653,6 +22672,7 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
 // };
 
 FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
+  var _self = this;
   if ($("body").hasClass("top-down")) {
     var $hlight = $(".suggestion-box.highlightSuggestion"),
       $div = $(".suggestion-box");
@@ -22664,11 +22684,15 @@ FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
       if ($hlight.next().length == 0) {
         $div.eq(0).addClass("highlightSuggestion");
       }
+      if(!_self.vars.isQueryEntered){
+        _self.vars.enteredQuery =  $('.search-top-down').val();
+      }
       var querySuggestionId = $(
         ".suggestion-box.highlightSuggestion .sugg-query-box"
       ).attr("id");
       $(".search-top-down").val(querySuggestionId);
       $(".top-down-suggestion").val("");
+      _self.vars.isQueryEntered = true;
     } else if (e.keyCode === 38) {
       $hlight
         .removeClass("highlightSuggestion")
@@ -22677,11 +22701,15 @@ FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
       if ($hlight.prev().length == 0) {
         $div.eq(-1).addClass("highlightSuggestion");
       }
+      if(!_self.vars.isQueryEntered){
+        _self.vars.enteredQuery =  $('.search-top-down').val();
+      }
       var querySuggestionId = $(
         ".suggestion-box.highlightSuggestion .sugg-query-box"
       ).attr("id");
       $(".search-top-down").val(querySuggestionId);
       $(".top-down-suggestion").val("");
+      _self.vars.isQueryEntered = true;
     }
   } else {
     var $hlight = $(".search-suggested-title.highlightSuggestion"),
@@ -22700,11 +22728,15 @@ FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
           300
         );
       }
+      if(!_self.vars.isQueryEntered){
+        _self.vars.enteredQuery =  $('.bottom-up-search').val();
+      }
       var querySuggestionId = $(
         ".search-suggested-title.highlightSuggestion"
       ).attr("suggestion");
       $(".bottom-up-search").val(querySuggestionId);
       $(".bottom-up-suggestion").val("");
+      _self.vars.isQueryEntered = true;
     } else if (e.keyCode === 38) {
       $hlight
         .removeClass("highlightSuggestion")
@@ -22722,11 +22754,15 @@ FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
           300
         );
       }
+      if(!_self.vars.isQueryEntered){
+        _self.vars.enteredQuery =  $('.bottom-up-search').val();
+      }
       var querySuggestionId = $(
         ".search-suggested-title.highlightSuggestion"
       ).attr("suggestion");
       $(".bottom-up-search").val(querySuggestionId);
       $(".bottom-up-suggestion").val("");
+      _self.vars.isQueryEntered = true;
     }
   }
 };
