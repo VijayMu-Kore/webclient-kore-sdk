@@ -78,7 +78,8 @@ let config= {
         new ESLintPlugin({
           files: 'src/**/*.ts,src/**/*.js',
           failOnError: true,
-          failOnWarning: true
+          failOnWarning: true,
+          //exclude:['src/components/chatwindow/chatWindow.js']
         })
         // new HtmlWebpackPlugin() 
           
@@ -87,7 +88,7 @@ let config= {
         extensions:['.js','.ts']
     },
     output: {
-        publicPath:"",
+        // publicPath:"",
         filename: 'kore-web-sdk-[name].umd.js',
         path: path.resolve(__dirname,'dist'),
         clean: false,
@@ -130,7 +131,7 @@ module.exports= function(env,argv){
         config.entry={
           // KoreChatSDK: {
           //   import: "./src/index_umd_chat.ts",
-          //   filename: 'kore-web-sdk-umd-chat.min.js',
+          //   filename: 'kore-web-sdk-umd-chat.js',
           //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
           // },
           // KoreWidgetsSDK:{
@@ -153,36 +154,28 @@ module.exports= function(env,argv){
             filename: 'plugins/kore-graph-templates-plugin-umd.js',
             chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
           },
-          WebKitSTTPluginSDK: {
-            import: "./src/index_plugins/WebKitSTT_umd.ts",
-            filename: 'plugins/webapi-stt-plugin-umd.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
-          BrowserTTSPluginSDK: {
-            import: "./src/index_plugins/BrowserTTS_umd.ts",
-            filename: 'plugins/browser-tts-umd-plugin-umd.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
-          AgentDeskTopPluginSDK: {
-            import: "./src/index_plugins/agentDesktop_umd.ts",
-            filename: 'plugins/agent-desktop-umd.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
-          BrowserTTSPluginSDK: {
-            import: "./src/index_plugins/BrowserTTS_umd.ts",
-            filename: 'plugins/browser-tts-umd-plugin-umd.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
-          // AgentDeskTopPluginSDK: {
-          //   import: "./src/index_plugins/agentDesktop_umd.ts",
-          //   filename: 'plugins/agent-desktop-umd.js',
+          // SpeechToTextPluginSDK: {
+          //   import: "./src/index_plugins/speechtotext_umd.ts",
+          //   filename: 'plugins/speech-to-text-plugin-umd.js',
           //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          // }
+          // },
+          // TtsSpeechPluginSDK: {
+          //   import: "./src/index_plugins/ttsspeech_umd.ts",
+          //   filename: 'plugins/tts-speech-plugin-umd.js',
+          //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
+          // },
         }
         config.output.library = {
           name: '[name]',
           type: 'assign-properties',
-        }
+        }//["KoreChatSDK","KoreWidgetsSDK","KoreSearchSDK"];
+        //config.output.umdNamedDefine= true;
+        //config.output.filename = 'kore-web-sdk-umd-[name].js';
+        // function(entryKey, entryValue) {
+        //     if (entryKey === 'umd_chat') return 'KoreChatSDK';
+        //     if (entryKey === 'umd_widgets') return 'KoreWidgetsSDK';
+        //     if (entryKey === 'umd_search') return 'KoreSearchSDK';
+        // }
     }
 
     if (env.kore_env==='dev') {
