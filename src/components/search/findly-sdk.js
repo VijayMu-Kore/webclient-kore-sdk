@@ -11454,7 +11454,7 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject) {
   }
   messageToBot["resourceid"] = "/bot.message";
 
-  messageToBot["maxNumOfResults"] = 5;
+
 
   messageToBot["location"] = _self.vars.locationObject.location;
   messageToBot["timeDateDay"] = dateTime;
@@ -11506,6 +11506,8 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject) {
   messageToBot["interface"] = $("body").hasClass("top-down")
     ? "fullSearch"
     : "conversationalSearch";
+
+    messageToBot["maxNumOfResults"] = (messageToBot["interface"]=="conversationalSearch")? 2 : 5;
   //payload end//
   if (!$("body").hasClass("demo")) {
     messageToBot.indexPipelineId = _self.API.indexpipelineId;
