@@ -46,12 +46,19 @@ botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id he
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 
 botOptionsFindly.botInfo = {
-  chatBot: "SA demo",
-  taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
+  chatBot: "Bot actions V2",
+  taskBotId: "st-af4891e5-b228-5c30-b629-e21a49d37d04",
 };
-botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
-botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
-botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
+botOptionsFindly.clientId = "cs-b20a8411-74d9-58b0-b615-78b33e2986ae";
+botOptionsFindly.clientSecret = "UFTq1wsjDREF7gb7XVDcOrg+8Llu98sVs4zGGXRZc1A=";
+botOptionsFindly.searchIndexID = "sidx-ea84961b-7aad-57f6-a021-eeb591433c48";
+// botOptionsFindly.botInfo = {
+//   chatBot: "PSI_Demo_V1.1",
+//   taskBotId: "st-7b63dd9c-d111-5372-ba60-0a8b69963798",
+// };
+// botOptionsFindly.clientId = "cs-4f4e9434-eca4-566a-9d90-7b7dbed81320";
+// botOptionsFindly.clientSecret = "EmgxDGZV8dZhm9pGQePqVeb1CXxlrcD0RwWnize0ass=";
+// botOptionsFindly.searchIndexID = "sidx-88a143e1-2447-5d67-b26a-78cf5f97d407";
 // To modify the web socket url use the following option
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {

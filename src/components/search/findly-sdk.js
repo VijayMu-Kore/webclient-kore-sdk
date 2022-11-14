@@ -7880,7 +7880,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         var snippetObj={};
               if(res?.graph_answer?.payload?.center_panel){
                 if(Object.keys(res.graph_answer.payload.center_panel).length>0){
-                  snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer),page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.page_url}; 
+                  snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer),page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source};
                 }
                 else{
                   snippetObj={};
@@ -19812,7 +19812,7 @@ FindlySDK.prototype.appendSuggestions = function (autoComplete) {
       ? $(".search-top-down").val()
       : $(".bottom-up-search").val(),
     // "maxNumOfResults": 9,
-    maxNumOfResults: 5,
+    maxNumOfResults: searchConfigurationCopy?.querySuggestionsLimit||2,
     userId: _self.API.uuid,
     streamId: _self.API.streamId,
     lang: "en",
@@ -24706,5 +24706,16 @@ FindlySDK.prototype.getFeedBackResult = function () {
   _self.updateFeedBackResult(type, text);
   });
   }
+  FindlySDK.prototype.focusInputTextbox = function () {
+    var _self = this;
+    setTimeout(() => {
+      $('#search').focus();
+    }, 600);
+  };
+  FindlySDK.prototype.renderWebForm = function (msgData, returnTemplate) {
+    var _self = this;
+    return;
+  }
+
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

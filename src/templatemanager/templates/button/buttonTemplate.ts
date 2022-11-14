@@ -85,7 +85,9 @@ class ButtonTemplate {
                 const _leftIcon = _parentQuikReplyEle.parentElement.parentElement.querySelectorAll('.quickreplyLeftIcon');
                 const _rightIcon = _parentQuikReplyEle.parentElement.parentElement.querySelectorAll('.quickreplyRightIcon');
                 setTimeout(() => {
-                    _parentQuikReplyEle.parentElement.parentElement.getElementsByClassName('user-account')[0].classList.remove('marginT50');
+                    if(_parentQuikReplyEle.parentElement.parentElement.getElementsByClassName('user-account')?.length){
+                        _parentQuikReplyEle.parentElement.parentElement.getElementsByClassName('user-account')[0].classList.remove('marginT50');
+                    }
                     _parentQuikReplyEle.parentElement.parentElement.removeChild(_leftIcon[0]);
                     _parentQuikReplyEle.parentElement.parentElement.removeChild(_rightIcon[0]);
                     _parentQuikReplyEle.parentElement.removeChild(_parentQuikReplyEle);
