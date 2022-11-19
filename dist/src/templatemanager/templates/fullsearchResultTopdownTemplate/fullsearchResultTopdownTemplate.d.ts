@@ -19,5 +19,6 @@ declare class FullSearchResultTopdownTemplate {
     bindSortableFacetClickEvent(me: any, messageHtml: any, sortableHtml: any, facets: any): void;
     bindBackToSearchClickEvent(me: any, messageHtml: any): void;
     feedBackResultEvents(me: any, messageHtml: any): void;
+    bindCustomizePreviewClickEvent(me: any, messageHtml: any): void;
 }
 export default FullSearchResultTopdownTemplate;

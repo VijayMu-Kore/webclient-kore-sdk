@@ -79,6 +79,8 @@ class FullSearchResultTopdownTemplate {
       FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,msgData.message[0].component.payload.sortableFacetList)
     }
     FullSearchResultTopdownTemplate.prototype.bindBackToSearchClickEvent(me,messageHtml);
+
+    FullSearchResultTopdownTemplate.prototype.bindCustomizePreviewClickEvent(me,messageHtml);
   }
   getTemplateString(type: any) {
 
@@ -102,10 +104,10 @@ class FullSearchResultTopdownTemplate {
                             <div class="show_insights_top_down" data-displayInsights="true">\
                                 <span class="query_analytics_top_down"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAD4SURBVHgBlVDbTcNAEJzZjQSfoQOX4A6gA8QvEtgkgMwX7iDQQfgz4nVUEKUCTAd0QNIBfxFSfMsdERGgRIpXOq1uZ0Y7s8SGlednqakMuBosu7E7N/xYkkVH9M0BV5Gt8/kC7xMQtTd7FchlJDt39yaHQf1bYDp7Imz8/Hi7Q/KGlPSHHHEe9wsX1ux6w7WETsHU3VdXa6KACxtF4hWlRN8PVYm2lZ8We/H9nx/1zss/oWMeFU3DMPnOA0zUo3aumsR/1ivemfUvRmxmJ9bZGjRzjlWRmWG6uAASUTgD9zsmw7k1dbBt4UrbXRjTtR7NlpigZbUWfAEi/12gzLS2XQAAAABJRU5ErkJggg==">Query Analytics</span>\
                             </div>\
-                            <div class="custom-header-container-center top-down-customize-btns display-none">\
+                            <div class="custom-header-container-center top-down-customize-btns">\
                                 <ul class="custom-header-nav">\
-                                    <li id="viewTypePreview" class="custom-header-nav-link-item nav-link-item-active"><a class="custom-header-nav-link">Preview</a></li>\
-                                    <li id="viewTypeCustomize" class="custom-header-nav-link-item"><a class="custom-header-nav-link">Customize</a></li>\
+                                    <li id="viewTypePreview" class="custom-header-nav-link-item {{if viewType == "Preview"}}nav-link-item-active {{/if}}"><a class="custom-header-nav-link">Preview</a></li>\
+                                    <li id="viewTypeCustomize" class="custom-header-nav-link-item {{if viewType == "Customize"}}nav-link-item-active {{/if}}"><a class="custom-header-nav-link">Customize</a></li>\
                                 </ul>\
                             </div>\
                             <div id="top-down-tab-sec"></div>\
@@ -127,7 +129,7 @@ class FullSearchResultTopdownTemplate {
                                 <div class="title-info">Please try searching with another term</div>\
                             </div>\
                             <div class="full-search-data-container"></div>\
-                            <div class="custom-add-result-container display-none">\
+                            <div class="custom-add-result-container1 display-none">\
                                 <div class="custom-add-new-result-content">\
                                     <div class="bold-text">Not finding the result?</div>\
                                     <div class="link-text"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABrSURBVHgBzVHBCYAwEMuV/lRwBDdykoojuIoTiBs5Qt8KjVZfLdeHD8FAyJEQOO4ABZXbx0gts5opIi0KMHiJ7wvSuLBcmu4s7G6lbHnBgmGGZAWa/hnCmvrw0FAPxxSpZT+8kvppkr5UOAH/GRicle7qIwAAAABJRU5ErkJggg==">Add from repository</div>\
@@ -825,6 +827,43 @@ class FullSearchResultTopdownTemplate {
     $('.thumbs-up-top-down-blue, .thumbs-up-top-down-red').hide();
     $('.thumbs-up-top-down-black,.thumbs-down-top-down-black').show();
     }
+
+  bindCustomizePreviewClickEvent(me: any, messageHtml: any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml).find(".custom-header-nav-link-item")
+  .off("click").on("click", function (e:any) {
+    hostWindowInstance.customizePreviewBtnClick(e,true).then((result: any) => {
+      let formatedTemplatesData: any = result;
+      var selectedFacet =$(messageHtml).find(".tab-name.capital.facet.active-tab").closest('.facet').attr("id");
+      setTimeout(() => {
+        $(messageHtml).find('.full-search-data-container').empty();
+        if (formatedTemplatesData && formatedTemplatesData.length) {
+          formatedTemplatesData.forEach((d: any) => {
+            var showAllHTML;
+            d.message[0].component.payload['selectedFacet'] = selectedFacet;
+            if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+              showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+            } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+              showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+            } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+              showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+            }
+            $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+          })
+        }
+
+        if (!$(".full-search-data-container").children().length) {
+          $(".empty-full-results-container").removeClass("hide");
+        } else {
+          if (!$(".empty-full-results-container").hasClass("hide")) {
+            $(".empty-full-results-container").addClass("hide");
+          }
+        }
+      }, 300);
+    })
+  })
+  }
 }
 var truncateText = FullSearchResultTopdownTemplate.prototype.truncateText;
 export default FullSearchResultTopdownTemplate;

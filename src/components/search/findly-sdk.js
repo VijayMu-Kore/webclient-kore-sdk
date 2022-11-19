@@ -3909,9 +3909,9 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                   _self.vars.searchFacetFilters
                 );
                 _self.markSelectedFilters();
-                setTimeout(function () {
-                  _self.bindStructuredDataTriggeringOptions();
-                }, 100);
+                // setTimeout(function () {
+                //   _self.bindStructuredDataTriggeringOptions();
+                // }, 100);
               }
               setTimeout(function () {
                 _self.vars["selectedFacetFromSearch"] =
@@ -3986,137 +3986,137 @@ FindlySDK.prototype.bindAllResultsView = function () {
       });
   }
 
-  $(".custom-header-nav-link-item")
-    .off("click")
-    .on("click", function (event) {
-      if ($("body").hasClass("top-down")) {
-        if (
-          ($(event.currentTarget).attr("id") == "viewTypeCustomize" &&
-            _self.vars.customizeView) ||
-          ($(event.currentTarget).attr("id") == "viewTypePreview" &&
-            !_self.vars.customizeView)
-        ) {
-          return;
-        }
-      }
+  // $(".custom-header-nav-link-item")
+  //   .off("click")
+  //   .on("click", function (event) {
+  //     if ($("body").hasClass("top-down")) {
+  //       if (
+  //         ($(event.currentTarget).attr("id") == "viewTypeCustomize" &&
+  //           _self.vars.customizeView) ||
+  //         ($(event.currentTarget).attr("id") == "viewTypePreview" &&
+  //           !_self.vars.customizeView)
+  //       ) {
+  //         return;
+  //       }
+  //     }
 
-      event.preventDefault();
-      event.stopImmediatePropagation();
+  //     event.preventDefault();
+  //     event.stopImmediatePropagation();
 
-      var navLinks = document.getElementsByClassName(
-        "custom-header-nav-link-item"
-      );
+  //     var navLinks = document.getElementsByClassName(
+  //       "custom-header-nav-link-item"
+  //     );
 
-      if (
-        _self.config.viaSocket &&
-        _self.vars.resultRankingActionPerformed == true
-      ) {
-        var scrollHeight =
-          $("#searchChatContainer").scrollTop() +
-          $("#searchChatContainer").prop("scrollHeight");
-        $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
-        if (!$("body").hasClass("top-down")) {
-          _self.sendMessage(_self.vars.searchObject.searchText);
-        }
-      }
+  //     if (
+  //       _self.config.viaSocket &&
+  //       _self.vars.resultRankingActionPerformed == true
+  //     ) {
+  //       var scrollHeight =
+  //         $("#searchChatContainer").scrollTop() +
+  //         $("#searchChatContainer").prop("scrollHeight");
+  //       $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
+  //       if (!$("body").hasClass("top-down")) {
+  //         _self.sendMessage(_self.vars.searchObject.searchText);
+  //       }
+  //     }
       
 
-      for (var i = 0; i < navLinks.length; i++) {
-        navLinks[i].className = navLinks[i].className.replace(
-          " nav-link-item-active",
-          ""
-        );
-      }
-      event.currentTarget.className += " nav-link-item-active";
-      if ($("body").hasClass("top-down")) {
-        var searchData;
-        // _self.vars.selectedFacetsList = [];
-        // _self.searchFacetsList([]);
-      }
-      if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
-        $(searchData)
-          .find(".tasks-wrp .faqs-shadow")
-          .find(".accordion.acc-active")
-          .trigger("click");
-      }
-      if (_self.vars.showingMatchedResults == true) {
-        if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-          _self.vars.customizeView = true;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").show();
-            $(".custom-add-result-container").removeClass("display-none");
-            $(".content-data-sec").addClass("if-customize-mode");
-          }
+  //     for (var i = 0; i < navLinks.length; i++) {
+  //       navLinks[i].className = navLinks[i].className.replace(
+  //         " nav-link-item-active",
+  //         ""
+  //       );
+  //     }
+  //     event.currentTarget.className += " nav-link-item-active";
+  //     if ($("body").hasClass("top-down")) {
+  //       var searchData;
+  //       // _self.vars.selectedFacetsList = [];
+  //       // _self.searchFacetsList([]);
+  //     }
+  //     if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
+  //       $(searchData)
+  //         .find(".tasks-wrp .faqs-shadow")
+  //         .find(".accordion.acc-active")
+  //         .trigger("click");
+  //     }
+  //     if (_self.vars.showingMatchedResults == true) {
+  //       if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
+  //         _self.vars.customizeView = true;
+  //         if ($("body").hasClass("top-down") && _self.isDev) {
+  //           $(".show_insights_top_down").show();
+  //           $(".custom-add-result-container").removeClass("display-none");
+  //           $(".content-data-sec").addClass("if-customize-mode");
+  //         }
 
-          // $(".custom-insights-control-container").show();
+  //         // $(".custom-insights-control-container").show();
 
-          // $(".query-analytics-control-container").show(); // Temporary modification, made as per FLY-1012
+  //         // $(".query-analytics-control-container").show(); // Temporary modification, made as per FLY-1012
 
-          $(".tasks-wrp").sortable();
-          $(".tasks-wrp").sortable("option", "disabled", false);
-          $(".tasks-wrp").disableSelection();
+  //         $(".tasks-wrp").sortable();
+  //         $(".tasks-wrp").sortable("option", "disabled", false);
+  //         $(".tasks-wrp").disableSelection();
 
-          $(".faqs-shadow").addClass("custom-faqs-shadow");
-          $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
+  //         $(".faqs-shadow").addClass("custom-faqs-shadow");
+  //         $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
 
-          $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
+  //         $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
 
-          $(".image-url-sec").css("display", "none");
-          $(".faqs-bottom-actions").css("display", "table");
+  //         $(".image-url-sec").css("display", "none");
+  //         $(".faqs-bottom-actions").css("display", "table");
 
-          $(".divfeedback").css("display", "none");
-        } else {
-          _self.vars.customizeView = false;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").hide();
-            $(".custom-add-result-container").addClass("display-none");
-            $(".content-data-sec").removeClass("if-customize-mode");
-          }
+  //         $(".divfeedback").css("display", "none");
+  //       } else {
+  //         _self.vars.customizeView = false;
+  //         if ($("body").hasClass("top-down") && _self.isDev) {
+  //           $(".show_insights_top_down").hide();
+  //           $(".custom-add-result-container").addClass("display-none");
+  //           $(".content-data-sec").removeClass("if-customize-mode");
+  //         }
 
-          $(".faqs-shadow").removeClass("custom-faqs-shadow");
-          $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
+  //         $(".faqs-shadow").removeClass("custom-faqs-shadow");
+  //         $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
 
-          $(".faqs-bottom-actions").removeClass("custom-faqs-bottom-actions");
+  //         $(".faqs-bottom-actions").removeClass("custom-faqs-bottom-actions");
 
-          // $(".tasks-wrp").sortable("disable");
-          $(".image-url-sec").css("display", "table-cell");
-          $(".faqs-bottom-actions").css("display", "none");
+  //         // $(".tasks-wrp").sortable("disable");
+  //         $(".image-url-sec").css("display", "table-cell");
+  //         $(".faqs-bottom-actions").css("display", "none");
 
-          // $(".divfeedback").css('display', 'block');
+  //         // $(".divfeedback").css('display', 'block');
 
-          $(".notification-div").hide();
-        }
-        if ($("body").hasClass("top-down")) {
-          _self.invokeSearch();
-        }
-      } else {
-        $(".search-container").css("top", 50);
-        if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-          _self.vars.customizeView = true;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").show();
-            $(".custom-add-result-container").removeClass("display-none");
-            $(".content-data-sec").addClass("if-customize-mode");
-          }
-        } else {
-          _self.vars.customizeView = false;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").hide();
-            $(".custom-add-result-container").addClass("display-none");
-            $(".content-data-sec").removeClass("if-customize-mode");
-          }
-        }
-        if ($("body").hasClass("top-down")) {
-          _self.pubSub.publish("sa-show-all-results-top-down", {});
-        }
-      }
-      if (!$("body").hasClass("top-down")) {
-        _self.pubSub.publish("sa-update-search-customozation");
-      }
-      $(".structured-data-bottom-actions").css("display", "none");
-      $(".structured-data-wrp-content").removeClass("custom-faqs-wrp-content");
-      $(".moreStructredData").addClass("display-none");
-    });
+  //         $(".notification-div").hide();
+  //       }
+  //       if ($("body").hasClass("top-down")) {
+  //         _self.invokeSearch();
+  //       }
+  //     } else {
+  //       $(".search-container").css("top", 50);
+  //       if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
+  //         _self.vars.customizeView = true;
+  //         if ($("body").hasClass("top-down") && _self.isDev) {
+  //           $(".show_insights_top_down").show();
+  //           $(".custom-add-result-container").removeClass("display-none");
+  //           $(".content-data-sec").addClass("if-customize-mode");
+  //         }
+  //       } else {
+  //         _self.vars.customizeView = false;
+  //         if ($("body").hasClass("top-down") && _self.isDev) {
+  //           $(".show_insights_top_down").hide();
+  //           $(".custom-add-result-container").addClass("display-none");
+  //           $(".content-data-sec").removeClass("if-customize-mode");
+  //         }
+  //       }
+  //       if ($("body").hasClass("top-down")) {
+  //         _self.pubSub.publish("sa-show-all-results-top-down", {});
+  //       }
+  //     }
+  //     if (!$("body").hasClass("top-down")) {
+  //       _self.pubSub.publish("sa-update-search-customozation");
+  //     }
+  //     $(".structured-data-bottom-actions").css("display", "none");
+  //     $(".structured-data-wrp-content").removeClass("custom-faqs-wrp-content");
+  //     $(".moreStructredData").addClass("display-none");
+  //   });
   $(".sdk-tours-info-nxt")
     .off("click")
     .on("click", function (e) { });
@@ -9722,10 +9722,10 @@ FindlySDK.prototype.getFrequentlySearched = function (url, type, payload) {
   payload.streamId = this.bot.options.botInfo.taskBotId;
   var _self = this;
   _self.vars.deselectedAutoFilters = [];
-  if (!$("body").hasClass("demo")) {
-    payload.indexPipelineId = _self.API.indexpipelineId;
-    payload.queryPipelineId = _self.API.pipelineId;
-  }
+  // if ($("body").hasClass("demo")) {
+    payload.indexPipelineId =  _self.API.indexpipelineId;
+    payload.queryPipelineId =  _self.API.pipelineId;
+  // }
 
   payload["messagePayload"] = {
     clientMessageId: new Date().getTime(),
@@ -20992,10 +20992,13 @@ FindlySDK.prototype.initializeTopDown = function (
   searchExperienceConfig
 ) {
   var _self = this;
-  if (search_container && search_container.length) {
-    _self.isDev = true;
-  } else {
-    _self.isDev = false;
+  // if (search_container && search_container.length) {
+  //   _self.isDev = true;
+  // } else {
+  //   _self.isDev = false;
+  // }
+  if(_self.isDev){
+    search_container = 'top-down-search-background-div';
   }
   var devMode = _self.isDev ? true : false;
   var searchConfiguration = _self.mapSearchConfiguration(
@@ -23158,9 +23161,17 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                 isDemoTemplate = 'bankingTemplate'
               }
             }
-            const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
-
             var isDropdownEnabled = true;
+            var searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
+            if(_self.vars.customizeView && _self.isDev){
+              viewType = 'Customize';
+              searchTemplateType = "List";
+              data.isClickable = true;
+              isDropdownEnabled = false;
+            }
+
+            
+
             var messageData = {
               "message": [
                 {
@@ -23193,7 +23204,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'fieldName': data.fieldName,
                       'gridLayoutType': gridLayoutType,
                       "isButtonTemplate": false,
-                      "isDemoTemplate":isDemoTemplate
+                      "isDemoTemplate":isDemoTemplate,
                     }
                   }
                 }
@@ -23258,10 +23269,10 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
           if(!obj.chips) {
             obj.chips = item.chips||'';
           }
-          if(!obj.createdOn){
+          if(!obj.createdOn || item.textField2){
             obj.createdOn = item.textField2 || ''
           }
-          if(!obj.createdByUser){
+          if(!obj.createdByUser || item.textField1){
             obj.createdByUser = item.textField1 || '';
           }
           // Demo fields start         
@@ -24418,8 +24429,15 @@ FindlySDK.prototype.setupInternalAssertionFunctionWithAPIKey = function () {
 FindlySDK.prototype.show = function (config) {
   var _self = this;
   _self.vars.isHostedSdk = true;
+
   if (config && config.API_KEY_CONFIG && config.API_KEY_CONFIG.KEY != 'YOUR_API_KEY') {
     _self.config.botOptions["apiKey"] = config["API_KEY_CONFIG"].KEY;
+  }
+  if(config.isDev){
+    _self.isDev = config.isDev;
+  }
+  if(config.botOptions){
+    _self.config.botOptions = {..._self.config.botOptions, ...config.botOptions}
   }
   _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
   _self.initKoreSDK();
@@ -24719,5 +24737,194 @@ FindlySDK.prototype.getFeedBackResult = function () {
     return;
   }
 
+
+  //Business SDk Custimize and Preview click Events (Author by: Pavan)//
+  FindlySDK.prototype.customizePreviewBtnClick = function (event,isTopDown) {
+    if ($("body").hasClass("top-down")) {
+      $(".content-data-sec").scrollTop(0);
+    }else{
+      $(".data-body-sec").scrollTop(0);
+    }
+    var _self = this;
+    // _self.isDev =  true;
+    if (isTopDown) {
+      if (
+        ($(event.currentTarget).attr("id") == "viewTypeCustomize" &&
+          _self.vars.customizeView) ||
+        ($(event.currentTarget).attr("id") == "viewTypePreview" &&
+          !_self.vars.customizeView)
+      ) {
+        return;
+      }
+    }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    var navLinks = document.getElementsByClassName(
+      "custom-header-nav-link-item"
+    );
+
+    if (
+      _self.config.viaSocket &&
+      _self.vars.resultRankingActionPerformed == true
+    ) {
+      var scrollHeight =
+        $("#searchChatContainer").scrollTop() +
+        $("#searchChatContainer").prop("scrollHeight");
+      $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
+      if (!isTopDown) {
+        _self.sendMessage(_self.vars.searchObject.searchText);
+      }
+    }
+    
+
+    for (var i = 0; i < navLinks.length; i++) {
+      navLinks[i].className = navLinks[i].className.replace(
+        " nav-link-item-active",
+        ""
+      );
+    }
+    event.currentTarget.className += " nav-link-item-active";
+    if (isTopDown) {
+      var searchData;
+    }
+    if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
+      $(searchData)
+        .find(".tasks-wrp .faqs-shadow")
+        .find(".accordion.acc-active")
+        .trigger("click");
+    }
+    if (_self.vars.showingMatchedResults == true) {
+      if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
+        _self.vars.customizeView = true;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").show();
+          $(".custom-add-result-container").removeClass("display-none");
+          $(".content-data-sec").addClass("if-customize-mode");
+        }
+        // $(".tasks-wrp").sortable();
+        // $(".tasks-wrp").sortable("option", "disabled", false);
+        // $(".tasks-wrp").disableSelection();
+
+        $(".faqs-shadow").addClass("custom-faqs-shadow");
+        $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
+
+        $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
+
+        $(".image-url-sec").css("display", "none");
+        $(".faqs-bottom-actions").css("display", "table");
+
+        $(".divfeedback").css("display", "none");
+      } else {
+        _self.vars.customizeView = false;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").hide();
+          $(".custom-add-result-container").addClass("display-none");
+          $(".content-data-sec").removeClass("if-customize-mode");
+        }
+
+        $(".faqs-shadow").removeClass("custom-faqs-shadow");
+        $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
+
+        $(".faqs-bottom-actions").removeClass("custom-faqs-bottom-actions");
+
+        $(".image-url-sec").css("display", "table-cell");
+        $(".faqs-bottom-actions").css("display", "none");
+
+        $(".notification-div").hide();
+      }
+    } else {
+      $(".search-container").css("top", 50);
+      if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
+        _self.vars.customizeView = true;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").show();
+          $(".custom-add-result-container").removeClass("display-none");
+          $(".content-data-sec").addClass("if-customize-mode");
+        }
+      } else {
+        _self.vars.customizeView = false;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").hide();
+          $(".custom-add-result-container").addClass("display-none");
+          $(".content-data-sec").removeClass("if-customize-mode");
+        }
+      }
+    }
+    
+      var url = _self.API.searchUrl;
+      var payload = {
+        query: _self.vars.searchObject.searchText,
+        // "maxNumOfResults": 9,
+        maxNumOfResults: 5,
+        userId: _self.API.uuid,
+        streamId: _self.API.streamId,
+        lang: "en",
+        // "isDev": true,
+        isDev: _self.isDev,
+        searchRequestId: _self.vars.requestId,
+      };
+      if (_self.vars.isFilterModified) {
+        payload['isFilterModified'] = true;
+      }
+      if (_self.isDev) {
+        payload["customize"] = _self.vars.customizeView;
+      }
+      if (_self.vars.displaySortable) {
+        payload['sortableFacets'] = [_self.vars.displaySortable];
+      }
+      if (_self.vars.filterObject.length > 0) {
+        payload.filters = JSON.parse(JSON.stringify(_self.vars.filterObject));
+      }
+      if (
+        _self.vars.selectedFacetFromSearch &&
+        _self.vars.selectedFacetFromSearch !== "all results"
+      ) {
+        var tabConfig = {
+          filter: {
+            fieldName: _self.vars.tabFacetFieldName,
+            facetValue: [_self.vars.selectedFacetFromSearch],
+          },
+        };
+        payload.tabConfig = tabConfig;
+      } else {
+        let filters = payload.filters;
+        for (let i = (filters || []).length - 1; i >= 0; i--) {
+          if (
+            filters[i].facetValue[0] == "faq" ||
+            filters[i].facetValue[0] == "task" ||
+            filters[i].facetValue[0] == "web" ||
+            filters[i].facetValue[0] == "file" ||
+            filters[i].facetValue[0] == "data"
+          ) {
+            payload.filters.splice(i, 1);
+          }
+        }
+      }
+      return new Promise((resolve, reject) => {
+        _self
+          .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
+            // var data = {"templateType":"search","requestId":"fsh-5b260720-6127-5bfa-ac18-bb5bb580dd9e","template":{"originalQuery":"morgan","cleanQuery":"morgan","results":{"web":{"data":[{"contentId":"fc-1f044c46-06d1-4576-bd4f-a8b9edfd2fbf","sys_content_type":"web","score":29.039259,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/people#:~:text=Careers%20at%20Morgan,at%20Morgan%20Stanley","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Careers in Finance and Investment Banking | Morgan Stanley","page_title_keywords":["investment banking","morgan stanley","careers","finance"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/people","sys_racl":["*"],"createdOn":"2022-08-05T17:34:12.371000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"If you are driven to succeed, eager to take on new challenges and open to collaborating with diverse colleagues in pursuit of excellence, you'll discover a wealth of exciting career opportunities at Morgan Stanley. Find your path with us, whether you're a student, a recent graduate or an experienced","snippets":[{"snippet":["Grow Your Career With Us","Explore Opportunities","By the Numbers","Explore Our Global Offices","Morgan Stanley Is Global","Our Commitment to Diversity and Inclusion","Discover Our Opportunities","Find Your Path"],"sub_type":"headings","title":"Careers at Morgan Stanley","type":"list"},{"snippet":["41","73k","36"],"sub_type":"headings","title":"By the Numbers","type":"list"}],"page_title_keywords_en":["investment banking","morgan stanley","careers","finance"],"page_sections":["Careers at Morgan Stanley","Grow Your Career With Us","Explore Opportunities","By the Numbers","41","73k","36","Explore Our Global Offices","Morgan Stanley Is Global","Our Commitment to Diversity and Inclusion","Discover Our Opportunities","Find Your Path"],"page_preview":"Careers at *morgan* Stanley Grow Your Career With Us Explore Opportunities By the Numbers Explore Our Global Offices *morgan* Stanley","most_matched_snippet":{"snippet":["Grow Your Career With Us","Explore Opportunities","By the Numbers","Explore Our Global Offices","Morgan Stanley Is Global","Our Commitment to Diversity and Inclusion","Discover Our Opportunities","Find Your Path"],"sub_type":"headings","title":"Careers at Morgan Stanley"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":233}},{"contentId":"fc-86607086-db17-4b88-9516-0560ec97577e","sys_content_type":"web","score":24.810549,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/about-us/giving-back#:~:text=For%20more%20than,to%20quality%20healthcare.","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Giving Back | Morgan Stanley","page_title_keywords":["giving back","morgan stanley"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/about-us/giving-back","sys_racl":["*"],"createdOn":"2022-08-05T17:34:12.775000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"Giving Back Morgan Stanley is committed to giving back to the communities where we live and work through long-lasting partnerships, community-based delivery and engaging our best asset—Morgan Stanley employees. Giving Back How Much Is Too Much Screen Time for Kids? Apr 27, 2022 What are the effects ","snippets":[{"sub_type":"paragraph","Content":"For more than 50 years, the Morgan Stanley Foundation has supported healthy starts and solid educations for the children in our communities, and has continued to expand the reach of those initiatives globally for the past 20 years through the Morgan Stanley International Foundation. Morgan Stanley Foundation programs focus on three core fundamentals for children’s physical and cognitive development: sustained access to healthy and nutritious food, safe places to play, and access to quality healthcare.","title":"Morgan Stanley Foundation"},{"sub_type":"paragraph","Content":"Our employees are instrumental in carrying out the Firm’s mission of Giving Back. In addition to year-round volunteering, employees have helped Morgan Stanley deliver more than 2.4 million hours of service through the Firm’s dedicated Global Volunteer Month. Each year our employees also make a lasting impact with local nonprofit partners through pro bono and skills based volunteering, including our signature pro bono program, Morgan Stanley Strategy Challenge.","title":"Employee Engagement"},{"sub_type":"paragraph","Content":"With charitable funding, planning advice and hands-on volunteering, we partner with Feeding America to provide children with access to nutritious food, which is critical for a healthy start to life. We recently celebrated 10 years of partnership with Feeding America distributing over 211 million meals to children and families across the country.","title":"Nutrition: Feeding America"},{"sub_type":"paragraph","Content":"By volunteering and providing financial support, we are ensuring that children around the country have access to a childhood filled with the balance and active play needed to thrive through our partnership with KaBOOM! This partnership has already delivered 23 playgrounds and 20 play spaces providing accessible and safe play to over 9,500 children.","title":"Play: KaBOOM!"},{"snippet":["Morgan Stanley Foundation","Employee Engagement"],"sub_type":"headings","title":"Employee Engagement","type":"list"},{"snippet":["Wellness: Centers of Excellence","Nutrition: Feeding America","Play: KaBOOM!"],"sub_type":"headings","title":"PROVIDING HEALTHY STARTS FOR CHILDREN IN OUR COMMUNITIES","type":"list"}],"page_title_keywords_en":["giving back","morgan stanley"],"page_sections":["Giving Back","How Much Is Too Much Screen Time for Kids?","Coming Together for Children's Mental Health","The Morgan Stanley Alliance for Children's Mental Health","Children's Mental Health Innovation Awards","A Virtual Roadmap to Real-World Success for a UK Nonprofit","Improving Virtual Healthcare to Address Adolescent Mental Health","Center for Urban Families Gets Guidance to Expand Reach","Employee Engagement","Morgan Stanley Foundation","Employee Engagement","PROVIDING HEALTHY STARTS FOR CHILDREN IN OUR COMMUNITIES","Wellness: Centers of Excellence","Nutrition: Feeding America","Play: KaBOOM!"],"page_preview":"*morgan* Stanley Foundation _For more than 50 years, the *morgan* Stanley Foundation has supported healthy starts and solid educations for","most_matched_snippet":{"Content":"For more than 50 years, the Morgan Stanley Foundation has supported healthy starts and solid educations for the children in our communities, and has continued to expand the reach of those initiatives globally for the past 20 years through the Morgan Stanley International Foundation. Morgan Stanley Foundation programs focus on three core fundamentals for children’s physical and cognitive development: sustained access to healthy and nutritious food, safe places to play, and access to quality healthcare.","sub_type":"paragraph","title":"Morgan Stanley Foundation"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":154}},{"contentId":"fc-f0e0ac2f-4ad5-4c49-a3fd-6c074babf5c1","sys_content_type":"web","score":20.241957,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/about-us/technology#:~:text=Collaborate%20With%20Us,Collaborate%20With%20Us","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Technology | Morgan Stanley","page_title_keywords":["morgan stanley","technology"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/about-us/technology","sys_racl":["*"],"createdOn":"2022-08-05T17:34:12.575000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"Technology We leverage engineering excellence and relentless innovation to build the connections and capabilities to power our firm and enable our clients and business teams to redefine markets and shape the future of our communities. By The Numbers What We Do From low latency and algorithmic tradin","snippets":[{"sub_type":"paragraph","Content":"From low latency and algorithmic trading, complex risk calculations and big data analytics to digital and end-user solutions, sophisticated cyber defense and large-scale, global infrastructure management—we maximize our ~$4 billion in investment in technology and innovation to provide clients and business teams with a competitive edge, drive efficiencies, and deliver stable, resilient operations 24/7.","title":"What We Do"},{"sub_type":"paragraph","Content":"The Morgan Stanley Technology Division is a powerhouse of world-class engineering that brings together diverse ideas, cultures and expertise. We serve our business with technology centers in Asia, Europe and the U.S. Our teams are comprised of developers, programmers, engineers, data scientists, physicists and mathematicians who bring to bear their extensive experience across industries, in government and academia, as well as Distinguished Engineers recognized throughout the industry.","title":"Technical Excellence"},{"snippet":["Powering our Market-Leading Platform","Optimizing Tools & Insights for Our Clients","Driving Productivity & Efficiency","Upholding Stability & Resilience"],"sub_type":"headings","title":"What We Do","type":"list"},{"snippet":["From the Sea to the Cloud","A Man Who Jumps at Opportunity","Microsoft and the Future of Remote Work","Mona\n                 \n\t\t\t\tEldam","Finding Professional Satisfaction in A.I. and Machine Learning","A Woman Who Codes—and So Much More"],"sub_type":"headings","title":"Recent Stories","type":"list"},{"snippet":["Nurturing Internal Innovation","Partnering with Tech Innovators","Innovating for Our Communities"],"sub_type":"headings","title":"Culture of Innovation","type":"list"},{"snippet":["Technology Partnerships","Morgan Stanley Developer Portal","Morgan Stanley Github"],"sub_type":"headings","title":"Collaborate With Us","type":"list"},{"snippet":["Fast Company","Banking Technology","CIO 100"],"sub_type":"headings","title":"Awards and Recognition","type":"list"},{"snippet":["Piyush","Rose-Gaëlle","Mona\n                 \n\t\t\t\tEldam"],"sub_type":"headings","title":"Technical Excellence","type":"list"}],"page_title_keywords_en":["morgan stanley","technology"],"page_sections":["Technology","By The Numbers","What We Do","Powering our Market-Leading Platform","Optimizing Tools & Insights for Our Clients","Driving Productivity & Efficiency","Upholding Stability & Resilience","Recent Stories","From the Sea to the Cloud","A Man Who Jumps at Opportunity","Microsoft and the Future of Remote Work","Mona\n                 \n\t\t\t\tEldam","Finding Professional Satisfaction in A.I. and Machine Learning","A Woman Who Codes—and So Much More","Culture of Innovation","Nurturing Internal Innovation","Partnering with Tech Innovators","Innovating for Our Communities","Collaborate With Us","Technology Partnerships","Morgan Stanley Developer Portal","Morgan Stanley Github","Awards and Recognition","Fast Company","Banking Technology","CIO 100","Technical Excellence","Piyush","Rose-Gaëlle","Mona\n                 \n\t\t\t\tEldam","Explore a Tech Career at Morgan Stanley"],"page_preview":"Collaborate With Us Technology Partnerships *morgan* Stanley Developer Portal *morgan* Stanley Github","most_matched_snippet":{"snippet":["Technology Partnerships","Morgan Stanley Developer Portal","Morgan Stanley Github"],"sub_type":"headings","title":"Collaborate With Us"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":213}},{"contentId":"fc-77641bef-b799-40b5-84d6-c92e4b3f52a5","sys_content_type":"web","score":19.353569,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/articles/who-we-are#:~:text=Meet%20the%20MindsBreaking,MindsBreaking%20the%20Mold","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Morgan Stanley Employee Profiles | Morgan Stanley Careers","page_title_keywords":["morgan stanley careers"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/content/dam/msdotcom/articles/who-we-are-campaign/tw-rose-gaelle.jpg","sys_racl":["*"],"createdOn":"2022-08-05T17:34:10.717000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"Our rising talent brings innovative solutions to whatever role they tackle. Hear their take on life at Morgan Stanley and learn how they succeed at meeting new challenges. Get Your Career Started At Morgan Stanley Find a program (opens in a new tab) Our People Profile learn more Katie Vice President","snippets":[{"snippet":["Get Your Career Started At Morgan Stanley","Our People","More Stories"],"sub_type":"headings","title":"Meet the MindsBreaking the Mold","type":"list"},{"snippet":["Katie","Wided","Manuel","Michelle\n                                 \n                                T.","Yuki","Rose-Gaëlle","Tomoko","Mariam","Satoko","Audrey","JP","Sebastian","Isaiah","Shelbie"],"sub_type":"headings","title":"Our People","type":"list"},{"snippet":["A Man Who Jumps at Opportunity","An Interest in Finance Yields a Different Spotlight","Finding Professional Satisfaction in A.I. and Machine Learning"],"sub_type":"headings","title":"More Stories","type":"list"}],"page_title_keywords_en":["morgan stanley careers"],"page_sections":["Meet the Minds","Breaking the Mold","Get Your Career Started At Morgan Stanley","Our People","Katie","Wided","Manuel","Michelle\n                                 \n                                T.","Yuki","Rose-Gaëlle","Tomoko","Mariam","Satoko","Audrey","JP","Sebastian","Isaiah","Shelbie","Katie","Wided","Manuel","Michelle\n                                 \n                                T.","Yuki","Rose-Gaëlle","More Stories","A Man Who Jumps at Opportunity","An Interest in Finance Yields a Different Spotlight","Finding Professional Satisfaction in A.I. and Machine Learning"],"page_preview":"Meet the MindsBreaking the Mold Get Your Career Started At *morgan* Stanley Our People More Stories","most_matched_snippet":{"snippet":["Get Your Career Started At Morgan Stanley","Our People","More Stories"],"sub_type":"headings","title":"Meet the MindsBreaking the Mold"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":2,"appearances":140}},{"contentId":"fc-030fe767-a6d4-4c92-9989-e4a3a429fa03","sys_content_type":"web","score":18.057867,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/people/technology-professionals#:~:text=Get%20Your%20Career,at%20Morgan%20Stanley","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Technology Professionals | Morgan Stanley","page_title_keywords":["technology professionals","morgan stanley"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/content/dam/msdotcom/people/tech-careers/tw-techcareers.jpg","sys_racl":["*"],"createdOn":"2022-08-05T17:34:10.869000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"Technology Professionals Our rich history and culture of innovation helps the firm stay on the cutting-edge. Join our team of world-class technologists in solving complex client and business challenges—and make an impact every day. Technology From the Sea to the Cloud Sep 17, 2021 The Billion Oyster","snippets":[{"snippet":["From the Sea to the Cloud","Congratulations to our employees for making us one of @FastCompany’s 100 Best Workplaces for Innovators.","A Woman Who Codes—and So Much More","Mona\n                 \n\t\t\t\tEldam","Yes, You Can Be a Tech Innovator at Morgan Stanley","Piyush","Training the Next Generation of Women Technologists","Get Your Career Started at Morgan Stanley","Meet Our Global Team"],"sub_type":"headings","title":"Technology Professionals","type":"list"},{"snippet":["For Students & Grads","For Experienced Professionals"],"sub_type":"headings","title":"Get Your Career Started at Morgan Stanley","type":"list"},{"snippet":["Ritika","Prateek","Piyush","Rose-Gaëlle","Ali","Deepshikha"],"sub_type":"headings","title":"Meet Our Global Team","type":"list"}],"page_title_keywords_en":["technology professionals","morgan stanley"],"page_sections":["Technology Professionals","From the Sea to the Cloud","Congratulations to our employees for making us one of @FastCompany’s 100 Best Workplaces for Innovators.","A Woman Who Codes—and So Much More","Mona\n                 \n\t\t\t\tEldam","Yes, You Can Be a Tech Innovator at Morgan Stanley","Piyush","Training the Next Generation of Women Technologists","Get Your Career Started at Morgan Stanley","For Students & Grads","For Experienced Professionals","Meet Our Global Team","Ritika","Prateek","Piyush","Rose-Gaëlle","Ali","Deepshikha","Ritika","Prateek","Piyush","Rose-Gaëlle","Ali","Deepshikha"],"page_preview":"Get Your Career Started at *morgan* Stanley For Students & Grads For Experienced Professionals","most_matched_snippet":{"snippet":["For Students & Grads","For Experienced Professionals"],"sub_type":"headings","title":"Get Your Career Started at Morgan Stanley"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":3,"appearances":84}}],"doc_count":20},"serviceNow":{"data":[{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_6e2983ccdbd85010b06c7b823996197e","sys_content_type":"serviceNow","score":12.010534,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":"What is Morgan Stanley Access Investing?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2020-04-16T08:06:41.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":"What is Morgan Stanley Access Investing?","serviceNow_number":"KB0010062","serviceNow_sys_id":"6e2983ccdbd85010b06c7b823996197e","createdAt":"2020-04-16T08:06:33.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-16T08:06:33Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_6e2983ccdbd85010b06c7b823996197e","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Morgan Stanley Access Investing (\"Access Investing\") is a digital investment platform that helps you","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2020-04-16T08:06:41.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010062","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-16","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2100-01-01","serviceNow_sys_mod_count":"2","serviceNow_sysid":"6e2983ccdbd85010b06c7b823996197e","serviceNow_wiki":"Morgan Stanley Access Investing (\"Access Investing\") is a digital investment platform that helps you identify and invest in your financial goals, whether that means investing for retirement, building wealth, or saving for a major purchase.\r\n\r\nFor clients who want a fully digital means of pursuing their goals, Access Investing is simple to use and backed by the intellectual capital and investment expertise of Morgan Stanley.","serviceNow_connectorType":"serviceNow","objectID":"6e2983ccdbd85010b06c7b823996197e","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":1,"appearances":74}},{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_3ee2781fdb441010b06c7b823996197d","sys_content_type":"serviceNow","score":9.38083,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":"How can I get involved in an IPO that Morgan Stanley is underwriting?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2020-04-14T07:14:30.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":"How can I get involved in an IPO that Morgan Stanley is underwriting?","serviceNow_number":"KB0010055","serviceNow_sys_id":"3ee2781fdb441010b06c7b823996197d","createdAt":"2020-04-13T13:13:06.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-13T13:13:06Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_3ee2781fdb441010b06c7b823996197d","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Please consult your Morgan Stanley financial advisor. They will give you the details of the requirements","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2020-04-14T07:14:30.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010055","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-13","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2100-01-01","serviceNow_sys_mod_count":"5","serviceNow_sysid":"3ee2781fdb441010b06c7b823996197d","serviceNow_wiki":"Please consult your Morgan Stanley financial advisor. They will give you the details of the requirements for IPO participation and share allocation. If you do not have a Morgan Stanley account, please check our Morgan Stanley retail branch office locator for a branch near you. You can also call toll free 1-877-937-6739","serviceNow_connectorType":"serviceNow","objectID":"3ee2781fdb441010b06c7b823996197d","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":74}},{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_ffcaa0a3dbc45010b06c7b82399619c7","sys_content_type":"serviceNow","score":8.893996,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":" Can I get IPO shares with my Morgan Stanley Online account?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2022-05-19T10:54:31.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":" Can I get IPO shares with my Morgan Stanley Online account?","serviceNow_number":"KB0010060","serviceNow_sys_id":"ffcaa0a3dbc45010b06c7b82399619c7","createdAt":"2020-04-14T07:15:57.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-14T07:15:57Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_ffcaa0a3dbc45010b06c7b82399619c7","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Yes. Please consult the following website for more information on IPOs: Equity Syndicate-Educational","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2022-05-19T10:54:31.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010060","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-14","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2022-05-19","serviceNow_sys_mod_count":"4","serviceNow_sysid":"ffcaa0a3dbc45010b06c7b82399619c7","serviceNow_wiki":" Yes. Please consult the following website for more information on IPOs: Equity Syndicate-Educational Overview\r\n\r\nPlease take note that public offerings are considered speculative investments and as such may not be appropriate for every investor.\r\n\r\nDue to the limited number of securities distributed by Morgan Stanley Online, no assurances may be made that any particular customer will receive an allocation of securities.","serviceNow_connectorType":"serviceNow","objectID":"ffcaa0a3dbc45010b06c7b82399619c7","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":74}},{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_e16be4a3dbc45010b06c7b823996197b","sys_content_type":"serviceNow","score":8.893996,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":"How can I get a copy of a Morgan Stanley Equity Research Report?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2020-04-14T07:18:52.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":"How can I get a copy of a Morgan Stanley Equity Research Report?","serviceNow_number":"KB0010061","serviceNow_sys_id":"e16be4a3dbc45010b06c7b823996197b","createdAt":"2020-04-14T07:18:41.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-14T07:18:41Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_e16be4a3dbc45010b06c7b823996197b","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Equity research is generally available only to the clients of Morgan Stanley; please contact your Financial","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2020-04-14T07:18:52.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010061","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-14","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2100-01-01","serviceNow_sys_mod_count":"2","serviceNow_sysid":"e16be4a3dbc45010b06c7b823996197b","serviceNow_wiki":"Equity research is generally available only to the clients of Morgan Stanley; please contact your Financial Advisor. Some research reports are available to the general public. Please call your local Morgan Stanley retail branch office or contact our Equity Research department at 212-761-6201.","serviceNow_connectorType":"serviceNow","objectID":"e16be4a3dbc45010b06c7b823996197b","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":74}},{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_8d0628abdb845010b06c7b823996195b","sys_content_type":"serviceNow","score":8.455198,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":" How do I transfer Morgan Stanley shares from one shareholder to another?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2020-04-14T07:15:15.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":" How do I transfer Morgan Stanley shares from one shareholder to another?","serviceNow_number":"KB0010058","serviceNow_sys_id":"8d0628abdb845010b06c7b823996195b","createdAt":"2020-04-14T06:54:54.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-14T06:54:54Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_8d0628abdb845010b06c7b823996195b","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Please call our Transfer Agent, Broadridge at 1-800-622-2393 or write to: Contacting us by Regular Mail","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2020-04-14T07:15:15.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010058","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-14","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2100-01-01","serviceNow_sys_mod_count":"3","serviceNow_sysid":"8d0628abdb845010b06c7b823996195b","serviceNow_wiki":"Please call our Transfer Agent, Broadridge at 1-800-622-2393 or write to:\r\n\r\nContacting us by Regular Mail\r\nBroadridge Corporate Issuer Solutions\r\nPO Box 1342\r\nBrentwood, NY 11717\r\nPhone: 1-800-622-2393\r\nFax: 215-553-5402\r\nEmail: msshareholder@broadridge.com","serviceNow_connectorType":"serviceNow","objectID":"8d0628abdb845010b06c7b823996195b","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":74}}],"doc_count":5}},"facets":[{"fieldName":"page_title_keywords","multiselect":false,"name":"Page_keywords","subtype":"value","buckets":[{"key":"morgan stanley","doc_count":18},{"key":"careers","doc_count":3},{"key":"career opportunities search","doc_count":2},{"key":"morgan stanley careers","doc_count":2},{"key":"advantages","doc_count":1},{"key":"charitable giving","doc_count":1},{"key":"culture","doc_count":1},{"key":"daniel simkowitz","doc_count":1},{"key":"deutschland","doc_count":1},{"key":"disclosures","doc_count":1},{"key":"experienced professionals","doc_count":1},{"key":"finance","doc_count":1}]}],"tabFacet":{"fieldName":"sys_content_type","buckets":[{"key":"web","doc_count":20,"name":"Web Results"},{"key":"serviceNow","doc_count":5,"name":"serviceNow"},{"key":"data","doc_count":0,"name":"Structured Data"},{"key":"faq","doc_count":0,"name":"FAQs"},{"key":"file","doc_count":0,"name":"Files"}]},"resultType":"grouped","graph_answer":{"payload":{"center_panel":{"type":"headings_snippet","data":[{"title":"*Meet the MindsBreaking the Mold*","answer":" \n * Get Your Career Started At Morgan Stanley \n * Our People \n * More Stories","page_url":"https://www.morganstanley.com/articles/who-we-are#:~:text=Meet%20the%20MindsBreaking,MindsBreaking%20the%20Mold","score":0.6698552946357336,"page_tile":"Morgan Stanley Employee Profiles | Morgan Stanley Careers"}]}}},"query_language":"en","tasks":[]},"relay":"default","queryPipelineId":"fqp-9b63ffd3-3ed6-59e7-95ca-05af11fdd906","indexPipelineId":"fip-847103c9-9cee-5fda-84ef-48ea2529ca2c"};
+            // if(_self.vars.customizeView){
+            //   data = {"templateType":"search","requestId":"fsh-5b260720-6127-5bfa-ac18-bb5bb580dd9e","template":{"originalQuery":"morgan","cleanQuery":"morgan","results":{"web":{"data":[{"contentId":"fc-1f044c46-06d1-4576-bd4f-a8b9edfd2fbf","sys_content_type":"web","score":29.039259,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/people#:~:text=Careers%20at%20Morgan,at%20Morgan%20Stanley","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Careers in Finance and Investment Banking | Morgan Stanley","page_title_keywords":["investment banking","morgan stanley","careers","finance"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/people","sys_racl":["*"],"createdOn":"2022-08-05T17:34:12.371000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"If you are driven to succeed, eager to take on new challenges and open to collaborating with diverse colleagues in pursuit of excellence, you'll discover a wealth of exciting career opportunities at Morgan Stanley. Find your path with us, whether you're a student, a recent graduate or an experienced","snippets":[{"snippet":["Grow Your Career With Us","Explore Opportunities","By the Numbers","Explore Our Global Offices","Morgan Stanley Is Global","Our Commitment to Diversity and Inclusion","Discover Our Opportunities","Find Your Path"],"sub_type":"headings","title":"Careers at Morgan Stanley","type":"list"},{"snippet":["41","73k","36"],"sub_type":"headings","title":"By the Numbers","type":"list"}],"page_title_keywords_en":["investment banking","morgan stanley","careers","finance"],"page_sections":["Careers at Morgan Stanley","Grow Your Career With Us","Explore Opportunities","By the Numbers","41","73k","36","Explore Our Global Offices","Morgan Stanley Is Global","Our Commitment to Diversity and Inclusion","Discover Our Opportunities","Find Your Path"],"page_preview":"Careers at *morgan* Stanley Grow Your Career With Us Explore Opportunities By the Numbers Explore Our Global Offices *morgan* Stanley","most_matched_snippet":{"snippet":["Grow Your Career With Us","Explore Opportunities","By the Numbers","Explore Our Global Offices","Morgan Stanley Is Global","Our Commitment to Diversity and Inclusion","Discover Our Opportunities","Find Your Path"],"sub_type":"headings","title":"Careers at Morgan Stanley"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":233}},{"contentId":"fc-86607086-db17-4b88-9516-0560ec97577e","sys_content_type":"web","score":24.810549,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/about-us/giving-back#:~:text=For%20more%20than,to%20quality%20healthcare.","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Giving Back | Morgan Stanley","page_title_keywords":["giving back","morgan stanley"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/about-us/giving-back","sys_racl":["*"],"createdOn":"2022-08-05T17:34:12.775000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"Giving Back Morgan Stanley is committed to giving back to the communities where we live and work through long-lasting partnerships, community-based delivery and engaging our best asset—Morgan Stanley employees. Giving Back How Much Is Too Much Screen Time for Kids? Apr 27, 2022 What are the effects ","snippets":[{"sub_type":"paragraph","Content":"For more than 50 years, the Morgan Stanley Foundation has supported healthy starts and solid educations for the children in our communities, and has continued to expand the reach of those initiatives globally for the past 20 years through the Morgan Stanley International Foundation. Morgan Stanley Foundation programs focus on three core fundamentals for children’s physical and cognitive development: sustained access to healthy and nutritious food, safe places to play, and access to quality healthcare.","title":"Morgan Stanley Foundation"},{"sub_type":"paragraph","Content":"Our employees are instrumental in carrying out the Firm’s mission of Giving Back. In addition to year-round volunteering, employees have helped Morgan Stanley deliver more than 2.4 million hours of service through the Firm’s dedicated Global Volunteer Month. Each year our employees also make a lasting impact with local nonprofit partners through pro bono and skills based volunteering, including our signature pro bono program, Morgan Stanley Strategy Challenge.","title":"Employee Engagement"},{"sub_type":"paragraph","Content":"With charitable funding, planning advice and hands-on volunteering, we partner with Feeding America to provide children with access to nutritious food, which is critical for a healthy start to life. We recently celebrated 10 years of partnership with Feeding America distributing over 211 million meals to children and families across the country.","title":"Nutrition: Feeding America"},{"sub_type":"paragraph","Content":"By volunteering and providing financial support, we are ensuring that children around the country have access to a childhood filled with the balance and active play needed to thrive through our partnership with KaBOOM! This partnership has already delivered 23 playgrounds and 20 play spaces providing accessible and safe play to over 9,500 children.","title":"Play: KaBOOM!"},{"snippet":["Morgan Stanley Foundation","Employee Engagement"],"sub_type":"headings","title":"Employee Engagement","type":"list"},{"snippet":["Wellness: Centers of Excellence","Nutrition: Feeding America","Play: KaBOOM!"],"sub_type":"headings","title":"PROVIDING HEALTHY STARTS FOR CHILDREN IN OUR COMMUNITIES","type":"list"}],"page_title_keywords_en":["giving back","morgan stanley"],"page_sections":["Giving Back","How Much Is Too Much Screen Time for Kids?","Coming Together for Children's Mental Health","The Morgan Stanley Alliance for Children's Mental Health","Children's Mental Health Innovation Awards","A Virtual Roadmap to Real-World Success for a UK Nonprofit","Improving Virtual Healthcare to Address Adolescent Mental Health","Center for Urban Families Gets Guidance to Expand Reach","Employee Engagement","Morgan Stanley Foundation","Employee Engagement","PROVIDING HEALTHY STARTS FOR CHILDREN IN OUR COMMUNITIES","Wellness: Centers of Excellence","Nutrition: Feeding America","Play: KaBOOM!"],"page_preview":"*morgan* Stanley Foundation _For more than 50 years, the *morgan* Stanley Foundation has supported healthy starts and solid educations for","most_matched_snippet":{"Content":"For more than 50 years, the Morgan Stanley Foundation has supported healthy starts and solid educations for the children in our communities, and has continued to expand the reach of those initiatives globally for the past 20 years through the Morgan Stanley International Foundation. Morgan Stanley Foundation programs focus on three core fundamentals for children’s physical and cognitive development: sustained access to healthy and nutritious food, safe places to play, and access to quality healthcare.","sub_type":"paragraph","title":"Morgan Stanley Foundation"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":154}},{"contentId":"fc-f0e0ac2f-4ad5-4c49-a3fd-6c074babf5c1","sys_content_type":"web","score":20.241957,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/about-us/technology#:~:text=Collaborate%20With%20Us,Collaborate%20With%20Us","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Technology | Morgan Stanley","page_title_keywords":["morgan stanley","technology"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/about-us/technology","sys_racl":["*"],"createdOn":"2022-08-05T17:34:12.575000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"Technology We leverage engineering excellence and relentless innovation to build the connections and capabilities to power our firm and enable our clients and business teams to redefine markets and shape the future of our communities. By The Numbers What We Do From low latency and algorithmic tradin","snippets":[{"sub_type":"paragraph","Content":"From low latency and algorithmic trading, complex risk calculations and big data analytics to digital and end-user solutions, sophisticated cyber defense and large-scale, global infrastructure management—we maximize our ~$4 billion in investment in technology and innovation to provide clients and business teams with a competitive edge, drive efficiencies, and deliver stable, resilient operations 24/7.","title":"What We Do"},{"sub_type":"paragraph","Content":"The Morgan Stanley Technology Division is a powerhouse of world-class engineering that brings together diverse ideas, cultures and expertise. We serve our business with technology centers in Asia, Europe and the U.S. Our teams are comprised of developers, programmers, engineers, data scientists, physicists and mathematicians who bring to bear their extensive experience across industries, in government and academia, as well as Distinguished Engineers recognized throughout the industry.","title":"Technical Excellence"},{"snippet":["Powering our Market-Leading Platform","Optimizing Tools & Insights for Our Clients","Driving Productivity & Efficiency","Upholding Stability & Resilience"],"sub_type":"headings","title":"What We Do","type":"list"},{"snippet":["From the Sea to the Cloud","A Man Who Jumps at Opportunity","Microsoft and the Future of Remote Work","Mona\n                 \n\t\t\t\tEldam","Finding Professional Satisfaction in A.I. and Machine Learning","A Woman Who Codes—and So Much More"],"sub_type":"headings","title":"Recent Stories","type":"list"},{"snippet":["Nurturing Internal Innovation","Partnering with Tech Innovators","Innovating for Our Communities"],"sub_type":"headings","title":"Culture of Innovation","type":"list"},{"snippet":["Technology Partnerships","Morgan Stanley Developer Portal","Morgan Stanley Github"],"sub_type":"headings","title":"Collaborate With Us","type":"list"},{"snippet":["Fast Company","Banking Technology","CIO 100"],"sub_type":"headings","title":"Awards and Recognition","type":"list"},{"snippet":["Piyush","Rose-Gaëlle","Mona\n                 \n\t\t\t\tEldam"],"sub_type":"headings","title":"Technical Excellence","type":"list"}],"page_title_keywords_en":["morgan stanley","technology"],"page_sections":["Technology","By The Numbers","What We Do","Powering our Market-Leading Platform","Optimizing Tools & Insights for Our Clients","Driving Productivity & Efficiency","Upholding Stability & Resilience","Recent Stories","From the Sea to the Cloud","A Man Who Jumps at Opportunity","Microsoft and the Future of Remote Work","Mona\n                 \n\t\t\t\tEldam","Finding Professional Satisfaction in A.I. and Machine Learning","A Woman Who Codes—and So Much More","Culture of Innovation","Nurturing Internal Innovation","Partnering with Tech Innovators","Innovating for Our Communities","Collaborate With Us","Technology Partnerships","Morgan Stanley Developer Portal","Morgan Stanley Github","Awards and Recognition","Fast Company","Banking Technology","CIO 100","Technical Excellence","Piyush","Rose-Gaëlle","Mona\n                 \n\t\t\t\tEldam","Explore a Tech Career at Morgan Stanley"],"page_preview":"Collaborate With Us Technology Partnerships *morgan* Stanley Developer Portal *morgan* Stanley Github","most_matched_snippet":{"snippet":["Technology Partnerships","Morgan Stanley Developer Portal","Morgan Stanley Github"],"sub_type":"headings","title":"Collaborate With Us"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":213}},{"contentId":"fc-77641bef-b799-40b5-84d6-c92e4b3f52a5","sys_content_type":"web","score":19.353569,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/articles/who-we-are#:~:text=Meet%20the%20MindsBreaking,MindsBreaking%20the%20Mold","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Morgan Stanley Employee Profiles | Morgan Stanley Careers","page_title_keywords":["morgan stanley careers"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/content/dam/msdotcom/articles/who-we-are-campaign/tw-rose-gaelle.jpg","sys_racl":["*"],"createdOn":"2022-08-05T17:34:10.717000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"Our rising talent brings innovative solutions to whatever role they tackle. Hear their take on life at Morgan Stanley and learn how they succeed at meeting new challenges. Get Your Career Started At Morgan Stanley Find a program (opens in a new tab) Our People Profile learn more Katie Vice President","snippets":[{"snippet":["Get Your Career Started At Morgan Stanley","Our People","More Stories"],"sub_type":"headings","title":"Meet the MindsBreaking the Mold","type":"list"},{"snippet":["Katie","Wided","Manuel","Michelle\n                                 \n                                T.","Yuki","Rose-Gaëlle","Tomoko","Mariam","Satoko","Audrey","JP","Sebastian","Isaiah","Shelbie"],"sub_type":"headings","title":"Our People","type":"list"},{"snippet":["A Man Who Jumps at Opportunity","An Interest in Finance Yields a Different Spotlight","Finding Professional Satisfaction in A.I. and Machine Learning"],"sub_type":"headings","title":"More Stories","type":"list"}],"page_title_keywords_en":["morgan stanley careers"],"page_sections":["Meet the Minds","Breaking the Mold","Get Your Career Started At Morgan Stanley","Our People","Katie","Wided","Manuel","Michelle\n                                 \n                                T.","Yuki","Rose-Gaëlle","Tomoko","Mariam","Satoko","Audrey","JP","Sebastian","Isaiah","Shelbie","Katie","Wided","Manuel","Michelle\n                                 \n                                T.","Yuki","Rose-Gaëlle","More Stories","A Man Who Jumps at Opportunity","An Interest in Finance Yields a Different Spotlight","Finding Professional Satisfaction in A.I. and Machine Learning"],"page_preview":"Meet the MindsBreaking the Mold Get Your Career Started At *morgan* Stanley Our People More Stories","most_matched_snippet":{"snippet":["Get Your Career Started At Morgan Stanley","Our People","More Stories"],"sub_type":"headings","title":"Meet the MindsBreaking the Mold"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":2,"appearances":140}},{"contentId":"fc-030fe767-a6d4-4c92-9989-e4a3a429fa03","sys_content_type":"web","score":18.057867,"keywords":[],"config":{"pinIndex":-1,"boost":1,"visible":true},"page_url":"https://www.morganstanley.com/people/technology-professionals#:~:text=Get%20Your%20Career,at%20Morgan%20Stanley","sys_source_name":"Morgan","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","dummy_field":" ","page_title":"Technology Professionals | Morgan Stanley","page_title_keywords":["technology professionals","morgan stanley"],"searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","page_image_url":"https://www.morganstanley.com/content/dam/msdotcom/people/tech-careers/tw-techcareers.jpg","sys_racl":["*"],"createdOn":"2022-08-05T17:34:10.869000","jobId":"fj-e4e32448-44f0-5b4c-aed8-b3837f56beb5","extractionSourceId":"fs-7e61e7b8-e8ca-5aca-8a4f-2e232959ac8a","page_body":"Technology Professionals Our rich history and culture of innovation helps the firm stay on the cutting-edge. Join our team of world-class technologists in solving complex client and business challenges—and make an impact every day. Technology From the Sea to the Cloud Sep 17, 2021 The Billion Oyster","snippets":[{"snippet":["From the Sea to the Cloud","Congratulations to our employees for making us one of @FastCompany’s 100 Best Workplaces for Innovators.","A Woman Who Codes—and So Much More","Mona\n                 \n\t\t\t\tEldam","Yes, You Can Be a Tech Innovator at Morgan Stanley","Piyush","Training the Next Generation of Women Technologists","Get Your Career Started at Morgan Stanley","Meet Our Global Team"],"sub_type":"headings","title":"Technology Professionals","type":"list"},{"snippet":["For Students & Grads","For Experienced Professionals"],"sub_type":"headings","title":"Get Your Career Started at Morgan Stanley","type":"list"},{"snippet":["Ritika","Prateek","Piyush","Rose-Gaëlle","Ali","Deepshikha"],"sub_type":"headings","title":"Meet Our Global Team","type":"list"}],"page_title_keywords_en":["technology professionals","morgan stanley"],"page_sections":["Technology Professionals","From the Sea to the Cloud","Congratulations to our employees for making us one of @FastCompany’s 100 Best Workplaces for Innovators.","A Woman Who Codes—and So Much More","Mona\n                 \n\t\t\t\tEldam","Yes, You Can Be a Tech Innovator at Morgan Stanley","Piyush","Training the Next Generation of Women Technologists","Get Your Career Started at Morgan Stanley","For Students & Grads","For Experienced Professionals","Meet Our Global Team","Ritika","Prateek","Piyush","Rose-Gaëlle","Ali","Deepshikha","Ritika","Prateek","Piyush","Rose-Gaëlle","Ali","Deepshikha"],"page_preview":"Get Your Career Started at *morgan* Stanley For Students & Grads For Experienced Professionals","most_matched_snippet":{"snippet":["For Students & Grads","For Experienced Professionals"],"sub_type":"headings","title":"Get Your Career Started at Morgan Stanley"},"addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":3,"appearances":84}}],"doc_count":20},"serviceNow":{"data":[{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_6e2983ccdbd85010b06c7b823996197e","sys_content_type":"serviceNow","score":12.010534,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":"What is Morgan Stanley Access Investing?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2020-04-16T08:06:41.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":"What is Morgan Stanley Access Investing?","serviceNow_number":"KB0010062","serviceNow_sys_id":"6e2983ccdbd85010b06c7b823996197e","createdAt":"2020-04-16T08:06:33.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-16T08:06:33Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_6e2983ccdbd85010b06c7b823996197e","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Morgan Stanley Access Investing (\"Access Investing\") is a digital investment platform that helps you","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2020-04-16T08:06:41.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010062","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-16","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2100-01-01","serviceNow_sys_mod_count":"2","serviceNow_sysid":"6e2983ccdbd85010b06c7b823996197e","serviceNow_wiki":"Morgan Stanley Access Investing (\"Access Investing\") is a digital investment platform that helps you identify and invest in your financial goals, whether that means investing for retirement, building wealth, or saving for a major purchase.\r\n\r\nFor clients who want a fully digital means of pursuing their goals, Access Investing is simple to use and backed by the intellectual capital and investment expertise of Morgan Stanley.","serviceNow_connectorType":"serviceNow","objectID":"6e2983ccdbd85010b06c7b823996197e","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":1,"appearances":74}},{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_3ee2781fdb441010b06c7b823996197d","sys_content_type":"serviceNow","score":9.38083,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":"How can I get involved in an IPO that Morgan Stanley is underwriting?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2020-04-14T07:14:30.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":"How can I get involved in an IPO that Morgan Stanley is underwriting?","serviceNow_number":"KB0010055","serviceNow_sys_id":"3ee2781fdb441010b06c7b823996197d","createdAt":"2020-04-13T13:13:06.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-13T13:13:06Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_3ee2781fdb441010b06c7b823996197d","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Please consult your Morgan Stanley financial advisor. They will give you the details of the requirements","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2020-04-14T07:14:30.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010055","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-13","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2100-01-01","serviceNow_sys_mod_count":"5","serviceNow_sysid":"3ee2781fdb441010b06c7b823996197d","serviceNow_wiki":"Please consult your Morgan Stanley financial advisor. They will give you the details of the requirements for IPO participation and share allocation. If you do not have a Morgan Stanley account, please check our Morgan Stanley retail branch office locator for a branch near you. You can also call toll free 1-877-937-6739","serviceNow_connectorType":"serviceNow","objectID":"3ee2781fdb441010b06c7b823996197d","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":74}},{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_ffcaa0a3dbc45010b06c7b82399619c7","sys_content_type":"serviceNow","score":8.893996,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":" Can I get IPO shares with my Morgan Stanley Online account?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2022-05-19T10:54:31.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":" Can I get IPO shares with my Morgan Stanley Online account?","serviceNow_number":"KB0010060","serviceNow_sys_id":"ffcaa0a3dbc45010b06c7b82399619c7","createdAt":"2020-04-14T07:15:57.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-14T07:15:57Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_ffcaa0a3dbc45010b06c7b82399619c7","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Yes. Please consult the following website for more information on IPOs: Equity Syndicate-Educational","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2022-05-19T10:54:31.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010060","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-14","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2022-05-19","serviceNow_sys_mod_count":"4","serviceNow_sysid":"ffcaa0a3dbc45010b06c7b82399619c7","serviceNow_wiki":" Yes. Please consult the following website for more information on IPOs: Equity Syndicate-Educational Overview\r\n\r\nPlease take note that public offerings are considered speculative investments and as such may not be appropriate for every investor.\r\n\r\nDue to the limited number of securities distributed by Morgan Stanley Online, no assurances may be made that any particular customer will receive an allocation of securities.","serviceNow_connectorType":"serviceNow","objectID":"ffcaa0a3dbc45010b06c7b82399619c7","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":74}},{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_e16be4a3dbc45010b06c7b823996197b","sys_content_type":"serviceNow","score":8.893996,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":"How can I get a copy of a Morgan Stanley Equity Research Report?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2020-04-14T07:18:52.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":"How can I get a copy of a Morgan Stanley Equity Research Report?","serviceNow_number":"KB0010061","serviceNow_sys_id":"e16be4a3dbc45010b06c7b823996197b","createdAt":"2020-04-14T07:18:41.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-14T07:18:41Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_e16be4a3dbc45010b06c7b823996197b","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Equity research is generally available only to the clients of Morgan Stanley; please contact your Financial","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2020-04-14T07:18:52.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010061","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-14","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2100-01-01","serviceNow_sys_mod_count":"2","serviceNow_sysid":"e16be4a3dbc45010b06c7b823996197b","serviceNow_wiki":"Equity research is generally available only to the clients of Morgan Stanley; please contact your Financial Advisor. Some research reports are available to the general public. Please call your local Morgan Stanley retail branch office or contact our Equity Research department at 212-761-6201.","serviceNow_connectorType":"serviceNow","objectID":"e16be4a3dbc45010b06c7b823996197b","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":74}},{"contentId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_8d0628abdb845010b06c7b823996195b","sys_content_type":"serviceNow","score":8.455198,"config":{"pinIndex":-1,"boost":1,"visible":true},"serviceNow_title":" How do I transfer Morgan Stanley shares from one shareholder to another?","streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","lastUpdatedAt":"2020-04-14T07:15:15.000Z","dummy_field":" ","connectorId":"fcon-59f5e208-0ea5-5c75-bd9d-82d26c7a6874","serviceNow_direct":"false","serviceNow_disable_suggesting":"false","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","serviceNow_sys_domain_path":"/","serviceNow_short_description":" How do I transfer Morgan Stanley shares from one shareholder to another?","serviceNow_number":"KB0010058","serviceNow_sys_id":"8d0628abdb845010b06c7b823996195b","createdAt":"2020-04-14T06:54:54.000Z","serviceNow_sys_class_name":"kb_knowledge","serviceNow_sys_created_by":"admin","serviceNow_disable_commenting":"false","serviceNow_createdAt":"2020-04-14T06:54:54Z","serviceNow_workflow_state":"published","externalSourceId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc_8d0628abdb845010b06c7b823996195b","serviceNow_article_type":"wiki","connectorType":"serviceNow","serviceNow_sys_updated_by":"admin","serviceNow_meta_description":"Please call our Transfer Agent, Broadridge at 1-800-622-2393 or write to: Contacting us by Regular Mail","base_url":"https://dev80567.service-now.com","serviceNow_body":"","serviceNow_lastUpdatedAt":"2020-04-14T07:15:15.000Z","serviceNow_active":"true","sys_racl":"*","serviceNow_resource_view_url":"https://dev80567.service-now.com/kb_view.do?sysparm_article=KB0010058","serviceNow_topic":"General","serviceNow_flagged":"false","jobId":"fconj-fe14a87b-2bf0-5688-8849-675341ebf368","serviceNow_display_attachments":"false","serviceNow_connectorBaseUrl":"https://dev80567.service-now.com","serviceNow_published":"2020-04-14","serviceNow_sys_view_count":"0","serviceNow_valid_to":"2100-01-01","serviceNow_sys_mod_count":"3","serviceNow_sysid":"8d0628abdb845010b06c7b823996195b","serviceNow_wiki":"Please call our Transfer Agent, Broadridge at 1-800-622-2393 or write to:\r\n\r\nContacting us by Regular Mail\r\nBroadridge Corporate Issuer Solutions\r\nPO Box 1342\r\nBrentwood, NY 11717\r\nPhone: 1-800-622-2393\r\nFax: 215-553-5402\r\nEmail: msshareholder@broadridge.com","serviceNow_connectorType":"serviceNow","objectID":"8d0628abdb845010b06c7b823996195b","addedResult":false,"customization":{},"score_debug":{},"feedback":{"clicks":0,"appearances":74}}],"doc_count":5}},"facets":[{"fieldName":"page_title_keywords","multiselect":false,"name":"Page_keywords","subtype":"value","buckets":[{"key":"morgan stanley","doc_count":18},{"key":"careers","doc_count":3},{"key":"career opportunities search","doc_count":2},{"key":"morgan stanley careers","doc_count":2},{"key":"advantages","doc_count":1},{"key":"charitable giving","doc_count":1},{"key":"culture","doc_count":1},{"key":"daniel simkowitz","doc_count":1},{"key":"deutschland","doc_count":1},{"key":"disclosures","doc_count":1},{"key":"experienced professionals","doc_count":1},{"key":"finance","doc_count":1}]}],"tabFacet":{"fieldName":"sys_content_type","buckets":[{"key":"web","doc_count":20,"name":"Web Results"},{"key":"serviceNow","doc_count":5,"name":"serviceNow"},{"key":"data","doc_count":0,"name":"Structured Data"},{"key":"faq","doc_count":0,"name":"FAQs"},{"key":"file","doc_count":0,"name":"Files"}]},"resultType":"grouped","graph_answer":{"payload":{"center_panel":{"type":"headings_snippet","data":[{"title":"*Meet the MindsBreaking the Mold*","answer":" \n * Get Your Career Started At Morgan Stanley \n * Our People \n * More Stories","page_url":"https://www.morganstanley.com/articles/who-we-are#:~:text=Meet%20the%20MindsBreaking,MindsBreaking%20the%20Mold","score":0.6698552946357336,"page_tile":"Morgan Stanley Employee Profiles | Morgan Stanley Careers"}]}}},"query_language":"en","tasks":[]},"relay":"default","queryPipelineId":"fqp-9b63ffd3-3ed6-59e7-95ca-05af11fdd906","indexPipelineId":"fip-847103c9-9cee-5fda-84ef-48ea2529ca2c"};
+            // }
+            _self.getMergedData(_self.vars.resultSettings, data, 'isFullResults').then((res) => {
+              resolve(res);
+            })
+          })
+          .catch((error) => {
+            reject(error);
+          })
+      })
+
+    // if (!isTopDown) {
+    //   _self.pubSub.publish("sa-update-search-customozation");
+    // }
+    // $(".structured-data-bottom-actions").css("display", "none");
+    // $(".structured-data-wrp-content").removeClass("custom-faqs-wrp-content");
+    // $(".moreStructredData").addClass("display-none");
+  
+}
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
