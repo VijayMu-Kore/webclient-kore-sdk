@@ -401,83 +401,83 @@ FindlySDK.prototype.fetchUserLocation = function() {
   navigator.geolocation.getCurrentPosition(successCallback);
   };
   
-FindlySDK.prototype.show = function (dataConfig, sel) {
-  var _self = this;
-  var initialWidgetData = _self.vars.initialWidgetData;
-  _self.config.container = sel || {}; //#TODO :need to remove below line on prod
+// FindlySDK.prototype.show = function (dataConfig, sel) {
+//   var _self = this;
+//   var initialWidgetData = _self.vars.initialWidgetData;
+//   _self.config.container = sel || {}; //#TODO :need to remove below line on prod
 
-  window.koreWidgetSDKInstance = _self;
+//   window.koreWidgetSDKInstance = _self;
 
-  //var currentTimezone = _self.vars.timezone.name();
+//   //var currentTimezone = _self.vars.timezone.name();
 
-  var latitude = _self.vars.latitude;
-  var longitude = _self.vars.longitude;
-  var config = _self.config;
+//   var latitude = _self.vars.latitude;
+//   var longitude = _self.vars.longitude;
+//   var config = _self.config;
 
-  _self
-    .getServerDataGen(
-      "/widgetsdk/" +
-      config.botOptions.botInfo._id +
-      "/panels?resolveWidgets=true&from=" +
-      config.botOptions.userIdentity,
-      "get"
-    )
-    .done(function (response) {
-      //_self.getServerDataGen("/searchassistapi/ka/users/:userId/panels?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function (response) {
-      // getServerData("/searchassistapi/ka/users/:userId/widgets?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function(response){
-      initialWidgetData.panels = response;
-      var panelData = [];
+//   _self
+//     .getServerDataGen(
+//       "/widgetsdk/" +
+//       config.botOptions.botInfo._id +
+//       "/panels?resolveWidgets=true&from=" +
+//       config.botOptions.userIdentity,
+//       "get"
+//     )
+//     .done(function (response) {
+//       //_self.getServerDataGen("/searchassistapi/ka/users/:userId/panels?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function (response) {
+//       // getServerData("/searchassistapi/ka/users/:userId/widgets?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function(response){
+//       initialWidgetData.panels = response;
+//       var panelData = [];
 
-      for (var i = 0; i < initialWidgetData.panels.length; i++) {
-        //todo: deviation :adding "id" from "_id"
-        if (
-          initialWidgetData.panels[i].widgets &&
-          initialWidgetData.panels[i].widgets.length
-        ) {
-          initialWidgetData.panels[i].widgets.forEach(function (widget) {
-            if (!widget.id) {
-              widget.id = widget._id;
-            }
-          });
-        } //todo: deviation :added fallback icon for panels
+//       for (var i = 0; i < initialWidgetData.panels.length; i++) {
+//         //todo: deviation :adding "id" from "_id"
+//         if (
+//           initialWidgetData.panels[i].widgets &&
+//           initialWidgetData.panels[i].widgets.length
+//         ) {
+//           initialWidgetData.panels[i].widgets.forEach(function (widget) {
+//             if (!widget.id) {
+//               widget.id = widget._id;
+//             }
+//           });
+//         } //todo: deviation :added fallback icon for panels
 
-        panelData.push(initialWidgetData.panels[i]);
-      }
-      var dataHTML = $(_self.getTemplate("menu")).tmplProxy({
-        panelData: panelData,
-        helpers: helpers,
-        baseUrl: baseUrl,
-        botDetails: _self.config.botOptions.botInfo,
-      });
-      _self.bindTemplateEvents(dataHTML, "menu", panelData);
-      if ($(_self.config.container.menu).find(".menuItemCntr").length > 0) {
-        $(_self.config.container.menu).find(".menuItemCntr").remove();
-      }
+//         panelData.push(initialWidgetData.panels[i]);
+//       }
+//       var dataHTML = $(_self.getTemplate("menu")).tmplProxy({
+//         panelData: panelData,
+//         helpers: helpers,
+//         baseUrl: baseUrl,
+//         botDetails: _self.config.botOptions.botInfo,
+//       });
+//       _self.bindTemplateEvents(dataHTML, "menu", panelData);
+//       if ($(_self.config.container.menu).find(".menuItemCntr").length > 0) {
+//         $(_self.config.container.menu).find(".menuItemCntr").remove();
+//       }
 
-      $(_self.config.container.menu).addClass("kr-wiz-menu-css");
-      $(_self.config.container.menu).addClass("defaultTheme-kore");
-      $(_self.config.container.menu).append(dataHTML);
+//       $(_self.config.container.menu).addClass("kr-wiz-menu-css");
+//       $(_self.config.container.menu).addClass("defaultTheme-kore");
+//       $(_self.config.container.menu).append(dataHTML);
 
-      if (KRPerfectScrollbar) {
-        if (!_self.vars.menuPSObj) {
-          _self.vars.menuPSObj = new KRPerfectScrollbar(
-            $(_self.config.container.menu).find(".menuItemBox").get(0),
-            {
-              suppressScrollX: true,
-            }
-          );
-        } else {
-          _self.vars.menuPSObj.update();
-        }
-      }
+//       if (KRPerfectScrollbar) {
+//         if (!_self.vars.menuPSObj) {
+//           _self.vars.menuPSObj = new KRPerfectScrollbar(
+//             $(_self.config.container.menu).find(".menuItemBox").get(0),
+//             {
+//               suppressScrollX: true,
+//             }
+//           );
+//         } else {
+//           _self.vars.menuPSObj.update();
+//         }
+//       }
 
-      _self.maintainCache();
+//       _self.maintainCache();
 
-      setTimeout(function () {
-        _self.triggerEvent("onPanelsLoaded");
-      }, 100);
-    });
-};
+//       setTimeout(function () {
+//         _self.triggerEvent("onPanelsLoaded");
+//       }, 100);
+//     });
+// };
 
 FindlySDK.prototype.setAPIDetails = function () {
   var _self = this;
