@@ -23256,10 +23256,10 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
           if(!obj.chips) {
             obj.chips = item.chips||'';
           }
-          if(!obj.createdOn){
+          if(!obj.createdOn || item.textField2){
             obj.createdOn = item.textField2 || ''
           }
-          if(!obj.createdByUser){
+          if(!obj.createdByUser || item.textField1){
             obj.createdByUser = item.textField1 || '';
           }
           // Demo fields start         
