@@ -162,13 +162,13 @@ class SearchCarouselViewTemplate {
             <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
             {{/if}}\
                     <div class="content-info-grid">\
-                        <div class="heading-title text_overflow">\
+                        <div class="heading-title">\
                         {{if data.img.length}}\
                         <div class="img_block">\
                         <img src="${data.img}"/>\
                         </div>\
                         {{/if}}\
-                        <span title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                        <span class="two-line-title" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
                         </div>\
                         <div class="desc_text_info clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                     </div>\

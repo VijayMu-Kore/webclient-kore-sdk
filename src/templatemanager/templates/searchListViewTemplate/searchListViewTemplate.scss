@@ -318,6 +318,9 @@
             font-size: 14px;
             line-height: 20px;
             color: #202124;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
         .desc_text_info{
             font-weight: 400;
@@ -325,6 +328,9 @@
             line-height: 18px;
             // color: #5F6368;
             color: #9AA0A6;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
     }
     .text-truncate{
@@ -358,6 +364,9 @@
             font-size: 14px;
             line-height: 20px;
             color: #202124;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
         .desc_text_info{
             font-weight: 400;
@@ -365,6 +374,9 @@
             line-height: 18px;
             color: #9AA0A6;
             // color: #5F6368;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
     }
     .show-more-data{

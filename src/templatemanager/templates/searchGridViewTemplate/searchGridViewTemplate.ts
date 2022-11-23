@@ -83,7 +83,7 @@ class SearchGridViewTemplate {
                 <img src="${data.img}" />\
                 </div>\
                 {{/if}}\
-                    <span>{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                    <span class="title-heading">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
                 </div>\
                 {{/if}}\
                 {{if data.description}}\
