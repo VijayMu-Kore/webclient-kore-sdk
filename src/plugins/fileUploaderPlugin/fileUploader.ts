@@ -339,7 +339,7 @@ class KoreFileUploaderPlugin {
   getUID(pattern: string | undefined) {
     let _pattern = pattern || 'xxxxyx';
     _pattern = _pattern.replace(/[xy]/g, (c: string) => {
-      const r = Math.random() * 16 | 0;
+      const r = this.generateRandomNum() * 16 | 0;
       const v = c === 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
@@ -579,7 +579,7 @@ class KoreFileUploaderPlugin {
   }
 
 MultipartData() {
-    this.boundary = "--------MultipartData" + Math.random();
+    this.boundary = "--------MultipartData" + this.generateRandomNum();
     this._fields = [];
 }
 MultipartDataAppend(key: string, value: { data: any; fileName: any; }) {
@@ -860,7 +860,17 @@ getTemplateString() {
       ';
   return fileUploader;
 }
-
+generateRandomNum() {
+  var dateObj = new Date();
+  var month = dateObj.getUTCMonth() + 1;
+  var day = dateObj.getUTCDate();
+  var year = dateObj.getUTCFullYear();
+  var seconds = dateObj.getSeconds();
+  var minutes = dateObj.getMinutes();
+  var hour = dateObj.getHours();
+  var generatedNum = year * month * day * (hour + minutes * seconds);
+  return generatedNum;
+}
 }
 export default KoreFileUploaderPlugin;
 

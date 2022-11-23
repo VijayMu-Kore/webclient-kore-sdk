@@ -3322,12 +3322,22 @@ let requireKr=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeo
       }
     }
     //END QS
-    
+    function generateRandomNum() {
+      var dateObj = new Date();
+      var month = dateObj.getUTCMonth() + 1;
+      var day = dateObj.getUTCDate();
+      var year = dateObj.getUTCFullYear();
+      var seconds = dateObj.getSeconds();
+      var minutes = dateObj.getMinutes();
+      var hour = dateObj.getHours();
+      var generatedNum = year * month * day * (hour + minutes * seconds);
+      return generatedNum;
+    }
     //BEGIN FORM
     var multipart = function(obj) {
       //todo: support file type (useful?)
       var result = {};
-      result.boundry = '-------------------------------'+Math.floor(Math.random()*1000000000);
+      result.boundry = '-------------------------------'+Math.floor(generateRandomNum()*1000000000);
       var lines = [];
       for(var p in obj){
           if (obj.hasOwnProperty(p)) {
@@ -16625,7 +16635,7 @@ let requireKr=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeo
   
   exports.createTimeout = function(attempt, opts) {
     var random = (opts.randomize)
-      ? (Math.random() + 1)
+      ? (generateRandomNum() + 1)
       : 1;
   
     var timeout = Math.round(random * opts.minTimeout * Math.pow(opts.factor, attempt));
