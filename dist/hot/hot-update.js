@@ -1,27 +1,567 @@
 self["webpackHotUpdatekore_web_sdk"]("esm",{
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/templatemanager/templates/searchGridViewTemplate/searchGridViewTemplate.scss":
-/*!*****************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/templatemanager/templates/searchGridViewTemplate/searchGridViewTemplate.scss ***!
-  \*****************************************************************************************************************************************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/templatemanager/templates/searchCarouselViewTemplate/searchCarouselViewTemplate.ts":
+/*!************************************************************************************************!*\
+  !*** ./src/templatemanager/templates/searchCarouselViewTemplate/searchCarouselViewTemplate.ts ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-// Imports
+/* harmony import */ var _utils_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../utils/helpers */ "./src/utils/helpers.js");
+/* harmony import */ var _libs_purejscarousel_purejscarousel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../libs/purejscarousel/purejscarousel */ "./src/libs/purejscarousel/purejscarousel.js");
+/* harmony import */ var _searchCarouselViewTemplate_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./searchCarouselViewTemplate.scss */ "./src/templatemanager/templates/searchCarouselViewTemplate/searchCarouselViewTemplate.scss");
 
 
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ".search-list-template-grid {\n  display: flex;\n  margin: 0 -5px;\n  flex-wrap: wrap;\n  margin-bottom: 15px;\n}\n.search-list-template-grid.mb-0 {\n  margin-bottom: 0px;\n}\n.search-list-template-grid .grid-item-col {\n  width: 50%;\n  padding: 5px;\n}\n.search-list-template-grid .grid-item-col.text-center {\n  text-align: center;\n}\n.search-list-template-grid .grid-item-col .content-info-grid {\n  background: #FFFFFF;\n  border: 1px solid #E4E5E7;\n  box-sizing: border-box;\n  border-radius: 4px;\n  padding: 12px 15px;\n}\n.search-list-template-grid .grid-item-col .content-info-grid .heading-title {\n  font-weight: 500;\n  font-size: 14px;\n  line-height: 20px;\n  color: #202124;\n}\n.search-list-template-grid .grid-item-col .content-info-grid .desc_text_info {\n  font-weight: 400;\n  font-size: 12px;\n  line-height: 16px;\n  color: #3C4043;\n}\n\n.search-list-template-grid-img-title {\n  display: flex;\n  margin: 0 -5px;\n  flex-wrap: wrap;\n  margin-bottom: 15px;\n}\n.search-list-template-grid-img-title.mb-0 {\n  margin-bottom: 0px;\n}\n.search-list-template-grid-img-title .grid-item-col {\n  width: 50%;\n  padding: 5px;\n}\n.search-list-template-grid-img-title .grid-item-col.text-center {\n  text-align: center;\n}\n.search-list-template-grid-img-title .grid-item-col .content-info-grid {\n  background: #FFFFFF;\n  border: 1px solid #E4E5E7;\n  box-sizing: border-box;\n  border-radius: 4px;\n  padding: 12px 15px;\n  height: 100%;\n}\n.search-list-template-grid-img-title .grid-item-col .content-info-grid .heading-title {\n  font-weight: 500;\n  font-size: 14px;\n  line-height: 20px;\n  color: #202124;\n  display: flex;\n  margin-bottom: 12px;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n.search-list-template-grid-img-title .grid-item-col .content-info-grid .heading-title .title-heading {\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n.search-list-template-grid-img-title .grid-item-col .content-info-grid .heading-title .img_block {\n  width: 40px;\n  height: 40px;\n  flex-shrink: 0;\n  margin-right: 10px;\n}\n.search-list-template-grid-img-title .grid-item-col .content-info-grid .heading-title .img_block img {\n  width: 100%;\n  height: 100%;\n  border-radius: 3px;\n}\n.search-list-template-grid-img-title .grid-item-col .content-info-grid .desc_text_info {\n  font-weight: 400;\n  font-size: 12px;\n  line-height: 16px;\n  color: #3C4043;\n}\n\n.search-list-template-grid-img {\n  display: flex;\n  margin: 0 -5px;\n  flex-wrap: wrap;\n  margin-bottom: 15px;\n}\n.search-list-template-grid-img.mb-0 {\n  margin-bottom: 0px;\n}\n.search-list-template-grid-img .grid-item-col {\n  width: 50%;\n  padding: 5px;\n}\n.search-list-template-grid-img .grid-item-col.text-center {\n  text-align: center;\n}\n.search-list-template-grid-img .grid-item-col .content-info-grid {\n  background: #FFFFFF;\n  border: 1px solid #E4E5E7;\n  box-sizing: border-box;\n  border-radius: 4px;\n  padding: 12px 15px;\n}\n.search-list-template-grid-img .grid-item-col .content-info-grid .img-block-data {\n  text-align: center;\n  width: 100%;\n  height: 100%;\n  text-align: center;\n}\n.search-list-template-grid-img .grid-item-col .content-info-grid .img-block-data img {\n  width: 100%;\n  height: 100%;\n  border-radius: 3px;\n}\n\n.search-list-template-grid-title-img-desc {\n  display: flex;\n  margin: 0 -5px;\n  flex-wrap: wrap;\n  margin-bottom: 15px;\n}\n.search-list-template-grid-title-img-desc.mb-0 {\n  margin-bottom: 0px;\n}\n.search-list-template-grid-title-img-desc .grid-item-col {\n  width: 50%;\n  padding: 5px;\n}\n.search-list-template-grid-title-img-desc .grid-item-col.text-center {\n  text-align: center;\n}\n.search-list-template-grid-title-img-desc .grid-item-col .content-info-grid {\n  background: #FFFFFF;\n  border: 1px solid #E4E5E7;\n  box-sizing: border-box;\n  border-radius: 4px;\n  padding: 12px 15px;\n}\n.search-list-template-grid-title-img-desc .grid-item-col .content-info-grid .heading-title {\n  font-weight: 500;\n  font-size: 14px;\n  line-height: 18px;\n  color: #202124;\n}\n.search-list-template-grid-title-img-desc .grid-item-col .content-info-grid .img-with-desc {\n  display: flex;\n  margin: 10px 0 0 0;\n}\n.search-list-template-grid-title-img-desc .grid-item-col .content-info-grid .img-with-desc .img_info {\n  width: 30px;\n  height: 30px;\n  flex-shrink: 0;\n  margin-right: 12px;\n}\n.search-list-template-grid-title-img-desc .grid-item-col .content-info-grid .img-with-desc .img_info img {\n  width: 100%;\n  height: 100%;\n  border-radius: 3px;\n}\n.search-list-template-grid-title-img-desc .grid-item-col .content-info-grid .img-with-desc .desc-text {\n  font-weight: 400;\n  font-size: 12px;\n  line-height: 16px;\n  color: #9AA0A6;\n}\n\n.search-list-template-grid-title-img-card {\n  display: flex;\n  margin: 0 -5px;\n  flex-wrap: wrap;\n  margin-bottom: 15px;\n}\n.search-list-template-grid-title-img-card.mb-0 {\n  margin-bottom: 0px;\n}\n.search-list-template-grid-title-img-card .grid-item-col {\n  width: 50%;\n  padding: 5px;\n}\n.search-list-template-grid-title-img-card .grid-item-col.text-center {\n  text-align: center;\n}\n.search-list-template-grid-title-img-card .grid-item-col .content-info-grid {\n  background: #FFFFFF;\n  border: 1px solid #E4E5E7;\n  box-sizing: border-box;\n  border-radius: 4px;\n  padding: 9px;\n}\n.search-list-template-grid-title-img-card .grid-item-col .content-info-grid .main-img-block {\n  height: 111px;\n  background: #EFF0F1;\n  border-radius: 4px;\n  text-align: center;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin-bottom: 16px;\n}\n.search-list-template-grid-title-img-card .grid-item-col .content-info-grid .main-img-block img {\n  border-radius: 4px;\n}\n.search-list-template-grid-title-img-card .grid-item-col .content-info-grid .heading-title {\n  font-weight: 500;\n  font-size: 14px;\n  line-height: 18px;\n  color: #202124;\n  margin-bottom: 5px;\n  padding: 0 5px;\n}\n.search-list-template-grid-title-img-card .grid-item-col .content-info-grid .desc-text {\n  font-weight: 400;\n  font-size: 12px;\n  line-height: 14px;\n  color: #9AA0A6;\n  margin: 12px 0;\n  padding: 0 5px;\n}\n.search-list-template-grid-title-img-card .grid-item-col .content-info-grid .price-tag {\n  font-weight: 600;\n  font-size: 12px;\n  line-height: 14px;\n  color: #202124;\n  text-align: right;\n  margin: 15px 0 5px 0;\n  padding: 0 5px;\n}\n\n.new-grid-search-data {\n  display: flex !important;\n  flex-wrap: wrap;\n  margin: 0 -5px 15px -5px;\n}\n.new-grid-search-data.list-view-data-search {\n  margin: 0 0px 13px;\n  width: 100%;\n}\n.new-grid-search-data.list-view-data-search .title-box-data {\n  padding: 5px 0 !important;\n  width: 100% !important;\n}\n.new-grid-search-data .title-box-data {\n  padding: 5px !important;\n  margin: 0 !important;\n  width: 50%;\n}\n.new-grid-search-data .title-box-data .search-grid-item {\n  min-height: 42px;\n  width: 100%;\n  background: #F3F8FF;\n  border: 1px solid #E7F1FF;\n  border-radius: 4px;\n  padding: 9px;\n  font-weight: 500;\n  font-size: 12px;\n  line-height: 19px;\n  letter-spacing: 0.257143px;\n  color: #07377F;\n  transition: 0.2s all ease;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n}\n.new-grid-search-data .title-box-data .search-grid-item:hover {\n  background: #E7F1FF;\n  border: 1px solid #0D6EFD;\n  color: #07377F;\n}\n.new-grid-search-data .title-box-data .search-grid-item:hover .child-bot {\n  display: none;\n}\n.new-grid-search-data .title-box-data .search-grid-item .credit-card {\n  margin-right: 8px;\n}\n.new-grid-search-data .title-box-data .search-grid-item .name-title {\n  width: 100%;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n.new-grid-search-data .title-box-data .search-grid-item .child-bot {\n  width: auto;\n  background: #E7F1FF;\n  border-radius: 100px;\n  padding: 4px 8px;\n  font-weight: normal;\n  font-size: 10px;\n  line-height: 12px;\n  color: #0D6EFD;\n}\n\n.title-list-heading {\n  font-weight: 500;\n  font-size: 14px;\n  line-height: 17px;\n  color: #202124;\n  margin-bottom: 8px;\n}\n\n.text_overflow {\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n.clamp-text {\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 2;\n  overflow: hidden;\n}\n\n.show-more-data {\n  display: inline-flex;\n  align-items: center;\n  cursor: unset;\n}\n.show-more-data .searchassist-show-more-button {\n  font-weight: 500;\n  font-size: 12px;\n  line-height: 20px;\n  color: #0d6efd;\n  cursor: pointer;\n}\n.show-more-data .searchassist-show-more-button img {\n  margin-left: 8px;\n  cursor: pointer;\n}", "",{"version":3,"sources":["webpack://./src/templatemanager/templates/searchGridViewTemplate/searchGridViewTemplate.scss"],"names":[],"mappings":"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","sourcesContent":["\r\n\r\n// Grid List\r\n.search-list-template-grid{\r\n    display: flex;\r\n    margin: 0 -5px;\r\n    flex-wrap: wrap;\r\n    margin-bottom: 15px;\r\n    &.mb-0{\r\n        margin-bottom: 0px;\r\n    }\r\n    .grid-item-col{\r\n        width: 50%;\r\n        padding: 5px;\r\n        &.text-center{\r\n            text-align: center;\r\n        }\r\n        .content-info-grid{\r\n            background: #FFFFFF;\r\n            border: 1px solid #E4E5E7;\r\n            box-sizing: border-box;\r\n            border-radius: 4px;\r\n            padding: 12px 15px;\r\n            .heading-title{\r\n                font-weight: 500;\r\n                font-size: 14px;\r\n                line-height: 20px;\r\n                color: #202124;\r\n            }\r\n            .desc_text_info{\r\n                font-weight: 400;\r\n                font-size: 12px;\r\n                line-height: 16px;\r\n                color: #3C4043;\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n// Grid List with title img\r\n.search-list-template-grid-img-title{\r\n    display: flex;\r\n    margin: 0 -5px;\r\n    flex-wrap: wrap;\r\n    margin-bottom: 15px;\r\n    &.mb-0{\r\n        margin-bottom: 0px;\r\n    }\r\n    .grid-item-col{\r\n        width: 50%;\r\n        padding: 5px;\r\n        &.text-center{\r\n            text-align: center;\r\n        }\r\n        .content-info-grid{\r\n            background: #FFFFFF;\r\n            border: 1px solid #E4E5E7;\r\n            box-sizing: border-box;\r\n            border-radius: 4px;\r\n            padding: 12px 15px;\r\n            height: 100%;\r\n            .heading-title{\r\n                font-weight: 500;\r\n                font-size: 14px;\r\n                line-height: 20px;\r\n                color: #202124;\r\n                display: flex;\r\n                margin-bottom: 12px;\r\n                overflow: hidden;\r\n                white-space: nowrap;\r\n                text-overflow: ellipsis;\r\n                .title-heading{\r\n                    overflow: hidden;\r\n                    white-space: nowrap;\r\n                    text-overflow: ellipsis;\r\n                }\r\n                .img_block{\r\n                    width: 40px;\r\n                    height: 40px;\r\n                    flex-shrink: 0;\r\n                    margin-right: 10px;\r\n                    img{\r\n                        width: 100%;\r\n                        height: 100%;\r\n                        border-radius: 3px;\r\n                    }\r\n                }\r\n            }\r\n            .desc_text_info{\r\n                font-weight: 400;\r\n                font-size: 12px;\r\n                line-height: 16px;\r\n                color: #3C4043;\r\n            }\r\n        }\r\n    }\r\n\r\n}\r\n\r\n// Grid List Only Img\r\n.search-list-template-grid-img{\r\n    display: flex;\r\n    margin: 0 -5px;\r\n    flex-wrap: wrap;\r\n    margin-bottom: 15px;\r\n    &.mb-0{\r\n        margin-bottom: 0px;\r\n    }\r\n    .grid-item-col{\r\n        width: 50%;\r\n        padding: 5px;\r\n        &.text-center{\r\n            text-align: center;\r\n        }\r\n        .content-info-grid{\r\n            background: #FFFFFF;\r\n            border: 1px solid #E4E5E7;\r\n            box-sizing: border-box;\r\n            border-radius: 4px;\r\n            padding: 12px 15px;\r\n            .img-block-data{\r\n                text-align: center;\r\n                width: 100%;\r\n                height: 100%;\r\n                text-align: center;\r\n                // padding: 20px 0;\r\n                img{\r\n                    width: 100%;\r\n                    height: 100%;\r\n                    border-radius: 3px;\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n// Grid List Img with desc\r\n.search-list-template-grid-title-img-desc{\r\n    display: flex;\r\n    margin: 0 -5px;\r\n    flex-wrap: wrap;\r\n    margin-bottom: 15px;\r\n    &.mb-0{\r\n        margin-bottom: 0px;\r\n    }\r\n    .grid-item-col{\r\n        width: 50%;\r\n        padding: 5px;\r\n        &.text-center{\r\n            text-align: center;\r\n        }\r\n        .content-info-grid{\r\n            background: #FFFFFF;\r\n            border: 1px solid #E4E5E7;\r\n            box-sizing: border-box;\r\n            border-radius: 4px;\r\n            padding: 12px 15px;\r\n            .heading-title{\r\n                font-weight: 500;\r\n                font-size: 14px;\r\n                line-height: 18px;\r\n                color: #202124;\r\n            }\r\n            .img-with-desc{\r\n                display: flex;\r\n                margin: 10px 0 0 0;\r\n                .img_info{\r\n                    width: 30px;\r\n                    height: 30px;\r\n                    flex-shrink: 0;\r\n                    margin-right: 12px;\r\n                    img{\r\n                        width: 100%;\r\n                        height: 100%;\r\n                        border-radius: 3px;\r\n                    }\r\n                }\r\n                .desc-text{\r\n                    font-weight: 400;\r\n                    font-size: 12px;\r\n                    line-height: 16px;\r\n                    // color: #5F6368;\r\n                    color: #9AA0A6;\r\n            }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n// Grid List Img with desc\r\n.search-list-template-grid-title-img-card{\r\n    display: flex;\r\n    margin: 0 -5px;\r\n    flex-wrap: wrap;\r\n    margin-bottom: 15px;\r\n    &.mb-0{\r\n        margin-bottom: 0px;\r\n    }\r\n    .grid-item-col{\r\n        width: 50%;\r\n        padding: 5px;\r\n        &.text-center{\r\n            text-align: center;\r\n        }\r\n        .content-info-grid{\r\n            background: #FFFFFF;\r\n            border: 1px solid #E4E5E7;\r\n            box-sizing: border-box;\r\n            border-radius: 4px;\r\n            padding: 9px;\r\n            .main-img-block{\r\n                height: 111px;\r\n                background: #EFF0F1;\r\n                border-radius: 4px;\r\n                text-align: center;\r\n                display: flex;\r\n                align-items: center;\r\n                justify-content: center;\r\n                margin-bottom: 16px;\r\n                img{\r\n                    border-radius: 4px;\r\n                }\r\n            }\r\n            .heading-title{\r\n                font-weight: 500;\r\n                font-size: 14px;\r\n                line-height: 18px;\r\n                color: #202124;\r\n                margin-bottom: 5px;\r\n                padding: 0 5px;\r\n            }\r\n            .desc-text{\r\n                font-weight: 400;\r\n                font-size: 12px;\r\n                line-height: 14px;\r\n                // color: #5F6368;\r\n                color: #9AA0A6;\r\n                margin: 12px 0;\r\n                padding: 0 5px;\r\n            }\r\n            .price-tag{\r\n                font-weight: 600;\r\n                font-size: 12px;\r\n                line-height: 14px;\r\n                color: #202124;\r\n                text-align: right;\r\n                margin: 15px 0 5px 0;\r\n                padding: 0 5px;\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n// Grid Action Template\r\n\r\n.new-grid-search-data{\r\n    display: flex !important;\r\n    flex-wrap: wrap;\r\n    margin: 0 -5px 15px -5px;\r\n    // width: 100%;\r\n    &.list-view-data-search{\r\n        margin: 0 0px 13px;\r\n        width: 100%;\r\n        .title-box-data{\r\n            padding: 5px 0 !important;\r\n            width: 100% !important;\r\n        }\r\n    }\r\n    .title-box-data{\r\n        padding: 5px !important;\r\n        margin: 0 !important;\r\n        width: 50%;\r\n        .search-grid-item{\r\n            min-height: 42px;\r\n            width: 100%;\r\n            background: #F3F8FF;\r\n            border: 1px solid #E7F1FF;\r\n            border-radius: 4px;\r\n            padding: 9px;\r\n            font-weight: 500;\r\n            font-size: 12px;\r\n            line-height: 19px;\r\n            letter-spacing: 0.257143px;\r\n            color: #07377F;\r\n            transition: 0.2s all ease;\r\n            cursor: pointer;\r\n            display: flex;\r\n            align-items: center;\r\n            &:hover{\r\n                background: #E7F1FF;\r\n                border: 1px solid #0D6EFD;\r\n                color: #07377F;\r\n                .child-bot{\r\n                    display: none;\r\n                }\r\n            }\r\n            .credit-card{\r\n                margin-right: 8px;\r\n            }\r\n            .name-title{\r\n                width: 100%;\r\n                overflow: hidden;\r\n                white-space: nowrap;\r\n                text-overflow: ellipsis;\r\n            }\r\n            .child-bot{\r\n                width: auto;\r\n                background: #E7F1FF;\r\n                border-radius: 100px;\r\n                padding: 4px 8px;\r\n                font-weight: normal;\r\n                font-size: 10px;\r\n                line-height: 12px;\r\n                color: #0D6EFD;\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n.title-list-heading{\r\n    font-weight: 500;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n    color: #202124;\r\n    margin-bottom: 8px;\r\n}\r\n\r\n.text_overflow{\r\n    overflow: hidden;\r\n    white-space: nowrap;\r\n    text-overflow: ellipsis;\r\n}\r\n\r\n.clamp-text{\r\n    display: -webkit-box;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-line-clamp: 2;\r\n    overflow: hidden;\r\n}\r\n.show-more-data{\r\n    display: inline-flex;\r\n    align-items: center;\r\n    cursor: unset;\r\n    .searchassist-show-more-button{\r\n        font-weight: 500;\r\n        font-size: 12px;\r\n        line-height: 20px;\r\n        color: #0d6efd;\r\n        cursor: pointer;\r\n        img{\r\n            margin-left: 8px;\r\n            cursor: pointer;\r\n        }\r\n    }\r\n   \r\n}"],"sourceRoot":""}]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+var SearchCarouselViewTemplate = /** @class */ (function () {
+    function SearchCarouselViewTemplate() {
+    }
+    SearchCarouselViewTemplate.prototype.renderMessage = function (msgData) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+        var me = this;
+        var $ = me.hostInstance.$;
+        me.helpersObj = _utils_helpers__WEBPACK_IMPORTED_MODULE_1__["default"];
+        if ((msgData === null || msgData === void 0 ? void 0 : msgData.message[0]) && (msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) && ((_a = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _a === void 0 ? void 0 : _a.payload) && ((_c = (_b = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _b === void 0 ? void 0 : _b.payload) === null || _c === void 0 ? void 0 : _c.template_type) == 'searchCarouselTemplate') {
+            if (!((_e = (_d = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _d === void 0 ? void 0 : _d.payload) === null || _e === void 0 ? void 0 : _e.helpers)) {
+                msgData.message[0].component.payload['helpers'] = me.helpersObj.helpers;
+            }
+            msgData.message[0].component.payload['helpers'] = me.helpersObj.helpers;
+            if (((_f = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _f === void 0 ? void 0 : _f.payload) && ((_h = (_g = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _g === void 0 ? void 0 : _g.payload) === null || _h === void 0 ? void 0 : _h.gridLayoutType) === 'img_common') {
+                var payload = (_k = (_j = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _j === void 0 ? void 0 : _j.payload) === null || _k === void 0 ? void 0 : _k.structuredData;
+                var checkImg = payload.some(function (res) { return res !== ''; });
+                msgData.message[0].component.payload.templateType = checkImg ? 'L4' : '';
+            }
+            me.messageCarouselHtml = $(SearchCarouselViewTemplate.prototype.getTemplateString((_m = (_l = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _l === void 0 ? void 0 : _l.payload) === null || _m === void 0 ? void 0 : _m.template_type)).tmpl((_o = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _o === void 0 ? void 0 : _o.payload);
+            SearchCarouselViewTemplate.prototype.bindEvents(me, me.messageCarouselHtml);
+            return me.messageCarouselHtml;
+        }
+    };
+    SearchCarouselViewTemplate.prototype.bindEvents = function (me, messageHtml) {
+        var _this = this;
+        var hostWindowInstance = me.hostInstance;
+        var $ = me.hostInstance.$;
+        setTimeout(function () {
+            var me = _this;
+            var newCarouselTemplateCount = $('.carousel').length;
+            var newCarouselEles = [];
+            newCarouselTemplateCount += 1;
+            messageHtml
+                .find(".carousel:last")
+                .addClass("carouselTemplate" + newCarouselTemplateCount);
+            var count = messageHtml
+                .find(".carouselTemplate" + newCarouselTemplateCount)
+                .children().length;
+            if (count > 1) {
+                var carouselOneByOne = new _libs_purejscarousel_purejscarousel__WEBPACK_IMPORTED_MODULE_2__["default"]({
+                    carousel: ".carouselTemplate" + newCarouselTemplateCount,
+                    slide: ".slide",
+                    oneByOne: true,
+                    jq: $,
+                });
+                $(".carousel" + newCarouselTemplateCount)
+                    .parent()
+                    .show();
+                newCarouselEles.push(carouselOneByOne);
+                if ($(".carouselTemplate" + newCarouselTemplateCount).width() >=
+                    $(".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-slides-container").children().length *
+                        $(".carouselTemplate" +
+                            newCarouselTemplateCount +
+                            " .purejscarousel-slides-container .slide:first").width()) {
+                    $(".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-btn-prev").hide();
+                    $(".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-btn-next").hide();
+                }
+                $(".carouselTemplate" +
+                    newCarouselTemplateCount +
+                    " .purejscarousel-btn-prev::after").css("height", $(".carouselTemplate" +
+                    newCarouselTemplateCount +
+                    ".purejscarousel-slides-container").height() + "px");
+                $(".carouselTemplate" +
+                    newCarouselTemplateCount +
+                    " .purejscarousel-btn-next::after").css("height", $(".carouselTemplate" +
+                    newCarouselTemplateCount +
+                    ".purejscarousel-slides-container").height() + "px");
+                $("body").append("<style>.carouselTemplate" +
+                    newCarouselTemplateCount +
+                    " .purejscarousel-btn-next::after,.carouselTemplate" +
+                    newCarouselTemplateCount +
+                    " .purejscarousel-btn-prev::after {height:" +
+                    ($(".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-slides-container").height() -
+                        8) +
+                    "px !important; top:-" +
+                    ($(".carouselTemplate" +
+                        newCarouselTemplateCount +
+                        " .purejscarousel-btn-next").position().top -
+                        27.5) +
+                    "px !important;}</style>");
+                window.dispatchEvent(new Event('resize'));
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("resize", true, false);
+                window.dispatchEvent(evt);
+            }
+        });
+        $(messageHtml)
+            .off("click", ".search-task")
+            .on("click", ".search-task", function (event) {
+            event.stopPropagation();
+            var ele = $(event.target).closest(".search-task");
+            hostWindowInstance.botActionTrigger(event);
+        });
+        $(messageHtml).off("click", ".click-to-navigate-url").on("click", ".click-to-navigate-url", function (e) {
+            hostWindowInstance === null || hostWindowInstance === void 0 ? void 0 : hostWindowInstance.clickNavigateToUrl(e);
+        });
+        $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e) {
+            hostWindowInstance === null || hostWindowInstance === void 0 ? void 0 : hostWindowInstance.captureClickAnalytics(e, $(e.currentTarget).closest(".click-log-metrics").attr("contentType"), "click", $(e.currentTarget).closest(".click-log-metrics").attr("contentId"), $(e.currentTarget).closest(".click-log-metrics").attr("id"), $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
+        });
+    };
+    SearchCarouselViewTemplate.prototype.getTemplateString = function (type) {
+        var searchCarouselTemplate = '<script type="text/x-jqury-tmpl">\
+        {{if isButtonTemplate == false}}\
+            {{if structuredData.length}}\
+            {{if renderTitle}}\
+            <div class="title-list-heading">${titleName}</div>\
+            {{/if}}\
+            {{if gridLayoutType==="img_common"}}\
+            <div class="search-list-template-carousel{{if templateType==="L4"}}-img-title{{/if}}">\
+            <div class="carousel">\
+            {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+            {{if isClickable == true}}\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
+                    <div class="content-info-grid">\
+                        <div class="heading-title">\
+                        {{if data.img.length}}\
+                        <div class="img_block">\
+                        <img src="${data.img}"/>\
+                        </div>\
+                        {{/if}}\
+                        <span class="two-line-title" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                        </div>\
+                        <div class="desc_text_info clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                    </div>\
+                </div>\
+            {{/each}}\
+            </div>\
+        </div>\
+            {{/if}}\
+            {{if gridLayoutType==="img_large"}}\
+            <div class="search-list-template-carousel-grid-img">\
+            <div class="carousel">\
+                {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+                {{if isClickable == true}}\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
+                    <div class="content-info-grid">\
+                        <div class="img-block-data">\
+                            <img src="${data.img}">\
+                        </div>\
+                    </div>\
+                </div>\
+                {{/each}}\
+            </div>\
+            </div>\
+            {{/if}}\
+            {{if gridLayoutType==="img_left"}}\
+            <div class="search-list-template-carousel-title-img-desc">\
+            <div class="carousel">\
+                {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+                {{if isClickable == true}}\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
+                    <div class="content-info-grid">\
+                        <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                        <div class="img-with-desc">\
+                            <div class="img_info">\
+                                <img src="${data.img}">\
+                            </div>\
+                            <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                        </div>\
+                    </div>\
+                </div>\
+                {{/each}}\
+            </div>\
+            </div>\
+            {{/if}}\
+            {{if gridLayoutType==="img_top"}}\
+            <div class="search-list-template-carousel-title-img-card">\
+            <div class="carousel">\
+                {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+                {{if isClickable == true}}\
+            <div class="slide grid-item-col click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{else}}\
+            <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
+            {{/if}}\
+                    <div class="content-info-grid">\
+                        <div class="main-img-block">\
+                            <img src="${data.img}" height="10">\
+                        </div>\
+                        {{if data.heading.length}}\
+                        <div class="heading-title text_overflow" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                        {{/if}}\
+                        {{if data.description.length}}\
+                        <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                        {{/if}}\
+                        <div class="price-tag">$156</div>\
+                    </div>\
+                </div>\
+                {{/each}}\
+            </div>\
+        </div>\
+            {{/if}}\
+            {{/if}}\
+        {{/if}}\
+        {{if isButtonTemplate}}\
+        {{if structuredData && structuredData.length > 0 }}\
+        <div class="action-carousel-parent-container">\
+        {{if devMode == true && viewType == "Customize" && selectedFacet == appearanceType}}\
+          <div class="bot-actions-customize-info ">\
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFnSURBVHgBpVNNSsNQEH4zabXLuFXEHsGCqLjQ9gTqCWJP0AsUk0j26tJdegLrCczKnyL0CDbgAbKzhvjGmZBIfIQScODxHt/8fzNPqRXSOfS6clbZgAm09sZ9tCxHkToDULZgRCphyykC+MsXb1G1x78ZfRfRumfDGBF6X68+yJG3YET0uLZ/6dZWIM5E+gIABmaWaksShE+Yzq783wClwnRmvK91ZqezYFoNojXNtf4+z96CKG9BE3F2mpiZAWgXsWVXMbHhlm5znoSzHGXCELFnlvz57N+oegm59DnfQyjKfxeyTCsmzJOb+/VM3fqBS2C1u6j+KSg9yZw7R8FOU6diuZLl0zguKqAHnaVD1VjAIaXyyeQBmMCQRzgy15bxhRwzu+yLbGUeqqLwmEyn4SJNSmKtUpl9RFF7e7DBymtr68Tmd8xYUjri5vGIuQq53bvqVKAui9aaDeC05jPJskWqqTT5zj8FOrqqP5/xLgAAAABJRU5ErkJggg==" alt="actions-info">\
+            <span class="info-text">Bot Actions cannot be customized</span>\
+          </div>\
+        {{/if}}\
+        {{if selectedFacet !== appearanceType && selectedFacet == "all results"}}\
+            <div class="heading-and-show-all" appearanceType="task">\
+                <div class="text-heading-main">ACTIONS</div>\
+                <div class="show-all-text display-none">Show all Actions</div>\
+            </div>\
+        {{/if}}\
+        {{if selectedFacet == appearanceType || selectedFacet == "all results"}}\
+          <div class="carousel action-results-container carousel-search-data-items">\
+            {{each(key, task) structuredData}}\
+              <div class="slide">\
+                <div class="title-box-data text-truncate">\
+                    <div id="${key}" class="search-task search-grid-item text-truncate one-line-height" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">${task.titleText}</div>\
+                    {{if task.childBotName !=="" && task.childBotName !== undefined}}\
+                      <div class="child-bot">${task.childBotName}</div>\
+                    {{/if}}\
+                </div>\
+              </div>\
+            {{/each}}\
+          </div>\
+        {{/if}}\
+        </div>\
+      {{/if}}\
+        {{/if}}\
+        </script>';
+        if (type === 'searchCarouselTemplate') {
+            return searchCarouselTemplate;
+        }
+    };
+    return SearchCarouselViewTemplate;
+}());
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SearchCarouselViewTemplate);
+// getTemplateString(type: any) {
+//     const searchCarouselTemplate = '<script type="text/x-jqury-tmpl">\
+//         <div class="title-list-heading">Template title comes here</div>\
+//         <div class="search-list-template-carousel">\
+//             <div class="carousel">\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">\
+//                             <span>Description comes here</span>\
+//                         </div>\
+//                         <div class="desc_text_info">Description comes here, descrip  tion comes here, description comes here, description comes here, description comes here, description comes here, desc....</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">\
+//                             <span>Description comes here</span>\
+//                         </div>\
+//                         <div class="desc_text_info">Description comes here, descrip  tion comes here, description comes here, description comes here, description comes here, description comes here, desc....</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">\
+//                             <span>Description comes here</span>\
+//                         </div>\
+//                         <div class="desc_text_info">Description comes here, descrip  tion comes here, description comes here, description comes here, description comes here, description comes here, desc....</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">\
+//                             <span>Description comes here</span>\
+//                         </div>\
+//                         <div class="desc_text_info">Description comes here, descrip  tion comes here, description comes here, description comes here, description comes here, description comes here, desc....</div>\
+//                     </div>\
+//                 </div>\
+//             </div>\
+//         </div>\
+//     </script>'
+//     if (type === 'searchCarouselTemplate') {
+//         return searchCarouselTemplate;
+//     }
+// }
+// getTemplateString(type: any) {
+//     const searchCarouselTemplate = '<script type="text/x-jqury-tmpl">\
+//         <div class="title-list-heading">Template title comes here</div>\
+//         <div class="search-list-template-carousel-img-title">\
+//             <div class="carousel">\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">\
+//                         <div class="img_block">\
+//                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAnCAYAAAB0Q6rCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAPISURBVHgB1ZhPUhpBFMZf9yCYMmXIDcgJgkvFRLpAq1xFTiCeQHICzQkkJ5CcAHap8k81aoCl5AaTE4RFNpLwOv1GZ2iGYZghiuRbqN12V/+q5/X3XjeDB9WlTK/CUhks6y0skgZ41Yd+c1cIm5qMfpxJmbV4UupmGhZT9gBVaUfkuuyrlJkkT94uMKyrXh/v1hJJa/kIlHqAVT1QvIEKf8ACiAHLMA77D830EiQrCaVUlrkjED4WxHoNFkjn8luXc35CfzPOPnAN64UCAtqwcFJds5WAZxK50ktIZH/Bn25JiF7UeRyeQfK6fbLKUz85tyT9lled/ahz5w58KVtlVFAx+xBU7Uy2slHmzx2YWTxwN7Uj5CGC5g6sgEWO1yDNH3jQ/xLQ20sAa0AEzR24KN43ENUnJ0k5Uj1E1EaxbkeZPzPwubzJw4zaFrnjwlbudR/ZG/q9Ld41o86dCZhsiSwpjh0FaTfirpqKDSxvOkeuLWk7qka1o8dSLGAHFtWx0ZW2OJNxoSnLwYyKDHwh23s+WFcEXacyFSKIxunsdnt53TqFGRQJmBZhXJkL2OCcdE+6pk7JadD3tXdK0nhQrDwL9FTg4SLMq5k5MlHQJ11DH0AM6CWeqjuwrjQ0hRk8FjDFmrcj7hrIDlzP1NA1DNhpGRCj5Cy6lB2LdQqzONChwK+s5ZEdIbii2BjJSOSpfmjlgzadhaQQKdvZs0BPBKYd0beRvAlLcEFj/dBK7yRaqVMP1jis+n/dotgsU1iNQUfw9UDgoB2ZBGtCK8BhnaBg7+K6I33OYlv4gkCBwmoMWpeZ06D5OGz70L8jFqxUIIKKW5tlE5oZX4jACFCINa9aG0KrngEdmoz4aMPKIkLVXMRCVjIXmSYLf1f04eqOLeTAjqdi6hsgmNChyYj7Wicm7KRFwqQn9BjeiTHoBEz81PRAQhWb0TUxGU08dFy/tIgZihPSPTQjANvtozC7lO2JoeVUbAG+zi2eGeEKmqyfhbTX5rrwDwo6VPQFww4V+Tq9jRhdOiOOfPVxYLKnHZr4CJrkBGG1dEFsVEd9ffQJjfthp9lXXN0fKlUynUDX0vUwJwhIRp58O4xNeALRoQpygrC6w/F1VJ/9/XO70xG0woF5qNLTiqWiyFVGkhHM+RJKF9C4FZ7e5ZrZ9gFbT37diVPhkTgMbU1n3R67kK2qfsY89EYw3jAPyJNJ4Z7PAWxgrBk6TrEak7KTQY7/wQs8XRz4Gh/mcsPgF04EC06Z4D2+OzsNmNchsQWLJDX4zmGl5hZgfwFKpyGomp0UxAAAAABJRU5ErkJggg==">\
+//                         </div>\
+//                         <span>Description comes here</span>\
+//                         </div>\
+//                         <div class="desc_text_info">Description comes here, descrip  tion comes here, description comes here, description comes here, description comes here, description comes here, desc....</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">\
+//                         <div class="img_block">\
+//                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAnCAYAAAB0Q6rCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAPISURBVHgB1ZhPUhpBFMZf9yCYMmXIDcgJgkvFRLpAq1xFTiCeQHICzQkkJ5CcAHap8k81aoCl5AaTE4RFNpLwOv1GZ2iGYZghiuRbqN12V/+q5/X3XjeDB9WlTK/CUhks6y0skgZ41Yd+c1cIm5qMfpxJmbV4UupmGhZT9gBVaUfkuuyrlJkkT94uMKyrXh/v1hJJa/kIlHqAVT1QvIEKf8ACiAHLMA77D830EiQrCaVUlrkjED4WxHoNFkjn8luXc35CfzPOPnAN64UCAtqwcFJds5WAZxK50ktIZH/Bn25JiF7UeRyeQfK6fbLKUz85tyT9lled/ahz5w58KVtlVFAx+xBU7Uy2slHmzx2YWTxwN7Uj5CGC5g6sgEWO1yDNH3jQ/xLQ20sAa0AEzR24KN43ENUnJ0k5Uj1E1EaxbkeZPzPwubzJw4zaFrnjwlbudR/ZG/q9Ld41o86dCZhsiSwpjh0FaTfirpqKDSxvOkeuLWk7qka1o8dSLGAHFtWx0ZW2OJNxoSnLwYyKDHwh23s+WFcEXacyFSKIxunsdnt53TqFGRQJmBZhXJkL2OCcdE+6pk7JadD3tXdK0nhQrDwL9FTg4SLMq5k5MlHQJ11DH0AM6CWeqjuwrjQ0hRk8FjDFmrcj7hrIDlzP1NA1DNhpGRCj5Cy6lB2LdQqzONChwK+s5ZEdIbii2BjJSOSpfmjlgzadhaQQKdvZs0BPBKYd0beRvAlLcEFj/dBK7yRaqVMP1jis+n/dotgsU1iNQUfw9UDgoB2ZBGtCK8BhnaBg7+K6I33OYlv4gkCBwmoMWpeZ06D5OGz70L8jFqxUIIKKW5tlE5oZX4jACFCINa9aG0KrngEdmoz4aMPKIkLVXMRCVjIXmSYLf1f04eqOLeTAjqdi6hsgmNChyYj7Wicm7KRFwqQn9BjeiTHoBEz81PRAQhWb0TUxGU08dFy/tIgZihPSPTQjANvtozC7lO2JoeVUbAG+zi2eGeEKmqyfhbTX5rrwDwo6VPQFww4V+Tq9jRhdOiOOfPVxYLKnHZr4CJrkBGG1dEFsVEd9ffQJjfthp9lXXN0fKlUynUDX0vUwJwhIRp58O4xNeALRoQpygrC6w/F1VJ/9/XO70xG0woF5qNLTiqWiyFVGkhHM+RJKF9C4FZ7e5ZrZ9gFbT37diVPhkTgMbU1n3R67kK2qfsY89EYw3jAPyJNJ4Z7PAWxgrBk6TrEak7KTQY7/wQs8XRz4Gh/mcsPgF04EC06Z4D2+OzsNmNchsQWLJDX4zmGl5hZgfwFKpyGomp0UxAAAAABJRU5ErkJggg==">\
+//                         </div>\
+//                         <span>Description comes here</span>\
+//                         </div>\
+//                         <div class="desc_text_info">Description comes here, descrip  tion comes here, description comes here, description comes here, description comes here, description comes here, desc....</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">\
+//                         <div class="img_block">\
+//                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAnCAYAAAB0Q6rCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAPISURBVHgB1ZhPUhpBFMZf9yCYMmXIDcgJgkvFRLpAq1xFTiCeQHICzQkkJ5CcAHap8k81aoCl5AaTE4RFNpLwOv1GZ2iGYZghiuRbqN12V/+q5/X3XjeDB9WlTK/CUhks6y0skgZ41Yd+c1cIm5qMfpxJmbV4UupmGhZT9gBVaUfkuuyrlJkkT94uMKyrXh/v1hJJa/kIlHqAVT1QvIEKf8ACiAHLMA77D830EiQrCaVUlrkjED4WxHoNFkjn8luXc35CfzPOPnAN64UCAtqwcFJds5WAZxK50ktIZH/Bn25JiF7UeRyeQfK6fbLKUz85tyT9lled/ahz5w58KVtlVFAx+xBU7Uy2slHmzx2YWTxwN7Uj5CGC5g6sgEWO1yDNH3jQ/xLQ20sAa0AEzR24KN43ENUnJ0k5Uj1E1EaxbkeZPzPwubzJw4zaFrnjwlbudR/ZG/q9Ld41o86dCZhsiSwpjh0FaTfirpqKDSxvOkeuLWk7qka1o8dSLGAHFtWx0ZW2OJNxoSnLwYyKDHwh23s+WFcEXacyFSKIxunsdnt53TqFGRQJmBZhXJkL2OCcdE+6pk7JadD3tXdK0nhQrDwL9FTg4SLMq5k5MlHQJ11DH0AM6CWeqjuwrjQ0hRk8FjDFmrcj7hrIDlzP1NA1DNhpGRCj5Cy6lB2LdQqzONChwK+s5ZEdIbii2BjJSOSpfmjlgzadhaQQKdvZs0BPBKYd0beRvAlLcEFj/dBK7yRaqVMP1jis+n/dotgsU1iNQUfw9UDgoB2ZBGtCK8BhnaBg7+K6I33OYlv4gkCBwmoMWpeZ06D5OGz70L8jFqxUIIKKW5tlE5oZX4jACFCINa9aG0KrngEdmoz4aMPKIkLVXMRCVjIXmSYLf1f04eqOLeTAjqdi6hsgmNChyYj7Wicm7KRFwqQn9BjeiTHoBEz81PRAQhWb0TUxGU08dFy/tIgZihPSPTQjANvtozC7lO2JoeVUbAG+zi2eGeEKmqyfhbTX5rrwDwo6VPQFww4V+Tq9jRhdOiOOfPVxYLKnHZr4CJrkBGG1dEFsVEd9ffQJjfthp9lXXN0fKlUynUDX0vUwJwhIRp58O4xNeALRoQpygrC6w/F1VJ/9/XO70xG0woF5qNLTiqWiyFVGkhHM+RJKF9C4FZ7e5ZrZ9gFbT37diVPhkTgMbU1n3R67kK2qfsY89EYw3jAPyJNJ4Z7PAWxgrBk6TrEak7KTQY7/wQs8XRz4Gh/mcsPgF04EC06Z4D2+OzsNmNchsQWLJDX4zmGl5hZgfwFKpyGomp0UxAAAAABJRU5ErkJggg==">\
+//                         </div>\
+//                         <span>Description comes here</span>\
+//                         </div>\
+//                         <div class="desc_text_info">Description comes here, descrip  tion comes here, description comes here, description comes here, description comes here, description comes here, desc....</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">\
+//                         <div class="img_block">\
+//                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAnCAYAAAB0Q6rCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAPISURBVHgB1ZhPUhpBFMZf9yCYMmXIDcgJgkvFRLpAq1xFTiCeQHICzQkkJ5CcAHap8k81aoCl5AaTE4RFNpLwOv1GZ2iGYZghiuRbqN12V/+q5/X3XjeDB9WlTK/CUhks6y0skgZ41Yd+c1cIm5qMfpxJmbV4UupmGhZT9gBVaUfkuuyrlJkkT94uMKyrXh/v1hJJa/kIlHqAVT1QvIEKf8ACiAHLMA77D830EiQrCaVUlrkjED4WxHoNFkjn8luXc35CfzPOPnAN64UCAtqwcFJds5WAZxK50ktIZH/Bn25JiF7UeRyeQfK6fbLKUz85tyT9lled/ahz5w58KVtlVFAx+xBU7Uy2slHmzx2YWTxwN7Uj5CGC5g6sgEWO1yDNH3jQ/xLQ20sAa0AEzR24KN43ENUnJ0k5Uj1E1EaxbkeZPzPwubzJw4zaFrnjwlbudR/ZG/q9Ld41o86dCZhsiSwpjh0FaTfirpqKDSxvOkeuLWk7qka1o8dSLGAHFtWx0ZW2OJNxoSnLwYyKDHwh23s+WFcEXacyFSKIxunsdnt53TqFGRQJmBZhXJkL2OCcdE+6pk7JadD3tXdK0nhQrDwL9FTg4SLMq5k5MlHQJ11DH0AM6CWeqjuwrjQ0hRk8FjDFmrcj7hrIDlzP1NA1DNhpGRCj5Cy6lB2LdQqzONChwK+s5ZEdIbii2BjJSOSpfmjlgzadhaQQKdvZs0BPBKYd0beRvAlLcEFj/dBK7yRaqVMP1jis+n/dotgsU1iNQUfw9UDgoB2ZBGtCK8BhnaBg7+K6I33OYlv4gkCBwmoMWpeZ06D5OGz70L8jFqxUIIKKW5tlE5oZX4jACFCINa9aG0KrngEdmoz4aMPKIkLVXMRCVjIXmSYLf1f04eqOLeTAjqdi6hsgmNChyYj7Wicm7KRFwqQn9BjeiTHoBEz81PRAQhWb0TUxGU08dFy/tIgZihPSPTQjANvtozC7lO2JoeVUbAG+zi2eGeEKmqyfhbTX5rrwDwo6VPQFww4V+Tq9jRhdOiOOfPVxYLKnHZr4CJrkBGG1dEFsVEd9ffQJjfthp9lXXN0fKlUynUDX0vUwJwhIRp58O4xNeALRoQpygrC6w/F1VJ/9/XO70xG0woF5qNLTiqWiyFVGkhHM+RJKF9C4FZ7e5ZrZ9gFbT37diVPhkTgMbU1n3R67kK2qfsY89EYw3jAPyJNJ4Z7PAWxgrBk6TrEak7KTQY7/wQs8XRz4Gh/mcsPgF04EC06Z4D2+OzsNmNchsQWLJDX4zmGl5hZgfwFKpyGomp0UxAAAAABJRU5ErkJggg==">\
+//                         </div>\
+//                         <span>Description comes here</span>\
+//                         </div>\
+//                         <div class="desc_text_info">Description comes here, descrip  tion comes here, description comes here, description comes here, description comes here, description comes here, desc....</div>\
+//                     </div>\
+//                 </div>\
+//             </div>\
+//         </div>\
+//     </script>'
+//     if (type === 'searchCarouselTemplate') {
+//         return searchCarouselTemplate;
+//     }
+// }
+// getTemplateString(type: any) {
+//     const searchCarouselTemplate = '<script type="text/x-jqury-tmpl">\
+//         <div class="title-list-heading">Template title comes here</div>\
+//         <div class="search-list-template-carousel-grid-img">\
+//             <div class="carousel">\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="img-block-data">\
+//                         <img src="data:image/png;base64,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">\
+//                         </div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="img-block-data">\
+//                         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAABMCAYAAAD3G0AKAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAagSURBVHgB7Z1bUttIFIZPtxhMUjWJlyBWMOYxkKlYBZmqeZp4BZgVJLMCYAU4KwBWQOZpqpJhxKWAV2YFoyV43ri5e/pIyDjG3X0ktZSU0PfkqCUKfsvn8p+2wkDDQRi2f4RWl4HwBbA2NIzhIIcC5OXb4Ocj3Tls+sCfYei3vIVdKWUXGmxEnLM9uLv6GATBcHLhK2HD0/P3QsgtaO7QrEQ34jr4NQii9MBY2PD0YjMRtSEnQyXuUipuLCx+/Od5619oKErElbgYFjj+S4kaQoML/DuY/4Av2JfwtMu5pxdWQsSARdAwRjLRMeShobprF+e4N7cOUs7+AQJ6a8HyJ2h4xJfwbEtVBJszltp3MNfhKsj6mmsHjah63gYrW4yxo9mrXoeretWftSTE6A9oMCJG4p9ZxzljP3FoyI0KoEPdWiNsSTTClsQcPBEOw7M+8/i6lEmppJL2pWTs8mZ0tT3Zirqi9sKiS/fSWzhAU0nGZWXSxatXHVVmdlRz1P0cnvV+CVYuwSG1DwUvvIUdi1Pne5yF2NaDQ2otLH781V3ZJ5zanvcWNsEh9b5jPe838rlSvgtV2ABH1FvYOFGRad/CvA+OqHmMlZnuQDWGau5YCjKjKyeBD8ER9RZWyCx+R+Sy5Kq1sHNwM1Dy0u5CIbfBIbUWNp6cCvjddp66sz+uBit74JDaNwgomLJAA/Uyerwqh0IJvxasfADHPAmv4H5jxSKOodS91MVjHAd/8PzTarDkLGFNUqmwuG/h9k4eu+7LqdwLfAQVUFkoSPYtwKCMvvx7pBJhH3bYxLRx3F53cUsX9nMYdvBOnTrs113cUoVF4TzeOtAsx+K6ND6+J0oT9n7bEm4E8Q2n+bKm4pYiLLr2PyR3qm87F518qRx+KBEMR3+F5++gQkoRtu3N7zAcfRBBh//w5GwXSiANR4yr9/v4Yh0qwrmwcVklWR+yoq7Ba8Eh0+FIgNxLmoTycSqsdY+tBNyyFOmW8VqX4s4KR5x7B2p4mMUAz4UzYTGGWTYuR1w+2+CCafr2BFfihiq0aMJRu4omxYmw+EsyLk0xMkJBA9WXB8GriCRugXhICEelNymFhX2IY7r9onKYiPoqSo88iKv3SjEe5hE3w5b/UpuUQsJiWWWrVaVgG5OipuCxkQCbuIMs8ZAQjqYprUkpJOzLpP70devqj9w27bFFl0sI0QM9cTykiEsIRzpKaVJyCxuenBt3mKCouDkXLMRWnpAbhlNQ3APTR5YSjtQIVvsGY5MiVO0NDsklbJIcQOu6SyH2KaKmxGMR8whFGw+p4YiPrjdwIxxoT2J9l01KZmGnLMBHqHf/ci143YeMrAbLA2Ee6M0UlxqOcP7FxHVgE9dVHZ1JWI0FOEnkCdaDnOBdbhO3pYr+NB5mDUeJuPHvFxmucVJHk4W1WIBINF1W5QGFwKmpbj02bTDZKFHzhCNyHV1QXJKwFAuQC9krKmoKTk0liH3depxsTKJawlEVTYpVWIoFiCPkwPGAcO3N674xHuohhaOkjpa9MpoUxCrsC6+1a7IAkzi2PIASsCabx2QKR1hHJ02KnqxNSopR2DjOSNAaxBgLs5RVWaEkm0nyhKN4FG+vozO3vlphPc+zWoBl7CCZhhIPY1QDkDccEerozKaNVlgpoQt6YgsQKoIkrvpkFUk2eetoHXk6r7EFCBVSdrJBKHU01bTJKOxjC7BKHpKNO0dsGlsdDUTTJpOwOguwSpJkY46HRScElDraNlkmC2uzAKskSTbmTF7UxI7raO3X5pPJMufsvW6dJCzVAqySZN+ru2QzCza66lnqaG04sAqb1QKsEpfJZhapIwbEOnoSo7B5LcAqoYgrC4pLqqOnMAlbyAKskjiTF0w2JshNygRaYYUYffMKIAuYbIzjl4LbmCiT5Ulq9eUO2vjlPPdsizJZHv8uUCNIyUb5uEVMbMJkOaZ2X0eiJJuiEwLCZLme3/OiTggOw/Pc7hzW0abWt7ZfoCMlGw47RUybJ/t4qDK2MU3CNJ2XlOI/rledd6EGuNzGNA3jbOYTPFBTroLw8axFfCBi/EyVGuBiG9MkOGANk7JNc744sj/mVCUA5fJEUAPSZ24ZTiH9rZafE62+WV5k+Orvk4uwedi5G1InME5eo9HdNjS4IJqD5/FWgFjYJAbZH5jQYCIdWyWzwHG5hVPKRtzcqJqZL02aVl/VsSiuUn1RCtiHBgL4hA65zcWzpWknkOkuCcMLfwS3HQle7olnXaH8lyj/AyVlLdTAdinuAAAAAElFTkSuQmCC">\
+//                         </div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="img-block-data">\
+//                         <img src="data:image/png;base64,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">\
+//                         </div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="img-block-data">\
+//                         <img src="data:image/png;base64,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">\
+//                         </div>\
+//                     </div>\
+//                 </div>\
+//             </div>\
+//         </div>\
+//     </script>'
+//     if (type === 'searchCarouselTemplate') {
+//         return searchCarouselTemplate;
+//     }
+// }
+// getTemplateString(type: any) {
+//     const searchCarouselTemplate = '<script type="text/x-jqury-tmpl">\
+//         <div class="title-list-heading">Template title comes here</div>\
+//         <div class="search-list-template-carousel-title-img-desc">\
+//             <div class="carousel">\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">Heading comes here</div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">Heading comes here</div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">Heading comes here</div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="heading-title">Heading comes here</div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                         <div class="img-with-desc">\
+//                             <div class="img_info">\
+//                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAbCAYAAABr/T8RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK8SURBVHgBvZZdctowEMd35RTKS5rcwDlByWNCM0UT0mc4QeAEdU9QOEHoCUhOAG+daUMVyAT6Br0BN6hfOpM0tbZaGfP9WaD/GQ2WWftnaf9aCcHos1JuzEm8B6AD2JnQhyD4cS5T17ZnoSLWMZc7hA4lBBbl2UkJ683vVSCdJYAuaGgQkA87EAK6KODSwvXT4Z6BJrmjNRXeyVQXdqjbRus1AiSfIZYV0U0nlvgJW9AX9ZDkNus/gTiYTQFblLpvf3QEdrjx9aLYrYGVUgcmXcWob649+B/gdbU1sJTSN6MsRX2toQSbgr+q+/QqcRcyVRQ6ccjtQp6WYRMwm0QIR9WbrStYQVIe+9yWxS0E36pWdmAYAm+ZU6vGYFwJYQXNBfMLUFDFMglsYeGPmAfn+H0R78RFvMoOh38Bh/U7rrh+cynNpE+PI+NYeKN9OfnMCwM0P66JT5Lzsgrrgnm6Qii4pvUcjTm+z8Yh0DcWDnQ9ajhl8s+lEGydJ5+I0vXmQ2Ut8L4Tr4RQ8oVGs0pOetF/mbdv8oh4Zx8UTpVLI0+9Nvnne6SxYL7qgw0mzC/yxBjYBhJk7ai0zo1CI2HwmEOwOT9wBKjIfJyKjDyt2f22D1/kiQFYBI/e6Esu5NndrAe4UGA4/b2RPbzMqYhizs0aHvVEXbW8ueBoukLo8CWz4Sc9TkMI570W0pNOtp7Q9KlPuZo05HiOCWrLoNNwY6Y5Ts7IlDdiyLIxnTsL3BOUKMAaYnigQS5ysqOfvcgTEK6UcXCgKbdKqZuUPbUscHLoiadBWqbAm5xAljmZ4VFapsD6968j2EDLnMxpQRTdEBr4+K3ZVpwf4KnoF4eNZE6sg2WGojYcpTmz92uEGf3RHgZQIEF8rnbNbpCHjYUTHzEunhUzOz0bpVTbDYA8Uw5fwQ6l6c9NVJj+AskwkARcpojIAAAAAElFTkSuQmCC">\
+//                             </div>\
+//                             <div class="desc-text">Men wardrobes there most special piecesa...</div>\
+//                         </div>\
+//                     </div>\
+//                 </div>\
+//             </div>\
+//         </div>\
+//     </script>'
+//     if (type === 'searchCarouselTemplate') {
+//         return searchCarouselTemplate;
+//     }
+// }
+// getTemplateString(type: any) {
+//     const searchCarouselTemplate = '<script type="text/x-jqury-tmpl">\
+//         <div class="title-list-heading">Template title comes here</div>\
+//         <div class="search-list-template-carousel-title-img-card">\
+//             <div class="carousel">\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="main-img-block">\
+//                             <img src="data:image/png;base64,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">\
+//                         </div>\
+//                         <div class="heading-title">Heading comes here</div>\
+//                         <div class="desc-text">Description text comes here, Description text comes here.</div>\
+//                         <div class="price-tag">$156</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="main-img-block">\
+//                             <img src="data:image/png;base64,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">\
+//                         </div>\
+//                         <div class="heading-title">Heading comes here</div>\
+//                         <div class="desc-text">Description text comes here, Description text comes here.</div>\
+//                         <div class="price-tag">$156</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="main-img-block">\
+//                             <img src="data:image/png;base64,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">\
+//                         </div>\
+//                         <div class="heading-title">Heading comes here</div>\
+//                         <div class="desc-text">Description text comes here, Description text comes here.</div>\
+//                         <div class="price-tag">$156</div>\
+//                     </div>\
+//                 </div>\
+//                 <div class="slide grid-item-col">\
+//                     <div class="content-info-grid">\
+//                         <div class="main-img-block">\
+//                             <img src="data:image/png;base64,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">\
+//                         </div>\
+//                         <div class="heading-title">Heading comes here</div>\
+//                         <div class="desc-text">Description text comes here, Description text comes here.</div>\
+//                         <div class="price-tag">$156</div>\
+//                     </div>\
+//                 </div>\
+//             </div>\
+//         </div>\
+//     </script>'
+//     if (type === 'searchCarouselTemplate') {
+//         return searchCarouselTemplate;
+//     }
+// }
 
 
 /***/ })
@@ -30,7 +570,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".search-list-template-grid {\n  displa
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("31e7df554ec37c0f6b9b")
+/******/ 	__webpack_require__.h = () => ("c144bc927c6b0fe765ba")
 /******/ })();
 /******/ 
 /******/ }

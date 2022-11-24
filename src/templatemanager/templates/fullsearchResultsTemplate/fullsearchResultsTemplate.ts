@@ -566,6 +566,7 @@ class FullSearchResultsTemplate {
       }
 
       if (!$(".full-search-data-container").children().length) {
+        console.log($(".full-search-data-container").children().length);
         $(".empty-full-results-container").removeClass("hide");
       } else {
         if (!$(".empty-full-results-container").hasClass("hide")) {

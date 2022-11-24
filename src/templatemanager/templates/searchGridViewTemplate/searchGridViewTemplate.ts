@@ -8,7 +8,6 @@ class SearchGridViewTemplate {
         let $ = me.hostInstance.$;
         me.helpersObj = helpers;
         if (msgData?.message[0] && msgData.message[0].component && msgData.message[0].component?.payload && msgData.message[0].component?.payload?.template_type == 'searchGridTemplate') {
-      console.log(msgData,'searchGridViewTemplate');
       if (!msgData.message[0].component.payload.helpers) {
                 msgData.message[0].component.payload['helpers'] = me.helpersObj;
             }
@@ -87,7 +86,7 @@ class SearchGridViewTemplate {
                 </div>\
                 {{/if}}\
                 {{if data.description}}\
-                <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                <div class="desc_text_info {{if listType==" classic"}}clamp-text{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 {{/if}}\
                 </div>\
             </div>\

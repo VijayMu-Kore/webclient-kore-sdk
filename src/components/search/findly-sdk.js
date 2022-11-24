@@ -18816,34 +18816,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       };
       // setTimeout(hide, 1000);
     });
-  $(".sdk-facet-count")
-    .off("click")
-    .on("click", function (event) {
-      selectClass(event, "child");
-    });
-  var selectClass = function (event, related) {
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    var classificationselected = $(event.target)
-      .closest(".see-all-result-nav")
-      .attr("classification");
-    _self.vars.selectedFacetFromSearch = classificationselected;
-    slecetFacetFunc(classificationselected);
-    $(".tab-name.see-all-result-nav.active-tab").removeClass("active-tab");
-    $(event.target).addClass("active-tab");
-    if (related == "child") {
-      $(event.target.parentNode).addClass("active-tab");
-    }
-
-    if (
-      classificationselected == "all results" ||
-      classificationselected == "task"
-    ) {
-      $("#actions-full-search-container").show();
-    } else {
-      $("#actions-full-search-container").hide();
-    }
-  };
+ 
   var removeActive = function (selectedFacet) {
     $(".see-all-result-nav").each(function (index, element) {
       if ($(element).attr("classification") == selectedFacet) {

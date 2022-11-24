@@ -60,7 +60,7 @@
             padding: 12px 15px;
             height: 100%;
             .heading-title{
-                font-weight: 500;
+                font-weight: 600;
                 font-size: 14px;
                 line-height: 20px;
                 color: #202124;
@@ -91,6 +91,13 @@
                 font-size: 12px;
                 line-height: 16px;
                 color: #3C4043;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                margin-bottom: 5px;
+                min-height: 30px;
+                max-height: 31px;
             }
         }
     }
