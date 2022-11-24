@@ -2726,6 +2726,7 @@ FindlySDK.prototype.getQuickReplyTemplate = function (messageData, helpers) {
         var messageData = {};
         messageData.text = _innerText;
         messageData.from = "user";
+        messageData.timeStamp = moment().format('LT');
         var templateMessageBubble = $(
           _self.getSearchTemplate("messageBubbles")
         ).tmplProxy({
@@ -2803,6 +2804,7 @@ FindlySDK.prototype.getButtonTemplate = function (messageData, helpers) {
         var messageData = {};
         messageData.text = displayMessage;
         messageData.from = "user";
+        messageData.timeStamp = moment().format('LT');
         var templateMessageBubble = $(
           _self.getSearchTemplate("messageBubbles")
         ).tmplProxy({
@@ -9184,6 +9186,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
               _self.vars.searchObject.searchText = payData.postback_value;
               messageData.text = payData.postback_value; //"Pay nowwww";
               messageData.from = "user";
+              messageData.timeStamp = moment().format('LT');
               var template = $(
                 _self.getSearchTemplate("messageBubbles")
               ).tmplProxy({
@@ -9296,6 +9299,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
                 var messageData = {};
                 messageData.text = _innerText;
                 messageData.from = "user";
+                messageData.timeStamp = moment().format('LT');
                 var templateMessageBubble = $(
                   _self.getSearchTemplate("messageBubbles")
                 ).tmplProxy({
@@ -9364,6 +9368,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
                   var messageData = {};
                   messageData.text = displayMessage;
                   messageData.from = "user";
+                  messageData.timeStamp = moment().format('LT');
                   var templateMessageBubble = $(
                     _self.getSearchTemplate("messageBubbles")
                   ).tmplProxy({
@@ -9525,6 +9530,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
   if (type === "botAction") {
     messageData.text = _self.vars.searchObject.searchText;
     messageData.from = "user";
+    messageData.timeStamp = moment().format('LT');
     var template = $(_self.getSearchTemplate("messageBubbles")).tmplProxy({
       msgData: messageData,
       devMode: devMode,
@@ -10129,6 +10135,7 @@ FindlySDK.prototype.initializeCustomTemplateEvent = function () {
     var messageData = {};
     messageData.text = data.title;
     messageData.from = "user";
+    messageData.timeStamp = moment().format('LT');
     var templateBotMessageBubble = $(
       _self.getSearchTemplate("messageBubbles")
     ).tmplProxy({
@@ -24138,6 +24145,9 @@ FindlySDK.prototype.appendTextToSearchContainer = function (type, text) {
   var messageData = {
     'text': text,
     'from': type,
+  }
+  if(messageData.from = "user"){
+    messageData.timeStamp = moment().format('LT');
   }
   var devMode = _self.isDev ? 'true' : 'false';
   var viewType = _self.vars.customizeView ? 'Customize' : 'Preview';
