@@ -66,13 +66,19 @@
                 color: #202124;
                 display: flex;
                 margin-bottom: 12px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
                 .title-heading{
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
+                }
+                .two-line-title-heading{
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    overflow: hidden;
+                    margin-bottom: 5px;
+                    min-height: 30px;
+                    max-height: 40px;
                 }
                 .img_block{
                     width: 40px;

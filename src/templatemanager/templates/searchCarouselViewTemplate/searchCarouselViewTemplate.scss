@@ -158,7 +158,9 @@
                         line-height: 20px;
                         color: #202124;
                         display: flex;
-                        margin-bottom: 12px;
+                        &.m-b-8{
+                            margin-bottom: 8px;
+                        }
                         .img_block{
                             width: 40px;
                             height: 40px;
@@ -169,6 +171,11 @@
                                 height: 100%;
                                 border-radius: 3px;
                             }
+                        }
+                        .title-heading{
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
                         }
                         .two-line-title{
                             display: -webkit-box;
@@ -327,6 +334,7 @@
             color: #202124;
             &.grid-item-col{
                 padding: 5px;
+                text-align: left;
                 &.text-center{
                     text-align: center;
                 }

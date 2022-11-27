@@ -82,7 +82,7 @@ class SearchGridViewTemplate {
                 <img src="${data.img}" />\
                 </div>\
                 {{/if}}\
-                    <span class="title-heading">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                    <span class="{{if data.img.length}}two-line-title-heading{{else}}title-heading {{/if}}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
                 </div>\
                 {{/if}}\
                 {{if data.description}}\
@@ -166,7 +166,7 @@ class SearchGridViewTemplate {
                 {{if data.description.length}}\
                 <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 {{/if}}\
-                <div class="price-tag">$156</div>\
+                <div class="price-tag display-none">$156</div>\
             </div>\
         </div>\
         {{/each}}\
