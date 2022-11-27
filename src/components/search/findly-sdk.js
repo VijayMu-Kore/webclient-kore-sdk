@@ -8200,7 +8200,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 scrollTop:
                   $("#searchChatContainer").scrollTop() +
                   $(".messageBubble-content").last().parent().position().top -
-                  25,
+                  60,
               },
               500
             );
