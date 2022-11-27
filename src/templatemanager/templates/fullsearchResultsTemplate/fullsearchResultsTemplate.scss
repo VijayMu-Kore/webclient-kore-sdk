@@ -297,6 +297,15 @@
             &.isTopAlignFilterAdded{
                 height: calc(100% - 197px) !important;
             }
+            &.sa-has-feedback{
+                height: calc(100% - 234px) !important;
+                &.filter-added-hide{
+                    height: calc(100% - 165px) !important;
+                }
+            }
+        }
+        &.sa-has-feedback{
+            height: calc(100% - 165px)
         }
         .grid_view_template {
             margin: 0 -5px;

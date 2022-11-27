@@ -145,7 +145,7 @@ class FullSearchResultsTemplate {
             <div id="fullResultAllTypeId" style="height:100%">\
             <div style="height:100%">\
       <!--<div id="loaderDIV" class="loader-container">Loading...</div>-->\
-        <div class="data-body-sec {{if facetPosition == `top`}}iffilteristop{{/if}}">\
+        <div class="data-body-sec {{if facetPosition == `top`}}iffilteristop{{/if}} {{if displayFeedback == true}} sa-has-feedback {{/if}}">\
         <div class="no-templates-defined-full-results-container">\
         <div class="img-block"><img class="no-data-mapped">\
           <div class="title">Result templates are not mapped with a proper field value</div>\
@@ -299,13 +299,16 @@ class FullSearchResultsTemplate {
           if ($(messageHtml).find(".filter-data").css('display') == 'none') {
             if ($(messageHtml).find('.horizantal-filter-sec.filter-data').length) {
               $(messageHtml).find(".filter-data").css('display', 'inline-block');
+              $(messageHtml).find(".data-body-sec").removeClass('filter-added-hide');
             } else {
               $(messageHtml).find(".filter-data").css('display', 'block');
+              $(messageHtml).find(".data-body-sec").removeClass('filter-added-hide');
             }
             $(messageHtml).find("#facetRightIconId").addClass('active-open');
           } else {
             $(messageHtml).find(".filter-data").css('display', 'none');
             $(messageHtml).find("#facetRightIconId").removeClass('active-open');
+            $(messageHtml).find(".data-body-sec").addClass('filter-added-hide');
           }
           FullSearchResultsTemplate.prototype.bindFacetTriggerEvents(me, messageHtml);
         });
@@ -591,6 +594,7 @@ class FullSearchResultsTemplate {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     $(".filter-data").hide();
+    $(messageHtml).find(".data-body-sec").addClass('filter-added-hide');
     hostWindowInstance.getSearchByFacetFilters().then((response: any) => {
       let selectedFacet = $(messageHtml).find(".tab-name.see-all-result-nav.active-tab").attr('id');
       if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
