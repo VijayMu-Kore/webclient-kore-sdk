@@ -23332,7 +23332,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               }
             }
           }
-          if ((response.tasks || []).length) {
+          if ((response.tasks || []).length && searchType != "liveSearch") {
             var tasksTemplateType = "grid";
             if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
               tasksTemplateType = searchConfigurationCopy.botConfig.botActionTemplate;
