@@ -54,6 +54,8 @@ let botOptions=KRSearchConfig.botOptions;
 
 Create searchassist chat window instance and trigger show method
 ```js
+
+KRSearchConfig.API_KEY_CONFIG.KEY="PLEASE_ENTER_API_KEY_HERE";
 var KRSearchInstance = new KRSearch(KRSearchConfig);
 KRSearchInstance.show(KRSearchConfig);
 
@@ -69,7 +71,7 @@ include the following script in your html file and configure bot configurations
 
 ```js
 
-<script  src="https://cdn.jsdelivr.net/gh/Koredotcom/web-kore-sdk@v2-9.3.0/dist/umd/kore-web-sdk-umd-chat.min.js"></script>
+<script  src="https://cdn.jsdelivr.net/gh/Koredotcom/SearchAssist-web-sdk@BranchName/dist/umd/kore-web-sdk-umd-search.js"></script>
 <script>
         //searchassist chat window declaration
         var KRSearchConfig=KoreSearchSDK.KRSearchConfig;
@@ -85,6 +87,9 @@ include the following script in your html file and configure bot configurations
         botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
         botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
         botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+
+        KRSearchConfig.API_KEY_CONFIG.KEY="PLEASE_ENTER_API_KEY_HERE";
+
 	/* 
 	Important Note: These keys are provided here for quick demos to generate JWT token at client side but not for Production environment.
 	Refer below document for JWT token generation at server side. Client Id and Client secret should maintained at server end.
@@ -92,7 +97,7 @@ include the following script in your html file and configure bot configurations
 	**/
 
         //show searchassist chatwindow
-        KRSearchInstance.show(chatConfig);
+        KRSearchInstance.show(KRSearchConfig);
 
 </script>
 
