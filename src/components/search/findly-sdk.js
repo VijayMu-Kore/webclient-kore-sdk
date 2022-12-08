@@ -2566,333 +2566,6 @@ FindlySDK.prototype.getCarouselTemplate = function (messageData, helpers) {
   return template;
 };
 
-FindlySDK.prototype.getQuickReplyTemplate = function (messageData, helpers) {
-  var quickReplyTemplate =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-                    {{if msgData.message}} \
-                      <div class="messageBubble">\
-                        <li {{if msgData.type !== "bot_response"}} id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon quickReplies" style="margin-top: 20px"> \
-                            <div class="buttonTmplContent">\
-                                {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                                {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar marginT50" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                                {{if msgData.message[0].component.payload.text}} \
-                                    <div class="buttonTmplContentHeading quickReply" style="display: none;"> \
-                                        {{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "user")}} {{/if}} \
-                                        {{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
-                                            <span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
-                                        {{/if}} \
-                                    </div>\
-                                    {{/if}} \
-                                    {{if msgData.message[0].component.payload.quick_replies && msgData.message[0].component.payload.quick_replies.length}} \
-                                    <div class="fa fa-chevron-left quickreplyLeftIcon hide"></div><div class="fa fa-chevron-right quickreplyRightIcon"></div>\
-                                        <div class="quick_replies_btn_parent"><div class="autoWidth">\
-                                            {{each(key, msgItem) msgData.message[0].component.payload.quick_replies}} \
-                                                <div class="buttonTmplContentChild quickReplyDiv"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} class="quickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.content_type}">\
-                                                    {{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">{{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}}</span></span>\
-                                                </div> \
-                                            {{/each}} \
-                                        </div>\
-                                    </div>\
-                                {{/if}} \
-                            </div>\
-                        </li> \
-                      </div> \
-                    {{/if}} \
-                </script>';
-  var template = $(quickReplyTemplate).tmpl({
-    msgData: messageData,
-    helpers: helpers || this.helpers,
-    extension: {},
-  });
-  setTimeout(function () {
-    var evt = document.createEvent("HTMLEvents");
-    evt.initEvent("resize", true, false);
-    window.dispatchEvent(evt);
-  }, 150);
-
-  $(template)
-    .off("click", ".quickreplyRightIcon")
-    .on("click", ".quickreplyRightIcon", function (event) {
-      var _quickReplesDivs =
-        event.currentTarget.parentElement.getElementsByClassName(
-          "buttonTmplContentChild"
-        );
-      if (_quickReplesDivs.length) {
-        var _scrollParentDiv =
-          event.target.parentElement.getElementsByClassName(
-            "quick_replies_btn_parent"
-          );
-        var _totalWidth = event.target.parentElement.offsetWidth;
-        var _currWidth = 0;
-        // calculation for moving element scroll
-        for (var i = 0; i < _quickReplesDivs.length; i++) {
-          _currWidth += _quickReplesDivs[i].offsetWidth + 10;
-          if (_currWidth > _totalWidth) {
-            //_scrollParentDiv[0].scrollLeft = _currWidth;
-            $(_scrollParentDiv).animate(
-              {
-                scrollLeft:
-                  _scrollParentDiv[0].scrollLeft +
-                  _quickReplesDivs[i].offsetWidth +
-                  20,
-              },
-              "slow",
-              function () {
-                // deciding to enable left and right scroll icons
-                var leftIcon =
-                  _scrollParentDiv[0].parentElement.querySelectorAll(
-                    ".quickreplyLeftIcon"
-                  );
-                leftIcon[0].classList.remove("hide");
-                if (
-                  _scrollParentDiv[0].scrollLeft + _totalWidth + 10 >=
-                  _scrollParentDiv[0].scrollWidth
-                ) {
-                  var rightIcon =
-                    _scrollParentDiv[0].parentElement.querySelectorAll(
-                      ".quickreplyRightIcon"
-                    );
-                  rightIcon[0].classList.add("hide");
-                }
-              }
-            );
-            break;
-          }
-        }
-      }
-    });
-  $(template)
-    .off("click", ".quickreplyLeftIcon")
-    .on("click", ".quickreplyLeftIcon", function (event) {
-      var _quickReplesDivs =
-        event.currentTarget.parentElement.getElementsByClassName(
-          "buttonTmplContentChild"
-        );
-      if (_quickReplesDivs.length) {
-        var _scrollParentDiv =
-          event.target.parentElement.getElementsByClassName(
-            "quick_replies_btn_parent"
-          );
-        var _totalWidth = _scrollParentDiv[0].scrollLeft;
-        var _currWidth = 0;
-        for (var i = 0; i < _quickReplesDivs.length; i++) {
-          _currWidth += _quickReplesDivs[i].offsetWidth + 10;
-          if (_currWidth > _totalWidth) {
-            //_scrollParentDiv[0].scrollLeft = (_totalWidth - _quickReplesDivs[i].offsetWidth+20);
-            $(_scrollParentDiv).animate(
-              {
-                scrollLeft: _totalWidth - _quickReplesDivs[i].offsetWidth - 50,
-              },
-              "slow",
-              function () {
-                // deciding to enable left and right scroll icons
-                var rightIcon =
-                  _scrollParentDiv[0].parentElement.querySelectorAll(
-                    ".quickreplyRightIcon"
-                  );
-                rightIcon[0].classList.remove("hide");
-                if (_scrollParentDiv[0].scrollLeft <= 0) {
-                  var leftIcon =
-                    _scrollParentDiv[0].parentElement.querySelectorAll(
-                      ".quickreplyLeftIcon"
-                    );
-                  leftIcon[0].classList.add("hide");
-                }
-              }
-            );
-            break;
-          }
-        }
-      }
-    });
-  $(template)
-    .off("click", ".quickReply")
-    .on("click", ".quickReply", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      var type = $(this).attr("type");
-      if (type) {
-        type = type.toLowerCase();
-      }
-      if (type == "postback" || type == "text") {
-        //$('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
-        var _innerText = $(this).attr("value").trim();
-        var displayMessage =
-          $(this)[0] && $(this)[0].innerText
-            ? $(this)[0].innerText.trim()
-            : "" || ($(this) && $(this).attr("data-value"))
-              ? $(this).attr("data-value").trim()
-              : "";
-        var messageData = {};
-        messageData.text = _innerText;
-        messageData.from = "user";
-        messageData.timeStamp = moment().format('LT');
-        var templateMessageBubble = $(
-          _self.getSearchTemplate("messageBubbles")
-        ).tmplProxy({
-          msgData: messageData,
-          devMode: devMode,
-          viewType: viewType,
-          helpers: helpers,
-        });
-        $("#searchChatContainer").append(templateMessageBubble);
-        _self.sendMessage(_innerText);
-      }
-    });
-
-  var templateBotMessageBubble = $(
-    _self.getSearchTemplate("messageBubbles")
-  ).tmplProxy({
-    msgData: messageBotData,
-  });
-  $("#searchChatContainer").append(templateBotMessageBubble);
-  return template;
-};
-
-FindlySDK.prototype.getButtonTemplate = function (messageData, helpers) {
-  var buttonTemplate =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-                              {{if msgData.message}} \
-                                <div class="messageBubble">\
-                                  <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon"> \
-                                    <div class="buttonTmplContent"> \
-                                      {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                                      {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                                      <ul class="buttonTmplContentBox">\
-                                        <li class="buttonTmplContentHeading"> \
-                                          {{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "user")}} {{/if}} \
-                                            {{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
-                                            <span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
-                                          {{/if}} \
-                                        </li>\
-                                        {{each(key, msgItem) msgData.message[0].component.payload.buttons}} \
-                                          <a href="" style="text-decoration: none;">\
-                                            <li {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} {{if msgItem.payload}}actual-value="${msgItem.payload}"{{/if}} {{if msgItem.url}}url="${msgItem.url}"{{/if}} class="buttonTmplContentChild" data-value="${msgItem.value}" type="${msgItem.type}">\
-                                              {{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}}\
-                                            </li> \
-                                          </a> \
-                                        {{/each}} \
-                                      </ul>\
-                                    </div>\
-                                  </li> \
-                                </div>\
-                              {{/if}} \
-                            </script>';
-  var template = $(buttonTemplate).tmpl({
-    msgData: messageData,
-    helpers: helpers || this.helpers,
-    extension: {},
-  });
-  $(template)
-    .off("click", ".buttonTmplContentBox li")
-    .on("click", ".buttonTmplContentBox li", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      var type = $(this).attr("type");
-      if (type) {
-        type = type.toLowerCase();
-      }
-      if (type == "postback" || type == "text") {
-        //$('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
-        var _innerText = $(this).attr("value").trim();
-        var displayMessage =
-          $(this)[0] && $(this)[0].innerText
-            ? $(this)[0].innerText.trim()
-            : "" || ($(this) && $(this).attr("data-value"))
-              ? $(this).attr("data-value").trim()
-              : "";
-        var messageData = {};
-        messageData.text = displayMessage;
-        messageData.from = "user";
-        messageData.timeStamp = moment().format('LT');
-        var templateMessageBubble = $(
-          _self.getSearchTemplate("messageBubbles")
-        ).tmplProxy({
-          msgData: messageData,
-          devMode: devMode,
-          viewType: viewType,
-        });
-        $("#searchChatContainer").append(templateMessageBubble);
-        _self.sendMessage(_innerText);
-      }
-    });
-  return template;
-};
-
-FindlySDK.prototype.getListTemplate = function () {
-  var listTemplate =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-                            {{if msgData.message}} \
-                              <div class="messageBubble">\
-                              <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon"> \
-                              <div class="listTmplContent"> \
-                              {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                              {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                                <ul class="listTmplContentBox"> \
-                                {{if msgData.message[0].component.payload.text || msgData.message[0].component.payload.heading}} \
-                                  <li class="listTmplContentHeading"> \
-                                    {{if msgData.type === "bot_response" && msgData.message[0].component.payload.heading}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.heading, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "user")}} {{/if}} \
-                                      {{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
-                                        <span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
-                                    {{/if}} \
-                                  </li> \
-                                {{/if}} \
-                                  {{each(key, msgItem) msgData.message[0].component.payload.elements}} \
-                                    {{if msgData.message[0].component.payload.buttons}} \
-                                      {{if key<= 2 }}\
-                                        <li class="listTmplContentChild"> \
-                                          {{if msgItem.image_url}} \
-                                            <div class="listRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-                                              <img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
-                                            </div> \
-                                          {{/if}} \
-                                          <div class="listLeftContent"> \
-                                            <div class="listItemTitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.title, "user")}} {{/if}}</div> \
-                                              {{if msgItem.subtitle}}<div class="listItemSubtitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
-                                                {{if msgItem.default_action && msgItem.default_action.url}}<div class="listItemPath" type="url" url="${msgItem.default_action.url}">${msgItem.default_action.url}</div>{{/if}} \
-                                                  {{if msgItem.buttons}}\
-                                            <div> \
-                                            <span class="buyBtn" {{if msgItem.buttons[0].type}}type="${msgItem.buttons[0].type}"{{/if}} {{if msgItem.buttons[0].url}}url="${msgItem.buttons[0].url}"{{/if}} {{if msgItem.buttons[0].payload}}value="${msgItem.buttons[0].payload}"{{/if}}>{{if msgItem.buttons[0].title}}${msgItem.buttons[0].title}{{else}}Buy{{/if}}</span> \
-                                          </div> \
-                                        {{/if}}\
-                                      </div>\
-                                    </li> \
-                                  {{/if}}\
-                              {{else}} \
-                              <li class="listTmplContentChild"> \
-                                  {{if msgItem.image_url}} \
-                                      <div class="listRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-                                          <img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';" /> \
-                                      </div> \
-                                  {{/if}} \
-                                  <div class="listLeftContent"> \
-                                      <div class="listItemTitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.title, "user")}} {{/if}}</div> \
-                                      {{if msgItem.subtitle}}<div class="listItemSubtitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
-                                      {{if msgItem.default_action && msgItem.default_action.url}}<div class="listItemPath" type="url" url="${msgItem.default_action.url}">${msgItem.default_action.url}</div>{{/if}} \
-                                      {{if msgItem.buttons}}\
-                                      <div> \
-                                          <span class="buyBtn" {{if msgItem.buttons[0].type}}type="${msgItem.buttons[0].type}"{{/if}} {{if msgItem.buttons[0].url}}url="${msgItem.buttons[0].url}"{{/if}} {{if msgItem.buttons[0].payload}}value="${msgItem.buttons[0].payload}"{{/if}}>{{if msgItem.buttons[0].title}}${msgItem.buttons[0].title}{{else}}Buy{{/if}}</span> \
-                                      </div> \
-                                      {{/if}}\
-                                  </div>\
-                              </li> \
-                          {{/if}} \
-                      {{/each}} \
-                      </li> \
-                      {{if msgData.message[0].component.AlwaysShowGlobalButtons || (msgData.message[0].component.payload.elements.length > 3 && msgData.message[0].component.payload.buttons)}}\
-                      <li class="viewMoreList"> \
-                          <span class="viewMore" url="{{if msgData.message[0].component.payload.buttons[0].url}}${msgData.message[0].component.payload.buttons[0].url}{{/if}}" type="${msgData.message[0].component.payload.buttons[0].type}" value="{{if msgData.message[0].component.payload.buttons[0].payload}}${msgData.message[0].component.payload.buttons[0].payload}{{else}}${msgData.message[0].component.payload.buttons[0].title}{{/if}}">${msgData.message[0].component.payload.buttons[0].title}</span> \
-                      </li> \
-                      {{/if}}\
-                  </ul> \
-              </div> \
-          </li> \
-        </div>\
-      {{/if}} \
-    </script>';
-
-  return listTemplate;
-};
 FindlySDK.prototype.enableAutoSuggest = function () {
   var _self = this;
   _self.pubSub.subscribe("sa-auto-suggest", (msg, data) => {
@@ -6345,7 +6018,7 @@ FindlySDK.prototype.searchEventBinding = function (
     $(dataHTML)
       .off("keydown", "#search")
       .on("keydown", "#search", function (e) {
-        _self.trimSearchQuery();
+        _self.trimSearchQuery(e);
         var keyCode = e.keyCode || e.which;
         keyCode = Number(keyCode);
         if (keyCode !== 13) {
@@ -6724,13 +6397,13 @@ FindlySDK.prototype.searchEventBinding = function (
     var searchBoxDom = document.getElementById("search");
 
     // This represents a very heavy method. Which takes a lot of time to execute
-    function makeAPICall() {
+    function makeAPICall(event) {
       // $('#search').trigger("keydown");
       if (_self.vars.enterIsClicked) {
         return;
       }
       $("#search").trigger("keyup");
-      _self.pubSub.publish("sa-input-keyup");
+      _self.pubSub.publish("sa-input-keyup",event);
     }
 
     // Debounce function: Input as function which needs to be debounced and delay is the debounced time in milliseconds
@@ -6744,13 +6417,13 @@ FindlySDK.prototype.searchEventBinding = function (
     // Event listener on the input box
     searchBoxDom.addEventListener("input", function (event) {
       // Debounces makeAPICall method
-      debounceFunction(makeAPICall, 200, event);
+      debounceFunction(makeAPICall(event), 200, event);
     });
 
     $(dataHTML)
       .off("keyup", "#search")
       .on("keyup", "#search", function (e) {
-        _self.trimSearchQuery();
+        _self.trimSearchQuery(e);
         if (!$("body").hasClass("top-down") && $(".bottom-up-search").val()) {
           $(".search-container").removeClass("no-history");
           if (!$(".search-container").hasClass("active")) {
@@ -7346,7 +7019,7 @@ FindlySDK.prototype.searchEventBinding = function (
             ? $(".search-top-down").val()
             : $(".bottom-up-search").val()
         ) {
-          _self.pubSub.publish("sa-input-keyup");
+          _self.pubSub.publish("sa-input-keyup", e);
         }
         if (!_self.vars.isSocketInitialize) {
           _self.bot.init(
@@ -7797,7 +7470,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       }
     }
     if (
-      ($("body").hasClass("top-down") && res.isAutoTriggeredBotAction) ||
+      ($("body").hasClass("top-down") && res.isAutoTriggeredBotAction) || ($("body").hasClass("top-down") && (res.payload || {}).template_type) || 
       ((res.payload || {}).template_type == "quick_replies" &&
         (res.payload || {}).isAutoTriggeredBotAction)
     ) {
@@ -8849,11 +8522,11 @@ FindlySDK.prototype.sendMessageToSearch = function (
       (messageData.text &&
         messageData.text.trim() &&
         _self.customSearchResult &&
-        !$("body").hasClass("top-down")) ||
-      ($("body").hasClass("top-down") &&
-        messageData.text &&
-        messageData.text.trim() &&
-        !_self.customSearchResult)
+        !$("body").hasClass("top-down"))
+      // ($("body").hasClass("top-down") &&
+      //   messageData.text &&
+      //   messageData.text.trim() &&
+      //   !_self.customSearchResult)
     ) {
       var template = $(_self.getSearchTemplate("messageBubbles")).tmplProxy({
         msgData: messageData,
@@ -8898,501 +8571,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
     var messageHtml = _self.customTemplateObj.renderMessage(defaultBotMessage);
     if (!messageHtml || !messageHtml.length) {
       if (messageData && messageData.type && messageData.type === "template") {
-        if (
-          messageData.payload &&
-          messageData.payload.template_type === "cardTemplate"
-        ) {
-          var y = {
-            type: "bot_response",
-            from: "bot",
-            message: [
-              {
-                type: "text",
-                component: {
-                  type: "template",
-                  payload: {
-                    template_type: "cardTemplate",
-                    elements: [
-                      {
-                        biller_name: "REWARD AND SIGNATURE CARD",
-                        card_type: "master_card",
-                        card_number: "2313",
-                        bill_amount: "95.20",
-                        due_date: "03/07/2020",
-                      },
-                      {
-                        biller_name: "DINERS CARD",
-                        card_type: "master_card",
-                        card_number: "2313",
-                        bill_amount: "64.45",
-                        due_date: "13/07/2020",
-                      },
-                    ],
-                  },
-                },
-                cInfo: { body: "Here are your details" },
-              },
-            ],
-            messageId: "ms-72023d22-2270-514c-9054-8af4c3408460",
-            botInfo: {
-              chatBot: "MyBank Virtual Assistant",
-              taskBotId: "st-d77caa4b-083a-533c-90d9-733c80ef1cb1",
-            },
-            createdOn: "2020-09-08T18:39:24.689Z",
-            icon: "https://app.findly.ai:443/api/getMediaStream/market/f-6374e248-76ad-5fa9-bcc2-63cd116c4944.png?n=5797654043&s=IklOclpPZElVWWlEK2MzZFNKSTl2b1E5b3hiSWFuV3FtSGR4bElpT2dLaFU9Ig$$",
-            contextId: "dcx-5b5a373e-7e9b-5215-b074-671b616d4055",
-            usedtime: 395,
-            NLAnalysis: {
-              scoringModel: "original",
-              toneAnalysis: {
-                dialogTone: [
-                  { tone_name: "positive", level: 2, count: 1 },
-                  { tone_name: "joy", level: 1, count: 1 },
-                ],
-              },
-              nlProcessing: {
-                originalInput: "my balance",
-                canonical: "I balance",
-                wordAnalysis: [
-                  {
-                    word: "I",
-                    ignored: true,
-                    pos: "Pronoun_possessive ",
-                    original: "my",
-                    processedWord: "my",
-                  },
-                  {
-                    word: "balance",
-                    ignored: false,
-                    pos: "Noun_singular ",
-                    role: "MAINSUBJECT ",
-                    original: "balance",
-                    processedWord: "balance",
-                  },
-                ],
-              },
-              noLabelMatch: ["st-d77caa4b-083a-533c-90d9-733c80ef1cb1"],
-              ml: {
-                possible: [
-                  {
-                    task: "CheckBalance",
-                    state: "configured",
-                    score: 0.9414263358151247,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "possible",
-                  },
-                ],
-                eliminated: [
-                  {
-                    task: "TransferMoney",
-                    state: "configured",
-                    score: 0.02181479727476244,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "unlikely",
-                  },
-                  {
-                    task: "MakePayment",
-                    state: "configured",
-                    score: 0.010900485239433579,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "unlikely",
-                  },
-                  {
-                    task: "ShowAccountDetails",
-                    state: "configured",
-                    score: 0.009582143296980096,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "unlikely",
-                  },
-                  {
-                    task: "Log In",
-                    state: "configured",
-                    score: 0.00538434196688181,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "unlikely",
-                  },
-                ],
-                namedEntityRecognition: [],
-              },
-              fm: {
-                definitive: [
-                  {
-                    count: 2,
-                    score: 6450,
-                    botid: "st-d77caa4b-083a-533c-90d9-733c80ef1cb1",
-                    botname: "MyBank Virtual Assistant",
-                    activity: "CheckBalance",
-                    activityType: 1,
-                    foundFmEngine: true,
-                    labelsize: 2,
-                    scoreBreakdown: {
-                      coverage: 2000,
-                      spreadBonus: 800,
-                      orderBonus: 200,
-                      wordMatch: 500,
-                      exactWords: 60,
-                      sentenceBonus: 4000,
-                      positionBonus: 1800,
-                      roleBonus: 100,
-                      faqQuestionBonus: 0,
-                      tasktypeBonus: 50,
-                      matchBonus: 500,
-                      phraseJoinPenalty: 0,
-                    },
-                    sentence: 0,
-                    mask: "0 1 2",
-                    allmask: "0 1 2 ",
-                    pattern:
-                      "{ get what_is check } [ my account acct credit] [balance bal]",
-                    exactcount: 2,
-                    priority: 10,
-                    mainRoles: 1,
-                    matchType: "definite",
-                    task: "CheckBalance",
-                    state: "configured",
-                    foundVia: "pattern",
-                  },
-                ],
-              },
-              faq: {
-                demystify: {
-                  SpellCorrectedInput: "my balance",
-                  lemmatizer_used: "PATTERN",
-                  normalizedQuery: "my balance",
-                  OntologyTraits: [],
-                  failed_questions: {
-                    path_coverage: {
-                      total_failures: 62,
-                      questions: [
-                        "What is a term loan",
-                        "How can I contact customer service?",
-                        "What is a credit score",
-                        "How do I request a replacement card?",
-                        "Where can I find my ABA routing number on my check?",
-                      ],
-                    },
-                    mandatory_node: { total_failures: 0, paths: [] },
-                    precondition_node: {
-                      total_failures: 2,
-                      paths: ["*locate atms", "*wire transfer"],
-                    },
-                  },
-                  SelectedPathCount: 25,
-                  ExtractedEntities: ["balance"],
-                  ContextEntities: [],
-                  PreConditionNodes: [],
-                  filtered_questions: {
-                    score: [
-                      ["What is the collected balance?", 0.5773502691896258],
-                      ["What is a CD?", 0],
-                      ["What is a traveler's check?", 0],
-                      ["what is individual retirement account", 0],
-                      ["What is a canceled check?", 0],
-                    ],
-                    traits: [],
-                  },
-                },
-              },
-              finalResolver: {
-                ranking: [
-                  {
-                    taskId: "dg-7dabfd36-6024-5de8-9866-bf32fa24765b",
-                    intent: "CheckBalance",
-                    activityType: "dialog",
-                    state: "configured",
-                    totalScore: 6450,
-                    scoring: {
-                      count: 2,
-                      score: 6450,
-                      botid: "st-d77caa4b-083a-533c-90d9-733c80ef1cb1",
-                      botname: "MyBank Virtual Assistant",
-                      activity: "CheckBalance",
-                      activityType: 1,
-                      foundFmEngine: true,
-                      labelsize: 2,
-                      scoreBreakdown: {
-                        coverage: 2000,
-                        spreadBonus: 800,
-                        orderBonus: 200,
-                        wordMatch: 500,
-                        exactWords: 60,
-                        sentenceBonus: 4000,
-                        positionBonus: 1800,
-                        roleBonus: 100,
-                        faqQuestionBonus: 0,
-                        tasktypeBonus: 50,
-                        matchBonus: 500,
-                        phraseJoinPenalty: 0,
-                      },
-                      sentence: 0,
-                      mask: "0 1 2",
-                      allmask: "0 1 2 ",
-                      pattern:
-                        "{ get what_is check } [ my account acct credit] [balance bal]",
-                      exactcount: 2,
-                      priority: 10,
-                      mainRoles: 1,
-                      matchType: "definite",
-                      csMatch: true,
-                    },
-                    identifyingEngines: { fm: true },
-                    csMatch: true,
-                    intentMatchVia: "pattern",
-                  },
-                ],
-                userInput: "my balance",
-                winningIntent: [
-                  {
-                    intent: "CheckBalance",
-                    taskId: "dg-7dabfd36-6024-5de8-9866-bf32fa24765b",
-                    activityType: "dialog",
-                    state: "configured",
-                    score: 6450,
-                  },
-                ],
-                entities: [],
-              },
-            },
-            traceId: "827bca70e1572629",
-          };
-          var cardData = messageData.payload.elements; //y.message[0].component.payload.elements;
-
-          var template1 = $(
-            _self.getSearchTemplate("messageBubbles")
-          ).tmplProxy({
-            msgData: {
-              from: "bot",
-              text: "Choose the credit card to pay bill",
-            },
-            helpers: helpers,
-          });
-          $("#searchChatContainer").append(template1);
-          var scrollBottom =
-            $("#searchChatContainer").scrollTop() +
-            $("#searchChatContainer").height();
-          $("#searchChatContainer").animate({ scrollTop: scrollBottom });
-          var creditCard = $(
-            _self.getSearchTemplate("payBillContainer")
-          ).tmplProxy({
-            selectedBiller: "XYZ",
-            data: cardData,
-          });
-          $(creditCard)
-            .off("click", ".pay-button")
-            .on("click", ".pay-button", function (e) {
-              var payData = $(e.currentTarget).attr("msgData");
-
-              payData = JSON.parse(payData);
-              _self.vars.searchObject.searchText = payData.postback_value;
-              messageData.text = payData.postback_value; //"Pay nowwww";
-              messageData.from = "user";
-              messageData.timeStamp = moment().format('LT');
-              var template = $(
-                _self.getSearchTemplate("messageBubbles")
-              ).tmplProxy({
-                msgData: messageData,
-                devMode: devMode,
-                viewType: viewType,
-                helpers: helpers,
-              });
-              $("#searchChatContainer").append(template);
-              _self.bindLiveDataToChat();
-              setTimeout(function () {
-                var scrollBottom =
-                  $("#searchChatContainer").scrollTop() +
-                  $("#searchChatContainer").height();
-                $("#searchChatContainer").animate({ scrollTop: scrollBottom });
-              }, 1000);
-            });
-          $("#searchChatContainer").append(creditCard);
-        } else if (
-          messageData.payload &&
-          messageData.payload.template_type === "carousel"
-        ) {
-          var defaultMessage = {
-            type: "bot_response",
-            from: "bot",
-            message: [{ type: "text", component: {} }],
-          };
-          defaultMessage.message[0].component = messageData;
-          // var template = $(_self.getCarouselTemplate()).tmpl({
-          //   'msgData': defaultMessage,
-          //   'helpers': helpers,
-          //   'extension': {}
-          // });
-          var template = _self.getCarouselTemplate(
-            defaultMessage,
-            this.helpers
-          );
-          $("#searchChatContainer").append(template);
-          setTimeout(function () {
-            $(".carousel:last").addClass("carousel" + carouselTemplateCount);
-            var count = $(".carousel" + carouselTemplateCount).children()
-              .length;
-            if (count > 1) {
-              var carouselOneByOne = new PureJSCarousel({
-                carousel: ".carousel" + carouselTemplateCount,
-                slide: ".slide",
-                oneByOne: true,
-                jq: $,
-              });
-              $(".carousel" + carouselTemplateCount)
-                .parent()
-                .show();
-              // $('.carousel' + carouselTemplateCount).attr('style', 'height: inherit !important');
-              carouselEles.push(carouselOneByOne);
-            }
-            if (
-              $(".carousel" + carouselTemplateCount).width() >=
-              $(
-                ".carousel" +
-                carouselTemplateCount +
-                " .purejscarousel-slides-container"
-              ).children().length *
-              $(
-                ".carousel" +
-                carouselTemplateCount +
-                " .purejscarousel-slides-container .slide:first"
-              ).width()
-            ) {
-              $(
-                ".carousel" +
-                carouselTemplateCount +
-                " .purejscarousel-btn-prev"
-              ).hide();
-              $(
-                ".carousel" +
-                carouselTemplateCount +
-                " .purejscarousel-btn-next"
-              ).hide();
-            }
-            //window.dispatchEvent(new Event('resize'));
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("resize", true, false);
-            window.dispatchEvent(evt);
-            carouselTemplateCount += 1;
-            $("#searchChatContainer").animate(
-              {
-                scrollTop: $("#searchChatContainer").prop("scrollHeight"),
-              },
-              0
-            );
-          });
-          $(template)
-            .off("click", ".carouselButton")
-            .on("click", ".carouselButton", function (event) {
-              event.preventDefault();
-              event.stopPropagation();
-              var type = $(this).attr("type");
-              if (type) {
-                type = type.toLowerCase();
-              }
-              if (type == "postback" || type == "text") {
-                //$('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
-                var _innerText = $(this).attr("value").trim();
-                var displayMessage =
-                  $(this)[0] && $(this)[0].innerText
-                    ? $(this)[0].innerText.trim()
-                    : "" || ($(this) && $(this).attr("data-value"))
-                      ? $(this).attr("data-value").trim()
-                      : "";
-                var messageData = {};
-                messageData.text = _innerText;
-                messageData.from = "user";
-                messageData.timeStamp = moment().format('LT');
-                var templateMessageBubble = $(
-                  _self.getSearchTemplate("messageBubbles")
-                ).tmplProxy({
-                  msgData: messageData,
-                  devMode: devMode,
-                  viewType: viewType,
-                  helpers: helpers,
-                });
-                $("#searchChatContainer").append(templateMessageBubble);
-                var scrollBottom =
-                  $("#searchChatContainer").scrollTop() +
-                  $("#searchChatContainer").height();
-                $("#searchChatContainer").animate({ scrollTop: scrollBottom });
-                // var templateMessageBubble = _self.getSearchTemplate(defaultMessage, this.helpers);
-                // $('#searchChatContainer').append(templateMessageBubble);
-                _self.sendMessage(_innerText);
-              } else if (type == "url" || type == "web_url") {
-                var a_link = $(this).attr("url");
-                if (
-                  a_link.indexOf("http:") < 0 &&
-                  a_link.indexOf("https:") < 0
-                ) {
-                  a_link = "http:////" + a_link;
-                }
-                var _tempWin = window.open(a_link, "_blank");
-              }
-            });
-          $("#searchChatContainer").append(template);
-        } else if (
-          messageData.payload &&
-          messageData.payload.template_type === "list"
-        ) {
-          var defaultMessage = {
-            type: "bot_response",
-            from: "bot",
-            message: [{ type: "text", component: {} }],
-          };
-          defaultMessage.message[0].component = messageData;
-
-          var template = $(_self.getListTemplate()).tmpl({
-            msgData: defaultMessage,
-            helpers: helpers,
-            extension: {},
-          });
-          $(template)
-            .off("click", ".listItemPath, .listRightContent,.buyBtn")
-            .on(
-              "click",
-              ".listItemPath, .listRightContent,.buyBtn",
-              function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                var type = $(this).attr("type");
-                if (type) {
-                  type = type.toLowerCase();
-                }
-                if (type == "postback" || type == "text") {
-                  //$('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
-                  var _innerText = $(this).attr("value").trim();
-                  var displayMessage =
-                    $(this)[0] && $(this)[0].innerText
-                      ? $(this)[0].innerText.trim()
-                      : "" || ($(this) && $(this).attr("data-value"))
-                        ? $(this).attr("data-value").trim()
-                        : "";
-                  var messageData = {};
-                  messageData.text = displayMessage;
-                  messageData.from = "user";
-                  messageData.timeStamp = moment().format('LT');
-                  var templateMessageBubble = $(
-                    _self.getSearchTemplate("messageBubbles")
-                  ).tmplProxy({
-                    msgData: messageData,
-                    devMode: devMode,
-                    viewType: viewType,
-                    helpers: helpers,
-                  });
-                  $("#searchChatContainer").append(templateMessageBubble);
-                  _self.sendMessage(_innerText);
-                } else if (type == "url" || type == "web_url") {
-                  var a_link = $(this).attr("url");
-                  if (
-                    a_link.indexOf("http:") < 0 &&
-                    a_link.indexOf("https:") < 0
-                  ) {
-                    a_link = "http:////" + a_link;
-                  }
-                  var _tempWin = window.open(a_link, "_blank");
-                }
-              }
-            );
-          $("#searchChatContainer").append(template);
-        }
+        //removed custom templates
       } else {
         //simple text message
         if (isSearchResultsMessage) {
@@ -10947,40 +10126,7 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
     null,
     "default-data-show-not-loaded"
   );
-  $(window)
-    .off("resize")
-    .on("resize", function () {
-      windowWidth = window.innerWidth;
-      left = windowWidth / 2 - 250 + "px";
-      if (!overrideDefaultPoisition) {
-        $(dataHTML).css("left", left);
-      }
 
-      var quickReplyDivs = document.querySelectorAll(".quickReplies");
-      for (var i = 0; i < quickReplyDivs.length; i++) {
-        var btnsParentDiv = quickReplyDivs[i].querySelectorAll(
-          ".quick_replies_btn_parent"
-        );
-        var leftScrollBtn = quickReplyDivs[i].querySelectorAll(
-          ".quickreplyLeftIcon"
-        );
-        var rightScrollBtn = quickReplyDivs[i].querySelectorAll(
-          ".quickreplyRightIcon"
-        );
-        if (btnsParentDiv[0].hasChildNodes()) {
-          if (btnsParentDiv[0].scrollLeft > 0) {
-            leftScrollBtn[0].classList.remove("hide");
-          } else {
-            leftScrollBtn[0].classList.add("hide");
-          }
-          if (btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
-            rightScrollBtn[0].classList.remove("hide");
-          } else {
-            rightScrollBtn[0].classList.add("hide");
-          }
-        }
-      }
-    });
   _self.showGreetingMsg = true;
   _self.vars.searchObject.clearGreetingTimeOut = setTimeout(function () {
     var greetingMsg = $(_self.getGreetingMsgTemplate()).tmplProxy({
@@ -11373,7 +10519,7 @@ FindlySDK.prototype.bindSocketEvents = function () {
   });
 };
 
-FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject) {
+FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isbotActionTrigger) {
   var _self = this;
   if (!$(".topdown-search-main-container").length) {
     $("#search").val("");
@@ -11382,6 +10528,9 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject) {
   } else {
     $("#suggestion").val("");
     $(".top-down-suggestion").val("");
+    if(!isbotActionTrigger){
+      _self.appendTextToSearchContainer('user', chatInput);
+    }
   }
   $("#frequently-searched-box").hide();
   if(!$("#conversation-container").is(":visible")){
@@ -22618,7 +21767,12 @@ FindlySDK.prototype.showTypingIndicator = function () {
     }
   }, 500);
 };
-FindlySDK.prototype.trimSearchQuery = function () {
+FindlySDK.prototype.trimSearchQuery = function (e) {
+  var keyCode = e.keyCode || e.which;
+          keyCode = Number(keyCode);
+      if(e.target.selectionStart !== ($('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val()).length && keyCode !== 13){
+        return;
+      }
   if (
     !$("body").hasClass("top-down") &&
     $(".bottom-up-search").val() &&
@@ -23473,7 +22627,7 @@ FindlySDK.prototype.botActionTrigger = function (e) {
         isRefresh: true,
       },
     };
-    _self.sendMessage(payload, null, nlMeta);
+    _self.sendMessage(payload, null, nlMeta, true);
   }
   if ($("body").hasClass("top-down")) {
     _self.sendMessageToSearch(
@@ -24693,9 +23847,9 @@ FindlySDK.prototype.getFeedBackResult = function () {
   }
   FindlySDK.prototype.focusInputTextbox = function () {
     var _self = this;
-    setTimeout(() => {
-      $('#search').focus();
-    }, 600);
+    // setTimeout(() => {
+    //   $('#search').focus();
+    // }, 600);
   };
   FindlySDK.prototype.renderWebForm = function (msgData, returnTemplate) {
     var _self = this;

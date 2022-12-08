@@ -54,6 +54,13 @@ botOptionsFindly.botInfo = {
 botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
 botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
 botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
+// botOptionsFindly.botInfo = {
+//   chatBot: "7 DEC-22",
+//   taskBotId: "st-0e74a50d-6082-5f35-8ef7-12f05b67c6e0",
+// };
+// botOptionsFindly.clientId = "cs-7bdcdb62-0ba3-5a94-8191-bcc2145e740f";
+// botOptionsFindly.clientSecret = "MLmrLKTApQk60vS0B3Ud5JTfaEMCASPFqP0WC+BdkTs=";
+// botOptionsFindly.searchIndexID = "sidx-546830dd-8d22-5a92-89a2-7432364a3e25";
 
 // botOptionsFindly.botInfo = {
 //   chatBot: "Bot actions V2",

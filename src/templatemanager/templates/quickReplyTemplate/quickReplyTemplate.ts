@@ -106,7 +106,7 @@ class QuickReplyTemplate {
                     }
                     _parentQuikReplyEle.parentElement.parentElement.removeChild(_leftIcon[0]);
                     _parentQuikReplyEle.parentElement.parentElement.removeChild(_rightIcon[0]);
-                    _parentQuikReplyEle.parentElement.removeChild(_parentQuikReplyEle);
+                    // _parentQuikReplyEle.parentElement.removeChild(_parentQuikReplyEle);
                 }, 50);
             }
             // setTimeout(() => {
@@ -184,7 +184,7 @@ class QuickReplyTemplate {
                         </div>\
                         {{/if}} \
                         {{if msgData.message[0].component.payload.quick_replies && msgData.message[0].component.payload.quick_replies.length}} \
-                        <div class="fa fa-chevron-left quickreplyLeftIcon hide"></div><div class="fa fa-chevron-right quickreplyRightIcon"></div>\
+                        <div class="fa fa-chevron-left quickreplyLeftIcon hide"></div><div class="fa fa-chevron-right quickreplyRightIcon hide"></div>\
                             <div class="quick_replies_btn_parent"><div class="autoWidth">\
                                 {{each(key, msgItem) msgData.message[0].component.payload.quick_replies}} \
                                     <div class="quickReplyTemplContentChild quickReplyDiv"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} class="quickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.content_type}">\
