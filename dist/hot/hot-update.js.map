@@ -1,1 +1,1 @@
-{"version":3,"file":"hot/hot-update.js","mappings":";;;;UAAA","sources":["webpack://kore-web-sdk/webpack/runtime/getFullHash"],"sourcesContent":["__webpack_require__.h = () => (\"1395b2a2c61880b027da\")"],"names":[],"sourceRoot":""}
+{"version":3,"file":"hot/hot-update.js","mappings":";;;;UAAA","sources":["webpack://kore-web-sdk/webpack/runtime/getFullHash"],"sourcesContent":["__webpack_require__.h = () => (\"4c49ac80a2678ca7d065\")"],"names":[],"sourceRoot":""}
