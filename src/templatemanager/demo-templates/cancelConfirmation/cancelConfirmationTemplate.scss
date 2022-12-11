@@ -1,0 +1,86 @@
+.yes-no-button-block {
+	background: #F8F9FA !important;
+	width: 342px;
+	.active-button {
+		background: #DD3646;
+		border: 1px solid #DD3646;
+		box-sizing: border-box;
+		border-radius: 4px;
+		padding: 9px 10px;
+		font-weight: normal;
+		font-size: 14px;
+		line-height: 17px;
+		color: #FFFFFF;
+		margin-right: 10px;
+		outline: 0;
+		cursor: pointer;
+	}
+	.cancel-confirm-btn {
+		&:hover {
+			box-shadow: 4px 4px 0px rgba(189, 193, 198, 0.5);
+			border-radius: 4px;
+			background: #DD3646;
+			border: 1px solid #EF9AA3;
+			box-sizing: border-box;
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 17px;
+			color: #FFFFFF;
+		}
+	}
+	.cancel-confirm-btn.active-button {
+		box-shadow: 4px 4px 0px rgba(189, 193, 198, 0.5);
+		border-radius: 4px;
+		background: #DD3646;
+		border: 1px solid #EF9AA3;
+		box-sizing: border-box;
+		font-weight: normal;
+		font-size: 14px;
+		line-height: 17px;
+		color: #FFFFFF;
+		span {
+			color: #FFFFFF !important;
+		}
+		img {
+			content: url(../images/cosmetics/arrow-white.svg);
+		}
+	}
+	.cancel-confirm-btn.no-btn {
+		&:hover {
+			span {
+				color: #FFFFFF !important;
+			}
+			img {
+				content: url(../images/cosmetics/arrow-white.svg);
+			}
+		}
+	}
+	.yes-btn {
+		span {
+			color: #FFFFFF !important;
+		}
+		img {
+			margin-left: 10px;
+		}
+	}
+	.no-btn {
+		padding: 9px 10px;
+		margin-right: 10px;
+		outline: 0;
+		background: #FFFFFF;
+		border: 1px solid #9AA0A6;
+		box-sizing: border-box;
+		border-radius: 4px;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 17px;
+		color: #202124;
+		cursor: pointer;
+		span {
+			color: #202124 !important;
+		}
+		img {
+			margin-left: 10px;
+		}
+	}
+}

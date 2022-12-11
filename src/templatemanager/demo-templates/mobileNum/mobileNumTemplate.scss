@@ -1,0 +1,78 @@
+.email-id-enter-container {
+	width: 320px;
+	.title {
+		font-weight: normal;
+		font-size: 14px;
+		line-height: 17px;
+		color: #161620;
+		margin-bottom: 10px;
+	}
+	.input-box {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		input {
+			background: #F8F9FA;
+			border: 1px solid #EFF0F1;
+			outline: 0;
+			height: 32px;
+			padding: 5px 10px;
+			border-radius: 2px;
+			width: 100%;
+			-webkit-appearance: none;
+			&::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+			&::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+			&:focus {
+				border: 1px solid #381472 !important;
+			}
+		}
+		input.width90 {
+			width: 90px;
+		}
+		input.width170 {
+			width: 176px;
+		}
+		.send-email {
+			width: 32px;
+			height: 32px;
+			background: #EAF6EC;
+			border: 0;
+			outline: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-left: 10px;
+			flex-shrink: 0;
+			cursor: pointer;
+			img {
+				width: auto;
+				height: auto;
+			}
+			&:hover {
+				background-color: #28A745;
+				.arrow-white {
+					display: block;
+				}
+				.arrow-green {
+					display: none;
+				}
+			}
+			.arrow-white {
+				display: none;
+			}
+		}
+		.refresh-otp {
+			background: #FFF1ED;
+			display: none;
+		}
+	}
+}
+.email-id-enter-container.phone-number-width {
+	width: auto;
+}

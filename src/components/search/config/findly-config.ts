@@ -54,29 +54,7 @@ botOptionsFindly.botInfo = {
 botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
 botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
 botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
-// botOptionsFindly.botInfo = {
-//   chatBot: "7 DEC-22",
-//   taskBotId: "st-0e74a50d-6082-5f35-8ef7-12f05b67c6e0",
-// };
-// botOptionsFindly.clientId = "cs-7bdcdb62-0ba3-5a94-8191-bcc2145e740f";
-// botOptionsFindly.clientSecret = "MLmrLKTApQk60vS0B3Ud5JTfaEMCASPFqP0WC+BdkTs=";
-// botOptionsFindly.searchIndexID = "sidx-546830dd-8d22-5a92-89a2-7432364a3e25";
 
-// botOptionsFindly.botInfo = {
-//   chatBot: "Bot actions V2",
-//   taskBotId: "st-af4891e5-b228-5c30-b629-e21a49d37d04",
-// };
-// botOptionsFindly.clientId = "cs-b20a8411-74d9-58b0-b615-78b33e2986ae";
-// botOptionsFindly.clientSecret = "UFTq1wsjDREF7gb7XVDcOrg+8Llu98sVs4zGGXRZc1A=";
-// botOptionsFindly.searchIndexID = "sidx-ea84961b-7aad-57f6-a021-eeb591433c48";
-// botOptionsFindly.botInfo = {
-//   chatBot: "PSI_Demo_V1.1",
-//   taskBotId: "st-7b63dd9c-d111-5372-ba60-0a8b69963798",
-// };
-// botOptionsFindly.clientId = "cs-4f4e9434-eca4-566a-9d90-7b7dbed81320";
-// botOptionsFindly.clientSecret = "EmgxDGZV8dZhm9pGQePqVeb1CXxlrcD0RwWnize0ass=";
-// botOptionsFindly.searchIndexID = "sidx-88a143e1-2447-5d67-b26a-78cf5f97d407";
-// To modify the web socket url use the following option
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {
   protocol: "wss",
@@ -92,6 +70,152 @@ function clearLocalStorageUserDetails() {
 let favicon: any = document.getElementById("favicon");
 // CVS Caremark configs //
  
+if (window.location && window.location.href && window.location.href.includes('#futurebank')) {
+  // For Demo 20/1/21
+  botOptionsFindly.botInfo = { chatBot: "Covid Help", "taskBotId": "st-1847ca83-3ea9-519d-bfe4-7c993c8bc477" };
+  botOptionsFindly.clientId = "cs-30d2773b-0131-5e3f-b6d5-ed93cbae67c6";
+  botOptionsFindly.clientSecret = "UdsX+q2hBSNVttzDoARy05zCluj9b0Ns0f2LRjmFwow=";
+  botOptionsFindly.searchIndexID = "sidx-810d6e38-b522-54d3-8f2b-cdee7667fb34";
+  setTimeout(function () {
+      $('body').addClass('futureBank');
+      document.title = 'Future Bank';
+      clearLocalStorageUserDetails();
+  }, 1000);
+}
+else if (window.location && window.location.href && window.location.href.includes('#pnc')) {
+  // A/B Testing Bot
+  botOptionsFindly.botInfo = { chatBot: "PNC App", "taskBotId": "st-e425ec59-273d-5a9b-86ac-119d4444c800" };
+  botOptionsFindly.clientId = "cs-1eb8ea6f-a1d4-5045-ac55-7fe9593074cd";
+  botOptionsFindly.clientSecret = "9dDCbzh9ZU0XSFgXVjp2vM3+ZodqO+l9JjaaN8gQ/UU=";
+  botOptionsFindly.searchIndexID = "sidx-c0d78244-572a-590c-9148-31b45cc3ff3c";
+  setTimeout(function () {
+      $('body').addClass('pnc');
+      document.title = 'PNC';
+      clearLocalStorageUserDetails();
+  }, 1000);
+} else if (window.location && window.location.href && (window.location.href.includes('#cdc') || window.location.href.includes('#polio') || window.location.href.includes('#hepatitis') || window.location.href.includes('#coronavirus'))) {
+  // CDC
+  botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
+  botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
+  botOptionsFindly.reWriteSocketURL = {
+      protocol: 'wss',
+      hostname: 'searchassist-qa.kore.ai'
+  };
+  // botOptionsFindly.botInfo = { chatBot: "CDC App", "taskBotId": "st-8f0ccfc3-6920-5371-be24-f386bcef49c2" };
+  // botOptionsFindly.clientId = "cs-d76f4a33-80c8-51ad-b6a7-810606a366b1";
+  // botOptionsFindly.clientSecret = "NmFqR0CP6aeomim0lzdkYtmihA2f2ey92Niy3MGKMDg=";
+  // botOptionsFindly.searchIndexID = "sidx-1857c1f1-7f93-55e2-9c04-124e148f1543";
+  botOptionsFindly.botInfo = { chatBot: "Covid Help", "taskBotId": "st-1847ca83-3ea9-519d-bfe4-7c993c8bc477" };
+  botOptionsFindly.clientId = "cs-30d2773b-0131-5e3f-b6d5-ed93cbae67c6";
+  botOptionsFindly.clientSecret = "UdsX+q2hBSNVttzDoARy05zCluj9b0Ns0f2LRjmFwow=";
+  botOptionsFindly.searchIndexID = "sidx-810d6e38-b522-54d3-8f2b-cdee7667fb34";
+  setTimeout(function () {
+      $('body').addClass('cdc');
+      document.title = 'CDC';
+      // favicon.setAttribute("href", "../demo/images/cdc.png"); 
+  }, 1000);
+} else if (window.location && window.location.href && (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze'))) {
+  // cosmetics
+  botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
+  botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
+  botOptionsFindly.reWriteSocketURL = {
+      protocol: 'wss',
+      hostname: 'searchassist-qa.kore.ai'
+  };
+  // botOptionsFindly.botInfo = { chatBot: "Cosmetics", "taskBotId": "st-cf0ce3fc-4e46-56fa-b083-c47f8c405e8c" };
+  // botOptionsFindly.clientId = "cs-3c22d3c0-67ea-5335-a7dc-691a3972d961";
+  // botOptionsFindly.clientSecret = "2iQclyckzscxUFQVUms1lDCLo5P5IT9BaxU1UDE9ENQ=";
+  // botOptionsFindly.searchIndexID = "sidx-2ccc1c39-b76d-5e78-9f96-3af138adafd7";
+  botOptionsFindly.botInfo = { chatBot: "CosmeticsV1.1", "taskBotId": "st-a359c185-2445-5bc9-b981-682d6f6ec1a0" };
+  botOptionsFindly.clientId = "cs-16f8dc7e-2a12-5c7f-bbca-6878c8dfb004";
+  botOptionsFindly.clientSecret = "7AQvrc6OHmF52ByFhcvw+S0dlDH+31stpk+ZaBzujW8=";
+  botOptionsFindly.searchIndexID = "sidx-53fd79c3-25fd-5c5d-8e09-1c4fcdbbbb62";
+  setTimeout(function () {
+      $('body').addClass('belcorp');
+      $('body').addClass('cosmetics');
+      document.title = 'Cosmetics';
+      favicon.setAttribute("href", "../demo/images/cosmetic-icon.svg");
+  }, 1000);
+} else if (window.location && window.location.href && (window.location.href.includes('#belcorp'))) {
+  // belcrop
+  botOptionsFindly.koreAPIUrl = "https://pilot.searchassist.ai/searchassistapi/";
+  botOptionsFindly.baseAPIServer = "https://pilot.searchassist.ai";
+  botOptionsFindly.reWriteSocketURL = {
+      protocol: 'wss',
+      hostname: 'pilot.searchassist.ai'
+  };
+  botOptionsFindly.botInfo = { chatBot: "Belcorp", "taskBotId": "st-05c53414-a6a0-5376-bd8b-a1ee4f287cd1" };
+  botOptionsFindly.clientId = "cs-aa7a9f01-3929-514f-8595-111fde1998c9";
+  botOptionsFindly.clientSecret = "4V8nmOHtv1HTWiy86XsbCfbWCxqVi8DhwLPLwHjM5Cc=";
+  botOptionsFindly.searchIndexID = "sidx-c64eec48-c5eb-5ae3-8cc2-40bc7ebf87b7";
+  setTimeout(function () {
+      $('body').addClass('belcorp');
+      document.title = 'Belcorp';
+      favicon.setAttribute("href", "../demo/images/belcrop-logo.svg");
+  }, 1000);
+} else if (window.location && window.location.href && (window.location.href.includes('#scm'))) {
+  // Siemens
+  botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
+  botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
+  botOptionsFindly.reWriteSocketURL = {
+      protocol: 'wss',
+      hostname: 'searchassist-qa.kore.ai'
+  };
+  botOptionsFindly.botInfo = { chatBot: "Siemens V1.1", "taskBotId": "st-bbb0e3ae-9865-5b0a-ab6a-6031da5ab3f1" };
+  botOptionsFindly.clientId = "cs-5abd51e8-f538-5e6b-8610-ce9c98b66efb";
+  botOptionsFindly.clientSecret = "MZTKNHkT8mimFMTooEE9E+ZjykiTMTeNGxfEIFBgrrk=";
+  botOptionsFindly.searchIndexID = "sidx-333198c8-0bcd-5bef-adbc-dc80372a8af9";
+  setTimeout(function () {
+      $('body').addClass('siemens');
+      document.title = 'SCM Procure';
+      favicon.setAttribute("href", "../demo/images/siemens-icon.jpg");
+  }, 1000);
+} else if (window.location && window.location.href && (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest'))) {
+  // banking
+  botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
+  botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
+  botOptionsFindly.reWriteSocketURL = {
+      protocol: 'wss',
+      hostname: 'searchassist-qa.kore.ai'
+  };
+  botOptionsFindly.botInfo = { chatBot: "Bank", "taskBotId": "st-95fd4a73-0a3c-5514-a11c-822682b8ab1f" };
+  botOptionsFindly.clientId = "cs-f3c49041-f08e-53c7-9095-2ad1d09fa76b";
+  botOptionsFindly.clientSecret = "oi3xWjrf8vILmEd8l6sq99C6HHGrAC6NkKU2PGlegLY=";
+  botOptionsFindly.searchIndexID = "sidx-171fce08-eab2-53f3-aa03-8d44926c75b4";
+  setTimeout(function () {
+      if (!$('body').hasClass('banking')) {
+          $('body').addClass('banking')
+      }
+      document.title = 'Banking';
+      favicon.setAttribute("href", "../demo/images/banking/bankingavatar.svg");
+  }, 1000);
+}
+else if (window.location && window.location.href && (window.location.href.includes('#tr'))) {
+  // Siemens
+  botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
+  botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
+  botOptionsFindly.reWriteSocketURL = {
+      protocol: 'wss',
+      hostname: 'searchassist-qa.kore.ai'
+  };
+  botOptionsFindly.botInfo = { chatBot: "TR", "taskBotId": "st-9c5592dc-7c18-5b9b-9c54-869aecdda25d" };
+  botOptionsFindly.clientId = "cs-9b11cc16-6ee9-5bea-be7c-39b9d1358fcd";
+  botOptionsFindly.clientSecret = "c0GbteFfqet5HBH3pKd+EOws8bzy1w5LgRfl0LrHFcg=";
+  botOptionsFindly.searchIndexID = "sidx-2963a1bb-6315-5c8d-959c-884993fd4a80";
+  setTimeout(function () {
+      $('body').addClass('siemens');
+      document.title = 'TR';
+      favicon.setAttribute("href", "../demo/images/siemens-icon.jpg");
+  }, 1000);
+}
+else {
+  setTimeout(function () {
+      $('body').addClass('futureBank');
+      document.title = 'SearchAssist Demo';
+      clearLocalStorageUserDetails();
+  }, 1000);
+}
+
 botOptionsFindly.interface = "top-down";
 findlyConfig = {
   botOptions: botOptionsFindly,

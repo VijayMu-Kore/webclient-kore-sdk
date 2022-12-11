@@ -1,0 +1,91 @@
+.divider-border {
+	padding: 19px 0 0 0;
+	margin-top: 14px;
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		width: calc(100% + 40px);
+		background: #E4E5E7;
+		left: -20px;
+		border-top: 1px solid #E4E5E7;
+	}
+}
+.verify-card-details {
+	.heading-text {
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 17px;
+		color: #202124;
+		margin-bottom: 8px;
+	}
+	.verify-details {
+		background: #FFFFFF;
+		border: 1px solid #E4E5E7;
+		box-sizing: border-box;
+		border-radius: 8px;
+		padding: 12px;
+		.info-text {
+			font-weight: normal;
+			font-size: 13px;
+			line-height: 16px;
+			color: #161620;
+			margin-bottom: 12px;
+		}
+		.card-info-details {
+			display: flex;
+			width: 100%;
+			margin-bottom: 5px;
+			.label-text {
+				font-weight: 500;
+				font-size: 12px;
+				line-height: 15px;
+				color: #202124;
+				margin-bottom: 6px;
+			}
+			input {
+				background: #FFFFFF;
+				border: 1px solid #BDC1C6;
+				box-sizing: border-box;
+				border-radius: 4px;
+				padding: 7px 10px;
+				font-weight: normal;
+				font-size: 14px;
+				line-height: 18px;
+				height: 34px;
+				outline: 0;
+				width: 100%;
+				&::placeholder {
+					color: #BDC1C6;
+				}
+				&:focus {
+					border: 1px solid #9A7834 !important;
+				}
+			}
+			.card-number {
+				margin-right: 5px;
+				width: 204px;
+			}
+			.cvv-details {
+				width: 70px;
+			}
+		}
+		.verify-btn {
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 20px;
+			border: 0;
+			height: 34px;
+			background: transparent;
+			outline: 0;
+			padding: 0;
+			color: #9A7834;
+			display: inline-flex;
+			align-items: center;
+			cursor: pointer;
+			img {
+				margin-left: 12px;
+			}
+		}
+	}
+}
