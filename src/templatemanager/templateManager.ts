@@ -19,6 +19,25 @@ import SystemTemplate from './templates/systemTemplate/systemTemplate';
 import AdvancedListTemplate from './templates/advancedListTemplate/advancedListTemplate';
 import CardTemplate from './templates/cardTemplate/cardTemplate';
 
+//demo custom templates start//
+import CancelConfirmationTemplate from './demo-templates/cancelConfirmation/cancelConfirmationTemplate';
+import CancelOrderTemplate from './demo-templates/cancelOrder/cancelOrderTemplate';
+import CardPaymentTemplate from './demo-templates/cardPayment/cardPaymentTemplate';
+import CardPaymentCarouselTemplate from './demo-templates/cardPaymentCarousel/cardPaymentCarouselTemplate';
+import ConfirCardPaymentTemplate from './demo-templates/confirmCardPayment/confirmCardPaymentTemplate';
+import createNewCardTemplate from './demo-templates/createNewCardPin/createNewCardPinTemplate';
+import DebitCardDetailsTemplate from './demo-templates/debitCardDetails/debitCardDetailsTemplate';
+import EnterEmailTemplate from './demo-templates/enterEmail/enterEmailTemplate';
+import EnterOtpTemplate from './demo-templates/enterOtp/enterOtpTemplate';
+import GuidedTourTemplate from './demo-templates/guidedTour/guidedTourTemplate';
+import MovileNumTemplate from './demo-templates/mobileNum/mobileNumTemplate';
+import OtpTemplate from './demo-templates/otp/otpTemplate';
+import TrackOrderTemplate from './demo-templates/trackOrder/trackOrderTemplate';
+import TravelCardCarouselTemplate from './demo-templates/travelCardCarousel/travelCardCarouselTemplate';
+import ProductTemplate from './demo-templates/productsCarousel/productsCarouselTemplate';
+
+//demo custom templates end//
+
 // import './customTemplate.css';
 // import '../../../libs/purejscarousel.css';
 //(function($){
@@ -62,6 +81,21 @@ class TemplateManager {
 	this.installTemplate(new AdvancedListTemplate());
 	this.installTemplate(new CardTemplate());
 
+	this.installTemplate(new CancelConfirmationTemplate());
+	this.installTemplate(new CancelOrderTemplate());
+	this.installTemplate(new CardPaymentTemplate());
+	this.installTemplate(new CardPaymentCarouselTemplate());
+	this.installTemplate(new ConfirCardPaymentTemplate());
+	this.installTemplate(new createNewCardTemplate());
+	this.installTemplate(new DebitCardDetailsTemplate());
+	this.installTemplate(new EnterEmailTemplate());
+	this.installTemplate(new EnterOtpTemplate());
+	this.installTemplate(new GuidedTourTemplate());
+	this.installTemplate(new MovileNumTemplate());
+	this.installTemplate(new OtpTemplate());
+	this.installTemplate(new TrackOrderTemplate());
+	this.installTemplate(new TravelCardCarouselTemplate());
+	this.installTemplate(new ProductTemplate());
 
 	this.installTemplate(new IframeTemplate());
 
