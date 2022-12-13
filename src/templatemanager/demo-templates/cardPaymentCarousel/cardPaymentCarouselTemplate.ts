@@ -9,7 +9,7 @@ class CardPaymentCarouselTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -37,7 +37,7 @@ class CardPaymentCarouselTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.bottom-content').off('click', '.play-now-btn').on('click', '.play-now-btn', function (e) {
+        $(messageHtml).find('.bottom-content').off('click', '.play-now-btn').on('click', '.play-now-btn', function (e:any) {
             var payload = $(e.currentTarget).closest('.play-now-btn').attr('payload');
             chatWindowInstance.sendMessage(payload, msgData);
         })

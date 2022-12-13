@@ -1,5 +1,6 @@
+import korejquery from "../../../libs/korejquery";
+const $ = korejquery;
 let findlyConfig:any = {};
-
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
@@ -134,7 +135,7 @@ else if (window.location && window.location.href && window.location.href.include
       $('body').addClass('belcorp');
       $('body').addClass('cosmetics');
       document.title = 'Cosmetics';
-      favicon.setAttribute("href", "../demo/images/cosmetic-icon.svg");
+      favicon.setAttribute("href", "https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetic-icon.svg");
   }, 1000);
 } else if (window.location && window.location.href && (window.location.href.includes('#belcorp'))) {
   // belcrop

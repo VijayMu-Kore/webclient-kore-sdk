@@ -8,7 +8,7 @@ class MobileNumTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -34,7 +34,7 @@ class MobileNumTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.email-id-enter-container').off('click', '#sendMobile').on('click', '#sendMobile', function (e) {
+        $(messageHtml).find('.email-id-enter-container').off('click', '#sendMobile').on('click', '#sendMobile', function (e:any) {
             var mobile = $(e.currentTarget).parent().find('#mobileValue').val();
             if (mobile.length > 9) {
                 $(e.currentTarget).prop("disabled", true);
@@ -42,7 +42,7 @@ class MobileNumTemplate {
                 chatWindowInstance.sendMessage('+91' + mobile, msgData)
             }
         })
-        $(messageHtml).find('.email-id-enter-container').off('keydown', '#mobileValue').on('keydown', '#mobileValue', function (e) {
+        $(messageHtml).find('.email-id-enter-container').off('keydown', '#mobileValue').on('keydown', '#mobileValue', function (e:any) {
             var mobile = $(e.currentTarget).parent().find('#mobileValue').val();
             var keyCode = e.keyCode || e.which;
             keyCode = Number(keyCode);

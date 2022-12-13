@@ -8,7 +8,7 @@ class EnterEmailTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -34,7 +34,7 @@ class EnterEmailTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.email-id-enter-container').off('click', '#sendEmail').on('click', '#sendEmail', function (e) {
+        $(messageHtml).find('.email-id-enter-container').off('click', '#sendEmail').on('click', '#sendEmail', function (e:any) {
             var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             var email = $('#emailValue').val();
             if (regex.test(email)) {

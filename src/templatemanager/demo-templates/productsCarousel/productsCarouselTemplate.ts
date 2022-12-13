@@ -1,15 +1,15 @@
 
 import helpers from '../../../utils/helpers';
 import PureJSCarousel from '../../../libs/purejscarousel/purejscarousel';
-import './productCarouselTemplate.scss';
-class ProductCarouselTemplate {
+import './productsCarouselTemplate.scss';
+class ProductsCarouselTemplate {
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -127,13 +127,13 @@ class ProductCarouselTemplate {
         $('.carouselTemplate' + newCarouselTemplateCount + ' .purejscarousel-btn-next').addClass('filterCard-next')
 
         var initialCard = 0;
-        $('.carouselTemplate' + newCarouselTemplateCount).off('click', '.filterCard-next').on('click', '.filterCard-next', function (e) {
+        $('.carouselTemplate' + newCarouselTemplateCount).off('click', '.filterCard-next').on('click', '.filterCard-next', function (e:any) {
           initialCard = initialCard + 1;
           chatWindowInstance.filterCardSelected = initialCard;
           // chatWindowInstance.userContextBankCard = JSON.parse(window.localStorage.getItem('cards'))[initialCard];
           // chatWindowInstance.invokeSpecificSearch(chatWindowInstance.selectedFacetFromSearch);
         })
-        $('.carouselTemplate' + newCarouselTemplateCount).off('click', '.filterCard-prev').on('click', '.filterCard-prev', function (e) {
+        $('.carouselTemplate' + newCarouselTemplateCount).off('click', '.filterCard-prev').on('click', '.filterCard-prev', function (e:any) {
           initialCard = initialCard - 1;
           chatWindowInstance.filterCardSelected = initialCard;
           // chatWindowInstance.userContextBankCard = JSON.parse(window.localStorage.getItem('cards'))[initialCard];
@@ -143,4 +143,4 @@ class ProductCarouselTemplate {
   }
 }
 
-export default ProductCarouselTemplate;
+export default ProductsCarouselTemplate;

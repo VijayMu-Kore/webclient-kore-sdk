@@ -8,7 +8,7 @@ class TrackOrderTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -34,7 +34,7 @@ class TrackOrderTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.trak-details').off('click', '.track-order').on('click', '.track-order', function (e) {
+        $(messageHtml).find('.trak-details').off('click', '.track-order').on('click', '.track-order', function (e:any) {
             $(e.currentTarget).closest('.order-info-cards').addClass('track-order-active');
             if ($('body').hasClass('top-down')) {
                 // var endTaskMsgTemplate = '<div class="task-ended-message">\
@@ -45,7 +45,7 @@ class TrackOrderTemplate {
                 //                       <div class="back-to-search"><a><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuODY4OTQgMy42NDgzMkM1LjY1OTc4IDMuNDQ1OTggNS4zMjYyNCAzLjQ1MTMzIDUuMTIzNjggMy42NjAyOEwxLjA1OTkgNy44NTIyQzAuOTgwMDM1IDcuOTM0NTggMC45ODAwMzUgOC4wNjU1IDEuMDU5OSA4LjE0Nzg3TDUuMTIzNTUgMTIuMzM5N0M1LjMyNjE4IDEyLjU0ODcgNS42NTk4NCAxMi41NTQgNS44NjkwNyAxMi4zNTE2QzYuMDc4NTggMTIuMTQ4OSA2LjA4Mzk4IDExLjgxNDggNS44ODExNCAxMS42MDU0TDIuOTA2NzggOC41MzU3SDE0LjQ3MjZDMTQuNzYzOSA4LjUzNTcgMTUgOC4yOTk1NyAxNSA4LjAwODI4QzE1IDcuNzE2OTkgMTQuNzYzOSA3LjQ4MDg1IDE0LjQ3MjYgNy40ODA4NUgyLjg4NjE4TDUuODgwNzUgNC4zOTQ1M0M2LjA4Mzc3IDQuMTg1MyA2LjA3ODQ4IDMuODUxMDMgNS44Njg5NCAzLjY0ODMyWiIgZmlsbD0iIzBENkVGRCIvPgo8L3N2Zz4K"/><span>Back to Search</span></a></div>\
                 //                     </div>';
                 // $('#searchChatContainer').append(endTaskMsgTemplate);
-                $(messageHtml).find('.task-ended-message').off('click', '.back-to-search').on('click', '.back-to-search', function (e) {
+                $(messageHtml).find('.task-ended-message').off('click', '.back-to-search').on('click', '.back-to-search', function (e:any) {
                     if (chatWindowInstance.isDev == false) {
                         $("#searchChatContainer .task-ended-message").remove();
                     }

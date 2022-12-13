@@ -8,7 +8,7 @@ class cancelConfirmationTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -34,7 +34,7 @@ class cancelConfirmationTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.yes-no-button-block').off('click', '.cancel-confirm-btn').on('click', '.cancel-confirm-btn', function (e) {
+        $(messageHtml).find('.yes-no-button-block').off('click', '.cancel-confirm-btn').on('click', '.cancel-confirm-btn', function (e:any) {
             var payload = $(e.currentTarget).closest('.cancel-confirm-btn').attr('id');
             $(e.currentTarget).closest('.cancel-confirm-btn').parent().find('.active-button').removeClass('active-button');
             $(e.currentTarget).closest('.cancel-confirm-btn').addClass('active-button');

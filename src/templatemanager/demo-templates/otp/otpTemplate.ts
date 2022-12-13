@@ -8,7 +8,7 @@ class OtpTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -26,7 +26,7 @@ class OtpTemplate {
             });
             setTimeout(() => {
                 me.bindEvents(me.messageHtml, msgData);
-                $(me.messageHtml).find('.autocomplete-input').each(function () {
+                $(me.messageHtml).find('.autocomplete-input').each(function (this:any) {
                     $(this).attr('autocomplete', 'off');
                 });
             }, 2000)
@@ -38,7 +38,7 @@ class OtpTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.otp-container').off('keydown', '#otpSubmit').on('keydown', '#otpSubmit', function (e) {
+        $(messageHtml).find('.otp-container').off('keydown', '#otpSubmit').on('keydown', '#otpSubmit', function (e:any) {
             var keyCode = e.keyCode || e.which;
             keyCode = Number(keyCode);
             if (keyCode == 13) {
@@ -48,7 +48,7 @@ class OtpTemplate {
                 }
             }
         })
-        $(messageHtml).find('.otp-container').off('keyup', '#otpSubmit').on('keyup', '#otpSubmit', function (e) {
+        $(messageHtml).find('.otp-container').off('keyup', '#otpSubmit').on('keyup', '#otpSubmit', function (e:any) {
             var keyCode = e.keyCode || e.which;
             keyCode = Number(keyCode);
             if (e.target.value.length && e.target.value.length) {
@@ -59,12 +59,12 @@ class OtpTemplate {
                 $(messageHtml).find('.submit-otp-btn').last().hide();
             }
         })
-        $(messageHtml).find('.otp-container').off('click', '.resend-otp-btn').on('click', '.resend-otp-btn', function (e) {
+        $(messageHtml).find('.otp-container').off('click', '.resend-otp-btn').on('click', '.resend-otp-btn', function (e:any) {
             var title = $(e.target).attr('title');
             $(e.currentTarget).parent().find('#otpSubmit').prop("disabled", true);
             chatWindowInstance.sendMessage(title, msgData);
         })
-        $(messageHtml).find('.otp-container').off('click', '.submit-otp-btn').on('click', '.submit-otp-btn', function (e) {
+        $(messageHtml).find('.otp-container').off('click', '.submit-otp-btn').on('click', '.submit-otp-btn', function (e:any) {
             var title = $(e.currentTarget).parent().find('#otpSubmit').val();
             $(e.currentTarget).parent().find('#otpSubmit').prop("disabled", true);
             chatWindowInstance.sendMessage(title, msgData);

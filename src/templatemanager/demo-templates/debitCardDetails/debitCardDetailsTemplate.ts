@@ -8,7 +8,7 @@ class debitCardDetailsTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -26,7 +26,7 @@ class debitCardDetailsTemplate {
             });
             setTimeout(() => {
                 me.bindEvents(me.messageHtml, msgData);
-                $(me.messageHtml).find('.autocomplete-input').each(function () {
+                $(me.messageHtml).find('.autocomplete-input').each(function (this:any) {
                     $(this).attr('autocomplete', 'off');
                 });
             }, 2000)
@@ -38,7 +38,7 @@ class debitCardDetailsTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.verify-details').off('keyup', '#debitCardId').on('keyup', '#debitCardId', function (e) {
+        $(messageHtml).find('.verify-details').off('keyup', '#debitCardId').on('keyup', '#debitCardId', function (e:any) {
             var keyCode = e.keyCode || e.which;
             keyCode = Number(keyCode);
             if (keyCode !== 8) {
@@ -47,7 +47,7 @@ class debitCardDetailsTemplate {
                 }
             }
         })
-        $(messageHtml).find('.verify-details').off('click', '.verify-btn').on('click', '.verify-btn', function (e) {
+        $(messageHtml).find('.verify-details').off('click', '.verify-btn').on('click', '.verify-btn', function (e:any) {
             if ( $(messageHtml).find('#debitCardId').val() &&  $(messageHtml).find('#cvvId').val()) {
                 var cardNo =  $(messageHtml).find('#debitCardId').val().replaceAll('-', '');
                 var cvvNo =  $(messageHtml).find('#cvvId').val();

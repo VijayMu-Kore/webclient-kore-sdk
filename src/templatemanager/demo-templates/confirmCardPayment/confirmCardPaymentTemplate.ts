@@ -8,7 +8,7 @@ class ConfirmCardPaymentTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -34,7 +34,7 @@ class ConfirmCardPaymentTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.actions-btn').off('click', '.confirm-cancel-btn').on('click', '.confirm-cancel-btn', function (e) {
+        $(messageHtml).find('.actions-btn').off('click', '.confirm-cancel-btn').on('click', '.confirm-cancel-btn', function (e:any) {
             var payload = $(e.target).attr("payload");
             var title = $(e.target).attr("title");
             chatWindowInstance.appendTextToSearchContainer('user', title);

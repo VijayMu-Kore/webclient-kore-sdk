@@ -9,7 +9,7 @@ class GuidedTourTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -34,7 +34,7 @@ class GuidedTourTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find(".tour-data-content").off('click', '.next-step').on('click', '.next-step', function (e) {
+        $(messageHtml).find(".tour-data-content").off('click', '.next-step').on('click', '.next-step', function (e:any) {
             var arraylength = msgData.length;
             var nextDiv = $(messageHtml).find(".tour-step:visible").next(".tour-step");
             if (nextDiv.length == 0) { // wrap around to beginning
@@ -53,14 +53,14 @@ class GuidedTourTemplate {
                 $(messageHtml).find(".next-step").css('color', '#009999');
                 $(messageHtml).find(".prevoius-step").css('color', '#009999');
             }
-            $(messageHtml).find(".active-step").each(function (i) {
+            $(messageHtml).find(".active-step").each(function (this:any, i:any) {
                 if (i <= index) {
                     $(this).css('background', '#009999');
                 }
             });
         });
 
-        $(messageHtml).find(".tour-data-content").off('click', '.prevoius-step').on('click', '.prevoius-step', function (e) {
+        $(messageHtml).find(".tour-data-content").off('click', '.prevoius-step').on('click', '.prevoius-step', function (e:any) {
             var prevDiv = $(messageHtml).find(".tour-step:visible").prev(".tour-step");
             if (prevDiv.length == 0) { // wrap around to end
                 //prevDiv = $(".tour-step:last");
@@ -78,13 +78,13 @@ class GuidedTourTemplate {
                 $(messageHtml).find(".prevoius-step").css('color', '#009999');
                 $(messageHtml).find(".next-step").css('color', '#009999');
             }
-            $(messageHtml).find(".active-step").each(function (i) {
+            $(messageHtml).find(".active-step").each(function (this:any, i:any) {
                 if (i > index) {
                     $(this).css('background', '#BDC1C6');
                 }
             });
         });
-        $(messageHtml).find(".tour-data-content").off('click', '.preview-img').on('click', '.preview-img', function (e) {
+        $(messageHtml).find(".tour-data-content").off('click', '.preview-img').on('click', '.preview-img', function (e:any) {
             var previewPage = '<script>\
                     <div class="full-page-tour-guide">\
                         <div class="dynamic-content">\
@@ -130,7 +130,7 @@ class GuidedTourTemplate {
                 chatWindowInstance.bindCarouselActions(htmlPreview, 'carousel-preview');
             }, 2000)
         });
-        $(messageHtml).find(".siemens-tour-guide").off('click', '.close-tour').on('click', '.close-tour', function (e) {
+        $(messageHtml).find(".siemens-tour-guide").off('click', '.close-tour').on('click', '.close-tour', function (e:any) {
             $(messageHtml).find(".siemens-tour-guide").empty();
             $(messageHtml).find('.siemens-tour-guide').css('display', 'none');
             // $('#searchBox').css({ display: 'block', background: 'white' });

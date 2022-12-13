@@ -8,7 +8,7 @@ class EnterOTPTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -34,7 +34,7 @@ class EnterOTPTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.email-id-enter-container').off('click', '.sendOTP').on('click', '.sendOTP', function (e) {
+        $(messageHtml).find('.email-id-enter-container').off('click', '.sendOTP').on('click', '.sendOTP', function (e:any) {
             var otp = $(e.currentTarget).parent().find('#otpValue').val();
             if (otp.length > 1) {
                 $(e.currentTarget).prop("disabled", true);
@@ -42,7 +42,7 @@ class EnterOTPTemplate {
                 chatWindowInstance.sendMessage(otp, msgData)
             }
         })
-        $(messageHtml).find('.email-id-enter-container').off('keydown', '#otpValue').on('keydown', '#otpValue', function (e) {
+        $(messageHtml).find('.email-id-enter-container').off('keydown', '#otpValue').on('keydown', '#otpValue', function (e:any) {
             var otp = $(e.currentTarget).parent().find('#otpValue').val();
             var keyCode = e.keyCode || e.which;
             keyCode = Number(keyCode);
@@ -54,12 +54,12 @@ class EnterOTPTemplate {
                 }
             }
         })
-        $(messageHtml).find('.email-id-enter-container').off('keypress', '#otpValue').on('keypress', '#otpValue', function (e) {
+        $(messageHtml).find('.email-id-enter-container').off('keypress', '#otpValue').on('keypress', '#otpValue', function (e:any) {
             if ($(e.currentTarget).val().length == $(e.currentTarget).attr("maxlength")) {
                 return false;
             }
         })
-        $(messageHtml).find('.email-id-enter-container').off('click', '.refresh-otp').on('click', '.refresh-otp', function (e) {
+        $(messageHtml).find('.email-id-enter-container').off('click', '.refresh-otp').on('click', '.refresh-otp', function (e:any) {
             $(e.currentTarget).prop("disabled", true);
             $(e.currentTarget).parent().find('#otpValue').prop("disabled", true);
             chatWindowInstance.sendMessage('Resend', msgData)

@@ -34,7 +34,9 @@ import MovileNumTemplate from './demo-templates/mobileNum/mobileNumTemplate';
 import OtpTemplate from './demo-templates/otp/otpTemplate';
 import TrackOrderTemplate from './demo-templates/trackOrder/trackOrderTemplate';
 import TravelCardCarouselTemplate from './demo-templates/travelCardCarousel/travelCardCarouselTemplate';
-import ProductTemplate from './demo-templates/productsCarousel/productsCarouselTemplate';
+import ProductsCarouselTemplate from './demo-templates/productsCarousel/productsCarouselTemplate';
+
+
 
 //demo custom templates end//
 
@@ -95,7 +97,7 @@ class TemplateManager {
 	this.installTemplate(new OtpTemplate());
 	this.installTemplate(new TrackOrderTemplate());
 	this.installTemplate(new TravelCardCarouselTemplate());
-	this.installTemplate(new ProductTemplate());
+	this.installTemplate(new ProductsCarouselTemplate());
 
 	this.installTemplate(new IframeTemplate());
 

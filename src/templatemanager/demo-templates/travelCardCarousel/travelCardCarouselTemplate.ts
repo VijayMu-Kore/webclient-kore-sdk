@@ -9,7 +9,7 @@ class TravelCardCarouselTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -37,7 +37,7 @@ class TravelCardCarouselTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.bottom-content').off('click', '.apply-card').on('click', '.apply-card', function (e) {
+        $(messageHtml).find('.bottom-content').off('click', '.apply-card').on('click', '.apply-card', function (e:any) {
             var payload = $(e.currentTarget).closest('.apply-card').attr("payload");
             chatWindowInstance.appendTextToSearchContainer('user', 'Apply Now');
             chatWindowInstance.sendMessage(payload, msgData);
@@ -132,13 +132,13 @@ class TravelCardCarouselTemplate {
         //   $('.carouselTemplate' + newCarouselTemplateCount + ' .purejscarousel-btn-next').addClass('filterCard-next')
   
         //   var initialCard = 0;
-        //   $('.carouselTemplate' + newCarouselTemplateCount).off('click', '.filterCard-next').on('click', '.filterCard-next', function (e) {
+        //   $('.carouselTemplate' + newCarouselTemplateCount).off('click', '.filterCard-next').on('click', '.filterCard-next', function (e:any) {
         //     initialCard = initialCard + 1;
         //     chatWindowInstance.filterCardSelected = initialCard;
         //     // chatWindowInstance.userContextBankCard = JSON.parse(window.localStorage.getItem('cards'))[initialCard];
         //     // chatWindowInstance.invokeSpecificSearch(chatWindowInstance.selectedFacetFromSearch);
         //   })
-        //   $('.carouselTemplate' + newCarouselTemplateCount).off('click', '.filterCard-prev').on('click', '.filterCard-prev', function (e) {
+        //   $('.carouselTemplate' + newCarouselTemplateCount).off('click', '.filterCard-prev').on('click', '.filterCard-prev', function (e:any) {
         //     initialCard = initialCard - 1;
         //     chatWindowInstance.filterCardSelected = initialCard;
         //     // chatWindowInstance.userContextBankCard = JSON.parse(window.localStorage.getItem('cards'))[initialCard];

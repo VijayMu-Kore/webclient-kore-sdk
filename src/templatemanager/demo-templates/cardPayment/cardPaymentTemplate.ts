@@ -8,7 +8,7 @@ class CardPaymentTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -45,10 +45,10 @@ class CardPaymentTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.select-bank-accont-dropdown').off('click', '.selected-item').on('click', '.selected-item', function (e) {
+        $(messageHtml).find('.select-bank-accont-dropdown').off('click', '.selected-item').on('click', '.selected-item', function (e:any) {
             if (!$(messageHtml).find('.select-bank-accont-dropdown').find('.dropdowns-item-container').is(':visible')) {
                 $(messageHtml).find('.select-bank-accont-dropdown .dropdowns-item-container').show();
-                $(messageHtml).find('.list-item').off('click').on('click', function (e) {
+                $(messageHtml).find('.list-item').off('click').on('click', function (e:any) {
                     $(messageHtml).find('.list-item.selected').removeClass('selected');
                     $(e.target).addClass('selected');
                     $(messageHtml).find('.select-bank-accont-dropdown').find('.selected-item').html($(e.target).attr('accountNumber')).append(`<img src="images/banking/carrotup.svg">`);
@@ -67,7 +67,7 @@ class CardPaymentTemplate {
                 $(messageHtml).find('.select-bank-accont-dropdown .dropdowns-item-container').hide();
             }
         })
-        $(messageHtml).find('.actions-paynow-statement').off('click', '.paynow-btn').on('click', '.paynow-btn', function (e) {
+        $(messageHtml).find('.actions-paynow-statement').off('click', '.paynow-btn').on('click', '.paynow-btn', function (e:any) {
             var accountNumber = $(messageHtml).find('.list-item.selected').attr('accountNumber');
             var payload = $(e.target).attr('payload');
             var amount = $(messageHtml).find("input[name='" + radioButtonName + "']:checked").val();
@@ -78,11 +78,11 @@ class CardPaymentTemplate {
             $(messageHtml).find('.selected-click').removeClass('selected-click');
             $(e.currentTarget).closest('.paynow-btn').addClass('selected-click');
         })
-        $(messageHtml).find('.actions-paynow-statement , .select-bank-details').off('click', '.dummy-btn').on('click', '.dummy-btn', function (e) {
+        $(messageHtml).find('.actions-paynow-statement , .select-bank-details').off('click', '.dummy-btn').on('click', '.dummy-btn', function (e:any) {
             $(messageHtml).find('.selected-click').removeClass('selected-click');
             $(e.currentTarget).closest('.dummy-btn').addClass('selected-click');
         })
-        $(document).off('click').on('click', function (e) {
+        $(document).off('click').on('click', function (e:any) {
             if (!($(e.target).closest('.select-bank-accont-dropdown').length)) {
                 $('.select-bank-accont-dropdown .dropdowns-item-container').hide();
             }

@@ -8,7 +8,7 @@ class CancelOrderTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -34,7 +34,7 @@ class CancelOrderTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.trak-details').off('click', '.cancel-order').on('click', '.cancel-order', function (e) {
+        $(messageHtml).find('.trak-details').off('click', '.cancel-order').on('click', '.cancel-order', function (e:any) {
             var payload = $(e.currentTarget).closest('.cancel-order').attr('id');
             $(e.currentTarget).closest('.order-card-data').addClass('pointers-none');
             chatWindowInstance.sendMessage(payload, msgData);

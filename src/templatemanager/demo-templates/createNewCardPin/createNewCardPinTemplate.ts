@@ -8,7 +8,7 @@ class CreateNewCardPinTemplate {
         let helpersObj = helpers;
         var extension = '';
         var _extractedFileName = '';
-        function strSplit(str) {
+        function strSplit(str:any) {
             return (str.split('.'));
         }
         if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
@@ -26,7 +26,7 @@ class CreateNewCardPinTemplate {
             });
             setTimeout(() => {
                 me.bindEvents(me.messageHtml, msgData);
-                $(me.messageHtml).find('.autocomplete-input').each(function () {
+                $(me.messageHtml).find('.autocomplete-input').each(function (this:any) {
                     $(this).attr('autocomplete', 'off');
                 });
             }, 2000)
@@ -38,7 +38,7 @@ class CreateNewCardPinTemplate {
         let me :any = this;
         let chatWindowInstance = me.hostInstance;
         let $ = me.hostInstance.$;
-        $(messageHtml).find('.otp-based-input-data').off('click', '.next-btn').on('click', '.next-btn', function (e) {
+        $(messageHtml).find('.otp-based-input-data').off('click', '.next-btn').on('click', '.next-btn', function (e:any) {
             if ($(messageHtml).find('#currentPin').val()) {
                 $(messageHtml).find('.otp-block.round-mark.active-next').last().next().addClass('active-next')
                 $(messageHtml).find('#otpReceived').prop("disabled", false);
@@ -63,7 +63,7 @@ class CreateNewCardPinTemplate {
 
 
         })
-        $(messageHtml).find('.otp-based-input-data').off('keydown', '#currentPin, #otpReceived').on('keydown', '#currentPin, #otpReceived', function (e) {
+        $(messageHtml).find('.otp-based-input-data').off('keydown', '#currentPin, #otpReceived').on('keydown', '#currentPin, #otpReceived', function (e:any) {
             var keycode = e.keyCode || e.which;
             if (keycode === 13) {
                 if ($(messageHtml).find('#currentPin').val()) {

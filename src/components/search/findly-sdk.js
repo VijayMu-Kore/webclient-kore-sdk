@@ -15,6 +15,8 @@ import './css/findly-sdk.scss';
 import './css/common-styles.scss';
 import './css/search-bar-experience.scss';
 import './css/fonts/inter.css';
+import './css/findly-demo.scss';
+import './css/cosmetics-styles.scss';
 import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
 import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
@@ -1361,6 +1363,8 @@ FindlySDK.prototype.getSearchControl = function () {
   var searchControl =
     '<script type="text/x-jqury-tmpl">\
             <div class="search-bar">\
+            <div class="search-btn-custom">SEARCH</div>\
+            <div class="search-icon-btn"><img src="images/cosmetics/search-blue.svg"></div>\
               <div class="widget-icon"><img style="vertical-align:middle" \
               {{if searchConfig.searchBarIcon}}\
               src="${searchConfig.searchBarIcon}"> </div>\
@@ -1385,7 +1389,7 @@ FindlySDK.prototype.getSearchControl = function () {
             {{if hideSearchIcon}}\
               style="position: absolute; bottom: 0px;  \
             {{else}}\
-              style="position: absolute; bottom: 0px; padding-left:36px!important; border : solid 1px ${searchConfig.searchBarBorderColor} !important; background : ${searchConfig.searchBarFillColor} !important; color :  ${searchConfig.searchBarPlaceholderTextColor} !important; \
+              style="position: absolute; bottom: 0px; padding-left:37px!important; border : solid 1px ${searchConfig.searchBarBorderColor} !important; background : ${searchConfig.searchBarFillColor} !important; color :  ${searchConfig.searchBarPlaceholderTextColor} !important; \
               {{if searchConfig.autocompleteOpt == true}}\
               background : transparent !important; \
               {{else}}\
@@ -20033,8 +20037,7 @@ FindlySDK.prototype.getTopDownTemplate = function () {
           <div id="heading" class="search-input-box">
               <div id="search-box-container" class="search-box-container-data">
                   <div class="cancel-search">
-                      <img
-                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII=" />
+                      Clear
                   </div>
               </div>
               <div id="greeting-msg-top-down"></div>
@@ -22236,7 +22239,35 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               }
             }
             const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
-
+            var routePath;  
+            if (window.location && window.location.href && structuredData && structuredData.length && (structuredData[0].sys_content_type == 'data' || structuredData[0].sys_content_type == "faq" || structuredData[0].sys_content_type == "web") && (window.location.href.includes('#scm') || (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')))) {
+                
+                if ( window.location.href.includes('#scm')) {
+                  routePath = (structuredData && structuredData.length && structuredData[0].bestMatch === true && structuredData[0].carouselData.length && templateInterfaceType !== 'liveSearch') ? 'siemensFeatureSnippet' : 'siemens';
+                }
+                else if (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')) {
+                  routePath = 'banking';
+                  if ($('body').hasClass('bankUserLogined')) {
+                    routePath = 'bankUserLogined';
+                    selected[groupName + templateInterfaceType + 'TemplateType'] = 'carousel';
+                  }
+                }
+                if (structuredData && structuredData.length && structuredData[0].sys_content_type == "faq") {
+                  routePath = 'bankingPlainList';
+                  _self.bindSearchAccordion();
+                }
+                if (structuredData && structuredData.length && structuredData[0].sys_content_type == "web" && (data.isLiveSearch || data.isSearch)) {
+                  routePath = 'bankingPlainListClickable';
+                }
+                if (structuredData && structuredData.length && structuredData[0].sys_content_type == "web" && data.isFullResults && $('body').hasClass('bankUserLogined')) {
+                  routePath = 'bankUserLogined';
+                }
+              } else if (window.location && window.location.href && (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze')) && structuredData && structuredData.length && structuredData[0].sys_content_type == 'data') {
+                 routePath = 'cosmetics';
+                if ($('body').hasClass('top-down') && !isLiveSearch) {
+                  routePath = 'cosmeticsProduct';
+                }
+              }
             var isDropdownEnabled = true;
             var messageData = {
               "message": [
@@ -22244,7 +22275,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                   "component": {
                     "type": 'template',
                     "payload": {
-                      "template_type": "search" + searchTemplateType + "Template",
+                      "template_type": routePath?routePath: ("search" + searchTemplateType + "Template"),
                       'isClickable': data.isClickable,
                       'structuredData': structuredData,
                       'viewType': viewType,
@@ -22308,81 +22339,152 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                 if (!item.img || !item.img.length) {
                   item.img = '';
                 }
+                if (obj.doc_url) {
+                  item.url = obj.doc_url;
+                }
                 if (!item.url || !item.url.length) {
                   item.url = '';
                 }
+                if (obj.prod_review_count) {
+                  item.prod_review_count = obj.prod_review_count;
+                }
+                if (obj.prod_avg_review) {
+                  item.prod_avg_review = obj.prod_avg_review;
+                }
+                if (obj.prod_price) {
+                  item.prod_price = obj.prod_price;
+                }
+                if (obj.prod_original_price) {
+                  item.prod_original_price = obj.prod_original_price;
+                }
+                if (obj.prod_cat) {
+                  item.prod_cat = obj.prod_cat;
+                }
+                if (obj.prod_percentage_offer) {
+                  item.prod_percentage_offer = obj.prod_percentage_offer;
+                }
+                if (obj.bestseller) {
+                  item.bestseller = obj.bestseller;
+                }
+                if (obj.newarrival) {
+                  item.newarrival = obj.newarrival;
+                }
+                if (obj.subtitle) {
+                  item.subtitle = obj.subtitle;
+                }
+
                 item.config = obj.config;
                 item.feedback = obj.feedback;
                 item.customization = null;
                 item.sys_content_type = obj.sys_content_type;
                 item.contentId = obj.contentId;
                 //connectors fields start//
-          if (obj[mapping.icon]) {
-            item.icon = obj[mapping.icon];
-          }
-          if (obj[mapping.chips]) {
-            item.chips = obj[mapping.chips];
-          }
-          if (obj[mapping.textField1]) {
-            item.textField1 = obj[mapping.textField1];
-          }
-          if (obj[mapping.textField2]) {
-            item.textField2 = obj[mapping.textField2];
-          }
-          if(!obj.icon) {
-            obj.icon = item.icon||'';
-          }
-          if(!obj.chips) {
-            obj.chips = item.chips||'';
-          }
-          if(!obj.createdOn || item.textField2){
-            obj.createdOn = item.textField2 || ''
-          }
-          if(!obj.createdByUser || item.textField1){
-            obj.createdByUser = item.textField1 || '';
-          }
-          // Demo fields start         
-          if (obj.chips) {
-            item.scm_author = obj.createdByUser || '';
-            item.scm_createdAt = obj.createdOn == '' ? '-' : moment(obj.createdOn).format('Do MMM YYYY, ddd [at] h:mm A');
-            if(Array.isArray(obj.chips)){
-              for (var chip of obj.chips) {
-                var background = chip == 'pdf' ? '#FFF6F8' : chip == 'Confluence' ? '#E7F1FF' : chip == 'Gdrive' ? '#FFF9DC' : '#F7FFFF';
-                var color = chip == 'pdf' ? '#DD3646' : chip == 'Confluence' ? '#0D6EFD' : chip == 'Gdrive' ? '#806D16' : '#009999';
-                chips.push({ background: background, color: color, name: chip })
-              }
-            }
-            if( typeof obj.chips === 'string' && obj.chips.length){
-              chips.push({ background: '#e7f1ff', color: '#0d6efd', name: obj.chips });
-            }
-            item.chips = chips;
-          }
-          if (obj.bestseller) {
-            item.ecommerce_bestseller = obj.bestseller;
-          }
-          if (obj.prod_original_price) {
-            item.ecommerce_original_price = obj.prod_original_price;
-          }
-          if (obj.rating) {
-            item.ecommerce_rating = obj.rating;
-            var reviweArr =['n_fill','n_fill','n_fill','n_fill','n_fill'];
-              for(let i=0;i<item.ecommerce_rating;i++){
-                reviweArr[i] = 'fill';
-              } 
-            item.ecommerce_ratingArr = reviweArr;  
-          }
-          if (obj.prod_percentage_offer) {
-            item.ecommerce_percentage_offer = obj.prod_percentage_offer;
-          }
-          if (obj.prod_price) {
-            item.ecommerce_price = obj.prod_price;
-          }
-          if (obj.prod_image) {
-            item.ecommerce_image = obj.prod_image;
-          }
+                if (obj[mapping.icon]) {
+                  item.icon = obj[mapping.icon];
+                }
+                if (obj[mapping.chips]) {
+                  item.chips = obj[mapping.chips];
+                }
+                if (obj[mapping.textField1]) {
+                  item.textField1 = obj[mapping.textField1];
+                }
+                if (obj[mapping.textField2]) {
+                  item.textField2 = obj[mapping.textField2];
+                }
+                if (!obj.icon) {
+                  obj.icon = item.icon || '';
+                }
+                if (!obj.chips) {
+                  obj.chips = item.chips || '';
+                }
+                if (!obj.createdOn || item.textField2) {
+                  obj.createdOn = item.textField2 || ''
+                }
+                if (!obj.createdByUser || item.textField1) {
+                  obj.createdByUser = item.textField1 || '';
+                }
+                // Demo fields start         
+                if (obj.chips) {
+                  item.scm_author = obj.createdByUser || '';
+                  item.scm_createdAt = obj.createdOn == '' ? '-' : moment(obj.createdOn).format('Do MMM YYYY, ddd [at] h:mm A');
+                  if (Array.isArray(obj.chips)) {
+                    for (var chip of obj.chips) {
+                      var background = chip == 'pdf' ? '#FFF6F8' : chip == 'Confluence' ? '#E7F1FF' : chip == 'Gdrive' ? '#FFF9DC' : '#F7FFFF';
+                      var color = chip == 'pdf' ? '#DD3646' : chip == 'Confluence' ? '#0D6EFD' : chip == 'Gdrive' ? '#806D16' : '#009999';
+                      chips.push({ background: background, color: color, name: chip })
+                    }
+                  }
+                  if (typeof obj.chips === 'string' && obj.chips.length) {
+                    chips.push({ background: '#e7f1ff', color: '#0d6efd', name: obj.chips });
+                  }
+                  item.chips = chips;
+                }
+                if (obj.bestseller) {
+                  item.ecommerce_bestseller = obj.bestseller;
+                }
+                if (obj.prod_original_price) {
+                  item.ecommerce_original_price = obj.prod_original_price;
+                }
+                if (obj.rating) {
+                  item.ecommerce_rating = obj.rating;
+                  var reviweArr = ['n_fill', 'n_fill', 'n_fill', 'n_fill', 'n_fill'];
+                  for (let i = 0; i < item.ecommerce_rating; i++) {
+                    reviweArr[i] = 'fill';
+                  }
+                  item.ecommerce_ratingArr = reviweArr;
+                }
+                if (obj.prod_percentage_offer) {
+                  item.ecommerce_percentage_offer = obj.prod_percentage_offer;
+                }
+                if (obj.prod_price) {
+                  item.ecommerce_price = obj.prod_price;
+                }
+                if (obj.prod_image) {
+                  item.ecommerce_image = obj.prod_image;
+                }
+                if (!item.prod_review_count) {
+                  item.prod_review_count = '0';
+                }
+                if (!item.prod_avg_review) {
+                  item.prod_avg_review = '0';
+                }
+                if (!item.prod_price) {
+                  item.prod_price = '0';
+                }
+                item.carouselData = [];
                 item.addedResult = (obj.addedResult || (obj.addedResult == false)) ? obj.addedResult : false;
                 item.bestMatch = (obj.bestMatch || (obj.bestMatch == false)) ? obj.bestMatch : false;
-                if (item.heading || item.description || item.img || item.url) {
+
+                if (window.location.href.includes('#scm')) {
+                  if (obj.bestMatch === true && obj.featured_snippet.payload.length) {
+                    item.description = obj.desc;
+                  }
+                  else {
+                    item.author = obj.createdByUser;
+                    item.doc_confluence_link = obj.doc_url;
+                    item.updateBy = obj.lastUpdatedAt == '' ? '-' : moment(obj.lastUpdatedAt).format('Do MMM YYYY, ddd [at] h:mm A');
+                    for (var chip of obj.chips) {
+                      var background = chip == 'pdf' ? '#FFF6F8' : chip == 'Confluence' ? '#E7F1FF' : chip == 'Gdrive' ? '#FFF9DC' : '#F7FFFF';
+                      var color = chip == 'pdf' ? '#DD3646' : chip == 'Confluence' ? '#0D6EFD' : chip == 'Gdrive' ? '#806D16' : '#009999';
+                      chips.push({ background: background, color: color, name: chip })
+                    }
+                    item.chips = chips;
+                  }
+                }
+                if ((obj || {}).featured_snippet) {
+                  if (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')) {
+                    item.featured_snippet = JSON.parse(obj.featured_snippet.toString().replaceAll("'\'", ''))
+                  }
+                  else {
+                    item.featured_snippet = obj.featured_snippet;
+                    _self.vars.siemensFeatureSnippetData = item.featured_snippet;
+                  }
+                }
+                item.carouselData = (item.featured_snippet || {}).payload || [];
+                if ((window.location.href.includes('#scm')) && obj.bestMatch === true && obj.featured_snippet.payload.length && $('body').hasClass('top-down')) {
+                  item = {};
+                }
+                if (item.heading || item.description || item.img || item.url || (item.carouselData || []).length) {
                   dataArr.push(item);
                 }
               });
@@ -23799,5 +23901,119 @@ FindlySDK.prototype.getFeedBackResult = function () {
     return;
   }
 
+
+   FindlySDK.prototype.infoTextCloseDataStore = function () {
+      if ($('body').hasClass('banking')) {
+        var tabsList = JSON.parse(window.localStorage.getItem('tabsList'));
+        var index = -1;
+        if (tabsList && tabsList.length) {
+          if (window.location.href.includes('#banking')) {
+            index = tabsList.findIndex((d) => d == 'personal');
+          } else if (window.location.href.includes('#loans')) {
+            index = tabsList.findIndex((d) => d == 'loan');
+          } else if (window.location.href.includes('#invest')) {
+            index = tabsList.findIndex((d) => d == 'investing');
+          } else if (window.location.href.includes('#cards')) {
+            index = tabsList.findIndex((d) => d == 'card');
+          } else if (window.location.href.includes('#offers')) {
+            index = tabsList.findIndex((d) => d == 'offer');
+          }
+          if (index > -1) {
+            tabsList.splice(index, 1);
+            window.localStorage.setItem('tabsList', JSON.stringify(tabsList));
+          }
+        }
+      }
+      if ($('body').hasClass('cosmetics')) {
+        var tabsList = JSON.parse(window.localStorage.getItem('tabsList'));
+        var index = -1;
+        if (tabsList && tabsList.length) {
+          if (window.location.href.includes('#cosmetics')) {
+            index = tabsList.findIndex((d) => d == 'belcorp');
+          } else if (window.location.href.includes('#essi')) {
+            index = tabsList.findIndex((d) => d == 'esika');
+          } else if (window.location.href.includes('#lblanc')) {
+            index = tabsList.findIndex((d) => d == 'lbel');
+          } else if (window.location.href.includes('#cyze')) {
+            index = tabsList.findIndex((d) => d == 'cyzone');
+          }
+          if (index > -1) {
+            tabsList.splice(index, 1);
+            window.localStorage.setItem('tabsList', JSON.stringify(tabsList));
+          }
+        }
+      }
+    }
+    FindlySDK.prototype.getProductPreview = function () {
+      var _self = this;
+      $('.cosmetics-product-view').off('click').on('click', function (event) {
+        if ($('.product-view-template').length) {
+          $('.product-view-template').remove()
+        }
+        var productViewData = {
+          title: ($(event.target).closest('.cosmetics-product-view').attr('data-title')).split(':')[1],
+          brandName: ($(event.target).closest('.cosmetics-product-view').attr('data-title')).split(':')[0],
+          info: $(event.target).closest('.cosmetics-product-view').attr('data-info'),
+          category: $(event.target).closest('.cosmetics-product-view').attr('data-prod-cat'),
+          price: $(event.target).closest('.cosmetics-product-view').attr('data-price'),
+          orgPrice: $(event.target).closest('.cosmetics-product-view').attr('data-orig-price'),
+          percentageOffer: $(event.target).closest('.cosmetics-product-view').attr('data-percentage-offer'),
+          img: $(event.target).closest('.cosmetics-product-view').attr('data-img'),
+          bestseller: $(event.target).closest('.cosmetics-product-view').attr('data-bestseller') ? true : false,
+          newarrival: $(event.target).closest('.cosmetics-product-view').attr('data-newarrival') ? true : false,
+          totalPrice: '$ ' + (Number(($(event.target).closest('.cosmetics-product-view').attr('data-price')).split('$')[1]) + 3),
+          totalOrigPrice: '$ ' + (Number(($(event.target).closest('.cosmetics-product-view').attr('data-price')).split('$')[1]) + 5)
+        }
+        var productViewTemplate = _self.searchTemplateObj.usecaseTemplates('productViewTemplate');
+        var dataHtml = $(productViewTemplate).tmplProxy(productViewData);
+        $('body').append(dataHtml);
+        $('.belcrop-action-header').find('.nav-demo-link.active-name').removeClass('active-name');
+      })
+    }
+    //banking animation 
+    FindlySDK.prototype.bankingAnimation = function (varient) {
+      _self = this;
+      // Avatar Animation
+      if (!$('body').hasClass('top-down')) {
+        if (_self.vars.bankingRIV === undefined) {
+          _self.vars.bankingRIV = new rive.Rive({
+            // src: 'https://searchassist-pilot.kore.ai/home/assets/images/eddy-live-avatar-state-new.riv',
+            src: 'https://searchassist-qa.kore.ai/home/assets/images/new_file.riv',
+            canvas: document.getElementById('canvas'),
+            //layout: new rive.Layout({ fit: "contain", alignment: "topRight" }),
+            //animations: ['idle', 'windshield_wipers', 'bouncing'],
+            // autoplay: true,
+          });
+        }
+        _self.vars.bankingRIV.stop();
+        _self.vars.bankingRIV = new rive.Rive({
+          src: 'https://searchassist-qa.kore.ai/home/assets/images/new_file.riv',
+          canvas: document.getElementById('canvas'),
+        });
+        _self.vars.bankingRIV.play([varient]);
+        if (varient !== 'thinking') {
+          var timeOut = 0;
+          if (varient === 'Sad') {
+            timeOut = 3080;
+          }
+          else if (varient === 'happy') {
+            timeOut = 3000;
+          }
+          else if (varient === 'hover') {
+            timeOut = 3050;
+          }
+          setTimeout(() => {
+            _self.vars.bankingRIV.stop();
+            _self.vars.bankingRIV = new rive.Rive({
+              src: 'https://searchassist-qa.kore.ai/home/assets/images/new_file.riv',
+              canvas: document.getElementById('canvas'),
+            });
+            _self.vars.bankingRIV.play('idle');
+          }, timeOut)
+
+        }
+
+      }
+    }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
