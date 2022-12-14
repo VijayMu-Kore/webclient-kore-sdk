@@ -63,6 +63,13 @@ class FullSearchResultsTemplate {
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
     FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, 'all results');
     FullSearchResultsTemplate.prototype.facetReset(me, messageHtml, msgData);
+    setTimeout(() => {
+    if((hostWindowInstance.vars.selectedFiltersArr ||[]).length){
+      let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: (hostWindowInstance.vars.selectedFiltersArr ||[]).length });
+      $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
+      FullSearchResultsTemplate.prototype.filterCloseEvent(messageHtml, me);
+    }
+  }, 100);
     if(msgData.message[0].component.payload.sortableFacetList && msgData.message[0].component.payload.sortableFacetList.length){
       let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: msgData.message[0].component.payload.sortableFacetList,
         displaySortable: msgData.message[0].component.payload.displaySortable});
@@ -619,6 +626,11 @@ class FullSearchResultsTemplate {
         FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, selectedFacet,sortableAddedListHtml);
       }
     });
+    FullSearchResultsTemplate.prototype.filterCloseEvent(messageHtml, me);
+  }
+  filterCloseEvent(messageHtml:any,me:any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
     $(messageHtml).find('#filter-count-container')
       .off("click", ".clsoe-filter")
       .on("click", ".clsoe-filter", function () {
@@ -648,7 +660,6 @@ class FullSearchResultsTemplate {
         })
       });
   }
-  
   truncateText(val:any) {
     var textMsg = val;
     textMsg = textMsg.split(' ');
