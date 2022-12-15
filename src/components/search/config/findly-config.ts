@@ -49,8 +49,8 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "SA demo",
-  taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
+  chatBot: "New zendesk after Nov 14",
+  taskBotId: "st-3cd359e5-96c3-54a4-afbe-82cf46e208a3",
 };
 botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
 botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
