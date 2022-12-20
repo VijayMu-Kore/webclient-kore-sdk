@@ -6,7 +6,7 @@ function bankingTemplate(data) {
 
     <div class="logo-sec">
 
-      <img src="./images/banking/logo.svg">
+      <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/logo.svg">
 
       <span class="logo-name">MY BANK</span>
 
@@ -30,7 +30,7 @@ function bankingTemplate(data) {
 
       <div class="locate-globe">
 
-        <img src="./images/banking/globe.svg">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/globe.svg">
 
         <span class="title" id="locateUs"></span>
 
@@ -38,7 +38,7 @@ function bankingTemplate(data) {
 
       <div class="help-link">
 
-        <img src="./images/banking/help.svg">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/help.svg">
 
         <span class="title">Help</span>
 
@@ -48,9 +48,9 @@ function bankingTemplate(data) {
 
       <div class="login-net">
 
-        <img src="./images/banking/external.svg" class="active-img">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external.svg" class="active-img">
 
-        <img src="./images/banking/external-white.svg" class="inactive-img">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-white.svg" class="inactive-img">
 
         <span class="title-netbanking">Login</span>
 
@@ -148,7 +148,7 @@ function bankingTemplate(data) {
 
             <div class="action-title">
 
-              <img src="images/banking/prelogin/change-address.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/change-address.svg">
 
               <span class="action-name">Change Address</span>
 
@@ -156,7 +156,7 @@ function bankingTemplate(data) {
 
             <div class="action-title">
 
-              <img src="images/banking/prelogin/password.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/password.svg">
 
               <span class="action-name">Generate Card PIN</span>
 
@@ -164,7 +164,7 @@ function bankingTemplate(data) {
 
             <div class="action-title">
 
-              <img src="images/banking/prelogin/textfield.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/textfield.svg">
 
               <span class="action-name">Manage Debit Card</span>
 
@@ -172,7 +172,7 @@ function bankingTemplate(data) {
 
             <div class="action-title">
 
-              <img src="images/banking/prelogin/upgrade.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/upgrade.svg">
 
               <span class="action-name">Upgrade your Account</span>
 
@@ -180,7 +180,7 @@ function bankingTemplate(data) {
 
             <div class="action-title">
 
-              <img src="images/banking/prelogin/nominee.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/nominee.svg">
 
               <span class="action-name">View/Update Nominee</span>
 
@@ -188,7 +188,7 @@ function bankingTemplate(data) {
 
             <div class="action-title">
 
-              <img src="images/banking/prelogin/linaccount.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/linaccount.svg">
 
               <span class="action-name">Link your Loan Account</span>
 
@@ -202,11 +202,11 @@ function bankingTemplate(data) {
 
             <div class="action-title">
 
-              <img src="images/banking/prelogin/travel-card.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/travel-card.svg">
 
               <span class="action-name">Travel Card</span>
 
-              <img src="images/banking/arrow.svg" class="arrow-right">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/arrow.svg" class="arrow-right">
 
             </div>
 
@@ -214,11 +214,11 @@ function bankingTemplate(data) {
 
             <div class="action-title">
 
-              <img src="images/banking/prelogin/testing.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/testing.svg">
 
               <span class="action-name">iWish Flexible RD</span>
 
-              <img src="images/banking/arrow.svg" class="arrow-right">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/arrow.svg" class="arrow-right">
 
             </div>
 
@@ -242,7 +242,7 @@ function bankingTemplate(data) {
 
                 <div class="hide-show">
 
-                  <img src="images/banking/carrot_up.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/carrot_up.svg">
 
                   <span>Hide</span>
 
@@ -302,7 +302,7 @@ function bankingTemplate(data) {
 
                   <div class="bill-card">
 
-                    <img src="images/banking/prelogin/electricity.svg">
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/electricity.svg">
 
                     <span>Electrictiy</span>
 
@@ -310,7 +310,7 @@ function bankingTemplate(data) {
 
                   <div class="bill-card">
 
-                    <img src="images/banking/prelogin/mutualfunds.svg">
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/mutualfunds.svg">
 
                     <span>Mutual Funds</span>
 
@@ -318,7 +318,7 @@ function bankingTemplate(data) {
 
                   <div class="bill-card">
 
-                    <img src="images/banking/prelogin/mobile.svg">
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/mobile.svg">
 
                     <span>Mobile</span>
 
@@ -326,7 +326,7 @@ function bankingTemplate(data) {
 
                   <div class="bill-card">
 
-                    <img src="images/banking/prelogin/internet.svg">
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/internet.svg">
 
                     <span>Internet</span>
 
@@ -346,7 +346,7 @@ function bankingTemplate(data) {
 
                 <div class="hide-show">
 
-                  <img src="images/banking/carrot_up.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/carrot_up.svg">
 
                   <span>Hide</span>
 
@@ -360,7 +360,7 @@ function bankingTemplate(data) {
 
                   <div class="img-block-credit">
 
-                    <img src="images/banking/creditcard.svg">
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/creditcard.svg">
 
                   </div>
 
@@ -508,7 +508,7 @@ function bankingTemplate(data) {
 
           <div class="debit-card-image">
 
-            <img src="images/banking/card-1.png">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/card-1.png">
 
             <span class="card-type">Mintlet travel card</span>
 
@@ -524,7 +524,7 @@ function bankingTemplate(data) {
 
               <div class="stars-list">
 
-                <img src="images/banking/star.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/star.svg">
 
                 <span>'Do Anything' Platinum Concierge</span>
 
@@ -532,7 +532,7 @@ function bankingTemplate(data) {
 
               <div class="stars-list">
 
-                <img src="images/banking/star.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/star.svg">
 
                 <span>Earn 3X Membership Rewards® Points on all Overseas spending</span>
 
@@ -540,7 +540,7 @@ function bankingTemplate(data) {
 
               <div class="stars-list">
 
-                <img src="images/banking/star.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/star.svg">
 
                 <span>Access to 1200+ lounges across the globe with the Global Lounge Collection®</span>
 
@@ -560,7 +560,7 @@ function bankingTemplate(data) {
 
           <div class="debit-card-image">
 
-            <img src="images/banking/card-2.png">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/card-2.png">
 
             <span class="card-type">Final Credit Card</span>
 
@@ -576,7 +576,7 @@ function bankingTemplate(data) {
 
               <div class="stars-list">
 
-                <img src="images/banking/star.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/star.svg">
 
                 <span>Earn 1,000 Bonus Membership Rewards®Points for simply using your Card 4 times on transactions of $ 1,500 and above every month</span>
 
@@ -584,7 +584,7 @@ function bankingTemplate(data) {
 
               <div class="stars-list">
 
-                <img src="images/banking/star.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/star.svg">
 
                 <span>Earn an additional 1,000 Membership Rewards points simply by spending $ 20,000</span>
 
@@ -592,7 +592,7 @@ function bankingTemplate(data) {
 
               <div class="stars-list">
 
-                <img src="images/banking/star.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/star.svg">
 
                 <span>Redeem your Points from the fabulous 18 and 24 Karat Gold Collection</span>
 
@@ -612,7 +612,7 @@ function bankingTemplate(data) {
 
           <div class="debit-card-image">
 
-            <img src="images/banking/card-3.png">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/card-3.png">
 
             <span class="card-type">HBL World Debit Card</span>
 
@@ -628,7 +628,7 @@ function bankingTemplate(data) {
 
               <div class="stars-list">
 
-                <img src="images/banking/star.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/star.svg">
 
                 <span>Earn 10X Membership Rewards® Points on all your spending on Flipkart, Amazon and Uber and earn 5X Membership Rewards Points.</span>
 
@@ -636,7 +636,7 @@ function bankingTemplate(data) {
 
               <div class="stars-list">
 
-                <img src="images/banking/star.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/star.svg">
 
                 <span>Beginning 01 August 2021, you can earn Amazon vouchers worth $ 500 upon reaching the spend milestones of $ 1,200, $ 1,800 and $ 2,400 respectively in a Cardmembership year</span>
 
@@ -686,7 +686,7 @@ function bankingTemplate(data) {
 
               <div class="list-info">
 
-                <img src="images/banking/round-arrow.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/round-arrow.svg">
 
                 <span class="action-name">No origination fee and no prepayment penalty</span>
 
@@ -694,7 +694,7 @@ function bankingTemplate(data) {
 
               <div class="list-info">
 
-                <img src="images/banking/round-arrow.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/round-arrow.svg">
 
                 <span class="action-name">Fixed interest rates</span>
 
@@ -702,7 +702,7 @@ function bankingTemplate(data) {
 
               <div class="list-info">
 
-                <img src="images/banking/round-arrow.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/round-arrow.svg">
 
                 <span class="action-name">No credit score impact to apply</span>
 
@@ -710,7 +710,7 @@ function bankingTemplate(data) {
 
               <div class="list-info">
 
-                <img src="images/banking/round-arrow.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/round-arrow.svg">
 
                 <span class="action-name">Quick application and a decision in seconds</span>
 
@@ -734,7 +734,7 @@ function bankingTemplate(data) {
 
               <div class="img-info">
 
-                <img src="images/banking/offer.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/offer.svg">
 
               </div>
 
@@ -748,7 +748,7 @@ function bankingTemplate(data) {
 
               <div class="img-info">
 
-                <img src="images/banking/quick.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/quick.svg">
 
               </div>
 
@@ -762,7 +762,7 @@ function bankingTemplate(data) {
 
               <div class="img-info">
 
-                <img src="images/banking/money.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/money.svg">
 
               </div>
 
@@ -826,7 +826,7 @@ function bankingTemplate(data) {
 
             <div class="img-info">
 
-              <img src="images/banking/globe-round.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/globe-round.svg">
 
             </div>
 
@@ -868,7 +868,7 @@ function bankingTemplate(data) {
 
             <div class="img-info">
 
-              <img src="images/banking/audience.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/audience.svg">
 
             </div>
 
@@ -962,7 +962,7 @@ function bankingTemplate(data) {
 
               <div class="img-block">
 
-                <img src="images/banking/image2.png">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/image2.png">
 
               </div>
 
@@ -974,15 +974,15 @@ function bankingTemplate(data) {
 
                   <span>3.96</span>
 
-                  <img src="images/banking/filled-star.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/filled-star.svg">
 
-                  <img src="images/banking/filled-star.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/filled-star.svg">
 
-                  <img src="images/banking/filled-star.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/filled-star.svg">
 
-                  <img src="images/banking/filled-star.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/filled-star.svg">
 
-                  <img src="images/banking/unfilled-star.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/unfilled-star.svg">
 
                 </div>
 
@@ -1030,7 +1030,7 @@ function bankingTemplate(data) {
 
       <div class="img-block-carousel">
 
-        <img src="./images/banking/banking-carousel.png">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/banking-carousel.png">
 
       </div>
 
@@ -1044,7 +1044,7 @@ function bankingTemplate(data) {
 
           <input class="dummy-inputs" placeholder="Select">
 
-          <img src="images/banking/carrotup.svg" class="drp-icon">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/carrotup.svg" class="drp-icon">
 
         </div>
 
@@ -1054,7 +1054,7 @@ function bankingTemplate(data) {
 
           <input class="dummy-inputs" placeholder="Select">
 
-          <img src="images/banking/carrotup.svg" class="drp-icon">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/carrotup.svg" class="drp-icon">
 
         </div>
 
@@ -1082,7 +1082,7 @@ function bankingTemplate(data) {
 
         <div class="img-block">
 
-          <img src="./images/banking/rupee.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/rupee.svg">
 
         </div>
 
@@ -1100,7 +1100,7 @@ function bankingTemplate(data) {
 
         <div class="img-block">
 
-          <img src="./images/banking/GIFT.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/GIFT.svg">
 
         </div>
 
@@ -1118,7 +1118,7 @@ function bankingTemplate(data) {
 
         <div class="img-block">
 
-          <img src="./images/banking/percentage.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/percentage.svg">
 
         </div>
 
@@ -1136,7 +1136,7 @@ function bankingTemplate(data) {
 
         <div class="img-block">
 
-          <img src="./images/banking/health.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/health.svg">
 
         </div>
 
@@ -1164,7 +1164,7 @@ function bankingTemplate(data) {
 
               <div class="link-data">
 
-                <img src="./images/banking/external-link.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
                 <span class="link-name">Industrial Automation</span>
 
@@ -1172,7 +1172,7 @@ function bankingTemplate(data) {
 
               <div class="link-data">
 
-                <img src="./images/banking/external-link.svg">
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
                 <span class="link-name">Building Technologies</span>
 
@@ -1184,7 +1184,7 @@ function bankingTemplate(data) {
 
             <div class="link-data">
 
-              <img src="./images/banking/external-link.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
               <span class="link-name">Car Loans</span>
 
@@ -1192,7 +1192,7 @@ function bankingTemplate(data) {
 
             <div class="link-data">
 
-              <img src="./images/banking/external-link.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
               <span class="link-name">Student loans</span>
 
@@ -1204,7 +1204,7 @@ function bankingTemplate(data) {
 
             <div class="link-data">
 
-              <img src="./images/banking/external-link.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
               <span class="link-name">Energy</span>
 
@@ -1212,7 +1212,7 @@ function bankingTemplate(data) {
 
             <div class="link-data">
 
-              <img src="./images/banking/external-link.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
               <span class="link-name">Healthcare</span>
 
@@ -1224,7 +1224,7 @@ function bankingTemplate(data) {
 
             <div class="link-data">
 
-              <img src="./images/banking/external-link.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
               <span class="link-name">House Loan</span>
 
@@ -1232,7 +1232,7 @@ function bankingTemplate(data) {
 
             <div class="link-data">
 
-              <img src="./images/banking/external-link.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
               <span class="link-name">Financing</span>
 
@@ -1244,7 +1244,7 @@ function bankingTemplate(data) {
 
             <div class="link-data">
 
-              <img src="./images/banking/external-link.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
               <span class="link-name">Download App</span>
 
@@ -1252,7 +1252,7 @@ function bankingTemplate(data) {
 
             <div class="link-data">
 
-              <img src="./images/banking/external-link.svg">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg">
 
               <span class="link-name">Download statements</span>
 

@@ -50,11 +50,11 @@ class cancelConfirmationTemplate {
                 <div class="botMessage yes-no-button-block">\
                     <button class="no-btn cancel-confirm-btn active-button" id="Yes">\
                         <span>Yes</span>\
-                        <img src="images/cosmetics/arrow-black.svg">\
+                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-black.svg">\
                     </button>\
                     <button class="no-btn cancel-confirm-btn" id="No">\
                     <span>No</span>\
-                    <img src="images/cosmetics/arrow-black.svg">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-black.svg">\
                     </button>\
                     </div>\
             </div>\

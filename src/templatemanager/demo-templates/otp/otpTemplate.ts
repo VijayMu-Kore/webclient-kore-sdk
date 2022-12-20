@@ -77,7 +77,7 @@ class OtpTemplate {
             <div class="messageBubble-content">\
                 <div class="botImg">\
                     <img class="default-bot-icon" src="images/bubbleIcon.svg">\
-                    <img class="default-bot-banking-icon" src="images/banking/bankingavatar.svg">\
+                    <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg">\
                 </div>\
                 <div class="botMessage">\
                     <div class="otp-container">\
@@ -85,11 +85,11 @@ class OtpTemplate {
                         <div class="input-otp-box">\
                             <input type="password" autocomplete="off" id="otpSubmit" class="input-box autocomplete-input" maxlength="6" placeholder="Ex: 123456">\
                             <div class="resend-btn-otp resend-otp-btn">\
-                            <img src="images/banking/resend.svg">\
+                            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/resend.svg">\
                             <div class="resend-text" title="Resend">Resend</div>\
                             </div>\
                             <div class="resend-btn-otp submit-otp-btn" style="display:none">\
-                            <img src="images/banking/external.svg">\
+                            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external.svg">\
                             <div class="resend-text" title="Submit">Submit</div>\
                             </div>\
                         </div>\

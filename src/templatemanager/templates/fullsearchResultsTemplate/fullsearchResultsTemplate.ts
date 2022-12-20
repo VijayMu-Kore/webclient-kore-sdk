@@ -94,6 +94,18 @@ class FullSearchResultsTemplate {
           $('.scroll-top-container').css('bottom', 41);
           $('.data-body-sec').css('height','calc(100% - 166px)');
         }
+        $(messageHtml).find('.scroll-top-container').css('display', 'none');
+        $(messageHtml).find(".data-body-sec").off('scroll').on('scroll', function () {
+              if ( $(messageHtml).find('.data-body-sec').scrollTop() > 50) {
+                $(messageHtml).find('.scroll-top-container').css('left', ( $(messageHtml).find('.show-all-results-outer-wrap').width() / 2) +  $(messageHtml).find('.show-all-results-outer-wrap').position().left)
+                $(messageHtml).find('.scroll-top-container').css('display', 'flex');
+              } else {
+                $(messageHtml).find('.scroll-top-container').css('display', 'none');
+              }
+            })
+            $(messageHtml).find(".title-scroll-top").off('click').on('click', function () {
+              $(messageHtml).find(".data-body-sec").scrollTop(0);
+            });
     }, 300);
     let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: msgData.message[0].component.payload.facets, truncateText: truncateText  });
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
@@ -140,7 +152,7 @@ class FullSearchResultsTemplate {
       </div>\
       {{/if}}\
         <div class="s-r-header">\
-          <div class="title">Search Results</div>\
+        <div class="title">Search Results for: <span class="queryString"></span></div>\
           <div class="close-btn" id="btn-close-show-all"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABiSURBVHgBjZDJDYBQCESBSjDq3VYswQotRe8e/JW4QEyEvyTMiQxvIADcDRvzOEFD0hOG4MYF8FprsHpvT5k/1Z8Wzj0s0zSr8dUpHbsDHSwykIggqPDq+DF2kkvnW6IPfwCV+T2+mOJOJAAAAABJRU5ErkJggg=="></div>\
           {{if isDev == true}}\
             <div class="custom-header-container-center">\

@@ -5,9 +5,11 @@ class CosmeticsTemplate {
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
+        let hostWindowInstance = me.hostInstance;
         let helpersObj = helpers;
         if (msgData?.message?.[0]?.component?.payload?.template_type === "cosmetics") {
           me.messageHtml = $(CosmeticsTemplate.prototype.getTemplateString()).tmpl(msgData?.message[0].component?.payload);
+          hostWindowInstance.getProductPreview(me.messageHtml);
             return me.messageHtml;
         }
     }
@@ -27,11 +29,11 @@ class CosmeticsTemplate {
                             <div class="new-arrival {{if  data.newarrival == true}} display-inline-block{{else}}display-none{{/if}}">New</div>\
                             <div class="img-block">\
                               <div class="wishlist">\
-                                <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">\
-                                <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">\
+                                <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">\
+                                <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">\
                               </div>\
                               <div class="add-to-bag">\
-                                <img src="images/cosmetics/bag.svg">\
+                                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">\
                                 <span>Add to Bag</span>\
                               </div>\
                               <img src="${data.img}">\
@@ -64,11 +66,11 @@ class CosmeticsTemplate {
                       <div class="new-arrival {{if  data.newarrival == true}}display-inline-block{{else}}display-none{{/if}}">New</div>\
                         <div class="img-block">\
                           <div class="wishlist">\
-                            <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">\
-                            <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">\
+                            <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">\
+                            <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">\
                           </div>\
                           <div class="add-to-bag">\
-                            <img src="images/cosmetics/bag.svg">\
+                            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">\
                             <span>Add to Bag</span>\
                           </div>\
                           <img src="${data.img}">\
@@ -87,7 +89,7 @@ class CosmeticsTemplate {
                     {{/each}}\
                   </div>\
                   <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
-                    <div class="searchassist-show-more-button">Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
+                    <div class="searchassist-show-more-button">Show more <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/show_more.png" height="6" width="10" /></div>\
                     </div>\
                     </div>\
                   {{/if}}\

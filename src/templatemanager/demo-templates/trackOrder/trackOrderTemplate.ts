@@ -99,7 +99,7 @@ class TrackOrderTemplate {
                             </div>\
                             <div class="trak-details">\
                                 <div class="button-track track-order">\
-                                    <img src="images/cosmetics/loaction-green.svg">\
+                                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/loaction-green.svg">\
                                         <span>Track</span>\
                                 </div>\
                             </div>\

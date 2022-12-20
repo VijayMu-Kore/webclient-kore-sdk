@@ -48,7 +48,7 @@ class EnterEmailTemplate {
         <div class="messageBubble">\
             <div class="messageBubble-content">\
                 <div class="botImg">\
-                    <img class="default-bot-banking-icon" src="images/cosmetics/cosmoticavatar.svg">\
+                    <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmoticavatar.svg">\
                 </div>\
                 <div class="botMessage">\
                  <div>Sure, I can help you with it.</div>\
@@ -59,7 +59,7 @@ class EnterEmailTemplate {
                         <div class="input-box">\
                             <input type="email" id="emailValue">\
                                 <button class="send-email" id="sendEmail>\
-                                    <img src="images/cosmetics/arrow-green.svg">\
+                                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-green.svg">\
                                 </button>\
                         </div>\
                     </div>\

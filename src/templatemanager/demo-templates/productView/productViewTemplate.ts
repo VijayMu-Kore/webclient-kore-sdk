@@ -60,15 +60,15 @@ class ProductViewTemplate {
                             </div>\
                             <div class="footer-info">\
                               <div class="btns-buy">\
-                                <img src="images/cosmetics/card.svg">\
+                                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/card.svg">\
                                 <span>Buy Now</span>\
                               </div>\
                               <div class="btns-buy add-to-tag">\
-                                <img src="images/cosmetics/bag.svg">\
+                                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">\
                                 <span>Add to Bag</span>\
                               </div>\
                               <div class="btns-buy add-to-list">\
-                                <img src="images/cosmetics/wishlist.svg">\
+                                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">\
                                 <span>Add to Wishlist</span>\
                               </div>\
                             </div>\
@@ -85,7 +85,7 @@ class ProductViewTemplate {
                           </div>\
                           <div class="plus-add">+</div>\
                           <div class="img-block">\
-                            <img src="images/cosmetics/makeup.png">\
+                            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/makeup.png">\
                             <div class="img-info">Lipstick - Red</div>\
                           </div>\
                           <div class="total-price">\
@@ -97,7 +97,7 @@ class ProductViewTemplate {
                               </div>\
                             </div>\
                             <div class="btns-buy add-to-tag">\
-                              <img src="images/cosmetics/bag.svg">\
+                              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">\
                               <span>Add All to Bag</span>\
                             </div>\
                           </div>\

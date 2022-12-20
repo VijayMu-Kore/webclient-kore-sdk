@@ -1,416 +1,8 @@
 /*cosmetics demo css */
-.cosmetic-welcomePage {
-	.cosmetic-login-screen-block {
-		.cosmetic-login-screen-right {
-			.cosmetic-login-form-block {
-				.input-box {
-					.veiw-pass-icon {
-						img {
-							&:hover {
-								content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/purple-Password.svg);
-							}
-						}
-						position: absolute;
-						top: 36px;
-						right: 10px;
-						cursor: pointer;
-					}
-					.label-text {
-						.icon-pos-set {
-							position: relative;
-							top: 2px;
-							padding: 0 5px 0 0;
-						}
-					}
-					margin-bottom: 30px;
-					.inputbox {
-						&:focus {
-							border: 1px solid #B893F2 !important;
-						}
-						width: 100%;
-						border-radius: 0;
-					}
-				}
-				padding: 45px 35px 20px 35px;
-				.input-box.pos-rel {
-					position: relative;
-				}
-				.login-btn {
-					background: #7027E5;
-					span {
-						padding: 0 0 0 6px;
-					}
-				}
-				.forgot-pws {
-					color: #3C4043;
-					font-weight: normal;
-					font-size: 12px;
-					line-height: 15px;
-				}
-				.cosmetic-login-btn {
-					padding: 10px 0 0 0;
-				}
-			}
-			width: 50%;
-			.cosmetic-login-welcome {
-				background: #F3EDFF;
-				height: 107px;
-				position: relative;
-				.cosmetic-login-welcome-block {
-					padding: 30px 0 20px 35px;
-				}
-			}
-			.cosmetic-login-welcome-header {
-				font-weight: 300;
-				font-size: 20px;
-				line-height: 24px;
-				color: #381472;
-			}
-			.cosmetic-login-welcome-desc {
-				font-weight: normal;
-				font-size: 12px;
-				line-height: 15px;
-				color: #6A4BBA;
-				padding: 10px 0 0 0;
-			}
-			.cosmetic-login-welcome-close {
-				width: 26px;
-				height: 26px;
-				cursor: pointer;
-				background: #E7D8FF;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				position: absolute;
-				top: 15px;
-				right: 15px;
-			}
-		}
-		display: flex;
-		width: 100%;
-		background: #fff;
-		.cosmetic-login-screen-left {
-			width: 50%;
-			.cosmetic-lipstick-bg {
-				background: #FCEAED;
-				width: 320px;
-				height: 336px;
-				img {
-					width: 100%;
-					height: 100%;
-				}
-			}
-			.cosmetic-logo-bg {
-				text-align: center;
-				height: 107px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-		}
-	}
-	display: none !important;
-	.banner-header {
-		.banner-img {
-			padding: 0 0 0 0 !important;
-			width: 100%;
-			padding: 40px 0 0 0;
-		}
-	}
-	.search-top-data {
-		.title {
-			display: none;
-		}
-		.fixed-login-screen {
-			display: none;
-			height: 100% !important;
-			&::before {
-				position: fixed;
-				top: 43px;
-			}
-			.login-screen-action {
-				width: 640px;
-				position: absolute;
-				right: 0;
-				top: 0;
-				left: 0;
-				padding: 0;
-				border-radius: 0;
-				margin: 0 auto;
-				height: 100%;
-				background: transparent;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-		}
-	}
-	.dummy-bg-search {
-		background: #FCEAED;
-		height: 42px;
-		box-shadow: 0px 6px 170px rgba(0, 0, 0, 0.07), 0px 1.34018px 37.9717px rgba(0, 0, 0, 0.0417275), 0px 0.399006px 11.3052px rgba(0, 0, 0, 0.0282725);
-	}
-	.dem-screen-containers.cosmetic-container {
-		.header-sec {
-			background-image: url("https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/header-bg.svg");
-			background-size: cover;
-			background-repeat: no-repeat;
-			background-position: right;
-			height: 43px;
-			.logo-with-img {
-				.logo-bg {
-					height: auto !important;
-					width: auto !important;
-					cursor: pointer;
-				}
-			}
-		}
-		padding-top: 43px;
-	}
-	.banner-bottom-section {
-		background: #F1E9FB;
-		backdrop-filter: blur(10px);
-		display: flex;
-		justify-content: space-evenly;
-		padding: 20px 20px;
-		width: 100%;
-		.media-block {
-			display: flex;
-			align-items: center;
-			width: 33.33%;
-			justify-content: flex-end;
-			border-right: 1px solid #B893F2;
-			.media-right-block {
-				padding: 0 70px 0 15px;
-				width: 70%;
-			}
-		}
-	}
-	.media-block {
-		display: flex;
-		align-items: center;
-		.media-left-block {
-			background: #fff;
-			width: 71px;
-			height: 71px;
-			border-radius: 100px;
-			text-align: center;
-			.media-left-img {
-				text-align: center;
-				transform: translate(0%, 50%);
-				width: 35px;
-				height: 35px;
-			}
-		}
-		.media-right-block {
-			padding: 0 15px 0 15px;
-			width: 250px;
-			.media-right-header {
-				font-weight: 500;
-				font-size: 12px;
-				line-height: 15px;
-				color: #7027E5;
-				padding: 0 0 5px 0;
-			}
-			.media-right-desc {
-				font-weight: normal;
-				font-size: 10px;
-				line-height: 12px;
-				color: #381472;
-				display: -webkit-box;
-				-webkit-box-orient: vertical;
-				-webkit-line-clamp: 7;
-				overflow: hidden;
-			}
-		}
-	}
-	.media-block.border-right-none {
-		border-right: 1px solid transparent;
-	}
-	.beauty-products-section {
-		display: flex;
-		justify-content: space-around;
-		padding: 15px 15px;
-		width: 100%;
-		.media-block {
-			display: flex;
-			align-items: start;
-			padding: 0 20px 0 20px;
-			width: 33.33%;
-			.media-left-block {
-				width: auto;
-				height: auto;
-				border-radius: 0;
-				.media-left-img {
-					width: auto;
-					height: auto;
-					transform: none;
-				}
-			}
-			.media-right-block {
-				padding: 0 15px 0 25px;
-				width: 250px;
-				.media-right-header {
-					font-weight: 500;
-					font-size: 12px;
-					line-height: 15px;
-					color: #000000;
-					padding: 0 0 10px 0;
-					border-bottom: 1px solid #E4E5E7;
-				}
-				.media-right-desc {
-					padding: 12px 0 0 0;
-				}
-			}
-		}
-	}
-	.cosmetic-blushes-section {
-		background: #381472;
-		display: flex;
-		justify-content: space-evenly;
-		padding: 24px 20px;
-		.cosmetic-blushes-type {
-			color: #fff;
-		}
-	}
-	.cosmetic-products-you-may-like {
-		background: #F8F9FA;
-		.cosmetic-product-block {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 25px 50px;
-			.cosmetic-product-header {
-				font-weight: bold;
-				font-size: 20px;
-				line-height: 24px;
-				color: #000000;
-			}
-			.cosmetic-product-view-all {
-				.view-all-link {
-					font-weight: 500;
-					font-size: 14px;
-					line-height: 17px;
-					color: #DD3646;
-				}
-			}
-		}
-		.cosmetic-product-list {
-			display: flex;
-			gap: 2em;
-			padding: 5px 50px 30px 50px;
-			.cosmetic-product-card {
-				display: flex;
-				background: #FFFFFF;
-				box-shadow: 4px 4px 0px rgb(189 193 198 / 50%);
-				padding: 15px 15px;
-				width: 25%;
-				&:hover {
-					.cosmetic-pro-img {
-						.cosmetic-add-to-bag {
-							opacity: 1;
-							background: #28A745;
-							width: 100%;
-						}
-						.cosmetic-add-to-wish {
-							opacity: 1;
-						}
-					}
-				}
-				.cosmetic-pro-img {
-					.cosmetic-add-to-wish {
-						position: absolute;
-						top: 10px;
-						right: 10px;
-						opacity: 0;
-						cursor: pointer;
-					}
-					position: relative;
-					.cos-pro-img {
-						width: 150px;
-						height: 150px;
-					}
-					.cosmetic-add-to-bag {
-						position: absolute;
-						bottom: 0px;
-						opacity: 0;
-						cursor: pointer;
-						background: #28A745;
-						padding: 12px 12px;
-						color: #FFFFFF;
-						.add-to-bag-name {
-							padding: 0 0px 0 10px;
-						}
-						.add-to-bag-icon {
-							padding: 0 10px 0 0;
-							border-right: 1px solid #fff;
-						}
-					}
-				}
-				.cosmetic-pro-details {
-					padding: 0 0 0 12px;
-					.cosmetic-pro-tag {
-						padding: 5px 0;
-						span {
-							color: #28A745;
-							background: #EAF6EC;
-							padding: 5px 5px;
-							font-weight: 500;
-							font-size: 10px;
-							line-height: 12px;
-						}
-					}
-					.cosmetic-pro-tag.best-seller {
-						span {
-							color: #FF784B;
-							background: #FFF1ED;
-							padding: 5px 5px;
-							font-weight: 500;
-							font-size: 10px;
-							line-height: 12px;
-						}
-					}
-					.cosmetic-pro-name {
-						color: #000000;
-						font-weight: 500;
-						font-size: 12px;
-						line-height: 15px;
-						padding: 5px 0;
-						border-bottom: 1px solid #E4E5E7;
-					}
-					.cosmetic-pro-desc {
-						color: #5F6368;
-						font-weight: normal;
-						font-size: 10px;
-						line-height: 12px;
-						padding: 5px 0;
-					}
-					.cosmetic-pro-price {
-						color: #000000;
-						font-weight: bold;
-						font-size: 14px;
-						line-height: 17px;
-					}
-				}
-			}
-		}
-	}
-	.cosmetic-fotter {
-		background: #381472;
-		.cosmetic-footer-data {
-			color: #B893F2;
-			font-weight: normal;
-			font-size: 10px;
-			line-height: 12px;
-			padding: 15px 200px;
-			text-align: center;
-			.act-terms-conditions {
-				text-decoration: underline !important;
-				color: #B893F2;
-			}
-		}
-	}
+.cosmetic-welcomePage{
+	display: none;
 }
+
 .cosmetics.demo {
 	.searchAssist-kore-chat-window {
 		.show-all-results-outer-wrap {
@@ -421,6 +13,427 @@
 	}
 }
 .cosmetics {
+	.filters-added-data{
+		.filters-reset{
+		  display: none;
+		}
+	  }
+	  .full-results-cancel-search {
+		top: 49px;
+		display: none !important;
+	}
+	.cosmetic-welcomePage {
+		.cosmetic-login-screen-block {
+			.cosmetic-login-screen-right {
+				.cosmetic-login-form-block {
+					.input-box {
+						.veiw-pass-icon {
+							img {
+								&:hover {
+									content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/purple-Password.svg);
+								}
+							}
+							position: absolute;
+							top: 36px;
+							right: 10px;
+							cursor: pointer;
+						}
+						.label-text {
+							.icon-pos-set {
+								position: relative;
+								top: 2px;
+								padding: 0 5px 0 0;
+							}
+						}
+						margin-bottom: 30px;
+						.inputbox {
+							&:focus {
+								border: 1px solid #B893F2 !important;
+							}
+							width: 100%;
+							border-radius: 0;
+						}
+					}
+					padding: 45px 35px 20px 35px;
+					.input-box.pos-rel {
+						position: relative;
+					}
+					.login-btn {
+						background: #7027E5;
+						span {
+							padding: 0 0 0 6px;
+						}
+					}
+					.forgot-pws {
+						color: #3C4043;
+						font-weight: normal;
+						font-size: 12px;
+						line-height: 15px;
+					}
+					.cosmetic-login-btn {
+						padding: 10px 0 0 0;
+					}
+				}
+				width: 50%;
+				.cosmetic-login-welcome {
+					background: #F3EDFF;
+					height: 107px;
+					position: relative;
+					.cosmetic-login-welcome-block {
+						padding: 30px 0 20px 35px;
+					}
+				}
+				.cosmetic-login-welcome-header {
+					font-weight: 300;
+					font-size: 20px;
+					line-height: 24px;
+					color: #381472;
+				}
+				.cosmetic-login-welcome-desc {
+					font-weight: normal;
+					font-size: 12px;
+					line-height: 15px;
+					color: #6A4BBA;
+					padding: 10px 0 0 0;
+				}
+				.cosmetic-login-welcome-close {
+					width: 26px;
+					height: 26px;
+					cursor: pointer;
+					background: #E7D8FF;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					position: absolute;
+					top: 15px;
+					right: 15px;
+				}
+			}
+			display: flex;
+			width: 100%;
+			background: #fff;
+			.cosmetic-login-screen-left {
+				width: 50%;
+				.cosmetic-lipstick-bg {
+					background: #FCEAED;
+					width: 320px;
+					height: 336px;
+					img {
+						width: 100%;
+						height: 100%;
+					}
+				}
+				.cosmetic-logo-bg {
+					text-align: center;
+					height: 107px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+			}
+		}
+		display: none !important;
+		.banner-header {
+			.banner-img {
+				padding: 0 0 0 0 !important;
+				width: 100%;
+				padding: 40px 0 0 0;
+			}
+		}
+		.search-top-data {
+			.title {
+				display: none;
+			}
+			.fixed-login-screen {
+				display: none;
+				height: 100% !important;
+				&::before {
+					position: fixed;
+					top: 43px;
+				}
+				.login-screen-action {
+					width: 640px;
+					position: absolute;
+					right: 0;
+					top: 0;
+					left: 0;
+					padding: 0;
+					border-radius: 0;
+					margin: 0 auto;
+					height: 100%;
+					background: transparent;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+			}
+		}
+		.dummy-bg-search {
+			background: #FCEAED;
+			height: 42px;
+			box-shadow: 0px 6px 170px rgba(0, 0, 0, 0.07), 0px 1.34018px 37.9717px rgba(0, 0, 0, 0.0417275), 0px 0.399006px 11.3052px rgba(0, 0, 0, 0.0282725);
+		}
+		.dem-screen-containers.cosmetic-container {
+			.header-sec {
+				background-image: url("https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/header-bg.svg");
+				background-size: cover;
+				background-repeat: no-repeat;
+				background-position: right;
+				height: 43px;
+				.logo-with-img {
+					.logo-bg {
+						height: auto !important;
+						width: auto !important;
+						cursor: pointer;
+					}
+				}
+			}
+			padding-top: 43px;
+		}
+		.banner-bottom-section {
+			background: #F1E9FB;
+			backdrop-filter: blur(10px);
+			display: flex;
+			justify-content: space-evenly;
+			padding: 20px 20px;
+			width: 100%;
+			.media-block {
+				display: flex;
+				align-items: center;
+				width: 33.33%;
+				justify-content: flex-end;
+				border-right: 1px solid #B893F2;
+				.media-right-block {
+					padding: 0 70px 0 15px;
+					width: 70%;
+				}
+			}
+		}
+		.media-block {
+			display: flex;
+			align-items: center;
+			.media-left-block {
+				background: #fff;
+				width: 71px;
+				height: 71px;
+				border-radius: 100px;
+				text-align: center;
+				.media-left-img {
+					text-align: center;
+					transform: translate(0%, 50%);
+					width: 35px;
+					height: 35px;
+				}
+			}
+			.media-right-block {
+				padding: 0 15px 0 15px;
+				width: 250px;
+				.media-right-header {
+					font-weight: 500;
+					font-size: 12px;
+					line-height: 15px;
+					color: #7027E5;
+					padding: 0 0 5px 0;
+				}
+				.media-right-desc {
+					font-weight: normal;
+					font-size: 10px;
+					line-height: 12px;
+					color: #381472;
+					display: -webkit-box;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 7;
+					overflow: hidden;
+				}
+			}
+		}
+		.media-block.border-right-none {
+			border-right: 1px solid transparent;
+		}
+		.beauty-products-section {
+			display: flex;
+			justify-content: space-around;
+			padding: 15px 15px;
+			width: 100%;
+			.media-block {
+				display: flex;
+				align-items: start;
+				padding: 0 20px 0 20px;
+				width: 33.33%;
+				.media-left-block {
+					width: auto;
+					height: auto;
+					border-radius: 0;
+					.media-left-img {
+						width: auto;
+						height: auto;
+						transform: none;
+					}
+				}
+				.media-right-block {
+					padding: 0 15px 0 25px;
+					width: 250px;
+					.media-right-header {
+						font-weight: 500;
+						font-size: 12px;
+						line-height: 15px;
+						color: #000000;
+						padding: 0 0 10px 0;
+						border-bottom: 1px solid #E4E5E7;
+					}
+					.media-right-desc {
+						padding: 12px 0 0 0;
+					}
+				}
+			}
+		}
+		.cosmetic-blushes-section {
+			background: #381472;
+			display: flex;
+			justify-content: space-evenly;
+			padding: 24px 20px;
+			.cosmetic-blushes-type {
+				color: #fff;
+			}
+		}
+		.cosmetic-products-you-may-like {
+			background: #F8F9FA;
+			.cosmetic-product-block {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 25px 50px;
+				.cosmetic-product-header {
+					font-weight: bold;
+					font-size: 20px;
+					line-height: 24px;
+					color: #000000;
+				}
+				.cosmetic-product-view-all {
+					.view-all-link {
+						font-weight: 500;
+						font-size: 14px;
+						line-height: 17px;
+						color: #DD3646;
+					}
+				}
+			}
+			.cosmetic-product-list {
+				display: flex;
+				gap: 2em;
+				padding: 5px 50px 30px 50px;
+				.cosmetic-product-card {
+					display: flex;
+					background: #FFFFFF;
+					box-shadow: 4px 4px 0px rgb(189 193 198 / 50%);
+					padding: 15px 15px;
+					width: 25%;
+					&:hover {
+						.cosmetic-pro-img {
+							.cosmetic-add-to-bag {
+								opacity: 1;
+								background: #28A745;
+								width: 100%;
+							}
+							.cosmetic-add-to-wish {
+								opacity: 1;
+							}
+						}
+					}
+					.cosmetic-pro-img {
+						.cosmetic-add-to-wish {
+							position: absolute;
+							top: 10px;
+							right: 10px;
+							opacity: 0;
+							cursor: pointer;
+						}
+						position: relative;
+						.cos-pro-img {
+							width: 150px;
+							height: 150px;
+						}
+						.cosmetic-add-to-bag {
+							position: absolute;
+							bottom: 0px;
+							opacity: 0;
+							cursor: pointer;
+							background: #28A745;
+							padding: 12px 12px;
+							color: #FFFFFF;
+							.add-to-bag-name {
+								padding: 0 0px 0 10px;
+							}
+							.add-to-bag-icon {
+								padding: 0 10px 0 0;
+								border-right: 1px solid #fff;
+							}
+						}
+					}
+					.cosmetic-pro-details {
+						padding: 0 0 0 12px;
+						.cosmetic-pro-tag {
+							padding: 5px 0;
+							span {
+								color: #28A745;
+								background: #EAF6EC;
+								padding: 5px 5px;
+								font-weight: 500;
+								font-size: 10px;
+								line-height: 12px;
+							}
+						}
+						.cosmetic-pro-tag.best-seller {
+							span {
+								color: #FF784B;
+								background: #FFF1ED;
+								padding: 5px 5px;
+								font-weight: 500;
+								font-size: 10px;
+								line-height: 12px;
+							}
+						}
+						.cosmetic-pro-name {
+							color: #000000;
+							font-weight: 500;
+							font-size: 12px;
+							line-height: 15px;
+							padding: 5px 0;
+							border-bottom: 1px solid #E4E5E7;
+						}
+						.cosmetic-pro-desc {
+							color: #5F6368;
+							font-weight: normal;
+							font-size: 10px;
+							line-height: 12px;
+							padding: 5px 0;
+						}
+						.cosmetic-pro-price {
+							color: #000000;
+							font-weight: bold;
+							font-size: 14px;
+							line-height: 17px;
+						}
+					}
+				}
+			}
+		}
+		.cosmetic-fotter {
+			background: #381472;
+			.cosmetic-footer-data {
+				color: #B893F2;
+				font-weight: normal;
+				font-size: 10px;
+				line-height: 12px;
+				padding: 15px 200px;
+				text-align: center;
+				.act-terms-conditions {
+					text-decoration: underline !important;
+					color: #B893F2;
+				}
+			}
+		}
+	}
 	.topdown-search-main-container {
 		.search-input-box {
 			.live_search_result_box {
@@ -848,6 +861,9 @@
 					span {
 						color: #161620;
 					}
+					&.mb-60{
+						margin-bottom: 60px;;
+					}
 				}
 				.botMessage {
 					background: #FFFFFF;
@@ -881,7 +897,6 @@
 	.cosmetic-fotter {
 		display: none;
 	}
-	.actions-search-container {
 		.grid-bot-actions-border {
 			background: #F8F9FA;
 			border: 1px solid #E4E5E7;
@@ -894,20 +909,8 @@
 				display: none;
 			}
 		}
-	}
-	.actions-full-search-container {
-		.grid-bot-actions-border {
-			background: #F8F9FA;
-			border: 1px solid #E4E5E7;
-			box-sizing: border-box;
-			border-radius: 4px;
-			padding: 10px 5px;
-			margin-bottom: 15px;
-			.title-text-heading.total-structured-data-wrap {
-				padding-left: 5px;
-				display: none;
-			}
-		}
+	.modalImagePreview{
+		display: none !important;
 	}
 	.info-gray-text {
 		color: #000000;
@@ -1361,6 +1364,7 @@
 		line-height: 15px !important;
 		color: #000000 !important;
 		z-index: 0;
+		border: none !important;
 		&::after {
 			content: "";
 			position: absolute;
@@ -1477,11 +1481,12 @@
 	display: none;
 	display: none;
 }
-.cosmetics.sdk-top-down-interface.cosmetics {
+.cosmetics.sdk-top-down-interface {
 	.topdown-search-main-container {
 		.all-result-container {
 			.full-results-data-container {
 				.filters-sec {
+					max-height: unset;
 					.filters-inner-content {
 						padding-top: 0px !important;
 					}
@@ -2129,9 +2134,9 @@ body.top-down.sdk-top-down-interface.cosmetics {
 					height: 100%;
 					background: #F8FFFF !important;
 					border-radius: 8px;
-          #search{
-            padding-left: 37px!important;
-          }
+        //   #search{
+        //     padding-left: 37px!important;
+        //   }
 					.search-btn-custom {
 						position: absolute;
 						z-index: 1;
@@ -2241,9 +2246,9 @@ body.top-down.sdk-top-down-interface.cosmetics {
 					}
 					.filters-added-data {
 						.facets-padding {
-							padding: 0px 0px 0px 15px;
+							padding: 0px 0px 0px 30px;
 						}
-						padding: 0px 116px 0px 15px;
+						padding: 0px 116px 0px 30px;
 						.filter-tag-content {
 							background: #F8F9FA;
 							border: 1px solid #E4E5E7;
@@ -2268,6 +2273,7 @@ body.top-down.sdk-top-down-interface.cosmetics {
 					margin-top: 0;
 					border-radius: 0;
 					width: 190px;
+					padding: 0px;
 					.filters-inner-content {
 						box-sizing: border-box;
 						border-radius: 0;

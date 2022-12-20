@@ -35,6 +35,7 @@ import OtpTemplate from './demo-templates/otp/otpTemplate';
 import TrackOrderTemplate from './demo-templates/trackOrder/trackOrderTemplate';
 import TravelCardCarouselTemplate from './demo-templates/travelCardCarousel/travelCardCarouselTemplate';
 import ProductsCarouselTemplate from './demo-templates/productsCarousel/productsCarouselTemplate';
+import ProductViewTemplate from './demo-templates/productView/productViewTemplate';
 
 
 
@@ -98,6 +99,7 @@ class TemplateManager {
 	this.installTemplate(new TrackOrderTemplate());
 	this.installTemplate(new TravelCardCarouselTemplate());
 	this.installTemplate(new ProductsCarouselTemplate());
+	this.installTemplate(new ProductViewTemplate());
 
 	this.installTemplate(new IframeTemplate());
 

@@ -75,11 +75,11 @@ class EnterOTPTemplate {
                         <div class="input-box">\
                             <input type="number" maxlength="4" class="width90" id="otpValue">\
                                 <button class="send-email sendOTP">\
-                                    <img src="images/cosmetics/arrow-green.svg" class="arrow-green">\
-                                    <img src="images/cosmetics/arrow-white.svg" class="arrow-white">\
+                                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-green.svg" class="arrow-green">\
+                                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-white.svg" class="arrow-white">\
                                 </button>\
                                 <button class="send-email refresh-otp">\
-                                    <img src="images/cosmetics/refresh.svg">\
+                                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/refresh.svg">\
                                 </button>\
                         </div>\
                     </div>\

@@ -94,7 +94,7 @@ body{
         }
         &.conversation{
             &.active{
-                height: calc(100% - 55px);
+                max-height: calc(100% - 100px);
                 background: var(--sdk-white-bg);
                 box-shadow: -7px 4px 30px rgba(18, 61, 101, 0.2), inset -8px -6px 80px rgba(255, 255, 255, 0.18) !important;
                 border-radius: 6px;
@@ -122,10 +122,6 @@ body{
                 }
             }
             #searchChatContainer{
-                display: block !important;
-                position: relative;
-                padding: 34px 20px;
-                overflow: auto;
                 &.bgfocus{   
                     background: rgba(32, 33, 36, 0.1);
                     border-radius: 0;
@@ -3751,9 +3747,6 @@ body{
             }
         }
     }
-    .action-results-container{
-        margin-bottom: 23px;
-    }
     #actions-full-search-container{
         .action-results-container{
             .action-content{
@@ -4844,7 +4837,8 @@ li{
     &.search-container{
         &.conversation{
             #searchChatContainer{
-                display: block !important;
+                // display: block !important;
+                display: none;
                 position: relative;
                 padding: 34px 20px;
                 overflow: auto;

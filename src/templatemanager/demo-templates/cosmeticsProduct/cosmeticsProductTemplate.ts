@@ -5,10 +5,12 @@ class CosmeticsProductTemplate {
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
+        let hostWindowInstance = me.hostInstance;
         let helpersObj = helpers;
         if (msgData?.message?.[0]?.component?.payload?.template_type === "cosmeticsProduct") {
           me.messageHtml = $(CosmeticsProductTemplate.prototype.getTemplateString()).tmpl(msgData?.message[0].component?.payload);
-            return me.messageHtml;
+        hostWindowInstance.getProductPreview(me.messageHtml);
+          return me.messageHtml;
         }
     }
 
@@ -27,17 +29,17 @@ class CosmeticsProductTemplate {
                       <div class="inner-content-data">\
                         <div class="img-block">\
                           <div class="add-to-bag">\
-                            <img src="images/cosmetics/bag.svg">\
+                            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">\
                             <span>Add to Bag</span>\
                           </div>\
                           <img class="banner-img" src="${data.img}">\
                           <div class="wishlist">\
-                            <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">\
-                            <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">\
+                            <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">\
+                            <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">\
                           </div>\
                         </div>\
                         <div class="content-block">\
-                        <div class="type-tag sponsered {{if data.sponsered == true}} display-inline-block{{else}}display-none{{/if}}"><img src="images/cosmetics/info.svg">Sponsered</div>\
+                        <div class="type-tag sponsered {{if data.sponsered == true}} display-inline-block{{else}}display-none{{/if}}"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/info.svg">Sponsered</div>\
                           <div class="type-tag  {{if data.bestseller == true}} display-inline-block{{else}}display-none{{/if}}">Best Seller</div>\
                           <div class="type-tag offer {{if data.newarrival == true}} display-inline-block{{else}}display-none{{/if}}">New</div>\
                           <div class="type-tag offer">${data.prod_percentage_offer}</div>\
@@ -50,7 +52,7 @@ class CosmeticsProductTemplate {
                     </div>\
                     {{/each}}\
                     <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
-                    <div class="searchassist-show-more-button">Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
+                    <div class="searchassist-show-more-button">Show more <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/show_more.png" height="6" width="10" /></div>\
                     </div>\
                   </div>\
                   </div>\

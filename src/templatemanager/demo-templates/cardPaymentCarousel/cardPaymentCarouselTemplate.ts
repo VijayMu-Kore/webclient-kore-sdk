@@ -66,7 +66,7 @@ class CardPaymentCarouselTemplate {
                         <div class="left-title">Due date</div>\
                         <div class="right-title date">${msgItem.due_date}</div>\
                         </div>\
-                        <a class="view-stamnet-btn" href="${msgItem.buttons[0].url}">${msgItem.buttons[0].title} <img src="images/banking/download.svg"></a>\
+                        <a class="view-stamnet-btn" href="${msgItem.buttons[0].url}">${msgItem.buttons[0].title} <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/download.svg"></a>\
                         <button class="play-now-btn" payload="${msgItem.buttons[1].payload}">${msgItem.buttons[1].title}</button>\
                     </div>\
                     </div>\

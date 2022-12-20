@@ -59,7 +59,7 @@ class CancelOrderTemplate {
                             </div>\
                             <div class="trak-details">\
                                 <div class="button-track cancel-order" id="${data.prod_title}">\
-                                    <img src="images/cosmetics/cancel-order.svg">\
+                                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cancel-order.svg">\
                                         <span>Cancel Order</span>\
                                 </div>\
                             </div>\

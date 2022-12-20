@@ -49,7 +49,7 @@ class ConfirmCardPaymentTemplate {
         <div class="messageBubble-content">\
             <div class="botImg">\
                 <img class="default-bot-icon" src="images/bubbleIcon.svg">\
-                <img class="default-bot-banking-icon" src="images/banking/bankingavatar.svg">\
+                <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg">\
             </div>\
             <div class="botMessage no-border-data">\
                 <div class="select-bank-details">\
@@ -70,7 +70,7 @@ class ConfirmCardPaymentTemplate {
                     <div class="price-debited">${msgData.message[0].component.payload.data.amount}</div>\
                     </div>\
                     <div class="actions-btn">\
-                    <button class="confirm-btn confirm-cancel-btn" payload="${msgData.message[0].component.payload.buttons[0].payload}" title="${msgData.message[0].component.payload.buttons[0].title}">${msgData.message[0].component.payload.buttons[0].title}<img title="${msgData.message[0].component.payload.buttons[0].title}" payload="${msgData.message[0].component.payload.buttons[0].payload}"  class="unactive-img" src="images/banking/external.svg"><img title="${msgData.message[0].component.payload.buttons[0].title}" payload="${msgData.message[0].component.payload.buttons[0].payload}" class="active-img" src="images/banking/external-white.svg"></button>\
+                    <button class="confirm-btn confirm-cancel-btn" payload="${msgData.message[0].component.payload.buttons[0].payload}" title="${msgData.message[0].component.payload.buttons[0].title}">${msgData.message[0].component.payload.buttons[0].title}<img title="${msgData.message[0].component.payload.buttons[0].title}" payload="${msgData.message[0].component.payload.buttons[0].payload}"  class="unactive-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external.svg"><img title="${msgData.message[0].component.payload.buttons[0].title}" payload="${msgData.message[0].component.payload.buttons[0].payload}" class="active-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-white.svg"></button>\
                     <button class="cancel-btn confirm-cancel-btn" payload="${msgData.message[0].component.payload.buttons[1].payload}" title="${msgData.message[0].component.payload.buttons[1].title}">${msgData.message[0].component.payload.buttons[1].title}</button>\
                     </div>\
                 </div>\

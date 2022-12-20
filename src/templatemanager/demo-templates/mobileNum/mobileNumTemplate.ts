@@ -65,8 +65,8 @@ class MobileNumTemplate {
                         <div class="input-box">\
                             <input type="number" maxlength="10" class="width170" id="mobileValue">\
                                 <button class="send-email" id="sendMobile">\
-                                    <img src="images/cosmetics/arrow-green.svg" class="arrow-green">\
-                                    <img src="images/cosmetics/arrow-white.svg" class="arrow-white">\
+                                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-green.svg" class="arrow-green">\
+                                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-white.svg" class="arrow-white">\
                                 </button>\
                         </div>\
                     </div>\

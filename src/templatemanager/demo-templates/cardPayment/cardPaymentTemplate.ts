@@ -51,7 +51,7 @@ class CardPaymentTemplate {
                 $(messageHtml).find('.list-item').off('click').on('click', function (e:any) {
                     $(messageHtml).find('.list-item.selected').removeClass('selected');
                     $(e.target).addClass('selected');
-                    $(messageHtml).find('.select-bank-accont-dropdown').find('.selected-item').html($(e.target).attr('accountNumber')).append(`<img src="images/banking/carrotup.svg">`);
+                    $(messageHtml).find('.select-bank-accont-dropdown').find('.selected-item').html($(e.target).attr('accountNumber')).append(`<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/carrotup.svg">`);
                     $(messageHtml).find('.select-bank-accont-dropdown .dropdowns-item-container').hide();
                     $(messageHtml).find('.radio-button-section-info .current-oustanding').html($(e.target).attr('currentOutStanding'));
                     $(messageHtml).find('.radio-button-section-info .minimum-due').html($(e.target).attr('minDue'));
@@ -94,13 +94,13 @@ class CardPaymentTemplate {
         <div class="messageBubble-content">\
             <div class="botImg">\
                 <img class="default-bot-icon" src="images/bubbleIcon.svg">\
-                <img class="default-bot-banking-icon" src="images/banking/bankingavatar.svg">\
+                <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg">\
             </div>\
             <div class="botMessage no-border-data">\
                 <div class="select-bank-details">\
                     <div class="label-text">${msgData.message[0].component.payload.text}</div>\
                     <div class="select-bank-accont-dropdown">\
-                    <div class="selected-item">${msgData.message[0].component.payload.data[0].account_number}<img src="images/banking/carrotup.svg"></div>\
+                    <div class="selected-item">${msgData.message[0].component.payload.data[0].account_number}<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/carrotup.svg"></div>\
                     <div class="dropdowns-item-container">\
                     {{each(key, cardData) msgData.message[0].component.payload.data}}\
                         <div class="list-item {{if key==0 }}selected{{/if}}" accountNumber = ${cardData.account_number} cardHolderName = ${cardData.card_holder_name} cardNumber ="${cardData.card_number}" minDue = ${cardData.minimum_due} lastBillDue = ${cardData.last_billed_due} currentOutStanding = ${cardData.current_oustanding}>${cardData.account_number}</div>\
@@ -142,19 +142,19 @@ class CardPaymentTemplate {
                     <div class="actions-paynow-statement">\
                     <div class="paynow paynow-btn selected-click" payload="${msgData.message[0].component.payload.buttons[0].payload}">\
                         <span class="action-title " >${msgData.message[0].component.payload.buttons[0].title}</span>\
-                        <img src="images/banking/external.svg" class="unactive-img">\
-                        <img src="images/banking/external-white.svg" class="active-img">\
+                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external.svg" class="unactive-img">\
+                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-white.svg" class="active-img">\
                     </div>\
                     <div class="paynow dummy-btn "><a class="view-statement-btn" href="${msgData.message[0].component.payload.buttons[1].url}">\
                         <span class="action-title">View Statement</span>\
-                        <img src="images/banking/download.svg" class="unactive-img">\
-                        <img src="images/banking/download-white.svg" class="active-img">\
+                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/download.svg" class="unactive-img">\
+                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/download-white.svg" class="active-img">\
                         </a>\
                     </div>\
                     </div>\
                     <div class="schedule-date dummy-btn">\
-                    <img src="images/banking/calendar.svg" class="unactive-img">\
-                    <img src="images/banking/Calendar-white.svg" class="active-img">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/calendar.svg" class="unactive-img">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/Calendar-white.svg" class="active-img">\
                     <span class="title">Schedule automated payment</span>\
                     </div>\
                 </div>\

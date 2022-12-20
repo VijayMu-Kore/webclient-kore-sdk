@@ -1,6 +1,7 @@
 
     .skelton-load-img{
         display: none;
+        background: var(--sdk-white-bg);
     }
 
 
@@ -1685,6 +1686,11 @@ $color_1: #9AA0A6;
             }
         }
     }
+}
+.card-carousel-filters {
+    padding: 15px 10px 6px 10px;
+    border-bottom: 1px solid #DBD09C;
+    display: none;
 }
 
 //Feedback CSS Ends

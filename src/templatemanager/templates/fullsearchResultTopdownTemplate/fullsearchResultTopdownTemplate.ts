@@ -100,12 +100,19 @@ class FullSearchResultTopdownTemplate {
         }
     }, 300);
 
-    let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
-      facets: msgData.message[0].component.payload.tabsList,
-      truncateText: truncateText
-    });
-    $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
-    FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, msgData.message[0].component.payload.tabsList, 'all results');
+    if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+      $(messageHtml).find('.all-tab-count').html(msgData?.message[0]?.component?.payload?.tabsList[0]?.doc_count);
+      $(messageHtml).find('.show-results-count-container').show();
+      $(messageHtml).find('#top-down-tab-sec').hide();
+    }else{
+      let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
+        facets: msgData.message[0].component.payload.tabsList,
+        truncateText: truncateText
+      });
+      $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
+      FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, msgData.message[0].component.payload.tabsList, 'all results');
+    }
+   
     FullSearchResultTopdownTemplate.prototype.facetReset(me, messageHtml, msgData);
     FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, msgData.message[0].component.payload.facetPosition);
     if(msgData.message[0].component.payload.sortableFacetList && msgData.message[0].component.payload.sortableFacetList.length){
@@ -121,8 +128,11 @@ class FullSearchResultTopdownTemplate {
     var fullSearchResultTopdownTemplate = '<script type="text/x-jqury-tmpl">\
     <div class="all-result-container">\
                     <div class="full-results-data-container">\
+                      <div class="full-results-cancel-search">\
                         <div class="back-search" style="cursor: pointer;position: absolute;right: 34px;z-index: 100000;">\
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuNzA3MDMgNS4wMDAwOUw5Ljg1MzU1IDAuODUzNTUzQzEwLjA0ODggMC42NTgyOTEgMTAuMDQ4OCAwLjM0MTcwOSA5Ljg1MzU1IDAuMTQ2NDQ3QzkuNjU4MjkgLTAuMDQ4ODE1NyA5LjM0MTcxIC0wLjA0ODgxNTQgOS4xNDY0NSAwLjE0NjQ0N0w0Ljk5OTkxIDQuMjkzTDAuODUzNTU1IDAuMTQ2ODE0QzAuNjU4Mjg4IC0wLjA0ODQ0NDQgMC4zNDE3MDYgLTAuMDQ4NDM4IDAuMTQ2NDQ4IDAuMTQ2ODI4Qy0wLjA0ODgxMDQgMC4zNDIwOTQgLTAuMDQ4ODA0IDAuNjU4Njc3IDAuMTQ2NDYyIDAuODUzOTM1TDQuMjkyOCA1LjAwMDFMMC4xNDY0NDcgOS4xNDY0NkMtMC4wNDg4MTU3IDkuMzQxNzMgLTAuMDQ4ODE1NSA5LjY1ODMxIDAuMTQ2NDQ3IDkuODUzNTdDMC4zNDE3MDkgMTAuMDQ4OCAwLjY1ODI5MiAxMC4wNDg4IDAuODUzNTUzIDkuODUzNTdMNC45OTk5MiA1LjcwNzJMOS4xNDY0NiA5Ljg1MzU3QzkuMzQxNzMgMTAuMDQ4OCA5LjY1ODMxIDEwLjA0ODggOS44NTM1NyA5Ljg1MzU1QzEwLjA0ODggOS42NTgyOSAxMC4wNDg4IDkuMzQxNzEgOS44NTM1NSA5LjE0NjQ1TDUuNzA3MDMgNS4wMDAwOVoiIGZpbGw9IiMyMDIxMjQiLz4KPC9zdmc+Cg=="/>\
+                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/demo-imgs/esc-icon.svg"/>\
+                        <div class="esc-text">Esc</div>\
+                        </div>\
                         </div>\
                         <div id="filters-left-sec"></div>\
                         {{if displayFeedback == true}}\
@@ -149,6 +159,7 @@ class FullSearchResultTopdownTemplate {
                             <div id="filters-center-sec" > </div>\
                             <div class="filters-added-data display-none" id="show-filters-added-data"></div>\
                             <div class="content-data-sec">\
+                            <div class="show-results-count-container">About <span class="all-tab-count"></span> results found.</div>\
                             <div class="scroll-top-container">\
                                 <div class="title-scroll-top"><img>Scroll to top</div>\
                             </div>\
@@ -388,9 +399,15 @@ class FullSearchResultTopdownTemplate {
               }
             }
             FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-            let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
-            $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
-            FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+            if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+              $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+              $(messageHtml).find('.show-results-count-container').show();
+              $(messageHtml).find('#top-down-tab-sec').hide();
+            }else{
+              let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
+              $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+              FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+            }
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
             if(response.sortableFacetList && response.sortableFacetList.length){
               let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
@@ -419,9 +436,16 @@ class FullSearchResultTopdownTemplate {
               }
             }
             FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-            let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets, truncateText: truncateText });
+            if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+              $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+              $(messageHtml).find('.show-results-count-container').show();
+              $(messageHtml).find('#top-down-tab-sec').hide();
+            }else{
+              let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets, truncateText: truncateText });
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+            }
+           
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
             if(response.sortableFacetList && response.sortableFacetList.length){
               let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
@@ -440,12 +464,26 @@ class FullSearchResultTopdownTemplate {
         $(".sdk-filter-checkbox-top-down").prop("checked", false);
         $(".sdk-filter-radio-top-down").prop("checked", false);
         hostWindowInstance.clearAllFilterTopdownEvent(event).then((res: any) => {
-          let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
-            facets: res.facets,
-            truncateText: truncateText
-          });
-          $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
-          FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, res.facets, 'all results');
+          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+            $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);
+            $(messageHtml).find('.show-results-count-container').show();
+            $(messageHtml).find('#top-down-tab-sec').hide();
+          }else{
+            if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+              $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);
+              $(messageHtml).find('.show-results-count-container').show();
+              $(messageHtml).find('#top-down-tab-sec').hide();
+            }else{
+              let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
+                facets: res.facets,
+                truncateText: truncateText
+              });
+              $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
+              FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, res.facets, 'all results');
+            }
+           
+          }
+       
           FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, res.result);
           if (res.isUnselectedFilter) {
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, res.selectedFacetsList, res.isFilterAlignedTop);
@@ -480,9 +518,17 @@ class FullSearchResultTopdownTemplate {
                 }
               }
               FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, res.result);
-              let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets,truncateText: truncateText });
+              if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+                $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);
+                $(messageHtml).find('.show-results-count-container').show();
+                $(messageHtml).find('#top-down-tab-sec').hide();
+              }else{
+                let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets,truncateText: truncateText });
               $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
               FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, res.facets, selectedFacet);
+              }
+
+              
               if (res.isFilterAlignedTop) {
                 hostWindowInstance.displayDropdownFilterCount();
               }
@@ -558,9 +604,16 @@ class FullSearchResultTopdownTemplate {
         }
       }
       FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-      let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets, truncateText: truncateText });
-      $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
-      FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+      if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+        $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+        $(messageHtml).find('.show-results-count-container').show();
+        $(messageHtml).find('#top-down-tab-sec').hide();
+      }else{
+        let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets, truncateText: truncateText });
+        $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+        FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+      }
+      
       FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
       hostWindowInstance.displayDropdownFilterCount();
       if(response.sortableFacetList && response.sortableFacetList.length){
@@ -576,6 +629,9 @@ class FullSearchResultTopdownTemplate {
     var leftSearchFacetsTemplate =
       '<script id="search_facets_tmpl" type="text/x-jqury-tmpl"> \
   <div class="filters-sec {{if position == "right"}} float-right{{/if}}">\
+  <div class="card-carousel-filters">\
+</div>\
+<div class="filters-inner-content">\
    {{if searchFacets.length}}\
     <div class="heading-sec">\
       <div class="title-main">FILTERS</div>\
@@ -584,38 +640,39 @@ class FullSearchResultTopdownTemplate {
     {{each(i, searchFacet) searchFacets}}\
     <div class="category-wise-container">\
       <div class="group-checkbox filters-content-top-down {{if searchFacet.maxCount && searchFacet.buckets.length > searchFacet.maxCount}} hide-more-facets{{/if}}" data-facetType="${searchFacet.subtype}" data-facetName="${searchFacet.name}" data-fieldName="${searchFacet.fieldName}">\
-        <div class="heading-title {{if searchFacet.showSearch == true}}display-none{{/if}}"">${searchFacet.name}<span class="float-right display-none  {{if searchFacet.maxCount && searchFacet.buckets.length > searchFacet.maxCount}}d-block{{/if}}"><img class="facet-search-icon display-none" facetFacetName="${searchFacet.name}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFYSURBVHgBrVNLUsJAEO2eiLoTbhBuQE6g3gC3UJSZhViUi8gJ9AaWCyuFLhqLApbiCcQbcAM5QtiJMmk7VsoKDPFT8jZdk+735r3MDMA/gXmNkMgF2HJ3YTHRWke/Fri97wfAcJm2E6IrQ+MFz3VL6+nqvFoid4cEjL7h+Kjp10tNv1Yu8LwUMz87uPPSoUE110FIfd9BvBCCt85ySL0DB50H6Zez/S8HCdmw0Xl5W7oxljJ+g+1zK0JIQ1dKMR3KhWF+ZFAVS8CB16KUCH5EPHWQ9yyBAsBUiktExe/oCrBiGGeWQJrbyrcKRBUoiEeWQIJ35jYiBjfUr6wj33UHV1Kipq53l0Sziw71qrILie6I5YfFYKLEtnw7TgZZYspGh2e6PrEcJDjVjZFh5QHzTCEEcu4k5H1ZX5/4NU9OoV1AfMq6zH0LeUgvHIkTL+vkjyKf92Yz+ADa8Y5Ak9HPCwAAAABJRU5ErkJggg=="><span></div>\
+        <div class="heading-title {{if searchFacet.showSearch == true}}display-none{{/if}}""><span class="title-span-item">${searchFacet.name}</span><span class="float-right display-none  {{if searchFacet.maxCount && searchFacet.buckets.length > searchFacet.maxCount}}d-block{{/if}}"><img class="facet-search-icon display-none" facetFacetName="${searchFacet.name}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFYSURBVHgBrVNLUsJAEO2eiLoTbhBuQE6g3gC3UJSZhViUi8gJ9AaWCyuFLhqLApbiCcQbcAM5QtiJMmk7VsoKDPFT8jZdk+735r3MDMA/gXmNkMgF2HJ3YTHRWke/Fri97wfAcJm2E6IrQ+MFz3VL6+nqvFoid4cEjL7h+Kjp10tNv1Yu8LwUMz87uPPSoUE110FIfd9BvBCCt85ySL0DB50H6Zez/S8HCdmw0Xl5W7oxljJ+g+1zK0JIQ1dKMR3KhWF+ZFAVS8CB16KUCH5EPHWQ9yyBAsBUiktExe/oCrBiGGeWQJrbyrcKRBUoiEeWQIJ35jYiBjfUr6wj33UHV1Kipq53l0Sziw71qrILie6I5YfFYKLEtnw7TgZZYspGh2e6PrEcJDjVjZFh5QHzTCEEcu4k5H1ZX5/4NU9OoV1AfMq6zH0LeUgvHIkTL+vkjyKf92Yz+ADa8Y5Ak9HPCwAAAABJRU5ErkJggg=="><span></div>\
         <div class="input-div {{if searchFacet.showSearch !== true}}display-none{{/if}}"><input type="text" class="searchFacetInput" id="${searchFacet.name}"> <span class="float-right display-none" id="${searchFacet.name}-close"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACGSURBVHgB3ZK9DYAgEIURjY2RWVzFEWgtYBvXcBTcwClsFIg5osmZgEjoeNVxx/v4ySOkLDFpVTcdQ2gOMyaswj2KF+bUnDb14oNAD2ZGa06+BBt7YTYM8fUeVSEInGa1Gd0173qf2/UXAEOgDpkdnGQq+wlec8onRs1JEAhJNEjyHaQCdAGUc1yB6RityQAAAABJRU5ErkJggg=="></span></div>\
         {{each(j, bucket) searchFacet.buckets}}\
             {{if (searchFacet.subtype == "value" || searchFacet.subtype == "range") && searchFacet.multiselect }}\
             <div class="kr-sg-checkbox d-block">\
                 <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down c-1" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
                 <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
+                <span class="count">${bucket.doc_count}</span>\
             </div>\
             {{/if}}\
             {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
             <div class="kr-sg-radiobutton d-block">\
                 <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
                 <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
+                <span class="count">${bucket.doc_count}</span>\
             </div>\
             {{/if}}\
             {{if searchFacet.subtype == "range" &&  !searchFacet.multiselect}}\
             <div class="kr-sg-radiobutton d-block">\
                 <input  {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
                 <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
+                <span class="count">${bucket.doc_count}</span>\
             </div>\
             {{/if}}\
         {{/each}}\
         {{if searchFacet.maxCount && searchFacet.buckets.length > searchFacet.maxCount}}\
-          <div class="more-data" name="${searchFacet.name}">+ ${searchFacet.buckets.length-searchFacet.maxCount} More</div> \
+        <div class="more-data" name="${searchFacet.name}"><img class="more-img-cosmotics" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/movedown.svg"><img class="dflt-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/movedown.svg">Show More <span class="more-count">+${searchFacet.buckets.length-searchFacet.maxCount}</span></div> \
         {{/if}}\
         </div>\
       </div>\
     {{/each}}\
     {{/if}}\
+    </div>\
     </div>\
   </script>';
 
@@ -727,7 +784,7 @@ class FullSearchResultTopdownTemplate {
         <div class="filter-tag-content filters-content-top-down" data-facetType="${facet.fieldType}" data-facetName="${facet.name}" data-fieldName="${facet.fieldName}">\
         <span class="filter-tag-name">${facet.name}</span>\
           <span class="close-filter-tag" id="${facet.id}" >\
-              <img name="${facet.name}" value="${facet.name}" data-from="${facet.from}" data-to="${facet.to}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBbZHRDcIwDERju+zTSizSCWgl8sFM+Ug26AwsUDIGO9A05AChprV/osjPd2eZLtfbg2gZg3PRKDUMts3SeAaUV5kGa1sVYpkoLaPEeX525+4OGC/+FbSmPgQX6T9dFAETp968jNlC6FNl9YNNLo0NhOIqVFEC9Bk/1Xn5ELwowX6/oGjBtQVpD2mZ4cBZ2GsQCkf4xmj8GzsLeh0gnVcbAAAAAElFTkSuQmCC">\
+              <img name="${facet.name}" value="${facet.name}" data-from="${facet.from}" data-to="${facet.to}" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/demo-imgs/close-chip.svg"/>\
                 </span>\
                 </div>\
         {{/each}} \
@@ -759,9 +816,16 @@ class FullSearchResultTopdownTemplate {
             }
           }
           FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, res.result);
-          let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets ,truncateText: truncateText});
-          $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
-          FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, res.facets, selectedFacet);
+          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+            $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);
+            $(messageHtml).find('.show-results-count-container').show();
+            $(messageHtml).find('#top-down-tab-sec').hide();
+          }else{
+            let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets ,truncateText: truncateText});
+            $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+            FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, res.facets, selectedFacet);
+          }
+         
           if (res.isFilterAlignedTop) {
             hostWindowInstance.displayDropdownFilterCount();
           }
@@ -826,9 +890,16 @@ class FullSearchResultTopdownTemplate {
             }
           }
           FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-          let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
-          $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
-          FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+            $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+            $(messageHtml).find('.show-results-count-container').show();
+            $(messageHtml).find('#top-down-tab-sec').hide();
+          }else{
+            let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
+            $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+            FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+          }
+         
           FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
         }
       });
@@ -852,9 +923,16 @@ class FullSearchResultTopdownTemplate {
                 }
               }
               FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-              let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
-              $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
-              FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+              if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+                $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+                $(messageHtml).find('.show-results-count-container').show();
+                $(messageHtml).find('#top-down-tab-sec').hide();
+              }else{
+                let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
+                $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
+                FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
+              }
+             
               FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
             }
           });

@@ -48,13 +48,10 @@ botOptionsFindly.JWTUrl =
   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
-botOptionsFindly.botInfo = {
-  chatBot: "New zendesk after Nov 14",
-  taskBotId: "st-3cd359e5-96c3-54a4-afbe-82cf46e208a3",
-};
-botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
-botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
-botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
+botOptionsFindly.botInfo = { chatBot: "CosmeticsV1.1", "taskBotId": "st-a359c185-2445-5bc9-b981-682d6f6ec1a0" };
+botOptionsFindly.clientId = "cs-16f8dc7e-2a12-5c7f-bbca-6878c8dfb004";
+botOptionsFindly.clientSecret = "7AQvrc6OHmF52ByFhcvw+S0dlDH+31stpk+ZaBzujW8=";
+botOptionsFindly.searchIndexID = "sidx-53fd79c3-25fd-5c5d-8e09-1c4fcdbbbb62";
 
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {
@@ -117,20 +114,20 @@ else if (window.location && window.location.href && window.location.href.include
   }, 1000);
 } else if (window.location && window.location.href && (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze'))) {
   // cosmetics
-  botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
-  botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
+  botOptionsFindly.koreAPIUrl = "https://searchassist-pilot.kore.ai/searchassistapi/";
+  botOptionsFindly.baseAPIServer = "https://searchassist-pilot.kore.ai";
   botOptionsFindly.reWriteSocketURL = {
       protocol: 'wss',
-      hostname: 'searchassist-qa.kore.ai'
+      hostname: 'searchassist-pilot.kore.ai'
   };
-  // botOptionsFindly.botInfo = { chatBot: "Cosmetics", "taskBotId": "st-cf0ce3fc-4e46-56fa-b083-c47f8c405e8c" };
-  // botOptionsFindly.clientId = "cs-3c22d3c0-67ea-5335-a7dc-691a3972d961";
-  // botOptionsFindly.clientSecret = "2iQclyckzscxUFQVUms1lDCLo5P5IT9BaxU1UDE9ENQ=";
-  // botOptionsFindly.searchIndexID = "sidx-2ccc1c39-b76d-5e78-9f96-3af138adafd7";
-  botOptionsFindly.botInfo = { chatBot: "CosmeticsV1.1", "taskBotId": "st-a359c185-2445-5bc9-b981-682d6f6ec1a0" };
-  botOptionsFindly.clientId = "cs-16f8dc7e-2a12-5c7f-bbca-6878c8dfb004";
-  botOptionsFindly.clientSecret = "7AQvrc6OHmF52ByFhcvw+S0dlDH+31stpk+ZaBzujW8=";
-  botOptionsFindly.searchIndexID = "sidx-53fd79c3-25fd-5c5d-8e09-1c4fcdbbbb62";
+  botOptionsFindly.botInfo = { chatBot: "Cosmetics", "taskBotId": "st-85d0f5ee-d8ec-5f46-a07b-60b19665f8ef" };
+  botOptionsFindly.clientId = "cs-6d7410bf-ad70-5392-a509-08f42b6b973b";
+  botOptionsFindly.clientSecret = "29vqaA7rQjs3ojPkWKDfMg+zuB3RWC5iBJbUjG7jZQQ=";
+  botOptionsFindly.searchIndexID = "sidx-80f8686d-e870-5ebf-a3d6-3f93ffc5a489";
+  // botOptionsFindly.botInfo = { chatBot: "CosmeticsV1.1", "taskBotId": "st-a359c185-2445-5bc9-b981-682d6f6ec1a0" };
+  // botOptionsFindly.clientId = "cs-16f8dc7e-2a12-5c7f-bbca-6878c8dfb004";
+  // botOptionsFindly.clientSecret = "7AQvrc6OHmF52ByFhcvw+S0dlDH+31stpk+ZaBzujW8=";
+  // botOptionsFindly.searchIndexID = "sidx-53fd79c3-25fd-5c5d-8e09-1c4fcdbbbb62";
   setTimeout(function () {
       $('body').addClass('belcorp');
       $('body').addClass('cosmetics');
@@ -188,7 +185,7 @@ else if (window.location && window.location.href && window.location.href.include
           $('body').addClass('banking')
       }
       document.title = 'Banking';
-      favicon.setAttribute("href", "../demo/images/banking/bankingavatar.svg");
+      favicon.setAttribute("href", "https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg");
   }, 1000);
 }
 else if (window.location && window.location.href && (window.location.href.includes('#tr'))) {

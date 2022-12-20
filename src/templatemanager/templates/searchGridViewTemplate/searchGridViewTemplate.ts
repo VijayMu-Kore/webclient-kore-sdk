@@ -189,23 +189,27 @@ class SearchGridViewTemplate {
     {{/if}}\
     {{if selectedFacet !== appearanceType && selectedFacet == "all results"}}\
         <div class="heading-and-show-all" appearanceType="task">\
-            <div class="text-heading-main">ACTIONS</div>\
+            <div class="text-heading-main display-none">ACTIONS</div>\
             <div class="show-al-text show-all-blue display-none">Show all Actions</div>\
         </div>\
     {{/if}}\
     {{if selectedFacet == appearanceType || selectedFacet == "all results"}}\
-        <div class="new-grid-search-data">\
+    <div class="grid-bot-actions-border">\
+        <div class="banking-grid-buttons-template action-results-container btn_block_actions main-content-title-grid-data new-grid-search-data">\
             {{each(key, task) structuredData}}\
                 <div class="title-box-data">\
                     <div id="${key}" class="search-task search-grid-item text-truncate" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">\
                         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJ1BMVEUAAAAAVaoEbq4DbK8GbK4Gbq8Gba0Fba8Fba4Fbq4Eba4Fba7////SVqJwAAAAC3RSTlMAA0hJVYKDqKmq4875bAAAAAABYktHRAyBs1FjAAAAP0lEQVQI12NgwACMJi5A4CzAwLobDBIYOCaAxDknMLCvnAkEsyYwcECkkBicMDV4GGwQxQEMjCogK5wEMC0HALyTIMofpWLWAAAAAElFTkSuQmCC" class="credit-card display-none">\
                         <div class="name-title">${task.titleText}</div>\
+                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/arrow-white.svg">\
                         {{if task.childBotName !=="" && task.childBotName !== undefined}}\
                             <div class="child-bot">${task.childBotName}</div>\
                         {{/if}}\
                     </div>\
                 </div>\
             {{/each}}\
+        </div>\
+        <div class="info-gray-text hide">Talk to Virtual Agent</div>\
         </div>\
     {{/if}}\
   {{/if}}\

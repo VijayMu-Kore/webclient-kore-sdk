@@ -10,9 +10,9 @@ function cosmeticsTemplate() {
 
         <div class="logo-bg">
 
-          <img class="belcorp-item cosmetic-icon" src="images/cosmetics/cosmetic-logo.svg">
+          <img class="belcorp-item cosmetic-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetic-logo.svg">
 
-          <img class="belcorp-item belcorp-icon" src="../demo/images/belcrop-logo.svg">
+          <img class="belcorp-item belcorp-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/belcrop-logo.svg">
 
         </div>
 
@@ -48,17 +48,17 @@ function cosmeticsTemplate() {
 
         </div> --!>
 
-        <a id="logIn" class="action-name-login"><span class="span-icon-login"><img src="images/cosmetics/icon-log-in.svg" class="icon-login" alt="icon-log-in" /></span>Login</a>
+        <a id="logIn" class="action-name-login"><span class="span-icon-login"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/icon-log-in.svg" class="icon-login" alt="icon-log-in" /></span>Login</a>
 
  
 
-        <a class="cosmetic-post-login cart-icon"><img src="images/cosmetics/cart.svg" alt="cart" /></a>
+        <a class="cosmetic-post-login cart-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cart.svg" alt="cart" /></a>
 
         <a class="cosmetic-post-login whish-list-icon">
 
-          <img class="dflt-wish-img" src="images/cosmetics/wish-unfill.svg" alt="wishlist" />
+          <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-unfill.svg" alt="wishlist" />
 
-          <img class="wish-img-fill" src="images/cosmetics/wishlist-active-icon.svg">
+          <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist-active-icon.svg">
 
         </a>
 
@@ -82,7 +82,7 @@ function cosmeticsTemplate() {
 
         </div>
 
-        <a class="cosmetic-post-login cosmetics-logout pl-0"><img src="images/cosmetics/nav/nav-logout.svg" alt="logout" /></a>
+        <a class="cosmetic-post-login cosmetics-logout pl-0"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/nav-logout.svg" alt="logout" /></a>
 
       </div>
 
@@ -90,13 +90,13 @@ function cosmeticsTemplate() {
 
     <!-- <div class="belcrop-body-img-section">
 
-        <img src="../demo/images/screen-E-1.png" id="belcorp-home"  style="width: 100%;">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/screen-E-1.png" id="belcorp-home"  style="width: 100%;">
 
-        <img src="../demo/images/screen-2.png" id="belcorp-esika"  style="width: 100%;">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/screen-2.png" id="belcorp-esika"  style="width: 100%;">
 
-        <img src="../demo/images/screen-3.png" id="belcorp-lbel"  style="width: 100%;">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/screen-3.png" id="belcorp-lbel"  style="width: 100%;">
 
-        <img src="../demo/images/screen-4.png" id="belcorp-cyzone"  style="width: 100%;">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/screen-4.png" id="belcorp-cyzone"  style="width: 100%;">
 
     </div> -->
 
@@ -116,13 +116,13 @@ function cosmeticsTemplate() {
 
           <div class="cosmetic-logo-bg">
 
-            <img src="images/cosmetics/login-cosmetic-logo.svg" alt="cosmetics-logo" />
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/login-cosmetic-logo.svg" alt="cosmetics-logo" />
 
           </div>
 
           <div class="cosmetic-lipstick-bg">
 
-            <img src="images/cosmetics/red-lipsticks-background.png" alt="lipstick-image" />
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/red-lipsticks-background.png" alt="lipstick-image" />
 
           </div>
 
@@ -140,7 +140,7 @@ function cosmeticsTemplate() {
 
             </div>
 
-            <div class="cosmetic-login-welcome-close cosmetics-logout"><img src="images/cosmetics/close-icon.png" alt="login-close" /></div>
+            <div class="cosmetic-login-welcome-close cosmetics-logout"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/close-icon.png" alt="login-close" /></div>
 
           </div>
 
@@ -148,7 +148,7 @@ function cosmeticsTemplate() {
 
             <div class="input-box">
 
-              <div class="label-text"><span class="icon-pos-set"><img src="images/cosmetics/user-icon.png" alt="user-icon" /></span> User Name</div>
+              <div class="label-text"><span class="icon-pos-set"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/user-icon.png" alt="user-icon" /></span> User Name</div>
 
               <input type="text" class="inputbox" id="loginUserName" placeholder="Enter text here">
 
@@ -156,17 +156,17 @@ function cosmeticsTemplate() {
 
             <div class="input-box pos-rel">
 
-              <div class="label-text"><span class="icon-pos-set"><img src="images/cosmetics/password-icon.png" alt="user-password-icon" /></span> Password</div>
+              <div class="label-text"><span class="icon-pos-set"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/password-icon.png" alt="user-password-icon" /></span> Password</div>
 
               <input type="password" class="inputbox" id="loginPassword" placeholder="Type here">
 
-              <span class="veiw-pass-icon"><img src="images/cosmetics/view-password-icon.png" alt="view-password-icon" /></span>
+              <span class="veiw-pass-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/view-password-icon.png" alt="view-password-icon" /></span>
 
             </div> 
 
             <div class="cosmetic-login-btn">
 
-              <button class="login-btn">Login <span><img src="images/cosmetics/login-right-arrow-icon.png"  /></span></button>
+              <button class="login-btn">Login <span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/login-right-arrow-icon.png"  /></span></button>
 
             </div>
 
@@ -204,7 +204,7 @@ function cosmeticsTemplate() {
 
         <div class="link-with-title selected-item">
 
-            <img src="images/cosmetics/my-orders.svg">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/my-orders.svg">
 
             <span>My Orders</span>
 
@@ -212,7 +212,7 @@ function cosmeticsTemplate() {
 
         <div class="link-with-title">
 
-            <img src="images/cosmetics/password.svg">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/password.svg">
 
             <span>Update wallet Detailes</span>
 
@@ -220,7 +220,7 @@ function cosmeticsTemplate() {
 
         <div class="link-with-title">
 
-            <img src="images/cosmetics/currency.svg">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/currency.svg">
 
             <span>Payment Options</span>
 
@@ -228,7 +228,7 @@ function cosmeticsTemplate() {
 
         <div class="link-with-title">
 
-            <img src="images/cosmetics/notes.svg">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/notes.svg">
 
             <span>Coupons</span>
 
@@ -236,7 +236,7 @@ function cosmeticsTemplate() {
 
         <div class="link-with-title">
 
-            <img src="images/cosmetics/upgrade.svg">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/upgrade.svg">
 
             <span>Upgrade your Account</span>
 
@@ -244,7 +244,7 @@ function cosmeticsTemplate() {
 
         <div class="link-with-title">
 
-            <img src="images/cosmetics/refund.svg">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/refund.svg">
 
             <span>Refund Status</span>
 
@@ -258,11 +258,11 @@ function cosmeticsTemplate() {
 
         <div class="link-with-title">
 
-            <img src="images/cosmetics/collections.svg">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/collections.svg">
 
             <span>Summer Collection</span>
 
-            <img class="arrow-icon" src="images/cosmetics/arrow-red.svg">
+            <img class="arrow-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-red.svg">
 
         </div>
 
@@ -270,11 +270,11 @@ function cosmeticsTemplate() {
 
         <div class="link-with-title">
 
-            <img src="images/cosmetics/publish.svg">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/publish.svg">
 
             <span>Back to school collection</span>
 
-            <img class="arrow-icon" src="images/cosmetics/arrow-red.svg">
+            <img class="arrow-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/arrow-red.svg">
 
         </div>
 
@@ -328,7 +328,7 @@ function cosmeticsTemplate() {
 
                       <div class="view-details">
 
-                          <img src="images/cosmetics/view-detals.svg">
+                          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/view-detals.svg">
 
                           <span>View Details</span>
 
@@ -336,7 +336,7 @@ function cosmeticsTemplate() {
 
                       <div class="invoice-details">
 
-                          <img src="images/cosmetics/download.svg">
+                          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/download.svg">
 
                           <span>Invoice</span>
 
@@ -352,7 +352,7 @@ function cosmeticsTemplate() {
 
               <div class="img-block">
 
-                  <img src="images/cosmetics/lipstick-w-3.png">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lipstick-w-3.png">
 
               </div>
 
@@ -368,7 +368,7 @@ function cosmeticsTemplate() {
 
                       <div class="action-links">
 
-                          <img src="images/cosmetics/refresh-red.svg">
+                          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/refresh-red.svg">
 
                           <span>Buy it again</span>
 
@@ -376,7 +376,7 @@ function cosmeticsTemplate() {
 
                       <div class="action-links">
 
-                          <img src="images/cosmetics/storyboard.svg">
+                          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/storyboard.svg">
 
                           <span>Product Review</span>
 
@@ -430,7 +430,7 @@ function cosmeticsTemplate() {
 
                       <div class="view-details">
 
-                          <img src="images/cosmetics/view-detals.svg">
+                          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/view-detals.svg">
 
                           <span>View Details</span>
 
@@ -438,7 +438,7 @@ function cosmeticsTemplate() {
 
                       <div class="invoice-details">
 
-                          <img src="images/cosmetics/download.svg">
+                          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/download.svg">
 
                           <span>Invoice</span>
 
@@ -454,7 +454,7 @@ function cosmeticsTemplate() {
 
               <div class="img-block">
 
-                  <img src="images/cosmetics/lipstick-w.png">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lipstick-w.png">
 
               </div>
 
@@ -470,7 +470,7 @@ function cosmeticsTemplate() {
 
                       <div class="action-links">
 
-                          <img src="images/cosmetics/refresh-red.svg">
+                          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/refresh-red.svg">
 
                           <span>Buy it again</span>
 
@@ -478,7 +478,7 @@ function cosmeticsTemplate() {
 
                       <div class="action-links">
 
-                          <img src="images/cosmetics/storyboard.svg">
+                          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/storyboard.svg">
 
                           <span>Product Review</span>
 
@@ -502,7 +502,7 @@ function cosmeticsTemplate() {
 
   <section class="banner-header">
 
-      <img src="images/cosmetics/banner-1.png" class="banner-img" alt="banner-1" />
+      <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/banner-1.png" class="banner-img" alt="banner-1" />
 
   </section>
 
@@ -514,7 +514,7 @@ function cosmeticsTemplate() {
 
           <div class="media-left-block">
 
-              <img src="images/cosmetics/rewards.png" class="media-left-img" alt="rewards">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/rewards.png" class="media-left-img" alt="rewards">
 
           </div>
 
@@ -532,7 +532,7 @@ function cosmeticsTemplate() {
 
           <div class="media-left-block">
 
-              <img src="images/cosmetics/order-online.png" class="media-left-img" alt="rewards">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/order-online.png" class="media-left-img" alt="rewards">
 
           </div>
 
@@ -550,7 +550,7 @@ function cosmeticsTemplate() {
 
           <div class="media-left-block">
 
-              <img src="images/cosmetics/download-app.png" class="media-left-img" alt="rewards">
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/download-app.png" class="media-left-img" alt="rewards">
 
           </div>
 
@@ -576,7 +576,7 @@ function cosmeticsTemplate() {
 
         <div class="media-left-block">
 
-            <img src="images/cosmetics/product-type-2.png" class="media-left-img" alt="rewards">
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/product-type-2.png" class="media-left-img" alt="rewards">
 
         </div>
 
@@ -594,7 +594,7 @@ function cosmeticsTemplate() {
 
       <div class="media-left-block">
 
-          <img src="images/cosmetics/product-type-3.png" class="media-left-img" alt="rewards">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/product-type-3.png" class="media-left-img" alt="rewards">
 
       </div>
 
@@ -612,7 +612,7 @@ function cosmeticsTemplate() {
 
     <div class="media-left-block">
 
-        <img src="images/cosmetics/product-type-1.png" class="media-left-img" alt="rewards">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/product-type-1.png" class="media-left-img" alt="rewards">
 
     </div>
 
@@ -668,11 +668,11 @@ function cosmeticsTemplate() {
 
           <div class="cosmetic-pro-img">
 
-            <img class="cos-pro-img" src="images/cosmetics/products/cosmetic-pro-1.png" />
+            <img class="cos-pro-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetic-pro-1.png" />
 
-            <div class="cosmetic-add-to-bag"><span class="add-to-bag-icon"><img src="images/cosmetics/products/add-to-bag.png" /></span><span class="add-to-bag-name">Add to Bag</span></div>
+            <div class="cosmetic-add-to-bag"><span class="add-to-bag-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/add-to-bag.png" /></span><span class="add-to-bag-name">Add to Bag</span></div>
 
-            <div class="cosmetic-add-to-wish"><img class="cos-wishlist-icon" src="images/cosmetics/products/pro-wishlist.png" /></div>
+            <div class="cosmetic-add-to-wish"><img class="cos-wishlist-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/pro-wishlist.png" /></div>
 
           </div>
 
@@ -696,11 +696,11 @@ Swiss Brown</div>
 
           <div class="cosmetic-pro-img">
 
-            <img class="cos-pro-img" src="images/cosmetics/products/cosmetic-pro-2.png" />
+            <img class="cos-pro-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetic-pro-2.png" />
 
-            <div class="cosmetic-add-to-bag"><span class="add-to-bag-icon"><img src="images/cosmetics/products/add-to-bag.png" /></span><span class="add-to-bag-name">Add to Bag</span></div>
+            <div class="cosmetic-add-to-bag"><span class="add-to-bag-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/add-to-bag.png" /></span><span class="add-to-bag-name">Add to Bag</span></div>
 
-            <div class="cosmetic-add-to-wish"><img class="cos-wishlist-icon" src="images/cosmetics/products/pro-wishlist.png" /></div>
+            <div class="cosmetic-add-to-wish"><img class="cos-wishlist-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/pro-wishlist.png" /></div>
 
           </div>
 
@@ -724,11 +724,11 @@ Swiss Brown</div>
 
           <div class="cosmetic-pro-img">
 
-            <img class="cos-pro-img" src="images/cosmetics/products/cosmetic-pro-3.png" />
+            <img class="cos-pro-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetic-pro-3.png" />
 
-            <div class="cosmetic-add-to-bag"><span class="add-to-bag-icon"><img src="images/cosmetics/products/add-to-bag.png" /></span><span class="add-to-bag-name">Add to Bag</span></div>
+            <div class="cosmetic-add-to-bag"><span class="add-to-bag-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/add-to-bag.png" /></span><span class="add-to-bag-name">Add to Bag</span></div>
 
-            <div class="cosmetic-add-to-wish"><img class="cos-wishlist-icon" src="images/cosmetics/products/pro-wishlist.png" /></div>
+            <div class="cosmetic-add-to-wish"><img class="cos-wishlist-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/pro-wishlist.png" /></div>
 
           </div>
 
@@ -752,17 +752,17 @@ Matte Maroon</div>
 
           <div class="cosmetic-pro-img">
 
-            <img class="cos-pro-img" src="images/cosmetics/products/cosmetic-pro-4.png" />
+            <img class="cos-pro-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetic-pro-4.png" />
 
-            <div class="cosmetic-add-to-bag"><span class="add-to-bag-icon"><img src="images/cosmetics/products/add-to-bag.png" /></span><span class="add-to-bag-name">Add to Bag</span></div>
+            <div class="cosmetic-add-to-bag"><span class="add-to-bag-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/add-to-bag.png" /></span><span class="add-to-bag-name">Add to Bag</span></div>
 
-            <div class="cosmetic-add-to-wish"><img class="cos-wishlist-icon" src="images/cosmetics/products/pro-wishlist.png" /></div>
+            <div class="cosmetic-add-to-wish"><img class="cos-wishlist-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/pro-wishlist.png" /></div>
 
           </div>
 
           <div class="cosmetic-pro-details">
 
-            <div class="type-tag sponsered"><img src="images/cosmetics/info.svg">Sponsered</div>\
+            <div class="type-tag sponsered"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/info.svg">Sponsered</div>\
 
             <div class="cosmetic-pro-tag hide"><span>All New</span></div>
 
@@ -802,7 +802,7 @@ Matte Maroon</div>
 
       <div class="banner-img-2">
 
-          <img src="images/cosmetics/welocme-2.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/welocme-2.svg">
 
       </div>
 
@@ -818,7 +818,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -826,13 +826,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/lipstick-w.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lipstick-w.png">
 
               </div>
 
@@ -860,7 +860,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -868,13 +868,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/lipstick-w-1.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lipstick-w-1.png">
 
               </div>
 
@@ -902,7 +902,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -910,13 +910,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/lipstick-w-2.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lipstick-w-2.png">
 
               </div>
 
@@ -944,7 +944,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -952,19 +952,19 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/lipstick-w-3.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lipstick-w-3.png">
 
               </div>
 
               <div class="content-block">
 
-                <div class="type-tag sponsered"><img src="images/cosmetics/info.svg">Sponsered</div>
+                <div class="type-tag sponsered"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/info.svg">Sponsered</div>
 
                 <div class="title">Lip Gloss - Dark Red</div>
 
@@ -988,7 +988,7 @@ Matte Maroon</div>
 
       <div class="banner-img-2 pl-0 pr-50">
 
-          <img src="images/cosmetics/welcome-3.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/welcome-3.svg">
 
       </div>
 
@@ -1004,7 +1004,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1012,13 +1012,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/perfume-1.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/perfume-1.png">
 
               </div>
 
@@ -1046,7 +1046,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1054,13 +1054,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/perfume-2.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/perfume-2.png">
 
               </div>
 
@@ -1088,7 +1088,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1096,13 +1096,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/perfume-3.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/perfume-3.png">
 
               </div>
 
@@ -1130,7 +1130,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1138,19 +1138,19 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/perfume-4.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/perfume-4.png">
 
               </div>
 
               <div class="content-block">
 
-                <div class="type-tag sponsered"><img src="images/cosmetics/info.svg">Sponsered</div>
+                <div class="type-tag sponsered"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/info.svg">Sponsered</div>
 
                 <div class="title">Cyze Woody - Perfume</div>
 
@@ -1174,7 +1174,7 @@ Matte Maroon</div>
 
       <div class="banner-img-2 pr-50">
 
-          <img src="images/cosmetics/welcome-4.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/welcome-4.svg">
 
       </div>
 
@@ -1190,7 +1190,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1198,13 +1198,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/facecream-1.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/facecream-1.png">
 
               </div>
 
@@ -1232,7 +1232,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1240,13 +1240,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/facecream-2.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/facecream-2.png">
 
               </div>
 
@@ -1274,7 +1274,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1282,13 +1282,13 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/facecream-3.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/facecream-3.png">
 
               </div>
 
@@ -1316,7 +1316,7 @@ Matte Maroon</div>
 
                 <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1324,19 +1324,19 @@ Matte Maroon</div>
 
                 <div class="wishlist">
 
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
                 </div>
 
-                <img class="banner-img" src="images/cosmetics/facecream-4.png">
+                <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/facecream-4.png">
 
               </div>
 
               <div class="content-block">
 
-                <div class="type-tag sponsered"><img src="images/cosmetics/info.svg">Sponsered</div>
+                <div class="type-tag sponsered"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/info.svg">Sponsered</div>
 
                 <div class="title">Mineral Pro -Sunscreen</div>
 
@@ -1370,7 +1370,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag">
 
-                  <img src="images/cosmetics/remove.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/remove.svg">
 
                   <span>Remove</span>
 
@@ -1378,13 +1378,13 @@ Matte Maroon</div>
 
               <div class="wishlist">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/lip-1.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lip-1.png">
 
           </div>
 
@@ -1416,7 +1416,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag">
 
-                  <img src="images/cosmetics/remove.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/remove.svg">
 
                   <span>Remove</span>
 
@@ -1424,13 +1424,13 @@ Matte Maroon</div>
 
               <div class="wishlist">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/lip-2.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lip-2.png">
 
           </div>
 
@@ -1460,7 +1460,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag">
 
-                  <img src="images/cosmetics/remove.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/remove.svg">
 
                   <span>Remove</span>
 
@@ -1468,13 +1468,13 @@ Matte Maroon</div>
 
               <div class="wishlist">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/lipstick-w-3.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lipstick-w-3.png">
 
           </div>
 
@@ -1506,7 +1506,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag">
 
-                  <img src="images/cosmetics/remove.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/remove.svg">
 
                   <span>Remove</span>
 
@@ -1514,13 +1514,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/lipstick-w-2.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lipstick-w-2.png">
 
           </div>
 
@@ -1552,7 +1552,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag">
 
-                  <img src="images/cosmetics/remove.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/remove.svg">
 
                   <span>Remove</span>
 
@@ -1560,13 +1560,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/lip-4.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lip-4.png">
 
           </div>
 
@@ -1598,7 +1598,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag">
 
-                  <img src="images/cosmetics/remove.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/remove.svg">
 
                   <span>Remove</span>
 
@@ -1606,13 +1606,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/facecream-2.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/facecream-2.png">
 
           </div>
 
@@ -1648,7 +1648,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1656,13 +1656,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/perfume-1.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/perfume-1.png">
 
           </div>
 
@@ -1694,7 +1694,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1702,13 +1702,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/perfume-2.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/perfume-2.png">
 
           </div>
 
@@ -1738,7 +1738,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1746,13 +1746,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-              <img class="banner-img" src="images/cosmetics/lip-1.png">
+              <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lip-1.png">
 
           </div>
 
@@ -1784,7 +1784,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1792,13 +1792,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/lip-4.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/lip-4.png">
 
           </div>
 
@@ -1830,7 +1830,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1838,13 +1838,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/card1.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/card1.png">
 
           </div>
 
@@ -1876,7 +1876,7 @@ Matte Maroon</div>
 
               <div class="add-to-bag green-bg">
 
-                  <img src="images/cosmetics/bag.svg">
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">
 
                   <span>Add to Bag</span>
 
@@ -1884,13 +1884,13 @@ Matte Maroon</div>
 
               <div class="wishlist wish-filled">
 
-                  <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">
+                  <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">
 
-                  <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">
+                  <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">
 
               </div>
 
-            <img class="banner-img" src="images/cosmetics/perfume-4.png">
+            <img class="banner-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/perfume-4.png">
 
           </div>
 
@@ -1922,7 +1922,7 @@ Matte Maroon</div>
 
       <div class="proceed-payment proceed-to-pay">
 
-        <img src="images/cosmetics/card.svg">
+        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/card.svg">
 
         <span>Proceed to Pay</span>
 
@@ -1930,7 +1930,7 @@ Matte Maroon</div>
 
       <div class="proceed-payment shopping-bag">
 
-          <img src="images/cosmetics/shopping-bag.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/shopping-bag.svg">
 
           <span>Add all to Bag</span>
 

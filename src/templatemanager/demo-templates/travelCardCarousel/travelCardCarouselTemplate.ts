@@ -59,13 +59,13 @@ class TravelCardCarouselTemplate {
                 <div class="bottom-content">\
                 <div class="apply-now-btn apply-card" payload="${element.buttons[0].payload}">\
                     <span class="text" >Apply Now</span>\
-                    <img src="images/banking/arrow.svg" class="unactive-img">\
-                    <img src="images/banking/arrow-white.svg" class="active-img">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/arrow.svg" class="unactive-img">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/arrow-white.svg" class="active-img">\
                 </div>\
                 <a class="apply-now-btn" href="${element.buttons[1].url}" target="_blank">\
                     <span class="text">Know more</span>\
-                    <img src="images/banking/external-link.svg" class="unactive-img">\
-                    <img src="images/banking/external-white-link.svg" class="active-img">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-link.svg" class="unactive-img">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/external-white-link.svg" class="active-img">\
                 </a>\
                 </div>\
             </div>\

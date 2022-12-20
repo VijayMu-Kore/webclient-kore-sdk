@@ -89,7 +89,7 @@ class CreateNewCardPinTemplate {
         <div class="messageBubble-content">\
             <div class="botImg">\
                 <img class="default-bot-icon" src="images/bubbleIcon.svg">\
-                <img class="default-bot-banking-icon" src="images/banking/bankingavatar.svg">\
+                <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg">\
             </div>\
             <div class="botMessage no-border-data">\
                 <div class="otp-based-input-data">\
@@ -126,11 +126,11 @@ class CreateNewCardPinTemplate {
                         <div class="otp-block confirm-new-pin-block">\
                         <div class="label-text">Confirm New PIN</div>\
                         <input type="password" autocomplete="off" id="confirmNewPin" maxlength="4" placeholder="0000" class="input_form autocomplete-input" disabled>\
-                        <img class="error-text-img" src="images/banking/Error-text.svg">\
+                        <img class="error-text-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/Error-text.svg">\
                         </div>\
                     </div>\
                 </div>\
-                <button class="next-btn">Next <img src="images/banking/carrotright.svg"></button>\
+                <button class="next-btn">Next <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/carrotright.svg"></button>\
                 </div>\
             </div>\
         </div>\

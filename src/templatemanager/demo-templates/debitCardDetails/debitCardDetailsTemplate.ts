@@ -61,7 +61,7 @@ class debitCardDetailsTemplate {
         <div class="messageBubble-content">\
             <div class="botImg">\
                 <img class="default-bot-icon" src="images/bubbleIcon.svg">\
-                <img class="default-bot-banking-icon" src="images/banking/bankingavatar.svg">\
+                <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg">\
             </div>\
             <div class="botMessage no-border-data">\
                 <div class="verify-card-details">\
@@ -78,7 +78,7 @@ class debitCardDetailsTemplate {
                             <input type="password" autocomplete="off" class="autocomplete-input" id="cvvId" maxlength="3" placeholder="000">\
                         </div>\
                     </div>\
-                    <button class="verify-btn">Verify <img src="images/banking/carrotright.svg"></button>\
+                    <button class="verify-btn">Verify <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/carrotright.svg"></button>\
                 </div>\
                 </div>\
             </div>\

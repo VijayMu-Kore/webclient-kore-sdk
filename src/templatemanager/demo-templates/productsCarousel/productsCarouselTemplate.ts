@@ -27,7 +27,7 @@ class ProductsCarouselTemplate {
             });
             setTimeout(() => {
               me.bindEvents(me.messageHtml, 'carousel-template');
-          }, 1000)
+          }, 500)
             return me.messageHtml;
         }
     }
@@ -43,11 +43,11 @@ class ProductsCarouselTemplate {
                 <div class="new-arrival {{if  data.newarrival == true}} display-inline-block{{else}}display-none{{/if}}">New</div>\
                 <div class="img-block">\
                   <div class="wishlist">\
-                    <img class="dflt-wish-img" src="images/cosmetics/wishlist.svg">\
-                    <img class="wish-img-fill" src="images/cosmetics/wish-fill.svg">\
+                    <img class="dflt-wish-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wishlist.svg">\
+                    <img class="wish-img-fill" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/wish-fill.svg">\
                   </div>\
                   <div class="add-to-bag">\
-                    <img src="images/cosmetics/bag.svg">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/bag.svg">\
                     <span>Add to Bag</span>\
                   </div>\
                   <img src="${data.prod_image}">\
