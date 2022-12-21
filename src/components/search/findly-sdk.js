@@ -7700,7 +7700,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                     _self.searchHistroy(_self.vars.configuration);
                   }
                 }
-                if ($('#searchChatContainer').prop('offsetHeight') >= $('.finalResults .resultsOfSearch .bottom-search-show-all-results').last().position().top) {
+                if ($('.finalResults .resultsOfSearch .bottom-search-show-all-results').last().position() && $('#searchChatContainer').prop('offsetHeight') >= $('.finalResults .resultsOfSearch .bottom-search-show-all-results').last().position().top) {
                   $('.more-results').css('display', 'none');
                   $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'flex');
                 } else {
@@ -7708,8 +7708,11 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                   $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'none');
                 }
               });
-              $('.more-results').css('display', 'block');
+              if ($("#searchChatContainer").find('.bottom-search-show-all-results').length) {
+                $('.more-results').css('display', 'block');
               $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'none');
+
+              }
             }
           }
           if (!$('.search-data-container').last().children().length) {
@@ -19230,8 +19233,8 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
 
 
     $("#search-box-container")
-      .off("click", ".submit-button")
-      .on("click", ".submit-button", function (e) {
+      .off("click", '.submit-button , .search-btn-arrow ,.search-btn-custom,.search-icon-btn')
+      .on("click", '.submit-button , .search-btn-arrow ,.search-btn-custom,.search-icon-btn', function (e) {
         if (
           $("body").hasClass("top-down")
             ? $(".search-top-down").val()

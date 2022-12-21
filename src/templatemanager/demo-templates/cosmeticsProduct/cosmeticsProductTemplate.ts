@@ -10,6 +10,7 @@ class CosmeticsProductTemplate {
         if (msgData?.message?.[0]?.component?.payload?.template_type === "cosmeticsProduct") {
           me.messageHtml = $(CosmeticsProductTemplate.prototype.getTemplateString()).tmpl(msgData?.message[0].component?.payload);
         hostWindowInstance.getProductPreview(me.messageHtml);
+        CosmeticsProductTemplate.prototype.bindEvents(me, me.messageHtml);
           return me.messageHtml;
         }
     }
@@ -23,7 +24,7 @@ class CosmeticsProductTemplate {
                     <span class="heading-text">${titleName}</span>\
                     <span class="view-all hide">View all</span>\
                   </div>\
-                  <div class="arrivals-grids-template">\
+                  <div class="arrivals-grids-template parent-grid-template">\
                   {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                     <div class="slide-gride cosmetics-product-view" data-prod-cat="${data.prod_cat}" data-img="${data.img}" data-title="{{html helpers.convertMDtoHTML(data.heading)}}" data-info="{{html helpers.convertMDtoHTML(data.description)}}" data-price="${data.prod_price}" data-orig-price="${data.prod_original_price}" data-percentage-offer="${data.prod_percentage_offer}" data-bestseller="${data.bestseller}" data-newarrival="${data.newarrival}">\
                       <div class="inner-content-data">\
@@ -61,6 +62,49 @@ class CosmeticsProductTemplate {
             "templateType": "carousel"
           }
           return cosmeticsProductTemplate.template
+    }
+
+    bindEvents(me:any, messageHtml: any) {
+      let hostWindowInstance = me.hostInstance;
+      let $ = me.hostInstance.$;
+      $(messageHtml)
+    .off("click", ".show-more-list")
+    .on("click", ".show-more-list", function (e: any) {
+    const showMoreData = {
+      groupName: $(e.currentTarget).attr("groupName"),
+      templateName: $(e.currentTarget).attr("templateName"),
+      pageNumber: Number($(e.currentTarget).attr("pageNumber")) + 1,
+      fieldName: $(e.currentTarget).attr("fieldName"),
+    };
+    hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
+      const isSearchSDK = document.body.className.match('sdk-body');
+      if(result?.message[0].component.payload){
+        if(isSearchSDK!==null){
+          result.message[0].component.payload.isSearchSDK = true;
+        }
+        else{
+          result.message[0].component.payload.isSearchSDK = false;
+        }
+      }
+      
+      const listHTML = $(CosmeticsProductTemplate.prototype.getTemplateString()).tmpl(result?.message[0].component.payload);
+      $(listHTML).find(".show-more-list").remove();
+      $(
+        ".full-search-data-container [templateName=" +
+        showMoreData.templateName +
+        "]"
+      ).before($(listHTML).find(".parent-grid-template").children());
+      if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * 5 >= result?.message[0].component.payload.doc_count) {
+        $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").hide();
+      }
+      var dataContainer = '.data-body-sec';
+      if ($('body').hasClass('top-down')) {
+        dataContainer = '.content-data-sec';
+      }
+      $(dataContainer).animate({ scrollTop: (+$(dataContainer).scrollTop() + ($(dataContainer).prop("offsetHeight"))) }, 1000);
+    })
+    $(e.currentTarget).attr("pageNumber", Number($(e.currentTarget).attr("pageNumber")) + 1);
+    });
     }
     
 }

@@ -95,6 +95,17 @@ class FullSearchResultTopdownTemplate {
           $(".empty-full-results-container").addClass("hide");
         }
       }
+      $(messageHtml).find('.scroll-top-container').css('display', 'none');
+      $(messageHtml).find(".content-data-sec").off('scroll').on('scroll', function () {
+          if ($(messageHtml).find('.content-data-sec').scrollTop() > 50) {
+            $(messageHtml).find('.scroll-top-container').css('display', 'flex');
+          } else {
+            $(messageHtml).find('.scroll-top-container').css('display', 'none');
+          }
+        });
+        $(messageHtml).find(".title-scroll-top").off('click').on('click', function () {
+          $(messageHtml).find(".content-data-sec").scrollTop(0);
+        });
       if(msgData.message[0].component.payload.displayFeedback){
         FullSearchResultTopdownTemplate.prototype.feedBackResultEvents(me, messageHtml);
         }
