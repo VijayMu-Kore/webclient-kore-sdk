@@ -6354,11 +6354,9 @@ FindlySDK.prototype.searchEventBinding = function (
             query: "Daily Care Products",
           },
         ];
-        _self.appendPopularSearchResults(
-          (response && response.result && response.result.slice(0, 3)) ||
-          defaultPopulardata ||
-          []
-        );
+        if (!$('body').hasClass('top-down')) {
+          _self.appendPopularSearchResults(response && response.result && response.result.slice(0, 3) || defaultPopulardata || []);
+        }
         _self.getRecentSearches(recentSearchUrl, "GET");
         var tmplData = {
           searchResults: _self.vars.searchObject.recentAPIResponse,
@@ -7060,6 +7058,12 @@ FindlySDK.prototype.searchEventBinding = function (
             $(".custom-header-container-center").css("visibility", "hidden");
           }
         }
+        setTimeout(function () {
+          _self.frequentlySearchedRecentTextClickEvent();
+        }, 1000);
+        if (!$('.bottom-up-search').val()) {
+          $('.parent-search-live-auto-suggesition').hide();
+        }
       });
       $(dataHTML).off('click', '#histroybutton').on('click', '#histroybutton', function (e) {
         e.stopPropagation();
@@ -7690,7 +7694,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       // } 
       if (!$('body').hasClass('top-down')) {
         setTimeout(() => {
-          if ($('.messageBubble .userMessage span').last().text() == _self.vars.searchObject.searchText && $('.messageBubble .messageBubble-content .botMessage span:nth-child(2)').last().text() === 'Sure, please find the matched results below') {
+          if ($('.messageBubble .userMessage span').last().text() == _self.vars.searchObject.searchText && $('.messageBubble .messageBubble-content .botMessage span:nth-child(1)').last().text() === 'Sure, please find the matched results below') {
             if ($('#searchChatContainer').prop('offsetHeight') < $('.finalResults .resultsOfSearch .bottom-search-show-all-results').last().position().top) {
               $("#searchChatContainer").off('scroll').on('scroll', function () {
                 if ($('.sdk-chat-container').scrollTop() == 0 && !$('#histroybutton').is(':visible')) {
@@ -9341,9 +9345,8 @@ FindlySDK.prototype.addFrequentlyUsedControl = function (config) {
             .empty()
             .append(dataHTML);
         } else {
-          var dataHTML = $(_self.getFrequentlySearchTemplate()).tmplProxy({
-            ...data,
-            ...{ searchConfig: config.searchConfig },
+          var dataHTML = $(_self.getTopDownPopularSearchTemplate()).tmplProxy({
+            ...{ data: data.recents, searchConfig: config.searchConfig , isRecentSearch: true},
           });
           if (
             data.recents &&
@@ -9353,12 +9356,14 @@ FindlySDK.prototype.addFrequentlyUsedControl = function (config) {
             if (config.searchConfig.showSearchesEnabled) {
               $("#frequently-searched-box").show();
               setTimeout(() => {
+                _self.deleteSearchedTextClickEvent();
                 _self.frequentlySearchedRecentTextClickEvent();
               }, 150);
             }
           } else {
-            $("#frequently-searched-box").hide();
+            // $("#frequently-searched-box").hide();
           }
+          $("#frequently-searched-box").show();
           $("#" + config.container)
             .empty()
             .append(dataHTML);
@@ -10092,11 +10097,11 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
     .configureSearchInterface(findlyConfig.botOptions)
     .then(function (response) {
       _self.vars.indexPipelineId = response.indexPipelineId;
-      if (response.experienceConfig.searchBarPosition !== "top") {
+      if (response.experienceConfig.searchBarPosition == "top") {
         _self.initializeTopDown(findlyConfig, null, response);
       } else {
         if (
-          ((response || {}).interactionsConfig || {}).defaultStatus !== "avatar"
+          ((response || {}).interactionsConfig || {}).defaultStatus == "avatar"
         ) {
           $("body").addClass("setDefaultSearchTemplate1");
         } else {
@@ -20018,9 +20023,9 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                   </div>
               </div>
               <div id="greeting-msg-top-down"></div>
-              <div id="frequently-searched-box" class="frequently_searched_box"> </div>
+              <div id="frequently-searched-box" class="frequently_searched_box">
               <div id="recent-searched-box"></div>
-              <div id="popular-searched-box"></div>
+                <div id="popular-searched-box"></div> </div>
               <div id="live-search-result-box" class="live_search_result_box">
                   <div id="auto-query-box" class="auto_query_box">
                   </div>
@@ -20122,9 +20127,14 @@ FindlySDK.prototype.initializeTopDown = function (
     container: "conversation-body",
   });
   _self.addFrequentlyUsedControl({
-    container: "frequently-searched-box",
+    container: "recent-searched-box",
     templateId: "frequently-searched-template",
     searchConfig: searchConfiguration,
+  });
+  _self.addPopularSearchControl({
+    container: "popular-searched-box",
+    templateId: "popular-searched-template",
+    searchConfig: searchConfiguration
   });
   _self.addGreetingMsgControl({
     container: "greeting-msg-top-down",
@@ -20457,7 +20467,24 @@ FindlySDK.prototype.getFrequentlySearchTemplate = function () {
                                       </script>'
   return frequentlySearchTemplate;
 };
-
+FindlySDK.prototype.getTopDownPopularSearchTemplate = function () {
+  var popularSearchTemplate = '<script id="popular-searched-template" type="text/x-jqury-tmpl">\
+    {{if data && data.length}}\
+        <div class="popular-search-container-data">\
+            {{each(key, msgItem) data }}\
+                <div class="p-data-search recentText" id="${msgItem||index}">\
+                    <img src="{{if isRecentSearch==true}}https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/history.svg{{else}}https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/popular.svg{{/if}}" class="type-search">\
+                    <span class="title-popular" title="${msgItem}">${msgItem}</span>\
+                    <div class="close-popular {{if isRecentSearch==true}}delete-recent{{else}}delete-popular{{/if}}">\
+                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/close-small.svg">\
+                    </div>\
+                </div>\
+            {{/each}}\
+        </div>\
+    {{/if}}\
+</script>'
+  return popularSearchTemplate;
+}
 FindlySDK.prototype.getGreetingMsgTopDownTemplate = function () {
   var greetingMsgTemplate =
     '<script id="greeting-msg-top-down-template" type="text/x-jqury-tmpl">\
@@ -20546,7 +20573,7 @@ FindlySDK.prototype.appendActionsContainerForBottomUp = function (from) {
 };
 FindlySDK.prototype.frequentlySearchedRecentTextClickEvent = function () {
   var _self = this;
-  $('.tile_with_header').off('click', '.tile-title').on('click', '.tile-title', function (e) {
+  $('#frequently-searched-box').off('click', '.recentText').on('click', '.recentText', function (e) {
     var recentText = $(this).attr('id');
     $("#search").val(recentText);
     $("#suggestion").val(recentText);
@@ -20601,18 +20628,20 @@ FindlySDK.prototype.frequentlySearchedRecentTextClickEvent = function () {
       $('#live-search-result-box').hide();
     }
   });
-  $('.recent-list-container').off('click', '.recent-search-delete').on('click', '.recent-search-delete', function (e) {
-    e.preventDefault();
+  $('#recent-searched-box').off('click', '.delete-recent').on('click', '.delete-recent', function (e) {
+       e.preventDefault();
     e.stopImmediatePropagation();
     e.stopPropagation()
-    var recentText = $(this).attr('id');
+    var recentText = $(e.currentTarget).closest('.recentText').attr('id')
     _self.deleteRecentSearches(recentText).then(data => {
-      $(this).parent().remove();
-      if (!$('.recent-list-container').children().length) {
+      $(e.currentTarget).parent().remove();
+      if (!$('#recent-searched-box .popular-search-container-data').children().length && !$('#popular-searched-box .popular-search-container-data').children().length) {
         $('#frequently-searched-box').hide();
         $('.live-search-result-box').hide();
       }
-      ;
+      if (!$('#recent-searched-box .popular-search-container-data').children().length) {
+              $('#recent-searched-box .popular-search-container-data').remove()
+          }
     })
   })
 };
@@ -24404,6 +24433,40 @@ FindlySDK.prototype.getFeedBackResult = function () {
       return textMessage;
     }
     // navigation experiance end//
+
+        /* delete recent and popular search click event start*/
+        FindlySDK.prototype.deleteSearchedTextClickEvent = function (event) {
+          // $('#recent-searched-box').off('click', '.delete-recent').on('click', '.delete-recent', function (e) {
+          //   e.stopPropagation();
+          //   var textMsg = $(e.currentTarget).closest('.recentText').attr('id');
+          //   $(e.currentTarget).closest('.recentText').remove();
+          //   if (!$('#recent-searched-box .popular-search-container-data').children().length) {
+          //     $('#recent-searched-box .popular-search-container-data').remove()
+          //   }
+          // });
+        
+          $('#popular-searched-box').off('click', '.delete-popular').on('click', '.delete-popular', function (e) {
+            e.stopPropagation();
+            var textMsg = $(e.currentTarget).closest('.recentText').attr('id');
+            var deletedPopularSearchList = [];
+            var index = -1;
+            deletedPopularSearchList = JSON.parse(window.localStorage.getItem('deletedPopularSearchList')) || [];
+            if (deletedPopularSearchList.length) {
+              index = deletedPopularSearchList.findIndex((d) => d == textMsg);
+            }
+            if (index == -1) {
+              deletedPopularSearchList.push(textMsg);
+              window.localStorage.setItem('deletedPopularSearchList', JSON.stringify(deletedPopularSearchList));
+            }
+            $(e.currentTarget).closest('.recentText').remove();
+            if (!$('#popular-searched-box .popular-search-container-data').children().length) {
+              $('#popular-searched-box .popular-search-container-data').remove()
+            }
+          });
+    
+    
+        }
+        /* delete recent and popular search click event end*/
         /* best match response check start*/
         FindlySDK.prototype.isBestMatchResponse = function (res) {
           var _self = this;
@@ -24426,5 +24489,27 @@ FindlySDK.prototype.getFeedBackResult = function () {
           return textMsge;
         }
         /* best match response check end*/
+
+        FindlySDK.prototype.addPopularSearchControl = function (config) {
+          var _self = this;
+          _self.pubSub.unsubscribe('sa-popular-search-data');
+          _self.pubSub.subscribe('sa-popular-search-data', (msg, data) => {
+            var popularData = [];
+            if (data && data.length) {
+              data.forEach((d) => {
+                popularData.push(d.query);
+              });
+            }
+            var dataHTML = $(_self.getTopDownPopularSearchTemplate()).tmplProxy({ ...{ data: popularData, searchConfig: config.searchConfig, isRecentSearch: false } });
+            if (data && data.length && !$('.search-top-down').val()) {
+              // $('#frequently-searched-box').show();
+              setTimeout(() => {
+                _self.deleteSearchedTextClickEvent();
+                _self.frequentlySearchedRecentTextClickEvent();
+              }, 150)
+            }
+            $('#' + config.container).empty().append(dataHTML);
+          });
+        }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

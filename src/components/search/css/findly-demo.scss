@@ -4164,3 +4164,48 @@ body.siemens {
 .finalResults .grid-bot-actions-border {
     margin-left: 30px;
 }
+#recent-searched-box {
+	.popular-search-container-data {
+		border-radius: 0px;
+		padding-bottom: 0px;
+		margin-bottom: -1px;
+	}
+}
+.popular-search-container-data {
+	background: #F8F9FA;
+	border-radius: 0px 0px 12px 12px;
+	padding: 10px 0;
+	display: inline-block;
+	width: 100%;
+	.p-data-search {
+		padding: 8px 15px;
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		position: relative;
+		.title-popular {
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 16px;
+			color: #202124;
+			padding-left: 11px;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			padding-right: 45px;
+		}
+		.close-popular {
+			position: absolute;
+			right: 25px;
+			top: 7px;
+			background: #E4E5E7;
+			width: 17px;
+			height: 17px;
+			border-radius: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+		}
+	}
+}
