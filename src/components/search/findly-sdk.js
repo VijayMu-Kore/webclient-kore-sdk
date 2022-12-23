@@ -16,7 +16,7 @@ import './css/common-styles.scss';
 import './css/search-bar-experience.scss';
 import './css/fonts/inter.css';
 import './css/findly-demo.scss';
-import './css/banking-styles.scss';
+// import './css/banking-styles.scss';
 import './css/cosmetics-styles.scss';
 import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
@@ -279,6 +279,7 @@ FindlySDK.prototype.initVariables = function () {
   vars.searchObject = {
     //recents:[]
   };
+  vars.maxNumOfResultsCount = 5;
   vars.selectedFiltersArr = [];
   vars.selectedFacetsList = [];
   vars.tempSelectedFacetsList = [];
@@ -1374,81 +1375,7 @@ FindlySDK.prototype.getSearchControl = function () {
             {{/if}}\
           </div>\
         </script>';
-
-        var searchControlseiemens = '<script type="text/x-jqury-tmpl">\
-        <div class="search-bar">\
-        <div class="search-btn-arrow">\
-          <span class="search-title search-siemens-title">SEARCH</span>\
-          <span class="search-title  search-banking-title">Search</span>\
-          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/arrow-right.svg" class="before-execute">\
-          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/search-right.svg" class="after-execute banking-exe">\
-          <img src="images/siems-search-right.svg" class="after-execute scm-exe">\
-        </div>\
-          <div class="widget-icon">\
-            {{if searchConfig.searchBarIcon}}\
-              <img style="vertical-align:middle" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/search-bank.svg" class="for-banking">\
-              <img style="vertical-align:middle" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/search.svg" class="for-scm">\
-            {{/if}}\
-          </div>\
-          {{if searchConfig.autocompleteOpt == true}}\
-        <input id="suggestion" name="search"  disabled="disabled" class="top-down-suggestion search \
-        {{if classes}}\
-          ${classes}"\
-        {{/if}}\
-        {{if hideSearchIcon}}\
-          style="position: absolute; bottom: 0px; color:#8a959f;">\
-        {{else}}\
-          style="position: absolute; bottom: 0px; color:#8a959f;"> \
-        {{/if}}\
-        {{/if}}\
-        <input autocomplete="off" id="search" name="search"\
-        {{if searchConfig.searchBarPlaceholderText}}\
-        placeholder="${searchConfig.searchBarPlaceholderText}" \
-        {{else}}\
-          placeholder="Search here"\
-        {{/if}}\
-        class="search-top-down search chatInputBox\
-        {{if classes}}\
-          ${classes}"\
-        {{/if}}\
-        {{if hideSearchIcon}}\
-          style="position: absolute; bottom: 0px;  \
-        {{else}}\
-          style="position: absolute; bottom: 0px;\
-          {{if searchConfig.autocompleteOpt == true}}\
-          background : transparent\
-          {{else}}\
-          background : ${searchConfig.searchBarFillColor}; \
-          {{/if}}\
-          {{/if}}\
-           background:transparent;">\
-        {{if microphone && defaultMicrophone}}\
-          <div class="sdkFooterIcon microphoneBtn"> \
-              <button class="notRecordingMicrophone" title="Microphone On"> \
-                  <i class="microphone"></i> \
-              </button> \
-              <button class="recordingMicrophone" title="Microphone Off" > \
-                  <i class="microphone"></i> \
-                  <span class="recordingGif"></span> \
-              </button> \
-              <div id="textFromServer"></div> \
-          </div> \
-        {{/if}}\
-        {{if searchConfig.searchButtonEnabled}}\
-        {{if searchConfig.buttonPlacementPosition== "inside"}}\
-        <button class="submit-button" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 28px; position: absolute; right: 70px;margin: 0;top: -31px;padding: 0px 15px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
-       {{else}}\
-          <button class="submit-button submit-button-outside" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}; height: 34px; position: absolute; right: -32px;margin:0px;padding: 0px 15px;line-height: 20px;font-size: 14px;letter-spacing: 0px;"{{/if}} disabled>${searchConfig.buttonText}</button>\
-        {{/if}}\
-        {{/if}}\
-      </div>\
-    </script>';
-  if ($('body').hasClass('banking') || $('body').hasClass('siemens')) {
-    return searchControlseiemens;
-  }
-  else {
     return searchControl;
-  }
 };
 FindlySDK.prototype.getSearchFacetsTemplate = function () {
   return '\
@@ -1526,25 +1453,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                 <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/close.svg" class="close-icon" />\
               </div>\
             </div>\
-            <div class="banking-header-sec">\
-              <div class="titles-logo">\
-                <span class="main-heading-logo">My Bank</span>\
-                <span class="small-heading-logo">Powered by Kore.ai</span>\
-              </div>\
-              <div class="righ-side-actions">\
-                <img class="elipse-overflow" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/3dots-icon.svg" />\
-                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/close.svg" class="close-icon" />\
-              </div>\
-            </div>\
-            <div class="siemens-header-sec">\
-              <div class="titles-logo">\
-                <span class="main-heading-logo">SCM Procure</span>\
-                <span class="small-heading-logo">Powered by Kore.ai</span>\
-              </div>\
-              <div class="righ-side-actions">\
-                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/close-white.svg" class="close-icon" />\
-              </div>\
-            </div>\
             <div class="custom-header {{if koreWidgetSDKInstance.isDev==false}}display-none{{/if}}">\
               <div class="custom-header-container-left">\
                 <img class="custom-chevron-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/right-arrow-icon.svg"/>\
@@ -1609,62 +1517,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                     </div>\
                     <div class="text-search-icon">\
                       <span class="text-search-promotion text-search" title="Winter Collection">Winter Collection</span>\
-                    </div>\
-                  </div>\
-                </div>\
-              </div>\
-            </div>\
-            <div class="banking-default-welcome-screen">\
-              <div class="welcome-message">\
-                <div class="bold-text">Hi<span class="username"></span></div>\
-                <div class="text-info">Welcome to MyBank. I am Elle, your assistant to address all your queries related to MyBank. Type in your query in the conversation bar and lets chat.</div>\
-                <div class="okay-thanks-parent"><div class="okay-thanks">OK, Thanks</div></div>\
-              </div>\
-              <div class="default-message-bubble-banking">\
-                <div class="icon-block">\
-                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg" />\
-                </div>\
-                <div class="text-content-data">\
-                  <div class="text-block hide">I can help  you with banking related queries. Here are some popular topics to get you started.</div>\
-                  <div class="main-heading">Popular Searches</div>\
-                  <div class="buttons-block popular-search-results">\
-                  </div>\
-                  <div class="main-heading">Promotions</div>\
-                  <div class="buttons-block">\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="MyBank Rewards Program">MyBank Rewards Program</span>\
-                    </div>\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="MyBank  Wealth Advisor">MyBank  Wealth Advisor</span>\
-                    </div>\
-                  </div>\
-                </div>\
-              </div>\
-            </div>\
-            <div class="siemens-default-welcome-screen">\
-              <div class="welcome-message">\
-                <div class="bold-text">Hi,</div>\
-                <div class="text-info">I am Nia, your personal assistant to help you with SCM Procure related queries. You can select from the options below or can type your question in the space provided.</div>\
-                <div class="okay-thanks-parent"><div class="okay-thanks">OK, Thanks</div></div>\
-              </div>\
-              <div class="default-message-bubble-siemens">\
-                <div class="icon-block">\
-                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg" />\
-                </div>\
-                <div class="text-content-data">\
-                  <div class="text-block">I can help with questions around SCM STAR. And, Im still learning about others. Here are some popular topics to get you started.</div>\
-                  <div class="buttons-block popular-search-results-siemens">\
-                  </div>\
-                  <div class="main-heading">Store Updates</div>\
-                  <div class="buttons-block">\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="RFQ Question">RFQ Question</span>\
-                    </div>\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="RFQ Question">RFQ Question</span>\
-                    </div>\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="RFQ Question">RFQ Question</span>\
                     </div>\
                   </div>\
                 </div>\
@@ -2523,9 +2375,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
     messageBubbles +=
       '<div class="botImg">\
                   <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg"/>\
-                  <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg"/>\
                 <img class="default-cosmetic-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetics-logo-icon.svg"/>\
-                <img class="default-bot-siemen-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg"/>\
                   </div>';
   }
   messageBubbles += '<div class="botMessage">';
@@ -2533,9 +2383,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
     messageBubbles +=
       '<span class="bot_Img">\
                 <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg"/>\
-                <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg"/>\
                 <img class="default-cosmetic-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetics-logo-icon.svg"/>\
-                <img class="default-bot-siemen-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg"/>\
                 </span>';
   }
   messageBubbles +=
@@ -3265,7 +3113,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
   var payload = {
     query: _self.vars.searchObject.searchText,
     // "maxNumOfResults": 9,
-    maxNumOfResults: 5,
+    maxNumOfResults: _self.vars.maxNumOfResultsCount,
     userId: _self.API.uuid,
     streamId: _self.API.streamId,
     lang: "en",
@@ -5421,7 +5269,7 @@ FindlySDK.prototype.searchByFacetFilters = function (
   var payload = {
     query: _self.vars.searchObject.searchText,
     // "maxNumOfResults": 9,
-    maxNumOfResults: 5,
+    maxNumOfResults: _self.vars.maxNumOfResultsCount,
     lang: "en",
     // "isDev": true,
     isDev: _self.isDev,
@@ -5952,7 +5800,6 @@ FindlySDK.prototype.searchEventBinding = function (
         _self.vars.selectedFacetFromSearch = "all results";
         _self.destroy();
       }
-      _self.bankingAnimation('idle');
     });
   //_self.bindSearchActionEvents();
 
@@ -6004,9 +5851,6 @@ FindlySDK.prototype.searchEventBinding = function (
             $('.show-results-count-container').remove();
             $('.cancel-search').hide();
         } else if (!$("body").hasClass("top-down") && keyCode == 13) {
-          $('.default-data-show-not-loaded').hide();
-            $('.banking-default-welcome-screen').hide();
-            $('.siemens-default-welcome-screen').hide();
             $('.cosmetics-default-welcome-screen').hide();
             $(".data-body-sec").scrollTop(0);
             $('.filterCarouselCard').remove();
@@ -6131,14 +5975,8 @@ FindlySDK.prototype.searchEventBinding = function (
           $('.cancel-search').hide();
           $('.back-search').show();
           $('#searchChatContainer').css({ 'display': 'block' });
-          if (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')) {
-            $('.search-container').css({ 'height': 'auto' });
-            $('.search-container').css({ 'max-height': 'calc(100vh -  165px)' });
-          }
-          else {
             $('.search-container').css({ 'height': 'calc(100vh -  100px)' });
             $('.search-container').css({ 'max-height': 'calc(100vh -  100px)' });
-          }
           if ($('body').hasClass('search-executed')) {
             $('.search-icon-btn').show();
           }
@@ -7327,7 +7165,7 @@ FindlySDK.prototype.bindLiveDataToChat = function (botAction) {
   var payload = {
     query: _self.vars.searchObject.searchText,
     // "maxNumOfResults": 9,
-    maxNumOfResults: 5,
+    maxNumOfResults: _self.vars.maxNumOfResultsCount,
     userId: _self.API.uuid,
     streamId: _self.API.streamId,
     lang: "en",
@@ -7425,15 +7263,9 @@ FindlySDK.prototype.handleSearchRes = function (res) {
 
       botResponse = res.text;
       _self.sendMessageToSearch("bot", botResponse);
-      if (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')) {
-        _self.bankingAnimation('happy');
-      }
     } else {
       botResponse = res;
       _self.sendMessageToSearch("bot", JSON.stringify(botResponse));
-      if (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')) {
-        _self.bankingAnimation('happy');
-      }
     }
   }
   if (res.templateType === "search") {
@@ -8834,7 +8666,7 @@ FindlySDK.prototype.getFrequentlySearched = function (url, type, payload) {
 
   if (url != this.API.livesearchUrl) {
     if (!payload.maxNumOfResults) {
-      payload["maxNumOfResults"] = 5;
+      payload["maxNumOfResults"] = _self.vars.maxNumOfResultsCount;
     }
     if (!payload.pageNumber) {
       payload["pageNumber"] = 0;
@@ -10081,17 +9913,7 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
-   if ( window.location.href.includes('#scm')) {
-        $('body').append(`<div class="full-page-tour-guide-fixed"></div>`);
-      }
-      if (window.location.href.includes('#banking') || window.location.href.includes('#loans') || window.location.href.includes('#invest') || window.location.href.includes('#cards') || window.location.href.includes('#offers')) {
-        if (!$('body').hasClass('banking')) {
-          $('body').addClass('banking')
-        }
-      }
-      if (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze')) {
-        _self.vars.maxNumOfResultsCount = 9;
-      }
+  _self.vars.maxNumOfResultsCount = 9;
   setTimeout(()=>{
   _self
     .configureSearchInterface(findlyConfig.botOptions)
@@ -10122,45 +9944,18 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
             ((response || {}).interactionsConfig || {}).welcomeMsgFillColor ||
             "#F8F9FA",
         };
-         if ($('body').hasClass('banking')) {
-            searchConfig.avatarURL = 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/banking-avt.png'
-          }
-          if (window.location.href.includes('#scm')) {
-            searchConfig.avatarURL = 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens_avatar_text.svg'
-          }
           if ($('body').hasClass('cosmetics')) {
             searchConfig.avatarURL = 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetics_avatar_text.svg'
           }
         setTimeout(() => {
             _self.configureSearchAvatar(searchConfig);
           }, 5000)
-          if ($('body').hasClass('siemens')) {
-            setTimeout(() => {
-              _self.imagePreview();
-            }, 200)
-          }
       }
 
       _self.initKorePicker(findlyConfig);
     });
     setTimeout(() => {
-      if (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')) {
-        var leftContainerHtml = $('.left-sec');
-        var middleContainerHtml = $('.middle-sec');
-        var rightContainerHtml = $('.right-sec');
-        var loanContainerHtml = $('.scroll-loans-relative');
-        var investContainerHtml = $('.invest-sec-cards-info');
-        var offersContainerHtml = $('.offers-sections-inside');
-        var cardsContainerHtml = $('.cards-features');
-        _self.bindPerfectScroll('.body-content-info', leftContainerHtml, null, 'y', 'leftsecContainer');
-        _self.bindPerfectScroll('.body-content-info', middleContainerHtml, null, 'y', 'middlesecContainer');
-        _self.bindPerfectScroll('.body-content-info', rightContainerHtml, null, 'y', 'rightsecContainer');
-        _self.bindPerfectScroll('.loans-section', loanContainerHtml, null, 'y', 'loanContainer');
-        _self.bindPerfectScroll('.invest-sec-data', investContainerHtml, null, 'y', 'investContainer');
-        _self.bindPerfectScroll('.offers-sec-data', offersContainerHtml, null, 'y', 'offersContainer');
-        _self.bindPerfectScroll('.future-cards-section-info', cardsContainerHtml, null, 'y', 'cardsContainer');
-      }
-      if (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze')) {
+      if (window.location.href.includes('cosmetics')) {
         var leftContainerHtml = $('.left-data');
         var rightContainerHtml = $('.right-data');
         _self.bindPerfectScroll('.my-orders-container', leftContainerHtml, null, 'y', 'leftsecContainer');
@@ -10622,7 +10417,7 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
     ? "fullSearch"
     : "conversationalSearch";
 
-    messageToBot["maxNumOfResults"] = (messageToBot["interface"]=="conversationalSearch")? 2 : 5;
+    messageToBot["maxNumOfResults"] = (messageToBot["interface"]=="conversationalSearch")? 2 : _self.vars.maxNumOfResultsCount;
   //payload end//
   if (!$("body").hasClass("demo")) {
     messageToBot.indexPipelineId = _self.API.indexpipelineId;
@@ -17504,7 +17299,7 @@ FindlySDK.prototype.invokeSpecificSearch = function (selectedFacet) {
   var payload = {
     query: _self.vars.searchObject.searchText,
     // "maxNumOfResults": 9,
-    maxNumOfResults: 5,
+    maxNumOfResults: _self.vars.maxNumOfResultsCount,
     userId: _self.API.uuid,
     streamId: _self.API.streamId,
     lang: "en",
@@ -19990,25 +19785,6 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                     <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/close.svg" class="close-conv-icon">\
                 </div>\
               </div>\
-              <div class="banking-header-sec">\
-                <div class="titles-logo">\
-                    <span class="main-heading-logo">My Bank</span>\
-                    <span class="small-heading-logo">Powered by Kore.ai</span>\
-                </div>\
-                <div class="righ-side-actions">\
-                <img class="elipse-overflow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAADCAYAAABI4YUMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABUSURBVHgBhcrBDYAgEETRiW4BSCzAo11YgpZgCZZgJ1qClmBDQgEkMFzgBPxkD/sy/cSUHi816Nma/wNrWQfIBo94J1KyV+wQwD2Elc+bB+6mLSULWI0gebajC9UAAAAASUVORK5CYII="/>\
-                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/close.svg" class="close-conv-icon">\
-                </div>\
-            </div>\
-            <div class="siemens-header-sec">\
-              <div class="titles-logo">\
-                  <span class="main-heading-logo">SCM Procure</span>\
-                  <span class="small-heading-logo">Powered by Kore.ai</span>\
-              </div>\
-              <div class="righ-side-actions">\
-                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/close-white.svg" class="close-conv-icon">\
-              </div>\
-            </div>\
           </div>
                     <div id="conversations" class="conversations">\
                         <div id="conversation-body"></div>\
@@ -20037,7 +19813,6 @@ FindlySDK.prototype.getTopDownTemplate = function () {
           </div>
           <div class="skelton-load-img" style="display: none;">
             <img alt="" class="default-skelton" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/skeletonImage.png">
-            <img alt="" class="banking-siemens-skelton" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/skelton-siemns-banking.png">
             <img alt="" class="cosmetics-skelton" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/skelton-loading.png"> 
            </div>
           <div id="top-down-full-results-container"></div>
@@ -21298,11 +21073,7 @@ FindlySDK.prototype.getAvatarTopLeft = function () {
 };
 
 FindlySDK.prototype.positionAvatar = function (position) {
-  if ($('body').hasClass('banking')) {
-    $('.start-search-icon-div').css('left', position.x + 25);
-  } else {
     $('.start-search-icon-div').css('left', position.x);
-  }
   $('.start-search-icon-div').css("top", position.y);
   if (!avatarDisplayedOnce) {
     this.positionAvatarIntro(position);
@@ -21315,13 +21086,13 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   }
   if (position.x >= $('#introText').width()) {
     if (position.x >= $('body').width() - 80) {
-      if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+      if ($('body').hasClass('cosmetics')) {
         $('#introText').css('left', $('body').width() - 60 - $('#introText').width() + 25);
       } else {
         $('#introText').css('left', $('body').width() - 60 - $('#introText').width());
       }
     } else {
-      if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+      if ( $('body').hasClass('cosmetics')) {
         $('#introText').css('left', position.x - $('#introText').width() + 125);
       } else {
         $('#introText').css('left', position.x - $('#introText').width() + 36);
@@ -21330,11 +21101,9 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   } else {
     $('#introText').css('left', 2);
   }
-  if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
-    if ( window.location.href.includes('#scm') || window.location.href.includes('#cosmetics')) {
+  if ($('body').hasClass('cosmetics')) {
+    if (window.location.href.includes('#cosmetics')) {
       $('#introText').css('top', position.y);
-    } else if (window.location.href.includes('#banking') && $('#introText').length > 1) {
-      $('#introText').css('top', position.y - 9);
     } else {
       $('#introText').css('top', position.y - 9 + 15);
     }
@@ -21347,32 +21116,21 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   var topPosition = (Number(($('#introText').css('top')).replace('px', '')));
   var leftPosition = (Number(($('#introText').css('left')).replace('px', '')));
 
-  if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+  if ( $('body').hasClass('cosmetics')) {
     $('#introText').css({ 'left': (leftPosition - 46) + 'px' });
     if (!$('.start-search-icon-div').hasClass('hideStartIcon')) {
       setTimeout(() => {
         if (!$('.start-search-icon-div').hasClass('hideStartIcon')) {
           $('.into-text-details').children().first().show();
-          if (($('body').hasClass('siemens') || $('body').hasClass('banking') || $('body').hasClass('cosmetics')) && !$('body').hasClass('tabchange-active') && $('.into-text-details').children().length === 1 && (window.location.href.includes('#banking') ||  window.location.href.includes('#scm') || window.location.href.includes('#cosmetics'))) {
+          if (($('body').hasClass('cosmetics')) && !$('body').hasClass('tabchange-active') && $('.into-text-details').children().length === 1 && ( window.location.href.includes('#cosmetics'))) {
             $('#introText').css({ 'left': (leftPosition + 100) + 'px' });
             $('#introText').css('display', 'block');
             if ($('#welcomeMsg').first().width() > 86) {
-              // $('#introText').animate({ 'left': (leftPosition - 98) + 'px' }, 'slow')
-              if (window.location.href.includes('#banking')) {
-                $('#introText').animate({ 'left': (leftPosition - 50) + 'px' }, 'slow')
-              }
-              else {
                 $('#introText').animate({ 'left': (leftPosition - 84) + 'px' }, 'slow')
-              }
             } else {
-              // $('#introText').animate({ 'left': (leftPosition - 35) + 'px' }, 'slow')
               $('#introText').animate({ 'left': (leftPosition - 21) + 'px' }, 'slow')
             }
-            if (window.location.href.includes('#banking')) {
-              $('#introText').animate({ 'top': (position.y - 29 + 25) }, 'slow')
-            } else {
               $('#introText').animate({ 'top': (position.y - 29) }, 'slow');
-            }
             setTimeout(() => {
               $('.text-data').addClass('withoutarrow');
               $('#welcomeMsg').first().css('float', 'right');
@@ -21389,19 +21147,10 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
             </div>
           </div>
           </div>`);
-                if (window.location.href.includes('#banking')) {
-                  $('.second-introText').css({ 'left': position.x - $('#introText').width() + 56, 'top': (position.y + 9 + 25) });
-                } else {
                   $('.second-introText').css({ 'left': position.x - $('#introText').width() + 56, 'top': (position.y + 9) });
-                }
                 $('.second-introText').fadeIn('slow');
                 $('.second-info-msg').fadeIn('slow');
-                if (window.location.href.includes('#banking')) {
-                  $('.second-introText').animate({ 'left': position.x - $('#introText').width() + 53 }, 'slow');
-                }
-                else {
                   $('.second-introText').animate({ 'left': position.x - $('#introText').width() + 22 }, 'slow');
-                }
                 $('.second-introText .avatar-greeting-msg-close').css('visibility', 'visible');
                 $('.second-introText').off('click', '.avatar-greeting-msg-close').on('click', '.avatar-greeting-msg-close', function () {
                   $('#introText').css('display', 'none');
@@ -21414,11 +21163,8 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
           }
           else {
             $('#introText').css('display', 'block');
-            if ($('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+            if ( $('body').hasClass('cosmetics')) {
               $('#introText').animate({ 'left': position.x - $('#introText').width() - 13 }, 'slow');
-            }
-            else if ($('body').hasClass('banking')) {
-              $('#introText').animate({ 'left': position.x - $('#introText').width() - 13 + 33 }, 'slow');
             }
             else {
               $('#introText').animate({ 'left': (leftPosition + 'px') }, 'slow');
@@ -21460,13 +21206,11 @@ FindlySDK.prototype.positionContainer = function (position) {
     $('#introText').css('display', 'none');
     $('.second-introText').remove();
     $('#introText').stop();
-    // $('.start-search-icon-div').animate({ 'top': containerPosition.y, 'left': containerPosition.x }, 'fast');
-    // $('.start-search-icon-div').css( {'top': containerPosition.y,'left': containerPosition.x });
     $('.start-search-icon-div').fadeOut('slow');
     setTimeout(() => {
       $('.search-container').css('display', 'block');
       $('.search-container').css('max-height', '0');
-      if ($('.banking-default-welcome-screen').css('display') == 'block' || $('.banking-default-welcome-screen').css('display') == 'block' || $('.default-data-show-not-loaded').css('display') == 'block' || $('.cosmetics-default-welcome-screen').css('display') == 'block') {
+      if ($('.default-data-show-not-loaded').css('display') == 'block' || $('.cosmetics-default-welcome-screen').css('display') == 'block') {
         $('.search-container').css({ 'height': 'unset' });
         $('.parent-search-live-auto-suggesition').hide();
         $('.search-container').animate({ 'max-height': containerHeight + 100 });
@@ -21475,25 +21219,12 @@ FindlySDK.prototype.positionContainer = function (position) {
         $('.search-container').animate({ 'max-height': containerHeight });
         $('.search-container').css('height', 'auto');
       }
-      if ($('body').hasClass('banking')) {
-        $('.banking-default-welcome-screen').css('max-height', 'auto');
-        $('#searchChatContainer').css('max-height', 'calc(100vh - 267px)');
-        $('.parent-search-live-auto-suggesition').hide();
-      } else if ($('body').hasClass('siemens')) {
-        $('.parent-search-live-auto-suggesition').hide();
-        $('.siemens-default-welcome-screen').css('max-height', 'auto');
-        $('#searchChatContainer').css('max-height', 'calc(100vh - 206px)');
-      } else {
-        $('#searchChatContainer').css('max-height', 'calc(100vh - 206px)');
-      }
+  
+      $('#searchChatContainer').css('max-height', 'calc(100vh - 206px)');
       $("#search").focus();
       $('.parent-search-live-auto-suggesition').hide();
       $('.start-search-icon-div').css('top', position.y)
-      if ($('body').hasClass('banking')) {
-        $('.start-search-icon-div').css('left', position.x + 25);
-      } else {
-        $('.start-search-icon-div').css('left', position.x);
-      }
+      $('.start-search-icon-div').css('left', position.x);
       $('.start-search-icon-div').addClass('hideStartIcon');
       $('#introText').stop();
       $('.second-introText').stop();
@@ -21502,10 +21233,7 @@ FindlySDK.prototype.positionContainer = function (position) {
       $('#introText').css('display', 'none');
       var name = (window.localStorage.getItem('userName')) ? `<strong> ${window.localStorage.getItem('userName')},</strong>` : `,`;
       $('.username').html(name);
-      if (window.location.href.includes('#banking')) {
-        $('.welcomeText').html('Welcome to MyBank. I am Elle, your assistant to address all your queries related to MyBank. Type in your query in the conversation bar and lets chat.')
-      }
-      else if (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze')) {
+     if (window.location.href.includes('cosmetics')) {
         $('.welcomeText').html('I am Julia, your assistant to address all your queries related to cosmetic and its products. Type in your query in the conversation bar and lets chat.')
       }
 
@@ -21517,15 +21245,7 @@ FindlySDK.prototype.positionContainer = function (position) {
 FindlySDK.prototype.calculateContainerPosition = function (position) {
   var containerPosition = { x: position.x, y: position.y };
   var cWidth = $('.search-container').outerWidth();
-  if ($('body').hasClass('banking')) {
-    containerHeight = ($('body').height() - 108) || containerHeight;
-  }
-  else if ($('body').hasClass('siemens')) {
-    containerHeight = ($('body').height() - 108) || containerHeight;
-  }
-  else {
     containerHeight = ($('body').height() - 64) || containerHeight;
-  }
   var cHeight = containerHeight;
   var widthFactor = 20;
   var heightFactor = 10;
@@ -21693,32 +21413,8 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
   </div>
   </div>`);
   }
-  if (window.location && window.location.href && (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest') ||  window.location.href.includes('#scm'))) {
-    if (window.location.href.includes('#banking') ||  window.location.href.includes('#scm')) {
-      var html_text = 'Hi, I am your <strong>Virtual Assistant</strong>';
-      $('#welcomeMsg').html(html_text);
-    }
-    else if (window.location.href.includes('#offers')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the offers page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-    else if (window.location.href.includes('#cards')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the credit cards page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-    else if (window.location.href.includes('#loans')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the Loans  page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    } else if (window.location.href.includes('#invest')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg "></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the invest  page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-  }
-  if (window.location && window.location.href && (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze'))) {
+
+  if (window.location && window.location.href && (window.location.href.includes('cosmetics'))) {
     if (window.location.href.includes('#cosmetics')) {
       var html_text = 'Hi, I am your <strong>Virtual Assistant</strong>';
       $('#welcomeMsg').html(html_text);
@@ -21741,43 +21437,15 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
   }
   $('#introText').css('position', 'absolute');
   $('.search-container').css('display', 'none');
-  if (window.location.href.includes('#banking') || window.location.href.includes('#loans') || window.location.href.includes('#invest') || window.location.href.includes('#cards') || window.location.href.includes('#offers')) {
-    $('body').append(`<div class="start-search-icon-div draggable" id="start-search-icon-div">
-    <canvas id="canvas" width="80" height="80"></canvas>
-    <div class="ask-text">Ask Cosmetic</div>
-    <div class="bank-label-avt">
-      <div class="normal-text">Ask</div>
-      <div class="bold-text">ELLE</div>
-    </div>
-    <div class="scm-label-avt">
-      <div class="normal-text">Ask</div>
-      <div class="bold-text">SCM</div>
-    </div>
-    <div class="cosmetics-label-avt">
-      <div class="normal-text">Ask</div>
-      <div class="bold-text">Julia</div>
-    </div>
-  </div>`);
-    window.localStorage.removeItem('avatarPosition');
-    _self.bankingAnimation('hover');
-  } else {
+
     $('body').append(`<div class="start-search-icon-div draggable" id="start-search-icon-div">
     <img src="${config.avatarURL}">
     <div class="ask-text">Ask Cosmetic</div>
-    <div class="bank-label-avt">
-      <div class="normal-text">Ask</div>
-      <div class="bold-text">ELLE</div>
-    </div>
-    <div class="scm-label-avt">
-      <div class="normal-text">Ask</div>
-      <div class="bold-text">SCM</div>
-    </div>
     <div class="cosmetics-label-avt">
       <div class="normal-text">Ask</div>
       <div class="bold-text">Julia</div>
     </div>
   </div>`);
-  }
   var _self = this;
   var avPosition = _self.getAvatarTopLeft();
   _self.positionAvatar(avPosition); // set position to avatar
@@ -21808,21 +21476,10 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
       $('#introText').css('display', 'none');
       $('.second-introText').remove();
       setTimeout(function () {
-        if (window.location.href.includes('#banking') || window.location.href.includes('#loans') || window.location.href.includes('#invest') || window.location.href.includes('#cards') || window.location.href.includes('#offers')) {
-          if ($('.search-container').css('display') == 'none') {
-            _self.positionContainer(_self.getAvatarTopLeft()); // set position to container
-          }
-          else {
-            $('.search-container').css('display', 'none');
-          }
-        }
-        else {
+
           _self.positionContainer(_self.getAvatarTopLeft());
-        }
         if ($('.start-search-icon-div').css('display') == 'none') {
           // // anyway this will not execute
-        }
-        else {
         }
         $('.conversation').css('max-height', containerHeight);
         if ($('body').hasClass('siemens')) {
@@ -22101,7 +21758,7 @@ FindlySDK.prototype.getPopularSearchTemplate = function () {
 {{/each}}\
   </script>'
    var template = popularSearchTemplate;
-   if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+   if ($('body').hasClass('cosmetics')) {
      template = bankingPopularSearchTemplate;
    }
    return template
@@ -22109,28 +21766,7 @@ FindlySDK.prototype.getPopularSearchTemplate = function () {
 FindlySDK.prototype.appendPopularSearchResults = function (popularSearches) {
   var _self = this;
   var popularSearchId = '#popular-search-results';
-  if ($('body').hasClass('banking')) {
-    popularSearchId = '.popular-search-results';
-    _self.bindPerfectScroll($('.banking-default-welcome-screen'), '.default-message-bubble-banking', null, 'y', 'popularSearch');
-
-    $('.welcome-message').off('click', '.okay-thanks').on('click', '.okay-thanks', function (e) {
-      $(".welcome-message").hide();
-      $(".default-message-bubble-banking").css('height', '100%');
-      $(".default-message-bubble-banking").css('max-height', 'calc(100vh - 267px)');
-      $(".search-container").css('max-height', 'calc(100vh - 169px)');
-    });
-  }
-  else if ($('body').hasClass('siemens')) {
-    popularSearchId = '.popular-search-results-siemens';
-    _self.bindPerfectScroll($('.siemens-default-welcome-screen'), '.default-message-bubble-siemens', null, 'y', 'popularSearch');
-    $('.welcome-message').off('click', '.okay-thanks').on('click', '.okay-thanks', function (e) {
-      $(".welcome-message").hide();
-      $(".default-message-bubble-siemens").css('height', '100%');
-      $(".default-message-bubble-siemens").css('max-height', 'calc(100vh - 293px)');
-      $(".search-container").css('max-height', 'calc(100vh - 193px)');
-    });
-  }
-  else if ($('body').hasClass('cosmetics')) {
+  if ($('body').hasClass('cosmetics')) {
     popularSearchId = '.popular-search-results-cosmetics';
     _self.bindPerfectScroll($('.cosmetics-default-welcome-screen'), '.default-message-bubble-cosmetics', null, 'y', 'popularSearch');
     $('.welcome-message').off('click', '.okay-thanks').on('click', '.okay-thanks', function (e) {
@@ -22179,7 +21815,7 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
     var payload = {
       query: _self.vars.searchObject.searchText,
       // "maxNumOfResults": 9,
-      maxNumOfResults: 5,
+      maxNumOfResults: _self.vars.maxNumOfResultsCount,
       userId: _self.API.uuid,
       streamId: _self.API.streamId,
       lang: "en",
@@ -22459,7 +22095,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               if (template.layout && template.layout.layoutType) {
                 configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.templateType = template.type;
                 configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.template = '';
-                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.maxSearchResultsAllowed = 5;
+                configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.maxSearchResultsAllowed = _self.vars.maxNumOfResultsCount || 5;
                 configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.layoutType = template.layout.layoutType;
                 configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.textAlignment = template.layout.textAlignment;
                 configurationSettings[condition.fieldValue + 'Config'][config.interface + 'Interface'].layout.listType = template.layout.listType;
@@ -22562,7 +22198,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               }
             }
             else if (isFullResults) {
-              maxSearchResultsAllowed = 5;
+              maxSearchResultsAllowed = _self.vars.maxNumOfResultsCount || 5;
             }
             else {
               maxSearchResultsAllowed = (structuredData.length) ? structuredData.length : 1;
@@ -22599,29 +22235,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             }
             const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
             var routePath;  
-            if (window.location && window.location.href && structuredData && structuredData.length && (structuredData[0].sys_content_type == 'data' || structuredData[0].sys_content_type == "faq" || structuredData[0].sys_content_type == "web") && (window.location.href.includes('#scm') || (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')))) {
-                
-                if ( window.location.href.includes('#scm')) {
-                  routePath = (structuredData && structuredData.length && structuredData[0].bestMatch === true && structuredData[0].carouselData.length && templateInterfaceType !== 'liveSearch') ? 'siemensFeatureSnippet' : 'siemens';
-                }
-                else if (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')) {
-                  routePath = 'banking';
-                  if ($('body').hasClass('bankUserLogined')) {
-                    routePath = 'bankUserLogined';
-                    selected[groupName + templateInterfaceType + 'TemplateType'] = 'carousel';
-                  }
-                }
-                if (structuredData && structuredData.length && structuredData[0].sys_content_type == "faq") {
-                  routePath = 'bankingPlainList';
-                  _self.bindSearchAccordion();
-                }
-                if (structuredData && structuredData.length && structuredData[0].sys_content_type == "web" && (data.isLiveSearch || data.isSearch)) {
-                  routePath = 'bankingPlainListClickable';
-                }
-                if (structuredData && structuredData.length && structuredData[0].sys_content_type == "web" && data.isFullResults && $('body').hasClass('bankUserLogined')) {
-                  routePath = 'bankUserLogined';
-                }
-              } else if (window.location && window.location.href && (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze')) && structuredData && structuredData.length && structuredData[0].sys_content_type == 'data') {
+             if (window.location && window.location.href && (window.location.href.includes('cosmetics')) && structuredData && structuredData.length && structuredData[0].sys_content_type == 'data') {
                  routePath = 'cosmetics';
                 if ($('body').hasClass('top-down') && !isLiveSearch) {
                   routePath = 'cosmeticsProduct';
@@ -22831,13 +22445,8 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                   }
                 }
                 if ((obj || {}).featured_snippet) {
-                  if (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest')) {
-                    item.featured_snippet = JSON.parse(obj.featured_snippet.toString().replaceAll("'\'", ''))
-                  }
-                  else {
                     item.featured_snippet = obj.featured_snippet;
                     _self.vars.siemensFeatureSnippetData = item.featured_snippet;
-                  }
                 }
                 item.carouselData = (item.featured_snippet || {}).payload || [];
                 if ((window.location.href.includes('#scm')) && obj.bestMatch === true && obj.featured_snippet.payload.length && $('body').hasClass('top-down')) {
@@ -22963,6 +22572,7 @@ FindlySDK.prototype.botActionTrigger = function (e) {
   var scrollBottom =
     $("#searchChatContainer").scrollTop() +
     $("#searchChatContainer").height();
+    $('.bottom-search-show-all-results').remove();
   $("#searchChatContainer").animate({ scrollTop: scrollBottom });
   if ($("body").hasClass("top-down")) {
     _self.actionHandler(e);
@@ -23070,7 +22680,7 @@ FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
   var payload = {
     query: _self.vars.searchObject.searchText,
     // "maxNumOfResults": 9,
-    maxNumOfResults: 5,
+    maxNumOfResults: _self.vars.maxNumOfResultsCount,
     userId: _self.API.uuid,
     streamId: _self.API.streamId,
     lang: "en",
@@ -23180,7 +22790,7 @@ var url = _self.API.searchUrl;
   var payload = {
     query: _self.vars.searchObject.searchText,
     // "maxNumOfResults": 9,
-    maxNumOfResults: 5,
+    maxNumOfResults: _self.vars.maxNumOfResultsCount,
     lang: "en",
     // "isDev": true,
     isDev: _self.isDev,
@@ -23759,7 +23369,7 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
   var payload = {
     "query": _self.vars.searchObject.searchText,
     // "maxNumOfResults": 9,
-    "maxNumOfResults": 5,
+    "maxNumOfResults": _self.vars.maxNumOfResultsCount,
     "userId": _self.API.uuid,
     "streamId": _self.API.streamId,
     "lang": "en",
@@ -24269,27 +23879,6 @@ FindlySDK.prototype.getFeedBackResult = function () {
 
 
    FindlySDK.prototype.infoTextCloseDataStore = function () {
-      if ($('body').hasClass('banking')) {
-        var tabsList = JSON.parse(window.localStorage.getItem('tabsList'));
-        var index = -1;
-        if (tabsList && tabsList.length) {
-          if (window.location.href.includes('#banking')) {
-            index = tabsList.findIndex((d) => d == 'personal');
-          } else if (window.location.href.includes('#loans')) {
-            index = tabsList.findIndex((d) => d == 'loan');
-          } else if (window.location.href.includes('#invest')) {
-            index = tabsList.findIndex((d) => d == 'investing');
-          } else if (window.location.href.includes('#cards')) {
-            index = tabsList.findIndex((d) => d == 'card');
-          } else if (window.location.href.includes('#offers')) {
-            index = tabsList.findIndex((d) => d == 'offer');
-          }
-          if (index > -1) {
-            tabsList.splice(index, 1);
-            window.localStorage.setItem('tabsList', JSON.stringify(tabsList));
-          }
-        }
-      }
       if ($('body').hasClass('cosmetics')) {
         var tabsList = JSON.parse(window.localStorage.getItem('tabsList'));
         var index = -1;
@@ -24343,108 +23932,55 @@ FindlySDK.prototype.getFeedBackResult = function () {
         $('.belcrop-action-header').find('.nav-demo-link.active-name').removeClass('active-name');
       })
     }
-    //banking animation 
-    FindlySDK.prototype.bankingAnimation = function (varient) {
-      _self = this;
-      // Avatar Animation
-      if (!$('body').hasClass('top-down')) {
-        if (_self.vars.bankingRIV === undefined) {
-          _self.vars.bankingRIV = new rive.Rive({
-            // src: 'https://searchassist-pilot.kore.ai/home/assets/images/eddy-live-avatar-state-new.riv',
-            src: 'https://searchassist-qa.kore.ai/home/assets/images/new_file.riv',
-            canvas: document.getElementById('canvas'),
-            //layout: new rive.Layout({ fit: "contain", alignment: "topRight" }),
-            //animations: ['idle', 'windshield_wipers', 'bouncing'],
-            // autoplay: true,
-          });
-        }
-        _self.vars.bankingRIV.stop();
-        _self.vars.bankingRIV = new rive.Rive({
-          src: 'https://searchassist-qa.kore.ai/home/assets/images/new_file.riv',
-          canvas: document.getElementById('canvas'),
-        });
-        _self.vars.bankingRIV.play([varient]);
-        if (varient !== 'thinking') {
-          var timeOut = 0;
-          if (varient === 'Sad') {
-            timeOut = 3080;
-          }
-          else if (varient === 'happy') {
-            timeOut = 3000;
-          }
-          else if (varient === 'hover') {
-            timeOut = 3050;
-          }
-          setTimeout(() => {
-            _self.vars.bankingRIV.stop();
-            _self.vars.bankingRIV = new rive.Rive({
-              src: 'https://searchassist-qa.kore.ai/home/assets/images/new_file.riv',
-              canvas: document.getElementById('canvas'),
-            });
-            _self.vars.bankingRIV.play('idle');
-          }, timeOut)
-
-        }
-
-      }
-    }
 
      // navigation experiance start//
      FindlySDK.prototype.navigationExperiance = function (res) {
       var textMessage = '';
-      if ($('body').hasClass('banking')) {
-        if ((((res.graph_answer || {}).payload || {}).center_panel || {}).type == 'redirect') {
-          //banking navigation experiance//
-          if (res.graph_answer.payload.center_panel.data && res.graph_answer.payload.center_panel.data.length) {
-            if (!(window.location.href.includes(res.graph_answer.payload.center_panel.data[0].page_url))) {
-              $('.search-container').css('display', 'none');
-              setTimeout(() => {
-                // $('#searchChatContainer').scrollTop($('#searchChatContainer').scrollTop());
-                $('.search-container').css({
-                  "opacity": "0",
-                  "display": "block",
-                }).show().animate({ opacity: 1 }, 500)
-                setTimeout(() => {
-                  if ($('.messageBubble').last().find('.messageBubble-content').length) {
-                    $('#searchChatContainer').animate({ scrollTop: ($('#searchChatContainer').scrollTop() + $('.userMessage').last().parent().position().top) }, 500)
-                  }
-                }, 1000);
-              }, 2000);
-            }
-            window.location.hash = res.graph_answer.payload.center_panel.data[0].page_url;
-            textMessage = res.graph_answer.payload.center_panel.data[0].text;
-            $('.links-section .link-name.active-link').removeClass('active-link');
-            if (window.location.href.includes('#banking')) {
-              $('#banking').addClass('active-link');
-            } else if (window.location.href.includes('#loans')) {
-              $('#loan').addClass('active-link');
-            } else if (window.location.href.includes('#invest')) {
-              $('#investing').addClass('active-link');
-            } else if (window.location.href.includes('#cards')) {
-              $('#card').addClass('active-link');
-            } else if (window.location.href.includes('#offers')) {
-              $('#offer').addClass('active-link');
-            }
-            $('#path-toastr').css({ opacity: 1.0, visibility: "visible" }).animate({ opacity: 0 }, 8000);
-            // $('#path-toastr').css({ 'visibility': 'visible' })
-          }
-        }
-      }
+      // if ($('body').hasClass('banking')) {
+      //   if ((((res.graph_answer || {}).payload || {}).center_panel || {}).type == 'redirect') {
+      //     //banking navigation experiance//
+      //     if (res.graph_answer.payload.center_panel.data && res.graph_answer.payload.center_panel.data.length) {
+      //       if (!(window.location.href.includes(res.graph_answer.payload.center_panel.data[0].page_url))) {
+      //         $('.search-container').css('display', 'none');
+      //         setTimeout(() => {
+      //           // $('#searchChatContainer').scrollTop($('#searchChatContainer').scrollTop());
+      //           $('.search-container').css({
+      //             "opacity": "0",
+      //             "display": "block",
+      //           }).show().animate({ opacity: 1 }, 500)
+      //           setTimeout(() => {
+      //             if ($('.messageBubble').last().find('.messageBubble-content').length) {
+      //               $('#searchChatContainer').animate({ scrollTop: ($('#searchChatContainer').scrollTop() + $('.userMessage').last().parent().position().top) }, 500)
+      //             }
+      //           }, 1000);
+      //         }, 2000);
+      //       }
+      //       window.location.hash = res.graph_answer.payload.center_panel.data[0].page_url;
+      //       textMessage = res.graph_answer.payload.center_panel.data[0].text;
+      //       $('.links-section .link-name.active-link').removeClass('active-link');
+      //       if (window.location.href.includes('#banking')) {
+      //         $('#banking').addClass('active-link');
+      //       } else if (window.location.href.includes('#loans')) {
+      //         $('#loan').addClass('active-link');
+      //       } else if (window.location.href.includes('#invest')) {
+      //         $('#investing').addClass('active-link');
+      //       } else if (window.location.href.includes('#cards')) {
+      //         $('#card').addClass('active-link');
+      //       } else if (window.location.href.includes('#offers')) {
+      //         $('#offer').addClass('active-link');
+      //       }
+      //       $('#path-toastr').css({ opacity: 1.0, visibility: "visible" }).animate({ opacity: 0 }, 8000);
+      //       // $('#path-toastr').css({ 'visibility': 'visible' })
+      //     }
+      //   }
+      // }
       return textMessage;
     }
     // navigation experiance end//
 
         /* delete recent and popular search click event start*/
         FindlySDK.prototype.deleteSearchedTextClickEvent = function (event) {
-          // $('#recent-searched-box').off('click', '.delete-recent').on('click', '.delete-recent', function (e) {
-          //   e.stopPropagation();
-          //   var textMsg = $(e.currentTarget).closest('.recentText').attr('id');
-          //   $(e.currentTarget).closest('.recentText').remove();
-          //   if (!$('#recent-searched-box .popular-search-container-data').children().length) {
-          //     $('#recent-searched-box .popular-search-container-data').remove()
-          //   }
-          // });
-        
+
           $('#popular-searched-box').off('click', '.delete-popular').on('click', '.delete-popular', function (e) {
             e.stopPropagation();
             var textMsg = $(e.currentTarget).closest('.recentText').attr('id');

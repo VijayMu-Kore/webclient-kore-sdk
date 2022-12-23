@@ -246,6 +246,10 @@
 					.track-steps {
 						.track-title-data {
 							width: 91px;
+							&.right-text{
+								width: 10px;
+								height: 10px;
+							}
 						}
 					}
 					width: 293px;

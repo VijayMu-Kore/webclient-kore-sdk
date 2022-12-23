@@ -272,7 +272,7 @@ class SearchListViewTemplate {
         showMoreData.templateName +
         "]"
       ).before($(listHTML).find(".parent-list-template").children());
-      if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * 5 >= result?.message[0].component.payload.doc_count) {
+      if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * result?.message[0].component.payload.maxSearchResultsAllowed >= result?.message[0].component.payload.doc_count) {
         $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").hide();
       }
     })

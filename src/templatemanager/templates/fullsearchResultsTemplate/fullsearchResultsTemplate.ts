@@ -6,13 +6,7 @@ import searchGridViewTemplate from '../../templates/searchGridViewTemplate/searc
 import searchCarouselViewTemplate from '../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
 import CosmeticsTemplate from '../../demo-templates/cosmetics/cosmeticsTemplate';
 import CosmeticsProductTemplate from '../../demo-templates/cosmeticsProduct/cosmeticsProductTemplate';
-import BankingTemplate from '../../demo-templates/banking/bankingTemplate';
-import BankUserLoginedTemplate from '../../demo-templates/bankUserLogined/bankUserLoginedTemplate';
-import BankingPlainListTemplate from '../../demo-templates/bankingPlainList/bankingPlainListTemplate';
-import BankingPlainListClickableTemplate from '../../demo-templates/bankingPlainListClickable/bankingPlainListClickableTemplate';
 import ProductViewTemplate from '../../demo-templates/productView/productViewTemplate';
-import SiemensTemplate from '../../demo-templates/siemens/siemensTemplate';
-import SiemensFeatureSnippetTemplate from '../../demo-templates/siemensFeatureSnippet/siemensFeatureSnippetTemplate';
 import korejquery from "../../../libs/korejquery";
 const $ = korejquery;
 class FullSearchResultsTemplate {
@@ -31,13 +25,7 @@ class FullSearchResultsTemplate {
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
       me.carouselTemplateObj = new searchCarouselViewTemplate();
-      me.siemensFeatureSnippetobj = new SiemensFeatureSnippetTemplate();
-      me.siemensOBJ = new SiemensTemplate();
       me.productViewObj = new ProductViewTemplate();
-      me.bankingPlainListClickableObj = new BankingPlainListClickableTemplate();
-      me.bankingPlainListObj = new BankingPlainListTemplate();
-      me.bankUserLoginedObj = new BankUserLoginedTemplate();
-      me.bankingObj = new BankingTemplate();
       me.cosmeticsProductObj = new CosmeticsProductTemplate();
       me.cosmeticsObj = new CosmeticsTemplate();
 
@@ -61,18 +49,6 @@ class FullSearchResultsTemplate {
             showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
             showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'siemens') {
-          showAllHTML = me.siemensObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'siemensFeatureSnippet') {
-            showAllHTML = me.siemensFeatureSnippetObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'banking') {
-            showAllHTML = me.bankingObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankUserLogined') {
-            showAllHTML = me.bankUserLoginedObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankingPlainList') {
-            showAllHTML = me.bankingPlainListObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankingPlainListClickable') {
-            showAllHTML = me.bankingPlainListClickableObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'cosmeticsProduct') {
             showAllHTML = me.cosmeticsProductObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'cosmetics') {
@@ -107,9 +83,15 @@ class FullSearchResultsTemplate {
               $(messageHtml).find(".data-body-sec").scrollTop(0);
             });
     }, 300);
-    let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: msgData.message[0].component.payload.facets, truncateText: truncateText  });
-    $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
-    FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, 'all results');
+    if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+      $(messageHtml).find('.all-tab-count').html(msgData?.message[0]?.component?.payload?.facets[0]?.doc_count);
+      $(messageHtml).find('.show-results-count-container').show();
+      $(messageHtml).find('#sdk-bottomup-tab-container').hide();
+    } else {
+      let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: msgData.message[0].component.payload.facets, truncateText: truncateText  });
+      $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
+      FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, 'all results');
+    }
     FullSearchResultsTemplate.prototype.facetReset(me, messageHtml, msgData);
     setTimeout(() => {
     if((hostWindowInstance.vars.selectedFiltersArr ||[]).length){
@@ -201,7 +183,8 @@ class FullSearchResultsTemplate {
             <div style="height:100%">\
       <!--<div id="loaderDIV" class="loader-container">Loading...</div>-->\
         <div class="data-body-sec {{if facetPosition == `top`}}iffilteristop{{/if}} {{if displayFeedback == true}} sa-has-feedback {{/if}}">\
-        <div class="no-templates-defined-full-results-container">\
+      <div class="show-results-count-container">About <span class="all-tab-count"></span> results found.</div>\
+      <div class="no-templates-defined-full-results-container">\
         <div class="img-block"><img class="no-data-mapped">\
           <div class="title">Result templates are not mapped with a proper field value</div>\
         </div>\
@@ -581,9 +564,15 @@ class FullSearchResultsTemplate {
             }
           }
           FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+            $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+            $(messageHtml).find('.show-results-count-container').show();
+            $(messageHtml).find('#sdk-bottomup-tab-container').hide();
+          } else {
           let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText });
           $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
           FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
+          }
           if(response.sortableFacetList && response.sortableFacetList.length){
             let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
               displaySortable: response.displaySortable});
@@ -618,18 +607,6 @@ class FullSearchResultsTemplate {
             showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
             showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'siemens') {
-          showAllHTML = me.siemensObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'siemensFeatureSnippet') {
-            showAllHTML = me.siemensFeatureSnippetObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'banking') {
-            showAllHTML = me.bankingObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankUserLogined') {
-            showAllHTML = me.bankUserLoginedObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankingPlainList') {
-            showAllHTML = me.bankingPlainListObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankingPlainListClickable') {
-            showAllHTML = me.bankingPlainListClickableObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'cosmeticsProduct') {
             showAllHTML = me.cosmeticsProductObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'cosmetics') {
@@ -677,9 +654,15 @@ class FullSearchResultsTemplate {
         }
       }
       FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+      if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+        $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+        $(messageHtml).find('.show-results-count-container').show();
+        $(messageHtml).find('#sdk-bottomup-tab-container').hide();
+      } else {
       let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText  });
       $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
       FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
+      }
       let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: response.filterCount });
       $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
       if(response.sortableFacetList && response.sortableFacetList.length){
@@ -711,9 +694,15 @@ class FullSearchResultsTemplate {
             }
           }
           FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+            $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+            $(messageHtml).find('.show-results-count-container').show();
+            $(messageHtml).find('#sdk-bottomup-tab-container').hide();
+          } else {
           let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText  });
           $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
           FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
+          }
           if(response.sortableFacetList && response.sortableFacetList.length){
             let sortableHtml = $(FullSearchResultsTemplate.prototype.getBottomUpSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
               displaySortable: response.displaySortable});
@@ -802,9 +791,15 @@ class FullSearchResultsTemplate {
         }
       }
       FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+      if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+        $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+        $(messageHtml).find('.show-results-count-container').show();
+        $(messageHtml).find('#sdk-bottomup-tab-container').hide();
+      } else {
       let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText  });
       $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
       FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
+      }
       let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: response.filterCount });
       $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
         }
@@ -839,9 +834,15 @@ class FullSearchResultsTemplate {
             }
           }
           FullSearchResultsTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
+          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
+            $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
+            $(messageHtml).find('.show-results-count-container').show();
+            $(messageHtml).find('#sdk-bottomup-tab-container').hide();
+          } else {
           let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: response.facets, truncateText: truncateText  });
           $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
           FullSearchResultsTemplate.prototype.bindTabsClickEvent(me, messageHtml, selectedFacet);
+          }
           let filterCountHtml = $(FullSearchResultsTemplate.prototype.getFilterCountTemplate()).tmpl({ count: response.filterCount });
           $(messageHtml).find('#filter-count-container').empty().append(filterCountHtml);
             }

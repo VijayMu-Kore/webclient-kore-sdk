@@ -12,9 +12,9 @@ class CosmeticsTemplate {
           me.messageHtml = $(CosmeticsTemplate.prototype.getTemplateString()).tmpl(msgData?.message[0].component?.payload);
           hostWindowInstance.getProductPreview(me.messageHtml);
           if(msgData?.message[0].component?.payload.isSearch  || msgData?.message[0].component?.payload.isLiveSearch){
-            setTimeout(() => {
-              CosmeticsTemplate.prototype.bindEvents(me.messageHtml, 'cosmeticsCarouselId', me);
-          }, 500)
+            setTimeout(()=>{
+            CosmeticsTemplate.prototype.bindEvents(me.messageHtml, 'cosmeticsCarouselId', me);
+          },1000) 
           }
           CosmeticsTemplate.prototype.showMoreClickEvents(me.messageHtml, me);
             return me.messageHtml;
@@ -135,12 +135,11 @@ class CosmeticsTemplate {
       } else {
         count = messageHtml.find(".carouselTemplate" + newCarouselTemplateCount).children().length;
       }
-      if (count > 1) {
-        let carouselOneByOne:any = new PureJSCarousel({
+      if (count > 1 && $('.carouselTemplate' + newCarouselTemplateCount).length) {
+        const carouselOneByOne:any = new PureJSCarousel({
           carousel: '.carouselTemplate' + newCarouselTemplateCount,
           slide: '.slide',
-          oneByOne: true,
-          jq: $,
+          oneByOne: true
         });
         $('.carousel' + newCarouselTemplateCount).parent().show();
         newCarouselEles.push(carouselOneByOne);
@@ -188,7 +187,7 @@ class CosmeticsTemplate {
           showMoreData.templateName +
           "]"
         ).before($(listHTML).find(".parent-grid-template").children());
-        if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * 5 >= result?.message[0].component.payload.doc_count) {
+        if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * result?.message[0].component.payload.maxSearchResultsAllowed >= result?.message[0].component.payload.doc_count) {
           $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").hide();
         }
         var dataContainer = '.data-body-sec';

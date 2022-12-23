@@ -29,8 +29,8 @@ import createNewCardTemplate from './demo-templates/createNewCardPin/createNewCa
 import DebitCardDetailsTemplate from './demo-templates/debitCardDetails/debitCardDetailsTemplate';
 import EnterEmailTemplate from './demo-templates/enterEmail/enterEmailTemplate';
 import EnterOtpTemplate from './demo-templates/enterOtp/enterOtpTemplate';
-import GuidedTourTemplate from './demo-templates/guidedTour/guidedTourTemplate';
-import MovileNumTemplate from './demo-templates/mobileNum/mobileNumTemplate';
+// import GuidedTourTemplate from './demo-templates/guidedTour/guidedTourTemplate';
+import MobileNumTemplate from './demo-templates/mobileNum/mobileNumTemplate';
 import OtpTemplate from './demo-templates/otp/otpTemplate';
 import TrackOrderTemplate from './demo-templates/trackOrder/trackOrderTemplate';
 import TravelCardCarouselTemplate from './demo-templates/travelCardCarousel/travelCardCarouselTemplate';
@@ -93,8 +93,8 @@ class TemplateManager {
 	this.installTemplate(new DebitCardDetailsTemplate());
 	this.installTemplate(new EnterEmailTemplate());
 	this.installTemplate(new EnterOtpTemplate());
-	this.installTemplate(new GuidedTourTemplate());
-	this.installTemplate(new MovileNumTemplate());
+	// this.installTemplate(new GuidedTourTemplate());
+	this.installTemplate(new MobileNumTemplate());
 	this.installTemplate(new OtpTemplate());
 	this.installTemplate(new TrackOrderTemplate());
 	this.installTemplate(new TravelCardCarouselTemplate());

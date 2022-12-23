@@ -52,7 +52,7 @@ class CosmeticsProductTemplate {
                       </div>\
                     </div>\
                     {{/each}}\
-                    <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+                    <div class="show-more-list {{if doc_count==0 || doc_count<(maxSearchResultsAllowed+1) || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
                     <div class="searchassist-show-more-button">Show more <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/show_more.png" height="6" width="10" /></div>\
                     </div>\
                   </div>\
@@ -94,7 +94,7 @@ class CosmeticsProductTemplate {
         showMoreData.templateName +
         "]"
       ).before($(listHTML).find(".parent-grid-template").children());
-      if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * 5 >= result?.message[0].component.payload.doc_count) {
+      if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * result?.message[0].component.payload.maxSearchResultsAllowed >= result?.message[0].component.payload.doc_count) {
         $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").hide();
       }
       var dataContainer = '.data-body-sec';

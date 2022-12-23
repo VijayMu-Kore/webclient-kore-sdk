@@ -38,7 +38,7 @@ class cancelConfirmationTemplate {
             var payload = $(e.currentTarget).closest('.cancel-confirm-btn').attr('id');
             $(e.currentTarget).closest('.cancel-confirm-btn').parent().find('.active-button').removeClass('active-button');
             $(e.currentTarget).closest('.cancel-confirm-btn').addClass('active-button');
-            chatWindowInstance.appendTextToSearchContainer('user', payload);
+            // chatWindowInstance.appendTextToSearchContainer('user', payload);
             chatWindowInstance.sendMessage(payload, msgData);
         })
 

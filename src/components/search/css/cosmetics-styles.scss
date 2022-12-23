@@ -2631,3 +2631,14 @@ body.top-down.sdk-top-down-interface.cosmetics {
 		color: #000000;
 	}
 }
+
+.sdk-top-down-interface .conversation-container .conversations .search-container.conversation #searchChatContainer .messageBubble .userMessage{
+	background: #F1E9FB;
+    border-radius: 8px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #161620;
+    padding: 10px;
+    margin-bottom: 10px;
+}

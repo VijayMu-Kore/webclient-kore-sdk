@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmetics</title>
+  <link rel="icon" id="favicon" type="image/x-icon"
+    href="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetic-icon.svg">
+  <!-- Avatar Script-->
+  <script src="libs/jquery.js" type="text/javascript"></script>
+
+  <script src="libs/jquery.tmpl.min.js" type="text/javascript"></script>
+
+  <script src="libs/jquery-ui.min.js" type="text/javascript"></script>
+
+  <link href="libs/jquery-ui.min.css" rel="stylesheet">
+  <script type="text/javascript" src="js/demo-landing-pages/cosmeticsTemplate.js"></script>
+  <!-- Avatar Script-->
+</head>
+<script type="module" src="js/index_search.js"></script>
+<!-- <script src="dist/kore-web-sdk-umd-search.js"></script> -->
+<!-- <script type="text/javascript"> KoreSearchSDK.KRSearchConfig.API_KEY_CONFIG.KEY=""; var findlySDK = new KoreSearchSDK.KRSearch(KoreSearchSDK.KRSearchConfig); findlySDK.show(KoreSearchSDK.KRSearchConfig); </script> -->
+<body class="demo cosmetics belcorp" style="background:#fff;font-family:'Inter !important';">
+  <div class="login-screen" style="display: none;"></div>
+  <script type="text/javascript">
+    if (window.localStorage.getItem('userName')) {
+      if (!$('body').hasClass('cosmeticsUserLogined') && window.location && window.location.href && (window.location.href.includes('cosmetics'))) {
+        $('body').addClass('cosmeticsUserLogined')
+      }
+    }
+    if (window.location && window.location.href && (window.location.href.includes('#cosmetics'))) {
+      $('body').addClass('home-tab')
+    } else if (window.location && window.location.href && (window.location.href.includes('#essi'))) {
+      $('body').addClass('essi-tab')
+    } else if (window.location && window.location.href && (window.location.href.includes('#lblanc'))) {
+      $('body').addClass('lblanc-tab')
+    } else if (window.location && window.location.href && (window.location.href.includes('#cyze'))) {
+      $('body').addClass('cyze-tab')
+    }
+    setTimeout(() => {
+      if (window.location && window.location.href && (window.location.href.includes('cosmetics'))) {
+        $('.login-screen').before(cosmeticsTemplate());
+        window.localStorage.setItem('tabsList', JSON.stringify(['belcorp', 'esika', 'lbel', 'cyzone']));
+        setTimeout(() => {
+          $('.login-screen').remove();
+        }, 300)
+      }
+    }, 1000)
+
+  </script>
+
+</body>
+
+<script type="text/javascript">
+
+  setTimeout(() => {
+    if (!window.localStorage.getItem('userName')) {
+      $('#login').show();
+      $('#logout').hide();
+      $("#contextjsonfield").val('');
+    } else {
+      setTimeout(() => {
+        $('#profileUserName').html(window.localStorage.getItem('userName'));
+        if ($('body').hasClass('belcorp')) {
+          $('#belcorpUserName').html(window.localStorage.getItem('userName'));
+        }
+        if ($('body').hasClass('cosmetics')) {
+
+          $('.cos-user-name').html(window.localStorage.getItem('userName'));
+          if (!$('body').hasClass('cosmeticsUserLogined')) {
+            $('body').addClass('cosmeticsUserLogined')
+          }
+          if ((window.localStorage.getItem('userName')).toLowerCase() == 'mia') {
+            $('.cosmetics-user-icon').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/dummy-female-user.png');
+          } else {
+            $('.cosmetics-user-icon').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/dummy-user.png');
+          }
+
+        }
+        var context = {
+
+          'user_name': window.localStorage.getItem('userName'),
+
+          'location': window.localStorage.getItem('userLocation'),
+
+          'gender': window.localStorage.getItem('gender'),
+
+          'user_age': window.localStorage.getItem('userAge'),
+
+        };
+
+        $("#contextjsonfield").val(JSON.stringify(context));
+      }, 3000)
+      $('.name-with-profile').removeClass('d-none');
+      $('#login').hide();
+      $('#logout').show();
+    }
+    if (!$('.login-screen').hasClass('hide')) {
+      $('.login-screen').addClass('hide')
+    }
+
+    $(document).off('click').on('click', function (event) {
+
+      if (!($(event.target).closest('.profile-dropdown').length)) {
+        $('.dropdown-btns').removeClass('show');
+      }
+
+      //baking login screen close//
+
+      if (($(event.target).closest('.fixed-login-screen').length && !$(event.target).closest('.login-screen-action').length) && !$(event.target).closest('.login-net').length) {
+        $('.fixed-login-screen').hide();
+      }
+
+
+      if (!$(event.target).closest('.cos-dis-flex').length) {
+        $('.profile_dropdown_cat').hide();
+      }
+
+      if (!$(event.target).closest('.arrivals-grids-template-whishlist').length && !$(event.target).closest('.cart-icon').length && !$(event.target).closest('.whish-list-icon').length) {
+
+        $('.fixed-slider-right-left').css('display', 'none');
+
+        $('.whish-list-icon').removeClass('active-whish');
+
+        $('.cart-icon').removeClass('active-cart-icon');
+
+      }
+
+    });
+
+    $('.name-with-profile').off('click', '.profile-dropdown').on('click', '.profile-dropdown', function (e) {
+
+      if ($('.dropdown-btns').hasClass('show')) {
+
+        $('.dropdown-btns').removeClass('show');
+
+      } else {
+
+        $('.dropdown-btns').addClass('show');
+
+      }
+
+    });
+
+    $('.dropdown-btns').off('click', '#login').on('click', '#login', function (e) {
+
+      $('.login-screen').removeClass('hide');
+
+    });
+
+    $('.dropdown-btns').off('click', '#logout').on('click', '#logout', function (e) {
+
+      window.localStorage.setItem('userName', '');
+
+      window.localStorage.setItem('userLocation', '');
+
+      window.localStorage.setItem('gender', '');
+
+      window.localStorage.setItem('userAge', '');
+
+      $("#contextjsonfield").val('');
+
+      $('.login-screen').removeClass('hide');
+
+      $('.name-with-profile').addClass('d-none');
+
+      $('#profileUserName').html('');
+
+    });
+
+    $('.login-container').off('click', '.sign-in-btn').on('click', '.sign-in-btn', function (e) {
+      var users = [{ 'userName': 'John Doe', 'password': '123', 'location': 'USA', "gender": "Male", "user_age": 65 },
+
+      { 'userName': 'Ramesh', 'password': 'Ramesh123', 'location': 'India', "gender": "Male", "user_age": 55 },
+
+      { 'userName': 'Mia', 'password': 'Mia123', 'location': 'USA', "gender": "Female", "user_age": 27 },
+
+      { 'userName': 'Emiley', 'password': '123', 'location': 'USA', "gender": "Female", "user_age": 25 }];
+
+      if ($('#loginUserName').val() && $('#loginPassword').val()) {
+
+        users.forEach((user) => {
+
+          if ($('#loginUserName').val().trim().toLowerCase() == user.userName.toLowerCase() && $('#loginPassword').val() == user.password) {
+
+            window.localStorage.setItem('userName', user.userName);
+
+            window.localStorage.setItem('userLocation', user.location);
+
+            window.localStorage.setItem('gender', user.gender);
+
+            window.localStorage.setItem('userAge', user.user_age);
+
+            $('#profileUserName').html($('#loginUserName').val());
+
+            if ($('body').hasClass('belcorp')) {
+
+              $('#belcorpUserName').html($('#loginUserName').val());
+
+            }
+
+            $('#loginUserName').val('');
+
+            $('#loginPassword').val('');
+
+            $('.login-screen').addClass('hide');
+
+            $('.name-with-profile').removeClass('d-none');
+
+            $('#login').hide();
+
+            $('#logout').show();
+
+            var context = {
+
+              'user_name': window.localStorage.getItem('userName'),
+
+              'location': window.localStorage.getItem('userLocation'),
+
+              'gender': window.localStorage.getItem('gender'),
+
+              'user_age': window.localStorage.getItem('userAge')
+
+            };
+
+            $("#contextjsonfield").val(JSON.stringify(context));
+
+          }
+
+        });
+
+        $('#loginUserName').val('');
+
+        $('#loginPassword').val('');
+
+      }
+
+    });
+
+    $('.login-container').off('click', '.cancel-btn').on('click', '.cancel-btn', function (e) {
+
+      $('.login-screen').addClass('hide');
+
+      window.localStorage.setItem('userName', '');
+
+      window.localStorage.setItem('userLocation', '');
+
+      window.localStorage.setItem('gender', '');
+
+      window.localStorage.setItem('userAge', '');
+
+      $('#profileUserName').html('');
+
+      $('#loginUserName').val('');
+
+      $('#loginPassword').val('');
+
+      $('#login').show();
+
+      $('#logout').hide();
+
+    });
+
+    $('.header-sec').off('click').on('click', function (event) {
+
+      $('#live-search-result-box').hide();
+
+      $('#frequently-searched-box').hide();
+
+    });
+
+    function clearFullResult() {
+
+      if ($('body').hasClass('top-down')) {
+
+        $('.faqs-search-data-container').empty();
+
+        $('.web-search-data-container').empty();
+
+        $('.structured-search-data-container').empty();
+
+        $('.files-full-search-container').empty();
+
+        $('#actions-container').empty();
+
+        $('#filters-left-sec').empty();
+
+        $('#filters-center-sec').empty();
+
+        $('#search').val('');
+
+        $('#suggestion').val('');
+
+        $('.all-result-container').removeClass('left-aligh-filter right-align-filter center-align-filter').addClass('center-align-filter');
+
+        $('.all-result-container').hide();
+
+        if ($('body').hasClass('search-executed')) {
+
+          $('body').removeClass('search-executed');
+
+        }
+
+        $('.cancel-search').hide();
+
+        clearTabsData();
+
+        //   $('.skelton-load-img').show();
+
+      } else {
+
+        $('.faqs-full-search-container').empty();
+
+        $('.web-full-search-container').empty();
+
+        $('.structured-data-full-search-container').empty();
+
+        $('.files-search-data-container').empty();
+
+        $('#actions-full-search-container').empty();
+
+        $('.search-body').html('');
+
+        $('.search-body').removeClass('h-100');
+
+        $('#search').val('');
+
+        $('#suggestion').val('');
+
+        $('.search-container').removeClass('active');
+
+        $('.search-container').addClass('no-history');
+
+        $('.search-container').css('box-shadow', 'none');
+
+        $('#show-all-results-container').hide();
+
+        $('.search-container').removeClass('bottom-up-results-showing');
+
+        $('.typingIndicatorContent').css('display', 'none');
+      }
+    }
+
+    function clearTabsData() {
+
+      var tabs = ['all results', 'faq', 'web', 'file', 'task', 'data'];
+
+      tabs.forEach((tab) => {
+
+        var str = $("div[id='" + tab + "']").text();
+
+        var newstr = str.replace(/\((.+?)\)/g, "(0)");
+
+        $("div[id='" + tab + "']").html(newstr);
+
+      })
+
+    }
+
+    $('.belcrop-action-header').off('click', '.nav-demo-link').on('click', '.nav-demo-link', function (e) {
+
+      let linkId = e.currentTarget.id;
+
+      clearFullResult();
+
+      cosmeticsChangeNavigationActive(linkId);
+
+    });
+
+    function cosmeticsChangeNavigationActive(linkId) {
+
+      $('body').removeClass('home-tab')
+
+      $('body').removeClass('essi-tab');
+
+      $('body').removeClass('lblanc-tab');
+
+      $('body').removeClass('cyze-tab');
+
+      $('body').removeClass('my-order-tab');
+
+      $('#my-orders-tab').removeClass('selected-link');
+
+      if (linkId == 'esika') {
+
+        $('.belcrop-action-header').find('.nav-demo-link.active-name').removeClass('active-name');
+
+        $('#esika').addClass('active-name');
+
+        $('body').addClass('essi-tab');
+
+      } else if (linkId == 'lbel') {
+
+        $('.belcrop-action-header').find('.nav-demo-link.active-name').removeClass('active-name');
+
+        $('#lbel').addClass('active-name');
+
+        $('body').addClass('lblanc-tab');
+
+      } else if (linkId == 'cyzone') {
+
+        $('.belcrop-action-header').find('.nav-demo-link.active-name').removeClass('active-name');
+
+        $('#cyzone').addClass('active-name');
+
+        $('body').addClass('cyze-tab');
+
+      } else {
+
+        $('.belcrop-action-header').find('.nav-demo-link.active-name').removeClass('active-name');
+
+        $('#belcorp').addClass('active-name');
+
+        $('body').addClass('home-tab');
+
+      }
+
+    }
+
+    if (window.location && window.location.href && (window.location.href.includes('cosmetics'))) {
+
+      if (window.location.href.includes('#essi')) {
+
+        cosmeticsChangeNavigationActive('esika');
+
+      } else if (window.location.href.includes('#lblanc')) {
+
+        cosmeticsChangeNavigationActive('lbel');
+
+      } else if (window.location.href.includes('#cyze')) {
+
+        cosmeticsChangeNavigationActive('cyzone');
+
+      } else {
+
+        cosmeticsChangeNavigationActive('belcorp');
+
+      }
+
+    }
+
+    function cosmeticsScreens() {
+
+      if (!$('.banner-bottom-section').hasClass('hide')) {
+
+        $('.banner-bottom-section').addClass('hide');
+
+      } else if (!$('.beauty-products-section').hasClass('hide')) {
+
+        $('.beauty-products-section').addClass('hide');
+
+      } else if (!$('.cosmetic-blushes-section').hasClass('hide')) {
+
+        $('.cosmetic-blushes-section').addClass('hide');
+
+      } else if (!$('.cosmetic-products-you-may-like').hasClass('hide')) {
+
+        $('.cosmetic-products-you-may-like').addClass('hide');
+
+      } else if (!$('.cosmetic-fotter').hasClass('hide')) {
+
+        $('.cosmetic-fotter').addClass('hide');
+
+      }
+
+    }
+
+    //cosmetics click functionality starts//
+
+    $('.name-with-profile').off('click', '.action-name-login').on('click', '.action-name-login', function (e) {
+
+      $('.fixed-login-screen').show();
+
+      if ($('.product-view-template').length) {
+
+        $('.product-view-template').remove()
+
+      }
+
+    })
+
+    $('.fixed-login-screen , .name-with-profile').off('click', '.cosmetics-logout').on('click', '.cosmetics-logout', function (e) {
+
+      $('.fixed-login-screen').hide();
+
+      $('.login-screen').addClass('hide');
+
+      window.localStorage.setItem('userName', '');
+
+      window.localStorage.setItem('userLocation', '');
+
+      window.localStorage.setItem('gender', '');
+
+      window.localStorage.setItem('userAge', '');
+
+      $('.cos-user-name').html('')
+
+      $('#loginUserName').val('');
+
+      $('#loginPassword').val('');
+
+      $('.action-name-login').show();
+
+      $('.cosmetic-post-login').hide();
+
+      $('body').removeClass('cosmeticsUserLogined');
+
+      cosmeticsAvatarMessageUpdate(true);
+
+      if ($('.product-view-template').length) {
+
+        $('.product-view-template').remove()
+
+      }
+
+      if ($('body').hasClass('my-order-tab')) {
+
+        $('body').removeClass('my-order-tab');
+
+        if (window.location && window.location.href && window.location.href.includes('#essi')) {
+
+          $('body').addClass('essi-tab');
+
+        } else if (window.location && window.location.href && window.location.href.includes('#lblanc')) {
+
+          $('body').addClass('lblanc-tab');
+
+        } else if (window.location && window.location.href && window.location.href.includes('#cyze')) {
+
+          $('body').addClass('cyze-tab');
+
+        } else {
+
+          $('body').addClass('home-tab');
+
+        }
+
+      }
+
+    })
+
+    $('.fixed-login-screen').off('click', '.login-btn').on('click', '.login-btn', function (e) {
+
+      var users = [{ 'userName': 'John Doe', 'password': '123', 'location': 'USA', "gender": "Male", "user_age": 65 },
+
+      { 'userName': 'Ramesh', 'password': 'Ramesh123', 'location': 'India', "gender": "Male", "user_age": 55 },
+
+      { 'userName': 'Mia', 'password': 'Mia123', 'location': 'USA', "gender": "Female", "user_age": 27 }, { 'userName': 'Emiley', 'password': '123', 'location': 'USA', "gender": "Female", "user_age": 25 }];
+
+      if ($('#loginUserName').val() && $('#loginPassword').val()) {
+
+        users.forEach((user) => {
+
+          if ($('#loginUserName').val().trim().toLowerCase() == user.userName.toLowerCase() && $('#loginPassword').val() == user.password) {
+
+            if (!$('body').hasClass('cosmeticsUserLogined')) {
+
+              $('body').addClass('cosmeticsUserLogined');
+
+            }
+
+            window.localStorage.setItem('userName', user.userName);
+
+            window.localStorage.setItem('userLocation', user.location);
+
+            window.localStorage.setItem('gender', user.gender);
+
+            window.localStorage.setItem('userAge', user.user_age);
+
+            $('.cos-user-name').html($('#loginUserName').val());
+
+            $('#loginUserName').val('');
+
+            $('#loginPassword').val('');
+
+            $('.action-name-login').hide();
+
+            $('.fixed-login-screen').hide()
+
+            $('.cosmetic-post-login').css('display', 'flex');
+
+            if ((window.localStorage.getItem('userName')).toLowerCase() == 'mia') {
+
+              $('.cosmetics-user-icon').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/dummy-female-user.png');
+
+            } else {
+
+              $('.cosmetics-user-icon').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/dummy-user.png');
+
+            }
+
+            var context = {
+
+              'user_name': window.localStorage.getItem('userName'),
+
+              'location': window.localStorage.getItem('userLocation'),
+
+              'gender': window.localStorage.getItem('gender'),
+
+              'user_age': window.localStorage.getItem('userAge')
+
+            };
+
+            $("#contextjsonfield").val(JSON.stringify(context));
+
+            cosmeticsAvatarMessageUpdate(true);
+
+          }
+
+        });
+
+        $('#loginUserName').val('');
+
+        $('#loginPassword').val('');
+
+      }
+
+    });
+
+
+
+    $('.fixed-login-screen').off('click', '.veiw-pass-icon').on('click', '.veiw-pass-icon', function (e) {
+
+      if ($('#loginPassword').attr('type') == 'text') {
+
+        $('#loginPassword').attr('type', 'password');
+
+      } else {
+
+        $('#loginPassword').attr('type', 'text');
+
+      }
+    });
+
+    $('.belcrop-action-header').off('click', '.nav-demo-link').on('click', '.nav-demo-link', function (e) {
+
+      if (!$('body').hasClass('tabchange-active')) {
+
+        $('body').addClass('tabchange-active');
+
+      }
+
+      let linkId = e.currentTarget.id;
+
+      cosmeticsChangeNavigationActive(linkId);
+
+      if (!$('body').hasClass('tabchange-active')) {
+
+        $('body').addClass('tabchange-active');
+
+      }
+
+      $('#introText').css('display', 'none');
+
+      $('#introText .avatar-greeting-msg-close').css('visibility', 'hidden');
+
+      var tabsList = JSON.parse(window.localStorage.getItem('tabsList'));
+
+      var position = {};
+
+      if (window.localStorage.getItem('avatarPosition')) {
+
+        position = JSON.parse(window.localStorage.getItem('avatarPosition'));
+
+      } else {
+
+        position['x'] = document.documentElement.clientWidth - 100;
+
+        position['y'] = document.documentElement.clientHeight - 100;
+
+      }
+
+      if (!$('.product-view-template').length) {
+
+        clearFullResult();
+
+      } else {
+
+        $('.product-view-template').remove()
+
+        if (!$('body').hasClass('top-down')) {
+
+          setTimeout(() => {
+
+            $('.search-container').removeClass('no-history');
+
+            if (!$('.search-container').hasClass('active')) {
+
+              $('.search-container').addClass('active');
+
+            }
+
+          }, 200);
+
+        }
+
+      }
+
+      var index = -1;
+
+      $('.second-introText').remove();
+
+      if (position.x >= $('#introText').width()) {
+
+        if (position.x >= $('body').width() - 80) {
+
+          if ($('body').hasClass('cosmetics')) {
+
+            $('#introText').css('left', $('body').width() - 60 - $('#introText').width() + 25);
+
+          } else {
+
+            $('#introText').css('left', $('body').width() - 60 - $('#introText').width());
+
+          }
+
+        } else {
+
+          if ($('body').hasClass('cosmetics')) {
+
+            $('#introText').css('left', position.x - $('#introText').width() + 125);
+
+          } else {
+
+            $('#introText').css('left', position.x - $('#introText').width() + 36);
+
+          }
+
+        }
+
+      } else {
+
+        $('#introText').css('left', 2);
+
+      }
+
+      if ($('body').hasClass('cosmetics')) {
+
+        if (window.location.href.includes('#cosmetics')) {
+
+          $('#introText').css('top', position.y);
+
+        } else {
+
+          $('#introText').css('top', position.y - 9);
+
+        }
+
+      }
+
+      if ($(e.currentTarget).attr('href').includes('#essi')) {
+
+        $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
+
+        $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the essi  page? would you like to talk?');
+
+        // $('#introText').css({ 'left': position.x - $('#introText').width() - 8, top: position.y });
+
+        $('#welcomeMsg').addClass('moreLines');
+
+      } else if ($(e.currentTarget).attr('href').includes('#lblanc')) {
+
+        $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
+
+        $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the l`blanc  page? would you like to talk?');
+
+        $('#welcomeMsg').addClass('moreLines');
+
+      }
+
+      else if ($(e.currentTarget).attr('href').includes('#cyze')) {
+
+        $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
+
+        $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the cyze page? would you like to talk?');
+
+        $('#welcomeMsg').addClass('moreLines');
+
+      }
+
+      else if ($(e.currentTarget).attr('href').includes('#cosmetics')) {
+
+        $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data"></div>`);
+
+        $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the cosmetics page? would you like to talk?');
+
+        $('#welcomeMsg').addClass('moreLines');
+
+      }
+
+
+
+
+
+      index = tabsList.findIndex((d) => d == $(e.currentTarget).attr('id'))
+
+      if (index > -1) {
+
+        if ($('body').hasClass('setDefaultSearchTemplate1') && !$('.start-search-icon-div').hasClass('hideStartIcon')) {
+
+          var topPosition = (Number(($('#introText').css('top')).replace('px', '')));
+
+          var leftPosition = (Number(($('#introText').css('left')).replace('px', '')));
+
+          $('#introText').css({ 'left': (leftPosition - 46) + 'px' });
+
+          if (!$('.start-search-icon-div').hasClass('hideStartIcon')) {
+
+            setTimeout(() => {
+
+              $('.second-introText').remove();
+
+              if (!$('.start-search-icon-div').hasClass('hideStartIcon')) {
+
+                $('.into-text-details').children().first().show();
+
+                $('#introText .avatar-greeting-msg-close').css('visibility', 'hidden');
+
+                $('#introText').css('display', 'block');
+
+                if ($('body').hasClass('cosmetics')) {
+
+                  $('#introText').animate({ 'left': position.x - $('#introText').width() - 13 }, 'slow');
+
+                }
+
+                else {
+
+                  $('#introText').animate({ 'left': (leftPosition + 'px') }, 'slow');
+
+                }
+
+                setTimeout(() => {
+
+                  $('#introText .avatar-greeting-msg-close').css('visibility', 'visible');
+
+                  $('.avatar-greeting-msg-close').off('click').on('click', function () {
+
+                    $('#introText').css('display', 'none');
+
+                    $('#introText').stop();
+
+                  })
+
+                }, 2000)
+
+              }
+
+            }, 1000)
+
+          }
+
+        }
+
+      } else {
+
+        $('#introText').css('display', 'none');
+
+      }
+
+    });
+
+    $('.name-with-profile , .footer-cart').off('click', '.cart-icon , .close-cart').on('click', '.cart-icon , .close-cart', function (e) {
+
+      $('.whish-list-icon').removeClass('active-whish');
+
+      if ($('.slider-content').hasClass('if-whishlist-icon')) {
+
+        $('.slider-content').removeClass('if-whishlist-icon');
+
+      }
+
+      $('.fixed-slider-right-left').removeClass('show-wish-list-data');
+
+      if (!$('.fixed-slider-right-left').hasClass('show-cart-list-data')) {
+
+        $('.fixed-slider-right-left').addClass('show-cart-list-data');
+
+      }
+
+      if (!$('.cart-icon').hasClass('active-cart-icon')) {
+
+        $('.cart-icon').addClass('active-cart-icon');
+
+        $('.fixed-slider-right-left').css('display', 'block');
+
+      } else {
+
+        $('.cart-icon').removeClass('active-cart-icon');
+
+        $('.fixed-slider-right-left').css('display', 'none');
+
+      }
+
+    })
+
+    $('.name-with-profile').off('click', '.whish-list-icon').on('click', '.whish-list-icon', function (e) {
+
+      if (!$('.slider-content').hasClass('if-whishlist-icon')) {
+
+        $('.slider-content').addClass('if-whishlist-icon');
+
+      }
+
+      $('.fixed-slider-right-left').removeClass('show-cart-list-data');
+
+      if (!$('.fixed-slider-right-left').hasClass('show-wish-list-data')) {
+
+        $('.fixed-slider-right-left').addClass('show-wish-list-data');
+
+      }
+
+      $('.cart-icon').removeClass('active-cart-icon');
+
+      if (!$('.whish-list-icon').hasClass('active-whish')) {
+
+        $('.whish-list-icon').addClass('active-whish');
+
+        $('.fixed-slider-right-left').css('display', 'block');
+
+      } else {
+
+        $('.whish-list-icon').removeClass('active-whish');
+
+        $('.fixed-slider-right-left').css('display', 'none');
+
+      }
+
+    })
+
+    $('.name-with-profile').off('click', '.cos-dis-flex').on('click', '.cos-dis-flex', function (e) {
+
+      if ($('.profile_dropdown_cat').css('display') == 'none') {
+
+        $('.profile_dropdown_cat').css('display', 'block');
+
+      } else {
+
+        $('.profile_dropdown_cat').css('display', 'none');
+
+      }
+
+    })
+
+    $('.profile_dropdown_cat').off('click', '#my-orders-tab').on('click', '#my-orders-tab', function (e) {
+
+      if (!$('#my-orders-tab').hasClass('selected-link')) {
+
+        $('#my-orders-tab').addClass('selected-link');
+
+      }
+
+      if (!$('.product-view-template').length) {
+
+        clearFullResult();
+
+      } else {
+
+        $('.product-view-template').remove()
+
+      }
+
+      $('body').removeClass('home-tab');
+
+      $('body').removeClass('essi-tab');
+
+      $('body').removeClass('lblanc-tab');
+
+      $('body').removeClass('cyze-tab');
+
+      $('body').addClass('my-order-tab');
+
+      $('.profile_dropdown_cat').css('display', 'none');
+
+    });
+
+    $('.logo-bg').off('click', '.cosmetic-icon').on('click', '.cosmetic-icon', function (e) {
+
+      window.location.hash = 'cosmetics';
+
+      $('body').addClass('home-tab');
+
+      $('body').removeClass('essi-tab');
+
+      $('body').removeClass('lblanc-tab');
+
+      $('body').removeClass('cyze-tab');
+
+      $('body').removeClass('my-order-tab');
+
+      if (!$('.product-view-template').length) {
+
+        clearFullResult();
+
+      } else {
+
+        $('.product-view-template').remove()
+
+        if (!$('body').hasClass('top-down')) {
+
+          setTimeout(() => {
+
+            $('.search-container').removeClass('no-history');
+
+            if (!$('.search-container').hasClass('active')) {
+
+              $('.search-container').addClass('active');
+
+            }
+
+          }, 200);
+
+        }
+
+      }
+
+      $('.profile_dropdown_cat').css('display', 'none');
+
+      $('.belcrop-action-header').find('.nav-demo-link.active-name').removeClass('active-name');
+
+      $('#belcorp').addClass('active-name');
+
+    })
+
+    function cosmeticsAvatarMessageUpdate(isFromLogin) {
+
+      if (window.location.href.includes('#essi')) {
+
+        $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg "></div>`);
+
+        $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the essi  page? would you like to talk?');
+
+        $('#welcomeMsg').addClass('moreLines');
+
+      } else if (window.location.href.includes('#lblanc')) {
+
+        $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
+
+        $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the l`blanc  page? would you like to talk?');
+
+        $('#welcomeMsg').addClass('moreLines');
+
+      }
+
+      else if (window.location.href.includes('#cyze')) {
+
+        $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
+
+        $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the cyze cards page? would you like to talk?');
+
+        $('#welcomeMsg').addClass('moreLines');
+
+      }
+
+      else {
+
+        if (!$('body').hasClass('tabchange-active') && isFromLogin) {
+
+          var leftPosition = (Number(($('#introText').css('left')).replace('px', '')));
+
+          $('#introText .avatar-greeting-msg-close').css('visibility', 'hidden');
+
+          if (!$('body').hasClass('cosmeticsUserLogined')) {
+
+            if ($('#welcomeMsg').first().width() > 171) {
+
+              $('#introText').first().css('left', (leftPosition) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 128 && $('#welcomeMsg').first().width() < 171) {
+
+              $('#introText').first().css('left', (leftPosition - 43) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 113) {
+
+              $('#introText').first().css('left', (leftPosition - 51) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 85) {
+
+              $('#introText').first().css('left', (leftPosition - 78) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 70) {
+
+              $('#introText').first().css('left', (leftPosition - 101) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 62) {
+
+              $('#introText').first().css('left', (leftPosition - 109) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 36) {
+
+              $('#introText').first().css('left', (leftPosition - 135) + 'px');
+
+            }
+
+            $('#introText .avatar-greeting-msg-close').css('visibility', 'hidden');
+
+          }
+
+          $('.into-text-details').first().empty().append(`<div id="welcomeMsg" class="text-data withoutarrow"></div>`);
+
+          var html_text = 'Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : ', I am your<strong> Virtual Assistant</strong>');
+
+          $('#welcomeMsg').first().html(html_text);
+
+          if ($('body').hasClass('cosmeticsUserLogined')) {
+
+            if ($('#welcomeMsg').first().width() > 128) {
+
+              $('#introText').first().css('left', (leftPosition + 43) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 113) {
+
+              $('#introText').first().css('left', (leftPosition + 51) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 85) {
+
+              $('#introText').first().css('left', (leftPosition + 78) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 70) {
+
+              $('#introText').first().css('left', (leftPosition + 101) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 62) {
+
+              $('#introText').first().css('left', (leftPosition + 109) + 'px');
+
+            } else if ($('#welcomeMsg').first().width() > 36) {
+
+              $('#introText').first().css('left', (leftPosition + 135) + 'px');
+
+            }
+
+            $('#introText .avatar-greeting-msg-close').css('visibility', 'hidden');
+
+          }
+
+          $('.second-introText .avatar-greeting-msg-close').css('visibility', 'visible');
+
+        } else if ($('body').hasClass('tabchange-active') && isFromLogin) {
+
+          $('.second-introText').remove();
+
+          $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data"></div>`);
+
+          $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the banking page? would you like to talk?');
+
+          $('#welcomeMsg').addClass('moreLines');
+
+        } else {
+
+          $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data"></div>`);
+
+          var html_text = 'Hi, I am your<strong>Virtual Assistant</strong>';
+
+          $('#welcomeMsg').html(html_text);
+
+          $('#introText .avatar-greeting-msg-close').css('visibility', 'hidden');
+
+        }
+
+      }
+
+    }
+
+    //cosmetics click functionality ends//
+  }, 1200)
+
+</script>
+
+</html>
+<div class="notification--navigated" id="path-toastr" style="display: none;">
+
+  <div class="check-icon">
+
+    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/demo-imgs/check1.svg">
+
+  </div>
+
+  <div class="noti-text">Navigated to the corresponding page!</div>
+
+  <div class="on-btn">OK</div>
+
+</div>

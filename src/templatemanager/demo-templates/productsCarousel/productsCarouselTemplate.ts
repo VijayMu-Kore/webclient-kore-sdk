@@ -20,13 +20,13 @@ class ProductsCarouselTemplate {
             _extractedFileName = msgData.message[0].component.payload.url.replace(/^.*[\\\/]/, '');
         }
         if (msgData?.message?.[0]?.component?.payload?.template_type === "products_carousel_template") {
-            me.messageHtml = $(me.getTemplateString("productCarouselTemplate")).tmpl({
+            me.messageHtml = $(ProductsCarouselTemplate.prototype.getTemplateString()).tmpl({
                 'msgData': msgData,
                 'helpers': helpersObj.helpers,
                 'extension': extension
             });
             setTimeout(() => {
-              me.bindEvents(me.messageHtml, 'carousel-template');
+              ProductsCarouselTemplate.prototype.bindEvents(me.messageHtml, 'carousel-template', me);
           }, 500)
             return me.messageHtml;
         }
@@ -71,8 +71,7 @@ class ProductsCarouselTemplate {
                           </script>';
         return productCarouselTemplate;
     }
-    bindEvents(messageHtml:any, carouselId:string){
-      let me :any = this;
+    bindEvents(messageHtml:any, carouselId:string, me:any){
       let chatWindowInstance:any = me.hostInstance;
       let $ = me.hostInstance.$;
       let newCarouselTemplateCount = $('.carousel').length;
@@ -100,12 +99,11 @@ class ProductsCarouselTemplate {
       } else {
         count = messageHtml.find(".carouselTemplate" + newCarouselTemplateCount).children().length;
       }
-      if (count > 1) {
+      if (count > 1 && $('.carouselTemplate' + newCarouselTemplateCount).length) {
         var carouselOneByOne = new PureJSCarousel({
           carousel: '.carouselTemplate' + newCarouselTemplateCount,
           slide: '.slide',
-          oneByOne: true,
-          jq: $,
+          oneByOne: true
         });
         $('.carousel' + newCarouselTemplateCount).parent().show();
         newCarouselEles.push(carouselOneByOne);
