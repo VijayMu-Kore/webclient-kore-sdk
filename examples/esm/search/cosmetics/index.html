@@ -20,8 +20,15 @@
   <!-- Avatar Script-->
 </head>
 <script type="module" src="js/index_search.js"></script>
-<!-- <script src="dist/kore-web-sdk-umd-search.js"></script> -->
-<!-- <script type="text/javascript"> KoreSearchSDK.KRSearchConfig.API_KEY_CONFIG.KEY=""; var findlySDK = new KoreSearchSDK.KRSearch(KoreSearchSDK.KRSearchConfig); findlySDK.show(KoreSearchSDK.KRSearchConfig); </script> -->
+<!-- <script src="dist/kore-web-sdk-umd-search.js"></script>
+<script type="text/javascript">
+  var envURL = 'searchassist-qa.kore.ai';
+ KoreSearchSDK.KRSearchConfig.botOptions.koreAPIUrl = "https://"+ envURL +"/searchassistapi/";
+ KoreSearchSDK.KRSearchConfig.botOptions.baseAPIServer = "https://"+envURL;
+ KoreSearchSDK.KRSearchConfig.botOptions.reWriteSocketURL.hostname= envURL;
+ KoreSearchSDK.KRSearchConfig.API_KEY_CONFIG.KEY="c975af633e554d01a8c2a8299bb7646d0864e14b56b24d36aa34fc1557a57cedsta3"; var findlySDK = new KoreSearchSDK.KRSearch(KoreSearchSDK.KRSearchConfig); findlySDK.show(KoreSearchSDK.KRSearchConfig);
+//  KoreSearchSDK.KRSearchConfig.API_KEY_CONFIG.KEY="93b7fa5188a4449e813219258c35713fc2a744ac7e754a168c47fc5e2a25491fst2f"; var findlySDK = new KoreSearchSDK.KRSearch(KoreSearchSDK.KRSearchConfig); findlySDK.show(KoreSearchSDK.KRSearchConfig);
+  </script> -->
 <body class="demo cosmetics belcorp" style="background:#fff;font-family:'Inter !important';">
   <div class="login-screen" style="display: none;"></div>
   <script type="text/javascript">
