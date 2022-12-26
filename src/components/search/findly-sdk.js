@@ -19297,65 +19297,6 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
       "frequentlySearchedBox"
     );
 
-    //top-down-pagination//
-    $(".content-data-sec")
-      .off("click", ".kore-sdk-bottom-up-first")
-      .on("click", ".kore-sdk-bottom-up-first", function () {
-        // $('#loaderDIV').show();
-        _self.vars.scrollPageNumber = 0;
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      });
-    $(".content-data-sec")
-      .off("click", ".kore-sdk-bottom-up-last")
-      .on("click", ".kore-sdk-bottom-up-last", function () {
-        // $('#loaderDIV').show();
-        var totalPages;
-        totalPages = $("#kore-total-page-number").text();
-        if (totalPages) {
-          _self.vars.scrollPageNumber = totalPages - 1;
-        }
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      });
-    $(".content-data-sec")
-      .off("click", ".kore-sdk-bottom-up-next")
-      .on("click", ".kore-sdk-bottom-up-next", function () {
-        if (
-          _self.vars.totalNumOfResults >
-          (_self.vars.scrollPageNumber + 1) * 10
-        ) {
-          _self.vars.scrollPageNumber = _self.vars.scrollPageNumber + 1;
-          $("#loaderDIV").show();
-          _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-        }
-      });
-    $(".content-data-sec")
-      .off("click", ".kore-sdk-bottom-up-previous")
-      .on("click", ".kore-sdk-bottom-up-previous", function () {
-        if (_self.vars.scrollPageNumber > 0) {
-          _self.vars.scrollPageNumber = _self.vars.scrollPageNumber - 1;
-          // $('#loaderDIV').show();
-          _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-        }
-      });
-    $(".content-data-sec")
-      .off("keyup", ".kore-current-page-number")
-      .on("keyup", ".kore-current-page-number", function (event) {
-        var totalPages;
-        totalPages = $("#kore-total-page-number").text();
-        if (event.keyCode == 13 || event.which == 13) {
-          if (parseInt(event.target.value) > 0) {
-            if (parseInt(event.target.value) > parseInt(totalPages)) {
-              _self.vars.scrollPageNumber = parseInt(totalPages) - 1;
-            } else {
-              _self.vars.scrollPageNumber = parseInt(event.target.value) - 1;
-            }
-          } else {
-            $("#kore-current-page-number").val(_self.vars.scrollPageNumber + 1);
-          }
-          $("#loaderDIV").show();
-          _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-        }
-      });
 
     $("#search-box-container")
       .off("click", ".submit-button")
