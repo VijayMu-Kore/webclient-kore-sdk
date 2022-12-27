@@ -21877,19 +21877,6 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
 }
 
 
-// FindlySDK.prototype.bindCarouselForActionsTemplate = function (
-//   actionContainer
-// ) {
-//   var _self = this;
-//   var type = "grid";
-//   if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
-//     type = searchConfigurationCopy.botConfig.botActionTemplate;
-//   }
-//   if ((type = "carousel")) {
-//     _self.bindCarouselActions($(actionContainer));
-//   }
-// };
-
 FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
   var _self = this;
   if ($("body").hasClass("top-down")) {
@@ -21982,6 +21969,16 @@ FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
       $(".bottom-up-search").val(querySuggestionId);
       $(".bottom-up-suggestion").val("");
       _self.vars.isQueryEntered = true;
+    }
+  }
+  if (e.keyCode === 27) {
+    $hlight.removeClass("highlightSuggestion")
+    $div.eq(0).addClass("highlightSuggestion");
+    if ($hlight.prev().length == 0 || $hlight.next().length == 0) {
+      $div.eq(0).addClass("highlightSuggestion");
+    }
+    if(!$('body').hasClass('top-down')){
+      $('.bottom-to-top-suggestion').scrollTop(0);
     }
   }
 };
