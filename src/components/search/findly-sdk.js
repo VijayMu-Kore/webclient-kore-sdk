@@ -23432,6 +23432,9 @@ FindlySDK.prototype.getJWTByAPIKey = function (options, callback) {
     apiKey = options.apiKey;
   }
   var jsonData = {};
+  if(_self.config.botOptions && _self.config.botOptions.userMailId){
+      jsonData['identity'] = _self.config.botOptions.userMailId;
+    }
   return $.ajax({
     url: options.koreAPIUrl + 'websdk/' + apiKey,
     type: 'post',
