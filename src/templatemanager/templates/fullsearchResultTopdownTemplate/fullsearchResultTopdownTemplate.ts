@@ -436,8 +436,14 @@ class FullSearchResultTopdownTemplate {
     $(messageHtml)
       .off("click", ".filters-reset-anchor")
       .on("click", ".filters-reset-anchor", function (event: any) {
+        if (!$(event.target).hasClass('enabled')) {
+          return;
+        }
         $(".sdk-filter-checkbox-top-down").prop("checked", false);
         $(".sdk-filter-radio-top-down").prop("checked", false);
+        if($('.filters-reset-anchor').hasClass('enabled')){
+          $('.filters-reset-anchor').removeClass('enabled');
+        }
         hostWindowInstance.clearAllFilterTopdownEvent(event).then((res: any) => {
           if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
             $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);

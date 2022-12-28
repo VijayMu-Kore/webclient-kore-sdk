@@ -6773,6 +6773,13 @@ FindlySDK.prototype.searchEventBinding = function (
           if (!$(".search-container").hasClass("active")) {
             $(".search-container").addClass("active");
           }
+          if ($('.welcome-message').find('.username').length) {
+            var name = (window.localStorage.getItem('userName')) ? `<strong> ${window.localStorage.getItem('userName')},</strong>` : `,`;
+            $('.username').html(name);
+           if (window.location.href.includes('#cosmetics')) {
+              $('.welcomeText').html('I am Julia, your assistant to address all your queries related to cosmetic and its products. Type in your query in the conversation bar and lets chat.')
+            }
+          }
         }
         if (
           $("body").hasClass("top-down")
@@ -9393,7 +9400,14 @@ FindlySDK.prototype.markSelectedFilters = function () {
   if (_self.vars.selectedFiltersArr.length > 0) {
     _self.vars.selectedFiltersArr.forEach(function (filter) {
       $("#" + filter).prop("checked", true);
+      if (!$('.filters-reset-anchor').hasClass('enabled')) {
+        $('.filters-reset-anchor').addClass('enabled')
+      }
     });
+  }else{
+    if($('.filters-reset-anchor').hasClass('enabled')){
+      $('.filters-reset-anchor').removeClass('enabled');
+    }
   }
 };
 FindlySDK.prototype.addSearchResult = function (config) {
@@ -21534,19 +21548,6 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
 }
 
 
-// FindlySDK.prototype.bindCarouselForActionsTemplate = function (
-//   actionContainer
-// ) {
-//   var _self = this;
-//   var type = "grid";
-//   if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
-//     type = searchConfigurationCopy.botConfig.botActionTemplate;
-//   }
-//   if ((type = "carousel")) {
-//     _self.bindCarouselActions($(actionContainer));
-//   }
-// };
-
 FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
   var _self = this;
   if ($("body").hasClass("top-down")) {
@@ -21639,6 +21640,16 @@ FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
       $(".bottom-up-search").val(querySuggestionId);
       $(".bottom-up-suggestion").val("");
       _self.vars.isQueryEntered = true;
+    }
+  }
+  if (e.keyCode === 27) {
+    $hlight.removeClass("highlightSuggestion")
+    $div.eq(0).addClass("highlightSuggestion");
+    if ($hlight.prev().length == 0 || $hlight.next().length == 0) {
+      $div.eq(0).addClass("highlightSuggestion");
+    }
+    if(!$('body').hasClass('top-down')){
+      $('.bottom-to-top-suggestion').scrollTop(0);
     }
   }
 };
@@ -23029,6 +23040,7 @@ return new Promise((resolve, reject) => {
             _self.vars.isTopFacets
           ).then((res)=>{
             res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            _self.markSelectedFilters();
             resolve(res);
           });
         } else {
@@ -23053,6 +23065,7 @@ return new Promise((resolve, reject) => {
             _self.vars.isTopFacets
           ).then((res)=>{
             res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            _self.markSelectedFilters();
             resolve(res);
           });
         }
@@ -23090,6 +23103,7 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
               });
               _self.filterResultsTopDown(event, false).then((res)=>{
                 res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+                _self.markSelectedFilters();
                 resolve(res);
               });
             } else {
@@ -23110,6 +23124,7 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
               _self.vars.countOfSelectedFilters += 1;
               _self.filterResultsTopDown(event, true).then((res)=>{
                 res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+                _self.markSelectedFilters();
                 resolve(res);
               });
             }
@@ -23131,6 +23146,7 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
             _self.vars.countOfSelectedFilters += 1;
             _self.filterResultsTopDown(event, true).then((res)=>{
               res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+              _self.markSelectedFilters();
               resolve(res);
             });
           }

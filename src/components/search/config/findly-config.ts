@@ -75,10 +75,15 @@ let favicon: any = document.getElementById("favicon");
         protocol: 'wss',
         hostname: 'searchassist-pilot.kore.ai'
     };
-    botOptionsFindly.botInfo = { chatBot: "Cosmetics", "taskBotId": "st-85d0f5ee-d8ec-5f46-a07b-60b19665f8ef" };
-    botOptionsFindly.clientId = "cs-6d7410bf-ad70-5392-a509-08f42b6b973b";
-    botOptionsFindly.clientSecret = "29vqaA7rQjs3ojPkWKDfMg+zuB3RWC5iBJbUjG7jZQQ=";
-    botOptionsFindly.searchIndexID = "sidx-80f8686d-e870-5ebf-a3d6-3f93ffc5a489";
+    botOptionsFindly.botInfo = { chatBot: "CosmeticsV1.1", "taskBotId": "st-2fbd4ab1-9de2-5ac0-8ba1-9acbc61708ac" };
+botOptionsFindly.clientId = "cs-ea1d088b-4575-5316-96af-0302060901b0";
+botOptionsFindly.clientSecret = "AgrfwDZXdX8gpdzHgfQl1vk5JVnpSEFfYJYe/Wnlj1M=";
+botOptionsFindly.searchIndexID = "sidx-3311ab62-8bae-556a-8aab-02b3fb3dda6a";
+// old
+    // botOptionsFindly.botInfo = { chatBot: "Cosmetics", "taskBotId": "st-85d0f5ee-d8ec-5f46-a07b-60b19665f8ef" };
+    // botOptionsFindly.clientId = "cs-6d7410bf-ad70-5392-a509-08f42b6b973b";
+    // botOptionsFindly.clientSecret = "29vqaA7rQjs3ojPkWKDfMg+zuB3RWC5iBJbUjG7jZQQ=";
+    // botOptionsFindly.searchIndexID = "sidx-80f8686d-e870-5ebf-a3d6-3f93ffc5a489";
   } else if(window.location && window.location.href && (window.location.href.includes('searchassist-qa.kore.ai'))){
     botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
     botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";

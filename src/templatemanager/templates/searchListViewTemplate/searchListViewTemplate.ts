@@ -452,7 +452,7 @@ class SearchListViewTemplate {
     });
   }
   getTemplateString(type: any) {
-   
+
     var searchListTemplates = '<script type="text/x-jqury-tmpl">\
     {{if isButtonTemplate == false}}\
     <div>\
