@@ -59,6 +59,17 @@ class FullSearchResultTopdownTemplate {
           $(".empty-full-results-container").addClass("hide");
         }
       }
+      $(messageHtml).find('.scroll-top-container').css('display', 'none');
+      $(messageHtml).find(".content-data-sec").off('scroll').on('scroll', function () {
+          if ($(messageHtml).find('.content-data-sec').scrollTop() > 50) {
+            $(messageHtml).find('.scroll-top-container').css('display', 'flex');
+          } else {
+            $(messageHtml).find('.scroll-top-container').css('display', 'none');
+          }
+        });
+        $(messageHtml).find(".title-scroll-top").off('click').on('click', function () {
+          $(messageHtml).find(".content-data-sec").scrollTop(0);
+        });
       if(msgData.message[0].component.payload.displayFeedback){
         FullSearchResultTopdownTemplate.prototype.feedBackResultEvents(me, messageHtml);
         }
@@ -383,8 +394,14 @@ class FullSearchResultTopdownTemplate {
     $(messageHtml)
       .off("click", ".filters-reset-anchor")
       .on("click", ".filters-reset-anchor", function (event: any) {
+        if (!$(event.target).hasClass('enabled')) {
+          return;
+        }
         $(".sdk-filter-checkbox-top-down").prop("checked", false);
         $(".sdk-filter-radio-top-down").prop("checked", false);
+        if($('.filters-reset-anchor').hasClass('enabled')){
+          $('.filters-reset-anchor').removeClass('enabled');
+        }
         hostWindowInstance.clearAllFilterTopdownEvent(event).then((res: any) => {
           let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
             facets: res.facets,

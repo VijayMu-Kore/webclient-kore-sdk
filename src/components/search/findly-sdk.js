@@ -9656,7 +9656,14 @@ FindlySDK.prototype.markSelectedFilters = function () {
   if (_self.vars.selectedFiltersArr.length > 0) {
     _self.vars.selectedFiltersArr.forEach(function (filter) {
       $("#" + filter).prop("checked", true);
+      if (!$('.filters-reset-anchor').hasClass('enabled')) {
+        $('.filters-reset-anchor').addClass('enabled')
+      }
     });
+  } else {
+    if($('.filters-reset-anchor').hasClass('enabled')){
+      $('.filters-reset-anchor').removeClass('enabled');
+    }
   }
 };
 FindlySDK.prototype.addSearchResult = function (config) {
@@ -22953,6 +22960,7 @@ return new Promise((resolve, reject) => {
             _self.vars.isTopFacets
           ).then((res)=>{
             res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            _self.markSelectedFilters();
             resolve(res);
           });
         } else {
@@ -22977,6 +22985,7 @@ return new Promise((resolve, reject) => {
             _self.vars.isTopFacets
           ).then((res)=>{
             res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            _self.markSelectedFilters();
             resolve(res);
           });
         }
@@ -23014,7 +23023,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
               });
               _self.filterResultsTopDown(event, false).then((res)=>{
                 res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-                resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
               });
             } else {
               _self.vars.selectedFiltersArr.push($(event.target).attr("id"));
@@ -23034,7 +23044,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
               _self.vars.countOfSelectedFilters += 1;
               _self.filterResultsTopDown(event, true).then((res)=>{
                 res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-                resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
               });
             }
           } else {
@@ -23055,7 +23066,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
             _self.vars.countOfSelectedFilters += 1;
             _self.filterResultsTopDown(event, true).then((res)=>{
               res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-              resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
             });
           }
         })

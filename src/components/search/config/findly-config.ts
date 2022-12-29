@@ -47,20 +47,20 @@ botOptionsFindly.JWTUrl =
   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
-botOptionsFindly.botInfo = {
-  chatBot: "New zendesk after Nov 14",
-  taskBotId: "st-3cd359e5-96c3-54a4-afbe-82cf46e208a3",
-};
-botOptionsFindly.clientId = "cs-3c5c78f4-289a-5745-aaa9-944658e9b075";
-botOptionsFindly.clientSecret = "S2K3A7tmcJjYVyIQIGeRCNJEQT6CFwJ5jiH34WQaG7U=";
-botOptionsFindly.searchIndexID = "sidx-62909178-4ea3-5950-897f-b5f8f07626c0";
 // botOptionsFindly.botInfo = {
-//   chatBot: "SA demo",
-//   taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
+//   chatBot: "New zendesk after Nov 14",
+//   taskBotId: "st-3cd359e5-96c3-54a4-afbe-82cf46e208a3",
 // };
-// botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
-// botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
-// botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
+// botOptionsFindly.clientId = "cs-3c5c78f4-289a-5745-aaa9-944658e9b075";
+// botOptionsFindly.clientSecret = "S2K3A7tmcJjYVyIQIGeRCNJEQT6CFwJ5jiH34WQaG7U=";
+// botOptionsFindly.searchIndexID = "sidx-62909178-4ea3-5950-897f-b5f8f07626c0";
+botOptionsFindly.botInfo = {
+  chatBot: "SA demo",
+  taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
+};
+botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
+botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
+botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
 // botOptionsFindly.botInfo = {
 //   chatBot: "7 DEC-22",
 //   taskBotId: "st-0e74a50d-6082-5f35-8ef7-12f05b67c6e0",

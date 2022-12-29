@@ -58,6 +58,18 @@ class FullSearchResultsTemplate {
           $('.scroll-top-container').css('bottom', 41);
           $('.data-body-sec').css('height','calc(100% - 166px)');
         }
+        $(messageHtml).find('.scroll-top-container').css('display', 'none');
+        $(messageHtml).find(".data-body-sec").off('scroll').on('scroll', function () {
+              if ( $(messageHtml).find('.data-body-sec').scrollTop() > 50) {
+                $(messageHtml).find('.scroll-top-container').css('left', ( $(messageHtml).find('.show-all-results-outer-wrap').width() / 2) +  $(messageHtml).find('.show-all-results-outer-wrap').position().left)
+                $(messageHtml).find('.scroll-top-container').css('display', 'flex');
+              } else {
+                $(messageHtml).find('.scroll-top-container').css('display', 'none');
+              }
+            })
+            $(messageHtml).find(".title-scroll-top").off('click').on('click', function () {
+              $(messageHtml).find(".data-body-sec").scrollTop(0);
+            });
     }, 300);
     let tabHtml = $(FullSearchResultsTemplate.prototype.getBottomupTab()).tmpl({ facets: msgData.message[0].component.payload.facets, truncateText: truncateText  });
     $(messageHtml).find('#sdk-bottomup-tab-container').empty().append(tabHtml);
