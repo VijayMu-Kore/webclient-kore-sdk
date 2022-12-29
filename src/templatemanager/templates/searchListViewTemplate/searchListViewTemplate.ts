@@ -452,11 +452,6 @@ class SearchListViewTemplate {
     });
   }
   getTemplateString(type: any) {
-<<<<<<< HEAD
-   
-=======
-  
->>>>>>> SA_Revamp_sdk_public_repo_changes
     var searchListTemplates = '<script type="text/x-jqury-tmpl">\
     {{if isButtonTemplate == false}}\
     <div>\
