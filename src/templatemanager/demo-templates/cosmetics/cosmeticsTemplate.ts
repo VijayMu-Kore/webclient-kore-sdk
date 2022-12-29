@@ -17,6 +17,7 @@ class CosmeticsTemplate {
           },1000) 
           }
           CosmeticsTemplate.prototype.showMoreClickEvents(me.messageHtml, me);
+          CosmeticsTemplate.prototype.bindClickLogsEvent(me, me.messageHtml);
             return me.messageHtml;
         }
     }
@@ -31,7 +32,7 @@ class CosmeticsTemplate {
                       <div class="carousel-cosmotics-sellers carousel {{if isSearch == true || isLiveSearch == true}}cosmeticsCarouselId{{/if}}">\
                       {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                         <div class="slide cosmetics-product-view" data-prod-cat="${data.prod_cat}" data-img="${data.img}" data-title="{{html helpers.convertMDtoHTML(data.heading)}}" data-info="{{html helpers.convertMDtoHTML(data.description)}}" data-price="${data.prod_price}" data-orig-price="${data.prod_original_price}" data-percentage-offer="${data.prod_percentage_offer}" data-bestseller="${data.bestseller}" data-newarrival="${data.newarrival}" >\
-                          <div class="inner-data click-to-navigate-url isClickable"  href="${data.url}" target="_blank">\
+                          <div class="inner-data click-to-navigate-url isClickable click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
                             <div class="best-sellar {{if  data.bestseller == true}} display-inline-block{{else}}display-none{{/if}}">Best Seller</div>\
                             <div class="new-arrival {{if  data.newarrival == true}} display-inline-block{{else}}display-none{{/if}}">New</div>\
                             <div class="img-block">\
@@ -68,7 +69,7 @@ class CosmeticsTemplate {
                     <div class="carousel-cosmotics-sellers-grid parent-grid-template">\
                     {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                     <div class="slide-grid cosmetics-product-view" data-prod-cat="${data.prod_cat}" data-img="${data.img}" data-title="{{html helpers.convertMDtoHTML(data.heading)}}" data-info="{{html helpers.convertMDtoHTML(data.description)}}" data-price="${data.prod_price}" data-orig-price="${data.prod_original_price}" data-percentage-offer="${data.prod_percentage_offer}" data-bestseller="${data.bestseller}" data-newarrival="${data.newarrival}">\
-                      <div class="inner-data">\
+                      <div class="inner-data click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
                       <div class="best-sellar {{if  data.bestseller == true}}display-inline-block{{else}}display-none{{/if}}">Best Seller</div>\
                       <div class="new-arrival {{if  data.newarrival == true}}display-inline-block{{else}}display-none{{/if}}">New</div>\
                         <div class="img-block">\
@@ -195,11 +196,23 @@ class CosmeticsTemplate {
           dataContainer = '.content-data-sec';
         }
         $(dataContainer).animate({ scrollTop: (+$(dataContainer).scrollTop() + ($(dataContainer).prop("offsetHeight"))) }, 1000);
+        CosmeticsTemplate.prototype.bindClickLogsEvent(me, messageHtml);
       })
       $(e.currentTarget).attr("pageNumber", Number($(e.currentTarget).attr("pageNumber")) + 1);
       });
   }
-    
+  bindClickLogsEvent(me:any, messageHtml: any) {
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml).off("click",".click-log-metrics").on("click",".click-log-metrics", function (e: any) {
+      hostWindowInstance?.captureClickAnalytics(e,
+        $(e.currentTarget).closest(".click-log-metrics").attr("contentType"),
+        "click",
+        $(e.currentTarget).closest(".click-log-metrics").attr("contentId"),
+        $(e.currentTarget).closest(".click-log-metrics").attr("id"),
+        $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
+    });
+  }
 }
 
 export default CosmeticsTemplate;
