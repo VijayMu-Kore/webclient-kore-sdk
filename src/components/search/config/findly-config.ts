@@ -4,7 +4,7 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-pilot.kore.ai"
+var paramUrl="searchassist-qa.kore.ai"
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
@@ -48,10 +48,10 @@ botOptionsFindly.JWTUrl =
   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
-botOptionsFindly.botInfo = { chatBot: "Cosmetics", "taskBotId": "st-85d0f5ee-d8ec-5f46-a07b-60b19665f8ef" };
-botOptionsFindly.clientId = "cs-6d7410bf-ad70-5392-a509-08f42b6b973b";
-botOptionsFindly.clientSecret = "29vqaA7rQjs3ojPkWKDfMg+zuB3RWC5iBJbUjG7jZQQ=";
-botOptionsFindly.searchIndexID = "sidx-80f8686d-e870-5ebf-a3d6-3f93ffc5a489";
+botOptionsFindly.botInfo = { chatBot: "CosmeticsV1.1", "taskBotId": "st-a359c185-2445-5bc9-b981-682d6f6ec1a0" };
+botOptionsFindly.clientId = "cs-16f8dc7e-2a12-5c7f-bbca-6878c8dfb004";
+botOptionsFindly.clientSecret = "7AQvrc6OHmF52ByFhcvw+S0dlDH+31stpk+ZaBzujW8=";
+botOptionsFindly.searchIndexID = "sidx-53fd79c3-25fd-5c5d-8e09-1c4fcdbbbb62";
 
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {

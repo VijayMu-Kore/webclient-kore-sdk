@@ -10462,22 +10462,28 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
         }
       }
       _self.bot.options.botInfo.customData["userContext"] = contextObj;
+      if (window.localStorage.getItem('userName')) {
+        _self.bot.options.botInfo.linkedBotCustomData = _self.bot.options.botInfo.customData;
+      }
     } else {
       if (!window.localStorage.getItem("userName")) {
         _self.customData;
         _self.bot.options.botInfo.customData["userContext"] =
           _self.vars.userContextData || {};
+          _self.bot.options.botInfo.linkedBotCustomData = _self.bot.options.botInfo.customData;
       } else {
-        _self.bot.options.botInfo.customData["userContext"] = {
-          user_name: window.localStorage.getItem("userName"),
-          location: window.localStorage.getItem("userLocation"),
-          gender: window.localStorage.getItem("gender"),
-          user_age: window.localStorage.getItem("userAge"),
-        };
+        _self.bot.options.botInfo.customData["userContext"] = { 'user_name': window.localStorage.getItem('userName'), 'location': window.localStorage.getItem('userLocation'), 'gender': window.localStorage.getItem('gender'), 'user_age': window.localStorage.getItem('userAge'), 'cards': window.localStorage.getItem('cards') ? JSON.parse(window.localStorage.getItem('cards'))[0] : {} };
+        _self.bot.options.botInfo.linkedBotCustomData = _self.bot.options.botInfo.customData;
       }
     }
   }
-
+  if ($('body').hasClass('cosmeticsUserLogined')) {
+    _self.bot.options.botInfo.customData.userContext["loggedIn"] = "true";
+    _self.bot.options.botInfo.linkedBotCustomData.userContext["loggedIn"] = "true";
+  } else {
+    _self.bot.options.botInfo.customData.userContext = { "loggedIn": 'false' };
+    _self.bot.options.botInfo.linkedBotCustomData.userContext = _self.bot.options.botInfo.customData.userContext;
+  }
   attachmentInfo = {};
   websockeRrefreshed = false;
   _self.checkWbInitialized(messageToBot, clientMessageId);

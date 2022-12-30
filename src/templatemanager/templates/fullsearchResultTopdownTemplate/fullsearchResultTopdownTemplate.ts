@@ -441,8 +441,8 @@ class FullSearchResultTopdownTemplate {
         }
         $(".sdk-filter-checkbox-top-down").prop("checked", false);
         $(".sdk-filter-radio-top-down").prop("checked", false);
-        if($('.filters-reset-anchor').hasClass('enabled')){
-          $('.filters-reset-anchor').removeClass('enabled');
+        if($(messageHtml).find('.filters-reset-anchor').hasClass('enabled')){
+          $(messageHtml).find('.filters-reset-anchor').removeClass('enabled');
         }
         hostWindowInstance.clearAllFilterTopdownEvent(event).then((res: any) => {
           if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
@@ -729,12 +729,18 @@ class FullSearchResultTopdownTemplate {
       $(messageHtml).find("#show-filters-added-data").show();
       $(messageHtml).find("#show-filters-added-data").removeClass("display-none");
       $(messageHtml).find(".content-data-sec").addClass("filter-added");
+      if(!$(messageHtml).find('.filters-reset-anchor').hasClass('enabled')){
+        $(messageHtml).find('.filters-reset-anchor').addClass('enabled');
+      }
     } else {
       hostWindowInstance.vars.selectedFiltersArr = [];
       hostWindowInstance.vars.filterObject = [];
       $(messageHtml).find("#show-filters-added-data").hide();
       $(messageHtml).find("#show-filters-added-data").addClass("display-none");
       $(messageHtml).find(".content-data-sec").removeClass("filter-added");
+      if($(messageHtml).find('.filters-reset-anchor').hasClass('enabled')){
+        $(messageHtml).find('.filters-reset-anchor').removeClass('enabled');
+      }
     }
 
     if ($(messageHtml).find("#show-filters-added-data").height() > 55) {
