@@ -7137,7 +7137,7 @@ FindlySDK.prototype.searchEventBinding = function (
           }
         }
       });
-      $(dataHTML).off('click', '#histroybutton').on('click', '#histroybutton', function (e) {
+      $(dataHTML).off('click', '.history-tag-click').on('click', '.history-tag-click', function (e) {
         e.stopPropagation();
         if (_self.vars.isHistroyloaded) {
           $('#histroybutton').hide();
@@ -21406,9 +21406,9 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
             messageData.isFromHistory = true;
             //messageData.timestamp = history.timestamp;
           } else {
-            messageData.text = 'Sure, please find the matched results below';
             messageData.from = 'bot';
             messageData.count = _self.countTotalResults(history.response.message[0].component.payload.template, 0);
+            messageData.text = messageData.count?'Sure, please find the matched results below':'No results were found for this query';
             messageData.timeStamp = _self.extractTime(history.timestamp);
           }
           var viewType = _self.vars.customizeView ? 'Customize' : 'Preview';
@@ -21420,7 +21420,7 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
             helpers: helpers
           });
           $('#histroyChatContainer').append(templateMessageBubble);
-          $('#searchChatContainer').animate({ scrollTop: ($('#searchChatContainer').scrollTop() + $('.userMessage').last().parent().position().top - 60) }, 500)
+          $('#searchChatContainer').animate({ scrollTop: ($('#searchChatContainer').scrollTop() + $('.userMessage').first().parent().position().top - 0) }, 500)
 
         })
         $('#histroyChatContainer').off('click', '.search-agin-tag').on('click', '.search-agin-tag', function (e) {
@@ -21984,7 +21984,7 @@ FindlySDK.prototype.countTotalResults = function (res, totalResultsCount) {
     _self.vars.totalNumOfResults =
     totalResultsCount + (res.tasks || []).length;
   } else {
-    var results = res.results.data;
+    var results = res.results?res.results.data:[];
     if (!(res.tabFacet || {}).buckets) {
       totalResultsCount = res.results.doc_count || 0;
     }
