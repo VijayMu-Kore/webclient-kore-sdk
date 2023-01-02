@@ -111,18 +111,12 @@ class FullSearchResultTopdownTemplate {
         }
     }, 300);
 
-    if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-      $(messageHtml).find('.all-tab-count').html(msgData?.message[0]?.component?.payload?.tabsList[0]?.doc_count);
-      $(messageHtml).find('.show-results-count-container').show();
-      $(messageHtml).find('#top-down-tab-sec').hide();
-    }else{
       let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
         facets: msgData.message[0].component.payload.tabsList,
         truncateText: truncateText
       });
       $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
       FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, msgData.message[0].component.payload.tabsList, 'all results');
-    }
    
     FullSearchResultTopdownTemplate.prototype.facetReset(me, messageHtml, msgData);
     FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, msgData.message[0].component.payload.facetPosition);
@@ -170,7 +164,6 @@ class FullSearchResultTopdownTemplate {
                             <div id="filters-center-sec" > </div>\
                             <div class="filters-added-data display-none" id="show-filters-added-data"></div>\
                             <div class="content-data-sec">\
-                            <div class="show-results-count-container">About <span class="all-tab-count"></span> results found.</div>\
                             <div class="scroll-top-container">\
                                 <div class="title-scroll-top"><img>Scroll to top</div>\
                             </div>\
@@ -207,7 +200,7 @@ class FullSearchResultTopdownTemplate {
       '<script id="top-down-tabs-template" type="text/x-jqury-tmpl">\
                                   <div class="tab-sec">\
                                     {{each(key, facet) facets }}\
-                                     <div class="tab-name capital un-selected-type facet {{= facet.className}}" id="{{= facet.key}}" apperance="{{= facet.key}}" title="{{= facet.name}} ({{= facet.doc_count}})"><span class="tab-title one-line-height"> {{html truncateText(facet.name)}}</span> <span class="tab-count text-truncate one-line-height"> (<span class="count-text">{{= facet.doc_count}}</span></span><span class="tab-count-right-bracket">)</span></div>\
+                                     <div class="tab-name capital un-selected-type facet {{= facet.className}}" id="{{= facet.key}}" apperance="{{= facet.key}}" title="{{= facet.name}} ({{= facet.doc_count}})"><span class="tab-title one-line-height"> {{html truncateText(facet.name)}}</span> <span class="tab-count text-truncate one-line-height"> <span class="count-text">{{= facet.doc_count}}</span></span></div>\
                                     {{/each}}\
                                     </div>\
                                 </script>';
@@ -410,15 +403,9 @@ class FullSearchResultTopdownTemplate {
               }
             }
             FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-            if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-              $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
-              $(messageHtml).find('.show-results-count-container').show();
-              $(messageHtml).find('#top-down-tab-sec').hide();
-            }else{
               let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
               $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
               FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
-            }
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
             if(response.sortableFacetList && response.sortableFacetList.length){
               let sortableHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownSortableFacetsTabs()).tmpl({ sortablefacets: response.sortableFacetList,
@@ -447,15 +434,9 @@ class FullSearchResultTopdownTemplate {
               }
             }
             FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-            if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-              $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
-              $(messageHtml).find('.show-results-count-container').show();
-              $(messageHtml).find('#top-down-tab-sec').hide();
-            }else{
               let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets, truncateText: truncateText });
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
-            }
            
             FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
             if(response.sortableFacetList && response.sortableFacetList.length){
@@ -481,25 +462,13 @@ class FullSearchResultTopdownTemplate {
           $('.filters-reset-anchor').removeClass('enabled');
         }
         hostWindowInstance.clearAllFilterTopdownEvent(event).then((res: any) => {
-          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-            $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);
-            $(messageHtml).find('.show-results-count-container').show();
-            $(messageHtml).find('#top-down-tab-sec').hide();
-          }else{
-            if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-              $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);
-              $(messageHtml).find('.show-results-count-container').show();
-              $(messageHtml).find('#top-down-tab-sec').hide();
-            }else{
               let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
                 facets: res.facets,
                 truncateText: truncateText
               });
               $(messageHtml).find('#top-down-tab-sec').empty().append(tabsHtml);
               FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabsHtml, res.facets, 'all results');
-            }
            
-          }
        
           FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, res.result);
           if (res.isUnselectedFilter) {
@@ -535,15 +504,9 @@ class FullSearchResultTopdownTemplate {
                 }
               }
               FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, res.result);
-              if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-                $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);
-                $(messageHtml).find('.show-results-count-container').show();
-                $(messageHtml).find('#top-down-tab-sec').hide();
-              }else{
                 let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets,truncateText: truncateText });
               $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
               FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, res.facets, selectedFacet);
-              }
 
               
               if (res.isFilterAlignedTop) {
@@ -621,15 +584,10 @@ class FullSearchResultTopdownTemplate {
         }
       }
       FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-      if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-        $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
-        $(messageHtml).find('.show-results-count-container').show();
-        $(messageHtml).find('#top-down-tab-sec').hide();
-      }else{
+      
         let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets, truncateText: truncateText });
         $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
         FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
-      }
       
       FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
       hostWindowInstance.displayDropdownFilterCount();
@@ -833,15 +791,10 @@ class FullSearchResultTopdownTemplate {
             }
           }
           FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, res.result);
-          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-            $(messageHtml).find('.all-tab-count').html(res?.facets[0]?.doc_count);
-            $(messageHtml).find('.show-results-count-container').show();
-            $(messageHtml).find('#top-down-tab-sec').hide();
-          }else{
+          
             let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: res.facets ,truncateText: truncateText});
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, res.facets, selectedFacet);
-          }
          
           if (res.isFilterAlignedTop) {
             hostWindowInstance.displayDropdownFilterCount();
@@ -907,15 +860,9 @@ class FullSearchResultTopdownTemplate {
             }
           }
           FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-          if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-            $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
-            $(messageHtml).find('.show-results-count-container').show();
-            $(messageHtml).find('#top-down-tab-sec').hide();
-          }else{
             let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
             $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
             FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
-          }
          
           FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
         }
@@ -940,15 +887,9 @@ class FullSearchResultTopdownTemplate {
                 }
               }
               FullSearchResultTopdownTemplate.prototype.fullResultTemplateDataBind(me, messageHtml, response.result);
-              if($('body').hasClass('cosmetics') || $('body').hasClass('banking')){
-                $(messageHtml).find('.all-tab-count').html(response?.facets[0]?.doc_count);
-                $(messageHtml).find('.show-results-count-container').show();
-                $(messageHtml).find('#top-down-tab-sec').hide();
-              }else{
                 let tabHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({ facets: response.facets,truncateText: truncateText });
                 $(messageHtml).find('#top-down-tab-sec').empty().append(tabHtml);
                 FullSearchResultTopdownTemplate.prototype.bindTabsClickEvent(me, messageHtml, tabHtml, response.facets, selectedFacet);
-              }
              
               FullSearchResultTopdownTemplate.prototype.searchFacetsList(me, messageHtml, hostWindowInstance.vars.selectedFacetsList, response.isFilterAlignedTop);
             }

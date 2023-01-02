@@ -89,7 +89,7 @@ class GuidedTourTemplate {
                     <div class="full-page-tour-guide">\
                         <div class="dynamic-content">\
                             <div class="close-tour">\
-                                <img src="images/siemens/close.svg">\
+                                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/close.svg">\
                             </div>\
                             <div class="carousel carousel-preview">\
                             {{each(key, data) msgData}}\
@@ -142,8 +142,8 @@ class GuidedTourTemplate {
         <div class="messageBubble divider-border">\
          <div class="messageBubble-content">\
             <div class="botImg">\
-                <img class="default-bot-icon" src="images/bubbleIcon.svg">\
-                    <img class="default-bot-siemens-icon" src="images/siemens/siemens-avatar.svg">\
+                <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg">\
+                    <img class="default-bot-siemens-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg.svg">\
                     </div>\
                     <div class="botMessage no-border-data mw_100">\
                         <div class="tour-data-content">\
@@ -159,14 +159,14 @@ class GuidedTourTemplate {
                                 <div class="tour-step">\
                                     <div class="info-text">${guide.title}</div>\
                                     <div class="img-block {{if guide.has_subelements}}d-none{{/if}}">\
-                                        <img src="images/siemens/enlarge.svg" class="enlarge-icon preview-img">\
+                                        <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/enlarge.svg" class="enlarge-icon preview-img">\
                                             <img src=${guide.image_url}>\
                                             </div>\
                                             {{if guide.has_subelements }}\
                                             <div class="inner-data-if-carousel">\
                                                 <div class="carousel">\
                                                     {{each(key, sub) guide.elements }}\
-                                                    <img src="images/siemens/enlarge.svg" class="enlarge-icon preview-img">\
+                                                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/enlarge.svg" class="enlarge-icon preview-img">\
                                                         <div class="slide">\
                                                             <div class="img_content">\
                                                                 <div class="info-text">${sub.title}</div>\
@@ -194,8 +194,8 @@ class GuidedTourTemplate {
               <div class="messageBubble">\
                 <div class="messageBubble-content">\
                     <div class="botImg">\
-                        <img class="default-bot-icon" src="images/bubbleIcon.svg">\
-                        <img class="default-bot-siemens-icon" src="images/siemens/siemens-avatar.svg">\
+                        <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg">\
+                        <img class="default-bot-siemens-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg">\
                     </div>\
                     <div class="botMessage">I can help with questions around SCM STAR. And, Im still learning about others. Here are some popular topics to get you started.</div>\
                     <div class="botMessage">\

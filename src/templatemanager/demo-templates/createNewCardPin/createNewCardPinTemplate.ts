@@ -88,7 +88,7 @@ class CreateNewCardPinTemplate {
         <div class="messageBubble">\
         <div class="messageBubble-content">\
             <div class="botImg">\
-                <img class="default-bot-icon" src="images/bubbleIcon.svg">\
+                <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg">\
                 <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg">\
             </div>\
             <div class="botMessage no-border-data">\

@@ -6,7 +6,7 @@ function scmTemplate() {
 
     <div class="logo-sec">
 
-      <img src="./images/siemens/Siemens_logo.svg">
+      <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/Siemens_logo.svg">
 
     </div>
 
@@ -24,7 +24,7 @@ function scmTemplate() {
 
     <div class="location-dropdown">
 
-      <img src="./images/siemens/globe.svg">
+      <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/globe.svg">
 
       <span class="drp-title">USA 
 
@@ -40,7 +40,7 @@ function scmTemplate() {
 
     <div class="img-block-banner">
 
-      <img src="./images/siemens/banner-seimens.png">
+      <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/banner-seimens.png">
 
     </div>
 
@@ -84,7 +84,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Industrial Automation</span>
 
@@ -92,7 +92,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Energy</span>
 
@@ -100,7 +100,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Mobility</span>
 
@@ -108,7 +108,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Services</span>
 
@@ -116,7 +116,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Building Technologies</span>
 
@@ -124,7 +124,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Healthcare</span>
 
@@ -132,7 +132,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Financing</span>
 
@@ -140,7 +140,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Software</span>
 
@@ -148,7 +148,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Drive Technology</span>
 
@@ -156,7 +156,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Mobility</span>
 
@@ -164,7 +164,7 @@ function scmTemplate() {
 
         <div class="link-sec">
 
-          <img src="./images/siemens/externallink.svg">
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink.svg">
 
           <span class="link-name-title">Consumer Products</span>
 

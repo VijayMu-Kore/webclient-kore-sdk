@@ -21,11 +21,11 @@ class SiemensTemplate {
             {{if !(data.bestMatch===true)}}\
               <div class="siemens-list-template redirecting-link click-to-navigate-url isClickable" href="${data.doc_confluence_link}" target="_blank">\
                 <div class="icon-with-title">\
-                  <img src="images/siemens/icon1-blue.svg" class="siemens-icon-blue">\
-                  <img src="images/siemens/icon1.svg" class="siemens-icon">\
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/icon1-blue.svg" class="siemens-icon-blue">\
+                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/icon1.svg" class="siemens-icon">\
                   <span class="name-title">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
                   <span class="redirecting-link click-to-navigate-url faqs-shadow isClickable" href="${data.doc_confluence_link}" target="_blank">\
-                    <img class="siemens-link-icon" src="images/siemens/externallink-gray.svg">\
+                    <img class="siemens-link-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink-gray.svg">\
                   </span>\
                 </div>\
                 <div class="info-test-content four-line-description">{{html helpers.convertMDtoHTML(data.description)}}</div>\

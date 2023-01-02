@@ -16,8 +16,9 @@ import './css/common-styles.scss';
 import './css/search-bar-experience.scss';
 import './css/fonts/inter.css';
 import './css/findly-demo.scss';
-import './css/banking-styles.scss';
-import './css/cosmetics-styles.scss';
+// import './css/banking-styles.scss';
+// import './css/cosmetics-styles.scss';
+import './css/seimens-styles.scss';
 import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
 import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
@@ -1379,14 +1380,11 @@ FindlySDK.prototype.getSearchControl = function () {
         <div class="search-bar">\
         <div class="search-btn-arrow">\
           <span class="search-title search-siemens-title">SEARCH</span>\
-          <span class="search-title  search-banking-title">Search</span>\
           <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/arrow-right.svg" class="before-execute">\
-          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/search-right.svg" class="after-execute banking-exe">\
-          <img src="images/siems-search-right.svg" class="after-execute scm-exe">\
+          <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siems-search-right.svg" class="after-execute scm-exe">\
         </div>\
           <div class="widget-icon">\
             {{if searchConfig.searchBarIcon}}\
-              <img style="vertical-align:middle" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/search-bank.svg" class="for-banking">\
               <img style="vertical-align:middle" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/search.svg" class="for-scm">\
             {{/if}}\
           </div>\
@@ -1443,7 +1441,7 @@ FindlySDK.prototype.getSearchControl = function () {
         {{/if}}\
       </div>\
     </script>';
-  if ($('body').hasClass('banking') || $('body').hasClass('siemens')) {
+  if ($('body').hasClass('siemens')) {
     return searchControlseiemens;
   }
   else {
@@ -1516,26 +1514,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                 <img class="close-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/close-icon.svg"/>\
               </div>\
             </div>\
-            <div class="cosmotics-header-sec">\
-              <div class="titles-logo">\
-                <span class="main-heading-logo">Julia</span>\
-                <span class="small-heading-logo">Powered by Kore.ai</span>\
-              </div>\
-              <div class="righ-side-actions">\
-                <img class="elipse-overflow" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/3dots-icon.svg" />\
-                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/close.svg" class="close-icon" />\
-              </div>\
-            </div>\
-            <div class="banking-header-sec">\
-              <div class="titles-logo">\
-                <span class="main-heading-logo">My Bank</span>\
-                <span class="small-heading-logo">Powered by Kore.ai</span>\
-              </div>\
-              <div class="righ-side-actions">\
-                <img class="elipse-overflow" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/3dots-icon.svg" />\
-                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/close.svg" class="close-icon" />\
-              </div>\
-            </div>\
             <div class="siemens-header-sec">\
               <div class="titles-logo">\
                 <span class="main-heading-logo">SCM Procure</span>\
@@ -1566,81 +1544,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               <div class="contest_variables_dropdown hide">\
               <div class="actions-link">Context</div>\
               </div>\
-            <div id="" class="default-data-show-not-loaded">\
-              <div class="defalut-message-babble">\
-                <div class="icon-block">\
-                  <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg"/>\
-                </div>\
-                <div class="bubble-text">Hi, Kindly type in your query or choose from our list of popular search queries</div>\
-              </div>\
-              <div class="default-suggestions-content" id="popular-search-results">\
-              </div>\
-              <div class="store-updates-block">\
-                <div class="main-title">Store Updates</div>\
-                <div class="tags-updates">\
-                <div class="store-tag-names" title="New Releases">New Releases</div>\
-                <div class="store-tag-names" title="New Year Sale">New Year Sale</div>\
-                <div class="store-tag-names" title="Winter Collection">Winter Collection</div>\
-                </div>\
-              </div>\
-            </div>\
-            <div class="cosmetics-default-welcome-screen">\
-              <div class="welcome-message">\
-                <div class="bold-text">Hi<span class="username"></span></div>\
-                <div class="text-info"><span class="welcomeText"></span></div>\
-                <div class="okay-thanks-parent"><div class="okay-thanks">OK, Thanks</div></div>\
-              </div>\
-              <div class="default-message-bubble-cosmetics">\
-                <div class="icon-block hide">\
-                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmoticavatar.svg" />\
-                </div>\
-                <div class="text-content-data">\
-                  <div class="text-block hide">I can help  you with banking related queries. Here are some popular topics to get you started.</div>\
-                  <div class="main-heading">SUGGESTIONS</div>\
-                  <div class="buttons-block popular-search-results-cosmetics">\
-                  </div>\
-                  <div class="main-heading">PROMOTIONS</div>\
-                  <div class="buttons-block">\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="New Releases">New Releases</span>\
-                    </div>\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="New Year Sale">New Year Sale</span>\
-                    </div>\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="Winter Collection">Winter Collection</span>\
-                    </div>\
-                  </div>\
-                </div>\
-              </div>\
-            </div>\
-            <div class="banking-default-welcome-screen">\
-              <div class="welcome-message">\
-                <div class="bold-text">Hi<span class="username"></span></div>\
-                <div class="text-info">Welcome to MyBank. I am Elle, your assistant to address all your queries related to MyBank. Type in your query in the conversation bar and lets chat.</div>\
-                <div class="okay-thanks-parent"><div class="okay-thanks">OK, Thanks</div></div>\
-              </div>\
-              <div class="default-message-bubble-banking">\
-                <div class="icon-block">\
-                  <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg" />\
-                </div>\
-                <div class="text-content-data">\
-                  <div class="text-block hide">I can help  you with banking related queries. Here are some popular topics to get you started.</div>\
-                  <div class="main-heading">Popular Searches</div>\
-                  <div class="buttons-block popular-search-results">\
-                  </div>\
-                  <div class="main-heading">Promotions</div>\
-                  <div class="buttons-block">\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="MyBank Rewards Program">MyBank Rewards Program</span>\
-                    </div>\
-                    <div class="text-search-icon">\
-                      <span class="text-search-promotion text-search" title="MyBank  Wealth Advisor">MyBank  Wealth Advisor</span>\
-                    </div>\
-                  </div>\
-                </div>\
-              </div>\
-            </div>\
             <div class="siemens-default-welcome-screen">\
               <div class="welcome-message">\
                 <div class="bold-text">Hi,</div>\
@@ -2523,8 +2426,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
     messageBubbles +=
       '<div class="botImg">\
                   <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg"/>\
-                  <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg"/>\
-                <img class="default-cosmetic-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetics-logo-icon.svg"/>\
                 <img class="default-bot-siemen-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg"/>\
                   </div>';
   }
@@ -2533,8 +2434,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
     messageBubbles +=
       '<span class="bot_Img">\
                 <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg"/>\
-                <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg"/>\
-                <img class="default-cosmetic-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetics-logo-icon.svg"/>\
                 <img class="default-bot-siemen-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg"/>\
                 </span>';
   }
@@ -5937,7 +5836,7 @@ FindlySDK.prototype.searchEventBinding = function (
       } else {
         $(".search-container").css("display", "none");
         var pos = _self.getAvatarTopLeft();
-        if (window.location.href.includes('#scm') || window.location.href.includes('#cosmetics')) {
+        if (window.location.href.includes('scm')) {
           $('.start-search-icon-div').css({ 'left': pos.x + 38 })
           $('.start-search-icon-div').animate({ 'left': pos.x }, 'slow', function () {
             $('.start-search-icon-div').removeClass('hideStartIcon');
@@ -6005,9 +5904,7 @@ FindlySDK.prototype.searchEventBinding = function (
             $('.cancel-search').hide();
         } else if (!$("body").hasClass("top-down") && keyCode == 13) {
           $('.default-data-show-not-loaded').hide();
-            $('.banking-default-welcome-screen').hide();
             $('.siemens-default-welcome-screen').hide();
-            $('.cosmetics-default-welcome-screen').hide();
             $(".data-body-sec").scrollTop(0);
             $('.filterCarouselCard').remove();
           _self.vars.enterIsClicked = true;
@@ -6122,9 +6019,6 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.suggestionSelectedByNavigationKeys(e);
         }
         if (code == 13) {
-          if ($('body').hasClass('cosmetics') && $('.product-view-template').length) {
-            $('.product-view-template').remove()
-          }
           $('.bottom-search-show-all-results').remove();
           _self.vars.selectedFacetFromSearch = 'all results';
           $(':focus').blur();
@@ -10088,16 +9982,8 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
-   if ( window.location.href.includes('#scm')) {
+   if ( window.location.href.includes('scm')) {
         $('body').append(`<div class="full-page-tour-guide-fixed"></div>`);
-      }
-      if (window.location.href.includes('#banking') || window.location.href.includes('#loans') || window.location.href.includes('#invest') || window.location.href.includes('#cards') || window.location.href.includes('#offers')) {
-        if (!$('body').hasClass('banking')) {
-          $('body').addClass('banking')
-        }
-      }
-      if (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze')) {
-        _self.vars.maxNumOfResultsCount = 9;
       }
   setTimeout(()=>{
   _self
@@ -10129,14 +10015,9 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
             ((response || {}).interactionsConfig || {}).welcomeMsgFillColor ||
             "#F8F9FA",
         };
-         if ($('body').hasClass('banking')) {
-            searchConfig.avatarURL = 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/banking-avt.png'
-          }
+      
           if (window.location.href.includes('#scm')) {
             searchConfig.avatarURL = 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens_avatar_text.svg'
-          }
-          if ($('body').hasClass('cosmetics')) {
-            searchConfig.avatarURL = 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetics_avatar_text.svg'
           }
         setTimeout(() => {
             _self.configureSearchAvatar(searchConfig);
@@ -10166,12 +10047,6 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
         _self.bindPerfectScroll('.invest-sec-data', investContainerHtml, null, 'y', 'investContainer');
         _self.bindPerfectScroll('.offers-sec-data', offersContainerHtml, null, 'y', 'offersContainer');
         _self.bindPerfectScroll('.future-cards-section-info', cardsContainerHtml, null, 'y', 'cardsContainer');
-      }
-      if (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze')) {
-        var leftContainerHtml = $('.left-data');
-        var rightContainerHtml = $('.right-data');
-        _self.bindPerfectScroll('.my-orders-container', leftContainerHtml, null, 'y', 'leftsecContainer');
-        _self.bindPerfectScroll('.my-orders-container', rightContainerHtml, null, 'y', 'rightsecContainer');
       }
     }, 3000)
   },1000);
@@ -19987,26 +19862,6 @@ FindlySDK.prototype.getTopDownTemplate = function () {
               <div class="close-conv">
                   <img class="close-conv-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBbZHRDcIwDERju+zTSizSCWgl8sFM+Ug26AwsUDIGO9A05AChprV/osjPd2eZLtfbg2gZg3PRKDUMts3SeAaUV5kGa1sVYpkoLaPEeX525+4OGC/+FbSmPgQX6T9dFAETp968jNlC6FNl9YNNLo0NhOIqVFEC9Bk/1Xn5ELwowX6/oGjBtQVpD2mZ4cBZ2GsQCkf4xmj8GzsLeh0gnVcbAAAAAElFTkSuQmCC" />
               </div>
-              <div class="cosmotics-header-sec">\
-                <div class="titles-logo">\
-                    <span class="main-heading-logo">Julia</span>\
-                    <span class="small-heading-logo">Powered by Kore.ai</span>\
-                </div>\
-                <div class="righ-side-actions">\
-                <img class="elipse-overflow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAADCAYAAABI4YUMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABUSURBVHgBhcrBDYAgEETRiW4BSCzAo11YgpZgCZZgJ1qClmBDQgEkMFzgBPxkD/sy/cSUHi816Nma/wNrWQfIBo94J1KyV+wQwD2Elc+bB+6mLSULWI0gebajC9UAAAAASUVORK5CYII="/>\
-                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/close.svg" class="close-conv-icon">\
-                </div>\
-              </div>\
-              <div class="banking-header-sec">\
-                <div class="titles-logo">\
-                    <span class="main-heading-logo">My Bank</span>\
-                    <span class="small-heading-logo">Powered by Kore.ai</span>\
-                </div>\
-                <div class="righ-side-actions">\
-                <img class="elipse-overflow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAADCAYAAABI4YUMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABUSURBVHgBhcrBDYAgEETRiW4BSCzAo11YgpZgCZZgJ1qClmBDQgEkMFzgBPxkD/sy/cSUHi816Nma/wNrWQfIBo94J1KyV+wQwD2Elc+bB+6mLSULWI0gebajC9UAAAAASUVORK5CYII="/>\
-                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/close.svg" class="close-conv-icon">\
-                </div>\
-            </div>\
             <div class="siemens-header-sec">\
               <div class="titles-logo">\
                   <span class="main-heading-logo">SCM Procure</span>\
@@ -20045,7 +19900,6 @@ FindlySDK.prototype.getTopDownTemplate = function () {
           <div class="skelton-load-img" style="display: none;">
             <img alt="" class="default-skelton" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/skeletonImage.png">
             <img alt="" class="banking-siemens-skelton" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/skelton-siemns-banking.png">
-            <img alt="" class="cosmetics-skelton" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/skelton-loading.png"> 
            </div>
           <div id="top-down-full-results-container"></div>
       </div>
@@ -21322,13 +21176,13 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   }
   if (position.x >= $('#introText').width()) {
     if (position.x >= $('body').width() - 80) {
-      if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+      if ($('body').hasClass('siemens')) {
         $('#introText').css('left', $('body').width() - 60 - $('#introText').width() + 25);
       } else {
         $('#introText').css('left', $('body').width() - 60 - $('#introText').width());
       }
     } else {
-      if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+      if ($('body').hasClass('siemens')) {
         $('#introText').css('left', position.x - $('#introText').width() + 125);
       } else {
         $('#introText').css('left', position.x - $('#introText').width() + 36);
@@ -21337,11 +21191,9 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   } else {
     $('#introText').css('left', 2);
   }
-  if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
-    if ( window.location.href.includes('#scm') || window.location.href.includes('#cosmetics')) {
+  if ( $('body').hasClass('siemens') ) {
+    if ( window.location.href.includes('scm')) {
       $('#introText').css('top', position.y);
-    } else if (window.location.href.includes('#banking') && $('#introText').length > 1) {
-      $('#introText').css('top', position.y - 9);
     } else {
       $('#introText').css('top', position.y - 9 + 15);
     }
@@ -21354,13 +21206,13 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   var topPosition = (Number(($('#introText').css('top')).replace('px', '')));
   var leftPosition = (Number(($('#introText').css('left')).replace('px', '')));
 
-  if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+  if ( $('body').hasClass('siemens')) {
     $('#introText').css({ 'left': (leftPosition - 46) + 'px' });
     if (!$('.start-search-icon-div').hasClass('hideStartIcon')) {
       setTimeout(() => {
         if (!$('.start-search-icon-div').hasClass('hideStartIcon')) {
           $('.into-text-details').children().first().show();
-          if (($('body').hasClass('siemens') || $('body').hasClass('banking') || $('body').hasClass('cosmetics')) && !$('body').hasClass('tabchange-active') && $('.into-text-details').children().length === 1 && (window.location.href.includes('#banking') ||  window.location.href.includes('#scm') || window.location.href.includes('#cosmetics'))) {
+          if (($('body').hasClass('siemens') ) && !$('body').hasClass('tabchange-active') && $('.into-text-details').children().length === 1 && (window.location.href.includes('#scm'))) {
             $('#introText').css({ 'left': (leftPosition + 100) + 'px' });
             $('#introText').css('display', 'block');
             if ($('#welcomeMsg').first().width() > 86) {
@@ -21414,18 +21266,14 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
                   $('#introText').css('display', 'none');
                   $('.second-introText').remove();
                   $('#introText').stop();
-                  _self.infoTextCloseDataStore()
                 })
               }
             }, 2000)
           }
           else {
             $('#introText').css('display', 'block');
-            if ($('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+            if ($('body').hasClass('siemens')) {
               $('#introText').animate({ 'left': position.x - $('#introText').width() - 13 }, 'slow');
-            }
-            else if ($('body').hasClass('banking')) {
-              $('#introText').animate({ 'left': position.x - $('#introText').width() - 13 + 33 }, 'slow');
             }
             else {
               $('#introText').animate({ 'left': (leftPosition + 'px') }, 'slow');
@@ -21435,7 +21283,6 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
               $('.avatar-greeting-msg-close').off('click').on('click', function () {
                 $('#introText').css('display', 'none');
                 $('#introText').stop();
-                _self.infoTextCloseDataStore()
               })
             }, 2000)
           }
@@ -21473,7 +21320,7 @@ FindlySDK.prototype.positionContainer = function (position) {
     setTimeout(() => {
       $('.search-container').css('display', 'block');
       $('.search-container').css('max-height', '0');
-      if ($('.banking-default-welcome-screen').css('display') == 'block' || $('.banking-default-welcome-screen').css('display') == 'block' || $('.default-data-show-not-loaded').css('display') == 'block' || $('.cosmetics-default-welcome-screen').css('display') == 'block') {
+      if ($('.siemens-default-welcome-screen').css('display') == 'block' ) {
         $('.search-container').css({ 'height': 'unset' });
         $('.parent-search-live-auto-suggesition').hide();
         $('.search-container').animate({ 'max-height': containerHeight + 100 });
@@ -21482,11 +21329,7 @@ FindlySDK.prototype.positionContainer = function (position) {
         $('.search-container').animate({ 'max-height': containerHeight });
         $('.search-container').css('height', 'auto');
       }
-      if ($('body').hasClass('banking')) {
-        $('.banking-default-welcome-screen').css('max-height', 'auto');
-        $('#searchChatContainer').css('max-height', 'calc(100vh - 267px)');
-        $('.parent-search-live-auto-suggesition').hide();
-      } else if ($('body').hasClass('siemens')) {
+       if ($('body').hasClass('siemens')) {
         $('.parent-search-live-auto-suggesition').hide();
         $('.siemens-default-welcome-screen').css('max-height', 'auto');
         $('#searchChatContainer').css('max-height', 'calc(100vh - 206px)');
@@ -21509,12 +21352,6 @@ FindlySDK.prototype.positionContainer = function (position) {
       $('#introText').css('display', 'none');
       var name = (window.localStorage.getItem('userName')) ? `<strong> ${window.localStorage.getItem('userName')},</strong>` : `,`;
       $('.username').html(name);
-      if (window.location.href.includes('#banking')) {
-        $('.welcomeText').html('Welcome to MyBank. I am Elle, your assistant to address all your queries related to MyBank. Type in your query in the conversation bar and lets chat.')
-      }
-      else if (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze')) {
-        $('.welcomeText').html('I am Julia, your assistant to address all your queries related to cosmetic and its products. Type in your query in the conversation bar and lets chat.')
-      }
 
     }, 200);
 
@@ -21524,10 +21361,7 @@ FindlySDK.prototype.positionContainer = function (position) {
 FindlySDK.prototype.calculateContainerPosition = function (position) {
   var containerPosition = { x: position.x, y: position.y };
   var cWidth = $('.search-container').outerWidth();
-  if ($('body').hasClass('banking')) {
-    containerHeight = ($('body').height() - 108) || containerHeight;
-  }
-  else if ($('body').hasClass('siemens')) {
+ if ($('body').hasClass('siemens')) {
     containerHeight = ($('body').height() - 108) || containerHeight;
   }
   else {
@@ -21700,74 +21534,9 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
   </div>
   </div>`);
   }
-  if (window.location && window.location.href && (window.location.href.includes('#banking') || window.location.href.includes('#cards') || window.location.href.includes('#loans') || window.location.href.includes('#offers') || window.location.href.includes('#invest') ||  window.location.href.includes('#scm'))) {
-    if (window.location.href.includes('#banking') ||  window.location.href.includes('#scm')) {
-      var html_text = 'Hi, I am your <strong>Virtual Assistant</strong>';
-      $('#welcomeMsg').html(html_text);
-    }
-    else if (window.location.href.includes('#offers')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the offers page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-    else if (window.location.href.includes('#cards')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the credit cards page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-    else if (window.location.href.includes('#loans')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the Loans  page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    } else if (window.location.href.includes('#invest')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg "></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the invest  page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-  }
-  if (window.location && window.location.href && (window.location.href.includes('#cosmetics') || window.location.href.includes('#essi') || window.location.href.includes('#lblanc') || window.location.href.includes('#cyze'))) {
-    if (window.location.href.includes('#cosmetics')) {
-      var html_text = 'Hi, I am your <strong>Virtual Assistant</strong>';
-      $('#welcomeMsg').html(html_text);
-    }
-    else if (window.location.href.includes('#essi')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the essi page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-    else if (window.location.href.includes('#lblanc')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the l`blanc page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-    else if (window.location.href.includes('#cyze')) {
-      $('.into-text-details').empty().append(`<div id="welcomeMsg" class="text-data second-info-msg"></div>`);
-      $('#welcomeMsg').html('Hi' + (window.localStorage.getItem('userName') ? ` <strong>${window.localStorage.getItem('userName')}</strong>` : '') + ', what brings you to the cyze  page? would you like to talk?');
-      $('#welcomeMsg').addClass('moreLines');
-    }
-  }
   $('#introText').css('position', 'absolute');
   $('.search-container').css('display', 'none');
-  if (window.location.href.includes('#banking') || window.location.href.includes('#loans') || window.location.href.includes('#invest') || window.location.href.includes('#cards') || window.location.href.includes('#offers')) {
-    $('body').append(`<div class="start-search-icon-div draggable" id="start-search-icon-div">
-    <canvas id="canvas" width="80" height="80"></canvas>
-    <div class="ask-text">Ask Cosmetic</div>
-    <div class="bank-label-avt">
-      <div class="normal-text">Ask</div>
-      <div class="bold-text">ELLE</div>
-    </div>
-    <div class="scm-label-avt">
-      <div class="normal-text">Ask</div>
-      <div class="bold-text">SCM</div>
-    </div>
-    <div class="cosmetics-label-avt">
-      <div class="normal-text">Ask</div>
-      <div class="bold-text">Julia</div>
-    </div>
-  </div>`);
-    window.localStorage.removeItem('avatarPosition');
-    _self.bankingAnimation('hover');
-  } else {
+  if (window.location.href.includes('scm')) {
     $('body').append(`<div class="start-search-icon-div draggable" id="start-search-icon-div">
     <img src="${config.avatarURL}">
     <div class="ask-text">Ask Cosmetic</div>
@@ -21791,7 +21560,6 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
   $('.avatar-greeting-msg-close').off('click').on('click', function () {
     $('#introText').css('display', 'none');
     $('#introText').stop();
-    _self.infoTextCloseDataStore()
   })
   $('.start-search-icon-div').off('click').on('click', function () {
     // $('#introText').css('display', 'none');
@@ -21809,7 +21577,6 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
       $('#introText').stop();
       $('.second-introText').stop();
       $('.second-introText').remove();
-      _self.infoTextCloseDataStore()
       $('.start-search-icon-div').addClass('hideStartIcon');
       $('#introText').stop();
       $('#introText').css('display', 'none');
@@ -22105,7 +21872,7 @@ FindlySDK.prototype.getPopularSearchTemplate = function () {
 {{/each}}\
   </script>'
    var template = popularSearchTemplate;
-   if ($('body').hasClass('banking') || $('body').hasClass('siemens') || $('body').hasClass('cosmetics')) {
+   if ( $('body').hasClass('siemens') ) {
      template = bankingPopularSearchTemplate;
    }
    return template
@@ -22113,18 +21880,7 @@ FindlySDK.prototype.getPopularSearchTemplate = function () {
 FindlySDK.prototype.appendPopularSearchResults = function (popularSearches) {
   var _self = this;
   var popularSearchId = '#popular-search-results';
-  if ($('body').hasClass('banking')) {
-    popularSearchId = '.popular-search-results';
-    _self.bindPerfectScroll($('.banking-default-welcome-screen'), '.default-message-bubble-banking', null, 'y', 'popularSearch');
-
-    $('.welcome-message').off('click', '.okay-thanks').on('click', '.okay-thanks', function (e) {
-      $(".welcome-message").hide();
-      $(".default-message-bubble-banking").css('height', '100%');
-      $(".default-message-bubble-banking").css('max-height', 'calc(100vh - 267px)');
-      $(".search-container").css('max-height', 'calc(100vh - 169px)');
-    });
-  }
-  else if ($('body').hasClass('siemens')) {
+   if ($('body').hasClass('siemens')) {
     popularSearchId = '.popular-search-results-siemens';
     _self.bindPerfectScroll($('.siemens-default-welcome-screen'), '.default-message-bubble-siemens', null, 'y', 'popularSearch');
     $('.welcome-message').off('click', '.okay-thanks').on('click', '.okay-thanks', function (e) {
@@ -22132,16 +21888,6 @@ FindlySDK.prototype.appendPopularSearchResults = function (popularSearches) {
       $(".default-message-bubble-siemens").css('height', '100%');
       $(".default-message-bubble-siemens").css('max-height', 'calc(100vh - 293px)');
       $(".search-container").css('max-height', 'calc(100vh - 193px)');
-    });
-  }
-  else if ($('body').hasClass('cosmetics')) {
-    popularSearchId = '.popular-search-results-cosmetics';
-    _self.bindPerfectScroll($('.cosmetics-default-welcome-screen'), '.default-message-bubble-cosmetics', null, 'y', 'popularSearch');
-    $('.welcome-message').off('click', '.okay-thanks').on('click', '.okay-thanks', function (e) {
-      $(".welcome-message").hide();
-      $(".default-message-bubble-cosmetics").css('height', '100%');
-      $(".default-message-bubble-cosmetics").css('max-height', 'calc(100vh - 267px)');
-      $(".search-container").css('max-height', 'calc(100vh - 167px)');
     });
   }
   $(popularSearchId).empty();
@@ -24280,48 +24026,6 @@ FindlySDK.prototype.getFeedBackResult = function () {
   }
 
 
-   FindlySDK.prototype.infoTextCloseDataStore = function () {
-      if ($('body').hasClass('banking')) {
-        var tabsList = JSON.parse(window.localStorage.getItem('tabsList'));
-        var index = -1;
-        if (tabsList && tabsList.length) {
-          if (window.location.href.includes('#banking')) {
-            index = tabsList.findIndex((d) => d == 'personal');
-          } else if (window.location.href.includes('#loans')) {
-            index = tabsList.findIndex((d) => d == 'loan');
-          } else if (window.location.href.includes('#invest')) {
-            index = tabsList.findIndex((d) => d == 'investing');
-          } else if (window.location.href.includes('#cards')) {
-            index = tabsList.findIndex((d) => d == 'card');
-          } else if (window.location.href.includes('#offers')) {
-            index = tabsList.findIndex((d) => d == 'offer');
-          }
-          if (index > -1) {
-            tabsList.splice(index, 1);
-            window.localStorage.setItem('tabsList', JSON.stringify(tabsList));
-          }
-        }
-      }
-      if ($('body').hasClass('cosmetics')) {
-        var tabsList = JSON.parse(window.localStorage.getItem('tabsList'));
-        var index = -1;
-        if (tabsList && tabsList.length) {
-          if (window.location.href.includes('#cosmetics')) {
-            index = tabsList.findIndex((d) => d == 'belcorp');
-          } else if (window.location.href.includes('#essi')) {
-            index = tabsList.findIndex((d) => d == 'esika');
-          } else if (window.location.href.includes('#lblanc')) {
-            index = tabsList.findIndex((d) => d == 'lbel');
-          } else if (window.location.href.includes('#cyze')) {
-            index = tabsList.findIndex((d) => d == 'cyzone');
-          }
-          if (index > -1) {
-            tabsList.splice(index, 1);
-            window.localStorage.setItem('tabsList', JSON.stringify(tabsList));
-          }
-        }
-      }
-    }
     FindlySDK.prototype.getProductPreview = function (messageHtml) {
       var _self = this;
       $(messageHtml).find('.cosmetics-product-view').off('click').on('click', function (event) {

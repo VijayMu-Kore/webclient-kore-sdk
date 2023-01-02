@@ -19,8 +19,8 @@ class SiemensFeatureSnippetTemplate {
             <div class="messageBubble siemens-snippet-left">\
               <div class="messageBubble-content">\
                   <div class="botImg">\
-                      <img class="default-bot-icon" src="images/bubbleIcon.svg">\
-                      <img class="default-bot-siemens-icon" src="images/siemens/siemens-avatar.svg">\
+                      <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg">\
+                      <img class="default-bot-siemens-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg">\
                   </div>\
                   <div class="botMessage">Sure, I can help with creating an RFQ. Its just ${structuredData[0].carouselData.length} easy steps.</div>\
                   <div class="botMessage">Prior to this youll need to have successfully applied for an account on SCM STAR in DirX</div>\
@@ -36,7 +36,7 @@ class SiemensFeatureSnippetTemplate {
                   </div>\
                   <div class="botMessage source-content">Source: www.scmprocure.com/how</div>\
                   <div class="botMessage takea-tour">\
-                    <div class="tour-title">Take a tour <img src="images/siemens/arrow-right.svg"></div>\
+                    <div class="tour-title">Take a tour <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/arrow-right.svg"></div>\
                   </div>\
               </div>\
             </div>\
