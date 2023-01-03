@@ -1625,7 +1625,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
           </div>\
           <div class="typingIndicatorContent"><div class="typingIndicator"></div><div class="movingDots"></div></div> \
           <div class="search-bar">\
-            <div class="widget-icon"><img src="${searchConfig.searchBarIcon}"/> </div>\
+            <div class="widget-icon bottom-img"><img src="${searchConfig.searchBarIcon}"/> </div>\
             {{if searchConfig.autocompleteOpt == true}}\
               <input id="suggestion"style="position: absolute; bottom: 0px;left: 1px;background : ${searchConfig.searchBarFillColor}; color : #8a959f;" name="search" class="bottom-up-suggestion search" disabled="disabled">\
             {{/if}}\
@@ -9929,12 +9929,12 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
     null,
     "searchChatContainer"
   );
-  _self.bindPerfectScroll(
-    dataHTML,
-    ".default-data-show-not-loaded",
-    null,
-    "default-data-show-not-loaded"
-  );
+  // _self.bindPerfectScroll(
+  //   dataHTML,
+  //   ".default-data-show-not-loaded",
+  //   null,
+  //   "default-data-show-not-loaded"
+  // );
 
   _self.showGreetingMsg = true;
   _self.vars.searchObject.clearGreetingTimeOut = setTimeout(function () {

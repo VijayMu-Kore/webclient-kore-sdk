@@ -268,6 +268,9 @@
 		}
 	}
 	.searchAssist-kore-chat-window {
+		.show-all-results{
+			float: right;
+		}
 		.show-all-results-outer-wrap {
 			.filter-sec-tab {
 				.filter-data {
@@ -354,7 +357,7 @@
 		}
 		.title-text-heading {
 			padding-left: 5px;
-			display: none;
+			display: none !important;
 		}
 	.main-content-title-grid-data.new-grid-search-data.banking-grid-buttons-template {
 		.title-box-data {
@@ -905,11 +908,18 @@ body.siemens {
 							display: inline-flex;
 							align-items: center;
 							margin-right: 5px;
+							height: 19px;
 							.filter-tag-name {
 								font-weight: normal;
 								font-size: 10px;
 								line-height: 12px;
 								color: #000000;
+								.close-filter-tag{
+									height: 23px;
+									img{
+										cursor: pointer;
+									}
+								}
 							}
 						}
 					}
@@ -959,12 +969,14 @@ body.siemens {
 					font-size: 12px;
 					line-height: 20px;
 					color: #202124;
+					padding-left: 0px;
 					&::before {
 						width: 16px;
 						height: 16px;
 						border: 1px solid #BDC1C6;
 						margin-top: -1px;
 						margin-right: 10px;
+						position: inherit;
 					}
 				}
 			}
@@ -1270,6 +1282,15 @@ body.siemens {
 			}
 		}
 	}
+	.skelton-load-img {
+		.default-skelton {
+			display: none;
+		}
+		.banking-siemens-skelton {
+			display: block;
+			position: relative;
+		}
+	}
 }
 
 .sdk-top-down-interface.search-executed.siemens {
@@ -1291,6 +1312,9 @@ body.siemens {
               display: none;
           }
 					}
+				}
+				.cancel-search {
+					right: 55px !important;
 				}
 			}
 		}

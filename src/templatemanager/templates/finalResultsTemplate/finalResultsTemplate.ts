@@ -156,8 +156,6 @@ class FinalResultsTemplate {
             <div class="messageBubble-content">\
             <div class="botImg">\
                   <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg"/>\
-                  <img class="default-bot-banking-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/bankingavatar.svg"/>\
-                <img class="default-cosmetic-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Cosmetics_demo/cosmetics-logo-icon.svg"/>\
                 <img class="default-bot-siemen-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/siemens-avatar.svg"/>\
                   </div>\
                 <div class="botMessage">\
