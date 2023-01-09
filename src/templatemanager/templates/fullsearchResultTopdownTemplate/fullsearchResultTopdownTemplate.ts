@@ -3,13 +3,6 @@ import './fullsearchResultTopdownTemplate.scss';
 import searchListViewTemplate from '../../templates/searchListViewTemplate/searchListViewTemplate';
 import searchGridViewTemplate from '../../templates/searchGridViewTemplate/searchGridViewTemplate';
 import searchCarouselViewTemplate from '../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
-import CosmeticsTemplate from '../../demo-templates/cosmetics/cosmeticsTemplate';
-import CosmeticsProductTemplate from '../../demo-templates/cosmeticsProduct/cosmeticsProductTemplate';
-import BankingTemplate from '../../demo-templates/banking/bankingTemplate';
-import BankUserLoginedTemplate from '../../demo-templates/bankUserLogined/bankUserLoginedTemplate';
-import BankingPlainListTemplate from '../../demo-templates/bankingPlainList/bankingPlainListTemplate';
-import BankingPlainListClickableTemplate from '../../demo-templates/bankingPlainListClickable/bankingPlainListClickableTemplate';
-import ProductViewTemplate from '../../demo-templates/productView/productViewTemplate';
 import SiemensTemplate from '../../demo-templates/siemens/siemensTemplate';
 import SiemensFeatureSnippetTemplate from '../../demo-templates/siemensFeatureSnippet/siemensFeatureSnippetTemplate';
 import korejquery from "../../../libs/korejquery";
@@ -25,19 +18,12 @@ class FullSearchResultTopdownTemplate {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
       me.messageFullResultHtml = $(FullSearchResultTopdownTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
-      FullSearchResultTopdownTemplate.prototype.bindEvents(me, me.messageFullResultHtml, msgData);
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
       me.carouselTemplateObj = new searchCarouselViewTemplate();
       me.siemensFeatureSnippetobj = new SiemensFeatureSnippetTemplate();
-      me.siemensOBJ = new SiemensTemplate();
-      me.productViewObj = new ProductViewTemplate();
-      me.bankingPlainListClickableObj = new BankingPlainListClickableTemplate();
-      me.bankingPlainListObj = new BankingPlainListTemplate();
-      me.bankUserLoginedObj = new BankUserLoginedTemplate();
-      me.bankingObj = new BankingTemplate();
-      me.cosmeticsProductObj = new CosmeticsProductTemplate();
-      me.cosmeticsObj = new CosmeticsTemplate();
+      me.siemensObj = new SiemensTemplate();
+      FullSearchResultTopdownTemplate.prototype.bindEvents(me, me.messageFullResultHtml, msgData);
       return me.messageFullResultHtml;
     }
   }
@@ -62,21 +48,7 @@ class FullSearchResultTopdownTemplate {
           showAllHTML = me.siemensObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'siemensFeatureSnippet') {
             showAllHTML = me.siemensFeatureSnippetObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'banking') {
-            showAllHTML = me.bankingObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankUserLogined') {
-            showAllHTML = me.bankUserLoginedObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankingPlainList') {
-            showAllHTML = me.bankingPlainListObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankingPlainListClickable') {
-            showAllHTML = me.bankingPlainListClickableObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'cosmeticsProduct') {
-            showAllHTML = me.cosmeticsProductObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'cosmetics') {
-            showAllHTML = me.cosmeticsObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'productViewTemplate') {
-            showAllHTML = me.productViewTemplateObj.renderMessage.bind(me, d);
-          }
+          } 
           $(messageHtml).find('.full-search-data-container').append(showAllHTML);
         })
       }
@@ -269,20 +241,6 @@ class FullSearchResultTopdownTemplate {
                 showAllHTML = me.siemensObj.renderMessage.bind(me, d);
               } else if (d.message[0].component.payload.template_type == 'siemensFeatureSnippet') {
                 showAllHTML = me.siemensFeatureSnippetObj.renderMessage.bind(me, d);
-              } else if (d.message[0].component.payload.template_type == 'banking') {
-                showAllHTML = me.bankingObj.renderMessage.bind(me, d);
-              } else if (d.message[0].component.payload.template_type == 'bankUserLogined') {
-                showAllHTML = me.bankUserLoginedObj.renderMessage.bind(me, d);
-              } else if (d.message[0].component.payload.template_type == 'bankingPlainList') {
-                showAllHTML = me.bankingPlainListObj.renderMessage.bind(me, d);
-              } else if (d.message[0].component.payload.template_type == 'bankingPlainListClickable') {
-                showAllHTML = me.bankingPlainListClickableObj.renderMessage.bind(me, d);
-              } else if (d.message[0].component.payload.template_type == 'cosmeticsProduct') {
-                showAllHTML = me.cosmeticsProductObj.renderMessage.bind(me, d);
-              } else if (d.message[0].component.payload.template_type == 'cosmetics') {
-                showAllHTML = me.cosmeticsObj.renderMessage.bind(me, d);
-              } else if (d.message[0].component.payload.template_type == 'productViewTemplate') {
-                showAllHTML = me.productViewTemplateObj.renderMessage.bind(me, d);
               }
               $(messageHtml).find('.full-search-data-container').append(showAllHTML);
             })
@@ -458,8 +416,8 @@ class FullSearchResultTopdownTemplate {
         }
         $(".sdk-filter-checkbox-top-down").prop("checked", false);
         $(".sdk-filter-radio-top-down").prop("checked", false);
-        if($('.filters-reset-anchor').hasClass('enabled')){
-          $('.filters-reset-anchor').removeClass('enabled');
+        if($(messageHtml).find('.filters-reset-anchor').hasClass('enabled')){
+          $(messageHtml).find('.filters-reset-anchor').removeClass('enabled');
         }
         hostWindowInstance.clearAllFilterTopdownEvent(event).then((res: any) => {
               let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
@@ -542,21 +500,7 @@ class FullSearchResultTopdownTemplate {
           showAllHTML = me.siemensObj.renderMessage.bind(me, d);
           } else if (d.message[0].component.payload.template_type == 'siemensFeatureSnippet') {
             showAllHTML = me.siemensFeatureSnippetObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'banking') {
-            showAllHTML = me.bankingObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankUserLogined') {
-            showAllHTML = me.bankUserLoginedObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankingPlainList') {
-            showAllHTML = me.bankingPlainListObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'bankingPlainListClickable') {
-            showAllHTML = me.bankingPlainListClickableObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'cosmeticsProduct') {
-            showAllHTML = me.cosmeticsProductObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'cosmetics') {
-            showAllHTML = me.cosmeticsObj.renderMessage.bind(me, d);
-          } else if (d.message[0].component.payload.template_type == 'productViewTemplate') {
-            showAllHTML = me.productViewTemplateObj.renderMessage.bind(me, d);
-          }
+          } 
           $(messageHtml).find('.full-search-data-container').append(showAllHTML);
         })
       }
@@ -735,12 +679,18 @@ class FullSearchResultTopdownTemplate {
       $(messageHtml).find("#show-filters-added-data").show();
       $(messageHtml).find("#show-filters-added-data").removeClass("display-none");
       $(messageHtml).find(".content-data-sec").addClass("filter-added");
+      if(!$(messageHtml).find('.filters-reset-anchor').hasClass('enabled')){
+        $(messageHtml).find('.filters-reset-anchor').addClass('enabled');
+      }
     } else {
       hostWindowInstance.vars.selectedFiltersArr = [];
       hostWindowInstance.vars.filterObject = [];
       $(messageHtml).find("#show-filters-added-data").hide();
       $(messageHtml).find("#show-filters-added-data").addClass("display-none");
       $(messageHtml).find(".content-data-sec").removeClass("filter-added");
+      if($(messageHtml).find('.filters-reset-anchor').hasClass('enabled')){
+        $(messageHtml).find('.filters-reset-anchor').removeClass('enabled');
+      }
     }
 
     if ($(messageHtml).find("#show-filters-added-data").height() > 55) {

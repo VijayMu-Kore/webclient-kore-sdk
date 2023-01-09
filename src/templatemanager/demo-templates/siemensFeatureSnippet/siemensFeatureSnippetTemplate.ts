@@ -13,9 +13,7 @@ class SiemensFeatureSnippetTemplate {
     }
 
     getTemplateString() {
-        var siemensFeatureSnippet = {
-            "id": 1,
-            "template": '<script>\
+        var siemensFeatureSnippet =  '<script>\
             <div class="messageBubble siemens-snippet-left">\
               <div class="messageBubble-content">\
                   <div class="botImg">\
@@ -40,11 +38,8 @@ class SiemensFeatureSnippetTemplate {
                   </div>\
               </div>\
             </div>\
-          </script>',
-            "layoutType": "siemensFeatureSnippet",
-            "templateType": "siemensFeatureSnippet"
-          }
-          return siemensFeatureSnippet.template;
+          </script>';
+          return siemensFeatureSnippet;
     }
     
 }

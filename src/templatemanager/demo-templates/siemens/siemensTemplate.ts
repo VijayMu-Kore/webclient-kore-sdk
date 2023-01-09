@@ -8,14 +8,13 @@ class SiemensTemplate {
         let helpersObj = helpers;
         if (msgData?.message?.[0]?.component?.payload?.template_type === "siemens") {
           me.messageHtml = $(SiemensTemplate.prototype.getTemplateString()).tmpl(msgData?.message[0].component?.payload);
+          SiemensTemplate.prototype.bindClickLogsEvent(me, me.messageHtml);
             return me.messageHtml;
         }
     }
 
     getTemplateString() {
-        var siemensUsecaseTemplate = {
-            "id": 1,
-            "template": '<script type="text/x-jqury-tmpl">\
+        var siemensUsecaseTemplate =  '<script type="text/x-jqury-tmpl">\
             <div class="siemens-template">\
             {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
             {{if !(data.bestMatch===true)}}\
@@ -24,7 +23,7 @@ class SiemensTemplate {
                   <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/icon1-blue.svg" class="siemens-icon-blue">\
                   <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/icon1.svg" class="siemens-icon">\
                   <span class="name-title">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
-                  <span class="redirecting-link click-to-navigate-url faqs-shadow isClickable" href="${data.doc_confluence_link}" target="_blank">\
+                  <span class="redirecting-link click-to-navigate-url faqs-shadow isClickable  click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.doc_confluence_link}" target="_blank">\
                     <img class="siemens-link-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Siemenss_demo/externallink-gray.svg">\
                   </span>\
                 </div>\
@@ -51,13 +50,31 @@ class SiemensTemplate {
                 <div class="searchassist-show-more-button">Show more <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Banking_demo/show_more.png" height="6" width="10" /></div>\
                 </div>\
                 </div>\
-            </script>',
-            "layoutType": "siemens",
-            "templateType": "siemens"
-          }
+            </script>';
         return siemensUsecaseTemplate;
     }
-    
+    bindClickLogsEvent(me:any, messageHtml: any) {
+      let hostWindowInstance = me.hostInstance;
+      let $ = me.hostInstance.$;
+      $(messageHtml).off("click",".click-log-metrics").on("click",".click-log-metrics", function (e: any) {
+        hostWindowInstance?.captureClickAnalytics(e,
+          $(e.currentTarget).closest(".click-log-metrics").attr("contentType"),
+          "click",
+          $(e.currentTarget).closest(".click-log-metrics").attr("contentId"),
+          $(e.currentTarget).closest(".click-log-metrics").attr("id"),
+          $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
+          if ($(e.currentTarget).hasClass('isClickable')) {
+            if ($(e.target).closest('.click-to-navigate-url').attr('href')) {
+              var link = document.createElement('a');
+              link.href = $(e.target).closest('.click-to-navigate-url').attr('href');
+              link.target = "_blank",
+                link.click();
+              link.remove();
+            }
+        }
+      });
+      
+    }
 }
 
 export default SiemensTemplate;
