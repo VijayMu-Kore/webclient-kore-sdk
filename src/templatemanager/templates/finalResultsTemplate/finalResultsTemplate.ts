@@ -109,7 +109,7 @@ class FinalResultsTemplate {
       var url = $(e.target).attr("snippetURL");
       window.open(url, '_blank','noopener');
     })
-
+    FinalResultsTemplate.prototype.bindSnippetEvents(messageHtml)
   }
   getTemplateString(type: any) {
     var finalResultsTemplate = '<script type="text/x-jqury-tmpl">\
@@ -127,19 +127,90 @@ class FinalResultsTemplate {
           </div>\
         {{/if}}\
         {{if snippetData && snippetData?.title}}\
-      <div class="snippet-template snippet-margin">\
-        <div class="title position-relative"><div class="title-text">{{html snippetData?.title}}</div></div>\
-        <div class="desc-text">{{html snippetData?.answer}}</div>\
-        <div class="quick-links">\
-          <div>\
-          <span class="quick-source">Source:</span>\
-          <span><img class="know-more-snippet" snippetURL="${snippetData?.page_url}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADnSURBVHgBbVBRSgNBDE1mMkoRYY/Qo+gRegJ3fgXRK3gCBUX8W3sCewM9gkfwCANtod2ZJJ2ULmxL85U8Xt7LC8KZap60yZxb6znzYvM5+XdnSFMR/bHegUshXHa2SKfEUspUReP64+LP5uuHApmlpbGdCDwKSgPC8/GyKeNgx6ydKj9XteSJOnYlBgjJ8Jy30Q8kGxAQ9qRSIio2qvhiuIUhZr6ponMbTP3qvo9I2NY2eYez5dskGU4C9aYKHiUSWKzew+8YouDDV7X+tnS25JHu+n47O/2GS6+YvMd4UAbn8HY4Y1w7HnB+uw0SNsYAAAAASUVORK5CYII="/><span class="quick-sourcename know-more-snippet" snippetURL="${snippetData?.page_url}">${snippetData?.source}</span></span>\
+        {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
+          <div class="search-temp-one snippet-margin">\
+            <div class="top-header">\
+                <div class="top-header-with-img">\
+                    <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                    <div class="btn-chip">SUGGESTED ANSWER</div>\
+                </div>\
+                {{if snippetData && snippetData.source === "Answered by AI"}}\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                {{/if}}\
+            </div>\
+            <div class="temp-data-desc">\
+            {{html snippetData?.answer}}\
+            </div>\
+            <div class="temp-read-link">\
+            <span class="desc-read-more">Read more</span> <span class="desc-read-less">Show Less</span>\
+            </div>\
+            {{if snippetData && snippetData.source !== "Answered by AI"}}\
+            <div class="snippet-source-block">\
+              <div class="snippet-source-file-name {{if !snippetData.source}} display-none{{/if}}">{{html snippetData.source}}</div>\
+              <div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name" title="${snippetData?.page_url}">${snippetData?.page_url}</span><a href="${snippetData?.page_url}" target="_blank" target="_blank"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></a></div>\
+            </div>\
+            {{/if}}\
+            <div class="temp-footer-block">\
+                <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
+                    {{if snippetData && snippetData.source === "Answered by AI"}}\
+                    <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                    {{/if}}\
+                    <div class="temp-right">\
+                        <div class="is-it-usefull">Is it useful?</div>\
+                        <div class="temp-fotter-actions">\
+                            <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                            <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                        </div>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+        {{/if}}\
+        {{if snippetData.template_type =="list_element_snippet" || snippetData.template_type =="heading_snippet"}}\
+    <div class="search-temp-one list-snippet-temp snippet-margin">\
+        <div class="top-header">\
+            <div class="top-header-with-img">\
+                <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                <div class="btn-chip">SUGGESTED ANSWER</div>\
+            </div>\
+            {{if snippetData && snippetData.source === "Answered by AI"}}\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+            {{/if}}\
+        </div>\
+        <div class="list-temp-block">\
+            <div class="list-temp-header">{{html snippetData?.title}}</div>\
+                <ol type="1" class="list-temp-ul">\
+                {{each(key, answer) snippetData.answer}}\
+                    <li class="list-temp-li">{{html answer}}</li>\
+                    {{/each}}\
+                </ol>\
+                {{if snippetData.answer.length > 4}}\
+                <span class="desc-read-more display-block"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Read more</span> <span class="desc-read-less  display-none"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Show Less</span>\
+                {{/if}}\
+        </div>\
+        {{if snippetData && snippetData.source !== "Answered by AI"}}\
+          <div class="snippet-source-block">\
+            <div class="snippet-source-file-name  {{if !snippetData.source}} display-none {{/if}}">{{html snippetData?.source}}</div>\
+            <div class="snippet-source-url {{if !snippetData.page_url}} display-none {{/if}}"><span class="snippet-source-url-name">${snippetData?.page_url}</span><a href="${snippetData?.page_url}" target="_blank" target="_blank"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></a> </div>\
           </div>\
-          <div class="quick-item display-none more-results-btn">\
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjI5ODM4IDAuNzk2ODc1QzMuMjYyMTQgMC43OTY4NzUgMC44MDA3ODEgMy4yNjQ4MSAwLjgwMDc4MSA2LjMwOTE2QzAuODAwNzgxIDkuMzUzNTEgMy4yNjIxNCAxMS44MjE0IDYuMjk4MzggMTEuODIxNEM3LjYyNjE1IDExLjgyMTQgOC44NDM5OSAxMS4zNDk1IDkuNzk0MTIgMTAuNTYzN0wxMi4zNDMgMTMuMDg4TDEyLjM4MSAxMy4xMjIyQzEyLjU5MDIgMTMuMjkzMyAxMi44OTg4IDEzLjI3OTkgMTMuMDkyMyAxMy4wODM0QzEzLjI5OCAxMi44NzQ2IDEzLjI5NTkgMTIuNTM4MiAxMy4wODc3IDEyLjMzMkwxMC41NDMzIDkuODEyMTZDMTEuMzI2IDguODU5OCAxMS43OTYgNy42Mzk1MSAxMS43OTYgNi4zMDkxNkMxMS43OTYgMy4yNjQ4MSA5LjMzNDYyIDAuNzk2ODc1IDYuMjk4MzggMC43OTY4NzVaTTYuMjk4MzggMS44NTk0OEM4Ljc0OTMyIDEuODU5NDggMTAuNzM2MiAzLjg1MTY3IDEwLjczNjIgNi4zMDkxNkMxMC43MzYyIDguNzY2NjQgOC43NDkzMiAxMC43NTg4IDYuMjk4MzggMTAuNzU4OEMzLjg0NzQ0IDEwLjc1ODggMS44NjA1NiA4Ljc2NjY0IDEuODYwNTYgNi4zMDkxNkMxLjg2MDU2IDMuODUxNjcgMy44NDc0NCAxLjg1OTQ4IDYuMjk4MzggMS44NTk0OFoiIGZpbGw9IiMwMDc3RDIiLz4KPC9zdmc+Cg==">More Results</div>\
-          </div>\
-      </div>\
-      {{/if}}\
+        {{/if}}\
+        <div class="temp-footer-block">\
+            <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
+                {{if snippetData && snippetData.source === "Answered by AI"}}\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                {{/if}}\
+                <div class="temp-right">\
+                    <div class="is-it-usefull">Is it useful?</div>\
+                    <div class="temp-fotter-actions">\
+                        <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                        <img  class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+    {{/if}}\
+    {{/if}}\
       <div class="finalResults {{if snippetData && snippetData?.title}}snippet-margin{{/if}}">\
         {{if taskPrefix === "SUGGESTED"}}\
         <span class="live-search-close-icon show-all-results">See All Results</span>\
@@ -172,8 +243,47 @@ class FinalResultsTemplate {
     let me: any = this;
     me.hostInstance.botActionTrigger(event);
   };
+  bindSnippetEvents(messageHtml:any){
+    $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event) {
+      $(messageHtml).find('.snippet-feedback').removeClass('active');
+      $(event.currentTarget).addClass('active');
+    });
+    
+    if(messageHtml &&  $(messageHtml).find('.search-temp-one').find('.temp-data-desc').length){
+      setTimeout(()=>{
+        if($(messageHtml).find('.search-temp-one').last().find('.temp-data-desc').length && $(messageHtml).find('.search-temp-one').last().find('.temp-data-desc')[0].scrollHeight>70){
+          $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').show();
+          $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
+        }else{
+          $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').hide();
+          $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
+        }
+        $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+          $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','initial');
+          $(event.currentTarget).hide();
+          $(event.currentTarget).parent().find('.desc-read-less').show();
+        });
+        $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+          $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','3');
+          $(event.currentTarget).parent().find('.desc-read-more').show();
+          $(event.currentTarget).hide();
+        });
+      },300)
+    }else if(messageHtml &&  $(messageHtml).find('.search-temp-one').find('.list-temp-ul').length){
+      $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+        $(messageHtml).find('.list-temp-ul').addClass('show-all-list');
+        $(messageHtml).find('.desc-read-more').removeClass('display-block').addClass('display-none');
+        $(messageHtml).find('.desc-read-less').removeClass('display-none').addClass('display-block');
+      });
+      $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+        $(messageHtml).find('.list-temp-ul').removeClass('show-all-list');
+        $(messageHtml).find('.desc-read-less').removeClass('display-block').addClass('display-none');
+        $(messageHtml).find('.desc-read-more').removeClass('display-none').addClass('display-block');
+      });
+    }
+    
+  }
   $ = $;
-
 }
 FinalResultsTemplate.prototype.$ = $;
 export default FinalResultsTemplate;

@@ -7550,20 +7550,28 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       var searchContainerName = $("body").hasClass("top-down")
         ? ".full-search-data-container"
         : ".search-data-container";
-
-      if (!$("body").hasClass("top-down")) {
         var snippetObj={};
-              if(res?.graph_answer?.payload?.center_panel){
-                if(Object.keys(res.graph_answer.payload.center_panel).length>0){
-                  snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer),page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source};
-                }
-                else{
-                  snippetObj={};
-                }
-              }
-              else{
-                snippetObj={};
-              }
+        if(res?.graph_answer?.payload?.center_panel){
+          if(Object.keys(res.graph_answer.payload.center_panel).length>0){
+            var listSnippetData = '';
+            if(['paragraph_snippet','answer_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+              listSnippetData = helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer);
+            } else {
+              var listSnippetData = (helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)).split('<br /> * ');
+              var filterData = listSnippetData.filter(e => e == " ");
+              filterData.forEach(f => listSnippetData.splice(listSnippetData.findIndex(e => e == f),1));
+            }
+            snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,'template_type':res?.graph_answer?.payload?.center_panel?.type}; 
+          }
+          else{
+            snippetObj={};
+          }
+        }
+        else{
+          snippetObj={};
+        }
+      if (!$("body").hasClass("top-down")) {
+        
         _self.countTotalResults(res, 0);
         var dataObj = {
           faqs: [],
