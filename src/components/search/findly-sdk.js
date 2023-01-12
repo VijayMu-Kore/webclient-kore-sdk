@@ -23808,6 +23808,32 @@ FindlySDK.prototype.getFeedBackResult = function () {
     var _self = this;
     return;
   }
+  FindlySDK.prototype.openExternalLink = function  (link_url,e) {
+    const me = this;
+    me.appendTextToSearchContainer('user', $(e.currentTarget).attr('data-title'));
+    const a = document.createElement('a');
+    $('.search-chat-container').append(a);
+    a.href = link_url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';// for tabnabbing security attack
+    a.click();
+    $(a).remove();
+  }
+  FindlySDK.prototype.openPopup = function  (link_url) {
+    const me = this;
+    const popupHtml = $(me.getChatTemplate('popup')).tmpl({
+      link_url,
+    });
+    $('.search-chat-container').append(popupHtml);
+    me.popupOpened = true;
+    me.bindIframeEvents($(popupHtml));
+  }
+  FindlySDK.prototype.getChatTemplate= function  (link_url) {
+    //chat templates
+  }
+  FindlySDK.prototype.bindIframeEvents= function  (html) {
+    //bind iframe events
+  }
 
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
