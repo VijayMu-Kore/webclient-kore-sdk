@@ -8,17 +8,18 @@ class SnippetListTemplate {
         let helpersObj = helpers;
 
         if (msgData?.message?.[0]?.component?.payload?.template_type === "list_element_snippet" || msgData?.message?.[0]?.component?.payload?.template_type === "heading_snippet") {
-            me.messageHtml = $(me.getTemplateString()).tmpl({
-                'snippetData': msgData?.message?.[0]?.component?.payload,
+            me.messageHtml = $(SnippetListTemplate.prototype.getTemplateString()).tmpl({
+                'snippetData': msgData?.message?.[0]?.component?.payload?.snippetData,
                 'helpers': helpersObj.helpers
             });
-            me.bindSnippetEvents(me.messageHtml);
+            setTimeout(()=>{
+              SnippetListTemplate.prototype.bindSnippetEvents(me,me.messageHtml);
+            },500)
             return me.messageHtml;
         }
     }
     getTemplateString() {
         var snippetListTemplate = '<script type="text/x-jqury-tmpl">\
-        {{if snippetData.template_type =="list_element_snippet" || snippetData.template_type =="heading_snippet"}}\
         <div class="search-temp-one list-snippet-temp">\
         <div class="top-header">\
             <div class="top-header-with-img">\
@@ -61,23 +62,23 @@ class SnippetListTemplate {
             </div>\
         </div>\
     </div>\
-        {{/if}}\
           </script>';
         return snippetListTemplate;
     }
-    bindSnippetEvents(messageHtml:any){
-        $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event) {
+    bindSnippetEvents(me:any,messageHtml:any){
+      let $ = me.hostInstance.$;
+        $(messageHtml).off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
           $(messageHtml).find('.snippet-feedback').removeClass('active');
           $(event.currentTarget).addClass('active');
         });
         
-         if(messageHtml &&  $(messageHtml).find('.search-temp-one').find('.list-temp-ul').length){
-          $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+         if(messageHtml &&  $(messageHtml).find('.list-temp-ul').length){
+          $(messageHtml).off('click', '.desc-read-more').on('click', '.desc-read-more', function (event:any) {
             $(messageHtml).find('.list-temp-ul').addClass('show-all-list');
             $(messageHtml).find('.desc-read-more').removeClass('display-block').addClass('display-none');
             $(messageHtml).find('.desc-read-less').removeClass('display-none').addClass('display-block');
           });
-          $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+          $(messageHtml).off('click', '.desc-read-less').on('click', '.desc-read-less', function (event:any) {
             $(messageHtml).find('.list-temp-ul').removeClass('show-all-list');
             $(messageHtml).find('.desc-read-less').removeClass('display-block').addClass('display-none');
             $(messageHtml).find('.desc-read-more').removeClass('display-none').addClass('display-block');

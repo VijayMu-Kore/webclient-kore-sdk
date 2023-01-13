@@ -2969,7 +2969,7 @@ FindlySDK.prototype.prepAllSearchData = function (
     _self.pubSub.publish("sa-search-facets", _self.vars.searchFacetFilters);
   }
   if ($("body").hasClass("top-down")) {
-    $(".content-data-sec").scrollTop(0);
+    $(".all-product-details").scrollTop(0);
     // _self.pubSub.publish('sa-search-result', { ...tmplData, ...{ isLiveSearch: false, isFullResults: true, selectedFacet: selectedFacet_temp } });
     setTimeout(() => {
       _self.pubSub.publish("facet-selected", {
@@ -3444,7 +3444,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
               $("#live-search-result-box").hide();
               $("#frequently-searched-box").hide();
               $("#loaderDIV").hide();
-              $(".content-data-sec").scrollTop(2);
+              $(".all-product-details").scrollTop(2);
             }
             $(".full-search-data-container").empty();
             if (res && res.results && res.resultType == "grouped") {
@@ -3618,7 +3618,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
               }
             }, 600);
             _self.fullResultsScrollTop();
-            $(".content-data-sec").scrollTop(0);
+            $(".all-product-details").scrollTop(0);
             $(".data-body-sec").scrollTop(0);
           }
           
@@ -5674,7 +5674,7 @@ FindlySDK.prototype.searchByFacetFilters = function (
         _self.markSelectedFilters();
       }
       _self.fullResultsScrollTop();
-      $(".content-data-sec").scrollTop(0);
+      $(".all-product-details").scrollTop(0);
       $(".data-body-sec").scrollTop(0);
     });
 };
@@ -7734,7 +7734,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                   filterFacetData: searchFacets||[],
                   sortableFacetList: _self.vars.sortableFacetList || [],
                   displaySortable: _self.vars.displaySortable,
-                  displayFeedback:_self.vars.feedBackExperience
+                  displayFeedback:_self.vars.feedBackExperience,
+                  snippetData:snippetObj
                 }
               }
 
@@ -8200,7 +8201,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     //   _self.pubSub.publish("facet-selected", { selectedFacet: "all results" });
     // }
     _self.fullResultsScrollTop();
-    $(".content-data-sec").scrollTop(0);
+    $(".all-product-details").scrollTop(0);
     $(".data-body-sec").scrollTop(0);
   } else if (res.templateType === "botAction") {
     // debugger;
@@ -17805,7 +17806,7 @@ FindlySDK.prototype.invokeSpecificSearch = function (selectedFacet) {
         // }, 400);
       }
       _self.fullResultsScrollTop();
-      $(".content-data-sec").scrollTop(0);
+      $(".all-product-details").scrollTop(0);
       $(".data-body-sec").scrollTop(0);
     });
 };
@@ -21930,10 +21931,10 @@ FindlySDK.prototype.rearrangeTabsList = function (facets) {
 FindlySDK.prototype.fullResultsScrollTop = function () {
   $(".scroll-top-container").css("display", "none");
   if ($("body").hasClass("top-down")) {
-    $(".content-data-sec")
+    $(".all-product-details")
       .off("scroll")
       .on("scroll", function () {
-        if ($(".content-data-sec").scrollTop() > 50) {
+        if ($(".all-product-details").scrollTop() > 50) {
           $(".scroll-top-container").css("display", "flex");
         } else {
           $(".scroll-top-container").css("display", "none");
@@ -21942,7 +21943,7 @@ FindlySDK.prototype.fullResultsScrollTop = function () {
     $(".title-scroll-top")
       .off("click")
       .on("click", function () {
-        $(".content-data-sec").scrollTop(0);
+        $(".all-product-details").scrollTop(0);
       });
   } else {
     $(".data-body-sec")
@@ -22608,7 +22609,7 @@ FindlySDK.prototype.botActionTrigger = function (e) {
 }
 FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
   if ($("body").hasClass("top-down")) {
-    $(".content-data-sec").scrollTop(0);
+    $(".all-product-details").scrollTop(0);
   }else{
     $(".data-body-sec").scrollTop(0);
   }

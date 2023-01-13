@@ -1,24 +1,25 @@
 
 import helpers from '../../../utils/helpers';
-import './snippetListTemplate.scss';
-class SnippetListTemplate {
+import './snippetParagraphTemplate.scss';
+class SnippetParagraphTemplate {
     renderMessage(msgData: any) {
         let me: any = this;
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
 
         if (msgData?.message?.[0]?.component?.payload?.template_type === "paragraph_snippet" || msgData?.message?.[0]?.component?.payload?.template_type === "answer_snippet") {
-            me.messageHtml = $(me.getTemplateString()).tmpl({
-                'snippetData': msgData?.message?.[0]?.component?.payload,
+            me.messageHtml = $(SnippetParagraphTemplate.prototype.getTemplateString()).tmpl({
+                'snippetData': msgData?.message?.[0]?.component?.payload?.snippetData,
                 'helpers': helpersObj.helpers
             });
-            me.bindSnippetEvents(me.messageHtml);
+            setTimeout(()=>{
+              SnippetParagraphTemplate.prototype.bindSnippetEvents(me, me.messageHtml);
+            },500)
             return me.messageHtml;
         }
     }
     getTemplateString() {
         var snipppetParagaraphTemplate  = '<script type="text/x-jqury-tmpl">\
-      {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
       <div class="search-temp-one">\
       <div class="top-header">\
           <div class="top-header-with-img">\
@@ -56,31 +57,31 @@ class SnippetListTemplate {
           </div>\
       </div>\
   </div>\
-    {{/if}}\
       </script>';
         return snipppetParagaraphTemplate;
     }
-    bindSnippetEvents(messageHtml:any){
-        $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event) {
+    bindSnippetEvents(me:any,messageHtml:any){
+      let $ = me.hostInstance.$;
+        $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
           $(messageHtml).find('.snippet-feedback').removeClass('active');
           $(event.currentTarget).addClass('active');
         });
         
-        if(messageHtml &&  $(messageHtml).find('.search-temp-one').find('.temp-data-desc').length){
+        if(messageHtml &&  $(messageHtml).find('.temp-data-desc').length){
           setTimeout(()=>{
-            if($(messageHtml).find('.search-temp-one').last().find('.temp-data-desc').length && $(messageHtml).find('.search-temp-one').last().find('.temp-data-desc')[0].scrollHeight>70){
-              $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').show();
-              $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
+            if($(messageHtml).find('.temp-data-desc').length && $(messageHtml).find('.temp-data-desc')[0].scrollHeight>70){
+              $(messageHtml).find('.desc-read-more').show();
+              $(messageHtml).find('.desc-read-less').hide();
             }else{
-              $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').hide();
-              $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
+              $(messageHtml).find('.desc-read-more').hide();
+              $(messageHtml).find('.desc-read-less').hide();
             }
-            $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+            $(messageHtml).off('click', '.desc-read-more').on('click', '.desc-read-more', function (event:any) {
               $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','initial');
               $(event.currentTarget).hide();
               $(event.currentTarget).parent().find('.desc-read-less').show();
             });
-            $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+            $(messageHtml).off('click', '.desc-read-less').on('click', '.desc-read-less', function (event:any) {
               $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','3');
               $(event.currentTarget).parent().find('.desc-read-more').show();
               $(event.currentTarget).hide();
@@ -93,4 +94,4 @@ class SnippetListTemplate {
 }
 
 
-export default SnippetListTemplate;
+export default SnippetParagraphTemplate;

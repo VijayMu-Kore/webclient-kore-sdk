@@ -368,7 +368,8 @@ margin-bottom: 10px;
     white-space: nowrap;
 }
 .search-temp-one .snippet-source-block .snippet-source-url a{
-    width: 20px;
+    width: 22px;
+    margin-left: 10px;
 } 
 .search-temp-one .top-header .top-header-with-img .logo-span{
     padding: 0 5px 0 0;
@@ -547,8 +548,8 @@ margin-bottom: 10px;
 			margin-top: 10px;
 			margin-bottom: 10px;
 			.list-temp-li {
-				list-style-type: decimal;
-				list-style-position: outside;
+				list-style-type: decimal !important;
+				list-style-position: outside !important;
 				&:nth-child(n+5) {
 					display: none;
 				}

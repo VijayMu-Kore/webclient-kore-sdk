@@ -3,6 +3,8 @@ import './fullsearchResultTopdownTemplate.scss';
 import searchListViewTemplate from '../../templates/searchListViewTemplate/searchListViewTemplate';
 import searchGridViewTemplate from '../../templates/searchGridViewTemplate/searchGridViewTemplate';
 import searchCarouselViewTemplate from '../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+import SnippetListTemplate from '../../templates/snippetListTemplate/snippetListTemplate';
+import SnippetParagraphTemplate from '../../templates/snippetParagraphTemplate/snippetParagraphTemplate';
 import korejquery from "../../../libs/korejquery";
 const $ = korejquery;
 class FullSearchResultTopdownTemplate {
@@ -16,6 +18,8 @@ class FullSearchResultTopdownTemplate {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
       me.messageFullResultHtml = $(FullSearchResultTopdownTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+      me.snippetListTemplateObj = new SnippetListTemplate();
+      me.snippetParagraphTemplateObj = new SnippetParagraphTemplate();
       FullSearchResultTopdownTemplate.prototype.bindEvents(me, me.messageFullResultHtml, msgData);
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
@@ -44,10 +48,10 @@ class FullSearchResultTopdownTemplate {
           $(messageHtml).find('.full-search-data-container').append(showAllHTML);
         })
       }
-      var resultsContainerHtml = $(".all-product-details");
+      var resultsContainerHtml = $(".full-results-data-container");
       hostWindowInstance.bindPerfectScroll(
         resultsContainerHtml,
-        ".content-data-sec",
+        ".all-product-details",
         null,
         "y",
         "resultsContainer"
@@ -60,15 +64,15 @@ class FullSearchResultTopdownTemplate {
         }
       }
       $(messageHtml).find('.scroll-top-container').css('display', 'none');
-      $(messageHtml).find(".content-data-sec").off('scroll').on('scroll', function () {
-          if ($(messageHtml).find('.content-data-sec').scrollTop() > 50) {
+      $(messageHtml).find(".all-product-details").off('scroll').on('scroll', function () {
+          if ($(messageHtml).find('.all-product-details').scrollTop() > 50) {
             $(messageHtml).find('.scroll-top-container').css('display', 'flex');
           } else {
             $(messageHtml).find('.scroll-top-container').css('display', 'none');
           }
         });
         $(messageHtml).find(".title-scroll-top").off('click').on('click', function () {
-          $(messageHtml).find(".content-data-sec").scrollTop(0);
+          $(messageHtml).find(".all-product-details").scrollTop(0);
         });
       if(msgData.message[0].component.payload.displayFeedback){
         FullSearchResultTopdownTemplate.prototype.feedBackResultEvents(me, messageHtml);
@@ -90,6 +94,9 @@ class FullSearchResultTopdownTemplate {
       FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,msgData.message[0].component.payload.sortableFacetList)
     }
     FullSearchResultTopdownTemplate.prototype.bindBackToSearchClickEvent(me,messageHtml);
+    if(msgData?.message[0].component?.payload?.snippetData?.title){
+      FullSearchResultTopdownTemplate.prototype.appendSnippetData(me,messageHtml,msgData);
+    }
   }
   getTemplateString(type: any) {
 
@@ -110,17 +117,23 @@ class FullSearchResultTopdownTemplate {
                           </div>\
                           {{/if}}\
                         <div class="all-product-details ">\
+                        <div id="snippet-demo-template"></div>\
                             <div class="show_insights_top_down" data-displayInsights="true">\
                                 <span class="query_analytics_top_down"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAD4SURBVHgBlVDbTcNAEJzZjQSfoQOX4A6gA8QvEtgkgMwX7iDQQfgz4nVUEKUCTAd0QNIBfxFSfMsdERGgRIpXOq1uZ0Y7s8SGlednqakMuBosu7E7N/xYkkVH9M0BV5Gt8/kC7xMQtTd7FchlJDt39yaHQf1bYDp7Imz8/Hi7Q/KGlPSHHHEe9wsX1ux6w7WETsHU3VdXa6KACxtF4hWlRN8PVYm2lZ8We/H9nx/1zss/oWMeFU3DMPnOA0zUo3aumsR/1ivemfUvRmxmJ9bZGjRzjlWRmWG6uAASUTgD9zsmw7k1dbBt4UrbXRjTtR7NlpigZbUWfAEi/12gzLS2XQAAAABJRU5ErkJggg==">Query Analytics</span>\
                             </div>\
-                            <div class="custom-header-container-center top-down-customize-btns display-none">\
-                                <ul class="custom-header-nav">\
-                                    <li id="viewTypePreview" class="custom-header-nav-link-item nav-link-item-active"><a class="custom-header-nav-link">Preview</a></li>\
-                                    <li id="viewTypeCustomize" class="custom-header-nav-link-item"><a class="custom-header-nav-link">Customize</a></li>\
-                                </ul>\
+                            <div class="total-search-results-block">\
+                            <div class="tsrb-header-sec">\
+                              <div class="tsrb-header-tabs"><div id="top-down-tab-sec"></div>\</div>\
+                              <div class="tsrb-right-filters">\
+                                  <div id="sa-sdk-sortable-dropdown"></div>\
+                                  <div class="custom-header-container-center top-down-customize-btns display-none">\
+                                        <ul class="custom-header-nav">\
+                                          <li id="viewTypePreview" class="custom-header-nav-link-item nav-link-item-active"><a class="custom-header-nav-link">Preview</a></li>\
+                                          <li id="viewTypeCustomize" class="custom-header-nav-link-item"><a class="custom-header-nav-link">Customize</a></li>\
+                                        </ul>\
+                                  </div>\
+                              </div>\
                             </div>\
-                            <div id="top-down-tab-sec"></div>\
-                            <div id="sa-sdk-sortable-dropdown"></div>\
                             <div id="filters-center-sec" > </div>\
                             <div class="filters-added-data display-none" id="show-filters-added-data"></div>\
                             <div class="content-data-sec">\
@@ -336,6 +349,7 @@ class FullSearchResultTopdownTemplate {
         event.stopPropagation();
         event.stopImmediatePropagation();
         hostWindowInstance.topdownFacetCheckBoxClick(event).then((response: any) => {
+          $(".all-product-details").scrollTop(0);
           if (!response.isFilterAlignedTop) {
             let selectedFacet = $(messageHtml).find(".tab-name.facet.active-tab").attr('id');
             if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
@@ -365,6 +379,7 @@ class FullSearchResultTopdownTemplate {
         event.stopPropagation();
         event.stopImmediatePropagation();
         hostWindowInstance.topdownFacetRadioClick(event).then((response: any) => {
+          $(".all-product-details").scrollTop(0);
           if (response.isFilterAlignedTop) {
             FullSearchResultTopdownTemplate.prototype.applyFiltersFun(me, messageHtml);
           } else {
@@ -397,6 +412,7 @@ class FullSearchResultTopdownTemplate {
         if (!$(event.target).hasClass('enabled')) {
           return;
         }
+        $(".all-product-details").scrollTop(0);
         $(".sdk-filter-checkbox-top-down").prop("checked", false);
         $(".sdk-filter-radio-top-down").prop("checked", false);
         if($('.filters-reset-anchor').hasClass('enabled')){
@@ -841,7 +857,26 @@ class FullSearchResultTopdownTemplate {
     });
     $('.thumbs-up-top-down-blue, .thumbs-up-top-down-red').hide();
     $('.thumbs-up-top-down-black,.thumbs-down-top-down-black').show();
-    }
+  }
+ appendSnippetData(me: any, messageHtml: any, msgData:any){
+  let snippetMsgData = {
+    message: [{
+      component: {
+        type: 'template',
+        payload: {
+          template_type: msgData.message[0].component.payload.snippetData.template_type,
+          helpers: msgData.message[0].component.payload.helpers,
+          snippetData: msgData.message[0].component.payload.snippetData
+        }
+      }
+    }]
+  };
+  if(['paragraph_snippet','answer_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
+    $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetParagraphTemplateObj.renderMessage.bind(me, snippetMsgData));
+  }else{
+    $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetListTemplateObj.renderMessage.bind(me, snippetMsgData));
+  }
+ }
 }
 var truncateText = FullSearchResultTopdownTemplate.prototype.truncateText;
 export default FullSearchResultTopdownTemplate;
