@@ -6142,6 +6142,10 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.suggestionSelectedByNavigationKeys(e);
         }
         if (code == 13) {
+          recognition.stop();
+          final_transcript = "";
+          $(".recordingMicrophone").css("display", "none");
+          $(".notRecordingMicrophone").css("display", "block");
           if ($('body').hasClass('top-down')) {
             _self.vars.enteredQuery = $('.search-top-down').val();
           }

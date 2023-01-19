@@ -294,22 +294,25 @@ body{
             }
         }
         .microphoneBtn {
+            padding-top:4px;
             .notRecordingMicrophone{
                 .microphone {
-                    background-image: var(--sdk-micro-phone-bg-image);
+                    // background-image: var(--sdk-micro-phone-bg-image);
+                    background-image: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/speaker.svg);
                     background-size: 100% 100%;
-                    width: 21px;
-                    height: 21px;
+                    width: 16px;
+                    height: 16px;
                     margin: 0px;
                     display: block;
                 }
             }
             .recordingMicrophone{
                 .microphone {
-                    background-image: var(--sdk-microphone-image2);
+                    // background-image: var(--sdk-microphone-image2);
+                    background-image: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/micro-phone-red-img.svg);
                     background-size: 100% 100%;
-                    width: 21px;
-                    height: 21px;
+                    width: 16px;
+                    height: 16px;
                     margin: 0px;
                     display: block;
                     float: left;
