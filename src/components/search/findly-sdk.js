@@ -5835,7 +5835,7 @@ FindlySDK.prototype.searchEventBinding = function (
   if (templateType === "search-container") {
     $(dataHTML)
       .off("keydown", "#search")
-      .on("keydown", "#search", function (e) {
+      .on("keydown", "#search", debounce(function (e) {
         _self.trimSearchQuery(e);
         var keyCode = e.keyCode || e.which;
         keyCode = Number(keyCode);
@@ -6108,7 +6108,7 @@ FindlySDK.prototype.searchEventBinding = function (
               : false;
           _self.vars.countOfSelectedFilters = 0;
         }
-      });
+      },300));
     $(dataHTML)
       .off("click", '.search-button , .send-icon-cosmotics')
       .on("click", '.search-button , .send-icon-cosmotics', function (e) {
@@ -6224,36 +6224,13 @@ FindlySDK.prototype.searchEventBinding = function (
       });
     }
 
-    var timerId;
-    var searchBoxDom = document.getElementById("search");
 
-    // This represents a very heavy method. Which takes a lot of time to execute
-    function makeAPICall(event) {
-      // $('#search').trigger("keydown");
-      if (_self.vars.enterIsClicked) {
-        return;
-      }
-      $("#search").trigger("keyup");
-      _self.pubSub.publish("sa-input-keyup",event);
-    }
 
-    // Debounce function: Input as function which needs to be debounced and delay is the debounced time in milliseconds
-    var debounceFunction = function (func, delay) {
-      // Cancels the setTimeout method execution
-      clearTimeout(timerId);
-      // Executes the func after delay time.
-      timerId = setTimeout(func, delay);
-    };
 
-    // Event listener on the input box
-    searchBoxDom.addEventListener("input", function (event) {
-      // Debounces makeAPICall method
-      debounceFunction(makeAPICall(event), 200, event);
-    });
 
     $(dataHTML)
       .off("keyup", "#search")
-      .on("keyup", "#search", function (e) {
+      .on("keyup", "#search", debounce(function (e) {
         _self.trimSearchQuery(e);
         if (!$("body").hasClass("top-down") && $(".bottom-up-search").val()) {
           $(".search-container").removeClass("no-history");
@@ -6274,12 +6251,12 @@ FindlySDK.prototype.searchEventBinding = function (
           $("#frequently-searched-box").hide();
           return;
         }
-        _self.pubSub.unsubscribe("sa-input-keyup");
+        // _self.pubSub.unsubscribe("sa-input-keyup");
         _self.pubSub.publish("sa-handel-go-button");
         if (!$('body').hasClass('top-down')) {
           _self.hideBottomUpAllResults();
         }
-        _self.pubSub.subscribe("sa-input-keyup", (msg, data) => {
+        // _self.pubSub.subscribe("sa-input-keyup", (msg, data) => {
           if (!$("body").hasClass("top-down") && _self.vars.enterIsClicked) {
             $(".search-body").css("display", "none");
             $(".search-body").addClass("hide");
@@ -6761,8 +6738,8 @@ FindlySDK.prototype.searchEventBinding = function (
             );
           }
           //top-down-suggestion box perfect scroll -end//
-        });
-      });
+        // });
+      },300));
 
     $(dataHTML)
       .off("focus", "#search")
@@ -6786,7 +6763,8 @@ FindlySDK.prototype.searchEventBinding = function (
             ? $(".search-top-down").val()
             : $(".bottom-up-search").val()
         ) {
-          _self.pubSub.publish("sa-input-keyup", e);
+          $("#search").trigger("keyup");
+          // _self.pubSub.publish("sa-input-keyup", e);
         }
         if (!_self.vars.isSocketInitialize) {
           _self.bot.init(
@@ -6898,7 +6876,7 @@ FindlySDK.prototype.searchEventBinding = function (
             : $(".bottom-up-search").val()
         ) {
           $("#search").trigger("keyup");
-          _self.pubSub.publish("sa-input-keyup");
+          // _self.pubSub.publish("sa-input-keyup");
           if (!$("body").hasClass("top-down")) {
             $(".custom-header-container-center").css("visibility", "hidden");
           }
@@ -23621,8 +23599,8 @@ FindlySDK.prototype.autoSelectFacetFilter = function () {
               _self.vars.selectedFiltersArr.push("checkbox-" + i + j)
             }
             var obj = {
-              fieldName: _self.vars.searchFacetFilters[i].facetName,
-              fieldType: _self.vars.searchFacetFilters[i].facetType,
+              fieldName: _self.vars.searchFacetFilters[i].facetName || _self.vars.searchFacetFilters[i].fieldName,
+              fieldType: _self.vars.searchFacetFilters[i].facetType || _self.vars.searchFacetFilters[i].subtype,
               id: "checkbox-" + i + j,
               name: _self.vars.searchFacetFilters[i].buckets[j].key
             };
@@ -24069,5 +24047,12 @@ FindlySDK.prototype.getFeedBackResult = function () {
             $('#' + config.container).empty().append(dataHTML);
           });
         }
+        function debounce(func, timeout = 300) {
+          var timer;
+          return (...args) => {
+              clearTimeout(timer);
+              timer = setTimeout(() => { func.apply(this, args); }, timeout);
+          };
+      }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
