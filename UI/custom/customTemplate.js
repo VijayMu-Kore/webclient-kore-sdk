@@ -83,7 +83,11 @@
 					if (eachValue && eachValue.reviewText) {
 						eachReviewText = eachValue.reviewText.toLocaleLowerCase();
 						splitWords = eachReviewText.split(' ');
-						resultValue = splitWords.filter(option => option.startsWith('un') || option.startsWith('dis') || option.startsWith('no'));
+						resultValue = splitWords.filter(function(option){ 
+							if(option){
+							return option.startsWith('un') || option.startsWith('dis') || option.startsWith('no')
+							}
+						});
 						if (!resultValue.length) {
 							eachValue.thumpUpId = 0;
 							msgData.message[0].component.payload.thumpsUpDownArrays[0] = eachValue;
