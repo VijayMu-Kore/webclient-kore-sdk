@@ -23601,7 +23601,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
     // $(".structured-data-bottom-actions").css("display", "none");
     // $(".structured-data-wrp-content").removeClass("custom-faqs-wrp-content");
     // $(".moreStructredData").addClass("display-none");
-  
+    }
   FindlySDK.prototype.openExternalLink = function  (link_url,e) {
     const me = this;
     me.appendTextToSearchContainer('user', $(e.currentTarget).attr('data-title'));
