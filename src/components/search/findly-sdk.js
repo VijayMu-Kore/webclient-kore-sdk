@@ -524,6 +524,8 @@ FindlySDK.prototype.setAPIDetails = function () {
     baseAPIServer = _self.baseAPIServer;
   }
   var baseUrl = baseAPIServer;
+   baseAPIServer = baseAPIServer.replace('/searchassistapi/searchassistapi','/searchassistapi');
+
   var searchAPIURL = baseAPIServer + "searchsdk/stream/";
   var liveSearchAPIURL = baseAPIServer + "searchsdk/stream/";
   var businessTooBaseURL = baseAPIServer + "findly/";
@@ -6308,7 +6310,7 @@ FindlySDK.prototype.searchEventBinding = function (
         $("#search").trigger({ type: "keydown", which: 39 });
       });
     var handle = setInterval(function () {
-      if (_self.bot.options.accessToken) {
+      if (_self.bot?.option?.accessToken) {
         initPopularSearchList();
         clearInterval(handle);
         handle = 0;
@@ -8785,9 +8787,9 @@ FindlySDK.prototype.getFrequentlySearched = function (url, type, payload) {
     ":" +
     currentDate.getSeconds();
 
-  payload.userId = this.bot.userInfo.userInfo.userId;
+  payload.userId = this.bot?.userInfo?.userInfo?.userId;
 
-  payload.streamId = this.bot.options.botInfo.taskBotId;
+  payload.streamId = this.bot.options?.botInfo?.taskBotId;
   var _self = this;
   _self.vars.deselectedAutoFilters = [];
   // if ($("body").hasClass("demo")) {
@@ -9241,9 +9243,14 @@ FindlySDK.prototype.initialize = function (findlyConfig, fromTopDown) {
   if (findlyConfig.botOptions) {
     _findlyConfig = findlyConfig.botOptions;
   }
-  _self.isDev = false;
+  // _self.isDev = false;
   //window["KoreSDK"].findlyConfig.botOptions.assertionFn = this.getJWT;
-  if (_findlyConfig.searchIndexID) {
+  if (_self.config && _self.config.API_KEY_CONFIG && _self.config.API_KEY_CONFIG.KEY !== 'YOUR_API_KEY') {
+    findlyConfig.botOptions.assertionFn = _self.getAssertionToken.bind(this);
+  } else {
+    findlyConfig.botOptions.assertionFn = this.getJWT;
+  }
+  if (_findlyConfig.searchIndexID && _findlyConfig.queryPipelineId) {
     const searchData = {
       _id: _findlyConfig.searchIndexID,
       pipelineId: _findlyConfig.queryPipelineId,
@@ -9260,7 +9267,7 @@ FindlySDK.prototype.initialize = function (findlyConfig, fromTopDown) {
   /*if (!$('body').hasClass('demo')) {
         _self.isDev = true;
       }*/
-  if (window.appConfig.API_SERVER_URL) {
+  if (window.appConfig && window.appConfig.API_SERVER_URL) {
     _self.baseAPIServer = window.appConfig.API_SERVER_URL;
   }
   if (fromTopDown) {
@@ -9798,7 +9805,7 @@ FindlySDK.prototype.addConversationBox = function (config) {
 };
 FindlySDK.prototype.addSearchText = function (config) {
   var _self = this;
-  if ($("body").hasClass("demo")) {
+  if (!_self.isDev) {
     $("body").removeClass("demo");
     $("body").addClass("top-down");
     $("body").addClass("sdk-top-down-interface");
@@ -10253,17 +10260,26 @@ FindlySDK.prototype.getGreetingMsgTemplate = function () {
 };
 FindlySDK.prototype.getJWT = function (options, callback) {
   var jsonData = {
-    clientId: options.clientId,
-    clientSecret: options.clientSecret,
-    identity: options.userIdentity,
-    aud: "",
-    isAnonymous: false,
+    // clientId: options.clientId,
+    // clientSecret: options.clientSecret,
+    // identity: options.userIdentity,
+    // aud: "",
+    // isAnonymous: false,
   };
+  var bearer = "bearer 9WACY7nGJHx-SBo3cUgqMwvhTaytdUm5LoGkHX4vYKlO2WAqLhkjJsE39yY3eBV7" ||
+  "bearer " + this.bot.options.accessToken ||
+  this.API.jstBarrer;
+var headers = {};
+headers["AccountId"]= "60547150f60ec050f4dfea8b";
+headers["Authorization"] = bearer;
+headers["Content-Type"] = "application/json;charset=UTF-8";
+headers["state"] = "configured";
   return $.ajax({
     url: options.JWTUrl,
     type: "post",
     data: jsonData,
     dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if (callback) {
@@ -10277,8 +10293,10 @@ FindlySDK.prototype.getJWT = function (options, callback) {
 FindlySDK.prototype.initKoreSDK = function (config) {
   var _self = this;
   config = config || _self.config.botOptions;
+  console.log('bot initialize----------');
   _self.bot = requireKr("/KoreBot.js").instance();
   _self.vars.botConfig = config || _self.config.botOptions;
+  console.log('bot initialize----------');
   _self.bot.init(config, _self.config.messageHistoryLimit);
   _self.vars.isSocketInitialize = true;
   _self.bindSocketEvents();
@@ -10555,7 +10573,7 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
 
     messageToBot["maxNumOfResults"] = (messageToBot["interface"]=="conversationalSearch")? 2 : 5;
   //payload end//
-  if (!$("body").hasClass("demo")) {
+  if (_self.isDev) {
     messageToBot.indexPipelineId = _self.API.indexpipelineId;
     messageToBot.queryPipelineId = _self.API.pipelineId;
   }
@@ -18556,7 +18574,7 @@ FindlySDK.prototype.appendSuggestions = function (autoComplete) {
     lang: "en",
     isDev: _self.isDev,
   };
-  payload.userId = this.bot.userInfo.userInfo.userId;
+  payload.userId = this.bot?.userInfo?.userInfo?.userId;
   payload.indexPipelineId = _self.API.indexpipelineId;
   var bearer =
     "bearer " + this.bot.options.accessToken ||
@@ -19655,13 +19673,17 @@ FindlySDK.prototype.initializeTopDown = function (
   search_container,
   searchExperienceConfig
 ) {
+  $('body').append('<div class="top-down-search-background-div"><div class="bgDullOpacity"></div></div>');
+  $('body').addClass('sdk-body');
   var _self = this;
   // if (search_container && search_container.length) {
   //   _self.isDev = true;
   // } else {
   //   _self.isDev = false;
   // }
-  if(_self.isDev){
+
+  if(findlyConfig.isDev){
+    _self.isDev = true;
     search_container = 'top-down-search-background-div';
   }
   var devMode = _self.isDev ? true : false;
@@ -19866,14 +19888,14 @@ FindlySDK.prototype.initializeTopDown = function (
         }
       });
   }
-  var resultsContainerHtml = $(".all-product-details");
-  _self.bindPerfectScroll(
-    resultsContainerHtml,
-    "#show-filters-added-data",
-    null,
-    "y",
-    "facetsListContainer"
-  );
+  // var resultsContainerHtml = $(".all-product-details");
+  // _self.bindPerfectScroll(
+  //   resultsContainerHtml,
+  //   "#show-filters-added-data",
+  //   null,
+  //   "y",
+  //   "facetsListContainer"
+  // );
   var conversationContainerHtml = $("#conversation-container");
   _self.bindPerfectScroll(
     conversationContainerHtml,
@@ -21593,17 +21615,26 @@ FindlySDK.prototype.countTotalResults = function (res, totalResultsCount) {
 FindlySDK.prototype.getJWT = function (options, callback) {
   var me = this;
   var jsonData = {
-    clientId: options.clientId,
-    clientSecret: options.clientSecret,
-    identity: options.userIdentity,
-    aud: "",
-    isAnonymous: false,
+    // clientId: options.clientId,
+    // clientSecret: options.clientSecret,
+    // identity: options.userIdentity,
+    // aud: "",
+    // isAnonymous: false,
   };
+  var bearer = "bearer 9WACY7nGJHx-SBo3cUgqMwvhTaytdUm5LoGkHX4vYKlO2WAqLhkjJsE39yY3eBV7" ||
+  "bearer " + this.bot.options.accessToken ||
+  this.API.jstBarrer;
+var headers = {};
+headers["AccountId"]= "60547150f60ec050f4dfea8b";
+headers["Authorization"] = bearer;
+headers["Content-Type"] = "application/json;charset=UTF-8";
+headers["state"] = "configured";
   return $.ajax({
     url: options.JWTUrl,
     type: "post",
     data: jsonData,
     dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if(!me.vars.sdkInitialized){
@@ -23014,17 +23045,26 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
 }
 FindlySDK.prototype.getJWTWithoutAPIKey = function (options, callback) {
   var jsonData = {
-    "clientId": options.clientId,
-    "clientSecret": options.clientSecret,
-    "identity": options.userIdentity,
-    "aud": "",
-    "isAnonymous": false
+    // "clientId": options.clientId,
+    // "clientSecret": options.clientSecret,
+    // "identity": options.userIdentity,
+    // "aud": "",
+    // "isAnonymous": false
   };
+  var bearer = "bearer F9y8f1pITXk3CpuLcGsh4-iDq8nUI8fhCGUGHeIAdmdyoK1yPU6dwPendePlJsUG" ||
+  "bearer " + this.bot.options.accessToken ||
+  this.API.jstBarrer;
+var headers = {};
+headers["AccountId"]= "60547150f60ec050f4dfea8b";
+headers["Authorization"] = bearer;
+headers["Content-Type"] = "application/json;charset=UTF-8";
+headers["state"] = "configured";
   return $.ajax({
     url: options.JWTUrl,
-    type: 'post',
+    type: "post",
     data: jsonData,
-    dataType: 'json',
+    dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if (callback) {
@@ -23112,6 +23152,8 @@ FindlySDK.prototype.show = function (config) {
   }
   if(config.isDev){
     _self.isDev = config.isDev;
+    _self.config.findlyBusinessConfig = config.findlyBusinessConfig;
+    _self.config.viaSocket = config.viaSocket;
   }
   if(config.botOptions){
     _self.config.botOptions = {..._self.config.botOptions, ...config.botOptions}
@@ -23423,7 +23465,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
       $(".data-body-sec").scrollTop(0);
     }
     var _self = this;
-    // _self.isDev =  true;
+    _self.isDev =  true;
     if (isTopDown) {
       if (
         ($(event.currentTarget).attr("id") == "viewTypeCustomize" &&

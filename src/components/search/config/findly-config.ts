@@ -43,10 +43,12 @@ function generateRandomNum() {
   var generatedNum = year * month * day * (hour + minutes * seconds);
   return generatedNum;
 }
-botOptionsFindly.JWTUrl =
-  "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
+// botOptionsFindly.JWTUrl =
+//   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
+botOptionsFindly.JWTUrl =
+  "https://searchassist-qa.kore.ai/searchassistapi/users/sts?rnd=fle73l";// for bussiness sdk testing
 botOptionsFindly.botInfo = {
   chatBot: "SA demo",
   taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
