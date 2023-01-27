@@ -3,11 +3,14 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-qa.kore.ai"
-// if(serverUrl && (serverUrl.includes("https"))){ // for installer 
-if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
+var paramUrl="searchassist-pilot.kore.ai"
+if(serverUrl && (serverUrl.includes("https"))){ // for installer 
+// if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
 }  
+if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
+  paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
+}
 botOptionsFindly.logLevel = 'debug';
 // botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
 botOptionsFindly.koreAPIUrl = "https://"+paramUrl+"/searchassistapi/";
@@ -44,7 +47,6 @@ botOptionsFindly.JWTUrl =
   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
-
 botOptionsFindly.botInfo = {
   chatBot: "SA demo",
   taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",

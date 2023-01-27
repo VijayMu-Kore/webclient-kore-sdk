@@ -534,7 +534,7 @@
             .conversations{
                 position: relative;
                 top: 0;
-                height: 380px;
+                height: 360px;
                 overflow-x: hidden;
                 background: var(--sdk-white-bg);
                 min-height: calc(67vh - 100px);
@@ -664,6 +664,17 @@
                 .all-result-container {
                     margin: 0;
                     .full-results-data-container {
+                        .back-search{
+                            position: absolute;
+                            right: 34px;
+                            top: 11px;
+                            z-index: 100000;
+                            padding: 7px 12px;
+                            cursor: pointer;
+                            background: var(--sdk-white-bg);
+                            box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
+                            border-radius: 50%;
+                        }
                         .all-product-details {
                             .filters-added-data{
                                 .facets-padding{
@@ -852,13 +863,13 @@
         }
         .search-bar{
             .widget-icon{
-                bottom: 15px;
-                left: 16px;
+                bottom: 12px;
+                left: 14px;
                 width: 16px;
                 height: 16px;
                 img{
-                    width: 13px;
-                    height: 13px;
+                    width: 16px;
+                    height: 16px;
                 }
             }
         }
@@ -1078,11 +1089,16 @@
                         }
                         .clear-all {
                             float: right;
-                            color: var(--sdk-primary-blue-color);
+                            color: #9aa0a6;
                             font-weight: normal;
                             font-size: 14px;
                             line-height: 17px;
-                            cursor: pointer;
+                            cursor: context-menu !important;
+                            &.enabled {
+                                cursor: pointer !important;
+                                color: #0d6efd !important;
+                                pointer-events: all;
+                            }
                         }
                     }
                     .category-wise-container {
@@ -1628,6 +1644,17 @@ $color_1: #9AA0A6;
     margin: 0;
 
     .full-results-data-container {
+        .back-search{
+            position: absolute;
+            right: 34px;
+            top: 11px;
+            z-index: 100000;
+            padding: 12px 12px;
+            cursor: pointer;
+            background: var(--sdk-white-bg);
+            box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
+            border-radius: 50%;
+        }
         .feedback-template-positions {
             background: #F3F8FF;
             border: 1px solid #F3F8FF;

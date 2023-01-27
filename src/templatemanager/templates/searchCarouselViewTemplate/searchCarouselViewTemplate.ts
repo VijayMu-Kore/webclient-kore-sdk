@@ -161,13 +161,13 @@ class SearchCarouselViewTemplate {
             <div class="slide grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
             {{/if}}\
                     <div class="content-info-grid">\
-                        <div class="heading-title text_overflow">\
+                        <div class="heading-title {{if data.heading.length && data.description.length}} m-b-8 {{/if}}">\
                         {{if data.img.length}}\
                         <div class="img_block">\
                         <img src="${data.img}"/>\
                         </div>\
                         {{/if}}\
-                        <span title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                        <span class="{{if data.img.length}}two-line-title{{else}}title-heading {{/if}}" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
                         </div>\
                         <div class="desc_text_info clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                     </div>\
@@ -237,7 +237,7 @@ class SearchCarouselViewTemplate {
                         {{if data.description.length}}\
                         <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                         {{/if}}\
-                        <div class="price-tag">$156</div>\
+                        <div class="price-tag display-none">$156</div>\
                     </div>\
                 </div>\
                 {{/each}}\

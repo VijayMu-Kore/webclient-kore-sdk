@@ -2071,7 +2071,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                 {{/if}}\
               </div>\
               {{/if}}\
-              <div class="custom-add-new-result-container {{if devMode=="false"||showingMatchedResults=="false"}}display-none{{/if}}">\
+              <div class="custom-add-new-result-container1 display-none {{if devMode=="false"||showingMatchedResults=="false"}}display-none{{/if}}">\
                 <div class="custom-add-new-result-icon-container">\
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADOSURBVHgBpVLRFYIwDDx4DsAIdQM2sJuAEwgTyCbgKE6AG4ATMAImj6vUVvDDe+8ebXrphSbAJzLhVTgIZ7IXtkLjC1NvXTBBBWfhkayFCS+oAiNcmGSxjZyawgWMcOLBL1hqs4T1g+X5KPntgrjuxwOdasQw+A5NbNVxpujpOen+xP1dHbA669mQ4g9svWZDhlBtr443eE/sYSRDqPahC52WCfs9dMipNS5QYil5r5eWmmh6Kt7WUmRIy9iEtbcRVNhhmUs35OrSYPmlN14wTi/zFOG6gwAAAABJRU5ErkJggg==">\
                 </div>\
@@ -2210,7 +2210,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                   <div class="recentSearch tile_with_header">\
                     <span id="${recent}" action-type="textTask" class="pointer recentText"><img class="RecentIcon-bottomUp" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYuNSAwQzIuOTE0MDYgMCAwIDIuOTE0MDYgMCA2LjVDMCAxMC4wODU5IDIuOTE0MDYgMTMgNi41IDEzQzEwLjA4NTkgMTMgMTMgMTAuMDg1OSAxMyA2LjVDMTMgNi4yMjM4NiAxMi43NzYxIDYgMTIuNSA2QzEyLjIyMzkgNiAxMiA2LjIyMzg2IDEyIDYuNUMxMiA5LjU0Mjk3IDkuNTQyOTcgMTIgNi41IDEyQzMuNDU3MDMgMTIgMSA5LjU0Mjk3IDEgNi41QzEgMy40NTcwMyAzLjQ1NzAzIDEgNi41IDFDOC4xNDA2MiAxIDkuNTk3NjYgMS43MjI2NiAxMC42MDU1IDIuODU5MzhMOS45NzY5OCAzLjQ4Nzg3QzkuNzg3OTkgMy42NzY4NiA5LjkyMTg0IDQgMTAuMTg5MSA0SDEyLjdDMTIuODY1NyA0IDEzIDMuODY1NjkgMTMgMy43VjEuMTg5MTFDMTMgMC45MjE4MzcgMTIuNjc2OSAwLjc4Nzk4NyAxMi40ODc5IDAuOTc2OTc2TDExLjMxMjUgMi4xNTIzNEMxMC4xMjExIDAuODM1OTM4IDguNDEwMTYgMCA2LjUgMFpNNi41IDJDNi4yMjM4NiAyIDYgMi4yMjM4NiA2IDIuNVY2SDQuNUM0LjIyMzg2IDYgNCA2LjIyMzg2IDQgNi41QzQgNi43NzYxNCA0LjIyMzg2IDcgNC41IDdINi43MjcyN0M2Ljg3NzkgNyA3IDYuODc3OSA3IDYuNzI3MjdWMi41QzcgMi4yMjM4NiA2Ljc3NjE0IDIgNi41IDJaIiBmaWxsPSIjMjAyMTI0Ii8+Cjwvc3ZnPgo=" alt="Recent search Icon">\${recent}</span>\
                     <span id="${recent}" class="recent-search-delete">\
-                      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZD0iTTQuNDM0NzUgNC4wMDAxTDYuOTg2NDUgMS40NDgzOUM3LjEwNjYyIDEuMzI4MjMgNy4xMDY2MiAxLjEzMzQxIDYuOTg2NDUgMS4wMTMyNUM2Ljg2NjI5IDAuODkzMDg2IDYuNjcxNDcgMC44OTMwODYgNi41NTEzMSAxLjAxMzI1TDMuOTk5NTkgMy41NjQ5N0wxLjQ0Nzk5IDEuMDEzNDdDMS4zMjc4MyAwLjg5MzMxNCAxLjEzMzAxIDAuODkzMzE4IDEuMDEyODUgMS4wMTM0OEMwLjg5MjY5MiAxLjEzMzY1IDAuODkyNjk2IDEuMzI4NDcgMS4wMTI4NiAxLjQ0ODYyTDMuNTY0NDUgNC4wMDAxMUwxLjAxMjg1IDYuNTUxNzJDMC44OTI2ODkgNi42NzE4OCAwLjg5MjY4OSA2Ljg2NjcgMS4wMTI4NSA2Ljk4Njg2QzEuMTMzMDEgNy4xMDcwMiAxLjMyNzgzIDcuMTA3MDIgMS40NDc5OSA2Ljk4Njg2TDMuOTk5NiA0LjQzNTI1TDYuNTUxMzIgNi45ODY4NkM2LjY3MTQ5IDcuMTA3MDIgNi44NjYzMSA3LjEwNzAyIDYuOTg2NDYgNi45ODY4NUM3LjEwNjYyIDYuODY2NjkgNy4xMDY2MiA2LjY3MTg3IDYuOTg2NDYgNi41NTE3MUw0LjQzNDc1IDQuMDAwMVoiIGZpbGw9IiMyMDIxMjQiLz4NCjwvc3ZnPg0K" alt="close-icon"/>\
+                      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuNzA3MDMgNS4wMDAwN0w5Ljg1MzU1IDAuODUzNTM4QzEwLjA0ODggMC42NTgyNzUgMTAuMDQ4OCAwLjM0MTY5MyA5Ljg1MzU1IDAuMTQ2NDMxQzkuNjU4MjkgLTAuMDQ4ODMxIDkuMzQxNzEgLTAuMDQ4ODMwNyA5LjE0NjQ1IDAuMTQ2NDMxTDQuOTk5OTEgNC4yOTI5OEwwLjg1MzU1NSAwLjE0Njc5OEMwLjY1ODI4OCAtMC4wNDg0NTk3IDAuMzQxNzA2IC0wLjA0ODQ1MzMgMC4xNDY0NDggMC4xNDY4MTNDLTAuMDQ4ODEwNCAwLjM0MjA3OSAtMC4wNDg4MDQgMC42NTg2NjEgMC4xNDY0NjIgMC44NTM5Mkw0LjI5MjggNS4wMDAwOUwwLjE0NjQ0NyA5LjE0NjQ1Qy0wLjA0ODgxNTcgOS4zNDE3MSAtMC4wNDg4MTU1IDkuNjU4MjkgMC4xNDY0NDcgOS44NTM1NUMwLjM0MTcwOSAxMC4wNDg4IDAuNjU4MjkyIDEwLjA0ODggMC44NTM1NTMgOS44NTM1NUw0Ljk5OTkyIDUuNzA3MThMOS4xNDY0NiA5Ljg1MzU1QzkuMzQxNzMgMTAuMDQ4OCA5LjY1ODMxIDEwLjA0ODggOS44NTM1NyA5Ljg1MzU0QzEwLjA0ODggOS42NTgyNyAxMC4wNDg4IDkuMzQxNjkgOS44NTM1NSA5LjE0NjQzTDUuNzA3MDMgNS4wMDAwN1oiIGZpbGw9IiMyMDIxMjQiLz4KPC9zdmc+Cg==" alt="close-icon"/>\
                     </span>\
                     </div>\
                 {{/if}}\
@@ -2355,10 +2355,10 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               {{if msgData && msgData.isSearchResultsMessage===true}}\
                 <div class="sdk-query-retry-icon" searchQuery="${msgData.text}"><img src="assets/icons/SDK-Icons/reply.svg"><span class="tooltiptext_top center">Retry Query</span></div>\
               {{/if}}\
-              <span>{{html helpers.convertMDtoHTML(msgData.text)}}</span>\
+              <span>${msgData.text}</span>\
               <div class="time-info">${msgData.timeStamp}</div>\
               {{if msgData && msgData.isFromHistory===true}}\
-              <div class="search-agin-tag" title="{{html helpers.convertMDtoHTML(msgData.text)}}">\
+              <div class="search-agin-tag" title="${msgData.text}">\
                 <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxMSAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjkyOTI5IDAuNDYyNDk0QzIuNDYyMzUgMC40NjI0OTQgMC40NjI0OTQgMi40Njc2OSAwLjQ2MjQ5NCA0Ljk0MTIyQzAuNDYyNDk0IDcuNDE0NzYgMi40NjIzNSA5LjQxOTk1IDQuOTI5MjkgOS40MTk5NUM2LjAwODExIDkuNDE5OTUgNi45OTc2IDkuMDM2NDggNy43Njk1OCA4LjM5ODA3TDkuODQwNTIgMTAuNDQ5TDkuODcxNDEgMTAuNDc2OUMxMC4wNDE0IDEwLjYxNTggMTAuMjkyMSAxMC42MDQ5IDEwLjQ0OTQgMTAuNDQ1M0MxMC42MTY1IDEwLjI3NTcgMTAuNjE0OCAxMC4wMDIzIDEwLjQ0NTYgOS44MzQ3OUw4LjM3ODMxIDcuNzg3NDFDOS4wMTQyIDcuMDEzNjIgOS4zOTYwOSA2LjAyMjE0IDkuMzk2MDkgNC45NDEyMkM5LjM5NjA5IDIuNDY3NjkgNy4zOTYyNCAwLjQ2MjQ5NCA0LjkyOTI5IDAuNDYyNDk0Wk00LjkyOTI5IDEuMzI1ODZDNi45MjA2OCAxLjMyNTg2IDguNTM1MDIgMi45NDQ1MSA4LjUzNTAyIDQuOTQxMjJDOC41MzUwMiA2LjkzNzkzIDYuOTIwNjggOC41NTY1OCA0LjkyOTI5IDguNTU2NThDMi45Mzc5IDguNTU2NTggMS4zMjM1NiA2LjkzNzkzIDEuMzIzNTYgNC45NDEyMkMxLjMyMzU2IDIuOTQ0NTEgMi45Mzc5IDEuMzI1ODYgNC45MjkyOSAxLjMyNTg2WiIgZmlsbD0iIzBENkVGRCIvPgo8L3N2Zz4K">\
                   <div class="text-search" >Search Again</div>\
                 </div>\
@@ -2420,21 +2420,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               </div>\
         </div>\
        </script>';
-  // <div class="row mostrcentOther">\
-  //     <div class="mostAsked">\
-  //       {{if searchResults && searchResults.results && searchResults.results.length}}\
-  //         <span class="search-heads">MOSTLY ASKED</span>\
-  //         <div class="asstFaq" id="accordionExample">\
-  //           {{each(key, searchResult) searchResults.results}}\
-  //               <button class="accordion">${searchResult.titleText} </button>\
-  //               <div class="panel">\
-  //                 <p> ${searchResult.answer} </p>\
-  //               </div>\
-  //           {{/each}}\
-  //         </div>\
-  //       {{/if}}\
-  //     </div>\
-  //   </div>\
   switch (type) {
     case "searchContainer":
       return searchContainer;
@@ -2566,331 +2551,6 @@ FindlySDK.prototype.getCarouselTemplate = function (messageData, helpers) {
   return template;
 };
 
-FindlySDK.prototype.getQuickReplyTemplate = function (messageData, helpers) {
-  var quickReplyTemplate =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-                    {{if msgData.message}} \
-                      <div class="messageBubble">\
-                        <li {{if msgData.type !== "bot_response"}} id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon quickReplies" style="margin-top: 20px"> \
-                            <div class="buttonTmplContent">\
-                                {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                                {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar marginT50" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                                {{if msgData.message[0].component.payload.text}} \
-                                    <div class="buttonTmplContentHeading quickReply" style="display: none;"> \
-                                        {{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "user")}} {{/if}} \
-                                        {{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
-                                            <span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
-                                        {{/if}} \
-                                    </div>\
-                                    {{/if}} \
-                                    {{if msgData.message[0].component.payload.quick_replies && msgData.message[0].component.payload.quick_replies.length}} \
-                                    <div class="fa fa-chevron-left quickreplyLeftIcon hide"></div><div class="fa fa-chevron-right quickreplyRightIcon"></div>\
-                                        <div class="quick_replies_btn_parent"><div class="autoWidth">\
-                                            {{each(key, msgItem) msgData.message[0].component.payload.quick_replies}} \
-                                                <div class="buttonTmplContentChild quickReplyDiv"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} class="quickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.content_type}">\
-                                                    {{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">{{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}}</span></span>\
-                                                </div> \
-                                            {{/each}} \
-                                        </div>\
-                                    </div>\
-                                {{/if}} \
-                            </div>\
-                        </li> \
-                      </div> \
-                    {{/if}} \
-                </script>';
-  var template = $(quickReplyTemplate).tmpl({
-    msgData: messageData,
-    helpers: helpers || this.helpers,
-    extension: {},
-  });
-  setTimeout(function () {
-    var evt = document.createEvent("HTMLEvents");
-    evt.initEvent("resize", true, false);
-    window.dispatchEvent(evt);
-  }, 150);
-
-  $(template)
-    .off("click", ".quickreplyRightIcon")
-    .on("click", ".quickreplyRightIcon", function (event) {
-      var _quickReplesDivs =
-        event.currentTarget.parentElement.getElementsByClassName(
-          "buttonTmplContentChild"
-        );
-      if (_quickReplesDivs.length) {
-        var _scrollParentDiv =
-          event.target.parentElement.getElementsByClassName(
-            "quick_replies_btn_parent"
-          );
-        var _totalWidth = event.target.parentElement.offsetWidth;
-        var _currWidth = 0;
-        // calculation for moving element scroll
-        for (var i = 0; i < _quickReplesDivs.length; i++) {
-          _currWidth += _quickReplesDivs[i].offsetWidth + 10;
-          if (_currWidth > _totalWidth) {
-            //_scrollParentDiv[0].scrollLeft = _currWidth;
-            $(_scrollParentDiv).animate(
-              {
-                scrollLeft:
-                  _scrollParentDiv[0].scrollLeft +
-                  _quickReplesDivs[i].offsetWidth +
-                  20,
-              },
-              "slow",
-              function () {
-                // deciding to enable left and right scroll icons
-                var leftIcon =
-                  _scrollParentDiv[0].parentElement.querySelectorAll(
-                    ".quickreplyLeftIcon"
-                  );
-                leftIcon[0].classList.remove("hide");
-                if (
-                  _scrollParentDiv[0].scrollLeft + _totalWidth + 10 >=
-                  _scrollParentDiv[0].scrollWidth
-                ) {
-                  var rightIcon =
-                    _scrollParentDiv[0].parentElement.querySelectorAll(
-                      ".quickreplyRightIcon"
-                    );
-                  rightIcon[0].classList.add("hide");
-                }
-              }
-            );
-            break;
-          }
-        }
-      }
-    });
-  $(template)
-    .off("click", ".quickreplyLeftIcon")
-    .on("click", ".quickreplyLeftIcon", function (event) {
-      var _quickReplesDivs =
-        event.currentTarget.parentElement.getElementsByClassName(
-          "buttonTmplContentChild"
-        );
-      if (_quickReplesDivs.length) {
-        var _scrollParentDiv =
-          event.target.parentElement.getElementsByClassName(
-            "quick_replies_btn_parent"
-          );
-        var _totalWidth = _scrollParentDiv[0].scrollLeft;
-        var _currWidth = 0;
-        for (var i = 0; i < _quickReplesDivs.length; i++) {
-          _currWidth += _quickReplesDivs[i].offsetWidth + 10;
-          if (_currWidth > _totalWidth) {
-            //_scrollParentDiv[0].scrollLeft = (_totalWidth - _quickReplesDivs[i].offsetWidth+20);
-            $(_scrollParentDiv).animate(
-              {
-                scrollLeft: _totalWidth - _quickReplesDivs[i].offsetWidth - 50,
-              },
-              "slow",
-              function () {
-                // deciding to enable left and right scroll icons
-                var rightIcon =
-                  _scrollParentDiv[0].parentElement.querySelectorAll(
-                    ".quickreplyRightIcon"
-                  );
-                rightIcon[0].classList.remove("hide");
-                if (_scrollParentDiv[0].scrollLeft <= 0) {
-                  var leftIcon =
-                    _scrollParentDiv[0].parentElement.querySelectorAll(
-                      ".quickreplyLeftIcon"
-                    );
-                  leftIcon[0].classList.add("hide");
-                }
-              }
-            );
-            break;
-          }
-        }
-      }
-    });
-  $(template)
-    .off("click", ".quickReply")
-    .on("click", ".quickReply", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      var type = $(this).attr("type");
-      if (type) {
-        type = type.toLowerCase();
-      }
-      if (type == "postback" || type == "text") {
-        //$('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
-        var _innerText = $(this).attr("value").trim();
-        var displayMessage =
-          $(this)[0] && $(this)[0].innerText
-            ? $(this)[0].innerText.trim()
-            : "" || ($(this) && $(this).attr("data-value"))
-              ? $(this).attr("data-value").trim()
-              : "";
-        var messageData = {};
-        messageData.text = _innerText;
-        messageData.from = "user";
-        var templateMessageBubble = $(
-          _self.getSearchTemplate("messageBubbles")
-        ).tmplProxy({
-          msgData: messageData,
-          devMode: devMode,
-          viewType: viewType,
-          helpers: helpers,
-        });
-        $("#searchChatContainer").append(templateMessageBubble);
-        _self.sendMessage(_innerText);
-      }
-    });
-
-  var templateBotMessageBubble = $(
-    _self.getSearchTemplate("messageBubbles")
-  ).tmplProxy({
-    msgData: messageBotData,
-  });
-  $("#searchChatContainer").append(templateBotMessageBubble);
-  return template;
-};
-
-FindlySDK.prototype.getButtonTemplate = function (messageData, helpers) {
-  var buttonTemplate =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-                              {{if msgData.message}} \
-                                <div class="messageBubble">\
-                                  <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon"> \
-                                    <div class="buttonTmplContent"> \
-                                      {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                                      {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                                      <ul class="buttonTmplContentBox">\
-                                        <li class="buttonTmplContentHeading"> \
-                                          {{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "user")}} {{/if}} \
-                                            {{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
-                                            <span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
-                                          {{/if}} \
-                                        </li>\
-                                        {{each(key, msgItem) msgData.message[0].component.payload.buttons}} \
-                                          <a href="" style="text-decoration: none;">\
-                                            <li {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} {{if msgItem.payload}}actual-value="${msgItem.payload}"{{/if}} {{if msgItem.url}}url="${msgItem.url}"{{/if}} class="buttonTmplContentChild" data-value="${msgItem.value}" type="${msgItem.type}">\
-                                              {{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}}\
-                                            </li> \
-                                          </a> \
-                                        {{/each}} \
-                                      </ul>\
-                                    </div>\
-                                  </li> \
-                                </div>\
-                              {{/if}} \
-                            </script>';
-  var template = $(buttonTemplate).tmpl({
-    msgData: messageData,
-    helpers: helpers || this.helpers,
-    extension: {},
-  });
-  $(template)
-    .off("click", ".buttonTmplContentBox li")
-    .on("click", ".buttonTmplContentBox li", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      var type = $(this).attr("type");
-      if (type) {
-        type = type.toLowerCase();
-      }
-      if (type == "postback" || type == "text") {
-        //$('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
-        var _innerText = $(this).attr("value").trim();
-        var displayMessage =
-          $(this)[0] && $(this)[0].innerText
-            ? $(this)[0].innerText.trim()
-            : "" || ($(this) && $(this).attr("data-value"))
-              ? $(this).attr("data-value").trim()
-              : "";
-        var messageData = {};
-        messageData.text = displayMessage;
-        messageData.from = "user";
-        var templateMessageBubble = $(
-          _self.getSearchTemplate("messageBubbles")
-        ).tmplProxy({
-          msgData: messageData,
-          devMode: devMode,
-          viewType: viewType,
-        });
-        $("#searchChatContainer").append(templateMessageBubble);
-        _self.sendMessage(_innerText);
-      }
-    });
-  return template;
-};
-
-FindlySDK.prototype.getListTemplate = function () {
-  var listTemplate =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-                            {{if msgData.message}} \
-                              <div class="messageBubble">\
-                              <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon"> \
-                              <div class="listTmplContent"> \
-                              {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                              {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                                <ul class="listTmplContentBox"> \
-                                {{if msgData.message[0].component.payload.text || msgData.message[0].component.payload.heading}} \
-                                  <li class="listTmplContentHeading"> \
-                                    {{if msgData.type === "bot_response" && msgData.message[0].component.payload.heading}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.heading, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "user")}} {{/if}} \
-                                      {{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
-                                        <span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
-                                    {{/if}} \
-                                  </li> \
-                                {{/if}} \
-                                  {{each(key, msgItem) msgData.message[0].component.payload.elements}} \
-                                    {{if msgData.message[0].component.payload.buttons}} \
-                                      {{if key<= 2 }}\
-                                        <li class="listTmplContentChild"> \
-                                          {{if msgItem.image_url}} \
-                                            <div class="listRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-                                              <img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
-                                            </div> \
-                                          {{/if}} \
-                                          <div class="listLeftContent"> \
-                                            <div class="listItemTitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.title, "user")}} {{/if}}</div> \
-                                              {{if msgItem.subtitle}}<div class="listItemSubtitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
-                                                {{if msgItem.default_action && msgItem.default_action.url}}<div class="listItemPath" type="url" url="${msgItem.default_action.url}">${msgItem.default_action.url}</div>{{/if}} \
-                                                  {{if msgItem.buttons}}\
-                                            <div> \
-                                            <span class="buyBtn" {{if msgItem.buttons[0].type}}type="${msgItem.buttons[0].type}"{{/if}} {{if msgItem.buttons[0].url}}url="${msgItem.buttons[0].url}"{{/if}} {{if msgItem.buttons[0].payload}}value="${msgItem.buttons[0].payload}"{{/if}}>{{if msgItem.buttons[0].title}}${msgItem.buttons[0].title}{{else}}Buy{{/if}}</span> \
-                                          </div> \
-                                        {{/if}}\
-                                      </div>\
-                                    </li> \
-                                  {{/if}}\
-                              {{else}} \
-                              <li class="listTmplContentChild"> \
-                                  {{if msgItem.image_url}} \
-                                      <div class="listRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-                                          <img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';" /> \
-                                      </div> \
-                                  {{/if}} \
-                                  <div class="listLeftContent"> \
-                                      <div class="listItemTitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.title, "user")}} {{/if}}</div> \
-                                      {{if msgItem.subtitle}}<div class="listItemSubtitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
-                                      {{if msgItem.default_action && msgItem.default_action.url}}<div class="listItemPath" type="url" url="${msgItem.default_action.url}">${msgItem.default_action.url}</div>{{/if}} \
-                                      {{if msgItem.buttons}}\
-                                      <div> \
-                                          <span class="buyBtn" {{if msgItem.buttons[0].type}}type="${msgItem.buttons[0].type}"{{/if}} {{if msgItem.buttons[0].url}}url="${msgItem.buttons[0].url}"{{/if}} {{if msgItem.buttons[0].payload}}value="${msgItem.buttons[0].payload}"{{/if}}>{{if msgItem.buttons[0].title}}${msgItem.buttons[0].title}{{else}}Buy{{/if}}</span> \
-                                      </div> \
-                                      {{/if}}\
-                                  </div>\
-                              </li> \
-                          {{/if}} \
-                      {{/each}} \
-                      </li> \
-                      {{if msgData.message[0].component.AlwaysShowGlobalButtons || (msgData.message[0].component.payload.elements.length > 3 && msgData.message[0].component.payload.buttons)}}\
-                      <li class="viewMoreList"> \
-                          <span class="viewMore" url="{{if msgData.message[0].component.payload.buttons[0].url}}${msgData.message[0].component.payload.buttons[0].url}{{/if}}" type="${msgData.message[0].component.payload.buttons[0].type}" value="{{if msgData.message[0].component.payload.buttons[0].payload}}${msgData.message[0].component.payload.buttons[0].payload}{{else}}${msgData.message[0].component.payload.buttons[0].title}{{/if}}">${msgData.message[0].component.payload.buttons[0].title}</span> \
-                      </li> \
-                      {{/if}}\
-                  </ul> \
-              </div> \
-          </li> \
-        </div>\
-      {{/if}} \
-    </script>';
-
-  return listTemplate;
-};
 FindlySDK.prototype.enableAutoSuggest = function () {
   var _self = this;
   _self.pubSub.subscribe("sa-auto-suggest", (msg, data) => {
@@ -6342,8 +6002,8 @@ FindlySDK.prototype.searchEventBinding = function (
   if (templateType === "search-container") {
     $(dataHTML)
       .off("keydown", "#search")
-      .on("keydown", "#search", function (e) {
-        _self.trimSearchQuery();
+      .on("keydown", "#search", debounce(function (e) {
+        _self.trimSearchQuery(e);
         var keyCode = e.keyCode || e.which;
         keyCode = Number(keyCode);
         if (keyCode !== 13) {
@@ -6467,6 +6127,10 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.suggestionSelectedByNavigationKeys(e);
         }
         if (code == 13) {
+          recognition.stop();
+          final_transcript = "";
+          $(".recordingMicrophone").css("display", "none");
+          $(".notRecordingMicrophone").css("display", "block");
           if ($('body').hasClass('top-down')) {
             _self.vars.enteredQuery = $('.search-top-down').val();
           }
@@ -6595,7 +6259,7 @@ FindlySDK.prototype.searchEventBinding = function (
               : false;
           _self.vars.countOfSelectedFilters = 0;
         }
-      });
+      },300));
     $(dataHTML)
       .off("click", ".search-button")
       .on("click", ".search-button", function (e) {
@@ -6718,37 +6382,10 @@ FindlySDK.prototype.searchEventBinding = function (
       });
     }
 
-    var timerId;
-    var searchBoxDom = document.getElementById("search");
-
-    // This represents a very heavy method. Which takes a lot of time to execute
-    function makeAPICall() {
-      // $('#search').trigger("keydown");
-      if (_self.vars.enterIsClicked) {
-        return;
-      }
-      $("#search").trigger("keyup");
-      _self.pubSub.publish("sa-input-keyup");
-    }
-
-    // Debounce function: Input as function which needs to be debounced and delay is the debounced time in milliseconds
-    var debounceFunction = function (func, delay) {
-      // Cancels the setTimeout method execution
-      clearTimeout(timerId);
-      // Executes the func after delay time.
-      timerId = setTimeout(func, delay);
-    };
-
-    // Event listener on the input box
-    searchBoxDom.addEventListener("input", function (event) {
-      // Debounces makeAPICall method
-      debounceFunction(makeAPICall, 200, event);
-    });
-
     $(dataHTML)
       .off("keyup", "#search")
-      .on("keyup", "#search", function (e) {
-        _self.trimSearchQuery();
+      .on("keyup", "#search", debounce(function (e) {
+        _self.trimSearchQuery(e);
         if (!$("body").hasClass("top-down") && $(".bottom-up-search").val()) {
           $(".search-container").removeClass("no-history");
           if (!$(".search-container").hasClass("active")) {
@@ -6768,10 +6405,10 @@ FindlySDK.prototype.searchEventBinding = function (
           $("#frequently-searched-box").hide();
           return;
         }
-        _self.pubSub.unsubscribe("sa-input-keyup");
+        // _self.pubSub.unsubscribe("sa-input-keyup");
         _self.pubSub.publish("sa-handel-go-button");
         _self.hideBottomUpAllResults();
-        _self.pubSub.subscribe("sa-input-keyup", (msg, data) => {
+        // _self.pubSub.subscribe("sa-input-keyup", (msg, data) => {
           if (!$("body").hasClass("top-down") && _self.vars.enterIsClicked) {
             $(".search-body").css("display", "none");
             $(".search-body").addClass("hide");
@@ -6783,13 +6420,6 @@ FindlySDK.prototype.searchEventBinding = function (
           } else {
             $(".bottom-up-suggestion").val("");
           }
-          // if ((!$('body').hasClass('top-down') && $('.bottom-up-search').val()) && !window.isBotLocked && !_self.vars.enterIsClicked) {
-          //   $('.search-body').css('display', 'block');
-          //   $('.search-body').removeClass('hide');
-          //   if (!window.isBotLocked) {
-          //     $('.parent-search-live-auto-suggesition').show();
-          //   }
-          // } else
           if (
             (!$("body").hasClass("top-down") &&
               !$(".bottom-up-search").val()) ||
@@ -7052,87 +6682,14 @@ FindlySDK.prototype.searchEventBinding = function (
                               $(".live-search-data-container").empty().append(showAllHTML);
                             }
                           });
-                          // var tmplData = {
-                          //   faqs: [],
-                          //   web: [],
-                          //   tasks: [],
-                          //   files: [],
-                          //   data: [],
-                          //   showAllResults: true,
-                          //   noResults: false,
-                          //   taskPrefix: "SUGGESTED",
-                          //   viewType: viewType,
-                          //   customSearchResult: _self.customSearchResult,
-                          // };
+                         
                           _self.pubSub.publish(
                             "sa-show-live-search-suggestion",
                             dataObj
                           );
-                          // searchData = $(
-                          //   _self.getSearchTemplate("liveSearchData")
-                          // ).tmplProxy(tmplData);
-                          // $(searchData).data(dataObj);
-                          // $(".search-body").html(searchData);
                           $(".search-body").show();
                           $(".search-body").removeClass("hide");
-                         
-                          // if (
-                          //   res &&
-                          //   res.results &&
-                          //   res.resultType == "grouped"
-                          // ) {
-                          //   var availableGroups = Object.keys(res.results);
-                          //   var selectedGroup = availableGroups[0];
-                          //   availableGroups.forEach((group) => {
-                          //     var results = res.results[group].data;
-                          //     var groupName =
-                          //       group == "default_group"
-                          //         ? "defaultTemplate"
-                          //         : group;
-                          //     var dataObj = {
-                          //       facets: [],
-                          //       searchFacets: [],
-                          //       originalQuery: res.originalQuery || "",
-                          //       customSearchResult: _self.customSearchResult,
-                          //       data: results,
-                          //       groupName: groupName,
-                          //     };
-
-                          //     var publishSearchData =
-                          //       "sa-" + groupName + "-search-data";
-                          //     _self.pubSub.publish(publishSearchData, {
-                          //       container: ".live-search-data-container",
-                          //       isFullResults: false,
-                          //       selectedFacet: "all results",
-                          //       isLiveSearch: true,
-                          //       isSearch: false,
-                          //       dataObj,
-                          //     });
-                          //   });
-                          //   res.results = results;
-                          // } else {
-                          //   var results = res.results.data;
-                          //   res.results = results;
-                          //   var dataObj = {
-                          //     facets: facets || [],
-                          //     searchFacets: searchFacets || [],
-                          //     originalQuery: res.originalQuery || "",
-                          //     customSearchResult: _self.customSearchResult,
-                          //     data: results,
-                          //     groupName: "defaultTemplate",
-                          //   };
-                          //   _self.pubSub.publish(
-                          //     "sa-defaultTemplate-search-data",
-                          //     {
-                          //       container: ".live-search-data-container",
-                          //       isFullResults: false,
-                          //       selectedFacet: "all results",
-                          //       isLiveSearch: true,
-                          //       isSearch: false,
-                          //       dataObj,
-                          //     }
-                          //   );
-                          // }
+                        
 
                           _self.closeGreetingMsg();
 
@@ -7326,8 +6883,8 @@ FindlySDK.prototype.searchEventBinding = function (
             );
           }
           //top-down-suggestion box perfect scroll -end//
-        });
-      });
+        // });
+      },300));
 
     $(dataHTML)
       .off("focus", "#search")
@@ -7344,7 +6901,8 @@ FindlySDK.prototype.searchEventBinding = function (
             ? $(".search-top-down").val()
             : $(".bottom-up-search").val()
         ) {
-          _self.pubSub.publish("sa-input-keyup");
+          $("#search").trigger("keyup");
+          // _self.pubSub.publish("sa-input-keyup", e);
         }
         if (!_self.vars.isSocketInitialize) {
           _self.bot.init(
@@ -7456,7 +7014,7 @@ FindlySDK.prototype.searchEventBinding = function (
             : $(".bottom-up-search").val()
         ) {
           $("#search").trigger("keyup");
-          _self.pubSub.publish("sa-input-keyup");
+          // _self.pubSub.publish("sa-input-keyup");
           if (!$("body").hasClass("top-down")) {
             $(".custom-header-container-center").css("visibility", "hidden");
           }
@@ -7795,7 +7353,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       }
     }
     if (
-      ($("body").hasClass("top-down") && res.isAutoTriggeredBotAction) ||
+      ($("body").hasClass("top-down") && res.isAutoTriggeredBotAction) || ($("body").hasClass("top-down") && (res.payload || {}).template_type) || 
       ((res.payload || {}).template_type == "quick_replies" &&
         (res.payload || {}).isAutoTriggeredBotAction)
     ) {
@@ -8198,7 +7756,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 scrollTop:
                   $("#searchChatContainer").scrollTop() +
                   $(".messageBubble-content").last().parent().position().top -
-                  25,
+                  60,
               },
               500
             );
@@ -8847,11 +8405,11 @@ FindlySDK.prototype.sendMessageToSearch = function (
       (messageData.text &&
         messageData.text.trim() &&
         _self.customSearchResult &&
-        !$("body").hasClass("top-down")) ||
-      ($("body").hasClass("top-down") &&
-        messageData.text &&
-        messageData.text.trim() &&
-        !_self.customSearchResult)
+        !$("body").hasClass("top-down"))
+      // ($("body").hasClass("top-down") &&
+      //   messageData.text &&
+      //   messageData.text.trim() &&
+      //   !_self.customSearchResult)
     ) {
       var template = $(_self.getSearchTemplate("messageBubbles")).tmplProxy({
         msgData: messageData,
@@ -8896,498 +8454,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
     var messageHtml = _self.customTemplateObj.renderMessage(defaultBotMessage);
     if (!messageHtml || !messageHtml.length) {
       if (messageData && messageData.type && messageData.type === "template") {
-        if (
-          messageData.payload &&
-          messageData.payload.template_type === "cardTemplate"
-        ) {
-          var y = {
-            type: "bot_response",
-            from: "bot",
-            message: [
-              {
-                type: "text",
-                component: {
-                  type: "template",
-                  payload: {
-                    template_type: "cardTemplate",
-                    elements: [
-                      {
-                        biller_name: "REWARD AND SIGNATURE CARD",
-                        card_type: "master_card",
-                        card_number: "2313",
-                        bill_amount: "95.20",
-                        due_date: "03/07/2020",
-                      },
-                      {
-                        biller_name: "DINERS CARD",
-                        card_type: "master_card",
-                        card_number: "2313",
-                        bill_amount: "64.45",
-                        due_date: "13/07/2020",
-                      },
-                    ],
-                  },
-                },
-                cInfo: { body: "Here are your details" },
-              },
-            ],
-            messageId: "ms-72023d22-2270-514c-9054-8af4c3408460",
-            botInfo: {
-              chatBot: "MyBank Virtual Assistant",
-              taskBotId: "st-d77caa4b-083a-533c-90d9-733c80ef1cb1",
-            },
-            createdOn: "2020-09-08T18:39:24.689Z",
-            icon: "https://app.findly.ai:443/api/getMediaStream/market/f-6374e248-76ad-5fa9-bcc2-63cd116c4944.png?n=5797654043&s=IklOclpPZElVWWlEK2MzZFNKSTl2b1E5b3hiSWFuV3FtSGR4bElpT2dLaFU9Ig$$",
-            contextId: "dcx-5b5a373e-7e9b-5215-b074-671b616d4055",
-            usedtime: 395,
-            NLAnalysis: {
-              scoringModel: "original",
-              toneAnalysis: {
-                dialogTone: [
-                  { tone_name: "positive", level: 2, count: 1 },
-                  { tone_name: "joy", level: 1, count: 1 },
-                ],
-              },
-              nlProcessing: {
-                originalInput: "my balance",
-                canonical: "I balance",
-                wordAnalysis: [
-                  {
-                    word: "I",
-                    ignored: true,
-                    pos: "Pronoun_possessive ",
-                    original: "my",
-                    processedWord: "my",
-                  },
-                  {
-                    word: "balance",
-                    ignored: false,
-                    pos: "Noun_singular ",
-                    role: "MAINSUBJECT ",
-                    original: "balance",
-                    processedWord: "balance",
-                  },
-                ],
-              },
-              noLabelMatch: ["st-d77caa4b-083a-533c-90d9-733c80ef1cb1"],
-              ml: {
-                possible: [
-                  {
-                    task: "CheckBalance",
-                    state: "configured",
-                    score: 0.9414263358151247,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "possible",
-                  },
-                ],
-                eliminated: [
-                  {
-                    task: "TransferMoney",
-                    state: "configured",
-                    score: 0.02181479727476244,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "unlikely",
-                  },
-                  {
-                    task: "MakePayment",
-                    state: "configured",
-                    score: 0.010900485239433579,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "unlikely",
-                  },
-                  {
-                    task: "ShowAccountDetails",
-                    state: "configured",
-                    score: 0.009582143296980096,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "unlikely",
-                  },
-                  {
-                    task: "Log In",
-                    state: "configured",
-                    score: 0.00538434196688181,
-                    scoringCriteria: "Probabilistic score",
-                    matchType: "unlikely",
-                  },
-                ],
-                namedEntityRecognition: [],
-              },
-              fm: {
-                definitive: [
-                  {
-                    count: 2,
-                    score: 6450,
-                    botid: "st-d77caa4b-083a-533c-90d9-733c80ef1cb1",
-                    botname: "MyBank Virtual Assistant",
-                    activity: "CheckBalance",
-                    activityType: 1,
-                    foundFmEngine: true,
-                    labelsize: 2,
-                    scoreBreakdown: {
-                      coverage: 2000,
-                      spreadBonus: 800,
-                      orderBonus: 200,
-                      wordMatch: 500,
-                      exactWords: 60,
-                      sentenceBonus: 4000,
-                      positionBonus: 1800,
-                      roleBonus: 100,
-                      faqQuestionBonus: 0,
-                      tasktypeBonus: 50,
-                      matchBonus: 500,
-                      phraseJoinPenalty: 0,
-                    },
-                    sentence: 0,
-                    mask: "0 1 2",
-                    allmask: "0 1 2 ",
-                    pattern:
-                      "{ get what_is check } [ my account acct credit] [balance bal]",
-                    exactcount: 2,
-                    priority: 10,
-                    mainRoles: 1,
-                    matchType: "definite",
-                    task: "CheckBalance",
-                    state: "configured",
-                    foundVia: "pattern",
-                  },
-                ],
-              },
-              faq: {
-                demystify: {
-                  SpellCorrectedInput: "my balance",
-                  lemmatizer_used: "PATTERN",
-                  normalizedQuery: "my balance",
-                  OntologyTraits: [],
-                  failed_questions: {
-                    path_coverage: {
-                      total_failures: 62,
-                      questions: [
-                        "What is a term loan",
-                        "How can I contact customer service?",
-                        "What is a credit score",
-                        "How do I request a replacement card?",
-                        "Where can I find my ABA routing number on my check?",
-                      ],
-                    },
-                    mandatory_node: { total_failures: 0, paths: [] },
-                    precondition_node: {
-                      total_failures: 2,
-                      paths: ["*locate atms", "*wire transfer"],
-                    },
-                  },
-                  SelectedPathCount: 25,
-                  ExtractedEntities: ["balance"],
-                  ContextEntities: [],
-                  PreConditionNodes: [],
-                  filtered_questions: {
-                    score: [
-                      ["What is the collected balance?", 0.5773502691896258],
-                      ["What is a CD?", 0],
-                      ["What is a traveler's check?", 0],
-                      ["what is individual retirement account", 0],
-                      ["What is a canceled check?", 0],
-                    ],
-                    traits: [],
-                  },
-                },
-              },
-              finalResolver: {
-                ranking: [
-                  {
-                    taskId: "dg-7dabfd36-6024-5de8-9866-bf32fa24765b",
-                    intent: "CheckBalance",
-                    activityType: "dialog",
-                    state: "configured",
-                    totalScore: 6450,
-                    scoring: {
-                      count: 2,
-                      score: 6450,
-                      botid: "st-d77caa4b-083a-533c-90d9-733c80ef1cb1",
-                      botname: "MyBank Virtual Assistant",
-                      activity: "CheckBalance",
-                      activityType: 1,
-                      foundFmEngine: true,
-                      labelsize: 2,
-                      scoreBreakdown: {
-                        coverage: 2000,
-                        spreadBonus: 800,
-                        orderBonus: 200,
-                        wordMatch: 500,
-                        exactWords: 60,
-                        sentenceBonus: 4000,
-                        positionBonus: 1800,
-                        roleBonus: 100,
-                        faqQuestionBonus: 0,
-                        tasktypeBonus: 50,
-                        matchBonus: 500,
-                        phraseJoinPenalty: 0,
-                      },
-                      sentence: 0,
-                      mask: "0 1 2",
-                      allmask: "0 1 2 ",
-                      pattern:
-                        "{ get what_is check } [ my account acct credit] [balance bal]",
-                      exactcount: 2,
-                      priority: 10,
-                      mainRoles: 1,
-                      matchType: "definite",
-                      csMatch: true,
-                    },
-                    identifyingEngines: { fm: true },
-                    csMatch: true,
-                    intentMatchVia: "pattern",
-                  },
-                ],
-                userInput: "my balance",
-                winningIntent: [
-                  {
-                    intent: "CheckBalance",
-                    taskId: "dg-7dabfd36-6024-5de8-9866-bf32fa24765b",
-                    activityType: "dialog",
-                    state: "configured",
-                    score: 6450,
-                  },
-                ],
-                entities: [],
-              },
-            },
-            traceId: "827bca70e1572629",
-          };
-          var cardData = messageData.payload.elements; //y.message[0].component.payload.elements;
-
-          var template1 = $(
-            _self.getSearchTemplate("messageBubbles")
-          ).tmplProxy({
-            msgData: {
-              from: "bot",
-              text: "Choose the credit card to pay bill",
-            },
-            helpers: helpers,
-          });
-          $("#searchChatContainer").append(template1);
-          var scrollBottom =
-            $("#searchChatContainer").scrollTop() +
-            $("#searchChatContainer").height();
-          $("#searchChatContainer").animate({ scrollTop: scrollBottom });
-          var creditCard = $(
-            _self.getSearchTemplate("payBillContainer")
-          ).tmplProxy({
-            selectedBiller: "XYZ",
-            data: cardData,
-          });
-          $(creditCard)
-            .off("click", ".pay-button")
-            .on("click", ".pay-button", function (e) {
-              var payData = $(e.currentTarget).attr("msgData");
-
-              payData = JSON.parse(payData);
-              _self.vars.searchObject.searchText = payData.postback_value;
-              messageData.text = payData.postback_value; //"Pay nowwww";
-              messageData.from = "user";
-              var template = $(
-                _self.getSearchTemplate("messageBubbles")
-              ).tmplProxy({
-                msgData: messageData,
-                devMode: devMode,
-                viewType: viewType,
-                helpers: helpers,
-              });
-              $("#searchChatContainer").append(template);
-              _self.bindLiveDataToChat();
-              setTimeout(function () {
-                var scrollBottom =
-                  $("#searchChatContainer").scrollTop() +
-                  $("#searchChatContainer").height();
-                $("#searchChatContainer").animate({ scrollTop: scrollBottom });
-              }, 1000);
-            });
-          $("#searchChatContainer").append(creditCard);
-        } else if (
-          messageData.payload &&
-          messageData.payload.template_type === "carousel"
-        ) {
-          var defaultMessage = {
-            type: "bot_response",
-            from: "bot",
-            message: [{ type: "text", component: {} }],
-          };
-          defaultMessage.message[0].component = messageData;
-          // var template = $(_self.getCarouselTemplate()).tmpl({
-          //   'msgData': defaultMessage,
-          //   'helpers': helpers,
-          //   'extension': {}
-          // });
-          var template = _self.getCarouselTemplate(
-            defaultMessage,
-            this.helpers
-          );
-          $("#searchChatContainer").append(template);
-          setTimeout(function () {
-            $(".carousel:last").addClass("carousel" + carouselTemplateCount);
-            var count = $(".carousel" + carouselTemplateCount).children()
-              .length;
-            if (count > 1) {
-              var carouselOneByOne = new PureJSCarousel({
-                carousel: ".carousel" + carouselTemplateCount,
-                slide: ".slide",
-                oneByOne: true,
-                jq: $,
-              });
-              $(".carousel" + carouselTemplateCount)
-                .parent()
-                .show();
-              // $('.carousel' + carouselTemplateCount).attr('style', 'height: inherit !important');
-              carouselEles.push(carouselOneByOne);
-            }
-            if (
-              $(".carousel" + carouselTemplateCount).width() >=
-              $(
-                ".carousel" +
-                carouselTemplateCount +
-                " .purejscarousel-slides-container"
-              ).children().length *
-              $(
-                ".carousel" +
-                carouselTemplateCount +
-                " .purejscarousel-slides-container .slide:first"
-              ).width()
-            ) {
-              $(
-                ".carousel" +
-                carouselTemplateCount +
-                " .purejscarousel-btn-prev"
-              ).hide();
-              $(
-                ".carousel" +
-                carouselTemplateCount +
-                " .purejscarousel-btn-next"
-              ).hide();
-            }
-            //window.dispatchEvent(new Event('resize'));
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("resize", true, false);
-            window.dispatchEvent(evt);
-            carouselTemplateCount += 1;
-            $("#searchChatContainer").animate(
-              {
-                scrollTop: $("#searchChatContainer").prop("scrollHeight"),
-              },
-              0
-            );
-          });
-          $(template)
-            .off("click", ".carouselButton")
-            .on("click", ".carouselButton", function (event) {
-              event.preventDefault();
-              event.stopPropagation();
-              var type = $(this).attr("type");
-              if (type) {
-                type = type.toLowerCase();
-              }
-              if (type == "postback" || type == "text") {
-                //$('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
-                var _innerText = $(this).attr("value").trim();
-                var displayMessage =
-                  $(this)[0] && $(this)[0].innerText
-                    ? $(this)[0].innerText.trim()
-                    : "" || ($(this) && $(this).attr("data-value"))
-                      ? $(this).attr("data-value").trim()
-                      : "";
-                var messageData = {};
-                messageData.text = _innerText;
-                messageData.from = "user";
-                var templateMessageBubble = $(
-                  _self.getSearchTemplate("messageBubbles")
-                ).tmplProxy({
-                  msgData: messageData,
-                  devMode: devMode,
-                  viewType: viewType,
-                  helpers: helpers,
-                });
-                $("#searchChatContainer").append(templateMessageBubble);
-                var scrollBottom =
-                  $("#searchChatContainer").scrollTop() +
-                  $("#searchChatContainer").height();
-                $("#searchChatContainer").animate({ scrollTop: scrollBottom });
-                // var templateMessageBubble = _self.getSearchTemplate(defaultMessage, this.helpers);
-                // $('#searchChatContainer').append(templateMessageBubble);
-                _self.sendMessage(_innerText);
-              } else if (type == "url" || type == "web_url") {
-                var a_link = $(this).attr("url");
-                if (
-                  a_link.indexOf("http:") < 0 &&
-                  a_link.indexOf("https:") < 0
-                ) {
-                  a_link = "http:////" + a_link;
-                }
-                var _tempWin = window.open(a_link, "_blank");
-              }
-            });
-          $("#searchChatContainer").append(template);
-        } else if (
-          messageData.payload &&
-          messageData.payload.template_type === "list"
-        ) {
-          var defaultMessage = {
-            type: "bot_response",
-            from: "bot",
-            message: [{ type: "text", component: {} }],
-          };
-          defaultMessage.message[0].component = messageData;
-
-          var template = $(_self.getListTemplate()).tmpl({
-            msgData: defaultMessage,
-            helpers: helpers,
-            extension: {},
-          });
-          $(template)
-            .off("click", ".listItemPath, .listRightContent,.buyBtn")
-            .on(
-              "click",
-              ".listItemPath, .listRightContent,.buyBtn",
-              function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                var type = $(this).attr("type");
-                if (type) {
-                  type = type.toLowerCase();
-                }
-                if (type == "postback" || type == "text") {
-                  //$('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
-                  var _innerText = $(this).attr("value").trim();
-                  var displayMessage =
-                    $(this)[0] && $(this)[0].innerText
-                      ? $(this)[0].innerText.trim()
-                      : "" || ($(this) && $(this).attr("data-value"))
-                        ? $(this).attr("data-value").trim()
-                        : "";
-                  var messageData = {};
-                  messageData.text = displayMessage;
-                  messageData.from = "user";
-                  var templateMessageBubble = $(
-                    _self.getSearchTemplate("messageBubbles")
-                  ).tmplProxy({
-                    msgData: messageData,
-                    devMode: devMode,
-                    viewType: viewType,
-                    helpers: helpers,
-                  });
-                  $("#searchChatContainer").append(templateMessageBubble);
-                  _self.sendMessage(_innerText);
-                } else if (type == "url" || type == "web_url") {
-                  var a_link = $(this).attr("url");
-                  if (
-                    a_link.indexOf("http:") < 0 &&
-                    a_link.indexOf("https:") < 0
-                  ) {
-                    a_link = "http:////" + a_link;
-                  }
-                  var _tempWin = window.open(a_link, "_blank");
-                }
-              }
-            );
-          $("#searchChatContainer").append(template);
-        }
+        //removed custom templates
       } else {
         //simple text message
         if (isSearchResultsMessage) {
@@ -9525,6 +8592,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
   if (type === "botAction") {
     messageData.text = _self.vars.searchObject.searchText;
     messageData.from = "user";
+    messageData.timeStamp = moment().format('LT');
     var template = $(_self.getSearchTemplate("messageBubbles")).tmplProxy({
       msgData: messageData,
       devMode: devMode,
@@ -10129,6 +9197,7 @@ FindlySDK.prototype.initializeCustomTemplateEvent = function () {
     var messageData = {};
     messageData.text = data.title;
     messageData.from = "user";
+    messageData.timeStamp = moment().format('LT');
     var templateBotMessageBubble = $(
       _self.getSearchTemplate("messageBubbles")
     ).tmplProxy({
@@ -10470,7 +9539,14 @@ FindlySDK.prototype.markSelectedFilters = function () {
   if (_self.vars.selectedFiltersArr.length > 0) {
     _self.vars.selectedFiltersArr.forEach(function (filter) {
       $("#" + filter).prop("checked", true);
+      if (!$('.filters-reset-anchor').hasClass('enabled')) {
+        $('.filters-reset-anchor').addClass('enabled')
+      }
     });
+  } else {
+    if($('.filters-reset-anchor').hasClass('enabled')){
+      $('.filters-reset-anchor').removeClass('enabled');
+    }
   }
 };
 FindlySDK.prototype.addSearchResult = function (config) {
@@ -10940,40 +10016,7 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
     null,
     "default-data-show-not-loaded"
   );
-  $(window)
-    .off("resize")
-    .on("resize", function () {
-      windowWidth = window.innerWidth;
-      left = windowWidth / 2 - 250 + "px";
-      if (!overrideDefaultPoisition) {
-        $(dataHTML).css("left", left);
-      }
 
-      var quickReplyDivs = document.querySelectorAll(".quickReplies");
-      for (var i = 0; i < quickReplyDivs.length; i++) {
-        var btnsParentDiv = quickReplyDivs[i].querySelectorAll(
-          ".quick_replies_btn_parent"
-        );
-        var leftScrollBtn = quickReplyDivs[i].querySelectorAll(
-          ".quickreplyLeftIcon"
-        );
-        var rightScrollBtn = quickReplyDivs[i].querySelectorAll(
-          ".quickreplyRightIcon"
-        );
-        if (btnsParentDiv[0].hasChildNodes()) {
-          if (btnsParentDiv[0].scrollLeft > 0) {
-            leftScrollBtn[0].classList.remove("hide");
-          } else {
-            leftScrollBtn[0].classList.add("hide");
-          }
-          if (btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
-            rightScrollBtn[0].classList.remove("hide");
-          } else {
-            rightScrollBtn[0].classList.add("hide");
-          }
-        }
-      }
-    });
   _self.showGreetingMsg = true;
   _self.vars.searchObject.clearGreetingTimeOut = setTimeout(function () {
     var greetingMsg = $(_self.getGreetingMsgTemplate()).tmplProxy({
@@ -11366,7 +10409,7 @@ FindlySDK.prototype.bindSocketEvents = function () {
   });
 };
 
-FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject) {
+FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isbotActionTrigger) {
   var _self = this;
   if (!$(".topdown-search-main-container").length) {
     $("#search").val("");
@@ -11375,6 +10418,9 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject) {
   } else {
     $("#suggestion").val("");
     $(".top-down-suggestion").val("");
+    if(!isbotActionTrigger){
+      _self.appendTextToSearchContainer('user', chatInput);
+    }
   }
   $("#frequently-searched-box").hide();
   if(!$("#conversation-container").is(":visible")){
@@ -18473,9 +17519,7 @@ FindlySDK.prototype.invokeSpecificSearch = function (selectedFacet) {
         var dataObj = _self.vars.searchObject.liveData;
         var facetdata = _self.vars.searchFacetFilters;
         $(".data-body-sec").scrollTop(0);
-        // _self.calculatePageNumber(selectedFacet, dataObj);
         if (!$("body").hasClass("top-down")) {
-          // _self.handlePaginationUI(selectedFacet, dataObj);
 
           _self.pubSub.publish("sa-action-full-search", {
             container: "#actions-full-search-container",
@@ -18809,34 +17853,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       };
       // setTimeout(hide, 1000);
     });
-  $(".sdk-facet-count")
-    .off("click")
-    .on("click", function (event) {
-      selectClass(event, "child");
-    });
-  var selectClass = function (event, related) {
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    var classificationselected = $(event.target)
-      .closest(".see-all-result-nav")
-      .attr("classification");
-    _self.vars.selectedFacetFromSearch = classificationselected;
-    slecetFacetFunc(classificationselected);
-    $(".tab-name.see-all-result-nav.active-tab").removeClass("active-tab");
-    $(event.target).addClass("active-tab");
-    if (related == "child") {
-      $(event.target.parentNode).addClass("active-tab");
-    }
-
-    if (
-      classificationselected == "all results" ||
-      classificationselected == "task"
-    ) {
-      $("#actions-full-search-container").show();
-    } else {
-      $("#actions-full-search-container").hide();
-    }
-  };
+ 
   var removeActive = function (selectedFacet) {
     $(".see-all-result-nav").each(function (index, element) {
       if ($(element).attr("classification") == selectedFacet) {
@@ -18857,64 +17874,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       //var bucket = $(event.target).closest('.sdk-bottomup-search-face').attr('data-bucket');
     });
 
-  $(showAllHTML)
-    .off("click", ".kore-sdk-bottom-up-first")
-    .on("click", ".kore-sdk-bottom-up-first", function () {
-      // $('#loaderDIV').show();
-      _self.vars.scrollPageNumber = 0;
-      _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-    });
-  $(showAllHTML)
-    .off("click", ".kore-sdk-bottom-up-last")
-    .on("click", ".kore-sdk-bottom-up-last", function () {
-      // $('#loaderDIV').show();
-      var totalPages;
-      totalPages = $("#kore-total-page-number").text();
-      if (totalPages) {
-        _self.vars.scrollPageNumber = totalPages - 1;
-      }
-      _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-    });
-  $(showAllHTML)
-    .off("click", ".kore-sdk-bottom-up-next")
-    .on("click", ".kore-sdk-bottom-up-next", function () {
-      if (
-        _self.vars.totalNumOfResults >
-        (_self.vars.scrollPageNumber + 1) * 10
-      ) {
-        _self.vars.scrollPageNumber = _self.vars.scrollPageNumber + 1;
-        $("#loaderDIV").show();
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      }
-    });
-  $(showAllHTML)
-    .off("click", ".kore-sdk-bottom-up-previous")
-    .on("click", ".kore-sdk-bottom-up-previous", function () {
-      if (_self.vars.scrollPageNumber > 0) {
-        _self.vars.scrollPageNumber = _self.vars.scrollPageNumber - 1;
-        $("#loaderDIV").show();
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      }
-    });
-  $(showAllHTML)
-    .off("keyup", ".kore-current-page-number")
-    .on("keyup", ".kore-current-page-number", function (event) {
-      var totalPages;
-      totalPages = $("#kore-total-page-number").text();
-      if (event.keyCode == 13 || event.which == 13) {
-        if (parseInt(event.target.value) > 0) {
-          if (parseInt(event.target.value) > parseInt(totalPages)) {
-            _self.vars.scrollPageNumber = parseInt(totalPages) - 1;
-          } else {
-            _self.vars.scrollPageNumber = parseInt(event.target.value) - 1;
-          }
-        } else {
-          $("#kore-current-page-number").val(_self.vars.scrollPageNumber + 1);
-        }
-        // $('#loaderDIV').show();
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      }
-    });
+  
   // Search Facet
 
   $(showAllHTML)
@@ -19010,43 +17970,6 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
     });
 };
 
-FindlySDK.prototype.calculatePageNumber = function (selectedFacet, data) {
-  var _self = this;
-  var totalPages = 1;
-  if (data && data.facets) {
-    totalPages = data.facets[selectedFacet] / 10;
-    if (totalPages) {
-      var temp_totalPages;
-      temp_totalPages = Math.round(totalPages);
-      if (totalPages > temp_totalPages) {
-        totalPages = temp_totalPages + 1;
-      } else {
-        totalPages = temp_totalPages;
-      }
-    } else {
-      totalPages = 1;
-    }
-    $("#kore-current-page-number").val(_self.vars.scrollPageNumber + 1);
-    $("#kore-total-page-number").text(totalPages);
-  } else {
-    $("#kore-current-page-number").val(1);
-    $("#kore-total-page-number").text(1);
-  }
-  if (_self.vars.scrollPageNumber == 0) {
-    $(".kore-sdk-bottom-up-previous").addClass("disabled");
-    $(".kore-sdk-bottom-up-first").addClass("disabled");
-  } else {
-    $(".kore-sdk-bottom-up-previous").removeClass("disabled");
-    $(".kore-sdk-bottom-up-first").removeClass("disabled");
-  }
-  if (data.facets[selectedFacet] < (_self.vars.scrollPageNumber + 1) * 10) {
-    $(".kore-sdk-bottom-up-next").addClass("disabled");
-    $(".kore-sdk-bottom-up-last").addClass("disabled");
-  } else {
-    $(".kore-sdk-bottom-up-next").removeClass("disabled");
-    $(".kore-sdk-bottom-up-last").removeClass("disabled");
-  }
-};
 
 FindlySDK.prototype.facetTemplateTopIcon = function () {
   var facet =
@@ -19123,64 +18046,6 @@ FindlySDK.prototype.facetFilter = function () {
 </script>';
   return facet;
 };
-FindlySDK.prototype.topFacetFilter = function () {
-  var facet =
-    '<script id="top-search_facets_tmpl" type="text/x-jqury-tmpl"> \
-      {{if searchFacets.length}}\
-      <div class="horizantal-filter-sec">\
-      {{each(i, searchFacet) searchFacets}}\
-      <div class="dropdown_custom_filter">\
-      <div  class="openDropdownFacets dropbtn">${searchFacet.name}{{if searchFacet.selectedFieldsCount && searchFacet.selectedFieldsCount>0}} <span class="count">${searchFacet.selectedFieldsCount}</span> {{/if}} <img class="down-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBbY6xDYMwEEX/yQuc5QUOmfRZIRskEyQjZJyU6VJmBGoqREcHJVT2AsiAhQRGvO7+vdM/JVleMevBe9fgBBF7Z21+itmUIPzZ6N47VyeStU+APgj0WK8uV8lsK5K/99Lc5pbdMtNWIQJSBYi+MQjhhTDeuplETOQobhLOn4/wMZ8As5kn7D+3/a0AAAAASUVORK5CYII="><img class="up-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACQSURBVHgBhY7BDYJQDIb/ggM8wgI14llXYBJ1A48e3YAVvHpyBHUC4gCYTmDeAGrpAw48LnxJk+bv16aEEczskKRV6OXdHMazJJJocccfFIqXRd1lAxRJqi+RZt9nqwuINtBvKSKeTGKTbiY9TTrGrxRnkO6gvzJ1WV5D6WrSCRO8/zycyzO7XNnWeosZgtMCupEtrTPwmiYAAAAASUVORK5CYII="></div>\
-      <div id="myDropdown" class="dropdown-content filters-content-top-down myDropdown-${i}" data-facetType="${searchFacet.subtype}" data-facetName="${searchFacet.name}" data-fieldName="${searchFacet.fieldName}">\
-      {{each(j, bucket) searchFacet.buckets}}\
-      <div class="option-text">\
-      {{if searchFacet.subtype == "value"&& searchFacet.multiselect }}\
-      <div class="kr-sg-checkbox d-block">\
-      <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down" type="checkbox" name="${bucket.key}" value="true" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
-      <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
-          <span class="count">(${bucket.doc_count})</span>\
-        </div>\
-        {{/if}}\
-        {{if searchFacet.subtype == "range" && searchFacet.multiselect}}\
-        <div class="kr-sg-checkbox d-block">\
-        <input  id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down" type="checkbox" name="${bucket.key}" value="true" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
-        <label  id="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
-            <span class="count">(${bucket.doc_count})</span>\
-          </div>\
-          {{/if}}\
-          {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
-          <div class="kr-sg-checkbox d-block">\
-            <input id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
-              <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-              <span class="count">(${bucket.doc_count})</span>\
-            </div>\
-            {{/if}}\
-            {{if searchFacet.subtype == "range" && !searchFacet.multiselect }}\
-            <div class="kr-sg-checkbox d-block">\
-              <input  id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
-                <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
-              </div>\
-              {{/if}}\
-      </div>\
-      {{/each}}\
-      <div class="action-bar">\
-      {{if searchFacet.multiselect}}<button class="btn clear-btn">Clear</button>{{/if}}\
-      {{if !searchFacet.multiselect}}<button class="btn apply-btn">Apply</button>{{/if}}\
-    </div>\
-      </div>\
-      </div>\
-      {{/each}}\
-      {{if searchFacets.length>4}}\
-      <div class="h-scroll-filter">\
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAYAAACulacQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB9SURBVHgBpZDBDUBAEEX/EvcVDQzLXQk6EBUoRTtuzk5qUAFHJ7YAybISEmvFwT9MJnl/MjMfdCjOYJEDeBwMDQlRmtCVcp44D9q9r3ngT3JZ+gvq8mZwT5fNwMw9REkKpjooFM7zRJUDSgLreJ+K4opCMejn/oI9HSv40gaMjzPqJ5ysbwAAAABJRU5ErkJggg==">\
-      </div>\
-      {{/if}}\
-      </div>\
-      {{/if}}\
-             </script>';
-  return facet;
-};
 FindlySDK.prototype.facetFilterTop = function () {
   var facet =
     '<script type="text/x-jqury-tmpl">\
@@ -19250,135 +18115,6 @@ FindlySDK.prototype.facetFilterTop = function () {
         </div>\
       </script>';
   return facet;
-};
-FindlySDK.prototype.facetFilterleft = function () {
-  var facet = `
-      <div>
-      <div class="fliter-right-btn left-filter">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAKCAYAAACE2W/HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB1c+hEQAgDATBfyqJwVMKpaYUPCadwCAyGATgcursUiQXYFQ8RU0IE33urFSz3tZFNHpn67Z538YJjc8On2EvoL4AAAAASUVORK5CYII=">
-
-      <div class="filter-data">
-        <div class="header-sec">
-          <div class="f-heading">FILTERS</div>
-          <div class="clear-all">Clear All</div>
-        </div>
-            <div class="scroll-data">
-                <div class="group-checkbox">
-                  <div class="heading-title">Type</div>
-                  <div class="custom_checkbox kr-sg-checkbox d-block">
-                      <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                      <label for="checkbox_grpb" class="checkbox-custom-label">Sapphire Cards <span class="count">(1)</span></label>
-                  </div>
-                  <div class="custom_checkbox kr-sg-checkbox d-block">
-                      <input id="checkbox_grpc" class="checkbox-custom" type="checkbox">
-                      <label for="checkbox_grpc" class="checkbox-custom-label">Platinum Cards <span class="count">(3)</span></label>
-                  </div>
-                  <div class="custom_checkbox kr-sg-checkbox d-block">
-                    <input id="checkbox_grpc" class="checkbox-custom" type="checkbox">
-                    <label for="checkbox_grpc" class="checkbox-custom-label">Travel Master Cards <span class="count">(2)</span></label>
-                </div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpc" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpc" class="checkbox-custom-label">Rewards Cards <span class="count">(3)</span></label>
-              </div>
-            </div>
-            <div class="group-checkbox">
-                <div class="heading-title">Benefits</div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">Accelarated Rewards <span class="count">(2)</span></label>
-                </div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">No Joining Fees <span class="count">(2)</span></label>
-                </div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">Annual Fee Waiver <span class="count">(1)</span></label>
-                </div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">Exclusive Events <span class="count">(1)</span></label>
-                </div>
-            </div>
-            <div class="group-checkbox">
-                <div class="heading-title">Min. Balance</div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">0 to 500 <span class="count">(8)</span></label>
-                </div>
-            </div>
-          </div>
-          <div class="footer-filter">
-                <button class="apply-btn">Apply</button>
-          </div>
-      </div>
-    </div>
-      </div>
-      `;
-  return facet;
-};
-FindlySDK.prototype.fullResultAllType = function () {
-  var template =
-    '<script type="text/x-jqury-tmpl">\
-      <div style="height:100%">\
-      <!--<div id="loaderDIV" class="loader-container">Loading...</div>-->\
-        <div class="data-body-sec {{if facetPosition == `top`}}iffilteristop{{/if}}">\
-        <div class="no-templates-defined-full-results-container">\
-        <div class="img-block"><img class="no-data-mapped">\
-          <div class="title">Result templates are not mapped with a proper field value</div>\
-        </div>\
-      </div>\
-        <div class="scroll-top-container">\
-         <div class="title-scroll-top">\
-           <img>Scroll to top\
-          </div>\
-        </div>\
-        <div class="empty-full-results-container hide" id="top-down-all-tab-empty-state">\
-        <div class="img-block">\
-        <img src="data:image/png;base64,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">\
-        </div>\
-        <div class="title">Sorry, we could not find any results for that</div>\
-        <div class="title-info">Please try searching with another term</div>\
-        </div>\
-        <div class="full-search-data-container matched-structured-data-contaniers">\
-        </div>\
-        <div class="kore-sdk-pagination-div hide">\
-          <div class="kore-sdk-custom-pagination">\
-            <div class="kore-sdk-bottom-up-first pagination-tootlip-buttons">\
-              <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAAQABADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+zn9pz9o/XPhre6B8H/gxpfhzxb+0d8Q9H1XxB4esPF8t9B8MfhH8OtBmjh8WfH74+6vpdzZXXh34V+Et722l6XFqWk+IPin4vFt4F8I3th/xUvirwe0r77fi/JeYiT9mv49eP/2j9X8SfEbRPCulaJ+y3/ZVjpXwe8b61p+taZ49+POsxXLtrnxc8OaBd33keEPgTfQKlj8NW1221DxV8RoXm8cW0ujeDG8M3PjAat69fLy9e4LX0Iv2m/2bda+JWoaD8Yvg1q2g+Ef2jvh9oupeHdAvvFYvZfhj8Xfh1rU4uPFPwB+PujafZ6nL4g+FXi9g89jqtvpOp+Jvhj4qa38beD7e7ceIfDPisT6Pb8vNef5g/wAST9mv4C/ED9nDV/Enw50XxVpWufst/wBlWOq/B7wRrWo61qfj74DazLcuuufCLw5r93YeR4v+BNjAyXvw0Gu3On+KvhzAk3ge3i1nwYnhm38IDaevXr2fn5PuMP/Z">\
-              <span class="tooltip_text"> First</span>\
-              </div>\
-            <div class="kore-sdk-bottom-up-previous pagination-tootlip-buttons">\
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACuSURBVHgB3VKxDcIwEDwTD2AEA3xk0zMCbMAGrMAIGYWSjhFQJgipEcIlnTMAknloaPImSZecZMnS3+nuTw+MAkRk+FHbbNZBTFBZBegd+uLrnLuKyBUSR6XEUPqCGEvv7weJJ6+g9JnFdUoM2d0Vn+hduEKC1xGI3Lzr7/5Lwcjtg6zdp3iZNGgYxixL/p7MYv5sQqgxLMlqzX0EXmfTNv97SN7frohqy50Qpok3s14tS5MeJgUAAAAASUVORK5CYII=">\
-              <span class="tooltip_text"> Previous</span>\
-              </div>\
-            <div class="input-text-data">\
-              <div class="title">Page</div>\
-              <div>\
-                <input id="kore-current-page-number" class="kore-current-page-number" type="text" value="1">\
-              </div>\
-              <div class="title">of</div>\
-              <div id="kore-total-page-number" class="kore-total-page-number">15</div>\
-            </div>\
-            <div class="kore-sdk-bottom-up-next pagination-tootlip-buttons">\
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAALCAYAAABcUvyWAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBXY+xDQIxEAT3bAIiZEQD99gf4xKgEuiEkDY+JUJUQEoGxAjhCsAhwUvmEHqw/8LZW2lWM9femNEwyiE7BaQ5SB+Y2eSBjvFxNGYyBqmNNLdSfH0C6j6YbQOiGVK7CCFE1QUh3FZI6QIa7IrGr1m5ExL2qoBTtxYZkWibP7R2yZW9ix33oHuWUAZ+Ye17A+GRSBSv5zx4A80eMIB299aVAAAAAElFTkSuQmCC">\
-              <span class="tooltip_text">Next</span>\
-              </div>\
-            <div class="kore-sdk-bottom-up-last pagination-tootlip-buttons">\
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAC8SURBVHgB3ZKxEcIwDEUVZwAEWUCJnJ5R2AA2YAQYIRswAkdJyQRQ0kEJTewFOBBxjos5QkI68htbOn//d7YA+iWK9Z4oHb9q4owSvfjmCasF4vAKAawRo621+QVxcAQIMhxFaE2+g1YUxDMhMSRytSjmUx1J+N6w1hwciVoJweYseq4dSPSySCZCj4R5Wj2nam9QcC936PVv8kqN6Uk6L9PJSxeqZrMgdjcTT9wPuFn4yVwYPg1SW/P/6gGaqz4/5BlCXQAAAABJRU5ErkJggg==">\
-              <span class="tooltip_text">Last </span>\
-              </div>\
-          </div>\
-        </div>\
-        <div class="custom-add-result-container {{if devMode== false || viewType != "Customize"}}display-none{{/if}}">\
-          <div class="custom-add-new-result-content">\
-            <div class="bold-text">Not finding the result?</div>\
-            <div class="link-text"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABrSURBVHgBzVHBCYAwEMuV/lRwBDdykoojuIoTiBs5Qt8KjVZfLdeHD8FAyJEQOO4ABZXbx0gts5opIi0KMHiJ7wvSuLBcmu4s7G6lbHnBgmGGZAWa/hnCmvrw0FAPxxSpZT+8kvppkr5UOAH/GRicle7qIwAAAABJRU5ErkJggg==">Add from repository</div>\
-          </div>\
-        </div>\
-        </script>';
-  return template;
 };
 FindlySDK.prototype.fullResultRanking = function () {
   var template =
@@ -20015,10 +18751,6 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
             : $(".bottom-up-search").val();
           _self.vars.showingMatchedResults = true;
           _self.searchFacetsList([]);
-          // $('#loaderDIV').show();
-          // _self.invokeSearch();
-          //$('#loaderDIV').hide();
-          // _self.pubSub.publish('sa-search-facets', _self.vars.searchFacetFilters);
           $(".all-result-container").show();
           setTimeout(function () {
             $("#frequently-searched-box").hide();
@@ -20081,12 +18813,7 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
         // _self.invokeSearch();
         var e = $.Event("keydown", { which: 13 });
         $("#search").trigger(e);
-        // _self.pubSub.publish('sa-search-facets', _self.vars.searchFacetFilters);
-        //$('#search').trigger("keyup");
         setTimeout(function () {
-          //   var e = $.Event( "keydown", { which: 13 } );
-          // $('#search').trigger(e);
-          // $('#loaderDIV').show();
           $(".all-result-container").show();
           //top-down-searc-facets active -start//
           _self.pubSub.publish("facet-selected", {
@@ -20129,12 +18856,8 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
             : $(".bottom-up-search").val();
           _self.vars.showingMatchedResults = true;
           _self.searchFacetsList([]);
-          // $('#loaderDIV').show();
-          // _self.invokeSearch();
           var e1 = $.Event("keydown", { which: 13 });
           $("#search").trigger(e1);
-          //$('#loaderDIV').hide();
-          // _self.pubSub.publish('sa-search-facets', _self.vars.searchFacetFilters);
           $(".all-result-container").show();
           setTimeout(function () {
             $("#frequently-searched-box").hide();
@@ -20168,65 +18891,6 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
       "frequentlySearchedBox"
     );
 
-    //top-down-pagination//
-    $(".content-data-sec")
-      .off("click", ".kore-sdk-bottom-up-first")
-      .on("click", ".kore-sdk-bottom-up-first", function () {
-        // $('#loaderDIV').show();
-        _self.vars.scrollPageNumber = 0;
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      });
-    $(".content-data-sec")
-      .off("click", ".kore-sdk-bottom-up-last")
-      .on("click", ".kore-sdk-bottom-up-last", function () {
-        // $('#loaderDIV').show();
-        var totalPages;
-        totalPages = $("#kore-total-page-number").text();
-        if (totalPages) {
-          _self.vars.scrollPageNumber = totalPages - 1;
-        }
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      });
-    $(".content-data-sec")
-      .off("click", ".kore-sdk-bottom-up-next")
-      .on("click", ".kore-sdk-bottom-up-next", function () {
-        if (
-          _self.vars.totalNumOfResults >
-          (_self.vars.scrollPageNumber + 1) * 10
-        ) {
-          _self.vars.scrollPageNumber = _self.vars.scrollPageNumber + 1;
-          $("#loaderDIV").show();
-          _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-        }
-      });
-    $(".content-data-sec")
-      .off("click", ".kore-sdk-bottom-up-previous")
-      .on("click", ".kore-sdk-bottom-up-previous", function () {
-        if (_self.vars.scrollPageNumber > 0) {
-          _self.vars.scrollPageNumber = _self.vars.scrollPageNumber - 1;
-          // $('#loaderDIV').show();
-          _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-        }
-      });
-    $(".content-data-sec")
-      .off("keyup", ".kore-current-page-number")
-      .on("keyup", ".kore-current-page-number", function (event) {
-        var totalPages;
-        totalPages = $("#kore-total-page-number").text();
-        if (event.keyCode == 13 || event.which == 13) {
-          if (parseInt(event.target.value) > 0) {
-            if (parseInt(event.target.value) > parseInt(totalPages)) {
-              _self.vars.scrollPageNumber = parseInt(totalPages) - 1;
-            } else {
-              _self.vars.scrollPageNumber = parseInt(event.target.value) - 1;
-            }
-          } else {
-            $("#kore-current-page-number").val(_self.vars.scrollPageNumber + 1);
-          }
-          $("#loaderDIV").show();
-          _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-        }
-      });
 
     $("#search-box-container")
       .off("click", ".submit-button")
@@ -22488,19 +21152,6 @@ FindlySDK.prototype.configureSearchAvatar = function (config) {
     }
 };
 
-// FindlySDK.prototype.bindCarouselForActionsTemplate = function (
-//   actionContainer
-// ) {
-//   var _self = this;
-//   var type = "grid";
-//   if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
-//     type = searchConfigurationCopy.botConfig.botActionTemplate;
-//   }
-//   if ((type = "carousel")) {
-//     _self.bindCarouselActions($(actionContainer));
-//   }
-// };
-
 FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
   var _self = this;
   if ($("body").hasClass("top-down")) {
@@ -22595,6 +21246,16 @@ FindlySDK.prototype.suggestionSelectedByNavigationKeys = function (e) {
       _self.vars.isQueryEntered = true;
     }
   }
+  if (e.keyCode === 27) {
+    $hlight.removeClass("highlightSuggestion")
+    $div.eq(0).addClass("highlightSuggestion");
+    if ($hlight.prev().length == 0 || $hlight.next().length == 0) {
+      $div.eq(0).addClass("highlightSuggestion");
+    }
+    if(!$('body').hasClass('top-down')){
+      $('.bottom-to-top-suggestion').scrollTop(0);
+    }
+  }
 };
 FindlySDK.prototype.clickNavigateToUrl = function (e) {
   var _self = this;
@@ -22641,7 +21302,12 @@ FindlySDK.prototype.showTypingIndicator = function () {
     }
   }, 500);
 };
-FindlySDK.prototype.trimSearchQuery = function () {
+FindlySDK.prototype.trimSearchQuery = function (e) {
+  var keyCode = e.keyCode || e.which;
+          keyCode = Number(keyCode);
+      if(e.target.selectionStart !== ($('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val()).length && keyCode !== 13){
+        return;
+      }
   if (
     !$("body").hasClass("top-down") &&
     $(".bottom-up-search").val() &&
@@ -23363,7 +22029,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
               }
             }
           }
-          if ((response.tasks || []).length) {
+          if ((response.tasks || []).length && searchType != "liveSearch") {
             var tasksTemplateType = "grid";
             if (searchConfigurationCopy && searchConfigurationCopy.botConfig) {
               tasksTemplateType = searchConfigurationCopy.botConfig.botActionTemplate;
@@ -23504,7 +22170,7 @@ FindlySDK.prototype.botActionTrigger = function (e) {
         isRefresh: true,
       },
     };
-    _self.sendMessage(payload, null, nlMeta);
+    _self.sendMessage(payload, null, nlMeta, true);
   }
   if ($("body").hasClass("top-down")) {
     _self.sendMessageToSearch(
@@ -23892,6 +22558,7 @@ return new Promise((resolve, reject) => {
             _self.vars.isTopFacets
           ).then((res)=>{
             res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            _self.markSelectedFilters();
             resolve(res);
           });
         } else {
@@ -23916,6 +22583,7 @@ return new Promise((resolve, reject) => {
             _self.vars.isTopFacets
           ).then((res)=>{
             res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            _self.markSelectedFilters();
             resolve(res);
           });
         }
@@ -23953,7 +22621,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
               });
               _self.filterResultsTopDown(event, false).then((res)=>{
                 res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-                resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
               });
             } else {
               _self.vars.selectedFiltersArr.push($(event.target).attr("id"));
@@ -23973,7 +22642,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
               _self.vars.countOfSelectedFilters += 1;
               _self.filterResultsTopDown(event, true).then((res)=>{
                 res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-                resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
               });
             }
           } else {
@@ -23994,7 +22664,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
             _self.vars.countOfSelectedFilters += 1;
             _self.filterResultsTopDown(event, true).then((res)=>{
               res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-              resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
             });
           }
         })
@@ -24149,6 +22820,9 @@ FindlySDK.prototype.appendTextToSearchContainer = function (type, text) {
   var messageData = {
     'text': text,
     'from': type,
+  }
+  if(messageData.from = "user"){
+    messageData.timeStamp = moment().format('LT');
   }
   var devMode = _self.isDev ? 'true' : 'false';
   var viewType = _self.vars.customizeView ? 'Customize' : 'Preview';
@@ -24368,6 +23042,9 @@ FindlySDK.prototype.getJWTByAPIKey = function (options, callback) {
     apiKey = options.apiKey;
   }
   var jsonData = {};
+  if(_self.config.botOptions && _self.config.botOptions.userMailId){
+      jsonData['identity'] = _self.config.botOptions.userMailId;
+    }
   return $.ajax({
     url: options.koreAPIUrl + 'websdk/' + apiKey,
     type: 'post',
@@ -24728,9 +23405,9 @@ FindlySDK.prototype.getFeedBackResult = function () {
   }
   FindlySDK.prototype.focusInputTextbox = function () {
     var _self = this;
-    setTimeout(() => {
-      $('#search').focus();
-    }, 600);
+    // setTimeout(() => {
+    //   $('#search').focus();
+    // }, 600);
   };
   FindlySDK.prototype.renderWebForm = function (msgData, returnTemplate) {
     var _self = this;
@@ -24925,6 +23602,38 @@ FindlySDK.prototype.getFeedBackResult = function () {
     // $(".structured-data-wrp-content").removeClass("custom-faqs-wrp-content");
     // $(".moreStructredData").addClass("display-none");
   
+  FindlySDK.prototype.openExternalLink = function  (link_url,e) {
+    const me = this;
+    me.appendTextToSearchContainer('user', $(e.currentTarget).attr('data-title'));
+    const a = document.createElement('a');
+    $('.search-chat-container').append(a);
+    a.href = link_url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';// for tabnabbing security attack
+    a.click();
+    $(a).remove();
+  }
+  FindlySDK.prototype.openPopup = function  (link_url) {
+    const me = this;
+    const popupHtml = $(me.getChatTemplate('popup')).tmpl({
+      link_url,
+    });
+    $('.search-chat-container').append(popupHtml);
+    me.popupOpened = true;
+    me.bindIframeEvents($(popupHtml));
+  }
+  FindlySDK.prototype.getChatTemplate= function  (link_url) {
+    //chat templates
+  }
+  FindlySDK.prototype.bindIframeEvents= function  (html) {
+    //bind iframe events
+  }
+  function debounce(func, timeout = 300) {
+    var timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
 }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

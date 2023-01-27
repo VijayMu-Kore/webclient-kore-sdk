@@ -37,7 +37,7 @@ class CarouselTemplate {
         // _chatContainer.animate({
         //   scrollTop: _chatContainer.prop('scrollHeight'),
         // }, 0);
-        chatWindowInstance.scrollTop();
+        // chatWindowInstance.scrollTop();
       });
       me.bindEvents(me.messageHtml);
       return me.messageHtml;
@@ -48,7 +48,7 @@ class CarouselTemplate {
     const me: any = this;
     let $ = me.hostInstance.$;
     const chatWindowInstance = me.hostInstance;
-    $(messageHtml).off('click', '.carouselImageContent').on('click', '.carouselImageContent', (e: any) => {
+    $(messageHtml).off('click', '.carouselImageContent, .carouselButton').on('click', '.carouselImageContent, .carouselButton', (e: any) => {
       e.preventDefault();
       e.stopPropagation();
       const selectedTarget = e.currentTarget;
@@ -60,6 +60,7 @@ class CarouselTemplate {
         //chatWindowInstance.assignValueToInput($(selectedTarget).attr('actual-value') || $(selectedTarget).attr('value'));
         // var _innerText = $(this)[0].innerText.trim() || $(this).attr('data-value').trim();
         const _innerText = ($(selectedTarget)[0] && $(selectedTarget)[0].innerText) ? $(selectedTarget)[0].innerText.trim() : '' || ($(selectedTarget) && $(selectedTarget).attr('data-value')) ? $(selectedTarget).attr('data-value').trim() : '';
+        chatWindowInstance.appendTextToSearchContainer('user', $(e.currentTarget).attr('data-title'));
         chatWindowInstance.sendMessage($(selectedTarget).attr('actual-value') || $(selectedTarget).attr('value'),{renderMsg:_innerText});
       } else if (type == 'url' || type == 'web_url') {
         if ($(selectedTarget).attr('msgData') !== undefined) {
@@ -89,6 +90,7 @@ class CarouselTemplate {
       //   _chatInput.focus();
       // }, 600);
     });
+    
   }
 
   getTemplateString() {
@@ -101,7 +103,7 @@ class CarouselTemplate {
                 {{if msgData.message[0].component.payload.text}}<div class="messageBubble tableChart">\
                     <span>{{html helpers.convertMDtoHTML(msgData.message[0].component.payload.text, "bot")}}</span>\
                 </div>{{/if}}\
-                <div class="carousel" id="carousel-one-by-one" style="height: 0px;">\
+                <div class="carousel" id="carousel-one-by-one">\
                     {{each(key, msgItem) msgData.message[0].component.payload.elements}} \
                         <div class="slide">\
                             {{if msgItem.image_url}} \
@@ -112,10 +114,10 @@ class CarouselTemplate {
                             <div class="carouselTitleBox"> \
                                 <p class="carouselTitle">{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.title, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.title, "user")}} {{/if}}</p> \
                                 {{if msgItem.subtitle}}<p class="carouselDescription">{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "user")}} {{/if}}</p>{{/if}} \
-                                {{if msgItem.default_action && msgItem.default_action.type === "web_url"}}<div class="listItemPath carouselDefaultAction" type="url" url="${msgItem.default_action.url}">${msgItem.default_action.url}</div>{{/if}} \
+                                {{if msgItem.default_action && msgItem.default_action.type === "web_url"}}<div class="listItemPath carouselDefaultAction" type="url" url="${msgItem.default_action.url}" title="${msgItem.default_action.url}">${msgItem.default_action.url}</div>{{/if}} \
                                 {{if msgItem.buttons}} \
                                     {{each(key, msgBtn) msgItem.buttons}} \
-                                        <div {{if msgBtn.payload}}value="${msgBtn.payload}"{{/if}} {{if msgBtn.url}}url="${msgBtn.url}"{{/if}} class="listItemPath carouselButton" data-value="${msgBtn.value}" type="${msgBtn.type}">\
+                                        <div {{if msgBtn.payload}}value="${msgBtn.payload}"{{/if}} {{if msgBtn.url}}url="${msgBtn.url}"{{/if}} class="listItemPath carouselButton" data-value="${msgBtn.value}" type="${msgBtn.type}" data-title="${msgBtn.title}">\
                                             ${msgBtn.title}\
                                         </div> \
                                     {{/each}} \

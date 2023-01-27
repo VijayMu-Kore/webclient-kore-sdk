@@ -24,19 +24,19 @@ First, install kore web SDK via the [npm](https://www.npmjs.com/get-npm) package
 npm install --save git+ssh://github.com/Koredotcom/SearchAssist-web-sdk#branchNAME
 ```
 
-Get chatWindow and chatConfig
+Get KRSearch and KRSearchConfig
 
 ```js
-import { chatConfig, chatWindow } from 'kore-web-sdk';
+import { KRSearch, KRSearchConfig } from 'kore-web-sdk';
 
 ```
-Configure ChatConfig
+Configure KRSearchConfig
 
 
 
 ```js
 
-let botOptions=chatConfig.botOptions;
+let botOptions=KRSearchConfig.botOptions;
 	
  botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";
  botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';// Provide users email id here
@@ -52,10 +52,12 @@ let botOptions=chatConfig.botOptions;
 ```
 
 
-Create chat window instance and trigger show method
+Create searchassist chat window instance and trigger show method
 ```js
-var chatWindowInstance = new chatWindow(chatConfig);
-chatWindowInstance.show(chatConfig);
+
+KRSearchConfig.API_KEY_CONFIG.KEY="PLEASE_ENTER_API_KEY_HERE";
+var KRSearchInstance = new KRSearch(KRSearchConfig);
+KRSearchInstance.show(KRSearchConfig);
 
 ```
 ### Examples
@@ -69,14 +71,14 @@ include the following script in your html file and configure bot configurations
 
 ```js
 
-<script  src="https://cdn.jsdelivr.net/gh/Koredotcom/web-kore-sdk@v2-9.3.0/dist/umd/kore-web-sdk-umd-chat.min.js"></script>
+<script  src="https://cdn.jsdelivr.net/gh/Koredotcom/SearchAssist-web-sdk@BranchName/dist/umd/kore-web-sdk-umd-search.js"></script>
 <script>
-        //chat window declaration
-        var chatConfig=KoreChatSDK.chatConfig;
-        var chatWindow=KoreChatSDK.chatWindow;
+        //searchassist chat window declaration
+        var KRSearchConfig=KoreSearchSDK.KRSearchConfig;
+        var KRSearch=KoreSearchSDK.KRSearch;
         
-        //create chat window instance
-        var chatWindowInstance = new chatWindow();
+        //create searchassist  chat window instance
+        var KRSearchInstance = new KRSearch();
 
         //configure bot configurations
         var botOptions=chatConfig.botOptions;
@@ -85,14 +87,17 @@ include the following script in your html file and configure bot configurations
         botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
         botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
         botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+
+        KRSearchConfig.API_KEY_CONFIG.KEY="PLEASE_ENTER_API_KEY_HERE";
+
 	/* 
 	Important Note: These keys are provided here for quick demos to generate JWT token at client side but not for Production environment.
 	Refer below document for JWT token generation at server side. Client Id and Client secret should maintained at server end.
 	https://developer.kore.ai/docs/bots/sdks/user-authorization-and-assertion/
 	**/
 
-        //show chatwindow
-        chatWindowInstance.show(chatConfig);
+        //show searchassist chatwindow
+        KRSearchInstance.show(KRSearchConfig);
 
 </script>
 
@@ -131,7 +136,7 @@ class customTemplateComponent{
   } 
 }
 
-chatWindowInstance.templateManager.installTemplate(new customTemplateComponent());
+KRSearchInstance.templateManager.installTemplate(new customTemplateComponent());
 ```
 Other framework UI components like angular and react can also be injected with this
 
@@ -144,7 +149,7 @@ class KoreCustomPlugin{
   
 }
 
-chatWindowInstance.installPlugin(new KoreCustomPlugin());
+KRSearchInstance.installPlugin(new KoreCustomPlugin());
 ```
 Kore offered plugins are listed [here](./docs/plugins)
 

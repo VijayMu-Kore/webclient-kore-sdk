@@ -3,7 +3,7 @@
 ###### Preview
 
 
-![FinalResultsTemplate](https://user-images.githubusercontent.com/58174664/148943771-aeb8404e-37ea-419b-b80d-ee222b526b9e.PNG)
+![FinalResultsTemplate](https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/sdk2.0_doc_templates/finalResultsTemplate.PNG)
 
 
 

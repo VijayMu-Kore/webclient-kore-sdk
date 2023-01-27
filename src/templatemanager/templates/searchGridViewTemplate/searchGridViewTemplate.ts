@@ -82,11 +82,11 @@ class SearchGridViewTemplate {
                 <img src="${data.img}" />\
                 </div>\
                 {{/if}}\
-                    <span>{{html helpers.convertMDtoHTML(data.heading)}}</span>\
+                    <span class="{{if data.img.length}}two-line-title-heading{{else}}title-heading {{/if}}">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
                 </div>\
                 {{/if}}\
                 {{if data.description}}\
-                <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                <div class="desc_text_info {{if listType==" classic"}}clamp-text{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 {{/if}}\
                 </div>\
             </div>\
@@ -166,7 +166,7 @@ class SearchGridViewTemplate {
                 {{if data.description.length}}\
                 <div class="desc-text clamp-text" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 {{/if}}\
-                <div class="price-tag">$156</div>\
+                <div class="price-tag display-none">$156</div>\
             </div>\
         </div>\
         {{/each}}\
