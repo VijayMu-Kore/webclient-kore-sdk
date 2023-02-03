@@ -3661,6 +3661,14 @@ var bankingFeedbackTemplate = '<script id="chat-window-listTemplate" type="text/
 				$(".emojiComponent .emoji-rating").removeClass("active");
 				$(".emojiElement").remove();
 			}
+			if($(messageHtml).find(".thumpsUpDownComponent .emoji-rating.active").length!=="0"){
+				$(".thumpsUpDownComponent .emoji-rating").removeClass("active");
+				$(".emojiElement").remove();
+			}
+			if($(messageHtml).find(".numbersComponent .numbers-rating.active").length!=="0"){
+				$(".numbersComponent .numbers-rating").removeClass("active");
+				$(".emojiElement").remove();
+			}
 			var emojiValue=$(this).attr("value");
 			$(e.currentTarget).addClass("active");
 			if($(messageHtml).find(".emojiComponent.version2").length === 0 && $(messageHtml).find(".thumpsUpDownComponent").length === 0 && $(messageHtml).find('.numbersComponent').length === 0){
@@ -3730,7 +3738,11 @@ var bankingFeedbackTemplate = '<script id="chat-window-listTemplate" type="text/
 				}else{
 					var messageDisplay=$(".suggestionInput").val();
 					chatInitialize.renderMessage(msgData);
+					if(messageDisplay){
                     chatInitialize.sendMessage($('.chatInputBox').text(emojiValue +" :"+ messageDisplay),emojiValue +" :"+ messageDisplay);
+					}else{
+						chatInitialize.sendMessage($('.chatInputBox').text(emojiValue),emojiValue);
+					}
 				}
 				bottomSliderAction("hide");
 				msgData.message[0].component.payload.sliderView=true;
