@@ -35,7 +35,7 @@ findlyConfig.botOptions = {
       "hostname": "searchassist-qa.kore.ai"
   },
   JWTUrl : "https://searchassist-qa.kore.ai/searchassistapi/users/sts?rnd=fle73l",
-  accessToken:"5KLHDK84q687QeLpeXPHbN5lR9-EHkRVOIGjTnfJ43Ofz2TgP1cVfZOm0EzHDt09"
+  accessToken:"TGRF37391VWUK74TL3bCEH54xF6_j4G4DgYHBtlAZT0YZVIA4-ZQQ2m1CRTuwodt"
 };
 findlyConfig.pickersConfig ={
   "showDatePickerIcon": false,
