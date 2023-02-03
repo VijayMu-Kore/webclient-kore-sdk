@@ -55,12 +55,12 @@ botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id he
 // botOptionsFindly.clientSecret = "S2K3A7tmcJjYVyIQIGeRCNJEQT6CFwJ5jiH34WQaG7U=";
 // botOptionsFindly.searchIndexID = "sidx-62909178-4ea3-5950-897f-b5f8f07626c0";
 botOptionsFindly.botInfo = {
-  chatBot: "snippet service now",
-  taskBotId: "st-7f788e46-d7f8-52fe-af29-a9ead1d72e74",
+  chatBot: "Assa_Abloy_Ai_Demo",
+  taskBotId: "st-abf9a36f-c6a9-5b6f-9b78-72a8569bbe3b",
 };
-botOptionsFindly.clientId = "cs-ea97ca2e-fd2e-52e5-9248-134293b8f2a8";
-botOptionsFindly.clientSecret = "MzNauDXFK2BLXWK5Y03yN8QezoE0b7CxDbKaYw78s4w=";
-botOptionsFindly.searchIndexID = "sidx-4ce752d6-eb64-5a85-be5d-ef88b0a1a07e";
+botOptionsFindly.clientId = "cs-cee60ada-14ac-5e20-9cea-7abc3f73bba0";
+botOptionsFindly.clientSecret = "kdW+hh5lzmNfeFz3rr/f72QK0xG79P9MN0iOXWg8HnM=";
+botOptionsFindly.searchIndexID = "sidx-cd61c787-fc9f-54ab-bd64-9911d2ded18d";
 // botOptionsFindly.botInfo = {
 //   chatBot: "7 DEC-22",
 //   taskBotId: "st-0e74a50d-6082-5f35-8ef7-12f05b67c6e0",

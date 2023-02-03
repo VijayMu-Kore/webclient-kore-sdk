@@ -44,7 +44,7 @@ class SnippetListTemplate {
         {{if snippetData && snippetData.source !== "Answered by AI"}}\
           <div class="snippet-source-block">\
             <div class="snippet-source-file-name  {{if !snippetData.source}} display-none {{/if}}">{{html snippetData?.source}}</div>\
-            <div class="snippet-source-url {{if !snippetData.page_url}} display-none {{/if}}"><span class="snippet-source-url-name">${snippetData?.page_url}</span><a href="${snippetData?.page_url}" target="_blank" target="_blank"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></a> </div>\
+            <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none {{/if}}"><span class="snippet-source-url-name">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/> </div></a>\
           </div>\
         {{/if}}\
         <div class="temp-footer-block">\

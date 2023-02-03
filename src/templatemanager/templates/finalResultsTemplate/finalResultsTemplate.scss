@@ -332,13 +332,19 @@
     padding: 0 0 10px 0;
 }
 
+#searchChatContainer .search-temp-one .top-header{
+    display: none !important;
+    }
+    #searchChatContainer .search-temp-one {
+        margin-top: -25px !important;
+    }
 .search-temp-one .top-header .top-header-with-img{
     display: flex;
     align-items: center;
     padding: 0 0 0px 0;
 }
-.search-temp-one .snippet-source-block{
-    
+.search-temp-one .snippet-source-block a{
+    text-decoration: none !important;
 }
 .search-temp-one .snippet-source-block .snippet-source-file-name{
     font-style: normal;
@@ -366,9 +372,10 @@ margin-bottom: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: 80%;
 }
 .search-temp-one .snippet-source-block .snippet-source-url a{
-    width: 22px;
+    width: 14px;
     margin-left: 10px;
 } 
 .search-temp-one .top-header .top-header-with-img .logo-span{
@@ -425,12 +432,12 @@ margin-bottom: 10px;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    padding: 10px 0 0px 0;
+    padding: 0px 0 0px 0;
     word-break: break-word;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 3;
+    // -webkit-box-orient: vertical;
+    // overflow: hidden;
 }
 .search-temp-one .temp-data-desc br:first-child {
     display: none;
@@ -441,7 +448,7 @@ margin-bottom: 10px;
     font-size: 14px;
     line-height: 20px;
     cursor: pointer;
-    display: none;
+    display: none !important;
 }
 .search-temp-one .temp-data-desc .desc-read-less{
     color: #0D6EFD;
@@ -452,7 +459,8 @@ margin-bottom: 10px;
     display: none;
 }
 .search-temp-one .temp-read-link{
-    display: flex;
+    /* display: flex; */
+    display: none !important;
     justify-content: end;
 }
 .search-temp-one .temp-read-link .desc-read-more,.search-temp-one .temp-read-link .desc-read-less{
@@ -461,7 +469,7 @@ margin-bottom: 10px;
     font-size: 14px;
     line-height: 20px;
     cursor: pointer;
-    display: none;
+    display: none !important;
 }
 
 .search-temp-one .temp-footer-block .temp-footer{
@@ -550,9 +558,9 @@ margin-bottom: 10px;
 			.list-temp-li {
 				list-style-type: decimal !important;
 				list-style-position: outside !important;
-				&:nth-child(n+5) {
-					display: none;
-				}
+				// &:nth-child(n+5) {
+				// 	display: none;
+				// }
 			}
 		}
 		.list-temp-ul.show-all-list {
@@ -568,7 +576,7 @@ margin-bottom: 10px;
 			font-size: 14px;
 			line-height: 20px;
 			cursor: pointer;
-			display: flex;
+			display: none !important;
 			align-items: center;
 			margin-right: 6px;
 			img {
