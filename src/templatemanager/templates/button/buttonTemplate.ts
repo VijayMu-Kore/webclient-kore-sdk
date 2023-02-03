@@ -33,6 +33,7 @@ class ButtonTemplate {
                 //chatWindowInstance.assignValueToInput($(selectedTarget).attr('actual-value') || $(selectedTarget).attr('value'));
                 // var _innerText = $(this)[0].innerText.trim() || $(this).attr('data-value').trim();
                 const _innerText = ($(selectedTarget)[0] && $(selectedTarget)[0].innerText) ? $(selectedTarget)[0].innerText.trim() : '' || ($(selectedTarget) && $(selectedTarget).attr('data-value')) ? $(selectedTarget).attr('data-value').trim() : '';
+                chatWindowInstance.appendTextToSearchContainer('user', $(e.currentTarget).attr('data-title'));
                 chatWindowInstance.sendMessage($(selectedTarget).attr('actual-value') || $(selectedTarget).attr('value'),{renderMsg:_innerText});
             } else if (type == 'url' || type == 'web_url') {
                 if ($(selectedTarget).attr('msgData') !== undefined) {
@@ -55,7 +56,7 @@ class ButtonTemplate {
                 if (a_link.indexOf('http:') < 0 && a_link.indexOf('https:') < 0) {
                     a_link = `http:////${a_link}`;
                 }
-                chatWindowInstance.openExternalLink(a_link);
+                chatWindowInstance.openExternalLink(a_link,e);
             }
             if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[1] === 'likeDiv') {
                 $('.likeImg').addClass('hide');
@@ -118,7 +119,7 @@ class ButtonTemplate {
                             </li>\
                             {{each(key, msgItem) msgData.message[0].component.payload.buttons}} \
                                 <a>\
-                                    <li {{if msgData}}msgData="${JSON.stringify(msgData)}"{{/if}} {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} {{if msgItem.payload}}actual-value="${msgItem.payload}"{{/if}} {{if msgItem.url}}url="${msgItem.url}"{{/if}} class="buttonTmplContentChild" data-value="${msgItem.value}" type="${msgItem.type}">\
+                                    <li {{if msgData}}msgData="${JSON.stringify(msgData)}"{{/if}} {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} {{if msgItem.payload}}actual-value="${msgItem.payload}"{{/if}} {{if msgItem.url}}url="${msgItem.url}"{{/if}} class="buttonTmplContentChild" data-value="${msgItem.value}" type="${msgItem.type}" data-title="${msgItem.title}">\
                                         ${msgItem.title}\
                                     </li> \
                                 </a> \

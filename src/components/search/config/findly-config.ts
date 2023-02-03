@@ -3,7 +3,7 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-dev.kore.ai"
+var paramUrl="searchassist-pilot.kore.ai"
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
@@ -47,20 +47,20 @@ botOptionsFindly.JWTUrl =
   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
-// botOptionsFindly.botInfo = {
-//   chatBot: "New zendesk after Nov 14",
-//   taskBotId: "st-3cd359e5-96c3-54a4-afbe-82cf46e208a3",
-// };
-// botOptionsFindly.clientId = "cs-3c5c78f4-289a-5745-aaa9-944658e9b075";
-// botOptionsFindly.clientSecret = "S2K3A7tmcJjYVyIQIGeRCNJEQT6CFwJ5jiH34WQaG7U=";
-// botOptionsFindly.searchIndexID = "sidx-62909178-4ea3-5950-897f-b5f8f07626c0";
 botOptionsFindly.botInfo = {
-  chatBot: "Assa_Abloy_Ai_Demo",
-  taskBotId: "st-abf9a36f-c6a9-5b6f-9b78-72a8569bbe3b",
+  chatBot: "New zFDA_Demo_V1",
+  taskBotId: "st-067b15b8-1f56-5d7f-bb80-31d65c92ab1c",
 };
-botOptionsFindly.clientId = "cs-cee60ada-14ac-5e20-9cea-7abc3f73bba0";
-botOptionsFindly.clientSecret = "kdW+hh5lzmNfeFz3rr/f72QK0xG79P9MN0iOXWg8HnM=";
-botOptionsFindly.searchIndexID = "sidx-cd61c787-fc9f-54ab-bd64-9911d2ded18d";
+botOptionsFindly.clientId = "cs-54f8e62b-f8a6-5d2f-aec3-ffb94b196ac6";
+botOptionsFindly.clientSecret = "04tiCrM1s+RqUhmArcsdIT/XVui6PVhIQosfFmhm0yU=";
+botOptionsFindly.searchIndexID = "sidx-37751d45-ee6a-55f5-8d19-bed46f1dc73b";
+// botOptionsFindly.botInfo = {
+//   chatBot: "SA demo",
+//   taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
+// };
+// botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
+// botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
+// botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
 // botOptionsFindly.botInfo = {
 //   chatBot: "7 DEC-22",
 //   taskBotId: "st-0e74a50d-6082-5f35-8ef7-12f05b67c6e0",
