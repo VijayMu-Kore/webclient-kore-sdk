@@ -3857,6 +3857,9 @@ display: none !important;
     box-shadow: 14px 4px 64px 12px rgb(18 61 101 / 40%), -16px -16px 64px 0 rgb(255 255 255 / 80%), inset -8px -6px 80px 0 rgb(255 255 255 / 18%);
 }
 //Feedback CSS Starts
+.builder-sdk .feedback-template-positions{
+    display: none !important;
+}
 .feedback-template-positions {
     background: #F3F8FF;
     border: 1px solid #F3F8FF;

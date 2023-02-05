@@ -76,14 +76,14 @@ class SearchListViewTemplate {
       .on("click", ".visibility", function (event: any) {
         // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
         if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-          hostWindowInstance.performRankActionsOnFullPage(
+          SearchListViewTemplate.prototype.postPerformRankingActions(me,
             event,
             { visible: false },
             hostWindowInstance.vars.searchObject.searchText,
             "visibility"
           );
         } else {
-          hostWindowInstance.performRankActionsOnFullPage(
+          SearchListViewTemplate.prototype.postPerformRankingActions(me,
             event,
             { visible: true },
             hostWindowInstance.vars.searchObject.searchText,
@@ -96,7 +96,7 @@ class SearchListViewTemplate {
     $(".customization")
       .off("click", ".unpin_added_result")
       .on("click", ".unpin_added_result", function (event: any) {
-        hostWindowInstance.performRankActionsOnFullPage(
+        SearchListViewTemplate.prototype.postPerformRankingActions(me,
           event,
           { pinIndex: -1 },
           hostWindowInstance.vars.searchObject.searchText,
@@ -117,12 +117,9 @@ class SearchListViewTemplate {
           } else {
             pinIndex = childNodes.indexOf(_selectedElement[0]);
           }
-          hostWindowInstance.performRankActionsOnFullPage(
-            event,
-            { pinIndex: pinIndex },
+          SearchListViewTemplate.prototype.postPerformRankingActions(me,event,{ pinIndex: pinIndex },
             hostWindowInstance.vars.searchObject.searchText,
-            "pinning"
-          );
+            "pinning");
         }
       });
     $(".customization")
@@ -146,13 +143,13 @@ class SearchListViewTemplate {
             action: "boosting"
           }
           /**  Emitting the Data to Host Instance */
-          hostWindowInstance.sendMessage(messageText, option, serverMessageObject, clientMessageObject)
-          // hostWindowInstance.performRankActionsOnFullPage(
-          //   event,
-          //   { boost: boostByValue },
-          //   hostWindowInstance.vars.searchObject.searchText,
-          //   "boosting"
-          // );
+          // hostWindowInstance.sendMessage(messageText, option, serverMessageObject, clientMessageObject)
+          SearchListViewTemplate.prototype.postPerformRankingActions(me,
+            event,
+            { boost: boostByValue },
+            hostWindowInstance.vars.searchObject.searchText,
+            "boosting"
+          );
         }
       });
     $(".customization")
@@ -167,7 +164,7 @@ class SearchListViewTemplate {
           );
           if (buryByValue > 0.25) {
             buryByValue = buryByValue - 0.25;
-            hostWindowInstance.performRankActionsOnFullPage(
+            SearchListViewTemplate.prototype.postPerformRankingActions(me,
               event,
               { boost: buryByValue },
               hostWindowInstance.vars.searchObject.searchText,
@@ -175,7 +172,7 @@ class SearchListViewTemplate {
             );
           } else if (buryByValue != 0) {
             buryByValue = 0.25 - buryByValue;
-            hostWindowInstance.performRankActionsOnFullPage(
+            SearchListViewTemplate.prototype.postPerformRankingActions(me,
               event,
               { boost: buryByValue },
               hostWindowInstance.vars.searchObject.searchText,
@@ -183,7 +180,7 @@ class SearchListViewTemplate {
             );
           } else {
             buryByValue = 0;
-            hostWindowInstance.performRankActionsOnFullPage(
+            SearchListViewTemplate.prototype.postPerformRankingActions(me,
               event,
               { boost: buryByValue },
               hostWindowInstance.vars.searchObject.searchText,
@@ -265,7 +262,9 @@ class SearchListViewTemplate {
           result.message[0].component.payload.isSearchSDK = false;
         }
       }
-      
+      if(result?.message[0].component?.payload?.viewType == 'Customize'){
+        result.message[0].component.payload.template_type = 'searchCustomizeListTemplate';
+      }
       const listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type)).tmpl(result?.message[0].component.payload);
       $(listHTML).find(".show-more-list").remove();
       $(
@@ -846,10 +845,11 @@ class SearchListViewTemplate {
                 </li>\
               {{/each}}\
               <div class="show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
-                  // <div>Show more <img src="{{if devMode}}assets/web-kore-sdk/demo/{{/if}}images/show_more.png" height="6" width="10" /></div>\
+              <div class="searchassist-show-more-button">Show more\
+              <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS4zNjQzNyA1LjE0OTQ5QzUuMTc0OTcgNS4zMzgzNyA0Ljg3NDgxIDUuMzQ5NDggNC42NzIzOSA1LjE4MjgyTDQuNjM1NjMgNS4xNDk0OUwwLjE1MDkyNyAwLjg3NzI2NUMtMC4wNTAzMDkxIDAuNjc2NTc5IC0wLjA1MDMwOTEgMC4zNTEyMDIgMC4xNTA5MjcgMC4xNTA1MTVDMC4zNDAzMjYgLTAuMDM4MzY2NCAwLjY0MDQ4IC0wLjA0OTQ3NzMgMC44NDI5MDkgMC4xMTcxODNMMC44Nzk2NjggMC4xNTA1MTVMNSA0LjA1OTI4TDkuMTIwMzMgMC4xNTA1MTVDOS4zMDk3MyAtMC4wMzgzNjY0IDkuNjA5ODggLTAuMDQ5NDc3MyA5LjgxMjMxIDAuMTE3MTgzTDkuODQ5MDcgMC4xNTA1MTVDMTAuMDM4NSAwLjMzOTM5NyAxMC4wNDk2IDAuNjM4NzMxIDkuODgyNSAwLjg0MDYwN0w5Ljg0OTA3IDAuODc3MjY1TDUuMzY0MzcgNS4xNDk0OVoiIGZpbGw9IiM1RjYzNjgiLz4KPC9zdmc+Cg==">\
+              </div>\
             </div>\
             </ul>\
-            <!-- <div class="moreStructredData custom-show-more-container {{if isFullResults == true}} {{if selectedFacet != appearanceType}} display-block{{/if}}{{/if}}">Show All</div> -->\
           {{/if}}\
       </div>\
     </div>\
@@ -865,6 +865,13 @@ class SearchListViewTemplate {
 
   }
 
+  postPerformRankingActions(me:any,event:any,pinObj:object,searchText:string,actionType:string){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    hostWindowInstance.performRankActionsOnFullPage(event,pinObj,searchText,actionType).then((result: any) => {
+      $(".custom-header-nav-link-item")[1].click();
+    })
+  }
 }
 
 export default SearchListViewTemplate;
