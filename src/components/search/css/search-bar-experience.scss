@@ -23,34 +23,6 @@ body::-webkit-scrollbar {
   -webkit-transition: background-color 0.2s linear, width 0.2s ease-in-out;
 }
 
-/* Templates styles  */
-
-
-/* Structured data */
-
-
-
-/* New Styles */
-
-
-
-
-
-
-
-/* Radio Buttons */
-
-
-
-
-
-
-
-
-
-
-
-
 .topdown-search-main-container {
   height: 100%;
   /* background: linear-gradient(106.58deg, rgba(0, 0, 0, 0.66) 35.56%, rgba(0, 0, 0, 0) 79.55%); */
@@ -594,7 +566,7 @@ body::-webkit-scrollbar {
     .query-analytics-control-container{
       position: absolute;
       display: block;
-      bottom: -22px;
+      bottom: -34px;
       right: 0;
       color: #9B9B9B;
       font-weight: normal;
@@ -613,6 +585,7 @@ body::-webkit-scrollbar {
         vertical-align: middle;
       }
     }
+    
     span{
       letter-spacing: normal;
       color: #161620;
@@ -675,7 +648,18 @@ body::-webkit-scrollbar {
     }
   }
 }
-
+.builder-sdk {
+  .sdk-chat-container{
+    .messageBubble{
+      .userMessage{
+        margin-bottom: 35px;
+        .query-analytics-control-container{
+          // display: block;
+        }
+      }
+    }
+   }
+} 
 
 // Checkbox radio Buttons
 .custom_checkbox{
@@ -1026,4 +1010,20 @@ body::-webkit-scrollbar {
       color: var(--sdk-gray-color);
     }
   }
+}
+.sdk-top-down-interface .search-input-box .search-box-container-data .kore-sponsored {
+  position: absolute;
+  display: block;
+  right: 72px;
+  top: -30px;
+  z-index: 1;
+  padding: 3px 5px;
+}
+.top-down-search-background-div .search-input-box .search-box-container-data .kore-sponsored {
+  position: absolute;
+  display: block;
+  right: 72px;
+  top: -30px;
+  z-index: 1;
+  padding: 3px 5px;
 }
