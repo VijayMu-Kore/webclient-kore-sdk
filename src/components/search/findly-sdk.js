@@ -7435,16 +7435,22 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         : ".search-data-container";
         var snippetObj={};
         if(res?.graph_answer?.payload?.center_panel){
-          if(Object.keys(res.graph_answer.payload.center_panel).length>0){
+          if(Object.keys(res.graph_answer.payload?.center_panel).length>0){
             var listSnippetData = '';
             if(['paragraph_snippet','answer_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              listSnippetData = helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer);
+              listSnippetData = helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content);
             } else {
-              var listSnippetData = (helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)).split('<br /> * ');
+              var listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content //(helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content)).split('<br /> * ');
               var filterData = listSnippetData.filter(e => e == " ");
               filterData.forEach(f => listSnippetData.splice(listSnippetData.findIndex(e => e == f),1));
             }
-            snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,'template_type':res?.graph_answer?.payload?.center_panel?.type}; 
+            snippetObj = {'title':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title,
+            'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,
+            'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,
+            'template_type':res?.graph_answer?.payload?.center_panel?.type,
+            'searchQuery': _self.vars.searchObject.searchText,
+            'displayFeedback':_self.vars.feedBackExperience.smartAnswer
+          };
           }
           else{
             snippetObj={};
@@ -10181,7 +10187,7 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
         searchConfig.interactionsConfig.liveSearchResultsLimit;
       searchConfiguration.feedbackExperience =
         searchConfig.interactionsConfig.feedbackExperience;
-        _self.vars.feedBackExperience = searchConfig.interactionsConfig.feedbackExperience.queryLevel;
+        _self.vars.feedBackExperience = searchConfig.interactionsConfig.feedbackExperience;
     } else {
       searchConfiguration.welcomeMsg = "Hello! How can I help you today?";
       searchConfiguration.welcomeMsgFillColor = "#3C4043";
@@ -23335,22 +23341,25 @@ FindlySDK.prototype.getFeedBackResult = function () {
   }
   })
   }
-  FindlySDK.prototype.updateFeedBackResult = function (type, text) {
+  FindlySDK.prototype.updateFeedBackResult = function (type,text,feedbackType,feedbackButton,feedbackInputText) {
   var _self = this;
   var url = _self.API.feedbackPostUrl;
   var payload = {
-  "feedbackLevel": "query",
-  "event": type,
-  "feedbackLevel": "query",
-  "indexPipelineId": _self.vars.experimentsObject.indexPipelineId,
-  "searchIndexId":_self.config.botOptions ? _self.config.botOptions.searchIndexID : '',
-  "isDev": _self.isDev,
-  "query": text ? text : _self.vars.searchObject.searchText,
-  "queryPipelineId": _self.vars.experimentsObject.queryPipelineId,//_self.API.pipelineId,
-  "relay": "default",
-  "searchRequestId": _self.vars.previousSearchObj.requestId,
-  "streamId": _self.API.streamId
-  }
+    "feedbackLevel": feedbackType,
+    "comments": {
+        "issueType": feedbackButton || '',
+        "text": feedbackInputText ||''
+    },
+    "event": type,
+    "indexPipelineId": _self.vars.experimentsObject.indexPipelineId,
+    "searchIndexId":_self.config.botOptions ? _self.config.botOptions.searchIndexID : '',
+    "isDev": _self.isDev,
+    "query": text ? text : _self.vars.searchObject.searchText,
+    "queryPipelineId":  _self.vars.experimentsObject.queryPipelineId,
+    "relay": "default",
+    "searchRequestId": _self.vars.previousSearchObj.requestId,
+    "streamId":  _self.API.streamId
+ }
   var headers = {};
   var bearer = "bearer " + this.bot.options.accessToken;
   headers["Authorization"] = bearer;
@@ -23384,14 +23393,15 @@ FindlySDK.prototype.getFeedBackResult = function () {
   $('.thumbs-up-top-down-blue').show();
   $('.thumbs-down-top-down-black').show();
   $('.thumbs-up-top-down-red').hide();
+  _self.updateFeedBackResult(type, text,'query');
   }
   else if (type === 'thumbsDown') {
   $('.thumbs-down-top-down-black').hide();
   $('.thumbs-up-top-down-red').show();
   $('.thumbs-up-top-down-black').show();
   $('.thumbs-up-top-down-blue').hide();
+  // $(messageHtml).find('#query-feedback').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, messageHtml));
   }
-  _self.updateFeedBackResult(type, text);
   });
   }
   FindlySDK.prototype.focusInputTextbox = function () {

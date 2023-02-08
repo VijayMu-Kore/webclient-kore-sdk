@@ -1,6 +1,7 @@
 
 import helpers from '../../../utils/helpers';
 import './snippetListTemplate.scss';
+import FeedBackFormTemplate from '../../templates/feedBackFormTemplate/feedBackFormTemplate';
 class SnippetListTemplate {
     renderMessage(msgData: any) {
         let me: any = this;
@@ -10,8 +11,10 @@ class SnippetListTemplate {
         if (msgData?.message?.[0]?.component?.payload?.template_type === "list_element_snippet" || msgData?.message?.[0]?.component?.payload?.template_type === "heading_snippet") {
             me.messageHtml = $(SnippetListTemplate.prototype.getTemplateString()).tmpl({
                 'snippetData': msgData?.message?.[0]?.component?.payload?.snippetData,
-                'helpers': helpersObj.helpers
+                'helpers': helpersObj.helpers,
+                'displayFeedback':msgData?.message?.[0]?.component?.payload?.feedbackDisplay
             });
+            me.feedBackTemplateObj = new FeedBackFormTemplate();
             setTimeout(()=>{
               SnippetListTemplate.prototype.bindSnippetEvents(me,me.messageHtml);
             },500)
@@ -52,6 +55,7 @@ class SnippetListTemplate {
                 {{if snippetData && snippetData.source === "Answered by AI"}}\
                 <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
                 {{/if}}\
+                {{if displayFeedback}}\
                 <div class="temp-right">\
                     <div class="is-it-usefull">Is it useful?</div>\
                     <div class="temp-fotter-actions">\
@@ -59,6 +63,8 @@ class SnippetListTemplate {
                         <img  class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
                     </div>\
                 </div>\
+                <div id="snippet-feedback-template"></div>\
+                {{/if}}\
             </div>\
         </div>\
     </div>\
@@ -70,6 +76,9 @@ class SnippetListTemplate {
         $(messageHtml).off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
           $(messageHtml).find('.snippet-feedback').removeClass('active');
           $(event.currentTarget).addClass('active');
+        });
+        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
+          // SnippetListTemplate.prototype.appendFeedBaackData(me,messageHtml)
         });
         
          if(messageHtml &&  $(messageHtml).find('.list-temp-ul').length){
@@ -86,6 +95,24 @@ class SnippetListTemplate {
         }
         
       }
+
+      
+    appendFeedBaackData(me: any, messageHtml: any){
+      let $ = me.hostInstance.$;
+      let feedbackMsgData = {
+      message: [{
+        component: {
+          type: 'template',
+          payload: {
+            template_type: "feedbackFormTemplate",
+            query:'opened Successfully'
+          }
+        }
+      }]
+    };
+      
+        $(messageHtml).find('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
+     } 
 }
 
 export default SnippetListTemplate;

@@ -5,6 +5,7 @@ import searchListViewTemplate from '../../templates/searchListViewTemplate/searc
 import searchGridViewTemplate from '../../templates/searchGridViewTemplate/searchGridViewTemplate';
 import searchCarouselViewTemplate from '../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
 import FullSearchResultsTemplate from '../../templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
+import FeedBackFormTemplate from '../../templates/feedBackFormTemplate/feedBackFormTemplate';
 import korejquery from "../../../libs/korejquery";
 const $ = korejquery;
 
@@ -27,6 +28,7 @@ class FinalResultsTemplate {
       me.gridTemplateObj = new searchGridViewTemplate();
       me.carouselTemplateObj = new searchCarouselViewTemplate();
       me.fullSearchTemplateObj = new FullSearchResultsTemplate();
+      me.feedBackTemplateObj = new FeedBackFormTemplate();
       FinalResultsTemplate.prototype.bindEvents(me, me.messageResultHtml, msgData);
       return me.messageResultHtml;
     }
@@ -109,7 +111,7 @@ class FinalResultsTemplate {
       var url = $(e.target).attr("snippetURL");
       window.open(url, '_blank','noopener');
     })
-    FinalResultsTemplate.prototype.bindSnippetEvents(messageHtml)
+    FinalResultsTemplate.prototype.bindSnippetEvents(me,messageHtml)
   }
   getTemplateString(type: any) {
     var finalResultsTemplate = '<script type="text/x-jqury-tmpl">\
@@ -126,7 +128,7 @@ class FinalResultsTemplate {
           </div>\
           </div>\
         {{/if}}\
-        {{if snippetData && snippetData?.title}}\
+        {{if snippetData && snippetData?.searchQuery}}\
         {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
           <div class="search-temp-one snippet-margin">\
             <div class="top-header">\
@@ -138,6 +140,7 @@ class FinalResultsTemplate {
                 <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
                 {{/if}}\
             </div>\
+            {{if snippetData && snippetData.title}}<div class="paragraph-temp-header">{{html snippetData?.title}}</div>{{/if}}\
             <div class="temp-data-desc">\
             {{html snippetData?.answer}}\
             </div>\
@@ -155,6 +158,7 @@ class FinalResultsTemplate {
                     {{if snippetData && snippetData.source === "Answered by AI"}}\
                     <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
                     {{/if}}\
+                    {{if snippetData.displayFeedback == true}}\
                     <div class="temp-right">\
                         <div class="is-it-usefull">Is it useful?</div>\
                         <div class="temp-fotter-actions">\
@@ -162,11 +166,13 @@ class FinalResultsTemplate {
                             <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
                         </div>\
                     </div>\
+                    {{/if}}\
                 </div>\
             </div>\
+            <div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>\
         </div>\
         {{/if}}\
-        {{if snippetData.template_type =="list_element_snippet" || snippetData.template_type =="heading_snippet"}}\
+        {{if snippetData.template_type =="list_element_snippet" || snippetData.template_type =="headings_snippet"}}\
     <div class="search-temp-one list-snippet-temp snippet-margin">\
         <div class="top-header">\
             <div class="top-header-with-img">\
@@ -199,6 +205,7 @@ class FinalResultsTemplate {
                 {{if snippetData && snippetData.source === "Answered by AI"}}\
                 <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
                 {{/if}}\
+                {{if snippetData.displayFeedback == true}}\
                 <div class="temp-right">\
                     <div class="is-it-usefull">Is it useful?</div>\
                     <div class="temp-fotter-actions">\
@@ -206,12 +213,14 @@ class FinalResultsTemplate {
                         <img  class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
                     </div>\
                 </div>\
+                {{/if}}\
             </div>\
         </div>\
+        <div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>\
     </div>\
     {{/if}}\
     {{/if}}\
-      <div class="finalResults {{if snippetData && snippetData?.title}}snippet-margin{{/if}}">\
+      <div class="finalResults {{if snippetData && snippetData?.searchQuery}}snippet-margin{{/if}}">\
         {{if taskPrefix === "SUGGESTED"}}\
         <span class="live-search-close-icon show-all-results">See All Results</span>\
         {{/if}}\
@@ -243,12 +252,16 @@ class FinalResultsTemplate {
     let me: any = this;
     me.hostInstance.botActionTrigger(event);
   };
-  bindSnippetEvents(messageHtml:any){
-    $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event) {
+  bindSnippetEvents(me:any,messageHtml:any){
+    let $ = me.hostInstance.$;
+    $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
       $(messageHtml).find('.snippet-feedback').removeClass('active');
       $(event.currentTarget).addClass('active');
     });
-    
+    $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
+      event.stopImmediatePropagation()
+      FinalResultsTemplate.prototype.appendFeedBaackData(me,messageHtml,'smartAnswer')
+    });
     if(messageHtml &&  $(messageHtml).find('.search-temp-one').find('.temp-data-desc').length){
       setTimeout(()=>{
         if($(messageHtml).find('.search-temp-one').last().find('.temp-data-desc').length && $(messageHtml).find('.search-temp-one').last().find('.temp-data-desc')[0].scrollHeight>70){
@@ -258,32 +271,43 @@ class FinalResultsTemplate {
           $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').hide();
           $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
         }
-        $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+        $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event:any) {
           $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','initial');
           $(event.currentTarget).hide();
           $(event.currentTarget).parent().find('.desc-read-less').show();
         });
-        $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+        $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event:any) {
           $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','3');
           $(event.currentTarget).parent().find('.desc-read-more').show();
           $(event.currentTarget).hide();
         });
       },300)
     }else if(messageHtml &&  $(messageHtml).find('.search-temp-one').find('.list-temp-ul').length){
-      $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+      $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event:any) {
         $(messageHtml).find('.list-temp-ul').addClass('show-all-list');
         $(messageHtml).find('.desc-read-more').removeClass('display-block').addClass('display-none');
         $(messageHtml).find('.desc-read-less').removeClass('display-none').addClass('display-block');
       });
-      $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+      $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event:any) {
         $(messageHtml).find('.list-temp-ul').removeClass('show-all-list');
         $(messageHtml).find('.desc-read-less').removeClass('display-block').addClass('display-none');
         $(messageHtml).find('.desc-read-more').removeClass('display-none').addClass('display-block');
       });
     }
-    
   }
+
+  appendFeedBaackData(me: any, messageHtml: any,feedBackType:any){
+    let $ = me.hostInstance.$;
+    let feedbackMsgData = {
+      'query':"opened SuccessFully",
+      'feedBackType':feedBackType,
+      'messageHtml':messageHtml
+
+    };
+      $(messageHtml).find('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
+   }
   $ = $;
+ 
 }
 FinalResultsTemplate.prototype.$ = $;
 export default FinalResultsTemplate;

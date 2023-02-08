@@ -3,7 +3,7 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-pilot.kore.ai"
+var paramUrl="searchassist-app.kore.ai"
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
@@ -48,12 +48,12 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "New zFDA_Demo_V1",
-  taskBotId: "st-067b15b8-1f56-5d7f-bb80-31d65c92ab1c",
+  chatBot: "feb 3 snippets",
+  taskBotId: "st-9da26062-9cfd-54fd-8713-ab61e339332f",
 };
-botOptionsFindly.clientId = "cs-54f8e62b-f8a6-5d2f-aec3-ffb94b196ac6";
-botOptionsFindly.clientSecret = "04tiCrM1s+RqUhmArcsdIT/XVui6PVhIQosfFmhm0yU=";
-botOptionsFindly.searchIndexID = "sidx-37751d45-ee6a-55f5-8d19-bed46f1dc73b";
+botOptionsFindly.clientId = "cs-8787d4d1-14c0-5b86-ae53-2fa2f4718e68";
+botOptionsFindly.clientSecret = "ELQWK/K6Te54FPxvits4AWe1TzRF5ysO2Rs9ng/HRss=";
+botOptionsFindly.searchIndexID = "sidx-6219f0c9-512f-58b6-8bf2-20b0c6f0949b";
 // botOptionsFindly.botInfo = {
 //   chatBot: "SA demo",
 //   taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
