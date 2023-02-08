@@ -3,7 +3,7 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-app.kore.ai"
+var paramUrl="searchassist-dev.kore.ai"
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
@@ -47,13 +47,13 @@ botOptionsFindly.JWTUrl =
   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
-botOptionsFindly.botInfo = {
-  chatBot: "feb 3 snippets",
-  taskBotId: "st-9da26062-9cfd-54fd-8713-ab61e339332f",
-};
-botOptionsFindly.clientId = "cs-8787d4d1-14c0-5b86-ae53-2fa2f4718e68";
-botOptionsFindly.clientSecret = "ELQWK/K6Te54FPxvits4AWe1TzRF5ysO2Rs9ng/HRss=";
-botOptionsFindly.searchIndexID = "sidx-6219f0c9-512f-58b6-8bf2-20b0c6f0949b";
+// botOptionsFindly.botInfo = {
+//   chatBot: "feb 3 snippets",
+//   taskBotId: "st-9da26062-9cfd-54fd-8713-ab61e339332f",
+// };
+// botOptionsFindly.clientId = "cs-8787d4d1-14c0-5b86-ae53-2fa2f4718e68";
+// botOptionsFindly.clientSecret = "ELQWK/K6Te54FPxvits4AWe1TzRF5ysO2Rs9ng/HRss=";
+// botOptionsFindly.searchIndexID = "sidx-6219f0c9-512f-58b6-8bf2-20b0c6f0949b";
 // botOptionsFindly.botInfo = {
 //   chatBot: "SA demo",
 //   taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
@@ -83,6 +83,16 @@ botOptionsFindly.searchIndexID = "sidx-6219f0c9-512f-58b6-8bf2-20b0c6f0949b";
 // botOptionsFindly.clientId = "cs-4f4e9434-eca4-566a-9d90-7b7dbed81320";
 // botOptionsFindly.clientSecret = "EmgxDGZV8dZhm9pGQePqVeb1CXxlrcD0RwWnize0ass=";
 // botOptionsFindly.searchIndexID = "sidx-88a143e1-2447-5d67-b26a-78cf5f97d407";
+//dev
+botOptionsFindly.botInfo = {
+  chatBot: "Assa_Abloy_Ai_Demo",
+  taskBotId: "st-abf9a36f-c6a9-5b6f-9b78-72a8569bbe3b",
+};
+botOptionsFindly.clientId = "cs-cee60ada-14ac-5e20-9cea-7abc3f73bba0";
+botOptionsFindly.clientSecret = "kdW+hh5lzmNfeFz3rr/f72QK0xG79P9MN0iOXWg8HnM=";
+botOptionsFindly.searchIndexID = "sidx-cd61c787-fc9f-54ab-bd64-9911d2ded18d";
+
+
 // To modify the web socket url use the following option
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {

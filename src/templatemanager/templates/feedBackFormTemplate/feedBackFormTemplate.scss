@@ -23,14 +23,12 @@
     right: 30px;
     border-radius: 6px;
 }
-#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp:before{
-    background: red;
-    height: 100%;
-}
+
+
 #snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn{
     margin-right: 20px;
 }
-#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn.active{
+.temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn.active{
     border: 1px solid #0D6EFD;
 }
 #snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-block{
@@ -62,40 +60,8 @@ display: none;
     padding: 20px 20px;
     z-index: 20;
 }
-#searchChatContainer #query-feedback .snippet-bg-blur{
-    background: #8080804a;
-    width: 485px !important;
-    height: calc(100vh - 133px);
-    position: fixed;
-    bottom: 75px;
-    right: 30px;
-    border-radius: 6px;
-}
-#query-feedback.sinnpet-feedback-template-assiatance-temp:before{
-    background: red;
-    height: 100%;
-}
-#query-feedback.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn{
-    margin-right: 20px;
-}
-#query-feedback.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn.active{
-    border: 1px solid #0D6EFD;
-}
-#query-feedback.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-block{
-    width: 100%;
-}
 
-#query-feedback.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-btn-secondary{
-    width: 50%;
-}
 
-#query-feedback.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-btn-primary{
-    width: 50%;
-}
-
-#query-feedback.sinnpet-feedback-template-assiatance-temp .temp-feed-back-header-block .temp-right-indicator-block{
-display: none;
-}
 .temp-footer-block .temp-feed-back-form{
     box-shadow: 0px 5px 26px rgb(32 33 36 / 25%);
     border-radius: 8px;
@@ -230,4 +196,24 @@ box-shadow: none;
 .temp-feed-back-footer-block .temp-feed-back-footer-btn-primary:hover{
     background: #0156d4;
     color: #fff;
+}
+#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-opt-ans .input-text{
+    width: 100%;
+}
+#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form {
+    width: 99%;
+    right: 2px;
+    bottom: 13px;
+}
+
+.sinnpet-feedback-template-assiatance-temp{
+    .snippet-bg-blur{
+        background: #8080804a;
+        width: 485px !important;
+        height: calc(100vh - 54px);
+        position: fixed;
+        bottom: 31px;
+        right: 30px;
+        border-radius: 6px;
+    }
 }

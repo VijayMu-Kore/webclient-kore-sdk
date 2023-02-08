@@ -823,6 +823,7 @@ class FullSearchResultsTemplate {
     $('.thumbs-up-top-down-blue').show();
     $('.thumbs-down-top-down-black').show();
     $('.thumbs-up-top-down-red').hide();
+    hostWindowInstance.updateFeedBackResult(type, text,'query');
     }
     else if (type === 'thumbsDown') {
     $('.thumbs-down-top-down-black').hide();
@@ -830,7 +831,6 @@ class FullSearchResultsTemplate {
     $('.thumbs-up-top-down-black').show();
     $('.thumbs-up-top-down-blue').hide();
     }
-    hostWindowInstance.updateFeedBackResult(type, text);
     });
     if (feedbackData === null) {
     $('.thumbs-up-top-down-blue, .thumbs-up-top-down-red').hide();

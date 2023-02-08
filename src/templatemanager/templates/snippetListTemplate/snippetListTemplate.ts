@@ -16,7 +16,7 @@ class SnippetListTemplate {
             });
             me.feedBackTemplateObj = new FeedBackFormTemplate();
             setTimeout(()=>{
-              SnippetListTemplate.prototype.bindSnippetEvents(me,me.messageHtml);
+              SnippetListTemplate.prototype.bindSnippetEvents(me,me.messageHtml,msgData?.message?.[0]?.component?.payload?.snippetData);
             },500)
             return me.messageHtml;
         }
@@ -71,14 +71,18 @@ class SnippetListTemplate {
           </script>';
         return snippetListTemplate;
     }
-    bindSnippetEvents(me:any,messageHtml:any){
+    bindSnippetEvents(me:any,messageHtml:any, snippetData:any){
       let $ = me.hostInstance.$;
-        $(messageHtml).off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
+      let hostInstance= me.hostInstance;
+      $(messageHtml).off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
           $(messageHtml).find('.snippet-feedback').removeClass('active');
           $(event.currentTarget).addClass('active');
         });
         $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
-          // SnippetListTemplate.prototype.appendFeedBaackData(me,messageHtml)
+          SnippetListTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
+        });
+        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-dislike-img', function (event:any) {
+          hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
         });
         
          if(messageHtml &&  $(messageHtml).find('.list-temp-ul').length){
@@ -97,7 +101,7 @@ class SnippetListTemplate {
       }
 
       
-    appendFeedBaackData(me: any, messageHtml: any){
+    appendFeedBaackData(me: any, messageHtml: any,snippetData:any){
       let $ = me.hostInstance.$;
       let feedbackMsgData = {
       message: [{
@@ -105,7 +109,8 @@ class SnippetListTemplate {
           type: 'template',
           payload: {
             template_type: "feedbackFormTemplate",
-            query:'opened Successfully'
+            query: snippetData.searchQuery,
+            feedBackType:'smartAnswer'
           }
         }
       }]

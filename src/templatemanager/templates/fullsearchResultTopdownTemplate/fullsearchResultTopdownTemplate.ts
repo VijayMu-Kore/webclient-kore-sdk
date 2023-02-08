@@ -856,7 +856,19 @@ class FullSearchResultTopdownTemplate {
     $('.thumbs-up-top-down-red').show();
     $('.thumbs-up-top-down-black').show();
     $('.thumbs-up-top-down-blue').hide();
-    // $(messageHtml).find('#query-feedback').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, messageHtml));
+    let feedbackMsgData = {
+      message: [{
+        component: {
+          type: 'template',
+          payload: {
+            template_type: "feedbackFormTemplate",
+            query: hostWindowInstance?.vars?.searchObject.searchText || '',
+            feedBackType:'query'
+          }
+        }
+      }]
+    };
+    $(messageHtml).find('#query-feedback').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
     }
     });
     $('.thumbs-up-top-down-blue, .thumbs-up-top-down-red').hide();

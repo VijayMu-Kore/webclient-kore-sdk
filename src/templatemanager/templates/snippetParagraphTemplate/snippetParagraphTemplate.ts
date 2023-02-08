@@ -16,7 +16,7 @@ class SnippetParagraphTemplate {
             });
             me.feedBackTemplateObj = new FeedBackFormTemplate();
             setTimeout(()=>{
-              SnippetParagraphTemplate.prototype.bindSnippetEvents(me, me.messageHtml);
+              SnippetParagraphTemplate.prototype.bindSnippetEvents(me, me.messageHtml,msgData?.message?.[0]?.component?.payload?.snippetData);
             },500)
             return me.messageHtml;
         }
@@ -67,14 +67,18 @@ class SnippetParagraphTemplate {
       </script>';
         return snipppetParagaraphTemplate;
     }
-    bindSnippetEvents(me:any,messageHtml:any){
+    bindSnippetEvents(me:any,messageHtml:any, snippetData:any){
       let $ = me.hostInstance.$;
-        $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
+      let hostInstance= me.hostInstance;
+        $(messageHtml).off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
           $(messageHtml).find('.snippet-feedback').removeClass('active');
           $(event.currentTarget).addClass('active');
         });
         $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
-          // SnippetParagraphdTemplate.prototype.appendFeedBaackData(me,messageHtml)
+          SnippetParagraphTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
+        });
+        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-dislike-img', function (event:any) {
+          hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
         });
         
         if(messageHtml &&  $(messageHtml).find('.temp-data-desc').length){
@@ -101,7 +105,7 @@ class SnippetParagraphTemplate {
         
     }
 
-    appendFeedBaackData(me: any, messageHtml: any){
+    appendFeedBaackData(me: any, messageHtml: any,snippetData:any){
       let $ = me.hostInstance.$;
       let feedbackMsgData = {
         message: [{
@@ -109,7 +113,8 @@ class SnippetParagraphTemplate {
             type: 'template',
             payload: {
               template_type: "feedbackFormTemplate",
-              query:'opened Successfully'
+              query: snippetData.searchQuery,
+              feedBackType:'smartAnswer'
             }
           }
         }]

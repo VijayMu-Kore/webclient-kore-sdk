@@ -12,22 +12,23 @@ class FeedBackFormTemplate {
             'feedBackType':msgData?.message?.[0]?.component?.payload?.feedBackType,
             'helpers': helpersObj.helpers
         });
-        }
         setTimeout(()=>{
           FeedBackFormTemplate.prototype.bindFeedbackEvents(me,me.messageHtml,msgData.message[0].component.payload);
         },500)
             return me.messageHtml;
+          }
     }
     getTemplateString() {
       var feedBackFormTemplate  = '<script type="text/x-jqury-tmpl">\
+      <div class="snippet-bg-blur"></div>\
       <div class="temp-feed-back-form">\
       <div class="temp-feed-back-header-block">\
           <div class="temp-feed-back-header">\
               <div class="temp-feed-back-header-samll">Feedback for</div>\
-              <div class="temp-feed-back-header-large">${feedbackData}</div>\
+              <div class="temp-feed-back-header-large">“${feedbackData}”</div>\
           </div>\
-          <div class="close-feedback"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABxSURBVHgBhZDBDYAgDEV/xAXcoKs4iW7gCqzgRLiGJ7160hH8ak1IAW3yGiiPUOoADGQjB/IhpKuYGhK0kJOCOnd4shhZtObt7VguSlb+lN7ndkXigxpp46Pur3VLVvw07mE+mJMS2TH1ZC6IE54ZyglkyhuCR14v1QAAAABJRU5ErkJggg=="/></div>\
-          <div class="temp-right-indicator-block"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAnCAYAAAAPZ2gOAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAC5SURBVHgBrdfdDcMgDARgsDpIR+smTTdrJiMhiqL8APbZdxLC2NInXp1KKe9EjKzns6LfRIrs98RC5VRTULm9w6g0eiFUOn03KoOZCxVlDqMaCKMWEEKtoBlFQBOKgirqAYeoF+yiEbCJRsEHygAv6CvxUtGZ9cOaX875zwIrNtWCAR4YA7xgUfCBRcAm5gW7mAccYiioYghowqygGbOAEKaBMDYCXVgPdGMtMITdwTB2BinYFvYWsAC972TlmZX3fgAAAABJRU5ErkJggg=="/></div>\
+          <div class="close-feedback"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/feedback-close.png"/></div>\
+          <div class="temp-right-indicator-block"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/feedback-right-pointer.png"/></div>\
       </div>\
       <div class="temp-break-line"></div>\
       <div class="temp-feed-back-qns">What seems to be the issue?</div>\
@@ -52,26 +53,23 @@ class FeedBackFormTemplate {
     bindFeedbackEvents(me:any,messageHtml:any,payload:any){
       let hostWindowInstance = me.hostInstance;
       let $ = me.hostInstance.$;
-      $(messageHtml).find('.temp-feed-back-form').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
-        $(messageHtml).find('.snippet-feedback').removeClass('active');
-        $(event.currentTarget).addClass('active');
-      });
-      $(messageHtml).find('.temp-feed-back-form').off('click', '.close-feedback').on('click', '.close-feedback', function (event:any) {
+      $(messageHtml).off('click', '.close-feedback').on('click', '.close-feedback', function (event:any) {
         event.stopPropagation();
-        $(messageHtml).find('.temp-feed-back-form').parent().hide();
+        $(messageHtml).parent().empty();
       });
-      $(messageHtml).find('.temp-feed-back-form').off('click', '.temp-feed-back-ans-tag-btn').on('click', '.temp-feed-back-ans-tag-btn', function (event:any) {
+      $(messageHtml).off('click', '.temp-feed-back-ans-tag-btn').on('click', '.temp-feed-back-ans-tag-btn', function (event:any) {
         event.stopPropagation();
         $(messageHtml).find('.temp-feed-back-ans-tag-btn.active').removeClass('active');
         $(event.currentTarget).addClass('active');
       });
-      $(messageHtml).find('.temp-feed-back-form').off('click', '.submit-feedback').on('click', '.submit-feedback', function (event:any) {
+      $(messageHtml).off('click', '.submit-feedback').on('click', '.submit-feedback', function (event:any) {
         event.stopPropagation();
         var feedbackInputText = $(messageHtml).find('#feedback-input-text').val() ||'';
         var feedbackButton = $(messageHtml).find('.temp-feed-back-ans-tag-btn.active').html() || '';
         if(feedbackInputText || feedbackButton){
           hostWindowInstance.updateFeedBackResult('thumbsDown', payload?.query,payload?.feedBackType,feedbackButton,feedbackInputText)
-          payload?.feedBackType=='smartAnswer'? $(messageHtml).parent().closest('#snippet-feedback-template').empty(): $(messageHtml).parent().closest('#query-feedback-template').empty()
+          $('#snippet-feedback-template').empty();
+          $('#query-feedback').empty()
         }
       });
     }

@@ -169,7 +169,7 @@ class FinalResultsTemplate {
                     {{/if}}\
                 </div>\
             </div>\
-            <div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>\
+            <!--<div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>-->\
         </div>\
         {{/if}}\
         {{if snippetData.template_type =="list_element_snippet" || snippetData.template_type =="headings_snippet"}}\
@@ -216,7 +216,7 @@ class FinalResultsTemplate {
                 {{/if}}\
             </div>\
         </div>\
-        <div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>\
+        <!--<div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>-->\
     </div>\
     {{/if}}\
     {{/if}}\
@@ -254,13 +254,16 @@ class FinalResultsTemplate {
   };
   bindSnippetEvents(me:any,messageHtml:any){
     let $ = me.hostInstance.$;
+    let hostInstance= me.hostInstance;
     $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
       $(messageHtml).find('.snippet-feedback').removeClass('active');
       $(event.currentTarget).addClass('active');
     });
     $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
-      event.stopImmediatePropagation()
       FinalResultsTemplate.prototype.appendFeedBaackData(me,messageHtml,'smartAnswer')
+    });
+    $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-dislike-img', function (event:any) {
+      hostInstance.updateFeedBackResult('thumbsUp',hostInstance.searchQuery,'smartAnswer')
     });
     if(messageHtml &&  $(messageHtml).find('.search-temp-one').find('.temp-data-desc').length){
       setTimeout(()=>{
@@ -297,14 +300,21 @@ class FinalResultsTemplate {
   }
 
   appendFeedBaackData(me: any, messageHtml: any,feedBackType:any){
+    let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     let feedbackMsgData = {
-      'query':"opened SuccessFully",
-      'feedBackType':feedBackType,
-      'messageHtml':messageHtml
-
+      message: [{
+        component: {
+          type: 'template',
+          payload: {
+            template_type: "feedbackFormTemplate",
+            query: hostWindowInstance?.vars?.searchObject.searchText || '',
+            feedBackType:feedBackType
+          }
+        }
+      }]
     };
-      $(messageHtml).find('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
+      $('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
    }
   $ = $;
  
