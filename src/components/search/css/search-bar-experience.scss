@@ -1027,3 +1027,9 @@ body::-webkit-scrollbar {
   z-index: 1;
   padding: 3px 5px;
 }
+.sdk-top-down-interface  #conversations .search-container .userMessage .sdk-query-retry-icon, .sdk-top-down-interface  #conversations .search-container .userMessage .query-analytics-control-container{
+  display: none !important;
+}
+.builder-sdk.sdk-top-down-interface .top-down-search-background-div .topdown-search-main-container .all-result-container .full-results-data-container .back-search{
+  display: none;
+}

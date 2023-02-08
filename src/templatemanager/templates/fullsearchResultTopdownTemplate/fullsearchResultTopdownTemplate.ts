@@ -92,6 +92,8 @@ class FullSearchResultTopdownTemplate {
     FullSearchResultTopdownTemplate.prototype.bindBackToSearchClickEvent(me,messageHtml);
 
     FullSearchResultTopdownTemplate.prototype.bindCustomizePreviewClickEvent(me,messageHtml);
+    FullSearchResultTopdownTemplate.prototype.bindQueryAnalyticsClickEvent(me,messageHtml);
+    
   }
   getTemplateString(type: any) {
 
@@ -880,6 +882,17 @@ class FullSearchResultTopdownTemplate {
       }, 300);
     })
   })
+  }
+  bindQueryAnalyticsClickEvent(me: any, messageHtml: any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml).find(".show_insights_top_down")
+      .off("click", ".query_analytics_top_down")
+      .on("click", ".query_analytics_top_down", function (event:any,messageHtml:any) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        hostWindowInstance.queryAnalyticsClickEvent(event);
+      });
   }
 }
 var truncateText = FullSearchResultTopdownTemplate.prototype.truncateText;

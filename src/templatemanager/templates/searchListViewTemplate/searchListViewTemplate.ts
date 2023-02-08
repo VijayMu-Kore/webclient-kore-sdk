@@ -21,7 +21,9 @@ class SearchListViewTemplate {
         msgData.message[0].component.payload.isSearchSDK = false;
       }
       me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString(msgData?.message[0].component?.payload?.template_type)).tmpl(msgData?.message[0].component?.payload);
-      SearchListViewTemplate.prototype.bindEvents(me, me.messageListHtml);
+      setTimeout(()=>{
+        SearchListViewTemplate.prototype.bindEvents(me, me.messageListHtml);
+    },500)
       return me.messageListHtml;
     }
   }
@@ -29,43 +31,6 @@ class SearchListViewTemplate {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     var _innerText;
-    //if(me.hostInstance.hasOwnProperty('FindlySDK')){
-    if (!hostWindowInstance.vars || !hostWindowInstance.vars.customizeView) {
-      setTimeout(function () {
-        // $(".results-wrap").sortable({
-        //   items: "li:not(.ui-state-disabled)",
-        //   cancel: ".ui-state-disabled",
-        //   stop: function (event : any, ui: any) {
-        //     var element = ui.item[0];
-        //     if ($(element).find(".pinning").length) {
-        //       var pinningElement = $(element).find(".pinning")[0];
-        //       if (pinningElement) {
-        //         $(pinningElement).closest(".pinning").attr("type", "Pin");
-        //         $(pinningElement).trigger("click");
-        //       }
-        //     } else if ($(element).attr("manuallyadded") == "true") {
-        //       var pinIndex = 0;
-        //       var _selectedElement = ui.item[0];
-        //       var _parentElement = $(event.target).closest(".results-wrap");
-        //       var childNodes = Array.prototype.slice.call(
-        //         _parentElement[0].children
-        //       );
-        //       pinIndex = childNodes.indexOf(_selectedElement);
-        //       if (pinIndex >= 0) {
-        //           hostWindowInstance.performRankActionsOnFullPage(
-        //           ui.item,
-        //           { pinIndex: pinIndex },
-        //           hostWindowInstance.vars.searchObject.searchText,
-        //           "pinning",
-        //           true
-        //         );
-        //         //
-        //       }
-        //     }
-        //   },
-        // });
-      }, 200);
-    }
     // Boost / Pin
     $(".template-3-classic-list-collapse")
       .off("click", ".click-here")
@@ -93,7 +58,7 @@ class SearchListViewTemplate {
         // }
       });
 
-    $(".customization")
+      $(".customization")
       .off("click", ".unpin_added_result")
       .on("click", ".unpin_added_result", function (event: any) {
         SearchListViewTemplate.prototype.postPerformRankingActions(me,
@@ -104,7 +69,7 @@ class SearchListViewTemplate {
         );
       });
 
-    $(".customization")
+      $(".customization")
       .off("click", ".pinning")
       .on("click", ".pinning", function (event: any) {
         if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
@@ -122,7 +87,7 @@ class SearchListViewTemplate {
             "pinning");
         }
       });
-    $(".customization")
+      $(".customization")
       .off("click", ".boosting")
       .on("click", ".boosting", function (event: any) {
         if (
@@ -152,7 +117,7 @@ class SearchListViewTemplate {
           );
         }
       });
-    $(".customization")
+      $(".customization")
       .off("click", ".burying")
       .on("click", ".burying", function (event: any) {
         if (
@@ -190,7 +155,7 @@ class SearchListViewTemplate {
         }
       });
 
-    $(".custom-add-result-container")
+      $(".custom-add-result-container")
       .off("click", ".link-text")
       .on("click", ".link-text", function (event: any) {
         var structure = "bottom";
@@ -219,14 +184,14 @@ class SearchListViewTemplate {
         }
       });
     //Tour RR
-    $(".sdk-tours-info-nxt")
+    $(messageHtml).find(".sdk-tours-info-nxt")
       .off("click")
       .on("click", function (e: any) {
         $(".sdk-tours-info-start").hide();
         $(".sdk-tours-info-end").removeClass("hide");
         $(".sdk-tours-info-end").show();
       });
-    $(".sdk-tours-info-pre")
+      $(messageHtml).find(".sdk-tours-info-pre")
       .off("click")
       .on("click", function (e: any) {
         $(".sdk-tours-info-start").show();
@@ -234,14 +199,14 @@ class SearchListViewTemplate {
         $(".sdk-tours-info-end").hide();
       });
 
-    $(".sdk-tours-info-close")
+      $(messageHtml).find(".sdk-tours-info-close")
       .off("click")
       .on("click", function (e: any) {
         $(".tours-information").hide();
         hostWindowInstance.vars.customTourResultRank = false;
       });
     //Tour RR 
-    //}
+
     //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
     $(messageHtml)
     .off("click", ".show-more-list")
@@ -417,20 +382,6 @@ class SearchListViewTemplate {
           $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text()
         );
       }
-      // if ($(evet.target).hasClass("acc-active")) {
-      //   $(evet.target).next().hide();
-      //   hostWindowInstance.captureClickAnalytics(
-      //     evet,
-      //     $(evet.currentTarget).closest(".accordion").attr("contenttype"),
-      //     "click",
-      //     $(evet.currentTarget).closest(".accordion").attr("contentId"),
-      //     $(evet.currentTarget).closest(".accordion").attr("id"),
-      //     $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text()
-      //   );
-      //   // }
-      // } else {
-      //   $(evet.target).next().show();
-      // }
       setTimeout(() => {
         if (
           $(evet.target).closest("#searchChatContainer") &&
@@ -450,6 +401,42 @@ class SearchListViewTemplate {
         }
       }, 500);
     });
+    // if (!hostWindowInstance.vars || !hostWindowInstance.vars.customizeView) {
+    //   setTimeout(function () {
+        // $(".results-wrap").sortable({
+        //   items: "li:not(.ui-state-disabled)",
+        //   cancel: ".ui-state-disabled",
+        //   stop: function (event : any, ui: any) {
+        //     var element = ui.item[0];
+        //     if ($(element).find(".pinning").length) {
+        //       var pinningElement = $(element).find(".pinning")[0];
+        //       if (pinningElement) {
+        //         $(pinningElement).closest(".pinning").attr("type", "Pin");
+        //         $(pinningElement).trigger("click");
+        //       }
+        //     } else if ($(element).attr("manuallyadded") == "true") {
+        //       var pinIndex = 0;
+        //       var _selectedElement = ui.item[0];
+        //       var _parentElement = $(event.target).closest(".results-wrap");
+        //       var childNodes = Array.prototype.slice.call(
+        //         _parentElement[0].children
+        //       );
+        //       pinIndex = childNodes.indexOf(_selectedElement);
+        //       if (pinIndex >= 0) {
+        //           hostWindowInstance.performRankActionsOnFullPage(
+        //           ui.item,
+        //           { pinIndex: pinIndex },
+        //           hostWindowInstance.vars.searchObject.searchText,
+        //           "pinning",
+        //           true
+        //         );
+        //         //
+        //       }
+        //     }
+        //   },
+        // });
+    //   }, 200);
+    // }
   }
   getTemplateString(type: any) {
   
@@ -667,7 +654,7 @@ class SearchListViewTemplate {
     <div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
     <div class="tpt-1-tle-wt-txt {{if devMode== false || viewType != "Customize"}}display-none{{/if}}">\
       <div class="total-structured-data-wrap {{if viewType=="Customize"&&devMode==true}}{{if isFullResults == true}}customization{{/if}}{{/if}} {{if maxSearchResultsAllowed ==0}}display-none{{/if}}">\
-        {{if tour && isFullResults == true && viewType=="Customize"&&devMode==true}}\
+        {{if tour && isFullResults == true && viewType=="Customize" && devMode==true}}\
           <div class="tours-information sdk-tours-info-start">\
             <div class="tourtitle">Customize</div>\
             <div class="tour-info">Start Customizing your search results by hovering on the matched content and performing below actions:</div>\
