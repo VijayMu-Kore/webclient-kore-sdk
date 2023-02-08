@@ -9970,7 +9970,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition == "top") {
+  if (response.experienceConfig.searchBarPosition !== "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
@@ -22764,20 +22764,27 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
  })
 }
 FindlySDK.prototype.getJWTWithoutAPIKey = function (options, callback) {
-  var jsonData = {
-    // "clientId": options.clientId,
-    // "clientSecret": options.clientSecret,
-    // "identity": options.userIdentity,
-    // "aud": "",
-    // "isAnonymous": false
-  };
-  var bearer = "bearer " + this.bot.options.accessToken ||
-  this.API.jstBarrer;
+  var _self=this;
+  var jsonData = {}
+
 var headers = {};
-headers["AccountId"]= "60547150f60ec050f4dfea8b";
-headers["Authorization"] = bearer;
-headers["Content-Type"] = "application/json;charset=UTF-8";
-headers["state"] = "configured";
+  if(_self.isDev){
+    var bearer = "bearer " + this.bot?.options?.accessToken ||
+    this.API.jstBarrer;
+    headers["Authorization"] = bearer;
+    headers["Content-Type"] = "application/json;charset=UTF-8";
+    headers["state"] = "configured";
+  }else{
+    jsonData = {
+      "clientId": options.clientId,
+      "clientSecret": options.clientSecret,
+      "identity": options.userIdentity,
+      "aud": "",
+      "isAnonymous": false
+    };
+  }
+
+
   return $.ajax({
     url: options.JWTUrl,
     type: "post",
