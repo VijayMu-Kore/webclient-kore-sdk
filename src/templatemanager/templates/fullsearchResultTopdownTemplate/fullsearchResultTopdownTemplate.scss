@@ -1127,21 +1127,22 @@
                 }
                 .all-product-details {
                     width: calc(100% - 230px);
+                    height: calc(100vh - 156px);
                     float: left;
                     position: relative;
                     .content-data-sec{
                         padding: 17px 15px 0 20px;
-                        max-height: calc(100vh - 232px);
-                        overflow: scroll;
+                        // max-height: calc(100vh - 232px);
+                        // overflow: scroll;
                         position: relative;
                         &.filter-added{
                             padding: 0 15px 0 20px;
-                            max-height: calc(100vh - 275px);
-                            overflow: scroll;
+                            // max-height: calc(100vh - 275px);
+                            // overflow: scroll;
                             position: relative;
                         }
                         &.facets-height-isMore{
-                            max-height: calc(100vh - 314px);
+                            // max-height: calc(100vh - 314px);
                         }
                         .customization{
                             .customization-tile {
@@ -1667,7 +1668,7 @@ $color_1: #9AA0A6;
             align-items: center;
             right: 30px;
             bottom: 10px;
-            z-index: 1;
+            z-index: 17;
 
             .helpfull-title {
                 font-weight: normal;
@@ -1691,6 +1692,26 @@ $color_1: #9AA0A6;
         }
     }
 }
-
+#query-feedback{
+    .temp-feed-back-form{
+        box-shadow: 0px 5px 26px rgb(32 33 36 / 25%);
+        border-radius: 8px;
+        background: #FFFFFF;
+        height: auto;
+        width: 420px;
+        position: absolute;
+        right: 75px;
+        bottom: 76px;
+        padding: 20px 20px;
+        z-index: 20;
+        .temp-feed-back-header-block{
+            .temp-right-indicator-block{
+                position: absolute;
+                top: 288px;
+                right: -34px;
+            }
+        }
+    }
+}
 //Feedback CSS Ends
 
