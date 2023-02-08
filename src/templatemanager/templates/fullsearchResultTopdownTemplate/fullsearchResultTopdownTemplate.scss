@@ -1019,17 +1019,17 @@
                         .content-data-sec{
                             padding: 9px 15px 0 20px;
                             position: relative; 
-                            max-height: calc(100vh - 267px);
+                            // max-height: calc(100vh - 267px);
                             &.filter-added {
-                                max-height: calc(100vh - 305px) !important;
+                                // max-height: calc(100vh - 305px) !important;
                                 &.facets-height-isMore {
-                                    max-height: calc(100vh - 345px) !important;
+                                    // max-height: calc(100vh - 345px) !important;
                                 }
                             }
                             &.facets-disabled{
                                 padding: 9px 15px 0 20px;
                                 position: relative; 
-                                max-height: calc(100vh - 220px);
+                                // max-height: calc(100vh - 220px);
                             }
                         }
                     }
