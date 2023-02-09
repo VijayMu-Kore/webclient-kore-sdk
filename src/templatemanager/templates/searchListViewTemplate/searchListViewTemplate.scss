@@ -382,6 +382,7 @@
     .show-more-data{
         margin: 10px 0 5px 0;
     }
+   
     .text-truncate{
         overflow: hidden;
         text-overflow: ellipsis;
@@ -389,7 +390,11 @@
         max-height: 18px;
     }
 }
-
+.total-structured-data-wrap.customization{
+    .show-more-list{
+        cursor: pointer;
+    }
+}
 // Classic List Accordion
 .search-list-template-clickble-classic{
     display: inline-block;

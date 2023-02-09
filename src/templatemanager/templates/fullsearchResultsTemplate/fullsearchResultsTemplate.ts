@@ -101,6 +101,7 @@ class FullSearchResultsTemplate {
         $(".search-body").addClass("hide");
         $("#show-all-results-container").attr("isCached", "false");
       });
+      FullSearchResultsTemplate.prototype.bindCustomizePreviewClickEvent(me,messageHtml);
   }
   getTemplateString(type: any) {
     var fullSearchResultsTemplate = '<script type="text/x-jqury-tmpl">\
@@ -121,8 +122,8 @@ class FullSearchResultsTemplate {
           {{if isDev == true}}\
             <div class="custom-header-container-center">\
               <ul class="custom-header-nav">\
-                <li id="viewTypePreview" class="custom-header-nav-link-item sdk-customize-nav"><a class="custom-header-nav-link">Preview</a></li>\
-                <li id="viewTypeCustomize" class="custom-header-nav-link-item sdk-customize-nav"><a class="custom-header-nav-link">Customize</a></li>\
+                <li id="viewTypePreview" class="custom-header-nav-link-item sdk-customize-nav {{if viewType == "Preview"}}nav-link-item-active {{/if}}"><a class="custom-header-nav-link">Preview</a></li>\
+                <li id="viewTypeCustomize" class="custom-header-nav-link-item sdk-customize-nav {{if viewType == "Customize"}}nav-link-item-active {{/if}}"><a class="custom-header-nav-link">Customize</a></li>\
               </ul>\
             </div>\
           {{/if}}\
@@ -212,7 +213,7 @@ class FullSearchResultsTemplate {
               </div>\
           </div>\
         </div>\
-        <div class="custom-add-result-container {{if devMode== false || viewType != "Customize"}}display-none{{/if}}">\
+        <div class="custom-add-result-container1 display-none {{if devMode== false || viewType != "Customize"}}display-none{{/if}}">\
           <div class="custom-add-new-result-content">\
             <div class="bold-text">Not finding the result?</div>\
             <div class="link-text"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABrSURBVHgBzVHBCYAwEMuV/lRwBDdykoojuIoTiBs5Qt8KjVZfLdeHD8FAyJEQOO4ABZXbx0gts5opIi0KMHiJ7wvSuLBcmu4s7G6lbHnBgmGGZAWa/hnCmvrw0FAPxxSpZT+8kvppkr5UOAH/GRicle7qIwAAAABJRU5ErkJggg==">Add from repository</div>\
@@ -847,7 +848,44 @@ class FullSearchResultsTemplate {
     }
     }
     }
+    bindCustomizePreviewClickEvent(me: any, messageHtml: any){
+      let hostWindowInstance = me.hostInstance;
+      let $ = me.hostInstance.$;
+      $(messageHtml).find(".custom-header-nav-link-item")
+    .off("click").on("click", function (e:any) {
+      hostWindowInstance.customizePreviewBtnClick(e,false).then((result: any) => {
+        let formatedTemplatesData: any = result;
+        var selectedFacet =$(messageHtml).find(".tab-name.capital.facet.active-tab").closest('.facet').attr("id");
+        setTimeout(() => {
+          $(messageHtml).find('.full-search-data-container').empty();
+          if (formatedTemplatesData && formatedTemplatesData.length) {
+            formatedTemplatesData.forEach((d: any) => {
+              var showAllHTML;
+              d.message[0].component.payload['selectedFacet'] = selectedFacet;
+              if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+                showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+              } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+                showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+              } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+                showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+              }
+              $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+            })
+          }
+    
+          if (!$(".full-search-data-container").children().length) {
+            $(".empty-full-results-container").removeClass("hide");
+          } else {
+            if (!$(".empty-full-results-container").hasClass("hide")) {
+              $(".empty-full-results-container").addClass("hide");
+            }
+          }
+        }, 300);
+      })
+    })
+    }
 }
+
 var truncateText = FullSearchResultsTemplate.prototype.truncateText;
 FullSearchResultsTemplate.prototype.$ = $;
 

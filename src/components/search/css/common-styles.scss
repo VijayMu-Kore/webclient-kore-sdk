@@ -1996,6 +1996,7 @@ body{
             right: 0;
             top: 24px;
             z-index: 99999 !important;
+            display: none;
         }
     }
     .custom-header-nav {
@@ -4932,4 +4933,10 @@ li{
             }
         }
     }
+}
+.searchAssist-kore-chat-window .top-down-customize-btns.custom-header-container-center{
+    display: none;
+}
+.builder-sdk .searchAssist-kore-chat-window .top-down-customize-btns.custom-header-container-center{
+    display: block;
 }

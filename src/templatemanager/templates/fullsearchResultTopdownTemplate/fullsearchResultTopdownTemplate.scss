@@ -682,15 +682,15 @@
                                 }
                             }
                             .content-data-sec{
-                                max-height: calc(100vh - 238px);
+                                // max-height: calc(100vh - 238px);
                                 padding: 9px 15px 0 20px;
                                 &.filter-added{
                                     padding: 0 15px 0 20px;
                                     &.if-customize-mode{
-                                        max-height: calc(100vh - 458px) !important;
+                                        // max-height: calc(100vh - 458px) !important;
                                     }
                                     &.facets-height-isMore {
-                                        max-height: calc(100vh - 356px) !important;
+                                        // max-height: calc(100vh - 356px) !important;
                                     }
                                 }
                             }
@@ -703,13 +703,13 @@
                         .full-results-data-container{
                             .all-product-details{
                                 .content-data-sec{
-                                    max-height: calc(100vh - 302px) !important;
+                                    // max-height: calc(100vh - 302px) !important;
                                     padding: 1px 15px 0 20px;
                                     &.filter-added {
-                                        max-height: calc(100vh - 344px) !important;
+                                        // max-height: calc(100vh - 344px) !important;
                                     }
                                     &.facets-disabled{
-                                        max-height: calc(100vh - 237px) !important;
+                                        // max-height: calc(100vh - 237px) !important;
                                     }
                                 }
                             }
@@ -1019,17 +1019,17 @@
                         .content-data-sec{
                             padding: 9px 15px 0 20px;
                             position: relative; 
-                            max-height: calc(100vh - 267px);
+                            // max-height: calc(100vh - 267px);
                             &.filter-added {
-                                max-height: calc(100vh - 305px) !important;
+                                // max-height: calc(100vh - 305px) !important;
                                 &.facets-height-isMore {
-                                    max-height: calc(100vh - 345px) !important;
+                                    // max-height: calc(100vh - 345px) !important;
                                 }
                             }
                             &.facets-disabled{
                                 padding: 9px 15px 0 20px;
                                 position: relative; 
-                                max-height: calc(100vh - 220px);
+                                // max-height: calc(100vh - 220px);
                             }
                         }
                     }

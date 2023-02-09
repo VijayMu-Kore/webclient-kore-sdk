@@ -121,7 +121,7 @@ FindlySDK.prototype.applicationToSDK = function (event) {
     }*/
 FindlySDK.prototype.customTourResultRank = function (val) {
   //this.config.findlyBusinessConfig.initVariables = this.initVariables();
-  _self = this;
+  var _self = this;
   _self.vars.customTourResultRank = val;
 };
 FindlySDK.prototype.addPolyFils = function () {
@@ -401,83 +401,83 @@ FindlySDK.prototype.fetchUserLocation = function() {
   navigator.geolocation.getCurrentPosition(successCallback);
   };
   
-FindlySDK.prototype.show = function (dataConfig, sel) {
-  var _self = this;
-  var initialWidgetData = _self.vars.initialWidgetData;
-  _self.config.container = sel || {}; //#TODO :need to remove below line on prod
+// FindlySDK.prototype.show = function (dataConfig, sel) {
+//   var _self = this;
+//   var initialWidgetData = _self.vars.initialWidgetData;
+//   _self.config.container = sel || {}; //#TODO :need to remove below line on prod
 
-  window.koreWidgetSDKInstance = _self;
+//   window.koreWidgetSDKInstance = _self;
 
-  //var currentTimezone = _self.vars.timezone.name();
+//   //var currentTimezone = _self.vars.timezone.name();
 
-  var latitude = _self.vars.latitude;
-  var longitude = _self.vars.longitude;
-  var config = _self.config;
+//   var latitude = _self.vars.latitude;
+//   var longitude = _self.vars.longitude;
+//   var config = _self.config;
 
-  _self
-    .getServerDataGen(
-      "/widgetsdk/" +
-      config.botOptions.botInfo._id +
-      "/panels?resolveWidgets=true&from=" +
-      config.botOptions.userIdentity,
-      "get"
-    )
-    .done(function (response) {
-      //_self.getServerDataGen("/searchassistapi/ka/users/:userId/panels?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function (response) {
-      // getServerData("/searchassistapi/ka/users/:userId/widgets?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function(response){
-      initialWidgetData.panels = response;
-      var panelData = [];
+//   _self
+//     .getServerDataGen(
+//       "/widgetsdk/" +
+//       config.botOptions.botInfo._id +
+//       "/panels?resolveWidgets=true&from=" +
+//       config.botOptions.userIdentity,
+//       "get"
+//     )
+//     .done(function (response) {
+//       //_self.getServerDataGen("/searchassistapi/ka/users/:userId/panels?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function (response) {
+//       // getServerData("/searchassistapi/ka/users/:userId/widgets?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function(response){
+//       initialWidgetData.panels = response;
+//       var panelData = [];
 
-      for (var i = 0; i < initialWidgetData.panels.length; i++) {
-        //todo: deviation :adding "id" from "_id"
-        if (
-          initialWidgetData.panels[i].widgets &&
-          initialWidgetData.panels[i].widgets.length
-        ) {
-          initialWidgetData.panels[i].widgets.forEach(function (widget) {
-            if (!widget.id) {
-              widget.id = widget._id;
-            }
-          });
-        } //todo: deviation :added fallback icon for panels
+//       for (var i = 0; i < initialWidgetData.panels.length; i++) {
+//         //todo: deviation :adding "id" from "_id"
+//         if (
+//           initialWidgetData.panels[i].widgets &&
+//           initialWidgetData.panels[i].widgets.length
+//         ) {
+//           initialWidgetData.panels[i].widgets.forEach(function (widget) {
+//             if (!widget.id) {
+//               widget.id = widget._id;
+//             }
+//           });
+//         } //todo: deviation :added fallback icon for panels
 
-        panelData.push(initialWidgetData.panels[i]);
-      }
-      var dataHTML = $(_self.getTemplate("menu")).tmplProxy({
-        panelData: panelData,
-        helpers: helpers,
-        baseUrl: baseUrl,
-        botDetails: _self.config.botOptions.botInfo,
-      });
-      _self.bindTemplateEvents(dataHTML, "menu", panelData);
-      if ($(_self.config.container.menu).find(".menuItemCntr").length > 0) {
-        $(_self.config.container.menu).find(".menuItemCntr").remove();
-      }
+//         panelData.push(initialWidgetData.panels[i]);
+//       }
+//       var dataHTML = $(_self.getTemplate("menu")).tmplProxy({
+//         panelData: panelData,
+//         helpers: helpers,
+//         baseUrl: baseUrl,
+//         botDetails: _self.config.botOptions.botInfo,
+//       });
+//       _self.bindTemplateEvents(dataHTML, "menu", panelData);
+//       if ($(_self.config.container.menu).find(".menuItemCntr").length > 0) {
+//         $(_self.config.container.menu).find(".menuItemCntr").remove();
+//       }
 
-      $(_self.config.container.menu).addClass("kr-wiz-menu-css");
-      $(_self.config.container.menu).addClass("defaultTheme-kore");
-      $(_self.config.container.menu).append(dataHTML);
+//       $(_self.config.container.menu).addClass("kr-wiz-menu-css");
+//       $(_self.config.container.menu).addClass("defaultTheme-kore");
+//       $(_self.config.container.menu).append(dataHTML);
 
-      if (KRPerfectScrollbar) {
-        if (!_self.vars.menuPSObj) {
-          _self.vars.menuPSObj = new KRPerfectScrollbar(
-            $(_self.config.container.menu).find(".menuItemBox").get(0),
-            {
-              suppressScrollX: true,
-            }
-          );
-        } else {
-          _self.vars.menuPSObj.update();
-        }
-      }
+//       if (KRPerfectScrollbar) {
+//         if (!_self.vars.menuPSObj) {
+//           _self.vars.menuPSObj = new KRPerfectScrollbar(
+//             $(_self.config.container.menu).find(".menuItemBox").get(0),
+//             {
+//               suppressScrollX: true,
+//             }
+//           );
+//         } else {
+//           _self.vars.menuPSObj.update();
+//         }
+//       }
 
-      _self.maintainCache();
+//       _self.maintainCache();
 
-      setTimeout(function () {
-        _self.triggerEvent("onPanelsLoaded");
-      }, 100);
-    });
-};
+//       setTimeout(function () {
+//         _self.triggerEvent("onPanelsLoaded");
+//       }, 100);
+//     });
+// };
 
 FindlySDK.prototype.setAPIDetails = function () {
   var _self = this;
@@ -515,15 +515,17 @@ FindlySDK.prototype.setAPIDetails = function () {
   var baseAPIServer = _self.config.botOptions.koreAPIUrl;
   //var baseAPIServer = 'https://pilot.searchassist.ai'; // For XHR calls in PILOT
 
-  if (_self.isDev) {
+  if (_self.config.isDev || _self.isDev) {
     baseAPIServer =
       window.appConfig.API_SERVER_URL + "/searchassistapi/businessapp/";
   }
 
-  if (_self.baseAPIServer) {
+  if (_self.baseAPIServer && !window?.appConfig?.API_SERVER_URL) {
     baseAPIServer = _self.baseAPIServer;
   }
   var baseUrl = baseAPIServer;
+   baseAPIServer = baseAPIServer.replace('/searchassistapi/searchassistapi','/searchassistapi');
+
   var searchAPIURL = baseAPIServer + "searchsdk/stream/";
   var liveSearchAPIURL = baseAPIServer + "searchsdk/stream/";
   var businessTooBaseURL = baseAPIServer + "findly/";
@@ -1601,6 +1603,9 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               <button class="search-button" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}"{{/if}} disabled>${searchConfig.buttonText}</button>\
             {{/if}}\
             <div class="sdkFooterIcon microphoneBtn"> \
+            {{if searchConfig.freePlan}}\
+                <div class="kore-sponsored-bottom"><img src="data:image/png;base64,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"></div>\
+              {{/if}}\
                 <button class="notRecordingMicrophone" title="Microphone On"> \
                     <i class="microphone"></i> \
                 </button> \
@@ -2354,7 +2359,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
           {{if msgData && msgData.from==="user"}}\
             <div class="userMessage {{if msgData && msgData.isFromHistory===true}}mb-60{{/if}}\">\
               {{if msgData && msgData.isSearchResultsMessage===true}}\
-                <div class="sdk-query-retry-icon" searchQuery="${msgData.text}"><img src="assets/icons/SDK-Icons/reply.svg"><span class="tooltiptext_top center">Retry Query</span></div>\
+                <div class="sdk-query-retry-icon" searchQuery="${msgData.text}"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/reply.svg"><span class="tooltiptext_top center">Retry Query</span></div>\
               {{/if}}\
               <span>${msgData.text}</span>\
               <div class="time-info">${msgData.timeStamp}</div>\
@@ -2401,7 +2406,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
           </div>\
           {{/if}}\
           {{if msgData && msgData.isSearchResultsMessage===true}}\
-            <div class="sdk-results-customize-icon"><img src="assets/icons/SDK-Icons/rangeslider.svg"><span class="tooltiptext-top">Customize Results</span></div>\
+            <div class="sdk-results-customize-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/rangeslider.svg"><span class="tooltiptext-top">Customize Results</span></div>\
           {{/if}}\
           {{if msgData && msgData.from==="searchResult"}}\
             <div class="serachContent"><span>{{html helpers.convertMDtoHTML(msgData.text)}}</span></div>\
@@ -2924,10 +2929,6 @@ FindlySDK.prototype.prepAllSearchData = function (
   } else {
     //top-down-search-start//
     $(".skelton-load-img").hide();
-    // _self.pubSub.publish('sa-st-data-search', { container: '.structured-search-data-container', isFullResults: true, selectedFacet: selectedFacet_temp, isLiveSearch: false, isSearch: false, dataObj, isShowAllBtn: false });
-    // _self.pubSub.publish('sa-faq-search', { container: '.faqs-search-data-container', isFullResults: true, selectedFacet: selectedFacet_temp, isLiveSearch: false, isSearch: false, dataObj, isShowAllBtn: false });
-    // _self.pubSub.publish('sa-web-search', { container: '.web-search-data-container', isFullResults: true, selectedFacet: selectedFacet_temp, isLiveSearch: false, isSearch: false, dataObj, isShowAllBtn: false });
-    // _self.pubSub.publish('sa-file-search', { container: '.files-search-data-container', isFullResults: true, selectedFacet: selectedFacet_temp, isLiveSearch: false, isSearch: false, dataObj, isShowAllBtn: false });
     if (_self.isDev) {
       $(".custom-header-container-center").removeClass("display-none");
       if (_self.vars.customizeView) {
@@ -3397,9 +3398,6 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                 totalResultsCount + (res.tasks || []).length;
               // $('#loaderDIV').show();
               _self.showAllResults();
-              setTimeout(() => {
-                _self.bindCustomizeAction();
-              }, 300);
               dataObj.tasks = res.tasks || [];
               _self.pubSub.publish("sa-search-full-results", {
                 container: container,
@@ -3570,9 +3568,9 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                   _self.vars.searchFacetFilters
                 );
                 _self.markSelectedFilters();
-                setTimeout(function () {
-                  _self.bindStructuredDataTriggeringOptions();
-                }, 100);
+                // setTimeout(function () {
+                //   _self.bindStructuredDataTriggeringOptions();
+                // }, 100);
               }
               setTimeout(function () {
                 _self.vars["selectedFacetFromSearch"] =
@@ -3622,9 +3620,6 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
 
     $(".custom-insights-control-container").hide();
     _self.showAllResults();
-    setTimeout(() => {
-      _self.bindCustomizeAction();
-    }, 300);
   
   }
  
@@ -3647,137 +3642,6 @@ FindlySDK.prototype.bindAllResultsView = function () {
       });
   }
 
-  $(".custom-header-nav-link-item")
-    .off("click")
-    .on("click", function (event) {
-      if ($("body").hasClass("top-down")) {
-        if (
-          ($(event.currentTarget).attr("id") == "viewTypeCustomize" &&
-            _self.vars.customizeView) ||
-          ($(event.currentTarget).attr("id") == "viewTypePreview" &&
-            !_self.vars.customizeView)
-        ) {
-          return;
-        }
-      }
-
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      var navLinks = document.getElementsByClassName(
-        "custom-header-nav-link-item"
-      );
-
-      if (
-        _self.config.viaSocket &&
-        _self.vars.resultRankingActionPerformed == true
-      ) {
-        var scrollHeight =
-          $("#searchChatContainer").scrollTop() +
-          $("#searchChatContainer").prop("scrollHeight");
-        $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
-        if (!$("body").hasClass("top-down")) {
-          _self.sendMessage(_self.vars.searchObject.searchText);
-        }
-      }
-      
-
-      for (var i = 0; i < navLinks.length; i++) {
-        navLinks[i].className = navLinks[i].className.replace(
-          " nav-link-item-active",
-          ""
-        );
-      }
-      event.currentTarget.className += " nav-link-item-active";
-      if ($("body").hasClass("top-down")) {
-        var searchData;
-        // _self.vars.selectedFacetsList = [];
-        // _self.searchFacetsList([]);
-      }
-      if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
-        $(searchData)
-          .find(".tasks-wrp .faqs-shadow")
-          .find(".accordion.acc-active")
-          .trigger("click");
-      }
-      if (_self.vars.showingMatchedResults == true) {
-        if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-          _self.vars.customizeView = true;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").show();
-            $(".custom-add-result-container").removeClass("display-none");
-            $(".content-data-sec").addClass("if-customize-mode");
-          }
-
-          // $(".custom-insights-control-container").show();
-
-          // $(".query-analytics-control-container").show(); // Temporary modification, made as per FLY-1012
-
-          $(".tasks-wrp").sortable();
-          $(".tasks-wrp").sortable("option", "disabled", false);
-          $(".tasks-wrp").disableSelection();
-
-          $(".faqs-shadow").addClass("custom-faqs-shadow");
-          $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
-
-          $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
-
-          $(".image-url-sec").css("display", "none");
-          $(".faqs-bottom-actions").css("display", "table");
-
-          $(".divfeedback").css("display", "none");
-        } else {
-          _self.vars.customizeView = false;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").hide();
-            $(".custom-add-result-container").addClass("display-none");
-            $(".content-data-sec").removeClass("if-customize-mode");
-          }
-
-          $(".faqs-shadow").removeClass("custom-faqs-shadow");
-          $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
-
-          $(".faqs-bottom-actions").removeClass("custom-faqs-bottom-actions");
-
-          // $(".tasks-wrp").sortable("disable");
-          $(".image-url-sec").css("display", "table-cell");
-          $(".faqs-bottom-actions").css("display", "none");
-
-          // $(".divfeedback").css('display', 'block');
-
-          $(".notification-div").hide();
-        }
-        if ($("body").hasClass("top-down")) {
-          _self.invokeSearch();
-        }
-      } else {
-        $(".search-container").css("top", 50);
-        if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-          _self.vars.customizeView = true;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").show();
-            $(".custom-add-result-container").removeClass("display-none");
-            $(".content-data-sec").addClass("if-customize-mode");
-          }
-        } else {
-          _self.vars.customizeView = false;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").hide();
-            $(".custom-add-result-container").addClass("display-none");
-            $(".content-data-sec").removeClass("if-customize-mode");
-          }
-        }
-        if ($("body").hasClass("top-down")) {
-          _self.pubSub.publish("sa-show-all-results-top-down", {});
-        }
-      }
-      if (!$("body").hasClass("top-down")) {
-        _self.pubSub.publish("sa-update-search-customozation");
-      }
-      $(".structured-data-bottom-actions").css("display", "none");
-      $(".structured-data-wrp-content").removeClass("custom-faqs-wrp-content");
-      $(".moreStructredData").addClass("display-none");
-    });
   $(".sdk-tours-info-nxt")
     .off("click")
     .on("click", function (e) { });
@@ -5652,9 +5516,6 @@ FindlySDK.prototype.searchByFacetFilters = function (
           }, 100);
         }
         _self.clickNavigateToUrl();
-        setTimeout(() => {
-          _self.bindCustomizeAction();
-        }, 300);
 
         $("#loaderDIV").hide();
         _self.markSelectedFilters();
@@ -6311,7 +6172,7 @@ FindlySDK.prototype.searchEventBinding = function (
         $("#search").trigger({ type: "keydown", which: 39 });
       });
     var handle = setInterval(function () {
-      if (_self.bot.options.accessToken) {
+      if (_self.bot?.option?.accessToken) {
         initPopularSearchList();
         clearInterval(handle);
         handle = 0;
@@ -8126,7 +7987,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     }
   }
   $(".parent-search-live-auto-suggesition").hide();
-  if (_self.vars.feedBackExperience) {
+  if (_self.vars.feedBackExperience && !_self.isDev) {
     _self.getFeedBackResult();
     }
 };
@@ -8807,15 +8668,15 @@ FindlySDK.prototype.getFrequentlySearched = function (url, type, payload) {
     ":" +
     currentDate.getSeconds();
 
-  payload.userId = this.bot.userInfo.userInfo.userId;
+  payload.userId = this.bot?.userInfo?.userInfo?.userId;
 
-  payload.streamId = this.bot.options.botInfo.taskBotId;
+  payload.streamId = this.bot.options?.botInfo?.taskBotId;
   var _self = this;
   _self.vars.deselectedAutoFilters = [];
-  if (!$("body").hasClass("demo")) {
-    payload.indexPipelineId = _self.API.indexpipelineId;
-    payload.queryPipelineId = _self.API.pipelineId;
-  }
+  // if ($("body").hasClass("demo")) {
+    payload.indexPipelineId =  _self.API.indexpipelineId;
+    payload.queryPipelineId =  _self.API.pipelineId;
+  // }
 
   payload["messagePayload"] = {
     clientMessageId: new Date().getTime(),
@@ -8938,12 +8799,13 @@ FindlySDK.prototype.newSearchFeedbackPost = function (url, type, payload) {
   });
 };
 FindlySDK.prototype.makeAPItoFindly = function (url, type, payload) {
+  var _self = this;
   return $.ajax({
     url: url,
     type: type,
     dataType: "json",
     headers: {
-      Authorization: "bearer " + window.findlyAccessToken,
+      Authorization: "bearer " + (window.findlyAccessToken || _self.config?.botOptions?.accessToken),
       AccountId: window.findlyAccountId,
       "Content-Type": "application/json",
     },
@@ -9263,9 +9125,14 @@ FindlySDK.prototype.initialize = function (findlyConfig, fromTopDown) {
   if (findlyConfig.botOptions) {
     _findlyConfig = findlyConfig.botOptions;
   }
-  _self.isDev = false;
+  // _self.isDev = false;
   //window["KoreSDK"].findlyConfig.botOptions.assertionFn = this.getJWT;
-  if (_findlyConfig.searchIndexID) {
+  if ((_self.config && _self.config.API_KEY_CONFIG && _self.config.API_KEY_CONFIG.KEY !== 'YOUR_API_KEY') || _self.config.isDev) {
+    findlyConfig.botOptions.assertionFn = _self.getAssertionToken.bind(this);
+  } else {
+    findlyConfig.botOptions.assertionFn = this.getJWT;
+  }
+  if (_findlyConfig.searchIndexID && _findlyConfig.queryPipelineId) {
     const searchData = {
       _id: _findlyConfig.searchIndexID,
       pipelineId: _findlyConfig.queryPipelineId,
@@ -9282,7 +9149,7 @@ FindlySDK.prototype.initialize = function (findlyConfig, fromTopDown) {
   /*if (!$('body').hasClass('demo')) {
         _self.isDev = true;
       }*/
-  if (window.appConfig.API_SERVER_URL) {
+  if (window.appConfig && window.appConfig.API_SERVER_URL) {
     _self.baseAPIServer = window.appConfig.API_SERVER_URL;
   }
   if (fromTopDown) {
@@ -9292,9 +9159,6 @@ FindlySDK.prototype.initialize = function (findlyConfig, fromTopDown) {
   if (findlyConfig.autoConnect) {
     _self.initWebKitSpeech();
     _self.setAPIDetails();
-    if (fromTopDown) {
-      _self.initKoreSDK(_findlyConfig);
-    }
     setTimeout(() => {
       _self.initWebKitSpeech();
     }, 1000);
@@ -9820,7 +9684,7 @@ FindlySDK.prototype.addConversationBox = function (config) {
 };
 FindlySDK.prototype.addSearchText = function (config) {
   var _self = this;
-  if ($("body").hasClass("demo")) {
+  if (!_self.isDev) {
     $("body").removeClass("demo");
     $("body").addClass("top-down");
     $("body").addClass("sdk-top-down-interface");
@@ -9940,12 +9804,15 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
   _self.isDev = false;
   if (!$("body").hasClass("demo")) {
     _self.isDev = true;
+    if (!$("body").hasClass("builder-sdk")) {
+      $("body").addClass("builder-sdk");
+    }
   }
   _self.initWebKitSpeech();
   // _self.initKoreSDK();
-  if (isDev) {
-    _self.initKoreSDK(config);
-  }
+  // if (isDev) {
+  //   _self.initKoreSDK(config);
+  // }
   _self.setAPIDetails();
   // _self.pubSub.subscribe("sa-register-all-template", (msg, data) => {
   //   _self.registerAllTemplateConfig(data, _self.customConfig);
@@ -10085,45 +9952,52 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
-  setTimeout(()=>{
-  _self
-    .configureSearchInterface(findlyConfig.botOptions)
-    .then(function (response) {
-      _self.vars.indexPipelineId = response.indexPipelineId;
-      if (response.experienceConfig.searchBarPosition == "top") {
-        _self.initializeTopDown(findlyConfig, null, response);
-      } else {
-        if (
-          ((response || {}).interactionsConfig || {}).defaultStatus == "avatar"
-        ) {
-          $("body").addClass("setDefaultSearchTemplate1");
-        } else {
-          $("body").addClass("setDefaultSearchTemplate");
-        }
-
-        _self.initialize(findlyConfig);
-        _self.showSearch(null, response, _self.isDev);
-        var searchConfig = {
-          avatarURL: "data:image/png;base64,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",
-          welcomeMsg:
-            ((response || {}).interactionsConfig || {}).welcomeMsg ||
-            "Hello! How can I help you today?",
-          welcomeMsgColor:
-            ((response || {}).interactionsConfig || {}).welcomeMsgColor ||
-            "#3C4043",
-          welcomeMsgFillColor:
-            ((response || {}).interactionsConfig || {}).welcomeMsgFillColor ||
-            "#F8F9FA",
-        };
-        _self.configureSearchAvatar(searchConfig);
-      }
-
-      _self.initKorePicker(findlyConfig);
-    });
-  },1000);
+  if(findlyConfig.searchInterfaceConfig){
+    _self.showSearchExperience(findlyConfig,findlyConfig.searchInterfaceConfig)
+  }else{
+    setTimeout(()=>{
+      _self
+        .configureSearchInterface(findlyConfig.botOptions)
+        .then(function (response) {
+          _self.showSearchExperience(findlyConfig,response)
+        });
+      },1000);
+  }
+ 
 };
 var searchConfigurationCopy = {};
 
+FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
+  var _self = this;
+  _self.vars.indexPipelineId = response.indexPipelineId;
+  if (response.experienceConfig.searchBarPosition == "top") {
+    _self.initializeTopDown(findlyConfig, null, response);
+  } else {
+    if (
+      ((response || {}).interactionsConfig || {}).defaultStatus == "avatar"
+    ) {
+      $("body").addClass("setDefaultSearchTemplate1");
+    } else {
+      $("body").addClass("setDefaultSearchTemplate");
+    }
+    _self.initialize(findlyConfig);
+    _self.showSearch(null, response, _self.isDev);
+    var searchConfig = {
+      avatarURL: "https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg",
+      welcomeMsg:
+        ((response || {}).interactionsConfig || {}).welcomeMsg ||
+        "Hello! How can I help you today?",
+      welcomeMsgColor:
+        ((response || {}).interactionsConfig || {}).welcomeMsgColor ||
+        "#3C4043",
+      welcomeMsgFillColor:
+        ((response || {}).interactionsConfig || {}).welcomeMsgFillColor ||
+        "#F8F9FA",
+    };
+    _self.configureSearchAvatar(searchConfig);
+  }
+  _self.initKorePicker(findlyConfig);
+}
 FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
   var _self = this;
   var searchConfiguration = {};
@@ -10255,6 +10129,7 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
   }
   //default showsearches as recent
   searchConfiguration.showSearches = "recent";
+  searchConfiguration.freePlan = searchConfig?.freePlan;
   searchConfigurationCopy = searchConfiguration;
   return searchConfiguration;
 };
@@ -10279,17 +10154,25 @@ FindlySDK.prototype.getGreetingMsgTemplate = function () {
 };
 FindlySDK.prototype.getJWT = function (options, callback) {
   var jsonData = {
-    clientId: options.clientId,
-    clientSecret: options.clientSecret,
-    identity: options.userIdentity,
-    aud: "",
-    isAnonymous: false,
+    // clientId: options.clientId,
+    // clientSecret: options.clientSecret,
+    // identity: options.userIdentity,
+    // aud: "",
+    // isAnonymous: false,
   };
+  var bearer =  "bearer " + this.bot.options.accessToken ||
+  this.API.jstBarrer;
+var headers = {};
+headers["AccountId"]= "60547150f60ec050f4dfea8b";
+headers["Authorization"] = bearer;
+headers["Content-Type"] = "application/json;charset=UTF-8";
+headers["state"] = "configured";
   return $.ajax({
     url: options.JWTUrl,
     type: "post",
     data: jsonData,
     dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if (callback) {
@@ -10581,7 +10464,7 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
 
     messageToBot["maxNumOfResults"] = (messageToBot["interface"]=="conversationalSearch")? 2 : 5;
   //payload end//
-  if (!$("body").hasClass("demo")) {
+  if (_self.isDev) {
     messageToBot.indexPipelineId = _self.API.indexpipelineId;
     messageToBot.queryPipelineId = _self.API.pipelineId;
   }
@@ -16986,6 +16869,7 @@ FindlySDK.prototype.bindSearchContainerViewHadler = function () {
           .off("scroll")
           .on("scroll", function (event) {
             $(".query_analytics_content").hide();
+            $(".query-analytics-control-container").show();
             $(".typingIndicatorContent").css("display", "none");
           });
       });
@@ -17004,12 +16888,14 @@ FindlySDK.prototype.bindSearchContainerViewHadler = function () {
             $("#searchChatContainer").scrollTop() +
             $("#searchChatContainer").prop("scrollHeight");
           $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
+          _self.appendTextToSearchContainer('user', searchQuery);
           _self.sendMessage(searchQuery);
         } else {
           var scrollHeight =
             $("#searchChatContainer").scrollTop() +
             $("#searchChatContainer").prop("scrollHeight");
           $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
+          _self.appendTextToSearchContainer('user', _self.vars.searchObject.searchText);
           _self.sendMessage(_self.vars.searchObject.searchText);
         }
       });
@@ -17301,136 +17187,7 @@ FindlySDK.prototype.showAllResults = function () {
   });
 };
 
-FindlySDK.prototype.bindCustomizeAction = function () {
-  var _self = this;
-  if (!$("body").hasClass("top-down")) {
-    if (_self.isDev) {
-      if (_self.vars.customizeView) {
-        $("#viewTypePreview").removeClass("nav-link-item-active");
-        $("#viewTypeCustomize").addClass("nav-link-item-active");
-        $(".data-body-sec").css("height", "calc(100vh - 260px)");
-      } else {
-        $(".query-analytics-control-container").hide();
-        $("#viewTypePreview").addClass("nav-link-item-active");
-        $("#viewTypeCustomize").removeClass("nav-link-item-active");
-        if (
-          _self.vars.selectedFiltersArr &&
-          _self.vars.selectedFiltersArr.length > 0
-        ) {
-          $(".data-body-sec").css("height", "calc(100vh - 225px)");
-        } else {
-          $(".data-body-sec").css("height", "calc(100vh - 195px)");
-        }
-      }
 
-      $(".sdk-customize-nav")
-        .off("click")
-        .on("click", function (event) {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-
-          var navLinks = document.getElementsByClassName(
-            "custom-header-nav-link-item"
-          );
-
-          if (
-            _self.config.viaSocket &&
-            _self.vars.resultRankingActionPerformed == true
-          ) {
-            var scrollHeight =
-              $("#searchChatContainer").scrollTop() +
-              $("#searchChatContainer").prop("scrollHeight");
-            $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
-            if (!$("body").hasClass("top-down")) {
-              _self.sendMessage(_self.vars.searchObject.searchText);
-            }
-          }
-
-          for (var i = 0; i < navLinks.length; i++) {
-            navLinks[i].className = navLinks[i].className.replace(
-              " nav-link-item-active",
-              ""
-            );
-          }
-          event.currentTarget.className += " nav-link-item-active";
-          if ($("body").hasClass("top-down")) {
-            var searchData;
-          }
-          if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
-            $(searchData)
-              .find(".tasks-wrp .faqs-shadow")
-              .find(".accordion.acc-active")
-              .trigger("click");
-          }
-          if (_self.vars.showingMatchedResults == true) {
-            if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-              _self.vars.customizeView = true;
-              // $(".custom-insights-control-container").show();
-
-              $(".query-analytics-control-container").show(); // Temporary modification, made as per FLY-1012
-
-              $(".tasks-wrp").sortable();
-              $(".tasks-wrp").sortable("option", "disabled", false);
-              $(".tasks-wrp").disableSelection();
-
-              $(".faqs-shadow").addClass("custom-faqs-shadow");
-              $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
-
-              $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
-
-              $(".image-url-sec").css("display", "none");
-              $(".faqs-bottom-actions").css("display", "table");
-
-              $(".divfeedback").css("display", "none");
-              $("#searchChatContainer")
-                .off("scroll")
-                .on("scroll", function (event) {
-                  $(".query_analytics_content").hide();
-                });
-            } else {
-              _self.vars.customizeView = false;
-
-              // $(".custom-insights-control-container").hide();
-
-              $(".query-analytics-control-container").hide(); // Temporary modification, made as per FLY-1012
-
-              $(".faqs-shadow").removeClass("custom-faqs-shadow");
-              $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
-
-              $(".faqs-bottom-actions").removeClass(
-                "custom-faqs-bottom-actions"
-              );
-
-              $(".tasks-wrp").sortable("disable");
-              $(".image-url-sec").css("display", "table-cell");
-              $(".faqs-bottom-actions").css("display", "none");
-
-              // $(".divfeedback").css('display', 'block');
-
-              $(".notification-div").hide();
-            }
-            /*_self.getFrequentlySearched(url, 'POST', JSON.stringify(payload)).then(function (response) {
-              _self.handleSearchRes(response);
-              });*/
-          } else {
-            if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-              _self.vars.customizeView = true;
-            } else {
-              _self.vars.customizeView = false;
-            }
-          }
-          if (!$("body").hasClass("top-down")) {
-            _self.pubSub.publish("sa-update-search-customozation");
-          }
-          $(".structured-data-bottom-actions").css("display", "none");
-          $(".structured-data-wrp-content").removeClass(
-            "custom-faqs-wrp-content"
-          );
-          $(".moreStructredData").addClass("display-none");
-        });
-    }
-  }
-};
 
 FindlySDK.prototype.seeAllResultsInifiteScroll = function () {
   // call the required API
@@ -18223,205 +17980,205 @@ FindlySDK.prototype.fullResultRanking = function () {
 };
 
 FindlySDK.prototype.bindAllResultRankingOperations = function () {
-  var _self = this;
-  if (_self.vars.customizeView) {
-    setTimeout(function () {
-      $(".results-wrap").sortable({
-        items: "li:not(.ui-state-disabled)",
-        cancel: ".ui-state-disabled",
-        stop: function (event, ui) {
-          var element = ui.item[0];
-          if ($(element).find(".pinning").length) {
-            var pinningElement = $(element).find(".pinning")[0];
-            if (pinningElement) {
-              $(pinningElement).closest(".pinning").attr("type", "Pin");
-              $(pinningElement).trigger("click");
-            }
-          } else if ($(element).attr("manuallyadded") == "true") {
-            var pinIndex = 0;
-            var _selectedElement = ui.item[0];
-            var _parentElement = $(event.target).closest(".results-wrap");
-            var childNodes = Array.prototype.slice.call(
-              _parentElement[0].children
-            );
-            pinIndex = childNodes.indexOf(_selectedElement);
-            if (pinIndex >= 0) {
-              _self.performRankActionsOnFullPage(
-                ui.item,
-                { pinIndex: pinIndex },
-                _self.vars.searchObject.searchText,
-                "pinning",
-                true
-              );
-              //
-            }
-          }
-        },
-      });
-    }, 200);
-  }
-  $(".customization")
-    .off("click", ".visibility")
-    .on("click", ".visibility", function (event) {
-      // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
-      if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-        _self.performRankActionsOnFullPage(
-          event,
-          { visible: false },
-          _self.vars.searchObject.searchText,
-          "visibility"
-        );
-      } else {
-        _self.performRankActionsOnFullPage(
-          event,
-          { visible: true },
-          _self.vars.searchObject.searchText,
-          "visibility"
-        );
-      }
-      // }
-    });
+  // var _self = this;
+  // if (_self.vars.customizeView) {
+  //   setTimeout(function () {
+  //     $(".results-wrap").sortable({
+  //       items: "li:not(.ui-state-disabled)",
+  //       cancel: ".ui-state-disabled",
+  //       stop: function (event, ui) {
+  //         var element = ui.item[0];
+  //         if ($(element).find(".pinning").length) {
+  //           var pinningElement = $(element).find(".pinning")[0];
+  //           if (pinningElement) {
+  //             $(pinningElement).closest(".pinning").attr("type", "Pin");
+  //             $(pinningElement).trigger("click");
+  //           }
+  //         } else if ($(element).attr("manuallyadded") == "true") {
+  //           var pinIndex = 0;
+  //           var _selectedElement = ui.item[0];
+  //           var _parentElement = $(event.target).closest(".results-wrap");
+  //           var childNodes = Array.prototype.slice.call(
+  //             _parentElement[0].children
+  //           );
+  //           pinIndex = childNodes.indexOf(_selectedElement);
+  //           if (pinIndex >= 0) {
+  //             _self.performRankActionsOnFullPage(
+  //               ui.item,
+  //               { pinIndex: pinIndex },
+  //               _self.vars.searchObject.searchText,
+  //               "pinning",
+  //               true
+  //             );
+  //             //
+  //           }
+  //         }
+  //       },
+  //     });
+  //   }, 200);
+  // }
+  // $(".customization")
+  //   .off("click", ".visibility")
+  //   .on("click", ".visibility", function (event) {
+  //     // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
+  //     if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
+  //       _self.performRankActionsOnFullPage(
+  //         event,
+  //         { visible: false },
+  //         _self.vars.searchObject.searchText,
+  //         "visibility"
+  //       );
+  //     } else {
+  //       _self.performRankActionsOnFullPage(
+  //         event,
+  //         { visible: true },
+  //         _self.vars.searchObject.searchText,
+  //         "visibility"
+  //       );
+  //     }
+  //     // }
+  //   });
 
-  $(".customization")
-    .off("click", ".unpin_added_result")
-    .on("click", ".unpin_added_result", function (event) {
-      _self.performRankActionsOnFullPage(
-        event,
-        { pinIndex: -1 },
-        _self.vars.searchObject.searchText,
-        "unpin_added_result"
-      );
-    });
+  // $(".customization")
+  //   .off("click", ".unpin_added_result")
+  //   .on("click", ".unpin_added_result", function (event) {
+  //     _self.performRankActionsOnFullPage(
+  //       event,
+  //       { pinIndex: -1 },
+  //       _self.vars.searchObject.searchText,
+  //       "unpin_added_result"
+  //     );
+  //   });
 
-  $(".customization")
-    .off("click", ".pinning")
-    .on("click", ".pinning", function (event) {
-      if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-        var _selectedElement = $(event.target).closest(".structure-data-wrp");
-        var _parentElement = $(event.target).closest(".results-wrap");
-        var childNodes = Array.prototype.slice.call(_parentElement[0].children);
-        var pinIndex = 0;
-        if ($(event.target).closest(".pinning").attr("type") == "UnPin") {
-          pinIndex = -1;
-        } else {
-          pinIndex = childNodes.indexOf(_selectedElement[0]);
-        }
-        _self.performRankActionsOnFullPage(
-          event,
-          { pinIndex: pinIndex },
-          _self.vars.searchObject.searchText,
-          "pinning"
-        );
-      }
-    });
-  $(".customization")
-    .off("click", ".boosting")
-    .on("click", ".boosting", function (event) {
-      if (
-        $(event.target).closest(".data-wrap").attr("visible") == "true" &&
-        parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
-      ) {
-        var boostByValue = parseFloat(
-          $(event.target).closest(".data-wrap").attr("boost")
-        );
-        boostByValue = boostByValue + 0.25;
-        _self.performRankActionsOnFullPage(
-          event,
-          { boost: boostByValue },
-          _self.vars.searchObject.searchText,
-          "boosting"
-        );
-      }
-    });
-  $(".customization")
-    .off("click", ".burying")
-    .on("click", ".burying", function (event) {
-      if (
-        $(event.target).closest(".data-wrap").attr("visible") == "true" &&
-        parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
-      ) {
-        var buryByValue = parseFloat(
-          $(event.target).closest(".data-wrap").attr("boost")
-        );
-        if (buryByValue > 0.25) {
-          buryByValue = buryByValue - 0.25;
-          _self.performRankActionsOnFullPage(
-            event,
-            { boost: buryByValue },
-            _self.vars.searchObject.searchText,
-            "burying"
-          );
-        } else if (buryByValue != 0) {
-          buryByValue = 0.25 - buryByValue;
-          _self.performRankActionsOnFullPage(
-            event,
-            { boost: buryByValue },
-            _self.vars.searchObject.searchText,
-            "burying"
-          );
-        } else {
-          buryByValue = 0;
-          _self.performRankActionsOnFullPage(
-            event,
-            { boost: buryByValue },
-            _self.vars.searchObject.searchText,
-            "burying"
-          );
-        }
-      }
-    });
+  // $(".customization")
+  //   .off("click", ".pinning")
+  //   .on("click", ".pinning", function (event) {
+  //     if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
+  //       var _selectedElement = $(event.target).closest(".structure-data-wrp");
+  //       var _parentElement = $(event.target).closest(".results-wrap");
+  //       var childNodes = Array.prototype.slice.call(_parentElement[0].children);
+  //       var pinIndex = 0;
+  //       if ($(event.target).closest(".pinning").attr("type") == "UnPin") {
+  //         pinIndex = -1;
+  //       } else {
+  //         pinIndex = childNodes.indexOf(_selectedElement[0]);
+  //       }
+  //       _self.performRankActionsOnFullPage(
+  //         event,
+  //         { pinIndex: pinIndex },
+  //         _self.vars.searchObject.searchText,
+  //         "pinning"
+  //       );
+  //     }
+  //   });
+  // $(".customization")
+  //   .off("click", ".boosting")
+  //   .on("click", ".boosting", function (event) {
+  //     if (
+  //       $(event.target).closest(".data-wrap").attr("visible") == "true" &&
+  //       parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
+  //     ) {
+  //       var boostByValue = parseFloat(
+  //         $(event.target).closest(".data-wrap").attr("boost")
+  //       );
+  //       boostByValue = boostByValue + 0.25;
+  //       _self.performRankActionsOnFullPage(
+  //         event,
+  //         { boost: boostByValue },
+  //         _self.vars.searchObject.searchText,
+  //         "boosting"
+  //       );
+  //     }
+  //   });
+  // $(".customization")
+  //   .off("click", ".burying")
+  //   .on("click", ".burying", function (event) {
+  //     if (
+  //       $(event.target).closest(".data-wrap").attr("visible") == "true" &&
+  //       parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
+  //     ) {
+  //       var buryByValue = parseFloat(
+  //         $(event.target).closest(".data-wrap").attr("boost")
+  //       );
+  //       if (buryByValue > 0.25) {
+  //         buryByValue = buryByValue - 0.25;
+  //         _self.performRankActionsOnFullPage(
+  //           event,
+  //           { boost: buryByValue },
+  //           _self.vars.searchObject.searchText,
+  //           "burying"
+  //         );
+  //       } else if (buryByValue != 0) {
+  //         buryByValue = 0.25 - buryByValue;
+  //         _self.performRankActionsOnFullPage(
+  //           event,
+  //           { boost: buryByValue },
+  //           _self.vars.searchObject.searchText,
+  //           "burying"
+  //         );
+  //       } else {
+  //         buryByValue = 0;
+  //         _self.performRankActionsOnFullPage(
+  //           event,
+  //           { boost: buryByValue },
+  //           _self.vars.searchObject.searchText,
+  //           "burying"
+  //         );
+  //       }
+  //     }
+  //   });
 
-  $(".custom-add-result-container")
-    .off("click", ".link-text")
-    .on("click", ".link-text", function (event) {
-      var structure = "bottom";
-      if ($("body").hasClass("top-down")) {
-        structure = "top";
-        if (
-          $("body").hasClass("top-down")
-            ? $(".search-top-down").val()
-            : $(".bottom-up-search").val()
-        ) {
-          _self.vars.searchObject.searchText = $("body").hasClass("top-down")
-            ? $(".search-top-down").val()
-            : $(".bottom-up-search").val();
-        }
-      } else {
-        structure = "bottom";
-      }
-      if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
-        var responseObject = {
-          type: "addNew",
-          data: true,
-          query: _self.vars.searchObject.searchText,
-          structure: structure,
-        };
-        _self.parentEvent(responseObject);
-      }
-    });
-  //Tour RR
-  $(".sdk-tours-info-nxt")
-    .off("click")
-    .on("click", function (e) {
-      $(".sdk-tours-info-start").hide();
-      $(".sdk-tours-info-end").removeClass("hide");
-      $(".sdk-tours-info-end").show();
-    });
-  $(".sdk-tours-info-pre")
-    .off("click")
-    .on("click", function (e) {
-      $(".sdk-tours-info-start").show();
-      //$("sdk-tours-info-end").removeClass("hide");
-      $(".sdk-tours-info-end").hide();
-    });
+  // $(".custom-add-result-container")
+  //   .off("click", ".link-text")
+  //   .on("click", ".link-text", function (event) {
+  //     var structure = "bottom";
+  //     if ($("body").hasClass("top-down")) {
+  //       structure = "top";
+  //       if (
+  //         $("body").hasClass("top-down")
+  //           ? $(".search-top-down").val()
+  //           : $(".bottom-up-search").val()
+  //       ) {
+  //         _self.vars.searchObject.searchText = $("body").hasClass("top-down")
+  //           ? $(".search-top-down").val()
+  //           : $(".bottom-up-search").val();
+  //       }
+  //     } else {
+  //       structure = "bottom";
+  //     }
+  //     if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
+  //       var responseObject = {
+  //         type: "addNew",
+  //         data: true,
+  //         query: _self.vars.searchObject.searchText,
+  //         structure: structure,
+  //       };
+  //       _self.parentEvent(responseObject);
+  //     }
+  //   });
+  // //Tour RR
+  // $(".sdk-tours-info-nxt")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     $(".sdk-tours-info-start").hide();
+  //     $(".sdk-tours-info-end").removeClass("hide");
+  //     $(".sdk-tours-info-end").show();
+  //   });
+  // $(".sdk-tours-info-pre")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     $(".sdk-tours-info-start").show();
+  //     //$("sdk-tours-info-end").removeClass("hide");
+  //     $(".sdk-tours-info-end").hide();
+  //   });
 
-  $(".sdk-tours-info-close")
-    .off("click")
-    .on("click", function (e) {
-      $(".tours-information").hide();
-      _self.vars.customTourResultRank = false;
-    });
-  //Tour RR
+  // $(".sdk-tours-info-close")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     $(".tours-information").hide();
+  //     _self.vars.customTourResultRank = false;
+  //   });
+  // //Tour RR
 };
 
 FindlySDK.prototype.performRankActionsOnFullPage = function (
@@ -18436,18 +18193,17 @@ FindlySDK.prototype.performRankActionsOnFullPage = function (
     event.preventDefault();
     event.stopPropagation();
   }
-  var selectedElement;
+  return new Promise((resolve, reject) => {
+    var selectedElement;
 
   if (!isManuallyAdded) {
     selectedElement = $(event.target).closest(".data-wrap");
   } else {
     selectedElement = $(event).find(".data-wrap");
   }
-
   var contentID = selectedElement.attr("contentid");
   var contentType = selectedElement.attr("contentType");
   var queryString = _self.vars.searchObject.searchText;
-
   var payload = {
     searchQuery: queryString,
     result: {
@@ -18456,14 +18212,10 @@ FindlySDK.prototype.performRankActionsOnFullPage = function (
       config: conf,
     },
   };
-
   if (actionType === "unpin_added_result") {
     payload.result["addedResult"] = false;
   }
 
-  // $('#loaderDIV').show();
-  // fqp-0357ee01-975c-56ab-bfd3-0a577ed1ed8b
-  // var url = 'https://dev.findly.ai/searchassistapi/findly/sidx-05441d26-7bb8-5886-a84b-0dd7768f0a44/queryPipeline/fqp-0357ee01-975c-56ab-bfd3-0a577ed1ed8b/rankingAndPinning';
   var url = _self.API.queryConfig;
   _self.makeAPItoFindly(url, "PUT", JSON.stringify(payload)).then(
     (res) => {
@@ -18476,17 +18228,15 @@ FindlySDK.prototype.performRankActionsOnFullPage = function (
           bottomUp: true,
         };
         _self.parentEvent(responseObject);
+        resolve(res);
       }
-
-      _self.refreshFullResultsPage();
-      // }
     },
     (err) => {
       $("#loaderDIV").hide();
-      // $('.show-all-results').click();
-      _self.refreshFullResultsPage();
+      resolve('');
     }
   );
+  })
 };
 
 FindlySDK.prototype.refreshFullResultsPage = function () {
@@ -18582,7 +18332,7 @@ FindlySDK.prototype.appendSuggestions = function (autoComplete) {
     lang: "en",
     isDev: _self.isDev,
   };
-  payload.userId = this.bot.userInfo.userInfo.userId;
+  payload.userId = this.bot?.userInfo?.userInfo?.userId;
   payload.indexPipelineId = _self.API.indexpipelineId;
   var bearer =
     "bearer " + this.bot.options.accessToken ||
@@ -18753,9 +18503,6 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
     $("#search-box-container")
       .off("keydown", "#search")
       .on("keydown", "#search", function (e) {
-        // if ($('body').hasClass('top-down')) {
-        //   _self.vars.enterIsClicked = false;
-        // }
         _self.pubSub.publish("sa-handel-submit-button");
         var code = e.keyCode || e.which;
         code = Number(code);
@@ -19650,6 +19397,11 @@ FindlySDK.prototype.getTopDownTemplate = function () {
       <div class="topdown-search-main-container">
           <div id="heading" class="search-input-box">
               <div id="search-box-container" class="search-box-container-data">
+              {{if searchConfig.freePlan}}\
+                <div class="kore-sponsored">\
+                   <img src="data:image/png;base64,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"/>\
+                </div>\
+                {{/if}}\
                   <div class="cancel-search">
                       <img
                           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII=" />
@@ -19681,11 +19433,17 @@ FindlySDK.prototype.initializeTopDown = function (
   search_container,
   searchExperienceConfig
 ) {
+  $('body').addClass('sdk-body');
   var _self = this;
-  if (search_container && search_container.length) {
+  if(findlyConfig.isDev){
     _self.isDev = true;
-  } else {
-    _self.isDev = false;
+    if (!$("body").hasClass("builder-sdk")) {
+      $("body").addClass("builder-sdk");
+    }
+    if(!$('.top-down-search-background-div').length){
+  $('body').append('<div class="top-down-search-background-div"><div class="bgDullOpacity"></div></div>');
+    }
+    search_container = 'top-down-search-background-div';
   }
   var devMode = _self.isDev ? true : false;
   var searchConfiguration = _self.mapSearchConfiguration(
@@ -19814,11 +19572,7 @@ FindlySDK.prototype.initializeTopDown = function (
       closeConversation();
     }
   }
-  if (search_container && search_container.length) {
-    _self.isDev = true;
-  } else {
-    _self.isDev = false;
-  }
+
   _self.pubSub.subscribe("sa-show-live-search-suggestion", (msg, data) => {
     if (_self.vars.enterIsClicked) {
       $("#live-search-result-box").hide();
@@ -19861,42 +19615,7 @@ FindlySDK.prototype.initializeTopDown = function (
         $("#greeting-msg-top-down").hide();
       }
     });
-  if (_self.isDev) {
-    $(".show_insights_top_down")
-      .off("click", ".query_analytics_top_down")
-      .on("click", ".query_analytics_top_down", function (event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
-          var responseObject = {
-            type: "show",
-            data: true,
-            query: _self.vars.searchObject.searchText,
-          };
-          _self.parentEvent(responseObject);
-          setTimeout(function () {
-            $(".query_analytics_content").css("top", event.pageY - 50);
-            $(".query_analytics_content").css(
-              "left",
-              event.pageX - 200 - event.offsetX
-            );
-            $(document).on("click", function (event) {
-              if (!$(event.target).closest(".query_analytics_content").length) {
-                $(".query_analytics_content").hide();
-              }
-            });
-          }, 100);
-        }
-      });
-  }
-  var resultsContainerHtml = $(".all-product-details");
-  _self.bindPerfectScroll(
-    resultsContainerHtml,
-    "#show-filters-added-data",
-    null,
-    "y",
-    "facetsListContainer"
-  );
+  
   var conversationContainerHtml = $("#conversation-container");
   _self.bindPerfectScroll(
     conversationContainerHtml,
@@ -20831,9 +20550,9 @@ FindlySDK.prototype.unlockBot = function () {
 
   headers["Authorization"] = bearer;
   headers["Content-Type"] = "application/json";
-  payload.userId = this.bot.userInfo.userInfo.userId;
-  payload.streamId = this.bot.options.botInfo.taskBotId;
-  payload.botInfo = this.bot.options.botInfo;
+  payload.userId = this.bot?.userInfo?.userInfo?.userId;
+  payload.streamId = this.bot?.options?.botInfo?.taskBotId;
+  payload.botInfo = this.bot?.options?.botInfo;
   if (!_self.isDev) {
     if (_self.config.botOptions.assertion) {
       headers.auth = _self.config.botOptions.assertion;
@@ -21616,17 +21335,26 @@ FindlySDK.prototype.countTotalResults = function (res, totalResultsCount) {
 FindlySDK.prototype.getJWT = function (options, callback) {
   var me = this;
   var jsonData = {
-    clientId: options.clientId,
-    clientSecret: options.clientSecret,
-    identity: options.userIdentity,
-    aud: "",
-    isAnonymous: false,
+    // clientId: options.clientId,
+    // clientSecret: options.clientSecret,
+    // identity: options.userIdentity,
+    // aud: "",
+    // isAnonymous: false,
   };
+  var bearer = "bearer 9WACY7nGJHx-SBo3cUgqMwvhTaytdUm5LoGkHX4vYKlO2WAqLhkjJsE39yY3eBV7" ||
+  "bearer " + this.bot.options.accessToken ||
+  this.API.jstBarrer;
+var headers = {};
+headers["AccountId"]= "60547150f60ec050f4dfea8b";
+headers["Authorization"] = bearer;
+headers["Content-Type"] = "application/json;charset=UTF-8";
+headers["state"] = "configured";
   return $.ajax({
     url: options.JWTUrl,
     type: "post",
     data: jsonData,
     dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if(!me.vars.sdkInitialized){
@@ -21850,9 +21578,17 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                 isDemoTemplate = 'bankingTemplate'
               }
             }
-            const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
-
             var isDropdownEnabled = true;
+            var searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
+            if(_self.vars.customizeView && _self.isDev){
+              viewType = 'Customize';
+              searchTemplateType = "List";
+              data.isClickable = true;
+              isDropdownEnabled = false;
+            }
+
+            
+
             var messageData = {
               "message": [
                 {
@@ -21870,7 +21606,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'appearanceType': 'data',
                       'maxSearchResultsAllowed': maxSearchResultsAllowed,
                       'isDropdownEnabled': isDropdownEnabled,
-                      'tour': false,
+                      'tour': _self.vars.customTourResultRank || false,
                       'helpers': helpers,
                       'renderTitle': data.renderTitle,
                       'titleName': data.titleName,
@@ -21885,7 +21621,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'fieldName': data.fieldName,
                       'gridLayoutType': gridLayoutType,
                       "isButtonTemplate": false,
-                      "isDemoTemplate":isDemoTemplate
+                      "isDemoTemplate":isDemoTemplate,
                     }
                   }
                 }
@@ -22103,7 +21839,7 @@ FindlySDK.prototype.seeAllBtnClickEvent = function (e) {
   if($(e.target).hasClass("live-search-close-icon")){
     _self.vars.searchObject.searchText = $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
   }
-  if (_self.vars.feedBackExperience) {
+  if (_self.vars.feedBackExperience  && !_self.isDev) {
     _self.getFeedBackResult();
     }
   _self.vars.showingMatchedResults = true;
@@ -22840,6 +22576,9 @@ FindlySDK.prototype.appendTextToSearchContainer = function (type, text) {
     messageData.timeStamp = moment().format('LT');
   }
   var devMode = _self.isDev ? 'true' : 'false';
+  if(_self.isDev){
+    messageData.isSearchResultsMessage = true;
+  }
   var viewType = _self.vars.customizeView ? 'Customize' : 'Preview';
   var template = $(_self.getSearchTemplate('messageBubbles')).tmplProxy({
     msgData: messageData,
@@ -23020,26 +22759,38 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
     }
 
     $(".custom-insights-control-container").hide();
-    // _self.showAllResults();
-    // setTimeout(() => {
-    //   _self.bindCustomizeAction();
-    // }, 300);
+
   }
  })
 }
 FindlySDK.prototype.getJWTWithoutAPIKey = function (options, callback) {
-  var jsonData = {
-    "clientId": options.clientId,
-    "clientSecret": options.clientSecret,
-    "identity": options.userIdentity,
-    "aud": "",
-    "isAnonymous": false
-  };
+  var _self=this;
+  var jsonData = {}
+
+var headers = {};
+  if(_self.isDev){
+    var bearer = "bearer " + this.bot?.options?.accessToken ||
+    this.API.jstBarrer;
+    headers["Authorization"] = bearer;
+    headers["Content-Type"] = "application/json;charset=UTF-8";
+    headers["state"] = "configured";
+  }else{
+    jsonData = {
+      "clientId": options.clientId,
+      "clientSecret": options.clientSecret,
+      "identity": options.userIdentity,
+      "aud": "",
+      "isAnonymous": false
+    };
+  }
+
+
   return $.ajax({
     url: options.JWTUrl,
-    type: 'post',
+    type: "post",
     data: jsonData,
-    dataType: 'json',
+    dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if (callback) {
@@ -23121,8 +22872,18 @@ FindlySDK.prototype.setupInternalAssertionFunctionWithAPIKey = function () {
 FindlySDK.prototype.show = function (config) {
   var _self = this;
   _self.vars.isHostedSdk = true;
+
   if (config && config.API_KEY_CONFIG && config.API_KEY_CONFIG.KEY != 'YOUR_API_KEY') {
     _self.config.botOptions["apiKey"] = config["API_KEY_CONFIG"].KEY;
+  }
+  if(config.isDev){
+    _self.isDev = config.isDev;
+    _self.config.findlyBusinessConfig = config.findlyBusinessConfig;
+    _self.config.viaSocket = config.viaSocket;
+    _self.config.searchInterfaceConfig = config.searchInterfaceConfig;
+  }
+  if(config.botOptions){
+    _self.config.botOptions = {..._self.config.botOptions, ...config.botOptions}
   }
   _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
   _self.initKoreSDK();
@@ -23308,7 +23069,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
   var payload =
   {
   "query": query_text,
-  "userId": this.bot.userInfo.userInfo.userId
+  "userId": this.bot?.userInfo?.userInfo?.userId
   }
   var headers = {};
   var bearer = "bearer " + this.bot.options.accessToken;
@@ -23437,6 +23198,177 @@ FindlySDK.prototype.getFeedBackResult = function () {
     var _self = this;
     return;
   }
+
+
+  //Business SDk Custimize and Preview click Events (Author by: Pavan)//
+  FindlySDK.prototype.customizePreviewBtnClick = function (event,isTopDown) {
+    if ($("body").hasClass("top-down")) {
+      $(".content-data-sec").scrollTop(0);
+    }else{
+      $(".data-body-sec").scrollTop(0);
+    }
+    var _self = this;
+    _self.isDev =  true;
+    // if (isTopDown) {
+    //   if (
+    //     ($(event.currentTarget).attr("id") == "viewTypeCustomize" &&
+    //       _self.vars.customizeView) ||
+    //     ($(event.currentTarget).attr("id") == "viewTypePreview" &&
+    //       !_self.vars.customizeView)
+    //   ) {
+    //     return;
+    //   }
+    // }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    var navLinks = document.getElementsByClassName(
+      "custom-header-nav-link-item"
+    );
+
+    if (
+      _self.config.viaSocket &&
+      _self.vars.resultRankingActionPerformed == true
+    ) {
+      var scrollHeight =
+        $("#searchChatContainer").scrollTop() +
+        $("#searchChatContainer").prop("scrollHeight");
+      $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
+      if (!isTopDown) {
+        _self.sendMessage(_self.vars.searchObject.searchText);
+      }
+    }
+    
+    for (var i = 0; i < navLinks.length; i++) {
+      navLinks[i].className = navLinks[i].className.replace(
+        " nav-link-item-active",
+        ""
+      );
+    }
+    event.currentTarget.className += " nav-link-item-active";
+    if (isTopDown) {
+      var searchData;
+    }
+    if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
+      $(searchData)
+        .find(".tasks-wrp .faqs-shadow")
+        .find(".accordion.acc-active")
+        .trigger("click");
+    }
+    if (_self.vars.showingMatchedResults == true) {
+      if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
+        _self.vars.customizeView = true;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").show();
+          $(".custom-add-result-container").removeClass("display-none");
+          $(".content-data-sec").addClass("if-customize-mode");
+        }
+        $(".faqs-shadow").addClass("custom-faqs-shadow");
+        $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
+        $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
+        $(".image-url-sec").css("display", "none");
+        $(".faqs-bottom-actions").css("display", "table");
+        $(".divfeedback").css("display", "none");
+        $(".query-analytics-control-container").show();
+      } else {
+        _self.vars.customizeView = false;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").hide();
+          $(".custom-add-result-container").addClass("display-none");
+          $(".content-data-sec").removeClass("if-customize-mode");
+        }
+        $(".query-analytics-control-container").hide();
+        $(".faqs-shadow").removeClass("custom-faqs-shadow");
+        $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
+        $(".faqs-bottom-actions").removeClass("custom-faqs-bottom-actions");
+        $(".image-url-sec").css("display", "table-cell");
+        $(".faqs-bottom-actions").css("display", "none");
+        $(".notification-div").hide();
+      }
+    } else {
+      $(".search-container").css("top", 50);
+      if (($(event.currentTarget).attr("id") == "viewTypeCustomize") || _self.vars.customizeView) {
+        _self.vars.customizeView = true;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").show();
+          $(".custom-add-result-container").removeClass("display-none");
+          $(".content-data-sec").addClass("if-customize-mode");
+        }
+        $(".query-analytics-control-container").show();
+      } else {
+        _self.vars.customizeView = false;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").hide();
+          $(".custom-add-result-container").addClass("display-none");
+          $(".content-data-sec").removeClass("if-customize-mode");
+        }
+        $(".query-analytics-control-container").hide();
+      }
+    }
+    
+      var url = _self.API.searchUrl;
+      var payload = {
+        query: _self.vars.searchObject.searchText,
+        // "maxNumOfResults": 9,
+        maxNumOfResults: 5,
+        userId: _self.API.uuid,
+        streamId: _self.API.streamId,
+        lang: "en",
+        // "isDev": true,
+        isDev: _self.isDev,
+        searchRequestId: _self.vars.requestId,
+      };
+      if (_self.vars.isFilterModified) {
+        payload['isFilterModified'] = true;
+      }
+      if (_self.isDev) {
+        payload["customize"] = _self.vars.customizeView;
+      }
+      if (_self.vars.displaySortable) {
+        payload['sortableFacets'] = [_self.vars.displaySortable];
+      }
+      if (_self.vars.filterObject.length > 0) {
+        payload.filters = JSON.parse(JSON.stringify(_self.vars.filterObject));
+      }
+      if (
+        _self.vars.selectedFacetFromSearch &&
+        _self.vars.selectedFacetFromSearch !== "all results"
+      ) {
+        var tabConfig = {
+          filter: {
+            fieldName: _self.vars.tabFacetFieldName,
+            facetValue: [_self.vars.selectedFacetFromSearch],
+          },
+        };
+        payload.tabConfig = tabConfig;
+      } else {
+        let filters = payload.filters;
+        for (let i = (filters || []).length - 1; i >= 0; i--) {
+          if (
+            filters[i].facetValue[0] == "faq" ||
+            filters[i].facetValue[0] == "task" ||
+            filters[i].facetValue[0] == "web" ||
+            filters[i].facetValue[0] == "file" ||
+            filters[i].facetValue[0] == "data"
+          ) {
+            payload.filters.splice(i, 1);
+          }
+        }
+      }
+      return new Promise((resolve, reject) => {
+        _self
+          .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
+            _self.getMergedData(_self.vars.resultSettings, data, 'isFullResults').then((res) => {
+              resolve(res);
+            })
+          })
+          .catch((error) => {
+            reject(error);
+          })
+      })
+
+    }
   FindlySDK.prototype.openExternalLink = function  (link_url,e) {
     const me = this;
     me.appendTextToSearchContainer('user', $(e.currentTarget).attr('data-title'));
@@ -23469,6 +23401,33 @@ FindlySDK.prototype.getFeedBackResult = function () {
         clearTimeout(timer);
         timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };
+}
+FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
+  var _self = this;
+  if (_self.isDev) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
+          var responseObject = {
+            type: "show",
+            data: true,
+            query: _self.vars.searchObject.searchText,
+          };
+          _self.parentEvent(responseObject);
+          setTimeout(function () {
+            $(".query_analytics_content").css("top", event.pageY - 50);
+            $(".query_analytics_content").css(
+              "left",
+              event.pageX - 300 - event.offsetX
+            );
+            $(document).off('click').on("click", function (event) {
+              if (!$(event.target).closest(".query_analytics_content").length) {
+                $(".query_analytics_content").hide();
+              }
+            });
+          }, 100);
+        }
+  }
 }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
