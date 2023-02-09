@@ -53,7 +53,7 @@ class FullSearchResultsTemplate {
         $('.show-all-results-outer-wrap').css({ 'left': '200px', 'box-shadow': '0 10px 25px 0 rgb(0 0 0 / 20%)' });
       }
       if(msgData.message[0].component.payload.displayFeedback){
-        FullSearchResultsTemplate.prototype.feedBackResultEvents(me, messageHtml,msgData.message[0].component.payload.feedbackData);
+        FullSearchResultsTemplate.prototype.feedBackResultEvents(me, messageHtml,msgData.message[0].component.payload.displayFeedback);
         }
         if($('.filter-sec-tab').height()>30){
           $('.scroll-top-container').css('bottom', 41);
@@ -822,29 +822,33 @@ class FullSearchResultsTemplate {
     const text = $('.search-top-down').val();
     if (type === 'thumbsUp') {
     $('.thumbs-up-top-down-black').hide();
+    if(!$('.thumbs-up-top-down-blue').is(":visible")){
+      hostWindowInstance.updateFeedBackResult(type, text,'query');
+      }
     $('.thumbs-up-top-down-blue').show();
     $('.thumbs-down-top-down-black').show();
     $('.thumbs-up-top-down-red').hide();
-    hostWindowInstance.updateFeedBackResult(type, text,'query');
-    }
+   }
     else if (type === 'thumbsDown') {
     $('.thumbs-down-top-down-black').hide();
+    if(!$('.thumbs-up-top-down-red').is(":visible")){
+      let feedbackMsgData = {
+        message: [{
+          component: {
+            type: 'template',
+            payload: {
+              template_type: "feedbackFormTemplate",
+              query: hostWindowInstance?.vars?.searchObject.searchText || '',
+              feedBackType:'query'
+            }
+          }
+        }]
+      };
+      $('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
+      }
     $('.thumbs-up-top-down-red').show();
     $('.thumbs-up-top-down-black').show();
     $('.thumbs-up-top-down-blue').hide();
-    let feedbackMsgData = {
-      message: [{
-        component: {
-          type: 'template',
-          payload: {
-            template_type: "feedbackFormTemplate",
-            query: hostWindowInstance?.vars?.searchObject.searchText || '',
-            feedBackType:'query'
-          }
-        }
-      }]
-    };
-    $('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
     }
     });
     if (feedbackData === null) {
