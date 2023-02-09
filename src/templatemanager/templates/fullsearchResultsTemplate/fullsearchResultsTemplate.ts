@@ -4,6 +4,7 @@ import customTemplate from '../../templateManager';
 import searchListViewTemplate from '../../templates/searchListViewTemplate/searchListViewTemplate';
 import searchGridViewTemplate from '../../templates/searchGridViewTemplate/searchGridViewTemplate';
 import searchCarouselViewTemplate from '../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+import FeedBackFormTemplate from '../feedBackFormTemplate/feedBackFormTemplate';
 import korejquery from "../../../libs/korejquery";
 const $ = korejquery;
 class FullSearchResultsTemplate {
@@ -22,7 +23,7 @@ class FullSearchResultsTemplate {
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
       me.carouselTemplateObj = new searchCarouselViewTemplate();
-
+      me.feedBackTemplateObj = new FeedBackFormTemplate();
       return me.messageHtml;
     }
   }
@@ -831,6 +832,19 @@ class FullSearchResultsTemplate {
     $('.thumbs-up-top-down-red').show();
     $('.thumbs-up-top-down-black').show();
     $('.thumbs-up-top-down-blue').hide();
+    let feedbackMsgData = {
+      message: [{
+        component: {
+          type: 'template',
+          payload: {
+            template_type: "feedbackFormTemplate",
+            query: hostWindowInstance?.vars?.searchObject.searchText || '',
+            feedBackType:'query'
+          }
+        }
+      }]
+    };
+    $('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
     }
     });
     if (feedbackData === null) {
