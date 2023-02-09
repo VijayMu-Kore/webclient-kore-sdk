@@ -252,10 +252,10 @@ class SearchListViewTemplate {
       var ele = $(event.target).closest(".search-task");
       hostWindowInstance.botActionTrigger(event);
     });
-    $(messageHtml).off("click",".click-to-navigate-url").on("click",".click-to-navigate-url", function (e: any) {
+    $('.parent-list-template').off("click",".click-to-navigate-url").on("click",".click-to-navigate-url", function (e: any) {
       hostWindowInstance?.clickNavigateToUrl(e);
     });
-    $(messageHtml).off("click",".click-log-metrics").on("click",".click-log-metrics", function (e: any) {
+    $('.parent-list-template').off("click",".click-log-metrics").on("click",".click-log-metrics", function (e: any) {
       hostWindowInstance?.captureClickAnalytics(e,
         $(e.currentTarget).closest(".click-log-metrics").attr("contentType"),
         "click",

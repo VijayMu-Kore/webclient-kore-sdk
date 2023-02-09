@@ -47,10 +47,10 @@ class SearchGridViewTemplate {
                 var ele = $(event.target).closest(".search-task");
                 hostWindowInstance.botActionTrigger(event);
             });
-        $(messageHtml).off("click", ".click-to-navigate-url").on("click", ".click-to-navigate-url", function (e: any) {
+        $('.parent-grid-template').off("click", ".click-to-navigate-url").on("click", ".click-to-navigate-url", function (e: any) {
             hostWindowInstance?.clickNavigateToUrl(e);
         });
-        $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
+        $('.parent-grid-template').off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
             hostWindowInstance?.captureClickAnalytics(e,
                 $(e.currentTarget).closest(".click-log-metrics").attr("contentType"),
                 "click",
@@ -67,10 +67,10 @@ class SearchGridViewTemplate {
             <div class="title-list-heading">${titleName}</div>\
             {{/if}}\
             {{if gridLayoutType==="img_common"}}\
-            <div class="search-list-template-grid-img-title">\
+            <div class="search-list-template-grid-img-title parent-grid-template">\
             {{each(key, data) structuredData.slice(0, 5)}}\
             {{if isClickable == true}}\
-            <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}}  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            <div class=" grid-item-col {{if textAlignment==" center"}}text-center{{/if}}  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
             {{else}}\
             <div class="grid-item-col {{if textAlignment==" center"}}text-center{{/if}} click-log-metrics" contentId="${data.contentId}" data-title="${data.heading}" contentType="${data.sys_content_type}" id="${key}">\
             {{/if}}\
@@ -99,10 +99,10 @@ class SearchGridViewTemplate {
             </div>\
         {{/if}}\
         {{if gridLayoutType==="img_large"}}\
-        <div class="search-list-template-grid-img">\
+        <div class="search-list-template-grid-img parent-grid-template">\
         {{each(key, data) structuredData.slice(0, 5)}}\
         {{if isClickable == true}}\
-        <div class="grid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class="parent-grid-template grid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         {{else}}\
         <div class="grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
         {{/if}}\
@@ -121,10 +121,10 @@ class SearchGridViewTemplate {
         </div>\
         {{/if}}\
         {{if gridLayoutType==="img_left"}}\
-        <div class="search-list-template-grid-title-img-desc">\
+        <div class="search-list-template-grid-title-img-desc parent-grid-template">\
         {{each(key, data) structuredData.slice(0, 5)}}\
         {{if isClickable == true}}\
-        <div class="grid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class=" parent-grid-templategrid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         {{else}}\
         <div class="grid-item-col click-log-metrics" contentId="${data.contentId}" data-title="${data.heading}" contentType="${data.sys_content_type}" id="${key}">\
         {{/if}}\
@@ -149,10 +149,10 @@ class SearchGridViewTemplate {
         </div>\
         {{/if}}\
         {{if gridLayoutType==="img_top"}}\
-        <div class="search-list-template-grid-title-img-card">\
+        <div class="search-list-template-grid-title-img-card parent-grid-template">\
         {{each(key, data) structuredData.slice(0, 5)}}\
         {{if isClickable == true}}\
-        <div class="grid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class=" grid-item-col  click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
         {{else}}\
         <div class="grid-item-col click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
         {{/if}}\

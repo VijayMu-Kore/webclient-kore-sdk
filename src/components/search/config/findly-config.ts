@@ -48,12 +48,12 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "feb 3 snippets",
-  taskBotId: "st-9da26062-9cfd-54fd-8713-ab61e339332f",
+  chatBot: "feb8768",
+  taskBotId: "st-1931e799-836c-5425-9aaa-e90ef1a19bf0",
 };
-botOptionsFindly.clientId = "cs-8787d4d1-14c0-5b86-ae53-2fa2f4718e68";
-botOptionsFindly.clientSecret = "ELQWK/K6Te54FPxvits4AWe1TzRF5ysO2Rs9ng/HRss=";
-botOptionsFindly.searchIndexID = "sidx-6219f0c9-512f-58b6-8bf2-20b0c6f0949b";
+botOptionsFindly.clientId = "cs-89ca67f7-b0a9-59e5-9a26-e2fbda42fdfc";
+botOptionsFindly.clientSecret = "OJmraOVwhYXmbH70HhRcf0qBJ78fxCohjsyWFE9yPTU=";
+botOptionsFindly.searchIndexID = "sidx-667167fa-e530-586c-a4eb-2cb26bb32eb7";
 // botOptionsFindly.botInfo = {
 //   chatBot: "SA demo",
 //   taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",

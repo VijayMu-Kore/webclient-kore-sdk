@@ -131,10 +131,10 @@ class SearchCarouselViewTemplate {
                 var ele = $(event.target).closest(".search-task");
                 hostWindowInstance.botActionTrigger(event);
             });
-        $(messageHtml).off("click", ".click-to-navigate-url").on("click", ".click-to-navigate-url", function (e: any) {
+        $('.parent-carousel-template').off("click", ".click-to-navigate-url").on("click", ".click-to-navigate-url", function (e: any) {
             hostWindowInstance?.clickNavigateToUrl(e);
         });
-        $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
+        $('.parent-carousel-template').off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e: any) {
             hostWindowInstance?.captureClickAnalytics(e,
                 $(e.currentTarget).closest(".click-log-metrics").attr("contentType"),
                 "click",
@@ -152,7 +152,7 @@ class SearchCarouselViewTemplate {
             <div class="title-list-heading">${titleName}</div>\
             {{/if}}\
             {{if gridLayoutType==="img_common"}}\
-            <div class="search-list-template-carousel{{if templateType==="L4"}}-img-title{{/if}}">\
+            <div class="search-list-template-carousel{{if templateType==="L4"}}-img-title{{/if}} parent-carousel-template">\
             <div class="carousel">\
             {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
             {{if isClickable == true}}\
@@ -177,7 +177,7 @@ class SearchCarouselViewTemplate {
         </div>\
             {{/if}}\
             {{if gridLayoutType==="img_large"}}\
-            <div class="search-list-template-carousel-grid-img">\
+            <div class="search-list-template-carousel-grid-img parent-carousel-template">\
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                 {{if isClickable == true}}\
@@ -196,7 +196,7 @@ class SearchCarouselViewTemplate {
             </div>\
             {{/if}}\
             {{if gridLayoutType==="img_left"}}\
-            <div class="search-list-template-carousel-title-img-desc">\
+            <div class="search-list-template-carousel-title-img-desc parent-carousel-template">\
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                 {{if isClickable == true}}\
@@ -219,7 +219,7 @@ class SearchCarouselViewTemplate {
             </div>\
             {{/if}}\
             {{if gridLayoutType==="img_top"}}\
-            <div class="search-list-template-carousel-title-img-card">\
+            <div class="search-list-template-carousel-title-img-card parent-carousel-template">\
             <div class="carousel">\
                 {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
                 {{if isClickable == true}}\

@@ -7933,32 +7933,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       _self.vars.totalNumOfResults = 0;
     }
 
-    // if ($("body").hasClass("top-down")) {
-    //   _self.showMoreClick();
-    //   facets.push({
-    //     key: "all results",
-    //     doc_count: _self.vars.totalNumOfResults + (res.tasks || []).length,
-    //     name: "ALL",
-    //   });
-    //   facets = facets.concat((res.tabFacet || {}).buckets || []);
-    //   facets = _self.rearrangeTabsList(facets);
-    //   if ((res.tasks || []).length) {
-    //     facets.push({
-    //       key: "task",
-    //       doc_count: (res.tasks || []).length,
-    //       name: "Actions",
-    //     });
-    //   }
-    //   _self.vars.tabsList = facets;
-    //   if (!_self.vars.searchObject.liveData) {
-    //     _self.vars.searchObject.liveData = { facets: facets };
-    //   } else {
-    //     _self.vars.searchObject.liveData.facets = facets;
-    //   }
-    //   _self.pubSub.publish("sa-source-type", facets);
-    //   _self.pubSub.publish("sa-search-facets", searchFacets);
-    //   _self.pubSub.publish("facet-selected", { selectedFacet: "all results" });
-    // }
+    
     _self.fullResultsScrollTop();
     $(".all-product-details").scrollTop(0);
     $(".data-body-sec").scrollTop(0);
@@ -7989,7 +7964,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     }
   }
   $(".parent-search-live-auto-suggesition").hide();
-  if (_self.vars.feedBackExperience && !_self.isDev) {
+  if ((_self.vars.feedBackExperience.queryLevel || _self.vars.feedBackExperience.smartAnswer) && !_self.isDev) {
     _self.getFeedBackResult();
     }
 };
@@ -21837,7 +21812,7 @@ FindlySDK.prototype.seeAllBtnClickEvent = function (e) {
   if($(e.target).hasClass("live-search-close-icon")){
     _self.vars.searchObject.searchText = $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
   }
-  if (_self.vars.feedBackExperience  && !_self.isDev) {
+  if (_self.vars.feedBackExperience.queryLevel  && !_self.isDev) {
     _self.getFeedBackResult();
     }
   _self.vars.showingMatchedResults = true;
