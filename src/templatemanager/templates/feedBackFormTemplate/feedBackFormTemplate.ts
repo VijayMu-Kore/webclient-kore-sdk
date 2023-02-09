@@ -53,9 +53,14 @@ class FeedBackFormTemplate {
     bindFeedbackEvents(me:any,messageHtml:any,payload:any){
       let hostWindowInstance = me.hostInstance;
       let $ = me.hostInstance.$;
+      var feedbackInputText = $(messageHtml).find('#feedback-input-text').val() ||'';
+      var feedbackButton = $(messageHtml).find('.temp-feed-back-ans-tag-btn.active').html() || '';
       $(messageHtml).off('click', '.close-feedback').on('click', '.close-feedback', function (event:any) {
         event.stopPropagation();
         $(messageHtml).parent().empty();
+        hostWindowInstance.updateFeedBackResult('thumbsDown', payload?.query,payload?.feedBackType)
+        feedbackInputText ='';
+        feedbackButton='';
       });
       $(messageHtml).off('click', '.temp-feed-back-ans-tag-btn').on('click', '.temp-feed-back-ans-tag-btn', function (event:any) {
         event.stopPropagation();
@@ -64,13 +69,9 @@ class FeedBackFormTemplate {
       });
       $(messageHtml).off('click', '.submit-feedback').on('click', '.submit-feedback', function (event:any) {
         event.stopPropagation();
-        var feedbackInputText = $(messageHtml).find('#feedback-input-text').val() ||'';
-        var feedbackButton = $(messageHtml).find('.temp-feed-back-ans-tag-btn.active').html() || '';
-        if(feedbackInputText || feedbackButton){
           hostWindowInstance.updateFeedBackResult('thumbsDown', payload?.query,payload?.feedBackType,feedbackButton,feedbackInputText)
           $('#snippet-feedback-template').empty();
           $('#query-feedback').empty()
-        }
       });
     }
 

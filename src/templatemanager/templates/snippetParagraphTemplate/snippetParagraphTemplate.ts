@@ -70,17 +70,21 @@ class SnippetParagraphTemplate {
     bindSnippetEvents(me:any,messageHtml:any, snippetData:any){
       let $ = me.hostInstance.$;
       let hostInstance= me.hostInstance;
-        $(messageHtml).off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
-          $(messageHtml).find('.snippet-feedback').removeClass('active');
-          $(event.currentTarget).addClass('active');
-        });
-        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
-          SnippetParagraphTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
-        });
-        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-dislike-img', function (event:any) {
-          hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
-        });
-        
+          $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
+            if(!$('.snippet-feedback .snippet-like-img  .active').is(":visible")){
+            hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
+            $(messageHtml).find('.snippet-feedback').removeClass('active');
+            $(event.currentTarget).addClass('active');
+          }
+          });
+
+          $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
+            if(!$('.snippet-feedback .snippet-dislike-img .active').is(":visible")){
+            SnippetParagraphTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
+            $(messageHtml).find('.snippet-feedback').removeClass('active');
+            $(event.currentTarget).addClass('active');
+          }
+          });
         if(messageHtml &&  $(messageHtml).find('.temp-data-desc').length){
           setTimeout(()=>{
             if($(messageHtml).find('.temp-data-desc').length && $(messageHtml).find('.temp-data-desc')[0].scrollHeight>70){

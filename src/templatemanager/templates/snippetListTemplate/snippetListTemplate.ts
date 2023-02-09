@@ -74,17 +74,20 @@ class SnippetListTemplate {
     bindSnippetEvents(me:any,messageHtml:any, snippetData:any){
       let $ = me.hostInstance.$;
       let hostInstance= me.hostInstance;
-      $(messageHtml).off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event:any) {
-          $(messageHtml).find('.snippet-feedback').removeClass('active');
-          $(event.currentTarget).addClass('active');
-        });
-        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
+      $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
+        if(!$('.snippet-feedback .snippet-like-img  .active').is(":visible")){
+        hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
+        $(messageHtml).find('.snippet-feedback').removeClass('active');
+        $(event.currentTarget).addClass('active');
+      }
+      });
+      $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
+        if(!$('.snippet-feedback .snippet-dislike-img .active').is(":visible")){
           SnippetListTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
-        });
-        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-dislike-img', function (event:any) {
-          hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
-        });
-        
+        $(messageHtml).find('.snippet-feedback').removeClass('active');
+        $(event.currentTarget).addClass('active');
+      }
+      });
          if(messageHtml &&  $(messageHtml).find('.list-temp-ul').length){
           $(messageHtml).off('click', '.desc-read-more').on('click', '.desc-read-more', function (event:any) {
             $(messageHtml).find('.list-temp-ul').addClass('show-all-list');

@@ -10069,10 +10069,6 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
       searchConfiguration.feedbackExperience =
         searchConfig.interactionsConfig.feedbackExperience;
         _self.vars.feedBackExperience = searchConfig.interactionsConfig.feedbackExperience;
-        _self.vars.feedBackExperience = {
-          queryLevel:true,
-          smartAnswer:true
-        }
     } else {
       searchConfiguration.welcomeMsg = "Hello! How can I help you today?";
       searchConfiguration.welcomeMsgFillColor = "#3C4043";
