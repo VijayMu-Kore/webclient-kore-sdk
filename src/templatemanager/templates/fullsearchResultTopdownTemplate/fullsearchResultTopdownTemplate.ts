@@ -850,16 +850,16 @@ class FullSearchResultTopdownTemplate {
     const text = $('.search-top-down').val();
     if (type === 'thumbsUp') {
     $('.thumbs-up-top-down-black').hide();
+    if(!$('.thumbs-up-top-down-blue').is(":visible")){
+      hostWindowInstance.updateFeedBackResult(type, text,'query');
+      }
     $('.thumbs-up-top-down-blue').show();
     $('.thumbs-down-top-down-black').show();
     $('.thumbs-up-top-down-red').hide();
-    hostWindowInstance.updateFeedBackResult(type, text,'query');
     }
     else if (type === 'thumbsDown') {
     $('.thumbs-down-top-down-black').hide();
-    $('.thumbs-up-top-down-red').show();
-    $('.thumbs-up-top-down-black').show();
-    $('.thumbs-up-top-down-blue').hide();
+    if(!$('.thumbs-up-top-down-red').is(":visible") ){
     let feedbackMsgData = {
       message: [{
         component: {
@@ -873,6 +873,10 @@ class FullSearchResultTopdownTemplate {
       }]
     };
     $(messageHtml).find('#query-feedback').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
+    }
+    $('.thumbs-up-top-down-red').show();
+    $('.thumbs-up-top-down-black').show();
+    $('.thumbs-up-top-down-blue').hide();
     }
     });
     $('.thumbs-up-top-down-blue, .thumbs-up-top-down-red').hide();

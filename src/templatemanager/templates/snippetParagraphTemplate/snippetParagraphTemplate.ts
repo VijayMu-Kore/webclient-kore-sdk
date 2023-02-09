@@ -71,7 +71,7 @@ class SnippetParagraphTemplate {
       let $ = me.hostInstance.$;
       let hostInstance= me.hostInstance;
           $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
-            if(!$('.snippet-feedback .snippet-like-img  .active').is(":visible")){
+            if(!$(event.currentTarget).closest('.snippet-like-img').hasClass('active')){
             hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
             $(messageHtml).find('.snippet-feedback').removeClass('active');
             $(event.currentTarget).addClass('active');
@@ -79,7 +79,7 @@ class SnippetParagraphTemplate {
           });
 
           $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
-            if(!$('.snippet-feedback .snippet-dislike-img .active').is(":visible")){
+            if(!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')){
             SnippetParagraphTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
             $(messageHtml).find('.snippet-feedback').removeClass('active');
             $(event.currentTarget).addClass('active');

@@ -257,14 +257,14 @@ class FinalResultsTemplate {
     let $ = me.hostInstance.$;
     let hostInstance= me.hostInstance;
     $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
-      if(!$('.snippet-feedback .snippet-like-img  .active').is(":visible")){
+      if(!$(event.currentTarget).closest('.snippet-like-img').hasClass('active')){
       hostInstance.updateFeedBackResult('thumbsUp',hostInstance.searchQuery,'smartAnswer')
       $(messageHtml).find('.snippet-feedback').removeClass('active');
       $(event.currentTarget).addClass('active');
       }
     });
     $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
-      if(!$('.snippet-feedback .snippet-dislike-img .active').is(":visible")){
+      if(!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')){
       FinalResultsTemplate.prototype.appendFeedBaackData(me,messageHtml,'smartAnswer')
       $(messageHtml).find('.snippet-feedback').removeClass('active');
       $(event.currentTarget).addClass('active');

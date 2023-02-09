@@ -200,6 +200,18 @@ box-shadow: none;
 #snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-opt-ans .input-text{
     width: 100%;
 }
+#snippet-feedback-template .temp-feed-back-opt-ans{
+    width: 100%;
+    height: 90px;
+}
+#snippet-feedback-template .temp-feed-back-opt-ans #feedback-input-text{
+    width: 100%;
+    height: 100%;
+}
+#snippet-feedback-template .temp-feed-back-opt-ans #feedback-input-text:focus-visible{
+outline: none;
+border: solid 1px #1372ff;
+}
 #snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form {
     width: 99%;
     right: 2px;

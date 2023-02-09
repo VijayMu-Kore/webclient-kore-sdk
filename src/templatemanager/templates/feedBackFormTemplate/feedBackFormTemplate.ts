@@ -39,7 +39,7 @@ class FeedBackFormTemplate {
       </div>\
       <div class="temp-feed-back-opt-qns">Please help us with more details (Optional)</div>\
       <div class="temp-feed-back-opt-ans">\
-          <textarea id="feedback-input-text" placeholder="I dont think these results are of any use for this month" class="input-text"></textarea>\
+          <textarea id="feedback-input-text" placeholder="Start typing here..."></textarea>\
       </div>\
       <div class="temp-feed-back-footer-block">\
           <button class="temp-feed-back-footer-btn-secondary close-feedback">Close</button>\
