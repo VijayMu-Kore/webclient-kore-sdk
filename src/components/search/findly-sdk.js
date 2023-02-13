@@ -23408,5 +23408,6 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
         }
   }
 }
+
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
