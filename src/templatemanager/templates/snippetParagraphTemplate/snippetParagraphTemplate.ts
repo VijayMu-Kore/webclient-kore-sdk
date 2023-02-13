@@ -33,7 +33,7 @@ class SnippetParagraphTemplate {
           <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
           {{/if}}\
       </div>\
-      {{if snippetData && snippetData.title}}<div class="paragraph-temp-header">{{html snippetData?.title}}</div>{{/if}}\
+      {{if snippetData && snippetData.title}}<div class="paragraph-temp-header" title="${snippetData?.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>{{/if}}\
       <div class="temp-data-desc">\
       {{html snippetData?.answer}}\
       </div>\
@@ -87,7 +87,7 @@ class SnippetParagraphTemplate {
           });
         if(messageHtml &&  $(messageHtml).find('.temp-data-desc').length){
           setTimeout(()=>{
-            if($(messageHtml).find('.temp-data-desc').length && $(messageHtml).find('.temp-data-desc')[0].scrollHeight>70){
+            if($(messageHtml).find('.temp-data-desc').length && $(messageHtml).find('.temp-data-desc')[0].scrollHeight>160){
               $(messageHtml).find('.desc-read-more').show();
               $(messageHtml).find('.desc-read-less').hide();
             }else{
@@ -100,7 +100,7 @@ class SnippetParagraphTemplate {
               $(event.currentTarget).parent().find('.desc-read-less').show();
             });
             $(messageHtml).off('click', '.desc-read-less').on('click', '.desc-read-less', function (event:any) {
-              $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','3');
+              $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','8');
               $(event.currentTarget).parent().find('.desc-read-more').show();
               $(event.currentTarget).hide();
             });

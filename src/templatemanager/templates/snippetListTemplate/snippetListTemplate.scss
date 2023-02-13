@@ -6,6 +6,9 @@
 			font-size: 16px;
 			line-height: 19px;
 			padding-top: 10px;
+			overflow: hidden;
+            white-space: nowrap;
+    		text-overflow: ellipsis;
 		}
 		.list-temp-ul {
 			color: #2D2F33;
@@ -18,14 +21,14 @@
 			.list-temp-li {
 				list-style-type: decimal !important;
 				list-style-position: outside !important;
-				// &:nth-child(n+5) {
-				// 	display: none;
-				// }
+				&:nth-child(n+8) {
+					display: none;
+				}
 			}
 		}
 		.list-temp-ul.show-all-list {
 			.list-temp-li {
-				&:nth-child(n+5) {
+				&:nth-child(n+8) {
 					display: list-item;
 				}
 			}

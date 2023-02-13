@@ -25,7 +25,7 @@ class FeedBackFormTemplate {
       <div class="temp-feed-back-header-block">\
           <div class="temp-feed-back-header">\
               <div class="temp-feed-back-header-samll">Feedback for</div>\
-              <div class="temp-feed-back-header-large">“${feedbackData}”</div>\
+              <div class="temp-feed-back-header-large" title="${feedbackData}">“${feedbackData}”</div>\
           </div>\
           <div class="close-feedback"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/feedback-close.png"/></div>\
           <div class="temp-right-indicator-block"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/feedback-right-pointer.png"/></div>\
@@ -33,9 +33,10 @@ class FeedBackFormTemplate {
       <div class="temp-break-line"></div>\
       <div class="temp-feed-back-qns">What seems to be the issue?</div>\
       <div class="temp-feed-back-ans-tags">\
-          <button class="temp-feed-back-ans-tag-btn">Incorrect</button>\
-          <button class="temp-feed-back-ans-tag-btn">Outdated</button>\
-          <button class="temp-feed-back-ans-tag-btn">Few Results</button>\
+          <button class="temp-feed-back-ans-tag-btn" value="incorrect">Incorrect</button>\
+          <button class="temp-feed-back-ans-tag-btn" value="outdated">Outdated</button>\
+          <button class="temp-feed-back-ans-tag-btn" value="few_results">Few Results</button>\
+          <button class="temp-feed-back-ans-tag-btn" value="other">Other</button>\
       </div>\
       <div class="temp-feed-back-opt-qns">Please help us with more details (Optional)</div>\
       <div class="temp-feed-back-opt-ans">\
@@ -66,7 +67,7 @@ class FeedBackFormTemplate {
       });
       $(messageHtml).off('click', '.submit-feedback').on('click', '.submit-feedback', function (event:any) {
         var feedbackInputText = $(messageHtml).find('#feedback-input-text').val() ||'';
-        var feedbackButton = $(messageHtml).find('.temp-feed-back-ans-tag-btn.active').html() || '';
+        var feedbackButton = $(messageHtml).find('.temp-feed-back-ans-tag-btn.active').attr('value') || '';
         event.stopPropagation();
           hostWindowInstance.updateFeedBackResult('thumbsDown', payload?.query,payload?.feedBackType,feedbackButton,feedbackInputText)
           $('#snippet-feedback-template').empty();

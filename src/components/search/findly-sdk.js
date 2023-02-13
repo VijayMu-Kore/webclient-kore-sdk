@@ -6173,7 +6173,7 @@ FindlySDK.prototype.searchEventBinding = function (
         $("#search").trigger({ type: "keydown", which: 39 });
       });
     var handle = setInterval(function () {
-      if (_self.bot?.option?.accessToken) {
+      if (_self.bot?.options?.accessToken) {
         initPopularSearchList();
         clearInterval(handle);
         handle = 0;
@@ -23091,10 +23091,6 @@ FindlySDK.prototype.getFeedBackResult = function () {
   var url = _self.API.feedbackPostUrl;
   var payload = {
     "feedbackLevel": feedbackType,
-    "comments": {
-        "issueType": feedbackButton || '',
-        "text": feedbackInputText ||''
-    },
     "event": type,
     "indexPipelineId": _self.vars.experimentsObject.indexPipelineId,
     "searchIndexId":_self.config.botOptions ? _self.config.botOptions.searchIndexID : '',
@@ -23105,6 +23101,12 @@ FindlySDK.prototype.getFeedBackResult = function () {
     "searchRequestId": _self.vars.previousSearchObj.requestId,
     "streamId":  _self.API.streamId
  }
+ if(feedbackButton || feedbackInputText){
+  payload.comments = {};
+  if(feedbackButton) payload.comments['issueType'] = feedbackButton || '';
+  if(feedbackInputText) payload.comments['text'] = feedbackInputText || '';
+ }
+
   var headers = {};
   var bearer = "bearer " + this.bot.options.accessToken;
   headers["Authorization"] = bearer;

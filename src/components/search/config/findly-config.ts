@@ -3,7 +3,7 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-app.kore.ai"
+var paramUrl="searchassist-qa.kore.ai"
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
@@ -48,49 +48,12 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "feb8768",
-  taskBotId: "st-1931e799-836c-5425-9aaa-e90ef1a19bf0",
+  chatBot: "Answer snippets1",
+  taskBotId: "st-bb827e73-55ec-5ebe-8e95-f585a5f152b4",
 };
-botOptionsFindly.clientId = "cs-89ca67f7-b0a9-59e5-9a26-e2fbda42fdfc";
-botOptionsFindly.clientSecret = "OJmraOVwhYXmbH70HhRcf0qBJ78fxCohjsyWFE9yPTU=";
-botOptionsFindly.searchIndexID = "sidx-667167fa-e530-586c-a4eb-2cb26bb32eb7";
-// botOptionsFindly.botInfo = {
-//   chatBot: "SA demo",
-//   taskBotId: "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34",
-// };
-// botOptionsFindly.clientId = "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c";
-// botOptionsFindly.clientSecret = "/xxpC/mek8mCpgcaTmyvfuFu5fsjycjFX1rQzohLpnU=";
-// botOptionsFindly.searchIndexID = "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc";
-// botOptionsFindly.botInfo = {
-//   chatBot: "7 DEC-22",
-//   taskBotId: "st-0e74a50d-6082-5f35-8ef7-12f05b67c6e0",
-// };
-// botOptionsFindly.clientId = "cs-7bdcdb62-0ba3-5a94-8191-bcc2145e740f";
-// botOptionsFindly.clientSecret = "MLmrLKTApQk60vS0B3Ud5JTfaEMCASPFqP0WC+BdkTs=";
-// botOptionsFindly.searchIndexID = "sidx-546830dd-8d22-5a92-89a2-7432364a3e25";
-
-// botOptionsFindly.botInfo = {
-//   chatBot: "Bot actions V2",
-//   taskBotId: "st-af4891e5-b228-5c30-b629-e21a49d37d04",
-// };
-// botOptionsFindly.clientId = "cs-b20a8411-74d9-58b0-b615-78b33e2986ae";
-// botOptionsFindly.clientSecret = "UFTq1wsjDREF7gb7XVDcOrg+8Llu98sVs4zGGXRZc1A=";
-// botOptionsFindly.searchIndexID = "sidx-ea84961b-7aad-57f6-a021-eeb591433c48";
-// botOptionsFindly.botInfo = {
-//   chatBot: "PSI_Demo_V1.1",
-//   taskBotId: "st-7b63dd9c-d111-5372-ba60-0a8b69963798",
-// };
-// botOptionsFindly.clientId = "cs-4f4e9434-eca4-566a-9d90-7b7dbed81320";
-// botOptionsFindly.clientSecret = "EmgxDGZV8dZhm9pGQePqVeb1CXxlrcD0RwWnize0ass=";
-// botOptionsFindly.searchIndexID = "sidx-88a143e1-2447-5d67-b26a-78cf5f97d407";
-//dev
-// botOptionsFindly.botInfo = {
-//   chatBot: "Assa_Abloy_Ai_Demo",
-//   taskBotId: "st-abf9a36f-c6a9-5b6f-9b78-72a8569bbe3b",
-// };
-// botOptionsFindly.clientId = "cs-cee60ada-14ac-5e20-9cea-7abc3f73bba0";
-// botOptionsFindly.clientSecret = "kdW+hh5lzmNfeFz3rr/f72QK0xG79P9MN0iOXWg8HnM=";
-// botOptionsFindly.searchIndexID = "sidx-cd61c787-fc9f-54ab-bd64-9911d2ded18d";
+botOptionsFindly.clientId = "cs-b2affdb1-c681-5b9a-b4a0-0ce3cefa7a7c";
+botOptionsFindly.clientSecret = "ffVC9WlZsyAzII115FaY6YYRVzdIt6lefezTMdnzCBw=";
+botOptionsFindly.searchIndexID = "sidx-2867c11d-2ab6-5916-be5c-b33c9ba15e70";
 
 
 // To modify the web socket url use the following option

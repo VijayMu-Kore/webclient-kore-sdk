@@ -141,7 +141,7 @@ class FinalResultsTemplate {
                 <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
                 {{/if}}\
             </div>\
-            {{if snippetData && snippetData.title}}<div class="paragraph-temp-header">{{html snippetData?.title}}</div>{{/if}}\
+            {{if snippetData && snippetData.title}}<div class="paragraph-temp-header" title="${snippetData?.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>{{/if}}\
             <div class="temp-data-desc">\
             {{html snippetData?.answer}}\
             </div>\
@@ -150,7 +150,7 @@ class FinalResultsTemplate {
             </div>\
             {{if snippetData && snippetData.source !== "Answered by AI"}}\
             <div class="snippet-source-block">\
-              <div class="snippet-source-file-name {{if !snippetData.source}} display-none{{/if}}">{{html snippetData.source}}</div>\
+              <div class="snippet-source-file-name {{if !snippetData.source}} display-none{{/if}}" title="${snippetData.source}">{{html snippetData.source}}</div>\
               <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name" title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
             </div>\
             {{/if}}\
@@ -185,7 +185,7 @@ class FinalResultsTemplate {
             {{/if}}\
         </div>\
         <div class="list-temp-block">\
-            <div class="list-temp-header">{{html snippetData?.title}}</div>\
+            <div class="list-temp-header" title="${snippetData.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
                 <ol type="1" class="list-temp-ul">\
                 {{each(key, answer) snippetData.answer}}\
                     <li class="list-temp-li">{{html answer}}</li>\
@@ -197,7 +197,7 @@ class FinalResultsTemplate {
         </div>\
         {{if snippetData && snippetData.source !== "Answered by AI"}}\
           <div class="snippet-source-block">\
-            <div class="snippet-source-file-name  {{if !snippetData.source}} display-none {{/if}}">{{html snippetData?.source}}</div>\
+            <div class="snippet-source-file-name  {{if !snippetData.source}} display-none {{/if}}" title="${snippetData.source}">{{html snippetData?.source}}</div>\
             <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none {{/if}}"><span class="snippet-source-url-name">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/> </div></a>\
           </div>\
         {{/if}}\
@@ -272,7 +272,7 @@ class FinalResultsTemplate {
     });
     if(messageHtml &&  $(messageHtml).find('.search-temp-one').find('.temp-data-desc').length){
       setTimeout(()=>{
-        if($(messageHtml).find('.search-temp-one').last().find('.temp-data-desc').length && $(messageHtml).find('.search-temp-one').last().find('.temp-data-desc')[0].scrollHeight>70){
+        if($(messageHtml).find('.search-temp-one').last().find('.temp-data-desc').length && $(messageHtml).find('.search-temp-one').last().find('.temp-data-desc')[0].scrollHeight>160){
           $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').show();
           $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
         }else{
@@ -285,7 +285,7 @@ class FinalResultsTemplate {
           $(event.currentTarget).parent().find('.desc-read-less').show();
         });
         $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event:any) {
-          $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','3');
+          $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp','8');
           $(event.currentTarget).parent().find('.desc-read-more').show();
           $(event.currentTarget).hide();
         });
