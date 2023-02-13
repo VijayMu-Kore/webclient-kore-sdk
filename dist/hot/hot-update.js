@@ -1,27 +1,85 @@
 self["webpackHotUpdatekore_web_sdk"]("esm",{
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/templatemanager/templates/feedBackFormTemplate/feedBackFormTemplate.scss":
-/*!*************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/templatemanager/templates/feedBackFormTemplate/feedBackFormTemplate.scss ***!
-  \*************************************************************************************************************************************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/components/search/config/findly-config.ts":
+/*!*******************************************************!*\
+  !*** ./src/components/search/config/findly-config.ts ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-// Imports
-
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ".temp-footer-block {\n  position: relative;\n}\n\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form {\n  box-shadow: 0px 5px 26px rgba(32, 33, 36, 0.25);\n  border-radius: 8px;\n  background: #FFFFFF;\n  height: auto;\n  width: 100%;\n  position: absolute;\n  right: 0px;\n  top: inherit;\n  bottom: 0;\n  padding: 20px 20px;\n  z-index: 20;\n}\n\n#searchChatContainer #snippet-feedback-template .snippet-bg-blur {\n  background: #8080804a;\n  width: 485px !important;\n  height: calc(100vh - 133px);\n  position: fixed;\n  bottom: 75px;\n  right: 30px;\n  border-radius: 6px;\n}\n\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn {\n  margin-right: 6px;\n}\n\n.temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn.active {\n  border: 1px solid #0D6EFD;\n}\n\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-block {\n  width: 100%;\n}\n\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-btn-secondary {\n  width: 50%;\n}\n\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-btn-primary {\n  width: 50%;\n}\n\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-header-block .temp-right-indicator-block {\n  display: none;\n}\n\n.temp-feed-back-header-block .temp-feed-back-header {\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n.temp-feed-back-header-block .temp-feed-back-header .temp-feed-back-header-large {\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n#query-feedback.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form {\n  box-shadow: 0px 5px 26px rgba(32, 33, 36, 0.25);\n  border-radius: 8px;\n  background: #FFFFFF;\n  height: auto;\n  width: 100%;\n  position: absolute;\n  right: 0px;\n  top: inherit;\n  bottom: 0;\n  padding: 20px 20px;\n  z-index: 20;\n}\n\n.temp-footer-block .temp-feed-back-form {\n  box-shadow: 0px 5px 26px rgba(32, 33, 36, 0.25);\n  border-radius: 8px;\n  background: #FFFFFF;\n  height: auto;\n  width: 420px;\n  position: absolute;\n  right: 30px;\n  top: -30px;\n  padding: 20px 20px;\n  z-index: 20;\n}\n\n.temp-feed-back-form .temp-feed-back-header-block .close-feedback {\n  cursor: pointer;\n}\n\n.temp-feed-back-header-block {\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  padding-bottom: 20px;\n  position: relative;\n}\n\n.temp-feed-back-header-block .temp-right-indicator-block {\n  position: absolute;\n  top: 0;\n  right: -34px;\n}\n\n.temp-feed-back-header .temp-feed-back-header-samll {\n  color: #777A80;\n  font-weight: 600;\n  font-size: 10px;\n  line-height: 12px;\n  padding-bottom: 10px;\n}\n\n.temp-feed-back-header .temp-feed-back-header-large {\n  color: #121314;\n  font-weight: 700;\n  font-size: 16px;\n  line-height: 19px;\n}\n\n.temp-break-line {\n  border-bottom: 1px solid #E3E4E6;\n}\n\n.temp-feed-back-qns {\n  color: #121314;\n  font-weight: 400;\n  font-size: 14px;\n  line-height: 20px;\n  padding-top: 15px;\n}\n\n.temp-feed-back-ans-tags {\n  padding-top: 5px;\n}\n\n.temp-feed-back-ans-tag-btn {\n  background: #FFFFFF;\n  box-shadow: 0px 4px 8px rgba(32, 33, 36, 0.15);\n  border-radius: 20px;\n  border: 1px solid #B9BCBF;\n  padding: 10px 15px;\n  cursor: pointer;\n}\n\n.temp-feed-back-ans-tag-btn:focus {\n  background: #F0F1F2;\n}\n\n.temp-feed-back-opt-qns {\n  font-weight: 500;\n  font-size: 12px;\n  line-height: 15px;\n  color: #202124;\n  padding-top: 15px;\n  padding-bottom: 5px;\n}\n\n.temp-feed-back-opt-ans .input-text {\n  background: #FFFFFF;\n  border: 1px solid #BDC1C6;\n  border-radius: 4px;\n  width: 95%;\n  resize: none !important;\n  min-height: 90px;\n  padding: 2px 10px 10px 10px;\n  font-size: 14px;\n  color: #202124;\n  line-height: normal;\n}\n\n.temp-feed-back-opt-ans .input-text:focus {\n  border: solid 1px #1372ff;\n}\n\n.temp-feed-back-opt-ans .input-text:focus-visible {\n  outline: none;\n  box-shadow: none;\n}\n\n.temp-feed-back-footer-block {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  padding-top: 15px;\n}\n\n.temp-feed-back-footer-block .temp-feed-back-footer-btn-secondary {\n  border: 1px solid #BDC1C6;\n  background: #fff;\n  padding: 0px 20px;\n  height: 34px;\n  font-size: 14px;\n  border-radius: 4px;\n  cursor: pointer;\n  color: #5F6368;\n  min-width: 60px;\n  text-align: center;\n  transition: 0.2s all ease-in;\n}\n\n.temp-feed-back-footer-block .temp-feed-back-footer-btn-secondary:hover {\n  background: #F8F9FA;\n}\n\n.temp-feed-back-footer-block .temp-feed-back-footer-btn-primary {\n  border: 1px solid transparent;\n  background: #0D6EFD;\n  padding: 0px 20px;\n  height: 34px;\n  font-size: 14px;\n  border-radius: 4px;\n  cursor: pointer;\n  color: #fff;\n  min-width: 60px;\n  text-align: center;\n  transition: 0.2s all ease-in;\n  margin-left: 10px;\n}\n\n.temp-feed-back-footer-block .temp-feed-back-footer-btn-primary:hover {\n  background: #0156d4;\n  color: #fff;\n}\n\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-opt-ans .input-text {\n  width: 100%;\n}\n\n#snippet-feedback-template .temp-feed-back-opt-ans {\n  width: 100%;\n  height: 90px;\n}\n\n#snippet-feedback-template .temp-feed-back-opt-ans #feedback-input-text {\n  width: 100%;\n  height: 100%;\n  resize: none;\n  font-family: \"Inter\";\n  font-style: normal;\n  font-weight: 400;\n  font-size: 14px;\n  line-height: 20px;\n  color: #202124;\n}\n\n#snippet-feedback-template .temp-feed-back-opt-ans #feedback-input-text:focus-visible {\n  outline: none;\n  border: solid 1px #1372ff;\n}\n\n.temp-feed-back-opt-ans #feedback-input-text::placeholder {\n  font-family: \"Inter\";\n  font-style: normal;\n  font-weight: 400;\n  font-size: 14px;\n  line-height: 20px;\n  color: #BDC1C6;\n}\n\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form {\n  width: 99%;\n  right: 2px;\n  bottom: 13px;\n}\n\n.sinnpet-feedback-template-assiatance-temp .snippet-bg-blur {\n  background: #8080804a;\n  width: 485px !important;\n  height: calc(100vh - 54px);\n  position: fixed;\n  bottom: 31px;\n  right: 30px;\n  border-radius: 6px;\n}", "",{"version":3,"sources":["webpack://./src/templatemanager/templates/feedBackFormTemplate/feedBackFormTemplate.scss"],"names":[],"mappings":"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","sourcesContent":[".temp-footer-block{\r\n    position: relative;\r\n}\r\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form{\r\n    box-shadow: 0px 5px 26px rgb(32 33 36 / 25%);\r\n    border-radius: 8px;\r\n    background: #FFFFFF;\r\n    height: auto;\r\n    width: 100%;\r\n    position: absolute;\r\n    right: 0px;\r\n    top: inherit;\r\n    bottom: 0;\r\n    padding: 20px 20px;\r\n    z-index: 20;\r\n}\r\n#searchChatContainer #snippet-feedback-template .snippet-bg-blur{\r\n    background: #8080804a;\r\n    width: 485px !important;\r\n    height: calc(100vh - 133px);\r\n    position: fixed;\r\n    bottom: 75px;\r\n    right: 30px;\r\n    border-radius: 6px;\r\n}\r\n\r\n\r\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn{\r\n    margin-right: 6px;\r\n}\r\n.temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn.active{\r\n    border: 1px solid #0D6EFD;\r\n}\r\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-block{\r\n    width: 100%;\r\n}\r\n\r\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-btn-secondary{\r\n    width: 50%;\r\n}\r\n\r\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form .temp-feed-back-footer-btn-primary{\r\n    width: 50%;\r\n}\r\n\r\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-header-block .temp-right-indicator-block{\r\ndisplay: none;\r\n}\r\n.temp-feed-back-header-block .temp-feed-back-header{\r\n    overflow: hidden;\r\n    white-space: nowrap;\r\n    text-overflow: ellipsis;\r\n}\r\n.temp-feed-back-header-block .temp-feed-back-header .temp-feed-back-header-large{\r\n    overflow: hidden;\r\n    white-space: nowrap;\r\n    text-overflow: ellipsis;\r\n}\r\n#query-feedback.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form{\r\n    box-shadow: 0px 5px 26px rgb(32 33 36 / 25%);\r\n    border-radius: 8px;\r\n    background: #FFFFFF;\r\n    height: auto;\r\n    width: 100%;\r\n    position: absolute;\r\n    right: 0px;\r\n    top: inherit;\r\n    bottom: 0;\r\n    padding: 20px 20px;\r\n    z-index: 20;\r\n}\r\n\r\n\r\n.temp-footer-block .temp-feed-back-form{\r\n    box-shadow: 0px 5px 26px rgb(32 33 36 / 25%);\r\n    border-radius: 8px;\r\n    background: #FFFFFF;\r\n    height: auto;\r\n    width: 420px;\r\n    position: absolute;\r\n    right: 30px;\r\n    top: -30px;\r\n    padding: 20px 20px;\r\n    z-index: 20;\r\n}\r\n.temp-feed-back-form .temp-feed-back-header-block .close-feedback{\r\n    cursor: pointer;\r\n}\r\n.temp-feed-back-header-block{\r\n    display: flex;\r\n    align-items: flex-start;\r\n    justify-content: space-between;\r\n    padding-bottom: 20px;\r\n    position: relative;\r\n}\r\n.temp-feed-back-header-block .temp-right-indicator-block{\r\n    position: absolute;\r\n    top: 0;\r\n    right: -34px;\r\n}\r\n.temp-feed-back-header .temp-feed-back-header-samll{\r\n    color: #777A80;\r\n    font-weight: 600;\r\n    font-size: 10px;\r\n    line-height: 12px;\r\n    padding-bottom: 10px;\r\n}\r\n.temp-feed-back-header .temp-feed-back-header-large{\r\n    color: #121314;\r\n    font-weight: 700;\r\n    font-size: 16px;\r\n    line-height: 19px;\r\n}\r\n.temp-break-line{\r\n    border-bottom: 1px solid #E3E4E6;\r\n}\r\n.temp-feed-back-qns{\r\n    color: #121314;\r\n    font-weight: 400;\r\n    font-size: 14px;\r\n    line-height: 20px;\r\n    padding-top: 15px;\r\n}\r\n.temp-feed-back-ans-tags{\r\n    padding-top: 5px;\r\n}\r\n.temp-feed-back-ans-tag-btn{\r\n    background: #FFFFFF;\r\n    box-shadow: 0px 4px 8px rgb(32 33 36 / 15%);\r\n    border-radius: 20px;\r\n    border: 1px solid #B9BCBF;\r\n    padding: 10px 15px;\r\n    cursor: pointer;\r\n}\r\n.temp-feed-back-ans-tag-btn:focus{\r\n    background: #F0F1F2;\r\n}\r\n.temp-feed-back-opt-qns{\r\n    font-weight: 500;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    color: #202124;\r\n    padding-top: 15px;\r\n    padding-bottom: 5px;\r\n}\r\n.temp-feed-back-opt-ans .input-text{\r\n    background: #FFFFFF;\r\n    border: 1px solid #BDC1C6;\r\n    border-radius: 4px;\r\n    width: 95%;\r\n    resize: none !important;\r\n    min-height: 90px;\r\n    padding: 2px 10px 10px 10px;\r\n    font-size: 14px;\r\n    color: #202124;\r\n    line-height: normal;\r\n}\r\n.temp-feed-back-opt-ans .input-text:focus{\r\n    border: solid 1px #1372ff;\r\n}\r\n\r\n.temp-feed-back-opt-ans .input-text:focus-visible{\r\n    outline: none;\r\nbox-shadow: none;\r\n}\r\n\r\n.temp-feed-back-footer-block{\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-end;\r\n    padding-top: 15px;\r\n}\r\n.temp-feed-back-footer-block .temp-feed-back-footer-btn-secondary{\r\n    border: 1px solid #BDC1C6;\r\n    background: #fff;\r\n    padding: 0px 20px;\r\n    height: 34px;\r\n    font-size: 14px;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    color: #5F6368;\r\n    min-width: 60px;\r\n    text-align: center;\r\n    transition: 0.2s all ease-in;\r\n}\r\n.temp-feed-back-footer-block .temp-feed-back-footer-btn-secondary:hover{\r\n    background: #F8F9FA;\r\n}\r\n\r\n.temp-feed-back-footer-block .temp-feed-back-footer-btn-primary{\r\n    border: 1px solid transparent;\r\n    background: #0D6EFD;\r\n    padding: 0px 20px;\r\n    height: 34px;\r\n    font-size: 14px;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    min-width: 60px;\r\n    text-align: center;\r\n    transition: 0.2s all ease-in;\r\n    margin-left: 10px;\r\n}\r\n\r\n.temp-feed-back-footer-block .temp-feed-back-footer-btn-primary:hover{\r\n    background: #0156d4;\r\n    color: #fff;\r\n}\r\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-opt-ans .input-text{\r\n    width: 100%;\r\n}\r\n#snippet-feedback-template .temp-feed-back-opt-ans{\r\n    width: 100%;\r\n    height: 90px;\r\n}\r\n#snippet-feedback-template .temp-feed-back-opt-ans #feedback-input-text{\r\n    width: 100%;\r\n    height: 100%;\r\n    resize: none;\r\n    font-family: 'Inter';\r\n    font-style: normal;\r\n    font-weight: 400;\r\n    font-size: 14px;\r\n    line-height: 20px;\r\n    color: #202124;\r\n}\r\n#snippet-feedback-template .temp-feed-back-opt-ans #feedback-input-text:focus-visible{\r\noutline: none;\r\nborder: solid 1px #1372ff;\r\n}\r\n .temp-feed-back-opt-ans #feedback-input-text::placeholder {\r\n    font-family: 'Inter';\r\n    font-style: normal;\r\n    font-weight: 400;\r\n    font-size: 14px;\r\n    line-height: 20px;\r\n    color: #BDC1C6;\r\n}\r\n\r\n#snippet-feedback-template.sinnpet-feedback-template-assiatance-temp .temp-feed-back-form {\r\n    width: 99%;\r\n    right: 2px;\r\n    bottom: 13px;\r\n}\r\n\r\n.sinnpet-feedback-template-assiatance-temp{\r\n    .snippet-bg-blur{\r\n        background: #8080804a;\r\n        width: 485px !important;\r\n        height: calc(100vh - 54px);\r\n        position: fixed;\r\n        bottom: 31px;\r\n        right: 30px;\r\n        border-radius: 6px;\r\n    }\r\n}"],"sourceRoot":""}]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+var _a;
+var findlyConfig = {};
+var botOptionsFindly = {};
+botOptionsFindly.logLevel = "debug";
+var serverUrl = window.location.href;
+var paramUrl = "searchassist-qa.kore.ai";
+if (serverUrl && (serverUrl.includes("https"))) { // for installer 
+    paramUrl = serverUrl.split('/')[2];
+}
+if ((window === null || window === void 0 ? void 0 : window.JWT_OBJ) && ((_a = window === null || window === void 0 ? void 0 : window.JWT_OBJ) === null || _a === void 0 ? void 0 : _a.koreAPIUrl)) {
+    paramUrl = window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
+}
+botOptionsFindly.logLevel = 'debug';
+botOptionsFindly.koreAPIUrl = "https://" + paramUrl + "/searchassistapi/";
+botOptionsFindly.baseAPIServer = "https://" + paramUrl;
+function koreGenerateUUID() {
+    console.info("generating UUID");
+    var d = new Date().getTime();
+    if (window.performance && typeof window.performance.now === "function") {
+        d += performance.now(); //use high-precision timer if available
+    }
+    var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+        var r = (d + generateRandomNum() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+    });
+    return uuid;
+}
+function generateRandomNum() {
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var seconds = dateObj.getSeconds();
+    var minutes = dateObj.getMinutes();
+    var hour = dateObj.getHours();
+    var generatedNum = year * month * day * (hour + minutes * seconds);
+    return generatedNum;
+}
+botOptionsFindly.JWTUrl =
+    "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
+botOptionsFindly.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID'; // Provide users email id here
+botOptionsFindly.botInfo = {
+    chatBot: "PLEASE_ENTER_APP_NAME",
+    taskBotId: "PLEASE_ENTER_APP_ID",
+};
+botOptionsFindly.clientId = "PLEASE_ENTER_CLIENT_ID";
+botOptionsFindly.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+botOptionsFindly.searchIndexID = "PLEASE_ENTER_SEARCHINDEX_ID";
+// To modify the web socket url use the following option
+// For Socket Connection
+botOptionsFindly.reWriteSocketURL = {
+    protocol: "wss",
+    hostname: paramUrl
+};
+var favicon = document.getElementById("favicon");
+botOptionsFindly.interface = "top-down";
+findlyConfig = {
+    botOptions: botOptionsFindly,
+    viaSocket: true,
+    pickersConfig: {
+        showDatePickerIcon: false,
+        showDateRangePickerIcon: false,
+        showClockPickerIcon: false,
+        showTaskMenuPickerIcon: true,
+        showradioOptionMenuPickerIcon: false, //set true to show Radio Option Template icon
+    },
+    API_KEY_CONFIG: { 'KEY': "YOUR_API_KEY" }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (findlyConfig);
 
 
 /***/ })
@@ -30,7 +88,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".temp-footer-block {\n  position: rela
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("f5eab3cc93dbf329cf72")
+/******/ 	__webpack_require__.h = () => ("be590dde56814c081833")
 /******/ })();
 /******/ 
 /******/ }

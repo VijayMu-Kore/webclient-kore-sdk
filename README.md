@@ -1,19 +1,18 @@
 ﻿# Kore.ai SDK
-Kore.ai offers Bots SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore.ai Bots chat capability into custom applications.
+Kore.ai offers SearchAssist SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore.ai Bots chat capability into custom applications.
 
 With just few lines of code, you can embed our Kore.ai chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to
 
-[Bot SDKs](https://developer.kore.ai/docs/bots/kore-web-sdk/)
+[SearchAssist SDK](https://docs.kore.ai/searchassist/)
 
 [Web Socket Endpoints and Events](https://developer.kore.ai/docs/bots/sdks/bots-platform-api-reference/)
 
-[SDK Security](https://developer.kore.ai/docs/bots/sdks/user-authorization-and-assertion/)
 
-[SDK App Registration](https://developer.kore.ai/docs/bots/sdks/sdk-app-registration/)
+[SDK App Registration](https://docs.kore.ai/searchassist/administration/managing-channels-3/)
 
 [Message Templates](https://developer.kore.ai/docs/bots/sdks/message-templates/)
 
-[API Referernce](https://rajasekharba-kore.github.io/web-kore-sdk/)
+
 
 
 ## 💡 Getting Started
@@ -40,9 +39,11 @@ let botOptions=KRSearchConfig.botOptions;
 	
  botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";
  botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';// Provide users email id here
- botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
+ botOptions.botInfo = { chatBot: "PLEASE_ENTER_APP_NAME", "taskBotId": "PLEASE_ENTER_APP_ID" }; // APP name is case sensitive
  botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
  botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+botOptionsFindly.searchIndexID = "PLEASE_ENTER_SEARCHINDEX_ID";
+
  /* 
  Important Note: These keys are provided here for quick demos to generate JWT token at client side but not for Production environment.
  Refer below document for JWT token generation at server side. Client Id and Client secret should maintained at server end.
@@ -84,9 +85,15 @@ include the following script in your html file and configure bot configurations
         var botOptions=chatConfig.botOptions;
         botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";
         botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';
-        botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
-        botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
-        botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+        botOptionsFindly.botInfo = {
+        chatBot: "PLEASE_ENTER_APP_NAME",
+        taskBotId: "PLEASE_ENTER_APP_ID",
+        };
+        botOptionsFindly.clientId = "PLEASE_ENTER_CLIENT_ID";
+        botOptionsFindly.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+        botOptionsFindly.searchIndexID = "PLEASE_ENTER_SEARCHINDEX_ID";
+
+            OR
 
         KRSearchConfig.API_KEY_CONFIG.KEY="PLEASE_ENTER_API_KEY_HERE";
 

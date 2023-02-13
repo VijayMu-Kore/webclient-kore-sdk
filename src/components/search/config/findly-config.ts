@@ -3,18 +3,15 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-qa.kore.ai"
+var paramUrl="searchassist-qa.kore.ai";
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
-// if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
 }  
 if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
   paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
 }
 botOptionsFindly.logLevel = 'debug';
-// botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
 botOptionsFindly.koreAPIUrl = "https://"+paramUrl+"/searchassistapi/";
-// botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
 botOptionsFindly.baseAPIServer = "https://"+paramUrl;
 function koreGenerateUUID() {
   console.info("generating UUID");
@@ -45,32 +42,24 @@ function generateRandomNum() {
 }
 botOptionsFindly.JWTUrl =
   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
-botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
-// botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
+botOptionsFindly.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID' // Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "Answer snippets1",
-  taskBotId: "st-bb827e73-55ec-5ebe-8e95-f585a5f152b4",
+  chatBot: "PLEASE_ENTER_APP_NAME",
+  taskBotId: "PLEASE_ENTER_APP_ID",
 };
-botOptionsFindly.clientId = "cs-b2affdb1-c681-5b9a-b4a0-0ce3cefa7a7c";
-botOptionsFindly.clientSecret = "ffVC9WlZsyAzII115FaY6YYRVzdIt6lefezTMdnzCBw=";
-botOptionsFindly.searchIndexID = "sidx-2867c11d-2ab6-5916-be5c-b33c9ba15e70";
+botOptionsFindly.clientId = "PLEASE_ENTER_CLIENT_ID";
+botOptionsFindly.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
+botOptionsFindly.searchIndexID = "PLEASE_ENTER_SEARCHINDEX_ID";
 
 
 // To modify the web socket url use the following option
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {
   protocol: "wss",
-  // hostname: 'searchassist-qa.kore.ai'
   hostname:paramUrl
 };
-function clearLocalStorageUserDetails() {
-  window.localStorage.setItem("userName", "");
-  window.localStorage.setItem("userLocation", "");
-  window.localStorage.setItem("gender", "");
-  window.localStorage.setItem("userAge", "");
-}
+
 let favicon: any = document.getElementById("favicon");
-// CVS Caremark configs //
  
 botOptionsFindly.interface = "top-down";
 findlyConfig = {
