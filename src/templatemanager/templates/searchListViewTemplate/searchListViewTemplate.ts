@@ -401,42 +401,7 @@ class SearchListViewTemplate {
         }
       }, 500);
     });
-    // if (!hostWindowInstance.vars || !hostWindowInstance.vars.customizeView) {
-    //   setTimeout(function () {
-        // $(".results-wrap").sortable({
-        //   items: "li:not(.ui-state-disabled)",
-        //   cancel: ".ui-state-disabled",
-        //   stop: function (event : any, ui: any) {
-        //     var element = ui.item[0];
-        //     if ($(element).find(".pinning").length) {
-        //       var pinningElement = $(element).find(".pinning")[0];
-        //       if (pinningElement) {
-        //         $(pinningElement).closest(".pinning").attr("type", "Pin");
-        //         $(pinningElement).trigger("click");
-        //       }
-        //     } else if ($(element).attr("manuallyadded") == "true") {
-        //       var pinIndex = 0;
-        //       var _selectedElement = ui.item[0];
-        //       var _parentElement = $(event.target).closest(".results-wrap");
-        //       var childNodes = Array.prototype.slice.call(
-        //         _parentElement[0].children
-        //       );
-        //       pinIndex = childNodes.indexOf(_selectedElement);
-        //       if (pinIndex >= 0) {
-        //           hostWindowInstance.performRankActionsOnFullPage(
-        //           ui.item,
-        //           { pinIndex: pinIndex },
-        //           hostWindowInstance.vars.searchObject.searchText,
-        //           "pinning",
-        //           true
-        //         );
-        //         //
-        //       }
-        //     }
-        //   },
-        // });
-    //   }, 200);
-    // }
+    SearchListViewTemplate.prototype.tooltipBindEvent(me);
   }
   getTemplateString(type: any) {
   
@@ -458,10 +423,10 @@ class SearchListViewTemplate {
             </div>\
             {{/if}}\
             {{if data.heading.length}}\
-            <div class="heading-title" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+            <div class="heading-title sa-sdk-title" data-title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
             {{/if}}\
             {{if data.description.length}}\
-            <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+            <div class="desc_text_info  sa-sdk-title {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" data-title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
             {{/if}}\
         </div>\
         {{/each}}\
@@ -634,7 +599,7 @@ class SearchListViewTemplate {
           <div class="new-grid-search-data list-view-data-search">\
             {{each(key, task) structuredData}}\
               <div class="title-box-data">\
-                  <div id="${key}" class="search-task search-grid-item text-truncate one-line-height" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">\
+                  <div id="${key}" class="sa-sdk-title search-task search-grid-item text-truncate one-line-height" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">\
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJ1BMVEUAAAAAVaoEbq4DbK8GbK4Gbq8Gba0Fba8Fba4Fbq4Eba4Fba7////SVqJwAAAAC3RSTlMAA0hJVYKDqKmq4875bAAAAAABYktHRAyBs1FjAAAAP0lEQVQI12NgwACMJi5A4CzAwLobDBIYOCaAxDknMLCvnAkEsyYwcECkkBicMDV4GGwQxQEMjCogK5wEMC0HALyTIMofpWLWAAAAAElFTkSuQmCC" class="credit-card display-none">\
                   <div class="name-title">${task.titleText}</div>\
                   {{if task.childBotName !=="" && task.childBotName !== undefined}}\
@@ -689,13 +654,13 @@ class SearchListViewTemplate {
                     {{if isClickable == true}}\
                       {{if viewType!="Customize" && (isFullResults == true ||  isSearch == true || isLiveSearch == true)}}\
                         <div class="click-to-navigate-url tile-with-text structured-data-wrp-content" href="${data.url}" target="_blank">\
-                          <div class="tile-heading text-truncate one-line-height"  title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                          <div class="tile-heading text-truncate one-line-height sa-sdk-title"  data-title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                           <div class="tile-description text-truncate one-line-height">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                         </div>\
                       {{/if}}\
                       {{if viewType=="Customize" && (isFullResults != true &&  (isSearch == true || isLiveSearch == true))}}\
                         <div class="click-to-navigate-url tile-with-text structured-data-wrp-content"  href="${data.url}" target="_blank">\
-                          <div class="tile-heading text-truncate one-line-height"  title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                          <div class="tile-heading text-truncate one-line-height sa-sdk-title"  data-title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                           <div class="tile-description text-truncate one-line-height">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                         </div>\
                       {{/if}}\
@@ -817,7 +782,7 @@ class SearchListViewTemplate {
                     {{if isClickable == false}}\
                       <div class="tile-with-text faqs-wrp-content structured-data-wrp-content">\
                       <div class="tile-heading accordion p-0  {{if data.bestMatch && data.bestMatch == true}} acc-active best-match{{/if}}\" id="1">\
-                         <div title="${data.heading}" class="text-truncate one-line-height" >{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                         <div data-title="${data.heading}" class="text-truncate one-line-height sa-sdk-title" >{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                             <div class="tile-description defalut-show text-truncate one-line-height">{{html helpers.convertMDtoHTML(data.description, null,null,true)}}</div>\
                         </div>\
                         <div class="panel">\
@@ -857,6 +822,20 @@ class SearchListViewTemplate {
     let $ = me.hostInstance.$;
     hostWindowInstance.performRankActionsOnFullPage(event,pinObj,searchText,actionType).then((result: any) => {
       $(".custom-header-nav-link-item")[1].click();
+    })
+  }
+  tooltipBindEvent(me:any){
+    let $ = me.hostInstance.$;
+  $('.sa-sdk-title').off('mouseover').on('mouseover',function(e:any){
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    $(e.currentTarget).before('<div class="sdk-tooltip-container">'+$(e.currentTarget).attr('data-title')+'<span class="sa-tooltip-arrow"></span></div>');
+    $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top',($(e.currentTarget).position().top-($(e.currentTarget).parent().find('.sdk-tooltip-container').height()+25))+'px');
+  })
+  $('.sa-sdk-title').off('mouseout').on('mouseout',function(e:any){
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
     })
   }
 }
