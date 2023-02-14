@@ -1,132 +1,27 @@
 self["webpackHotUpdatekore_web_sdk"]("esm",{
 
-/***/ "./src/components/search/config/findly-config.ts":
-/*!*******************************************************!*\
-  !*** ./src/components/search/config/findly-config.ts ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/templatemanager/templates/snippetImageTemplate/snippetImageTemplate.scss":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/templatemanager/templates/snippetImageTemplate/snippetImageTemplate.scss ***!
+  \*************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var _a;
-var findlyConfig = {};
-var botOptionsFindly = {};
-botOptionsFindly.logLevel = "debug";
-var serverUrl = window.location.href;
-var paramUrl = "searchassist-dev.kore.ai";
-if (serverUrl && (serverUrl.includes("https"))) { // for installer 
-    // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
-    paramUrl = serverUrl.split('/')[2];
-}
-if ((window === null || window === void 0 ? void 0 : window.JWT_OBJ) && ((_a = window === null || window === void 0 ? void 0 : window.JWT_OBJ) === null || _a === void 0 ? void 0 : _a.koreAPIUrl)) {
-    paramUrl = window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
-}
-botOptionsFindly.logLevel = 'debug';
-// botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
-botOptionsFindly.koreAPIUrl = "https://" + paramUrl + "/searchassistapi/";
-// botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
-botOptionsFindly.baseAPIServer = "https://" + paramUrl;
-function koreGenerateUUID() {
-    console.info("generating UUID");
-    var d = new Date().getTime();
-    if (window.performance && typeof window.performance.now === "function") {
-        d += performance.now(); //use high-precision timer if available
-    }
-    var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-        var r = (d + generateRandomNum() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
-    });
-    return uuid;
-}
-function generateRandomNum() {
-    var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1;
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
-    var seconds = dateObj.getSeconds();
-    var minutes = dateObj.getMinutes();
-    var hour = dateObj.getHours();
-    var generatedNum = year * month * day * (hour + minutes * seconds);
-    return generatedNum;
-}
-botOptionsFindly.JWTUrl =
-    "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
-botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
-// botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
-// botOptionsFindly.botInfo = {
-//   chatBot: "New zendesk after Nov 14",
-//   taskBotId: "st-3cd359e5-96c3-54a4-afbe-82cf46e208a3",
-// };
-// botOptionsFindly.clientId = "cs-3c5c78f4-289a-5745-aaa9-944658e9b075";
-// botOptionsFindly.clientSecret = "S2K3A7tmcJjYVyIQIGeRCNJEQT6CFwJ5jiH34WQaG7U=";
-// botOptionsFindly.searchIndexID = "sidx-62909178-4ea3-5950-897f-b5f8f07626c0";
-// botOptionsFindly.botInfo = {
-//   chatBot: "Assa_Abloy_Ai_Demo",
-//   taskBotId: "st-abf9a36f-c6a9-5b6f-9b78-72a8569bbe3b",
-// };
-// botOptionsFindly.clientId = "cs-cee60ada-14ac-5e20-9cea-7abc3f73bba0";
-// botOptionsFindly.clientSecret = "kdW+hh5lzmNfeFz3rr/f72QK0xG79P9MN0iOXWg8HnM=";
-// botOptionsFindly.searchIndexID = "sidx-cd61c787-fc9f-54ab-bd64-9911d2ded18d";
-botOptionsFindly.botInfo = {
-    chatBot: "MorganStanley_Demo",
-    taskBotId: "st-690e2a33-4d55-56e6-bc79-da7adfd82285",
-};
-botOptionsFindly.clientId = "cs-38ec6c80-6247-5889-8e0c-b10be2b8b9ae";
-botOptionsFindly.clientSecret = "oljyhLFd4I46kG3YJmRGSJHWeBbntNnsqhynJlxU3vg=";
-botOptionsFindly.searchIndexID = "sidx-02d1428e-a7c4-5b07-ba6d-44fa562c30d0";
-// botOptionsFindly.botInfo = {
-//   chatBot: "7 DEC-22",
-//   taskBotId: "st-0e74a50d-6082-5f35-8ef7-12f05b67c6e0",
-// };
-// botOptionsFindly.clientId = "cs-7bdcdb62-0ba3-5a94-8191-bcc2145e740f";
-// botOptionsFindly.clientSecret = "MLmrLKTApQk60vS0B3Ud5JTfaEMCASPFqP0WC+BdkTs=";
-// botOptionsFindly.searchIndexID = "sidx-546830dd-8d22-5a92-89a2-7432364a3e25";
-// botOptionsFindly.botInfo = {
-//   chatBot: "Bot actions V2",
-//   taskBotId: "st-af4891e5-b228-5c30-b629-e21a49d37d04",
-// };
-// botOptionsFindly.clientId = "cs-b20a8411-74d9-58b0-b615-78b33e2986ae";
-// botOptionsFindly.clientSecret = "UFTq1wsjDREF7gb7XVDcOrg+8Llu98sVs4zGGXRZc1A=";
-// botOptionsFindly.searchIndexID = "sidx-ea84961b-7aad-57f6-a021-eeb591433c48";
-// botOptionsFindly.botInfo = {
-//   chatBot: "PSI_Demo_V1.1",
-//   taskBotId: "st-7b63dd9c-d111-5372-ba60-0a8b69963798",
-// };
-// botOptionsFindly.clientId = "cs-4f4e9434-eca4-566a-9d90-7b7dbed81320";
-// botOptionsFindly.clientSecret = "EmgxDGZV8dZhm9pGQePqVeb1CXxlrcD0RwWnize0ass=";
-// botOptionsFindly.searchIndexID = "sidx-88a143e1-2447-5d67-b26a-78cf5f97d407";
-// To modify the web socket url use the following option
-// For Socket Connection
-botOptionsFindly.reWriteSocketURL = {
-    protocol: "wss",
-    // hostname: 'searchassist-qa.kore.ai'
-    hostname: paramUrl
-};
-function clearLocalStorageUserDetails() {
-    window.localStorage.setItem("userName", "");
-    window.localStorage.setItem("userLocation", "");
-    window.localStorage.setItem("gender", "");
-    window.localStorage.setItem("userAge", "");
-}
-var favicon = document.getElementById("favicon");
-// CVS Caremark configs //
-botOptionsFindly.interface = "top-down";
-findlyConfig = {
-    botOptions: botOptionsFindly,
-    viaSocket: true,
-    pickersConfig: {
-        showDatePickerIcon: false,
-        showDateRangePickerIcon: false,
-        showClockPickerIcon: false,
-        showTaskMenuPickerIcon: true,
-        showradioOptionMenuPickerIcon: false, //set true to show Radio Option Template icon
-    },
-    API_KEY_CONFIG: { 'KEY': "YOUR_API_KEY" }
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (findlyConfig);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".top-down-search-background-div .all-product-details {\n  position: relative;\n  overflow-anchor: none;\n  max-height: calc(100vh - 148px);\n}\n\n.sdk-top-down-interface .search-temp-one {\n  margin-left: 30px;\n  width: 96%;\n}\n\n.top-down-search-background-div .total-search-results-block .tsrb-right-filters .top-down-customize-btns.custom-header-container-center {\n  position: initial;\n  margin: 0px 0px 0px 16px;\n  right: auto;\n  top: auto;\n  z-index: 8 !important;\n}\n.top-down-search-background-div .total-search-results-block .tsrb-right-filters .dropdown_sortable_filter {\n  position: initial;\n  top: auto;\n  right: auto;\n}\n\n.sdk-top-down-interface .all-product-details .total-search-results-block {\n  position: sticky;\n  top: 0;\n  z-index: 8;\n  background: #fff;\n}\n.sdk-top-down-interface .all-product-details .total-search-results-block .tsrb-header-sec {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n.sdk-top-down-interface .all-product-details .total-search-results-block .tsrb-right-filters {\n  display: flex;\n  align-items: center;\n}\n\n/* snippet templates css styles */\n.search-temp-one {\n  background: #FFFFFF;\n  border-bottom: 2px solid #784BD1;\n  box-shadow: 0px 1px 2px #bdc1c6;\n  border-radius: 8px;\n  padding: 20px 20px;\n  margin-bottom: 25px;\n}\n\n.search-temp-one .top-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 0 10px 0;\n}\n\n.search-temp-one .snippet-image-block {\n  margin-top: 20px;\n}\n\n.search-temp-one .snippet-image-block img {\n  width: 300px;\n  height: 227px;\n  border-radius: 10px;\n}\n\n#searchChatContainer .search-temp-one .top-header {\n  display: none !important;\n}\n\n#searchChatContainer .search-temp-one {\n  margin-top: -25px !important;\n}\n\n.search-temp-one .top-header .top-header-with-img {\n  display: flex;\n  align-items: center;\n  padding: 0 0 0px 0;\n}\n\n.search-temp-one .snippet-source-block a {\n  text-decoration: none !important;\n}\n\n.search-temp-one .snippet-source-block .snippet-source-file-name {\n  font-style: normal;\n  font-weight: 600;\n  font-size: 14px;\n  line-height: 17px;\n  color: #2D2F33;\n  padding: 20px 0 10px 0;\n}\n\n.search-temp-one .snippet-source-block .snippet-source-url {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  padding: 7px 10px;\n  background: #F3F8FF;\n  border-radius: 4px;\n  justify-content: space-between;\n  margin-bottom: 10px;\n}\n\n.search-temp-one .snippet-source-block .snippet-source-url a, .search-temp-one .snippet-source-block .snippet-source-url .snippet-source-url-name {\n  color: #2B75E4;\n  font-weight: 400;\n  font-size: 10px;\n  line-height: 12px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 80%;\n}\n\n.search-temp-one .snippet-source-block .snippet-source-url a {\n  width: 14px;\n  margin-left: 10px;\n}\n\n.search-temp-one .top-header .top-header-with-img .logo-span {\n  padding: 0 5px 0 0;\n}\n\n.search-temp-one .top-header .btn-chip {\n  background: #F7F9FA;\n  border-radius: 4px;\n  padding: 10px 10px;\n  color: #777A80;\n  font-weight: 600;\n  font-size: 10px;\n  line-height: 12px;\n}\n\n#searchChatContainer .search-temp-one .top-header .btn-link {\n  display: none;\n}\n\n.sdk-top-down-interface .search-temp-one .temp-footer-block .btn-link {\n  display: none;\n}\n\n.sdk-top-down-interface .search-temp-one .temp-footer-block .temp-footer {\n  justify-content: end;\n}\n\n.search-temp-one .temp-footer-block .temp-footer.justify-content-end {\n  justify-content: end !important;\n}\n\n.sdk-top-down-interface .search-temp-one .top-header .top-header-with-img .logo-span {\n  display: none;\n}\n\n#searchChatContainer .search-temp-one .temp-footer .is-it-usefull {\n  display: none;\n}\n\n.search-temp-one .top-header .btn-link {\n  color: #784BD1;\n  font-weight: 600;\n  font-size: 8px;\n  display: flex;\n  align-items: center;\n  text-decoration: none !important;\n}\n\n.search-temp-one .top-header .btn-link .bot-bg-purple {\n  background: #F2EDFA;\n  border-radius: 20px;\n  padding: 6px 6px;\n  display: flex;\n  margin-right: 10px;\n}\n\n.search-temp-one .img-temp-title {\n  font-family: \"Inter\";\n  font-style: normal;\n  font-weight: 500;\n  font-size: 16px;\n  line-height: 19px;\n  display: flex;\n  align-items: center;\n  color: #2D2F33;\n}\n\n.search-temp-one .img-temp-data-desc {\n  font-family: \"Inter\";\n  font-style: normal;\n  font-weight: 600;\n  font-size: 12px;\n  line-height: 15px;\n  display: flex;\n  align-items: center;\n  color: #777A80;\n  word-break: break-word;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}\n\n.search-temp-one .img-temp-data-desc br:first-child {\n  display: none;\n}\n\n.search-temp-one .paragraph-temp-title br:first-child {\n  display: none;\n}\n\n.search-temp-one .img-temp-title br:first-child {\n  display: none;\n}\n\n.search-temp-one .temp-read-link {\n  /* display: flex; */\n  display: none !important;\n  justify-content: end;\n}\n\n.search-temp-one .temp-read-link .desc-read-more, .search-temp-one .temp-read-link .desc-read-less {\n  color: #0D6EFD;\n  font-weight: 400;\n  font-size: 14px;\n  line-height: 20px;\n  cursor: pointer;\n  display: none !important;\n}\n\n.search-temp-one .temp-footer-block .temp-footer {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 0 0 0;\n}\n\n.search-temp-one .temp-footer-block .temp-footer .temp-right {\n  display: flex;\n  align-items: center;\n}\n\n.search-temp-one .temp-footer-block .btn-link {\n  color: #784BD1;\n  font-weight: 600;\n  font-size: 8px;\n  display: flex;\n  align-items: center;\n  text-decoration: none !important;\n}\n\n.search-temp-one .temp-footer-block .btn-link .bot-bg-purple {\n  background: #F2EDFA;\n  border-radius: 20px;\n  padding: 6px 6px;\n  display: flex;\n  margin-right: 10px;\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions {\n  display: flex;\n  align-items: center;\n  gap: 5px;\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img:hover {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img.active {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green-fill.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img:hover {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img.active {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red-fill.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions img {\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.search-temp-one .temp-footer .is-it-usefull {\n  color: #777A80;\n  font-weight: 400;\n  font-size: 12px;\n  line-height: 15px;\n  padding: 0 20px 0 0;\n}", "",{"version":3,"sources":["webpack://./src/templatemanager/templates/snippetImageTemplate/snippetImageTemplate.scss"],"names":[],"mappings":"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","sourcesContent":["\r\n.top-down-search-background-div {\r\n\t.all-product-details {\r\n\t\tposition: relative;\r\n\t\toverflow-anchor: none;\r\n\t\tmax-height: calc(100vh - 148px);\r\n\t}\r\n}\r\n.sdk-top-down-interface {\r\n\t.search-temp-one {\r\n\t\tmargin-left: 30px;\r\n\t\twidth: 96%;\r\n\t}\r\n}\r\n\r\n\r\n.top-down-search-background-div {\r\n\t.total-search-results-block {\r\n\t\t.tsrb-right-filters {\r\n\t\t\t.top-down-customize-btns.custom-header-container-center {\r\n\t\t\t\tposition: initial;\r\n\t\t\t\tmargin: 0px 0px 0px 16px;\r\n\t\t\t\tright: auto;\r\n\t\t\t\ttop: auto;\r\n\t\t\t\tz-index: 8 !important;\r\n\t\t\t}\r\n\t\t\t.dropdown_sortable_filter {\r\n\t\t\t\tposition: initial;\r\n\t\t\t\ttop: auto;\r\n\t\t\t\tright: auto;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n.sdk-top-down-interface {\r\n\t.all-product-details {\r\n\t\t.total-search-results-block {\r\n\t\t\tposition: sticky;\r\n\t\t\ttop: 0;\r\n\t\t\tz-index: 8;\r\n\t\t\tbackground: #fff;\r\n\t\t\t.tsrb-header-sec {\r\n\t\t\t\tdisplay: flex;\r\n\t\t\t\talign-items: center;\r\n\t\t\t\tjustify-content: space-between;\r\n\t\t\t}\r\n            .tsrb-right-filters {\r\n                display: flex;\r\n                align-items: center;\r\n            }\r\n\t\t}\r\n\t}\r\n}\r\n/* snippet templates css styles */\r\n.search-temp-one{\r\n    background: #FFFFFF;\r\n    border-bottom: 2px solid #784BD1;\r\n    box-shadow: 0px 1px 2px #bdc1c6;\r\n    border-radius: 8px;\r\n    padding: 20px 20px;\r\n    margin-bottom: 25px;\r\n}\r\n\r\n.search-temp-one .top-header{\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    padding: 0 0 10px 0;\r\n}\r\n.search-temp-one .snippet-image-block{\r\n\tmargin-top:20px;\r\n}\r\n.search-temp-one .snippet-image-block img{\r\n\twidth: 300px;\r\n\theight: 227px;\r\n\tborder-radius: 10px;\r\n}\r\n\r\n#searchChatContainer .search-temp-one .top-header{\r\n    display: none !important;\r\n    }\r\n    #searchChatContainer .search-temp-one {\r\n        margin-top: -25px !important;\r\n    }\r\n.search-temp-one .top-header .top-header-with-img{\r\n    display: flex;\r\n    align-items: center;\r\n    padding: 0 0 0px 0;\r\n}\r\n.search-temp-one .snippet-source-block a{\r\n    text-decoration: none !important;\r\n}\r\n.search-temp-one .snippet-source-block .snippet-source-file-name{\r\n    font-style: normal;\r\nfont-weight: 600;\r\nfont-size: 14px;\r\nline-height: 17px;\r\ncolor: #2D2F33;\r\npadding: 20px 0 10px 0;\r\n}\r\n.search-temp-one .snippet-source-block .snippet-source-url{\r\n    display: flex;\r\nflex-direction: row;\r\nalign-items: center;\r\npadding: 7px 10px;\r\nbackground: #F3F8FF;\r\nborder-radius: 4px;\r\njustify-content: space-between;\r\nmargin-bottom: 10px;\r\n}\r\n.search-temp-one .snippet-source-block .snippet-source-url a,.search-temp-one .snippet-source-block .snippet-source-url .snippet-source-url-name{\r\n    color: #2B75E4;\r\n    font-weight: 400;\r\n    font-size: 10px;\r\n    line-height: 12px;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n    white-space: nowrap;\r\n    width: 80%;\r\n}\r\n.search-temp-one .snippet-source-block .snippet-source-url a{\r\n    width: 14px;\r\n    margin-left: 10px;\r\n} \r\n.search-temp-one .top-header .top-header-with-img .logo-span{\r\n    padding: 0 5px 0 0;\r\n}\r\n\r\n.search-temp-one .top-header .btn-chip{\r\n    background: #F7F9FA;\r\n    border-radius: 4px;\r\n    padding: 10px 10px;\r\n    color: #777A80;\r\n    font-weight: 600;\r\n    font-size: 10px;\r\n    line-height: 12px;\r\n}\r\n#searchChatContainer .search-temp-one .top-header .btn-link{\r\n    display: none;\r\n}\r\n.sdk-top-down-interface .search-temp-one .temp-footer-block .btn-link{\r\n    display: none;\r\n}\r\n.sdk-top-down-interface .search-temp-one .temp-footer-block .temp-footer {\r\n    justify-content: end;\r\n}\r\n.search-temp-one .temp-footer-block .temp-footer.justify-content-end {\r\n    justify-content: end !important;\r\n}\r\n.sdk-top-down-interface .search-temp-one .top-header .top-header-with-img .logo-span {\r\n    display: none;\r\n}\r\n#searchChatContainer .search-temp-one .temp-footer .is-it-usefull{\r\n    display: none;\r\n}\r\n.search-temp-one .top-header .btn-link{\r\n    color: #784BD1;\r\n    font-weight: 600;\r\n    font-size: 8px;\r\n    display: flex;\r\n    align-items: center;\r\n    text-decoration: none !important;\r\n}\r\n\r\n\r\n.search-temp-one .top-header .btn-link .bot-bg-purple{\r\n    background: #F2EDFA;\r\n    border-radius: 20px;\r\n    padding: 6px 6px;\r\n    display: flex;\r\n    margin-right: 10px;\r\n}\r\n.search-temp-one .img-temp-title{\r\n\tfont-family: 'Inter';\r\n\tfont-style: normal;\r\n\tfont-weight: 500;\r\n\tfont-size: 16px;\r\n\tline-height: 19px;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tcolor: #2D2F33;\r\n}\r\n.search-temp-one .img-temp-data-desc{\r\n\tfont-family: 'Inter';\r\n\tfont-style: normal;\r\n\tfont-weight: 600;\r\n\tfont-size: 12px;\r\n\tline-height: 15px;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tcolor: #777A80;\r\n    word-break: break-word;\r\n    display: -webkit-box;\r\n    -webkit-line-clamp: 2;\r\n    -webkit-box-orient: vertical;\r\n    overflow: hidden;\r\n}\r\n.search-temp-one .img-temp-data-desc br:first-child {\r\n    display: none;\r\n  }\r\n  .search-temp-one .paragraph-temp-title br:first-child {\r\n    display: none;\r\n  }\r\n  .search-temp-one .img-temp-title br:first-child {\r\n    display: none;\r\n  }\r\n.search-temp-one .temp-read-link{\r\n    /* display: flex; */\r\n    display: none !important;\r\n    justify-content: end;\r\n}\r\n.search-temp-one .temp-read-link .desc-read-more,.search-temp-one .temp-read-link .desc-read-less{\r\n    color: #0D6EFD;\r\n    font-weight: 400;\r\n    font-size: 14px;\r\n    line-height: 20px;\r\n    cursor: pointer;\r\n    display: none !important;\r\n}\r\n\r\n.search-temp-one .temp-footer-block .temp-footer{\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    padding: 10px 0 0 0;\r\n}\r\n.search-temp-one .temp-footer-block .temp-footer .temp-right{\r\n    display: flex;\r\n    align-items: center;\r\n}\r\n.search-temp-one .temp-footer-block .btn-link{\r\n    color: #784BD1;\r\n    font-weight: 600;\r\n    font-size: 8px;\r\n    display: flex;\r\n    align-items: center;\r\n    text-decoration: none !important;\r\n}\r\n\r\n.search-temp-one .temp-footer-block .btn-link .bot-bg-purple{\r\n    background: #F2EDFA;\r\n    border-radius: 20px;\r\n    padding: 6px 6px;\r\n    display: flex;\r\n    margin-right: 10px;\r\n}\r\n\r\n.search-temp-one .temp-footer .temp-fotter-actions{\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 5px;\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img:hover{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img.active{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green-fill.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img:hover{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img.active{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red-fill.svg);\r\n}\r\n\r\n.search-temp-one .temp-footer .temp-fotter-actions img{\r\n    width: 16px;\r\n    height: 16px;\r\n    cursor: pointer;\r\n}\r\n\r\n.search-temp-one .temp-footer .is-it-usefull{\r\n    color: #777A80;\r\n    font-weight: 400;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    padding: 0 20px 0 0;\r\n}\r\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
 /***/ })
@@ -135,7 +30,7 @@ findlyConfig = {
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("4347a5b6a3e484932131")
+/******/ 	__webpack_require__.h = () => ("84eaefd847b6419c3663")
 /******/ })();
 /******/ 
 /******/ }
