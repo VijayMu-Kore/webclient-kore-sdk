@@ -30,6 +30,9 @@ class SnippetParagraphTemplate {
           <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
           {{/if}}\
       </div>\
+      {{if snippetData && snippetData.title}}\
+      <div class="paragraph-temp-title">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
+      {{/if}}\
       <div class="temp-data-desc">\
       {{html snippetData?.answer}}\
       </div>\

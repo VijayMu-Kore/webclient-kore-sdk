@@ -54,13 +54,20 @@ botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id he
 // botOptionsFindly.clientId = "cs-3c5c78f4-289a-5745-aaa9-944658e9b075";
 // botOptionsFindly.clientSecret = "S2K3A7tmcJjYVyIQIGeRCNJEQT6CFwJ5jiH34WQaG7U=";
 // botOptionsFindly.searchIndexID = "sidx-62909178-4ea3-5950-897f-b5f8f07626c0";
+// botOptionsFindly.botInfo = {
+//   chatBot: "Assa_Abloy_Ai_Demo",
+//   taskBotId: "st-abf9a36f-c6a9-5b6f-9b78-72a8569bbe3b",
+// };
+// botOptionsFindly.clientId = "cs-cee60ada-14ac-5e20-9cea-7abc3f73bba0";
+// botOptionsFindly.clientSecret = "kdW+hh5lzmNfeFz3rr/f72QK0xG79P9MN0iOXWg8HnM=";
+// botOptionsFindly.searchIndexID = "sidx-cd61c787-fc9f-54ab-bd64-9911d2ded18d";
 botOptionsFindly.botInfo = {
-  chatBot: "Assa_Abloy_Ai_Demo",
-  taskBotId: "st-abf9a36f-c6a9-5b6f-9b78-72a8569bbe3b",
+  chatBot: "MorganStanley_Demo",
+  taskBotId: "st-690e2a33-4d55-56e6-bc79-da7adfd82285",
 };
-botOptionsFindly.clientId = "cs-cee60ada-14ac-5e20-9cea-7abc3f73bba0";
-botOptionsFindly.clientSecret = "kdW+hh5lzmNfeFz3rr/f72QK0xG79P9MN0iOXWg8HnM=";
-botOptionsFindly.searchIndexID = "sidx-cd61c787-fc9f-54ab-bd64-9911d2ded18d";
+botOptionsFindly.clientId = "cs-38ec6c80-6247-5889-8e0c-b10be2b8b9ae";
+botOptionsFindly.clientSecret = "oljyhLFd4I46kG3YJmRGSJHWeBbntNnsqhynJlxU3vg=";
+botOptionsFindly.searchIndexID = "sidx-02d1428e-a7c4-5b07-ba6d-44fa562c30d0";
 // botOptionsFindly.botInfo = {
 //   chatBot: "7 DEC-22",
 //   taskBotId: "st-0e74a50d-6082-5f35-8ef7-12f05b67c6e0",

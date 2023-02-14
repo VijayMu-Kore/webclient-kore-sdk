@@ -418,7 +418,14 @@ margin-bottom: 10px;
     text-decoration: none !important;
 }
 
-
+.search-temp-one .snippet-image-block{
+	margin-top:20px;
+}
+.search-temp-one .snippet-image-block img{
+	width: 300px;
+	height: 227px;
+	border-radius: 10px;
+}
 .search-temp-one .top-header .btn-link .bot-bg-purple{
     background: #F2EDFA;
     border-radius: 20px;
@@ -426,7 +433,19 @@ margin-bottom: 10px;
     display: flex;
     margin-right: 10px;
 }
-
+.search-temp-one .paragraph-temp-title{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    color: #2D2F33;
+}
+.search-temp-one .paragraph-temp-title br:first-child {
+    display: none;
+  }
 .search-temp-one .temp-data-desc{
     color: #2D2F33;
     font-weight: 400;

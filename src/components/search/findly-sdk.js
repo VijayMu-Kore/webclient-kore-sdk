@@ -7554,14 +7554,14 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         if(res?.graph_answer?.payload?.center_panel){
           if(Object.keys(res.graph_answer.payload.center_panel).length>0){
             var listSnippetData = '';
-            if(['paragraph_snippet','answer_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+            if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               listSnippetData = helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer);
             } else {
               var listSnippetData = (helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)).split('<br /> * ');
               var filterData = listSnippetData.filter(e => e == " ");
               filterData.forEach(f => listSnippetData.splice(listSnippetData.findIndex(e => e == f),1));
             }
-            snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,'template_type':res?.graph_answer?.payload?.center_panel?.type}; 
+            snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,'template_type':res?.graph_answer?.payload?.center_panel?.type, 'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||'')}; 
           }
           else{
             snippetObj={};
