@@ -34,7 +34,7 @@ class SnippetListTemplate {
             {{/if}}\
         </div>\
         <div class="list-temp-block">\
-            <div class="list-temp-header" title="${snippetData?.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
+            <div class="list-temp-header sa-sdk-title" data-title="${snippetData?.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
                 <ol type="1" class="list-temp-ul">\
                 {{each(key, answer) snippetData.answer}}\
                     <li class="list-temp-li">{{html answer}}</li>\
@@ -46,7 +46,7 @@ class SnippetListTemplate {
         </div>\
         {{if snippetData && snippetData.source !== "Answered by AI"}}\
           <div class="snippet-source-block">\
-            <div class="snippet-source-file-name  {{if !snippetData.source}} display-none {{/if}}" title="${snippetData?.source}">{{html snippetData?.source}}</div>\
+            <div class="snippet-source-file-name sa-sdk-title  {{if !snippetData.source}} display-none {{/if}}" data-title="${snippetData?.source}">{{html snippetData?.source}}</div>\
             <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none {{/if}}"><span class="snippet-source-url-name">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/> </div></a>\
           </div>\
         {{/if}}\
@@ -100,7 +100,7 @@ class SnippetListTemplate {
             $(messageHtml).find('.desc-read-more').removeClass('display-none').addClass('display-block');
           });
         }
-        
+        SnippetListTemplate.prototype.tooltipBindEvent(me);
       }
 
       
@@ -121,6 +121,20 @@ class SnippetListTemplate {
       
         $(messageHtml).find('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
      } 
+     tooltipBindEvent(me:any){
+      let $ = me.hostInstance.$;
+    $('.sa-sdk-title').off('mouseover').on('mouseover',function(e:any){
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      $(e.currentTarget).before('<div class="sdk-tooltip-container">'+$(e.currentTarget).attr('data-title')+'<span class="sa-tooltip-arrow"></span></div>');
+      $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top',($(e.currentTarget).position().top-($(e.currentTarget).parent().find('.sdk-tooltip-container').height()+25))+'px');
+    })
+    $('.sa-sdk-title').off('mouseout').on('mouseout',function(e:any){
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
+      })
+    }
 }
 
 export default SnippetListTemplate;
