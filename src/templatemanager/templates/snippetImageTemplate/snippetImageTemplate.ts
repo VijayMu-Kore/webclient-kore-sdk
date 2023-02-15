@@ -1,4 +1,5 @@
 
+import { prototype } from 'events';
 import helpers from '../../../utils/helpers';
 import './snippetImageTemplate.scss';
 class SnippetImageTemplate {
@@ -31,7 +32,7 @@ class SnippetImageTemplate {
           {{/if}}\
       </div>\
       {{if snippetData && snippetData.title}}\
-      <div class="img-temp-title">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
+      <div class="img-temp-title sa-sdk-title" data-title="{{html helpers.convertMDtoHTML(snippetData?.title)}}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
       {{/if}}\
       <div class="img-temp-data-desc">\
       {{html snippetData?.answer}}\
@@ -69,8 +70,22 @@ class SnippetImageTemplate {
           $(messageHtml).find('.snippet-feedback').removeClass('active');
           $(event.currentTarget).addClass('active');
         });
+        SnippetImageTemplate.prototype.tooltipBindEvent(me);
       }
-    
+      tooltipBindEvent(me:any){
+        let $ = me.hostInstance.$;
+      $('.sa-sdk-title').off('mouseover').on('mouseover',function(e:any){
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        $(e.currentTarget).before('<div class="sdk-tooltip-container">'+$(e.currentTarget).attr('data-title')+'<span class="sa-tooltip-arrow"></span></div>');
+        $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top',($(e.currentTarget).position().top-($(e.currentTarget).parent().find('.sdk-tooltip-container').height()+25))+'px');
+      })
+      $('.sa-sdk-title').off('mouseout').on('mouseout',function(e:any){
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
+        })
+      }
 }
 
 

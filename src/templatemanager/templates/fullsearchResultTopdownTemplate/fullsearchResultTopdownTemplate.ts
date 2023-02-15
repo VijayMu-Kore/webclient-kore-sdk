@@ -6,6 +6,7 @@ import searchCarouselViewTemplate from '../../templates/searchCarouselViewTempla
 import SnippetListTemplate from '../../templates/snippetListTemplate/snippetListTemplate';
 import SnippetParagraphTemplate from '../../templates/snippetParagraphTemplate/snippetParagraphTemplate';
 import SnippetImageTemplate from '../../templates/snippetImageTemplate/snippetImageTemplate';
+import SnippetCitationTemplate from '../../templates/snippetCitationTemplate/snippetCitationTemplate';
 import korejquery from "../../../libs/korejquery";
 const $ = korejquery;
 class FullSearchResultTopdownTemplate {
@@ -22,6 +23,7 @@ class FullSearchResultTopdownTemplate {
       me.snippetListTemplateObj = new SnippetListTemplate();
       me.snippetParagraphTemplateObj = new SnippetParagraphTemplate();
       me.snippetImageTemplateObj = new SnippetImageTemplate();
+      me.snippetCitationTemplateObj = new SnippetCitationTemplate();
       FullSearchResultTopdownTemplate.prototype.bindEvents(me, me.messageFullResultHtml, msgData);
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
@@ -877,6 +879,8 @@ class FullSearchResultTopdownTemplate {
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetParagraphTemplateObj.renderMessage.bind(me, snippetMsgData));
   }else if(['image_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetImageTemplateObj.renderMessage.bind(me, snippetMsgData));
+  }else if(['citation_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
+    $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetCitationTemplateObj.renderMessage.bind(me, snippetMsgData));
   }else{
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetListTemplateObj.renderMessage.bind(me, snippetMsgData));
   }

@@ -7551,17 +7551,73 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         ? ".full-search-data-container"
         : ".search-data-container";
         var snippetObj={};
+      //   res.graph_answer = {
+      //     "payload":
+      //     {
+      //         "center_panel":
+      //         {
+      //             "type": "citation_snippet",
+      //             "data":
+      //             [
+      //                 {
+      //                     "title": "Finanace and developemnt overview and Introduction",
+      //                     "answer":
+      //                     [
+      //                         {
+      //                             "answer_fragment": "The relationship between financial development and economic growth has long been of interest to economists and goes back to at least Schumpeter’s",
+      //                             "sources":
+      //                             [
+      //                                 {
+      //                                     "title": "Wiki Michael Jordan",
+      //                                     "url": "https://en.wikipedia.org/wiki/Michael_Jordan"
+      //                                 }
+      //                             ]
+      //                         },
+      //                         {
+      //                             "answer_fragment": "Advances in growth theory have shown the complexities and variety of ways in which the financial system can affect economic growth, once allowance is made for asymmetric information in financial markets and increasing returns to scale in production, According to Pagano",
+      //                             "sources":
+      //                             [
+      //                                 {
+      //                                     "title": "Wiki Michael Jordan",
+      //                                     "url": "https://en.wikipedia.org/wiki/Michael_Jordan"
+      //                                 },
+      //                                 {
+      //                                     "title": "google Michael Jordan",
+      //                                     "url": "https://en.google.org/wiki/Michael_Jordan"
+      //                                 }
+      //                             ]
+      //                         }
+      //                     ],
+      //                     "reference":
+      //                     [],
+      //                     "score": 0.8504485383978129,
+      //                     "source": "refinitive Morgan stanley Research.pdf"
+      //                 }
+      //             ]
+      //         }
+      //     }
+      // };
         if(res?.graph_answer?.payload?.center_panel){
+         
           if(Object.keys(res.graph_answer.payload.center_panel).length>0){
             var listSnippetData = '';
+            var snippetReference = [];
             if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               listSnippetData = helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer);
+            } else if(['citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+              res.graph_answer.payload.center_panel.data[0].answer.forEach((item)=>{
+                snippetReference = [...snippetReference,...item.sources];
+              })
+              listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
             } else {
-              var listSnippetData = (helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)).split('<br /> * ');
+              listSnippetData = (helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)).split('<br /> * ');
               var filterData = listSnippetData.filter(e => e == " ");
               filterData.forEach(f => listSnippetData.splice(listSnippetData.findIndex(e => e == f),1));
             }
             snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,'template_type':res?.graph_answer?.payload?.center_panel?.type, 'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||'')}; 
+            if(['citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+              snippetObj['reference']=snippetReference;
+            }
           }
           else{
             snippetObj={};

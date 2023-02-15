@@ -1,27 +1,426 @@
 self["webpackHotUpdatekore_web_sdk"]("esm",{
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/templatemanager/templates/snippetImageTemplate/snippetImageTemplate.scss":
-/*!*************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/templatemanager/templates/snippetImageTemplate/snippetImageTemplate.scss ***!
-  \*************************************************************************************************************************************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/templatemanager/templates/finalResultsTemplate/finalResultsTemplate.ts":
+/*!************************************************************************************!*\
+  !*** ./src/templatemanager/templates/finalResultsTemplate/finalResultsTemplate.ts ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-// Imports
+/* harmony import */ var _utils_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../utils/helpers */ "./src/utils/helpers.js");
+/* harmony import */ var _finalResultsTemplate_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./finalResultsTemplate.scss */ "./src/templatemanager/templates/finalResultsTemplate/finalResultsTemplate.scss");
+/* harmony import */ var _templateManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../templateManager */ "./src/templatemanager/templateManager.ts");
+/* harmony import */ var _templates_searchListViewTemplate_searchListViewTemplate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../templates/searchListViewTemplate/searchListViewTemplate */ "./src/templatemanager/templates/searchListViewTemplate/searchListViewTemplate.ts");
+/* harmony import */ var _templates_searchGridViewTemplate_searchGridViewTemplate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../templates/searchGridViewTemplate/searchGridViewTemplate */ "./src/templatemanager/templates/searchGridViewTemplate/searchGridViewTemplate.ts");
+/* harmony import */ var _templates_searchCarouselViewTemplate_searchCarouselViewTemplate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate */ "./src/templatemanager/templates/searchCarouselViewTemplate/searchCarouselViewTemplate.ts");
+/* harmony import */ var _templates_fullsearchResultsTemplate_fullsearchResultsTemplate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../templates/fullsearchResultsTemplate/fullsearchResultsTemplate */ "./src/templatemanager/templates/fullsearchResultsTemplate/fullsearchResultsTemplate.ts");
+/* harmony import */ var _libs_korejquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../libs/korejquery */ "./src/libs/korejquery.js");
 
 
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ".top-down-search-background-div .all-product-details {\n  position: relative;\n  overflow-anchor: none;\n  max-height: calc(100vh - 148px);\n}\n\n.sdk-top-down-interface .search-temp-one {\n  margin-left: 30px;\n  width: 96%;\n}\n\n.top-down-search-background-div .total-search-results-block .tsrb-right-filters .top-down-customize-btns.custom-header-container-center {\n  position: initial;\n  margin: 0px 0px 0px 16px;\n  right: auto;\n  top: auto;\n  z-index: 8 !important;\n}\n.top-down-search-background-div .total-search-results-block .tsrb-right-filters .dropdown_sortable_filter {\n  position: initial;\n  top: auto;\n  right: auto;\n}\n\n.sdk-top-down-interface .all-product-details .total-search-results-block {\n  position: sticky;\n  top: 0;\n  z-index: 8;\n  background: #fff;\n}\n.sdk-top-down-interface .all-product-details .total-search-results-block .tsrb-header-sec {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n.sdk-top-down-interface .all-product-details .total-search-results-block .tsrb-right-filters {\n  display: flex;\n  align-items: center;\n}\n\n/* snippet templates css styles */\n.search-temp-one {\n  background: #FFFFFF;\n  border-bottom: 2px solid #784BD1;\n  box-shadow: 0px 1px 2px #bdc1c6;\n  border-radius: 8px;\n  padding: 20px 20px;\n  margin-bottom: 25px;\n}\n\n.search-temp-one .top-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 0 10px 0;\n}\n\n.search-temp-one .snippet-image-block {\n  margin-top: 20px;\n}\n\n.search-temp-one .snippet-image-block img {\n  width: 300px;\n  height: 227px;\n  border-radius: 10px;\n}\n\n#searchChatContainer .search-temp-one .top-header {\n  display: none !important;\n}\n\n#searchChatContainer .search-temp-one {\n  margin-top: -25px !important;\n}\n\n.search-temp-one .top-header .top-header-with-img {\n  display: flex;\n  align-items: center;\n  padding: 0 0 0px 0;\n}\n\n.search-temp-one .snippet-source-block a {\n  text-decoration: none !important;\n}\n\n.search-temp-one .snippet-source-block .snippet-source-file-name {\n  font-style: normal;\n  font-weight: 600;\n  font-size: 14px;\n  line-height: 17px;\n  color: #2D2F33;\n  padding: 20px 0 10px 0;\n}\n\n.search-temp-one .snippet-source-block .snippet-source-url {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  padding: 7px 10px;\n  background: #F3F8FF;\n  border-radius: 4px;\n  justify-content: space-between;\n  margin-bottom: 10px;\n}\n\n.search-temp-one .snippet-source-block .snippet-source-url a, .search-temp-one .snippet-source-block .snippet-source-url .snippet-source-url-name {\n  color: #2B75E4;\n  font-weight: 400;\n  font-size: 10px;\n  line-height: 12px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 80%;\n}\n\n.search-temp-one .snippet-source-block .snippet-source-url a {\n  width: 14px;\n  margin-left: 10px;\n}\n\n.search-temp-one .top-header .top-header-with-img .logo-span {\n  padding: 0 5px 0 0;\n}\n\n.search-temp-one .top-header .btn-chip {\n  background: #F7F9FA;\n  border-radius: 4px;\n  padding: 10px 10px;\n  color: #777A80;\n  font-weight: 600;\n  font-size: 10px;\n  line-height: 12px;\n}\n\n#searchChatContainer .search-temp-one .top-header .btn-link {\n  display: none;\n}\n\n.sdk-top-down-interface .search-temp-one .temp-footer-block .btn-link {\n  display: none;\n}\n\n.sdk-top-down-interface .search-temp-one .temp-footer-block .temp-footer {\n  justify-content: end;\n}\n\n.search-temp-one .temp-footer-block .temp-footer.justify-content-end {\n  justify-content: end !important;\n}\n\n.sdk-top-down-interface .search-temp-one .top-header .top-header-with-img .logo-span {\n  display: none;\n}\n\n#searchChatContainer .search-temp-one .temp-footer .is-it-usefull {\n  display: none;\n}\n\n.search-temp-one .top-header .btn-link {\n  color: #784BD1;\n  font-weight: 600;\n  font-size: 8px;\n  display: flex;\n  align-items: center;\n  text-decoration: none !important;\n}\n\n.search-temp-one .top-header .btn-link .bot-bg-purple {\n  background: #F2EDFA;\n  border-radius: 20px;\n  padding: 6px 6px;\n  display: flex;\n  margin-right: 10px;\n}\n\n.search-temp-one .img-temp-title {\n  font-family: \"Inter\";\n  font-style: normal;\n  font-weight: 500;\n  font-size: 16px;\n  line-height: 19px;\n  display: flex;\n  align-items: center;\n  color: #2D2F33;\n}\n\n.search-temp-one .img-temp-data-desc {\n  font-family: \"Inter\";\n  font-style: normal;\n  font-weight: 600;\n  font-size: 12px;\n  line-height: 15px;\n  display: flex;\n  align-items: center;\n  color: #777A80;\n  word-break: break-word;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}\n\n.search-temp-one .img-temp-data-desc br:first-child {\n  display: none;\n}\n\n.search-temp-one .paragraph-temp-title br:first-child {\n  display: none;\n}\n\n.search-temp-one .img-temp-title br:first-child {\n  display: none;\n}\n\n.search-temp-one .temp-read-link {\n  /* display: flex; */\n  display: none !important;\n  justify-content: end;\n}\n\n.search-temp-one .temp-read-link .desc-read-more, .search-temp-one .temp-read-link .desc-read-less {\n  color: #0D6EFD;\n  font-weight: 400;\n  font-size: 14px;\n  line-height: 20px;\n  cursor: pointer;\n  display: none !important;\n}\n\n.search-temp-one .temp-footer-block .temp-footer {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 0 0 0;\n}\n\n.search-temp-one .temp-footer-block .temp-footer .temp-right {\n  display: flex;\n  align-items: center;\n}\n\n.search-temp-one .temp-footer-block .btn-link {\n  color: #784BD1;\n  font-weight: 600;\n  font-size: 8px;\n  display: flex;\n  align-items: center;\n  text-decoration: none !important;\n}\n\n.search-temp-one .temp-footer-block .btn-link .bot-bg-purple {\n  background: #F2EDFA;\n  border-radius: 20px;\n  padding: 6px 6px;\n  display: flex;\n  margin-right: 10px;\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions {\n  display: flex;\n  align-items: center;\n  gap: 5px;\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img:hover {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img.active {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green-fill.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img:hover {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img.active {\n  content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red-fill.svg);\n}\n\n.search-temp-one .temp-footer .temp-fotter-actions img {\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.search-temp-one .temp-footer .is-it-usefull {\n  color: #777A80;\n  font-weight: 400;\n  font-size: 12px;\n  line-height: 15px;\n  padding: 0 20px 0 0;\n}", "",{"version":3,"sources":["webpack://./src/templatemanager/templates/snippetImageTemplate/snippetImageTemplate.scss"],"names":[],"mappings":"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","sourcesContent":["\r\n.top-down-search-background-div {\r\n\t.all-product-details {\r\n\t\tposition: relative;\r\n\t\toverflow-anchor: none;\r\n\t\tmax-height: calc(100vh - 148px);\r\n\t}\r\n}\r\n.sdk-top-down-interface {\r\n\t.search-temp-one {\r\n\t\tmargin-left: 30px;\r\n\t\twidth: 96%;\r\n\t}\r\n}\r\n\r\n\r\n.top-down-search-background-div {\r\n\t.total-search-results-block {\r\n\t\t.tsrb-right-filters {\r\n\t\t\t.top-down-customize-btns.custom-header-container-center {\r\n\t\t\t\tposition: initial;\r\n\t\t\t\tmargin: 0px 0px 0px 16px;\r\n\t\t\t\tright: auto;\r\n\t\t\t\ttop: auto;\r\n\t\t\t\tz-index: 8 !important;\r\n\t\t\t}\r\n\t\t\t.dropdown_sortable_filter {\r\n\t\t\t\tposition: initial;\r\n\t\t\t\ttop: auto;\r\n\t\t\t\tright: auto;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n.sdk-top-down-interface {\r\n\t.all-product-details {\r\n\t\t.total-search-results-block {\r\n\t\t\tposition: sticky;\r\n\t\t\ttop: 0;\r\n\t\t\tz-index: 8;\r\n\t\t\tbackground: #fff;\r\n\t\t\t.tsrb-header-sec {\r\n\t\t\t\tdisplay: flex;\r\n\t\t\t\talign-items: center;\r\n\t\t\t\tjustify-content: space-between;\r\n\t\t\t}\r\n            .tsrb-right-filters {\r\n                display: flex;\r\n                align-items: center;\r\n            }\r\n\t\t}\r\n\t}\r\n}\r\n/* snippet templates css styles */\r\n.search-temp-one{\r\n    background: #FFFFFF;\r\n    border-bottom: 2px solid #784BD1;\r\n    box-shadow: 0px 1px 2px #bdc1c6;\r\n    border-radius: 8px;\r\n    padding: 20px 20px;\r\n    margin-bottom: 25px;\r\n}\r\n\r\n.search-temp-one .top-header{\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    padding: 0 0 10px 0;\r\n}\r\n.search-temp-one .snippet-image-block{\r\n\tmargin-top:20px;\r\n}\r\n.search-temp-one .snippet-image-block img{\r\n\twidth: 300px;\r\n\theight: 227px;\r\n\tborder-radius: 10px;\r\n}\r\n\r\n#searchChatContainer .search-temp-one .top-header{\r\n    display: none !important;\r\n    }\r\n    #searchChatContainer .search-temp-one {\r\n        margin-top: -25px !important;\r\n    }\r\n.search-temp-one .top-header .top-header-with-img{\r\n    display: flex;\r\n    align-items: center;\r\n    padding: 0 0 0px 0;\r\n}\r\n.search-temp-one .snippet-source-block a{\r\n    text-decoration: none !important;\r\n}\r\n.search-temp-one .snippet-source-block .snippet-source-file-name{\r\n    font-style: normal;\r\nfont-weight: 600;\r\nfont-size: 14px;\r\nline-height: 17px;\r\ncolor: #2D2F33;\r\npadding: 20px 0 10px 0;\r\n}\r\n.search-temp-one .snippet-source-block .snippet-source-url{\r\n    display: flex;\r\nflex-direction: row;\r\nalign-items: center;\r\npadding: 7px 10px;\r\nbackground: #F3F8FF;\r\nborder-radius: 4px;\r\njustify-content: space-between;\r\nmargin-bottom: 10px;\r\n}\r\n.search-temp-one .snippet-source-block .snippet-source-url a,.search-temp-one .snippet-source-block .snippet-source-url .snippet-source-url-name{\r\n    color: #2B75E4;\r\n    font-weight: 400;\r\n    font-size: 10px;\r\n    line-height: 12px;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n    white-space: nowrap;\r\n    width: 80%;\r\n}\r\n.search-temp-one .snippet-source-block .snippet-source-url a{\r\n    width: 14px;\r\n    margin-left: 10px;\r\n} \r\n.search-temp-one .top-header .top-header-with-img .logo-span{\r\n    padding: 0 5px 0 0;\r\n}\r\n\r\n.search-temp-one .top-header .btn-chip{\r\n    background: #F7F9FA;\r\n    border-radius: 4px;\r\n    padding: 10px 10px;\r\n    color: #777A80;\r\n    font-weight: 600;\r\n    font-size: 10px;\r\n    line-height: 12px;\r\n}\r\n#searchChatContainer .search-temp-one .top-header .btn-link{\r\n    display: none;\r\n}\r\n.sdk-top-down-interface .search-temp-one .temp-footer-block .btn-link{\r\n    display: none;\r\n}\r\n.sdk-top-down-interface .search-temp-one .temp-footer-block .temp-footer {\r\n    justify-content: end;\r\n}\r\n.search-temp-one .temp-footer-block .temp-footer.justify-content-end {\r\n    justify-content: end !important;\r\n}\r\n.sdk-top-down-interface .search-temp-one .top-header .top-header-with-img .logo-span {\r\n    display: none;\r\n}\r\n#searchChatContainer .search-temp-one .temp-footer .is-it-usefull{\r\n    display: none;\r\n}\r\n.search-temp-one .top-header .btn-link{\r\n    color: #784BD1;\r\n    font-weight: 600;\r\n    font-size: 8px;\r\n    display: flex;\r\n    align-items: center;\r\n    text-decoration: none !important;\r\n}\r\n\r\n\r\n.search-temp-one .top-header .btn-link .bot-bg-purple{\r\n    background: #F2EDFA;\r\n    border-radius: 20px;\r\n    padding: 6px 6px;\r\n    display: flex;\r\n    margin-right: 10px;\r\n}\r\n.search-temp-one .img-temp-title{\r\n\tfont-family: 'Inter';\r\n\tfont-style: normal;\r\n\tfont-weight: 500;\r\n\tfont-size: 16px;\r\n\tline-height: 19px;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tcolor: #2D2F33;\r\n}\r\n.search-temp-one .img-temp-data-desc{\r\n\tfont-family: 'Inter';\r\n\tfont-style: normal;\r\n\tfont-weight: 600;\r\n\tfont-size: 12px;\r\n\tline-height: 15px;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tcolor: #777A80;\r\n    word-break: break-word;\r\n    display: -webkit-box;\r\n    -webkit-line-clamp: 2;\r\n    -webkit-box-orient: vertical;\r\n    overflow: hidden;\r\n}\r\n.search-temp-one .img-temp-data-desc br:first-child {\r\n    display: none;\r\n  }\r\n  .search-temp-one .paragraph-temp-title br:first-child {\r\n    display: none;\r\n  }\r\n  .search-temp-one .img-temp-title br:first-child {\r\n    display: none;\r\n  }\r\n.search-temp-one .temp-read-link{\r\n    /* display: flex; */\r\n    display: none !important;\r\n    justify-content: end;\r\n}\r\n.search-temp-one .temp-read-link .desc-read-more,.search-temp-one .temp-read-link .desc-read-less{\r\n    color: #0D6EFD;\r\n    font-weight: 400;\r\n    font-size: 14px;\r\n    line-height: 20px;\r\n    cursor: pointer;\r\n    display: none !important;\r\n}\r\n\r\n.search-temp-one .temp-footer-block .temp-footer{\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    padding: 10px 0 0 0;\r\n}\r\n.search-temp-one .temp-footer-block .temp-footer .temp-right{\r\n    display: flex;\r\n    align-items: center;\r\n}\r\n.search-temp-one .temp-footer-block .btn-link{\r\n    color: #784BD1;\r\n    font-weight: 600;\r\n    font-size: 8px;\r\n    display: flex;\r\n    align-items: center;\r\n    text-decoration: none !important;\r\n}\r\n\r\n.search-temp-one .temp-footer-block .btn-link .bot-bg-purple{\r\n    background: #F2EDFA;\r\n    border-radius: 20px;\r\n    padding: 6px 6px;\r\n    display: flex;\r\n    margin-right: 10px;\r\n}\r\n\r\n.search-temp-one .temp-footer .temp-fotter-actions{\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 5px;\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img:hover{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-like-img.active{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green-fill.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img:hover{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red.svg);\r\n}\r\n.search-temp-one .temp-footer .temp-fotter-actions .snippet-dislike-img.active{\r\n    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red-fill.svg);\r\n}\r\n\r\n.search-temp-one .temp-footer .temp-fotter-actions img{\r\n    width: 16px;\r\n    height: 16px;\r\n    cursor: pointer;\r\n}\r\n\r\n.search-temp-one .temp-footer .is-it-usefull{\r\n    color: #777A80;\r\n    font-weight: 400;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    padding: 0 20px 0 0;\r\n}\r\n"],"sourceRoot":""}]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+
+
+
+
+var $ = _libs_korejquery__WEBPACK_IMPORTED_MODULE_1__["default"];
+var FinalResultsTemplate = /** @class */ (function () {
+    function FinalResultsTemplate() {
+        this.$ = $;
+    }
+    FinalResultsTemplate.prototype.renderMessage = function (msgData) {
+        var _a, _b;
+        var me = this;
+        var $ = me.hostInstance.$;
+        me.helpersObj = _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"] === null || _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"] === void 0 ? void 0 : _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"].helpers;
+        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'finalResultsTemplate') {
+            if ((_b = (_a = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _a === void 0 ? void 0 : _a.payload) === null || _b === void 0 ? void 0 : _b.helpers) {
+                me.helpersObj = msgData.message[0].component.payload.helpers;
+            }
+            else {
+                msgData.message[0].component.payload['helpers'] = me.helpersObj;
+            }
+            me.messageResultHtml = $(FinalResultsTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+            me.customTemplateObj = new _templateManager__WEBPACK_IMPORTED_MODULE_3__["default"](me);
+            me.listTemplateObj = new _templates_searchListViewTemplate_searchListViewTemplate__WEBPACK_IMPORTED_MODULE_4__["default"]();
+            me.gridTemplateObj = new _templates_searchGridViewTemplate_searchGridViewTemplate__WEBPACK_IMPORTED_MODULE_5__["default"]();
+            me.carouselTemplateObj = new _templates_searchCarouselViewTemplate_searchCarouselViewTemplate__WEBPACK_IMPORTED_MODULE_6__["default"]();
+            me.fullSearchTemplateObj = new _templates_fullsearchResultsTemplate_fullsearchResultsTemplate__WEBPACK_IMPORTED_MODULE_7__["default"]();
+            FinalResultsTemplate.prototype.bindEvents(me, me.messageResultHtml, msgData);
+            return me.messageResultHtml;
+        }
+    };
+    FinalResultsTemplate.prototype.bindEvents = function (me, messageHtml, msgData) {
+        var _a;
+        var hostWindowInstance = me.hostInstance;
+        var $ = (_a = me === null || me === void 0 ? void 0 : me.hostInstance) === null || _a === void 0 ? void 0 : _a.$;
+        // if(msgData.message[0].component.payload.searchConfigurationCopy){
+        //   me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
+        // }
+        me.groupData = msgData.message[0].component.payload.groupData;
+        var container = '.search-data-container';
+        if (msgData.message[0].component.payload.searchType == 'isSearch') {
+            container = '.search-data-container';
+        }
+        else if (msgData.message[0].component.payload.searchType == 'isLiveSearch') {
+            container = '.live-search-data-container';
+        }
+        if (me.groupData && me.groupData.length) {
+            me.groupData.forEach(function (d) {
+                var showAllHTML;
+                if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+                    showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+                }
+                else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+                    showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+                }
+                else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+                    showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+                }
+                // var showAllHTML = me.customTemplateObj.renderMessage.bind(me.hostInstance,d);
+                $(messageHtml).find(container).append(showAllHTML);
+            });
+        }
+        $(messageHtml).off("click", ".show-all-results").on("click", ".show-all-results", function (e) {
+            var isSearchSDK = document.body.className.match('sdk-body');
+            if (isSearchSDK !== null) {
+                hostWindowInstance.seeAllBtnClickEvent(e);
+            }
+            else {
+                var modifyGroupData = msgData.message[0].component.payload.groupData;
+                modifyGroupData.forEach(function (d) {
+                    d.message[0].component.payload.isSearch = false;
+                    d.message[0].component.payload.isFullResults = true;
+                    d.message[0].component.payload.isSearchSDK = true;
+                    d.message[0].component.payload.maxSearchResultsAllowed = 10;
+                });
+                var fullSearchMsgData_1 = {
+                    message: [{
+                            component: {
+                                type: 'template',
+                                payload: {
+                                    template_type: "fullSearchResultsTemplate",
+                                    facets: [],
+                                    count: msgData.message[0].component.payload.totalSearchResults,
+                                    view: "preview",
+                                    isDev: msgData.message[0].component.payload.isDev,
+                                    isFilterEnabled: false,
+                                    devMode: msgData.message[0].component.payload.devMode,
+                                    viewType: msgData.message[0].component.payload.viewType,
+                                    facetPosition: 'left',
+                                    filterFacetData: [],
+                                    groupData: modifyGroupData,
+                                    displayFeedback: null,
+                                    feedbackData: null
+                                }
+                            }
+                        }]
+                };
+                // let fullSearchHtml = me.fullSearchTemplateObj.renderMessage.bind(me, fullSearchMsgData);
+                // setTimeout(fullSearchHtml, 500)
+                setTimeout(function () {
+                    $('body').find('.full-search-results-container').remove();
+                    $('body').append("<div class=\"full-search-results-container\"></div>");
+                    $('.full-search-results-container').append(me.fullSearchTemplateObj.renderMessage.bind(me, fullSearchMsgData_1));
+                }, 1000);
+            }
+        });
+        $(messageHtml).off("click", ".know-more-snippet").on("click", ".know-more-snippet", function (e) {
+            var url = $(e.target).attr("snippetURL");
+            window.open(url, '_blank', 'noopener');
+        });
+        FinalResultsTemplate.prototype.bindSnippetEvents(messageHtml);
+        FinalResultsTemplate.prototype.tooltipBindEvent(me);
+    };
+    FinalResultsTemplate.prototype.getTemplateString = function (type) {
+        var finalResultsTemplate = '<script type="text/x-jqury-tmpl">\
+    <div class="final-results-container">\
+        {{if infoText && infoText.length}}\
+          <div class="messageBubble">\
+            <div class="messageBubble-content">\
+                <div class="botMessage">\
+                <span class="bot_Img">\
+                    <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg">\
+                </span>\
+                <span>{{html helpers.convertMDtoHTML(infoText)}}</span>\
+                </div>\
+          </div>\
+          </div>\
+        {{/if}}\
+        {{if snippetData && snippetData?.title}}\
+        {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
+          <div class="search-temp-one snippet-margin">\
+            <div class="top-header">\
+                <div class="top-header-with-img">\
+                    <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                    <div class="btn-chip">SUGGESTED ANSWER</div>\
+                </div>\
+                {{if snippetData && snippetData.source === "Answered by AI"}}\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                {{/if}}\
+            </div>\
+            {{if snippetData && snippetData.title}}\
+              <div class="paragraph-temp-title">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
+            {{/if}}\
+            <div class="temp-data-desc">\
+            {{html snippetData?.answer}}\
+            </div>\
+            <div class="temp-read-link">\
+            <span class="desc-read-more">Read more</span> <span class="desc-read-less">Show Less</span>\
+            </div>\
+            {{if snippetData && snippetData.source !== "Answered by AI"}}\
+            <div class="snippet-source-block">\
+              <div class="snippet-source-file-name {{if !snippetData.source}} display-none{{/if}}">{{html snippetData.source}}</div>\
+              <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name" title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
+            </div>\
+            {{/if}}\
+            <div class="temp-footer-block">\
+                <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
+                    {{if snippetData && snippetData.source === "Answered by AI"}}\
+                    <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                    {{/if}}\
+                    <div class="temp-right">\
+                        <div class="is-it-usefull">Is it useful?</div>\
+                        <div class="temp-fotter-actions">\
+                            <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                            <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                        </div>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+        {{/if}}\
+        {{if snippetData.template_type =="list_element_snippet" || snippetData.template_type =="heading_snippet"}}\
+    <div class="search-temp-one list-snippet-temp snippet-margin">\
+        <div class="top-header">\
+            <div class="top-header-with-img">\
+                <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                <div class="btn-chip">SUGGESTED ANSWER</div>\
+            </div>\
+            {{if snippetData && snippetData.source === "Answered by AI"}}\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+            {{/if}}\
+        </div>\
+        <div class="list-temp-block">\
+            <div class="list-temp-header">{{html snippetData?.title}}</div>\
+                <ol type="1" class="list-temp-ul">\
+                {{each(key, answer) snippetData.answer}}\
+                    <li class="list-temp-li">{{html answer}}</li>\
+                    {{/each}}\
+                </ol>\
+                {{if snippetData.answer.length > 4}}\
+                <span class="desc-read-more display-block"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Read more</span> <span class="desc-read-less  display-none"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Show Less</span>\
+                {{/if}}\
+        </div>\
+        {{if snippetData && snippetData.source !== "Answered by AI"}}\
+          <div class="snippet-source-block">\
+            <div class="snippet-source-file-name  {{if !snippetData.source}} display-none {{/if}}">{{html snippetData?.source}}</div>\
+            <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none {{/if}}"><span class="snippet-source-url-name">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/> </div></a>\
+          </div>\
+        {{/if}}\
+        <div class="temp-footer-block">\
+            <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
+                {{if snippetData && snippetData.source === "Answered by AI"}}\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                {{/if}}\
+                <div class="temp-right">\
+                    <div class="is-it-usefull">Is it useful?</div>\
+                    <div class="temp-fotter-actions">\
+                        <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                        <img  class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+    {{/if}}\
+    {{if snippetData.template_type =="image_snippet"}}\
+          <div class="search-temp-one snippet-margin">\
+            <div class="top-header">\
+                <div class="top-header-with-img">\
+                    <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                    <div class="btn-chip">SUGGESTED ANSWER</div>\
+                </div>\
+                {{if snippetData && snippetData.source === "Answered by AI"}}\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                {{/if}}\
+            </div>\
+            {{if snippetData && snippetData.title}}\
+              <div class="img-temp-title">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
+              {{/if}}\
+              {{if snippetData.answer}}\
+                <div class="img-temp-data-desc">\
+                {{html snippetData?.answer}}\
+                </div>\
+              {{/if}}\
+              {{if snippetData && snippetData.image_url}}\
+              <div class="snippet-image-block"><img src="${snippetData.image_url}"/></div>\
+              {{/if}}\
+            {{if snippetData && snippetData.source !== "Answered by AI"}}\
+            <div class="snippet-source-block">\
+              <div class="snippet-source-file-name {{if !snippetData.source}} display-none{{/if}}">{{html snippetData.source}}</div>\
+              <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name" title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
+            </div>\
+            {{/if}}\
+            <div class="temp-footer-block">\
+                <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
+                    {{if snippetData && snippetData.source === "Answered by AI"}}\
+                    <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                    {{/if}}\
+                    <div class="temp-right">\
+                        <div class="is-it-usefull">Is it useful?</div>\
+                        <div class="temp-fotter-actions">\
+                            <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                            <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                        </div>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+        {{/if}}\
+        {{if snippetData.template_type =="citation_snippet"}}\
+        <div class="search-temp-one">\
+        <div class="top-header">\
+            <div class="top-header-with-img">\
+                <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                <div class="btn-chip">SUGGESTED ANSWER</div>\
+            </div>\
+            {{if snippetData && snippetData.source === "Answered by AI"}}\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+            {{/if}}\
+        </div>\
+        {{if snippetData && snippetData.title}}\
+        <div class="img-temp-title sa-sdk-title" data-title="{{html helpers.convertMDtoHTML(snippetData?.title)}}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
+        {{/if}}\
+        <div class="citation-data-desc">\
+        {{each(key, data) snippetData.answer}}\
+        <span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a href="${source.url}" target="_blank">[${sourceKey+1}]</a></sup>{{/each}}. </span>\
+        {{/each}}\
+        </div>\
+        <div class="snippet-referene-block">\
+          <div class="reference-block-header">References: </div>\
+          <ol type="1" class="reference-list-temp-ul">\
+                  {{each(key, item) snippetData.reference}}\
+                      <li class="reference-list-temp-li"><a class="sa-sdk-title"  data-title="{{html helpers.convertMDtoHTML(item.title)}}" href="${item.url}" target="_blank"><span>{{html helpers.convertMDtoHTML(item.title)}}</span></a></li>\
+                      {{/each}}\
+                  </ol>\
+        </div>\
+        {{if snippetData && snippetData.source !== "Answered by AI"}}\
+        <div class="snippet-source-block">\
+          <div class="snippet-source-file-name {{if !snippetData.source}} display-none{{/if}}">{{html snippetData.source}}</div>\
+          <a href="${snippetData?.page_url}" target="_blank" ><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name" title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
+        </div>\
+        {{/if}}\
+        <div class="temp-footer-block">\
+            <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
+                {{if snippetData && snippetData.source === "Answered by AI"}}\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                {{/if}}\
+                <div class="temp-right">\
+                    <div class="is-it-usefull">Is it useful?</div>\
+                    <div class="temp-fotter-actions">\
+                        <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                        <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+    {{/if}}\
+    {{/if}}\
+      <div class="finalResults {{if snippetData && snippetData?.title}}snippet-margin{{/if}}">\
+        {{if taskPrefix === "SUGGESTED"}}\
+        <span class="live-search-close-icon show-all-results">See All Results</span>\
+        {{/if}}\
+        <div class="resultsOfSearch">\
+            {{if taskPrefix !== "SUGGESTED"}}\
+                <div class="search-data-container"></div>\
+            {{/if}}\
+            {{if taskPrefix === "SUGGESTED"}}\
+                <div class="live-search-data-container"></div>\
+            {{/if}}\
+            <!--{{if noResults}} <span class="text-center">No results found</span> {{/if}}-->\
+            {{if showAllResults && !customSearchResult}}\
+                {{if taskPrefix !== "SUGGESTED"}}\
+                    <div class="bottom-search-show-all-results">\
+                        <span class="pointer show-all-results" >See all <span class="search-results-count">(${totalSearchResults} results)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
+                    </div>\
+                {{/if}}\
+            {{/if}}\
+        </div>\
+        </div>\
+    </div>\
+</script>';
+        if (type === 'finalResultsTemplate') {
+            return finalResultsTemplate;
+        }
+    };
+    FinalResultsTemplate.prototype.botActionTrigger = function (event) {
+        var me = this;
+        me.hostInstance.botActionTrigger(event);
+    };
+    ;
+    FinalResultsTemplate.prototype.bindSnippetEvents = function (messageHtml) {
+        $(messageHtml).find('.search-temp-one').off('click', '.snippet-feedback').on('click', '.snippet-feedback', function (event) {
+            $(messageHtml).find('.snippet-feedback').removeClass('active');
+            $(event.currentTarget).addClass('active');
+        });
+        if (messageHtml && $(messageHtml).find('.search-temp-one').find('.temp-data-desc').length) {
+            setTimeout(function () {
+                if ($(messageHtml).find('.search-temp-one').last().find('.temp-data-desc').length && $(messageHtml).find('.search-temp-one').last().find('.temp-data-desc')[0].scrollHeight > 70) {
+                    $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').show();
+                    $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
+                }
+                else {
+                    $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').hide();
+                    $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
+                }
+                $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+                    $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp', 'initial');
+                    $(event.currentTarget).hide();
+                    $(event.currentTarget).parent().find('.desc-read-less').show();
+                });
+                $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+                    $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp', '3');
+                    $(event.currentTarget).parent().find('.desc-read-more').show();
+                    $(event.currentTarget).hide();
+                });
+            }, 300);
+        }
+        else if (messageHtml && $(messageHtml).find('.search-temp-one').find('.list-temp-ul').length) {
+            $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+                $(messageHtml).find('.list-temp-ul').addClass('show-all-list');
+                $(messageHtml).find('.desc-read-more').removeClass('display-block').addClass('display-none');
+                $(messageHtml).find('.desc-read-less').removeClass('display-none').addClass('display-block');
+            });
+            $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+                $(messageHtml).find('.list-temp-ul').removeClass('show-all-list');
+                $(messageHtml).find('.desc-read-less').removeClass('display-block').addClass('display-none');
+                $(messageHtml).find('.desc-read-more').removeClass('display-none').addClass('display-block');
+            });
+        }
+    };
+    FinalResultsTemplate.prototype.tooltipBindEvent = function (me) {
+        var $ = me.hostInstance.$;
+        $('.sa-sdk-title').off('mouseover').on('mouseover', function (e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            $(e.currentTarget).before('<div class="sdk-tooltip-container">' + $(e.currentTarget).attr('data-title') + '<span class="sa-tooltip-arrow"></span></div>');
+            $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top', ($(e.currentTarget).position().top - ($(e.currentTarget).parent().find('.sdk-tooltip-container').height() + 25)) + 'px');
+        });
+        $('.sa-sdk-title').off('mouseout').on('mouseout', function (e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
+        });
+    };
+    return FinalResultsTemplate;
+}());
+FinalResultsTemplate.prototype.$ = $;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FinalResultsTemplate);
 
 
 /***/ })
@@ -30,7 +429,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".top-down-search-background-div .all-p
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("84eaefd847b6419c3663")
+/******/ 	__webpack_require__.h = () => ("5de4e9290b3b40972194")
 /******/ })();
 /******/ 
 /******/ }
