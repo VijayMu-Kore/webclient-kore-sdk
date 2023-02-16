@@ -34,9 +34,11 @@ class SnippetImageTemplate {
       {{if snippetData && snippetData.title}}\
       <div class="img-temp-title sa-sdk-title" data-title="{{html helpers.convertMDtoHTML(snippetData?.title)}}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
       {{/if}}\
+      {{if snippetData && snippetData.answer}}\
       <div class="img-temp-data-desc">\
       {{html snippetData?.answer}}\
       </div>\
+      {{/if}}\
       {{if snippetData && snippetData.image_url}}\
       <div class="snippet-image-block"><img src="${snippetData.image_url}"/></div>\
       {{/if}}\

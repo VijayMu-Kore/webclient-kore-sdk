@@ -423,7 +423,6 @@ margin-bottom: 10px;
 }
 .search-temp-one .snippet-image-block img{
 	width: 100%;
-	max-height: 300px;
 	border-radius: 10px;
 }
 .search-temp-one .top-header .btn-link .bot-bg-purple{
@@ -453,10 +452,6 @@ margin-bottom: 10px;
     line-height: 20px;
     padding: 0px 0 0px 0;
     word-break: break-word;
-    // display: -webkit-box;
-    // -webkit-line-clamp: 3;
-    // -webkit-box-orient: vertical;
-    // overflow: hidden;
 }
 .search-temp-one .temp-data-desc br:first-child {
     display: none;
@@ -732,7 +727,7 @@ margin-bottom: 10px;
                 a{
                     word-break: break-word;
                     display: -webkit-box;
-                    -webkit-line-clamp: 2;
+                    -webkit-line-clamp: 1;
                     -webkit-box-orient: vertical;
                     overflow: hidden;
                     text-decoration: none !important;
@@ -743,6 +738,131 @@ margin-bottom: 10px;
                     }
                     span{
                         border-bottom: 1px solid #99969E;
+                    }
+                }
+            }
+        }
+    }
+    &.active-citation-snippet{
+        .citation-data-desc{
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 15px;
+            color: #121314;
+            .snippet-answer-fragment-block{
+                line-height: 16px;
+                .sub-fragment{
+                    background: #fff;
+                    border-radius: 8px;
+                    padding: 0px 5px;
+                    .snippet-citation{
+                        vertical-align: text-bottom;
+                    }
+                    .reference-no{
+                        padding: 1px 4px;
+                        margin-left: 2px;
+                        border-radius: 20px;
+                        background: #EAF1FC;
+                        color: #1A4689;
+                        font-family: "Inter";
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 8px;
+                        line-height: 15px;
+                        border: 1px solid transparent;
+                    }
+                }
+                
+                &:hover, &.active{
+                    .sub-fragment{
+                    background: #EAF1FC;
+                    border-radius: 4px;
+                    padding: 0px 5px;
+                    .reference-no{
+                        background: #5591E9;
+                        color: #fff;
+                    }
+                }
+             }
+            }
+        }
+        .active-snippet-referene-block{
+            .active-reference-block-header{
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 10px;
+                line-height: 12px;
+                color: #777A80;
+                margin-bottom: 5px;
+            }
+            .active-reference-list-temp-block{
+                display: inline-block;
+                box-sizing:border-box;
+                .active-reference-list-temp{
+                    box-sizing: border-box;
+                    display: inline-flex;
+                    flex-direction: row;
+                    align-items: center;
+                    padding: 6px 10px 9px 5px;
+                    gap: 5px;
+                    height: 26px;
+                    background: #FFFFFF;
+                    border: 1px solid #f0f1f2;
+                    border-radius: 20px;
+                    width: 150px;
+                    margin: 5px 5px 0px 0px;
+                    a{
+                        word-break: break-word;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-decoration: none !important;
+                        color: #99969E;
+                        &:focus{
+                            color: #99969E;
+                        }
+                        .reference-no{
+                            padding: 2px 5px;
+                            gap: 10px;
+                            margin-right: 5px;
+                            border-radius: 20px;
+                            background: #EAF1FC;
+                            color: #5591E9;
+                            font-family: 'Inter';
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 10px;
+                            line-height: 17px;
+                            border: 1px solid transparent;
+                        }
+                        .reference-title{
+                            font-family: 'Inter';
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 10px;
+                            line-height: 12px;
+                            color: #777A80;
+                        }
+                    }
+                  
+                    &:hover, &.active{
+                        background: #F2F7FF;
+                        border: 1px solid #D5E3FA;
+                        a{
+                            .reference-no{
+                                background: #FFFFFF;
+                                border: 1px solid #D5E3FA;
+                                color: #1A4689;
+                                line-height: 17px;
+                            }
+                            .reference-title{
+                                color: #121314;
+                            }
+                        }
                     }
                 }
             }

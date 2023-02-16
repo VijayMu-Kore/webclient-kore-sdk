@@ -7556,7 +7556,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       //     {
       //         "center_panel":
       //         {
-      //             "type": "citation_snippet",
+      //             "type": "active_citation_snippet",
       //             "data":
       //             [
       //                 {
@@ -7604,10 +7604,19 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             var snippetReference = [];
             if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               listSnippetData = helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer);
-            } else if(['citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+            } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               res.graph_answer.payload.center_panel.data[0].answer.forEach((item)=>{
                 snippetReference = [...snippetReference,...item.sources];
               })
+              var set = new Set();
+              var unionArray =  snippetReference.filter(item => {
+                if (!set.has(item.title)) {
+                  set.add(item.title);
+                  return true;
+                }
+                return false;
+              }, set);
+              snippetReference = unionArray;
               listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
             } else {
               listSnippetData = (helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)).split('<br /> * ');
@@ -7615,7 +7624,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
               filterData.forEach(f => listSnippetData.splice(listSnippetData.findIndex(e => e == f),1));
             }
             snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,'template_type':res?.graph_answer?.payload?.center_panel?.type, 'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||'')}; 
-            if(['citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+            if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               snippetObj['reference']=snippetReference;
             }
           }
