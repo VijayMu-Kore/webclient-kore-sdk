@@ -1,592 +1,371 @@
 self["webpackHotUpdatekore_web_sdk"]("esm",{
 
-/***/ "./src/templatemanager/templates/searchListViewTemplate/searchListViewTemplate.ts":
-/*!****************************************************************************************!*\
-  !*** ./src/templatemanager/templates/searchListViewTemplate/searchListViewTemplate.ts ***!
-  \****************************************************************************************/
+/***/ "./src/templatemanager/templates/finalResultsTemplate/finalResultsTemplate.ts":
+/*!************************************************************************************!*\
+  !*** ./src/templatemanager/templates/finalResultsTemplate/finalResultsTemplate.ts ***!
+  \************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _utils_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../utils/helpers */ "./src/utils/helpers.js");
-/* harmony import */ var _searchListViewTemplate_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./searchListViewTemplate.scss */ "./src/templatemanager/templates/searchListViewTemplate/searchListViewTemplate.scss");
+/* harmony import */ var _utils_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../utils/helpers */ "./src/utils/helpers.js");
+/* harmony import */ var _finalResultsTemplate_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./finalResultsTemplate.scss */ "./src/templatemanager/templates/finalResultsTemplate/finalResultsTemplate.scss");
+/* harmony import */ var _templateManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../templateManager */ "./src/templatemanager/templateManager.ts");
+/* harmony import */ var _templates_searchListViewTemplate_searchListViewTemplate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../templates/searchListViewTemplate/searchListViewTemplate */ "./src/templatemanager/templates/searchListViewTemplate/searchListViewTemplate.ts");
+/* harmony import */ var _templates_searchGridViewTemplate_searchGridViewTemplate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../templates/searchGridViewTemplate/searchGridViewTemplate */ "./src/templatemanager/templates/searchGridViewTemplate/searchGridViewTemplate.ts");
+/* harmony import */ var _templates_searchCarouselViewTemplate_searchCarouselViewTemplate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate */ "./src/templatemanager/templates/searchCarouselViewTemplate/searchCarouselViewTemplate.ts");
+/* harmony import */ var _templates_fullsearchResultsTemplate_fullsearchResultsTemplate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../templates/fullsearchResultsTemplate/fullsearchResultsTemplate */ "./src/templatemanager/templates/fullsearchResultsTemplate/fullsearchResultsTemplate.ts");
+/* harmony import */ var _templates_feedBackFormTemplate_feedBackFormTemplate__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../templates/feedBackFormTemplate/feedBackFormTemplate */ "./src/templatemanager/templates/feedBackFormTemplate/feedBackFormTemplate.ts");
+/* harmony import */ var _libs_korejquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../libs/korejquery */ "./src/libs/korejquery.js");
 
 
-var SearchListViewTemplate = /** @class */ (function () {
-    function SearchListViewTemplate() {
+
+
+
+
+
+
+
+var $ = _libs_korejquery__WEBPACK_IMPORTED_MODULE_1__["default"];
+var FinalResultsTemplate = /** @class */ (function () {
+    function FinalResultsTemplate() {
+        this.$ = $;
     }
-    SearchListViewTemplate.prototype.renderMessage = function (msgData) {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
+    FinalResultsTemplate.prototype.renderMessage = function (msgData) {
+        var _a, _b;
         var me = this;
         var $ = me.hostInstance.$;
-        me.helpersObj = _utils_helpers__WEBPACK_IMPORTED_MODULE_1__["default"] === null || _utils_helpers__WEBPACK_IMPORTED_MODULE_1__["default"] === void 0 ? void 0 : _utils_helpers__WEBPACK_IMPORTED_MODULE_1__["default"].helpers;
-        if ((msgData === null || msgData === void 0 ? void 0 : msgData.message[0]) && (msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) && ((_a = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _a === void 0 ? void 0 : _a.payload) && ((_c = (_b = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _b === void 0 ? void 0 : _b.payload) === null || _c === void 0 ? void 0 : _c.template_type) == 'searchListTemplate') {
-            if (!((_e = (_d = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _d === void 0 ? void 0 : _d.payload) === null || _e === void 0 ? void 0 : _e.helpers)) {
+        me.helpersObj = _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"] === null || _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"] === void 0 ? void 0 : _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"].helpers;
+        if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == 'finalResultsTemplate') {
+            if ((_b = (_a = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _a === void 0 ? void 0 : _a.payload) === null || _b === void 0 ? void 0 : _b.helpers) {
+                me.helpersObj = msgData.message[0].component.payload.helpers;
+            }
+            else {
                 msgData.message[0].component.payload['helpers'] = me.helpersObj;
             }
+            me.messageResultHtml = $(FinalResultsTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+            me.customTemplateObj = new _templateManager__WEBPACK_IMPORTED_MODULE_3__["default"](me);
+            me.listTemplateObj = new _templates_searchListViewTemplate_searchListViewTemplate__WEBPACK_IMPORTED_MODULE_4__["default"]();
+            me.gridTemplateObj = new _templates_searchGridViewTemplate_searchGridViewTemplate__WEBPACK_IMPORTED_MODULE_5__["default"]();
+            me.carouselTemplateObj = new _templates_searchCarouselViewTemplate_searchCarouselViewTemplate__WEBPACK_IMPORTED_MODULE_6__["default"]();
+            me.fullSearchTemplateObj = new _templates_fullsearchResultsTemplate_fullsearchResultsTemplate__WEBPACK_IMPORTED_MODULE_7__["default"]();
+            me.feedBackTemplateObj = new _templates_feedBackFormTemplate_feedBackFormTemplate__WEBPACK_IMPORTED_MODULE_8__["default"]();
+            FinalResultsTemplate.prototype.bindEvents(me, me.messageResultHtml, msgData);
+            return me.messageResultHtml;
+        }
+    };
+    FinalResultsTemplate.prototype.bindEvents = function (me, messageHtml, msgData) {
+        var _a;
+        var hostWindowInstance = me.hostInstance;
+        var $ = (_a = me === null || me === void 0 ? void 0 : me.hostInstance) === null || _a === void 0 ? void 0 : _a.$;
+        // if(msgData.message[0].component.payload.searchConfigurationCopy){
+        //   me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
+        // }
+        me.groupData = msgData.message[0].component.payload.groupData;
+        var container = '.search-data-container';
+        if (msgData.message[0].component.payload.searchType == 'isSearch') {
+            container = '.search-data-container';
+        }
+        else if (msgData.message[0].component.payload.searchType == 'isLiveSearch') {
+            container = '.live-search-data-container';
+        }
+        if (me.groupData && me.groupData.length) {
+            me.groupData.forEach(function (d) {
+                var showAllHTML;
+                if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+                    showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+                }
+                else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+                    showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+                }
+                else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+                    showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+                }
+                // var showAllHTML = me.customTemplateObj.renderMessage.bind(me.hostInstance,d);
+                $(messageHtml).find(container).append(showAllHTML);
+            });
+        }
+        $(messageHtml).off("click", ".show-all-results").on("click", ".show-all-results", function (e) {
             var isSearchSDK = document.body.className.match('sdk-body');
             if (isSearchSDK !== null) {
-                msgData.message[0].component.payload.isSearchSDK = true;
+                hostWindowInstance.seeAllBtnClickEvent(e);
             }
             else {
-                msgData.message[0].component.payload.isSearchSDK = false;
-            }
-            me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString((_g = (_f = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _f === void 0 ? void 0 : _f.payload) === null || _g === void 0 ? void 0 : _g.template_type)).tmpl((_h = msgData === null || msgData === void 0 ? void 0 : msgData.message[0].component) === null || _h === void 0 ? void 0 : _h.payload);
-            SearchListViewTemplate.prototype.bindEvents(me, me.messageListHtml);
-            return me.messageListHtml;
-        }
-    };
-    SearchListViewTemplate.prototype.bindEvents = function (me, messageHtml) {
-        var hostWindowInstance = me.hostInstance;
-        var $ = me.hostInstance.$;
-        var _innerText;
-        //if(me.hostInstance.hasOwnProperty('FindlySDK')){
-        if (!hostWindowInstance.vars || !hostWindowInstance.vars.customizeView) {
-            setTimeout(function () {
-                // $(".results-wrap").sortable({
-                //   items: "li:not(.ui-state-disabled)",
-                //   cancel: ".ui-state-disabled",
-                //   stop: function (event : any, ui: any) {
-                //     var element = ui.item[0];
-                //     if ($(element).find(".pinning").length) {
-                //       var pinningElement = $(element).find(".pinning")[0];
-                //       if (pinningElement) {
-                //         $(pinningElement).closest(".pinning").attr("type", "Pin");
-                //         $(pinningElement).trigger("click");
-                //       }
-                //     } else if ($(element).attr("manuallyadded") == "true") {
-                //       var pinIndex = 0;
-                //       var _selectedElement = ui.item[0];
-                //       var _parentElement = $(event.target).closest(".results-wrap");
-                //       var childNodes = Array.prototype.slice.call(
-                //         _parentElement[0].children
-                //       );
-                //       pinIndex = childNodes.indexOf(_selectedElement);
-                //       if (pinIndex >= 0) {
-                //           hostWindowInstance.performRankActionsOnFullPage(
-                //           ui.item,
-                //           { pinIndex: pinIndex },
-                //           hostWindowInstance.vars.searchObject.searchText,
-                //           "pinning",
-                //           true
-                //         );
-                //         //
-                //       }
-                //     }
-                //   },
-                // });
-            }, 200);
-        }
-        // Boost / Pin
-        $(".template-3-classic-list-collapse")
-            .off("click", ".click-here")
-            .on("click", ".click-here", function (event) {
-        });
-        $(".customization")
-            .off("click", ".visibility")
-            .on("click", ".visibility", function (event) {
-            // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
-            if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-                hostWindowInstance.performRankActionsOnFullPage(event, { visible: false }, hostWindowInstance.vars.searchObject.searchText, "visibility");
-            }
-            else {
-                hostWindowInstance.performRankActionsOnFullPage(event, { visible: true }, hostWindowInstance.vars.searchObject.searchText, "visibility");
-            }
-            // }
-        });
-        $(".customization")
-            .off("click", ".unpin_added_result")
-            .on("click", ".unpin_added_result", function (event) {
-            hostWindowInstance.performRankActionsOnFullPage(event, { pinIndex: -1 }, hostWindowInstance.vars.searchObject.searchText, "unpin_added_result");
-        });
-        $(".customization")
-            .off("click", ".pinning")
-            .on("click", ".pinning", function (event) {
-            if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-                var _selectedElement = $(event.target).closest(".structure-data-wrp");
-                var _parentElement = $(event.target).closest(".results-wrap");
-                var childNodes = Array.prototype.slice.call(_parentElement[0].children);
-                var pinIndex = 0;
-                if ($(event.target).closest(".pinning").attr("type") == "UnPin") {
-                    pinIndex = -1;
-                }
-                else {
-                    pinIndex = childNodes.indexOf(_selectedElement[0]);
-                }
-                hostWindowInstance.performRankActionsOnFullPage(event, { pinIndex: pinIndex }, hostWindowInstance.vars.searchObject.searchText, "pinning");
-            }
-        });
-        $(".customization")
-            .off("click", ".boosting")
-            .on("click", ".boosting", function (event) {
-            if ($(event.target).closest(".data-wrap").attr("visible") == "true" &&
-                parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1) {
-                var boostByValue = parseFloat($(event.target).closest(".data-wrap").attr("boost"));
-                boostByValue = boostByValue + 0.25;
-                var messageText = "customizationOnResults";
-                var option = null;
-                var serverMessageObject = null;
-                var clientMessageObject = {
-                    event: event,
-                    boost: boostByValue,
-                    searchText: hostWindowInstance.vars.searchObject.searchText,
-                    action: "boosting"
+                var modifyGroupData = msgData.message[0].component.payload.groupData;
+                modifyGroupData.forEach(function (d) {
+                    d.message[0].component.payload.isSearch = false;
+                    d.message[0].component.payload.isFullResults = true;
+                    d.message[0].component.payload.isSearchSDK = true;
+                    d.message[0].component.payload.maxSearchResultsAllowed = 10;
+                });
+                var fullSearchMsgData_1 = {
+                    message: [{
+                            component: {
+                                type: 'template',
+                                payload: {
+                                    template_type: "fullSearchResultsTemplate",
+                                    facets: [],
+                                    count: msgData.message[0].component.payload.totalSearchResults,
+                                    view: "preview",
+                                    isDev: msgData.message[0].component.payload.isDev,
+                                    isFilterEnabled: false,
+                                    devMode: msgData.message[0].component.payload.devMode,
+                                    viewType: msgData.message[0].component.payload.viewType,
+                                    facetPosition: 'left',
+                                    filterFacetData: [],
+                                    groupData: modifyGroupData,
+                                    displayFeedback: null,
+                                    feedbackData: null
+                                }
+                            }
+                        }]
                 };
-                /**  Emitting the Data to Host Instance */
-                hostWindowInstance.sendMessage(messageText, option, serverMessageObject, clientMessageObject);
-                // hostWindowInstance.performRankActionsOnFullPage(
-                //   event,
-                //   { boost: boostByValue },
-                //   hostWindowInstance.vars.searchObject.searchText,
-                //   "boosting"
-                // );
-            }
-        });
-        $(".customization")
-            .off("click", ".burying")
-            .on("click", ".burying", function (event) {
-            if ($(event.target).closest(".data-wrap").attr("visible") == "true" &&
-                parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1) {
-                var buryByValue = parseFloat($(event.target).closest(".data-wrap").attr("boost"));
-                if (buryByValue > 0.25) {
-                    buryByValue = buryByValue - 0.25;
-                    hostWindowInstance.performRankActionsOnFullPage(event, { boost: buryByValue }, hostWindowInstance.vars.searchObject.searchText, "burying");
-                }
-                else if (buryByValue != 0) {
-                    buryByValue = 0.25 - buryByValue;
-                    hostWindowInstance.performRankActionsOnFullPage(event, { boost: buryByValue }, hostWindowInstance.vars.searchObject.searchText, "burying");
-                }
-                else {
-                    buryByValue = 0;
-                    hostWindowInstance.performRankActionsOnFullPage(event, { boost: buryByValue }, hostWindowInstance.vars.searchObject.searchText, "burying");
-                }
-            }
-        });
-        $(".custom-add-result-container")
-            .off("click", ".link-text")
-            .on("click", ".link-text", function (event) {
-            var structure = "bottom";
-            if ($("body").hasClass("top-down")) {
-                structure = "top";
-                if ($("body").hasClass("top-down")
-                    ? $(".search-top-down").val()
-                    : $(".bottom-up-search").val()) {
-                    hostWindowInstance.vars.searchObject.searchText = $("body").hasClass("top-down")
-                        ? $(".search-top-down").val()
-                        : $(".bottom-up-search").val();
-                }
-            }
-            else {
-                structure = "bottom";
-            }
-            if (hostWindowInstance.vars.searchObject && hostWindowInstance.vars.searchObject.searchText) {
-                var responseObject = {
-                    type: "addNew",
-                    data: true,
-                    query: hostWindowInstance.vars.searchObject.searchText,
-                    structure: structure,
-                };
-                hostWindowInstance.parentEvent(responseObject);
-            }
-        });
-        //Tour RR
-        $(".sdk-tours-info-nxt")
-            .off("click")
-            .on("click", function (e) {
-            $(".sdk-tours-info-start").hide();
-            $(".sdk-tours-info-end").removeClass("hide");
-            $(".sdk-tours-info-end").show();
-        });
-        $(".sdk-tours-info-pre")
-            .off("click")
-            .on("click", function (e) {
-            $(".sdk-tours-info-start").show();
-            //$("sdk-tours-info-end").removeClass("hide");
-            $(".sdk-tours-info-end").hide();
-        });
-        $(".sdk-tours-info-close")
-            .off("click")
-            .on("click", function (e) {
-            $(".tours-information").hide();
-            hostWindowInstance.vars.customTourResultRank = false;
-        });
-        //Tour RR 
-        //}
-        //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
-        $(messageHtml)
-            .off("click", ".show-more-list")
-            .on("click", ".show-more-list", function (e) {
-            var showMoreData = {
-                groupName: $(e.currentTarget).attr("groupName"),
-                templateName: $(e.currentTarget).attr("templateName"),
-                pageNumber: Number($(e.currentTarget).attr("pageNumber")) + 1,
-                fieldName: $(e.currentTarget).attr("fieldName"),
-            };
-            hostWindowInstance.showMoreClick(showMoreData).then(function (result) {
-                var isSearchSDK = document.body.className.match('sdk-body');
-                if (result === null || result === void 0 ? void 0 : result.message[0].component.payload) {
-                    if (isSearchSDK !== null) {
-                        result.message[0].component.payload.isSearchSDK = true;
-                    }
-                    else {
-                        result.message[0].component.payload.isSearchSDK = false;
-                    }
-                }
-                var listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result === null || result === void 0 ? void 0 : result.message[0].component.payload.template_type)).tmpl(result === null || result === void 0 ? void 0 : result.message[0].component.payload);
-                $(listHTML).find(".show-more-list").remove();
-                $(".full-search-data-container [templateName=" +
-                    showMoreData.templateName +
-                    "]").before($(listHTML).find(".parent-list-template").children());
-                if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * 5 >= (result === null || result === void 0 ? void 0 : result.message[0].component.payload.doc_count)) {
-                    $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").hide();
-                }
-            });
-            $(e.currentTarget).attr("pageNumber", Number($(e.currentTarget).attr("pageNumber")) + 1);
-        });
-        //tasks click events//
-        $(messageHtml)
-            .off("click", ".search-task")
-            .on("click", ".search-task", function (event) {
-            event.stopPropagation();
-            var ele = $(event.target).closest(".search-task");
-            hostWindowInstance.botActionTrigger(event);
-        });
-        $(messageHtml).off("click", ".click-to-navigate-url").on("click", ".click-to-navigate-url", function (e) {
-            hostWindowInstance === null || hostWindowInstance === void 0 ? void 0 : hostWindowInstance.clickNavigateToUrl(e);
-        });
-        $(messageHtml).off("click", ".click-log-metrics").on("click", ".click-log-metrics", function (e) {
-            hostWindowInstance === null || hostWindowInstance === void 0 ? void 0 : hostWindowInstance.captureClickAnalytics(e, $(e.currentTarget).closest(".click-log-metrics").attr("contentType"), "click", $(e.currentTarget).closest(".click-log-metrics").attr("contentId"), $(e.currentTarget).closest(".click-log-metrics").attr("id"), $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
-        });
-        $(messageHtml)
-            .off("click", ".accordion")
-            .on("click", ".accordion", function (evet) {
-            $(evet.target).closest(".accordion").toggleClass("acc-active");
-            var panel = $(evet.target).closest(".accordion").next();
-            if ($(evet.target)
-                .closest(".accordion")
-                .children(".desc_text_info").length &&
-                $(evet.target)
-                    .closest(".accordion")
-                    .children(".desc_text_info")[0].scrollHeight == "18" &&
-                $(evet.target).closest(".accordion").hasClass("best-match") && !panel.find('.img_content').length) {
-                if ($(evet.target)
-                    .closest(".accordion").height() !== $(evet.target)
-                    .closest(".accordion").next().children('.inner-content-panel-data').height()) {
-                    $(evet.target)
-                        .closest(".accordion")
-                        .children(".desc_text_info")
-                        .hide();
-                    panel[0].style.dispaly = "block";
-                    if (!panel[0].classList.contains("carousel")) {
-                        panel[0].style.overflow = "initial";
-                    }
-                }
-                hostWindowInstance.captureClickAnalytics(evet, $(evet.currentTarget).closest(".accordion").attr("contenttype"), "click", $(evet.currentTarget).closest(".accordion").attr("contentId"), $(evet.currentTarget).closest(".accordion").attr("id"), $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text());
-                return;
-            }
-            if ($(evet.target)
-                .closest(".accordion")
-                .children(".desc_text_info").length &&
-                $(evet.target)
-                    .closest(".accordion")
-                    .children(".desc_text_info")[0].scrollHeight == "18" &&
-                !$(evet.target).closest(".accordion").hasClass("best-match") && !panel.find('.img_content').length) {
-                if ($(evet.target)
-                    .closest(".accordion").height() !== $(evet.target)
-                    .closest(".accordion").next().children('.inner-content-panel-data').height()) {
-                    $(evet.target)
-                        .closest(".accordion")
-                        .children(".desc_text_info")
-                        .show();
-                    $(evet.target)
-                        .closest(".accordion").next()
-                        .hide();
-                }
-                hostWindowInstance.captureClickAnalytics(evet, $(evet.currentTarget).closest(".accordion").attr("contenttype"), "click", $(evet.currentTarget).closest(".accordion").attr("contentId"), $(evet.currentTarget).closest(".accordion").attr("id"), $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text());
-                return;
-            }
-            //if($(evet.target).next().length){
-            if (panel.length && panel[0].style.maxHeight || $(evet.target).hasClass("best-match")) {
-                if (panel[0].style.maxHeight &&
-                    panel[0].style.maxHeight.toString().split("px")[0] == "18") {
-                    hostWindowInstance.captureClickAnalytics(evet, $(evet.currentTarget).closest(".accordion").attr("contenttype"), "click", $(evet.currentTarget).closest(".accordion").attr("contentId"), $(evet.currentTarget).closest(".accordion").attr("id"), $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text());
-                    return;
-                }
-                if ($(evet.target).hasClass("best-match")) {
-                    $(evet.target).removeClass("best-match");
-                }
-                panel[0].style.dispaly = "none";
-                panel[0].style.overflow = "hidden";
+                // let fullSearchHtml = me.fullSearchTemplateObj.renderMessage.bind(me, fullSearchMsgData);
+                // setTimeout(fullSearchHtml, 500)
                 setTimeout(function () {
-                    $(evet.target)
-                        .closest(".accordion")
-                        .children(".desc_text_info")
-                        .show();
-                    panel[0].style.maxHeight = null;
-                }, 150);
+                    $('body').find('.full-search-results-container').remove();
+                    $('body').append("<div class=\"full-search-results-container\"></div>");
+                    $('.full-search-results-container').append(me.fullSearchTemplateObj.renderMessage.bind(me, fullSearchMsgData_1));
+                }, 1000);
             }
-            else if (panel.length) {
-                if ($(evet.target)
-                    .closest(".accordion").height() !== $(evet.target)
-                    .closest(".accordion").next().children('.inner-content-panel-data').height()) {
-                    $(evet.target)
-                        .closest(".accordion")
-                        .children(".desc_text_info")
-                        .hide();
-                    panel[0].style.dispaly = "block";
-                    panel[0].style.maxHeight = panel[0].scrollHeight + "px";
-                    if (!panel[0].classList.contains("carousel")) {
-                        panel[0].style.overflow = "initial";
-                    }
-                }
-                hostWindowInstance.captureClickAnalytics(evet, $(evet.currentTarget).closest(".accordion").attr("contenttype"), "click", $(evet.currentTarget).closest(".accordion").attr("contentId"), $(evet.currentTarget).closest(".accordion").attr("id"), $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text());
-            }
-            // if ($(evet.target).hasClass("acc-active")) {
-            //   $(evet.target).next().hide();
-            //   hostWindowInstance.captureClickAnalytics(
-            //     evet,
-            //     $(evet.currentTarget).closest(".accordion").attr("contenttype"),
-            //     "click",
-            //     $(evet.currentTarget).closest(".accordion").attr("contentId"),
-            //     $(evet.currentTarget).closest(".accordion").attr("id"),
-            //     $(evet.currentTarget).closest(".accordion").attr("data-title") || $(evet.currentTarget).closest(".accordion").text()
-            //   );
-            //   // }
-            // } else {
-            //   $(evet.target).next().show();
-            // }
-            setTimeout(function () {
-                if ($(evet.target).closest("#searchChatContainer") &&
-                    $(".finalResults .resultsOfSearch .bottom-search-show-all-results").last().length) {
-                    if ($("#searchChatContainer").prop("offsetHeight") >=
-                        $(".finalResults .resultsOfSearch .bottom-search-show-all-results")
-                            .last()
-                            .position().top) {
-                        $(".more-results").css("display", "none");
-                        $('.feedback-template-positions.if-live-search-top-down.bottom-up-show-all').css('display', 'flex');
-                    }
-                }
-            }, 500);
         });
+        $(messageHtml).off("click", ".know-more-snippet").on("click", ".know-more-snippet", function (e) {
+            var url = $(e.target).attr("snippetURL");
+            window.open(url, '_blank', 'noopener');
+        });
+        FinalResultsTemplate.prototype.bindSnippetEvents(me, messageHtml);
+        FinalResultsTemplate.prototype.tooltipBindEvent(me);
     };
-    SearchListViewTemplate.prototype.getTemplateString = function (type) {
-        var searchListTemplates = '<script type="text/x-jqury-tmpl">\
-    {{if isButtonTemplate == false}}\
-    <div>\
-    {{if structuredData?.length }}\
-    {{if !isDemoTemplate}}\
-    {{if renderTitle}}\
-    <div class="title-list-heading">${titleName}</div>\
-    {{/if}}\
-    <div class="parent-list-template search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}-group{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
-        {{if isClickable == true}}\
-        {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-        <div class="content-info {{if isSearchSDK&&textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
-            {{if data.img.length}}\
-            <div class="img_block">\
-                <img src="${data.img}">\
-            </div>\
-            {{/if}}\
-            {{if data.heading.length}}\
-            <div class="heading-title" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-            {{/if}}\
-            {{if data.description.length}}\
-            <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-            {{/if}}\
-        </div>\
-        {{/each}}\
+    FinalResultsTemplate.prototype.getTemplateString = function (type) {
+        var finalResultsTemplate = '<script type="text/x-jqury-tmpl">\
+    <div class="final-results-container">\
+        {{if infoText && infoText.length}}\
+          <div class="messageBubble">\
+            <div class="messageBubble-content">\
+                <div class="botMessage">\
+                <span class="bot_Img">\
+                    <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg">\
+                </span>\
+                <span>{{html helpers.convertMDtoHTML(infoText)}}</span>\
+                </div>\
+          </div>\
+            <div class="sdk-results-customize-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/rangeslider.svg"><span class="tooltiptext-top sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize_results">Customize Results</span></div>\
+          </div>\
         {{/if}}\
-        {{if isClickable == false}}\
-        {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-        <div class="accordion-content-info">\
-            <div class="content-info accordion" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
-                {{if data.heading.length}}\
-                <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                {{/if}}\
-                {{if data.description.length}}\
-                <div class="desc_text_info {{if !data.heading || !data.heading.length}}two-line-desc{{else}}text-truncate{{/if}}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+        {{if snippetData && snippetData?.searchQuery}}\
+        {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
+          <div class="search-temp-one snippet-margin">\
+            <div class="top-header">\
+                <div class="top-header-with-img">\
+                    <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                    <div class="btn-chip">SUGGESTED ANSWER</div>\
+                </div>\
+                {{if snippetData && snippetData.source === "Answered by AI"}}\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
                 {{/if}}\
             </div>\
-            <div class="panel">\
-                <div class="inner-content-panel-data">\
-                {{if data.img.length}}\
-                    <div class="img_content">\
-                        <img src="${data.img}">\
+            {{if snippetData && snippetData.title}}<div class="paragraph-temp-header sa-sdk-title" data-title="${snippetData?.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>{{/if}}\
+            <div class="temp-data-desc">\
+            {{html snippetData?.answer}}\
+            </div>\
+            <div class="temp-read-link">\
+            <span class="desc-read-more">Read more</span> <span class="desc-read-less">Show Less</span>\
+            </div>\
+            {{if snippetData && snippetData.source !== "Answered by AI"}}\
+            <div class="snippet-source-block">\
+              <div class="snippet-source-file-name sa-sdk-title {{if !snippetData.source}} display-none{{/if}}" data-title="${snippetData.source}">{{html snippetData.source}}</div>\
+              <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name sa-sdk-title" data-title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
+            </div>\
+            {{/if}}\
+            <div class="temp-footer-block">\
+                <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
+                    {{if snippetData && snippetData.source === "Answered by AI"}}\
+                    <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                    {{/if}}\
+                    {{if snippetData.displayFeedback == true}}\
+                    <div class="temp-right">\
+                        <div class="is-it-usefull">Is it useful?</div>\
+                        <div class="temp-fotter-actions">\
+                            <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                            <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                        </div>\
                     </div>\
                     {{/if}}\
-                    <div class="desc-text-info-img">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                 </div>\
             </div>\
-        </div>\
-        {{/each}}\
-        {{/if}}\
-        {{if isSearchSDK}}\
-        <div class="show-more-data {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}} show-more-list" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
-           <div class="searchassist-show-more-button">Show more\
-           <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS4zNjQzNyA1LjE0OTQ5QzUuMTc0OTcgNS4zMzgzNyA0Ljg3NDgxIDUuMzQ5NDggNC42NzIzOSA1LjE4MjgyTDQuNjM1NjMgNS4xNDk0OUwwLjE1MDkyNyAwLjg3NzI2NUMtMC4wNTAzMDkxIDAuNjc2NTc5IC0wLjA1MDMwOTEgMC4zNTEyMDIgMC4xNTA5MjcgMC4xNTA1MTVDMC4zNDAzMjYgLTAuMDM4MzY2NCAwLjY0MDQ4IC0wLjA0OTQ3NzMgMC44NDI5MDkgMC4xMTcxODNMMC44Nzk2NjggMC4xNTA1MTVMNSA0LjA1OTI4TDkuMTIwMzMgMC4xNTA1MTVDOS4zMDk3MyAtMC4wMzgzNjY0IDkuNjA5ODggLTAuMDQ5NDc3MyA5LjgxMjMxIDAuMTE3MTgzTDkuODQ5MDcgMC4xNTA1MTVDMTAuMDM4NSAwLjMzOTM5NyAxMC4wNDk2IDAuNjM4NzMxIDkuODgyNSAwLjg0MDYwN0w5Ljg0OTA3IDAuODc3MjY1TDUuMzY0MzcgNS4xNDk0OVoiIGZpbGw9IiM1RjYzNjgiLz4KPC9zdmc+Cg==">\
-           </div>\
+            <!--<div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>-->\
         </div>\
         {{/if}}\
-    </div>\
-    {{/if}}\
-    </div>\
-    {{/if}}\
-    {{if isDemoTemplate == "serviceNowTemplate"}}\
-<div class="siemens-template">\
-<div class="title-text-heading {{if renderTitle}}display-block{{else}}display-none{{/if}}">${titleName}</div>\
-<div class="parent-list-template">\
-{{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-  <div class="siemens-list-template">\
-    <div class="icon-with-title">\
-    {{if data.icon}}\
-      <img src="${data.icon}" class="siemens-icon-blue">\
-    {{/if}}\
-      <span class="name-title">{{html helpers.convertMDtoHTML(data.heading)}}</span>\
-      <span class="redirecting-link click-to-navigate-url click-log-metrics isClickable" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
-        <img class="siemens-link-icon" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik01LjYzNTAyIDEyQzUuMzQ0ODcgMTIgNS4xMDk2NiAxMS43NjQ4IDUuMTA5NjYgMTEuNDc0NkM1LjEwOTY2IDExLjIwMDYgNS4zMTk0NyAxMC45NzU2IDUuNTg3MjEgMTAuOTUxNEw1LjYzNTAyIDEwLjk0OTNIMTAuMDE0N0MxMC41MTI0IDEwLjk0OTMgMTAuOTE5MyAxMC41NjAyIDEwLjk0NzcgMTAuMDY5NkwxMC45NDkzIDEwLjAxNDdWMS45ODUyN0MxMC45NDkzIDEuNDg3NTcgMTAuNTYwMiAxLjA4MDc0IDEwLjA2OTYgMS4wNTIzMUwxMC4wMTQ3IDEuMDUwNzNIMS45ODUyN0MxLjQ4NzU3IDEuMDUwNzMgMS4wODA3NCAxLjQzOTc4IDEuMDUyMzEgMS45MzAzNkwxLjA1MDczIDEuOTg1MjdWNi4zNjQ5OEMxLjA1MDczIDYuNjU1MTMgMC44MTU1MTMgNi44OTAzNCAwLjUyNTM2MyA2Ljg5MDM0QzAuMjUxMzMyIDYuODkwMzQgMC4wMjYzMDQxIDYuNjgwNTMgMC4wMDIxNDY3MiA2LjQxMjc5TDAgNi4zNjQ5OFYxLjk4NTI3QzAgMC45MTM3NTMgMC44NDg4OTEgMC4wNDA1MDg5IDEuOTEwODQgMC4wMDEzNjk0OEwxLjk4NTI3IDBIMTAuMDE0N0MxMS4wODYyIDAgMTEuOTU5NSAwLjg0ODg5MSAxMS45OTg2IDEuOTEwODRMMTIgMS45ODUyN1YxMC4wMTQ3QzEyIDExLjA4NjIgMTEuMTUxMSAxMS45NTk1IDEwLjA4OTIgMTEuOTk4NkwxMC4wMTQ3IDEySDUuNjM1MDJaIiBmaWxsPSIjQkRDMUM2Ii8+DQo8cGF0aCBkPSJNOC4wMDI5IDMuNjAzOThDOC4yNzY5MyAzLjYwMzk4IDguNTAxOTYgMy44MTM3OSA4LjUyNjEyIDQuMDgxNTNMOC41MjgyNiA0LjEyOTM0TDguNTI4MjYgNy4wNDkxNUM4LjUyODI2IDcuMzM5MyA4LjI5MzA1IDcuNTc0NTEgOC4wMDI5IDcuNTc0NTFDNy43Mjg4NyA3LjU3NDUxIDcuNTAzODQgNy4zNjQ3MSA3LjQ3OTY4IDcuMDk2OTdMNy40Nzc1NCA3LjA0OTE1TDcuNDc3MzMgNS40MDM5TDIuMzgwMzggMTAuNTAwOEMyLjE3NTIxIDEwLjcwNiAxLjg0MjU3IDEwLjcwNiAxLjYzNzQgMTAuNTAwOEMxLjQ0NDMgMTAuMzA3NyAxLjQzMjk0IDEwLjAwMTcgMS42MDMzMyA5Ljc5NTM1TDEuNjM3NCA5Ljc1Nzg3TDYuNzQwNzkgNC42NTQ0OUw1LjA4MzA5IDQuNjU0NzFDNC44MDkwNiA0LjY1NDcxIDQuNTg0MDMgNC40NDQ5IDQuNTU5ODggNC4xNzcxNkw0LjU1NzczIDQuMTI5MzRDNC41NTc3MyAzLjg1NTMxIDQuNzY3NTMgMy42MzAyOSA1LjAzNTI3IDMuNjA2MTNMNS4wODMwOSAzLjYwMzk4SDguMDAyOVoiIGZpbGw9IiNCREMxQzYiLz4NCjwvc3ZnPg0K">\
-      </span>\
-    </div>\
-    <div class="info-test-content four-line-description">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-    <div class="author-updates-sec">\
-      <div class="author-names">\
-        <span class="author-title">Author:</span>\
-        <span class="author_name">{{html helpers.convertMDtoHTML(data.scm_author)}}</span>\
-      </div>\
-      <div class="updates-on">\
-        <span class="title">Updated on:</span>\
-        <span class="time-updates">{{html helpers.convertMDtoHTML(data.scm_createdAt)}}</span>\
-      </div>\
-    </div>\
-    <div class="button-chips">\
-    {{each(key, chip) data.chips}}\
-    <button class="btn-chip" style="color:${chip.color};background:${chip.background};border:1px solid ${chip.color}">{{html helpers.convertMDtoHTML(chip.name)}}</button>\
-    {{/each}}\
-    </div>\
-    </div>\
-    {{/each}}\
-    {{if isSearchSDK}}\
-    <div class="show-more-data {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}} show-more-list" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
-    <div class="searchassist-show-more-button">Show more\
-    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS4zNjQzNyA1LjE0OTQ5QzUuMTc0OTcgNS4zMzgzNyA0Ljg3NDgxIDUuMzQ5NDggNC42NzIzOSA1LjE4MjgyTDQuNjM1NjMgNS4xNDk0OUwwLjE1MDkyNyAwLjg3NzI2NUMtMC4wNTAzMDkxIDAuNjc2NTc5IC0wLjA1MDMwOTEgMC4zNTEyMDIgMC4xNTA5MjcgMC4xNTA1MTVDMC4zNDAzMjYgLTAuMDM4MzY2NCAwLjY0MDQ4IC0wLjA0OTQ3NzMgMC44NDI5MDkgMC4xMTcxODNMMC44Nzk2NjggMC4xNTA1MTVMNSA0LjA1OTI4TDkuMTIwMzMgMC4xNTA1MTVDOS4zMDk3MyAtMC4wMzgzNjY0IDkuNjA5ODggLTAuMDQ5NDc3MyA5LjgxMjMxIDAuMTE3MTgzTDkuODQ5MDcgMC4xNTA1MTVDMTAuMDM4NSAwLjMzOTM5NyAxMC4wNDk2IDAuNjM4NzMxIDkuODgyNSAwLjg0MDYwN0w5Ljg0OTA3IDAuODc3MjY1TDUuMzY0MzcgNS4xNDk0OVoiIGZpbGw9IiM1RjYzNjgiLz4KPC9zdmc+Cg==">\
-    </div>\
- </div>\
-        {{/if}}\
-     </div>\
-    </div>\
-    {{/if}}\
-    {{if isDemoTemplate == "cosmeticsTemplate"}}\
-    <div class="cosmetics-grid-template2">\
-                <div class="arrivals-grids-template">\
-                {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-                  <div class="slide-gride cosmetics-product-view" style="width:100%">\
-                    <div class="inner-content-data">\
-                      <div class="img-block">\
-                        <img class="banner-img" src="${data.ecommerce_image}">\
-                      </div>\
-                      <div class="content-block">\
-                        <div class="type-tag {{if data.ecommerce_bestseller == true}} display-inline-block{{else}}display-none{{/if}}">Best Seller</div>\
-                        <div class="type-tag offer">${data.ecommerce_percentage_offer}</div>\
-                        <div class="title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
-                        <div class="text-desc">{{html helpers.convertMDtoHTML(data.description)}}</div>\
-                        <div class="price-and-rating">\
-                        <div>\
-                        <div class="amount-info">${data.ecommerce_price}</div>\
-                        <div class="amount-info strike-text">${data.ecommerce_original_price}</div>\
-                        </div>\
-                        <div class="rating-flex">{{each(key, review) data.ecommerce_ratingArr}}\{{if review == "fill"}}\
-                        <div class="rating-star-pd"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxMCAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAuMzUwMjc4IDMuNTI0TDMuMzk1ODkgMy4xOTMwNkw0LjYzOTgyIDAuMjM5OTE0QzQuNzc0NTYgLTAuMDc5OTcxNCA1LjIyNzg1IC0wLjA3OTk3MTQgNS4zNjI1OSAwLjIzOTkxNEw2LjYwNjUyIDMuMTkzMDZMOS42NDk3NiAzLjUyNEM5Ljk4MjMgMy41NjAxNiAxMC4xMTk4IDMuOTY5MzMgOS44NzY1NyA0LjE5ODk3TDcuNTg2ODcgNi4zNjA4TDguMjMxNzkgOS41MzAyNkM4LjMwMDA0IDkuODY1NjkgNy45MzU4NSAxMC4xMjE0IDcuNjQzNTIgOS45NDMzNUw1LjAwMTIxIDguMzMzNzRMMi4zNTYzNiA5Ljk0MzQ0QzIuMDYzOSAxMC4xMjE0IDEuNjk5NzcgOS44NjU0NCAxLjc2ODI4IDkuNTNMMi40MTU1NSA2LjM2MDhMMC4xMjM1ODIgNC4xOTkxMUMtMC4xMTk4NDQgMy45Njk1MyAwLjAxNzYyMDkgMy41NjAxNCAwLjM1MDI3OCAzLjUyNFoiIGZpbGw9IiNGNUIyNEQiLz4KPC9zdmc+Cg==" /></div>\
-                        {{else}}\
-                        <div class="rating-star-pd"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuMzYyNTkgMC4yMzk5MjNDNS4yMjc4MiAtMC4wNzk5NDAzIDQuNzc0NDggLTAuMDc5OTg3MiA0LjYzOTY3IDAuMjM5ODU5QzQuMTUzNjkgMS4zOTI5MyAzLjM5NTc2IDMuMTkyNzEgMy4zOTU3NiAzLjE5MjcxTDAuMzUwNjAxIDMuNTIzNTJDMC4wMTc2Mzc5IDMuNTU5NjkgLTAuMTE5OTU0IDMuOTY5MzUgMC4xMjM2OTYgNC4xOTkxTDIuNDE1MzMgNi4zNTk5N0wxLjc2ODE2IDkuNTI3OTZDMS42OTk1OSA5Ljg2MzYzIDIuMDY0MDUgMTAuMTE5OCAyLjM1Njc4IDkuOTQxNjhMNS4wMDEyIDguMzMyNjJMNy42NDMwOSA5Ljk0MTU5QzcuOTM1NyAxMC4xMTk4IDguMzAwMjIgOS44NjM4OCA4LjIzMTkgOS41MjgyMkw3LjU4NzA4IDYuMzU5OTdMOS44NzY0NSA0LjE5ODk2QzEwLjExOTkgMy45NjkxNiA5Ljk4MjI4IDMuNTU5NzEgOS42NDk0MyAzLjUyMzUyTDYuNjA2NjUgMy4xOTI3MUw1LjM2MjU5IDAuMjM5OTIzWk01LjAwMTIgMS40MDA3OEw2LjA2NDM1IDMuOTIxNzNMOC43MjM3NiA0LjIwOTY2TDYuNzMyMjcgNi4wOTA0Mkw3LjI4Mzc2IDguODA0MzRMNS4wMDEyIDcuNDEzNjhMMi43MTU1OSA4LjgwNDM0TDMuMjcwMTQgNi4wOTA0MkwxLjI4MTcxIDQuMjA5NjZMMy45MzgwNiAzLjkyMTczTDUuMDAxMiAxLjQwMDc4WiIgZmlsbD0iI0Y1QjI0RCIvPgo8L3N2Zz4K" /></div>\
-                        {{/if}}\
-                        {{/each}}\</div>\
-                        </div>\
-                      </div>\
-                    </div>\
-                  </div>\
-                {{/each}}\
-                </div>\
-                </div>\
-    {{/if}}\
-    {{if isDemoTemplate == "bankingTemplate"}}\
-    <div class="banking-demo-list">\
-              <div class="banking-list-template">\
-                <div class="title-heading-banking {{if data.subtitle}}display-block{{else}}display-none{{/if}}">${data.subtitle}</div>\
-                <div class="banking-carousel-template-data">\
-                  <div class="carousel bankCarouselId${key+1}">\
-                      <div class="slide">\
-                        <div class="inner-content-list">\
-                          <div class="img-block-with-text">\
-                              <div class="img-block">\
-                                  <img src="">\
-                              </div>\
-                              <div class="text-content">\
-                                  <div class="main-heading text-truncate">Luxor Hotel & Casino</div>\
-                                  <div class="stars">\
-                                    <span>4.5</span>\
-                                    <img src="images/banking/star-fill.svg">\
-                                    <img src="images/banking/star-fill.svg">\
-                                    <img src="images/banking/star-fill.svg">\
-                                    <img src="images/banking/star-fill.svg">\
-                                    <img src="images/banking/star-unfil.svg">\
-                                  </div>\
-                                  <div class="info-content two-line-description">Significant reduce time and costs with the U.S Bank purchasing card, a fast, flexible purchasing tool, which offers you an.</div>\
-                              </div>\
-                          </div>\
-                          <div class="chips-data">\
-                            <div class="chip-name">25% off</div>\
-                            <div class="chip-name">Complimentary meals</div>\
-                            <div class="chip-name">No chargeable Reschedule</div>\
-                            <div class="chip-name">3x Reward points</div>\
-                          </div>\
-                        </div>\
-                    </div>\
-                </div>\
-              </div>\
-              </div>\
+        {{if snippetData.template_type =="list_element_snippet" || snippetData.template_type =="headings_snippet"}}\
+    <div class="search-temp-one list-snippet-temp snippet-margin">\
+        <div class="top-header">\
+            <div class="top-header-with-img">\
+                <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                <div class="btn-chip">SUGGESTED ANSWER</div>\
             </div>\
+            {{if snippetData && snippetData.source === "Answered by AI"}}\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+            {{/if}}\
+        </div>\
+        <div class="list-temp-block">\
+            <div class="list-temp-header sa-sdk-title" data-title="${snippetData.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
+                <ol type="1" class="list-temp-ul">\
+                {{each(key, answer) snippetData.answer}}\
+                    <li class="list-temp-li">{{html answer}}</li>\
+                    {{/each}}\
+                </ol>\
+                {{if snippetData.answer.length > 4}}\
+                <span class="desc-read-more display-block"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Read more</span> <span class="desc-read-less  display-none"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Show Less</span>\
+                {{/if}}\
+        </div>\
+        {{if snippetData && snippetData.source !== "Answered by AI"}}\
+          <div class="snippet-source-block">\
+            <div class="snippet-source-file-name sa-sdk-title  {{if !snippetData.source}} display-none {{/if}}" data-title="${snippetData.source}">{{html snippetData?.source}}</div>\
+            <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none {{/if}}"><span class="snippet-source-url-name">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/> </div></a>\
+          </div>\
+        {{/if}}\
+        <div class="temp-footer-block">\
+            <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
+                {{if snippetData && snippetData.source === "Answered by AI"}}\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                {{/if}}\
+                {{if snippetData.displayFeedback == true}}\
+                <div class="temp-right">\
+                    <div class="is-it-usefull">Is it useful?</div>\
+                    <div class="temp-fotter-actions">\
+                        <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                        <img  class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                    </div>\
+                </div>\
+                {{/if}}\
+            </div>\
+        </div>\
+        <!--<div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>-->\
+    </div>\
     {{/if}}\
     {{/if}}\
-    {{if isButtonTemplate}}\
-    {{if structuredData?.length}}\
-        {{if devMode == true && viewType == "Customize" && selectedFacet == appearanceType}}\
-          <div class="bot-actions-customize-info ">\
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFnSURBVHgBpVNNSsNQEH4zabXLuFXEHsGCqLjQ9gTqCWJP0AsUk0j26tJdegLrCczKnyL0CDbgAbKzhvjGmZBIfIQScODxHt/8fzNPqRXSOfS6clbZgAm09sZ9tCxHkToDULZgRCphyykC+MsXb1G1x78ZfRfRumfDGBF6X68+yJG3YET0uLZ/6dZWIM5E+gIABmaWaksShE+Yzq783wClwnRmvK91ZqezYFoNojXNtf4+z96CKG9BE3F2mpiZAWgXsWVXMbHhlm5znoSzHGXCELFnlvz57N+oegm59DnfQyjKfxeyTCsmzJOb+/VM3fqBS2C1u6j+KSg9yZw7R8FOU6diuZLl0zguKqAHnaVD1VjAIaXyyeQBmMCQRzgy15bxhRwzu+yLbGUeqqLwmEyn4SJNSmKtUpl9RFF7e7DBymtr68Tmd8xYUjri5vGIuQq53bvqVKAui9aaDeC05jPJskWqqTT5zj8FOrqqP5/xLgAAAABJRU5ErkJggg==" alt="actions-info">\
-            <span class="info-text">Bot Actions cannot be customized</span>\
-          </div>\
+      <div class="finalResults {{if snippetData && snippetData?.searchQuery}}snippet-margin{{/if}}">\
+        {{if taskPrefix === "SUGGESTED"}}\
+        <span class="live-search-close-icon show-all-results">See All Results</span>\
         {{/if}}\
-        {{if selectedFacet !== appearanceType && selectedFacet == "all results"}}\
-          <div class="heading-and-show-all" appearanceType="task">\
-            <div class="text-heading-main">ACTIONS</div>\
-            <div class="show-al-text show-all-blue display-none">Show all Actions</div>\
-          </div>\
-        {{/if}}\
-        {{if selectedFacet == appearanceType || selectedFacet == "all results"}}\
-          <div class="new-grid-search-data list-view-data-search">\
-            {{each(key, task) structuredData}}\
-              <div class="title-box-data">\
-                  <div id="${key}" class="search-task search-grid-item text-truncate one-line-height" title="${task.name}" contentId="${task.taskId}" contentType="${task.contentType}" childBotId="${task.childBotId}" childBotName="${task.childBotName}" payload="${task.payload}" seqLogId="${task.seqLogId}">\
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJ1BMVEUAAAAAVaoEbq4DbK8GbK4Gbq8Gba0Fba8Fba4Fbq4Eba4Fba7////SVqJwAAAAC3RSTlMAA0hJVYKDqKmq4875bAAAAAABYktHRAyBs1FjAAAAP0lEQVQI12NgwACMJi5A4CzAwLobDBIYOCaAxDknMLCvnAkEsyYwcECkkBicMDV4GGwQxQEMjCogK5wEMC0HALyTIMofpWLWAAAAAElFTkSuQmCC" class="credit-card display-none">\
-                  <div class="name-title">${task.titleText}</div>\
-                  {{if task.childBotName !=="" && task.childBotName !== undefined}}\
-                      <span class="child-bot">${task.childBotName}</span>\
-                  {{/if}}\
-                  </div>\
-              </div>\
-            {{/each}}\
-          </div>\
-        {{/if}}\
-        {{/if}}\
-        {{/if}}\
-    </script>';
-        if (type === 'searchListTemplate') {
-            return searchListTemplates;
+        <div class="resultsOfSearch">\
+            {{if taskPrefix !== "SUGGESTED"}}\
+                <div class="search-data-container"></div>\
+            {{/if}}\
+            {{if taskPrefix === "SUGGESTED"}}\
+                <div class="live-search-data-container"></div>\
+            {{/if}}\
+            <!--{{if noResults}} <span class="text-center">No results found</span> {{/if}}-->\
+            {{if showAllResults && !customSearchResult}}\
+                {{if taskPrefix !== "SUGGESTED"}}\
+                    <div class="bottom-search-show-all-results">\
+                        <span class="pointer show-all-results" >See all <span class="search-results-count">(${totalSearchResults} results)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
+                    </div>\
+                {{/if}}\
+            {{/if}}\
+        </div>\
+        </div>\
+    </div>\
+</script>';
+        if (type === 'finalResultsTemplate') {
+            return finalResultsTemplate;
         }
     };
-    return SearchListViewTemplate;
+    FinalResultsTemplate.prototype.botActionTrigger = function (event) {
+        var me = this;
+        me.hostInstance.botActionTrigger(event);
+    };
+    ;
+    FinalResultsTemplate.prototype.bindSnippetEvents = function (me, messageHtml) {
+        var $ = me.hostInstance.$;
+        var hostInstance = me.hostInstance;
+        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event) {
+            if (!$(event.currentTarget).closest('.snippet-like-img').hasClass('active')) {
+                hostInstance.updateFeedBackResult('thumbsUp', hostInstance.searchQuery, 'smartAnswer');
+                $(messageHtml).find('.snippet-feedback').removeClass('active');
+                $(event.currentTarget).addClass('active');
+            }
+        });
+        $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event) {
+            if (!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')) {
+                FinalResultsTemplate.prototype.appendFeedBaackData(me, messageHtml, 'smartAnswer');
+                $(messageHtml).find('.snippet-feedback').removeClass('active');
+                $(event.currentTarget).addClass('active');
+            }
+        });
+        if (messageHtml && $(messageHtml).find('.search-temp-one').find('.temp-data-desc').length) {
+            setTimeout(function () {
+                if ($(messageHtml).find('.search-temp-one').last().find('.temp-data-desc').length && $(messageHtml).find('.search-temp-one').last().find('.temp-data-desc')[0].scrollHeight > 160) {
+                    $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').show();
+                    $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
+                }
+                else {
+                    $(messageHtml).find('.search-temp-one').last().find('.desc-read-more').hide();
+                    $(messageHtml).find('.search-temp-one').last().find('.desc-read-less').hide();
+                }
+                $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+                    $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp', 'initial');
+                    $(event.currentTarget).hide();
+                    $(event.currentTarget).parent().find('.desc-read-less').show();
+                });
+                $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+                    $(event.currentTarget).parent().parent().find('.temp-data-desc').css('-webkit-line-clamp', '8');
+                    $(event.currentTarget).parent().find('.desc-read-more').show();
+                    $(event.currentTarget).hide();
+                });
+            }, 300);
+        }
+        else if (messageHtml && $(messageHtml).find('.search-temp-one').find('.list-temp-ul').length) {
+            $(messageHtml).find('.search-temp-one').off('click', '.desc-read-more').on('click', '.desc-read-more', function (event) {
+                $(messageHtml).find('.list-temp-ul').addClass('show-all-list');
+                $(messageHtml).find('.desc-read-more').removeClass('display-block').addClass('display-none');
+                $(messageHtml).find('.desc-read-less').removeClass('display-none').addClass('display-block');
+            });
+            $(messageHtml).find('.search-temp-one').off('click', '.desc-read-less').on('click', '.desc-read-less', function (event) {
+                $(messageHtml).find('.list-temp-ul').removeClass('show-all-list');
+                $(messageHtml).find('.desc-read-less').removeClass('display-block').addClass('display-none');
+                $(messageHtml).find('.desc-read-more').removeClass('display-none').addClass('display-block');
+            });
+        }
+    };
+    FinalResultsTemplate.prototype.appendFeedBaackData = function (me, messageHtml, feedBackType) {
+        var _a;
+        var hostWindowInstance = me.hostInstance;
+        var $ = me.hostInstance.$;
+        var feedbackMsgData = {
+            message: [{
+                    component: {
+                        type: 'template',
+                        payload: {
+                            template_type: "feedbackFormTemplate",
+                            query: ((_a = hostWindowInstance === null || hostWindowInstance === void 0 ? void 0 : hostWindowInstance.vars) === null || _a === void 0 ? void 0 : _a.searchObject.searchText) || '',
+                            feedBackType: feedBackType
+                        }
+                    }
+                }]
+        };
+        $('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
+    };
+    FinalResultsTemplate.prototype.tooltipBindEvent = function (me) {
+        var $ = me.hostInstance.$;
+        $('.sa-sdk-title').off('mouseover').on('mouseover', function (e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            $(e.currentTarget).before('<div class="sdk-tooltip-container">' + $(e.currentTarget).attr('data-title') + '<span class="sa-tooltip-arrow"></span></div>');
+            $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top', ($(e.currentTarget).position().top - ($(e.currentTarget).parent().find('.sdk-tooltip-container').height() + 25)) + 'px');
+        });
+        $('.sa-sdk-title').off('mouseout').on('mouseout', function (e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
+        });
+    };
+    return FinalResultsTemplate;
 }());
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SearchListViewTemplate);
+FinalResultsTemplate.prototype.$ = $;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FinalResultsTemplate);
 
 
 /***/ })
@@ -595,7 +374,7 @@ var SearchListViewTemplate = /** @class */ (function () {
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("f256b67987669619a978")
+/******/ 	__webpack_require__.h = () => ("782bee26688036384282")
 /******/ })();
 /******/ 
 /******/ }

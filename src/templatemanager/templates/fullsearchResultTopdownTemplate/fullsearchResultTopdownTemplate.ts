@@ -3,7 +3,10 @@ import './fullsearchResultTopdownTemplate.scss';
 import searchListViewTemplate from '../../templates/searchListViewTemplate/searchListViewTemplate';
 import searchGridViewTemplate from '../../templates/searchGridViewTemplate/searchGridViewTemplate';
 import searchCarouselViewTemplate from '../../templates/searchCarouselViewTemplate/searchCarouselViewTemplate';
+import SnippetListTemplate from '../../templates/snippetListTemplate/snippetListTemplate';
+import SnippetParagraphTemplate from '../../templates/snippetParagraphTemplate/snippetParagraphTemplate';
 import korejquery from "../../../libs/korejquery";
+import FeedBackFormTemplate from '../feedBackFormTemplate/feedBackFormTemplate';
 const $ = korejquery;
 class FullSearchResultTopdownTemplate {
 
@@ -16,10 +19,13 @@ class FullSearchResultTopdownTemplate {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
       me.messageFullResultHtml = $(FullSearchResultTopdownTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
+      me.snippetListTemplateObj = new SnippetListTemplate();
+      me.snippetParagraphTemplateObj = new SnippetParagraphTemplate();
       FullSearchResultTopdownTemplate.prototype.bindEvents(me, me.messageFullResultHtml, msgData);
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
       me.carouselTemplateObj = new searchCarouselViewTemplate();
+      me.feedBackTemplateObj = new FeedBackFormTemplate();
       return me.messageFullResultHtml;
     }
   }
@@ -27,7 +33,7 @@ class FullSearchResultTopdownTemplate {
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
 
-    me.searchConfigurationCopy = msgData.message[0].component.payload.searchConfigurationCopy;
+    me.searchConfigurationCopy = msgData.message[0].component.payload;
     let formatedTemplatesData: any = msgData.message[0].component.payload.groupData;
     setTimeout(() => {
       $(messageHtml).find('.full-search-data-container').empty();
@@ -44,10 +50,10 @@ class FullSearchResultTopdownTemplate {
           $(messageHtml).find('.full-search-data-container').append(showAllHTML);
         })
       }
-      var resultsContainerHtml = $(".all-product-details");
+      var resultsContainerHtml = $(".full-results-data-container");
       hostWindowInstance.bindPerfectScroll(
         resultsContainerHtml,
-        ".content-data-sec",
+        ".all-product-details",
         null,
         "y",
         "resultsContainer"
@@ -59,7 +65,18 @@ class FullSearchResultTopdownTemplate {
           $(".empty-full-results-container").addClass("hide");
         }
       }
-      if(msgData.message[0].component.payload.displayFeedback){
+      $(messageHtml).find('.scroll-top-container').css('display', 'none');
+      $(messageHtml).find(".all-product-details").off('scroll').on('scroll', function () {
+          if ($(messageHtml).find('.all-product-details').scrollTop() > 50) {
+            $(messageHtml).find('.scroll-top-container').css('display', 'flex');
+          } else {
+            $(messageHtml).find('.scroll-top-container').css('display', 'none');
+          }
+        });
+        $(messageHtml).find(".title-scroll-top").off('click').on('click', function () {
+          $(messageHtml).find(".all-product-details").scrollTop(0);
+        });
+      if(msgData.message[0].component.payload.displayFeedback.queryLevel){
         FullSearchResultTopdownTemplate.prototype.feedBackResultEvents(me, messageHtml);
         }
     }, 300);
@@ -79,6 +96,13 @@ class FullSearchResultTopdownTemplate {
       FullSearchResultTopdownTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml,msgData.message[0].component.payload.sortableFacetList)
     }
     FullSearchResultTopdownTemplate.prototype.bindBackToSearchClickEvent(me,messageHtml);
+
+    FullSearchResultTopdownTemplate.prototype.bindCustomizePreviewClickEvent(me,messageHtml);
+    FullSearchResultTopdownTemplate.prototype.bindQueryAnalyticsClickEvent(me,messageHtml);
+    
+    if(msgData?.message[0].component?.payload?.snippetData?.searchQuery){
+      FullSearchResultTopdownTemplate.prototype.appendSnippetData(me,messageHtml,msgData);
+    }
   }
   getTemplateString(type: any) {
 
@@ -89,7 +113,7 @@ class FullSearchResultTopdownTemplate {
                             <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuNzA3MDMgNS4wMDAwOUw5Ljg1MzU1IDAuODUzNTUzQzEwLjA0ODggMC42NTgyOTEgMTAuMDQ4OCAwLjM0MTcwOSA5Ljg1MzU1IDAuMTQ2NDQ3QzkuNjU4MjkgLTAuMDQ4ODE1NyA5LjM0MTcxIC0wLjA0ODgxNTQgOS4xNDY0NSAwLjE0NjQ0N0w0Ljk5OTkxIDQuMjkzTDAuODUzNTU1IDAuMTQ2ODE0QzAuNjU4Mjg4IC0wLjA0ODQ0NDQgMC4zNDE3MDYgLTAuMDQ4NDM4IDAuMTQ2NDQ4IDAuMTQ2ODI4Qy0wLjA0ODgxMDQgMC4zNDIwOTQgLTAuMDQ4ODA0IDAuNjU4Njc3IDAuMTQ2NDYyIDAuODUzOTM1TDQuMjkyOCA1LjAwMDFMMC4xNDY0NDcgOS4xNDY0NkMtMC4wNDg4MTU3IDkuMzQxNzMgLTAuMDQ4ODE1NSA5LjY1ODMxIDAuMTQ2NDQ3IDkuODUzNTdDMC4zNDE3MDkgMTAuMDQ4OCAwLjY1ODI5MiAxMC4wNDg4IDAuODUzNTUzIDkuODUzNTdMNC45OTk5MiA1LjcwNzJMOS4xNDY0NiA5Ljg1MzU3QzkuMzQxNzMgMTAuMDQ4OCA5LjY1ODMxIDEwLjA0ODggOS44NTM1NyA5Ljg1MzU1QzEwLjA0ODggOS42NTgyOSAxMC4wNDg4IDkuMzQxNzEgOS44NTM1NSA5LjE0NjQ1TDUuNzA3MDMgNS4wMDAwOVoiIGZpbGw9IiMyMDIxMjQiLz4KPC9zdmc+Cg=="/>\
                         </div>\
                         <div id="filters-left-sec"></div>\
-                        {{if displayFeedback == true}}\
+                        {{if displayFeedback.queryLevel == true}}\
                           <div class="feedback-template-positions feedback-top-down-full">\
                           <span class="helpfull-title">Was this helpful?</span>\
                           <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjgwNTcgNy41ODMzM0MxMy44MDU3IDcuMTMzIDEzLjYzMzQgNi43MjcgMTMuMzU3OCA2LjQxNjY3QzEzLjYzMzQgNi4xMDYzMyAxMy44MDU3IDUuNzAwMzMgMTMuODA1NyA1LjI1QzEzLjgwNTcgNC4yODUxNyAxMy4wMzI4IDMuNSAxMi4wODMxIDMuNUg3LjU0ODIxTDcuOTY5NjYgMi4yNEM4LjA5ODI4IDEuNzkwODMgOC4wNDc3NSAxLjMxODMzIDcuODI2MTEgMC45MDg4MzVDNy42MDQ0OCAwLjQ5OTMzNSA3LjIzOTMgMC4yMDA2NjggNi43OTgzMyAwLjA3MDAwMTFDNS45ODg3MyAtMC4xNjQ0OTkgNS4xNzEwOSAwLjE5MTMzNSA0LjU3ODU0IDEuMTJMMi40NTk4IDQuNjY2NjdIMFYxNEgyLjcyNzM3VjEzLjk3MDhDMi43NzMzIDEzLjk4MzcgMi44MTkyNCAxNCAyLjg3MDkxIDE0SDEwLjkzNDdDMTEuODg0NCAxNCAxMi42NTczIDEzLjIxNDggMTIuNjU3MyAxMi4yNUMxMi42NTczIDExLjk4NjMgMTIuNTk1MyAxMS43MzkgMTIuNDkxOSAxMS41MTM4QzEzLjA5NDggMTEuMjQwOCAxMy41MTg2IDEwLjYyOTUgMTMuNTE4NiA5LjkxNjY3QzEzLjUxODYgOS41Mzk4MyAxMy4zOTggOS4xOTIxNyAxMy4xOTgyIDguOTA2MzNDMTMuNTY2OCA4LjU4NTUgMTMuODA1NyA4LjExNDE3IDEzLjgwNTcgNy41ODMzM1pNMS4xNDgzNyA1LjgzMzMzSDIuMjk2NzNWMTIuODMzM0gxLjE0ODM3VjUuODMzMzNaTTEwLjkzNDcgMTIuODMzM0gzLjQ0NTFWNS4yNjc1TDUuNTUxMiAxLjc0MTgzQzUuOTE3NTMgMS4xNjY2NyA2LjIwNjkyIDEuMTY2NjcgNi4zMTYwMSAxLjE2NjY3QzYuMzY5OTkgMS4xNjY2NyA2LjQyNTExIDEuMTc0ODMgNi40Nzc5MyAxLjE5MTE3QzYuNzgxMSAxLjI3OTgzIDYuOTU2OCAxLjYwNDE3IDYuODc1MjcgMS44OUw2LjIwMzQ3IDMuODk2NjdDNi4xNDI2MSA0LjA3MjgzIDYuMTcxMzIgNC4yNyA2LjI3OTI3IDQuNDIyODNDNi4zODcyMSA0LjU3NTY3IDYuNTYwNjEgNC42NjY2NyA2Ljc0NjY1IDQuNjY2NjdIMTIuMDgzMUMxMi40MDAxIDQuNjY2NjcgMTIuNjU3MyA0LjkyOTE3IDEyLjY1NzMgNS4yNUMxMi42NTczIDUuNTcwODMgMTIuNDAwMSA1LjgzMzMzIDEyLjA4MzEgNS44MzMzM0gxMC4zNjA2VjdIMTIuMDgzMUMxMi40MDAxIDcgMTIuNjU3MyA3LjI2MjUgMTIuNjU3MyA3LjU4MzMzQzEyLjY1NzMgNy45MDQxNyAxMi40MDAxIDguMTY2NjcgMTIuMDgzMSA4LjE2NjY3SDEwLjM2MDZWOS4zMzMzM0gxMS43OTZDMTIuMTEzIDkuMzMzMzMgMTIuMzcwMiA5LjU5NTgzIDEyLjM3MDIgOS45MTY2N0MxMi4zNzAyIDEwLjIzNzUgMTIuMTEzIDEwLjUgMTEuNzk2IDEwLjVIMTAuMzYwNlYxMS42NjY3SDEwLjkzNDdDMTEuMjUxNyAxMS42NjY3IDExLjUwODkgMTEuOTI5MiAxMS41MDg5IDEyLjI1QzExLjUwODkgMTIuNTcwOCAxMS4yNTE3IDEyLjgzMzMgMTAuOTM0NyAxMi44MzMzWiIgZmlsbD0iIzlBQTBBNiIvPgo8L3N2Zz4K" class="thumb-up thumb-up-full-top thumbs-up-top-down-black" alt="thumb-up"/>\
@@ -97,19 +121,26 @@ class FullSearchResultTopdownTemplate {
                           <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNSAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTExLjkxNDcgMEMxMS45NjU2IDAgMTIuMDE1MSAwLjAwNjUzMzgxIDEyLjA2MjIgMC4wMTg4MDk0TDEyLjA2MDUgMEgxNC44MzEzVjkuMzMzMzNIMTIuMzMxMkwxMC4xNjk5IDEyLjg5NDJDOS43MDY2NiAxMy42MDgxIDkuMTI5NDMgMTQgOC40MTQ2NiAxNEM4LjI1MDcxIDE0IDguMDg1MiAxMy45NzY2IDcuOTI1MjMgMTMuOTMwMkM3LjA1MjE3IDEzLjY3NjUgNi41Mjg5NSAxMi44MDAzIDYuNzAxNzYgMTEuOTAzN0w2Ljc0MjQgMTEuNzM1NUw3LjE2MTY2IDEwLjVIMi41NTU2NkMxLjY0NjMzIDEwLjUgMC44OTg1MTEgOS44MDU2NyAwLjgxMzY3OCA4LjkxODQ4TDAuODA1NjY0IDguNzVDMC44MDU2NjQgOC4zMDEzNCAwLjk3NDY4NyA3Ljg5MjAxIDEuMjUyNSA3LjU4MjIyQzAuOTc0Mjc2IDcuMjczNjYgMC44MDU2NjQgNi44NjQ3OCAwLjgwNTY2NCA2LjQxNjY3QzAuODA1NjY0IDUuODg1NDkgMS4wNDI1OCA1LjQwOTQzIDEuNDE2NDYgNS4wODg0M0MxLjIxNTQxIDQuODA1ODYgMS4wOTczMyA0LjQ1ODMzIDEuMDk3MzMgNC4wODMzM0MxLjA5NzMzIDMuMzcwNjYgMS41MjM4MSAyLjc1NzIgMi4xMzUzNyAyLjQ4NDM0QzIuMDMwNCAyLjI2MjQzIDEuOTcyMzMgMi4wMTI5NyAxLjk3MjMzIDEuNzVDMS45NzIzMyAwLjg0MDY2NyAyLjY2NjY2IDAuMDkyODQ2NyAzLjU1Mzg1IDAuMDA4MDE0MjVMMy43MjIzMyAwSDExLjkxNDdaTTQuMzMxMzMgN1Y4LjE2NjY3SDIuNTU1NjZDMi4yMzM4MyA4LjE2NjY3IDEuOTcyMzMgOC40MjgxNyAxLjk3MjMzIDguNzVDMS45NzIzMyA5LjAzNjA3IDIuMTc4OTUgOS4yNzQ0OCAyLjQ1MDkgOS4zMjM5MkwyLjU1NTY2IDkuMzMzMzNINy45NzcxNkM4LjM0MzUxIDkuMzMzMzMgOC42MTA0MSA5LjY2MzM5IDguNTUzMjMgMTAuMDA5OEw4LjUyOTQzIDEwLjEwNDVMNy44NTQ4MyAxMi4wODYxQzcuNzY0ODMgMTIuMzk1OCA3Ljk0MjU4IDEyLjcyMDMgOC4yNTA2NCAxMi44MDk4QzguMzA0NDUgMTIuODI1NCA4LjM2MDQzIDEyLjgzMzMgOC40MTQ2NiAxMi44MzMzQzguNjUwMiAxMi44MzMzIDguODY0MDYgMTIuNzA4MSA5LjA4NjA5IDEyLjQxMTdMOS4xODE4MyAxMi4yNzRMMTEuMzMxMyA4LjczMTMzVjEuMTY2NjdIMy43MjIzM0MzLjQzNjI2IDEuMTY2NjcgMy4xOTc4NSAxLjM3MzI4IDMuMTQ4NDEgMS42NDUyM0wzLjEzOSAxLjc1QzMuMTM5IDIuMDM2MDcgMy4zNDU2MSAyLjI3NDQ4IDMuNjE3NTYgMi4zMjM5MkwzLjcyMjMzIDIuMzMzMzNINC4zMzEzM1YzLjVIMi44NDczM0MyLjUyNTUgMy41IDIuMjY0IDMuNzYxNSAyLjI2NCA0LjA4MzMzQzIuMjY0IDQuMzY5NDEgMi40NzA2MSA0LjYwNzgxIDIuNzQyNTYgNC42NTcyNkwyLjg0NzMzIDQuNjY2NjdINC4zMzEzM1Y1LjgzMzMzSDIuNTU1NjZDMi4yMzM4MyA1LjgzMzMzIDEuOTcyMzMgNi4wOTQ4MyAxLjk3MjMzIDYuNDE2NjdDMS45NzIzMyA2LjcwMjc0IDIuMTc4OTUgNi45NDExNCAyLjQ1MDkgNi45OTA1OUwyLjU1NTY2IDdINC4zMzEzM1pNMTIuNDk4IDguMTY2NjdIMTMuNjY0N1YxLjE2NjY3SDEyLjQ5OFY4LjE2NjY3WiIgZmlsbD0iIzlBQTBBNiIvPgo8L3N2Zz4K" class="thumb-down thumb-up-full-top thumbs-down-top-down-black" alt="thumb-down"/>\
                           <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNSAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTExLjkxNDcgMEMxMS45NjU2IDAgMTIuMDE1MSAwLjAwNjUzMzgxIDEyLjA2MjIgMC4wMTg4MDk0TDEyLjA2MDUgMEgxNC44MzEzVjkuMzMzMzNIMTIuMzMxMkwxMC4xNjk5IDEyLjg5NDJDOS43MDY2NiAxMy42MDgxIDkuMTI5NDMgMTQgOC40MTQ2NiAxNEM4LjI1MDcxIDE0IDguMDg1MiAxMy45NzY2IDcuOTI1MjMgMTMuOTMwMkM3LjA1MjE3IDEzLjY3NjUgNi41Mjg5NSAxMi44MDAzIDYuNzAxNzYgMTEuOTAzN0w2Ljc0MjQgMTEuNzM1NUw3LjE2MTY2IDEwLjVIMi41NTU2NkMxLjY0NjMzIDEwLjUgMC44OTg1MTEgOS44MDU2NyAwLjgxMzY3OCA4LjkxODQ4TDAuODA1NjY0IDguNzVDMC44MDU2NjQgOC4zMDEzNCAwLjk3NDY4NyA3Ljg5MjAxIDEuMjUyNSA3LjU4MjIyQzAuOTc0Mjc2IDcuMjczNjYgMC44MDU2NjQgNi44NjQ3OCAwLjgwNTY2NCA2LjQxNjY3QzAuODA1NjY0IDUuODg1NDkgMS4wNDI1OCA1LjQwOTQzIDEuNDE2NDYgNS4wODg0M0MxLjIxNTQxIDQuODA1ODYgMS4wOTczMyA0LjQ1ODMzIDEuMDk3MzMgNC4wODMzM0MxLjA5NzMzIDMuMzcwNjYgMS41MjM4MSAyLjc1NzIgMi4xMzUzNyAyLjQ4NDM0QzIuMDMwNCAyLjI2MjQzIDEuOTcyMzMgMi4wMTI5NyAxLjk3MjMzIDEuNzVDMS45NzIzMyAwLjg0MDY2NyAyLjY2NjY2IDAuMDkyODQ2NyAzLjU1Mzg1IDAuMDA4MDE0MjVMMy43MjIzMyAwSDExLjkxNDdaTTQuMzMxMzMgN1Y4LjE2NjY3SDIuNTU1NjZDMi4yMzM4MyA4LjE2NjY3IDEuOTcyMzMgOC40MjgxNyAxLjk3MjMzIDguNzVDMS45NzIzMyA5LjAzNjA3IDIuMTc4OTUgOS4yNzQ0OCAyLjQ1MDkgOS4zMjM5MkwyLjU1NTY2IDkuMzMzMzNINy45NzcxNkM4LjM0MzUxIDkuMzMzMzMgOC42MTA0MSA5LjY2MzM5IDguNTUzMjMgMTAuMDA5OEw4LjUyOTQzIDEwLjEwNDVMNy44NTQ4MyAxMi4wODYxQzcuNzY0ODMgMTIuMzk1OCA3Ljk0MjU4IDEyLjcyMDMgOC4yNTA2NCAxMi44MDk4QzguMzA0NDUgMTIuODI1NCA4LjM2MDQzIDEyLjgzMzMgOC40MTQ2NiAxMi44MzMzQzguNjUwMiAxMi44MzMzIDguODY0MDYgMTIuNzA4MSA5LjA4NjA5IDEyLjQxMTdMOS4xODE4MyAxMi4yNzRMMTEuMzMxMyA4LjczMTMzVjEuMTY2NjdIMy43MjIzM0MzLjQzNjI2IDEuMTY2NjcgMy4xOTc4NSAxLjM3MzI4IDMuMTQ4NDEgMS42NDUyM0wzLjEzOSAxLjc1QzMuMTM5IDIuMDM2MDcgMy4zNDU2MSAyLjI3NDQ4IDMuNjE3NTYgMi4zMjM5MkwzLjcyMjMzIDIuMzMzMzNINC4zMzEzM1YzLjVIMi44NDczM0MyLjUyNTUgMy41IDIuMjY0IDMuNzYxNSAyLjI2NCA0LjA4MzMzQzIuMjY0IDQuMzY5NDEgMi40NzA2MSA0LjYwNzgxIDIuNzQyNTYgNC42NTcyNkwyLjg0NzMzIDQuNjY2NjdINC4zMzEzM1Y1LjgzMzMzSDIuNTU1NjZDMi4yMzM4MyA1LjgzMzMzIDEuOTcyMzMgNi4wOTQ4MyAxLjk3MjMzIDYuNDE2NjdDMS45NzIzMyA2LjcwMjc0IDIuMTc4OTUgNi45NDExNCAyLjQ1MDkgNi45OTA1OUwyLjU1NTY2IDdINC4zMzEzM1pNMTIuNDk4IDguMTY2NjdIMTMuNjY0N1YxLjE2NjY3SDEyLjQ5OFY4LjE2NjY3WiIgZmlsbD0iI0REMzY0NiIvPgo8L3N2Zz4K" class="thumb-down thumb-up-full-top thumbs-up-top-down-red" alt="thumb-down"/>\
                           </div>\
+                          <div id="query-feedback"></div>\
                           {{/if}}\
                         <div class="all-product-details ">\
-                            <div class="show_insights_top_down" data-displayInsights="true">\
+                        <div id="snippet-demo-template"></div>\
+                            <div class="total-search-results-block">\
+                            <div class="tsrb-header-sec">\
+                              <div class="tsrb-header-tabs"><div id="top-down-tab-sec"></div>\</div>\
+                              <div class="tsrb-right-filters">\
+                                  <div id="sa-sdk-sortable-dropdown"></div>\
+                                  <div class="show_insights_top_down" data-displayInsights="true">\
                                 <span class="query_analytics_top_down"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAD4SURBVHgBlVDbTcNAEJzZjQSfoQOX4A6gA8QvEtgkgMwX7iDQQfgz4nVUEKUCTAd0QNIBfxFSfMsdERGgRIpXOq1uZ0Y7s8SGlednqakMuBosu7E7N/xYkkVH9M0BV5Gt8/kC7xMQtTd7FchlJDt39yaHQf1bYDp7Imz8/Hi7Q/KGlPSHHHEe9wsX1ux6w7WETsHU3VdXa6KACxtF4hWlRN8PVYm2lZ8We/H9nx/1zss/oWMeFU3DMPnOA0zUo3aumsR/1ivemfUvRmxmJ9bZGjRzjlWRmWG6uAASUTgD9zsmw7k1dbBt4UrbXRjTtR7NlpigZbUWfAEi/12gzLS2XQAAAABJRU5ErkJggg==">Query Analytics</span>\
+                                </div>\
+                                  <div class="custom-header-container-center top-down-customize-btns">\
+                                  <ul class="custom-header-nav">\
+                                    <li id="viewTypePreview" class="custom-header-nav-link-item {{if viewType == "Preview"}}nav-link-item-active {{/if}}"><a class="custom-header-nav-link">Preview</a></li>\
+                                    <li id="viewTypeCustomize" class="custom-header-nav-link-item {{if viewType == "Customize"}}nav-link-item-active {{/if}}"><a class="custom-header-nav-link">Customize</a></li>\
+                                 </ul>\
+                                  </div>\
+                              </div>\
                             </div>\
-                            <div class="custom-header-container-center top-down-customize-btns display-none">\
-                                <ul class="custom-header-nav">\
-                                    <li id="viewTypePreview" class="custom-header-nav-link-item nav-link-item-active"><a class="custom-header-nav-link">Preview</a></li>\
-                                    <li id="viewTypeCustomize" class="custom-header-nav-link-item"><a class="custom-header-nav-link">Customize</a></li>\
-                                </ul>\
-                            </div>\
-                            <div id="top-down-tab-sec"></div>\
-                            <div id="sa-sdk-sortable-dropdown"></div>\
                             <div id="filters-center-sec" > </div>\
                             <div class="filters-added-data display-none" id="show-filters-added-data"></div>\
                             <div class="content-data-sec">\
@@ -127,7 +158,7 @@ class FullSearchResultTopdownTemplate {
                                 <div class="title-info">Please try searching with another term</div>\
                             </div>\
                             <div class="full-search-data-container"></div>\
-                            <div class="custom-add-result-container display-none">\
+                            <div class="custom-add-result-container1 display-none">\
                                 <div class="custom-add-new-result-content">\
                                     <div class="bold-text">Not finding the result?</div>\
                                     <div class="link-text"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABrSURBVHgBzVHBCYAwEMuV/lRwBDdykoojuIoTiBs5Qt8KjVZfLdeHD8FAyJEQOO4ABZXbx0gts5opIi0KMHiJ7wvSuLBcmu4s7G6lbHnBgmGGZAWa/hnCmvrw0FAPxxSpZT+8kvppkr5UOAH/GRicle7qIwAAAABJRU5ErkJggg==">Add from repository</div>\
@@ -325,6 +356,7 @@ class FullSearchResultTopdownTemplate {
         event.stopPropagation();
         event.stopImmediatePropagation();
         hostWindowInstance.topdownFacetCheckBoxClick(event).then((response: any) => {
+          $(".all-product-details").scrollTop(0);
           if (!response.isFilterAlignedTop) {
             let selectedFacet = $(messageHtml).find(".tab-name.facet.active-tab").attr('id');
             if (selectedFacet !== 'task' && selectedFacet !== 'all results') {
@@ -354,6 +386,7 @@ class FullSearchResultTopdownTemplate {
         event.stopPropagation();
         event.stopImmediatePropagation();
         hostWindowInstance.topdownFacetRadioClick(event).then((response: any) => {
+          $(".all-product-details").scrollTop(0);
           if (response.isFilterAlignedTop) {
             FullSearchResultTopdownTemplate.prototype.applyFiltersFun(me, messageHtml);
           } else {
@@ -383,8 +416,15 @@ class FullSearchResultTopdownTemplate {
     $(messageHtml)
       .off("click", ".filters-reset-anchor")
       .on("click", ".filters-reset-anchor", function (event: any) {
+        if (!$(event.target).hasClass('enabled')) {
+          return;
+        }
+        $(".all-product-details").scrollTop(0);
         $(".sdk-filter-checkbox-top-down").prop("checked", false);
         $(".sdk-filter-radio-top-down").prop("checked", false);
+        if($('.filters-reset-anchor').hasClass('enabled')){
+          $('.filters-reset-anchor').removeClass('enabled');
+        }
         hostWindowInstance.clearAllFilterTopdownEvent(event).then((res: any) => {
           let tabsHtml = $(FullSearchResultTopdownTemplate.prototype.getTopDownFacetsTabs()).tmpl({
             facets: res.facets,
@@ -810,21 +850,106 @@ class FullSearchResultTopdownTemplate {
     const text = $('.search-top-down').val();
     if (type === 'thumbsUp') {
     $('.thumbs-up-top-down-black').hide();
+    if(!$('.thumbs-up-top-down-blue').is(":visible")){
+      hostWindowInstance.updateFeedBackResult(type, text,'query');
+      }
     $('.thumbs-up-top-down-blue').show();
     $('.thumbs-down-top-down-black').show();
     $('.thumbs-up-top-down-red').hide();
     }
     else if (type === 'thumbsDown') {
     $('.thumbs-down-top-down-black').hide();
+    if(!$('.thumbs-up-top-down-red').is(":visible") ){
+    let feedbackMsgData = {
+      message: [{
+        component: {
+          type: 'template',
+          payload: {
+            template_type: "feedbackFormTemplate",
+            query: hostWindowInstance?.vars?.searchObject.searchText || '',
+            feedBackType:'query'
+          }
+        }
+      }]
+    };
+    $(messageHtml).find('#query-feedback').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
+    }
     $('.thumbs-up-top-down-red').show();
     $('.thumbs-up-top-down-black').show();
     $('.thumbs-up-top-down-blue').hide();
     }
-    hostWindowInstance.updateFeedBackResult(type, text);
     });
     $('.thumbs-up-top-down-blue, .thumbs-up-top-down-red').hide();
     $('.thumbs-up-top-down-black,.thumbs-down-top-down-black').show();
     }
+
+  bindCustomizePreviewClickEvent(me: any, messageHtml: any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml).find(".custom-header-nav-link-item")
+  .off("click").on("click", function (e:any) {
+    hostWindowInstance.customizePreviewBtnClick(e,true).then((result: any) => {
+      let formatedTemplatesData: any = result;
+      var selectedFacet =$(messageHtml).find(".tab-name.capital.facet.active-tab").closest('.facet').attr("id");
+      setTimeout(() => {
+        $(messageHtml).find('.full-search-data-container').empty();
+        if (formatedTemplatesData && formatedTemplatesData.length) {
+          formatedTemplatesData.forEach((d: any) => {
+            var showAllHTML;
+            d.message[0].component.payload['selectedFacet'] = selectedFacet;
+            if (d.message[0].component.payload.template_type == 'searchListTemplate') {
+              showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
+            } else if (d.message[0].component.payload.template_type == 'searchGridTemplate') {
+              showAllHTML = me.gridTemplateObj.renderMessage.bind(me, d);
+            } else if (d.message[0].component.payload.template_type == 'searchCarouselTemplate') {
+              showAllHTML = me.carouselTemplateObj.renderMessage.bind(me, d);
+            }
+            $(messageHtml).find('.full-search-data-container').append(showAllHTML);
+          })
+        }
+
+        if (!$(".full-search-data-container").children().length) {
+          $(".empty-full-results-container").removeClass("hide");
+        } else {
+          if (!$(".empty-full-results-container").hasClass("hide")) {
+            $(".empty-full-results-container").addClass("hide");
+          }
+        }
+      }, 300);
+    })
+  })
+  }
+  bindQueryAnalyticsClickEvent(me: any, messageHtml: any){
+    let hostWindowInstance = me.hostInstance;
+    let $ = me.hostInstance.$;
+    $(messageHtml).find(".show_insights_top_down")
+      .off("click", ".query_analytics_top_down")
+      .on("click", ".query_analytics_top_down", function (event:any,messageHtml:any) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        hostWindowInstance.queryAnalyticsClickEvent(event);
+      });
+  }
+ appendSnippetData(me: any, messageHtml: any, msgData:any){
+  let snippetMsgData = {
+    message: [{
+      component: {
+        type: 'template',
+        payload: {
+          template_type: msgData.message[0].component.payload.snippetData.template_type,
+          helpers: msgData.message[0].component.payload.helpers,
+          snippetData: msgData.message[0].component.payload.snippetData,
+          feedbackDisplay:msgData.message[0].component.payload.displayFeedback.smartAnswer
+        }
+      }
+    }]
+  };
+  if(['paragraph_snippet','answer_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
+    $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetParagraphTemplateObj.renderMessage.bind(me, snippetMsgData));
+  }else{
+    $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetListTemplateObj.renderMessage.bind(me, snippetMsgData));
+  }
+ }
 }
 var truncateText = FullSearchResultTopdownTemplate.prototype.truncateText;
 export default FullSearchResultTopdownTemplate;

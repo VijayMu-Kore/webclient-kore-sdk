@@ -382,6 +382,7 @@
     .show-more-data{
         margin: 10px 0 5px 0;
     }
+   
     .text-truncate{
         overflow: hidden;
         text-overflow: ellipsis;
@@ -389,7 +390,11 @@
         max-height: 18px;
     }
 }
-
+.total-structured-data-wrap.customization{
+    .show-more-list{
+        cursor: pointer;
+    }
+}
 // Classic List Accordion
 .search-list-template-clickble-classic{
     display: inline-block;
@@ -1439,3 +1444,23 @@
     font-weight: 400;
   }
 
+.sdk-tooltip-container {
+    color: #fff;
+    background: #000000;
+    position: absolute;
+    padding: 8px;
+    top: -32px;
+    font-size: 10px;
+    font-weight: normal;
+    z-index: 99999;
+    border-radius: 8px;
+    .sa-tooltip-arrow{
+        background: #000000;
+        position: absolute;
+        padding: 6px;
+        left: 50%;
+        bottom: -5px;
+        z-index: 99999;
+        transform: rotate(45deg) !important;
+    }
+}

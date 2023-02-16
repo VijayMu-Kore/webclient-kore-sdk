@@ -121,7 +121,7 @@ FindlySDK.prototype.applicationToSDK = function (event) {
     }*/
 FindlySDK.prototype.customTourResultRank = function (val) {
   //this.config.findlyBusinessConfig.initVariables = this.initVariables();
-  _self = this;
+  var _self = this;
   _self.vars.customTourResultRank = val;
 };
 FindlySDK.prototype.addPolyFils = function () {
@@ -401,83 +401,83 @@ FindlySDK.prototype.fetchUserLocation = function() {
   navigator.geolocation.getCurrentPosition(successCallback);
   };
   
-FindlySDK.prototype.show = function (dataConfig, sel) {
-  var _self = this;
-  var initialWidgetData = _self.vars.initialWidgetData;
-  _self.config.container = sel || {}; //#TODO :need to remove below line on prod
+// FindlySDK.prototype.show = function (dataConfig, sel) {
+//   var _self = this;
+//   var initialWidgetData = _self.vars.initialWidgetData;
+//   _self.config.container = sel || {}; //#TODO :need to remove below line on prod
 
-  window.koreWidgetSDKInstance = _self;
+//   window.koreWidgetSDKInstance = _self;
 
-  //var currentTimezone = _self.vars.timezone.name();
+//   //var currentTimezone = _self.vars.timezone.name();
 
-  var latitude = _self.vars.latitude;
-  var longitude = _self.vars.longitude;
-  var config = _self.config;
+//   var latitude = _self.vars.latitude;
+//   var longitude = _self.vars.longitude;
+//   var config = _self.config;
 
-  _self
-    .getServerDataGen(
-      "/widgetsdk/" +
-      config.botOptions.botInfo._id +
-      "/panels?resolveWidgets=true&from=" +
-      config.botOptions.userIdentity,
-      "get"
-    )
-    .done(function (response) {
-      //_self.getServerDataGen("/searchassistapi/ka/users/:userId/panels?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function (response) {
-      // getServerData("/searchassistapi/ka/users/:userId/widgets?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function(response){
-      initialWidgetData.panels = response;
-      var panelData = [];
+//   _self
+//     .getServerDataGen(
+//       "/widgetsdk/" +
+//       config.botOptions.botInfo._id +
+//       "/panels?resolveWidgets=true&from=" +
+//       config.botOptions.userIdentity,
+//       "get"
+//     )
+//     .done(function (response) {
+//       //_self.getServerDataGen("/searchassistapi/ka/users/:userId/panels?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function (response) {
+//       // getServerData("/searchassistapi/ka/users/:userId/widgets?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function(response){
+//       initialWidgetData.panels = response;
+//       var panelData = [];
 
-      for (var i = 0; i < initialWidgetData.panels.length; i++) {
-        //todo: deviation :adding "id" from "_id"
-        if (
-          initialWidgetData.panels[i].widgets &&
-          initialWidgetData.panels[i].widgets.length
-        ) {
-          initialWidgetData.panels[i].widgets.forEach(function (widget) {
-            if (!widget.id) {
-              widget.id = widget._id;
-            }
-          });
-        } //todo: deviation :added fallback icon for panels
+//       for (var i = 0; i < initialWidgetData.panels.length; i++) {
+//         //todo: deviation :adding "id" from "_id"
+//         if (
+//           initialWidgetData.panels[i].widgets &&
+//           initialWidgetData.panels[i].widgets.length
+//         ) {
+//           initialWidgetData.panels[i].widgets.forEach(function (widget) {
+//             if (!widget.id) {
+//               widget.id = widget._id;
+//             }
+//           });
+//         } //todo: deviation :added fallback icon for panels
 
-        panelData.push(initialWidgetData.panels[i]);
-      }
-      var dataHTML = $(_self.getTemplate("menu")).tmplProxy({
-        panelData: panelData,
-        helpers: helpers,
-        baseUrl: baseUrl,
-        botDetails: _self.config.botOptions.botInfo,
-      });
-      _self.bindTemplateEvents(dataHTML, "menu", panelData);
-      if ($(_self.config.container.menu).find(".menuItemCntr").length > 0) {
-        $(_self.config.container.menu).find(".menuItemCntr").remove();
-      }
+//         panelData.push(initialWidgetData.panels[i]);
+//       }
+//       var dataHTML = $(_self.getTemplate("menu")).tmplProxy({
+//         panelData: panelData,
+//         helpers: helpers,
+//         baseUrl: baseUrl,
+//         botDetails: _self.config.botOptions.botInfo,
+//       });
+//       _self.bindTemplateEvents(dataHTML, "menu", panelData);
+//       if ($(_self.config.container.menu).find(".menuItemCntr").length > 0) {
+//         $(_self.config.container.menu).find(".menuItemCntr").remove();
+//       }
 
-      $(_self.config.container.menu).addClass("kr-wiz-menu-css");
-      $(_self.config.container.menu).addClass("defaultTheme-kore");
-      $(_self.config.container.menu).append(dataHTML);
+//       $(_self.config.container.menu).addClass("kr-wiz-menu-css");
+//       $(_self.config.container.menu).addClass("defaultTheme-kore");
+//       $(_self.config.container.menu).append(dataHTML);
 
-      if (KRPerfectScrollbar) {
-        if (!_self.vars.menuPSObj) {
-          _self.vars.menuPSObj = new KRPerfectScrollbar(
-            $(_self.config.container.menu).find(".menuItemBox").get(0),
-            {
-              suppressScrollX: true,
-            }
-          );
-        } else {
-          _self.vars.menuPSObj.update();
-        }
-      }
+//       if (KRPerfectScrollbar) {
+//         if (!_self.vars.menuPSObj) {
+//           _self.vars.menuPSObj = new KRPerfectScrollbar(
+//             $(_self.config.container.menu).find(".menuItemBox").get(0),
+//             {
+//               suppressScrollX: true,
+//             }
+//           );
+//         } else {
+//           _self.vars.menuPSObj.update();
+//         }
+//       }
 
-      _self.maintainCache();
+//       _self.maintainCache();
 
-      setTimeout(function () {
-        _self.triggerEvent("onPanelsLoaded");
-      }, 100);
-    });
-};
+//       setTimeout(function () {
+//         _self.triggerEvent("onPanelsLoaded");
+//       }, 100);
+//     });
+// };
 
 FindlySDK.prototype.setAPIDetails = function () {
   var _self = this;
@@ -515,15 +515,17 @@ FindlySDK.prototype.setAPIDetails = function () {
   var baseAPIServer = _self.config.botOptions.koreAPIUrl;
   //var baseAPIServer = 'https://pilot.searchassist.ai'; // For XHR calls in PILOT
 
-  if (_self.isDev) {
+  if (_self.config.isDev || _self.isDev) {
     baseAPIServer =
       window.appConfig.API_SERVER_URL + "/searchassistapi/businessapp/";
   }
 
-  if (_self.baseAPIServer) {
+  if (_self.baseAPIServer && !window?.appConfig?.API_SERVER_URL) {
     baseAPIServer = _self.baseAPIServer;
   }
   var baseUrl = baseAPIServer;
+   baseAPIServer = baseAPIServer.replace('/searchassistapi/searchassistapi','/searchassistapi');
+
   var searchAPIURL = baseAPIServer + "searchsdk/stream/";
   var liveSearchAPIURL = baseAPIServer + "searchsdk/stream/";
   var businessTooBaseURL = baseAPIServer + "findly/";
@@ -1510,6 +1512,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               <div class="actions-link">Context</div>\
               </div>\
             <div class="parent-data-scroll">\
+            {{if searchConfig.feedbackExperience.queryLevel == true}}\
             <div class="feedback-template-positions if-live-search-top-down bottom-up-show-all">\
               <span class="helpfull-title">Was this helpful?</span>\
               <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjgwNTcgNy41ODMzM0MxMy44MDU3IDcuMTMzIDEzLjYzMzQgNi43MjcgMTMuMzU3OCA2LjQxNjY3QzEzLjYzMzQgNi4xMDYzMyAxMy44MDU3IDUuNzAwMzMgMTMuODA1NyA1LjI1QzEzLjgwNTcgNC4yODUxNyAxMy4wMzI4IDMuNSAxMi4wODMxIDMuNUg3LjU0ODIxTDcuOTY5NjYgMi4yNEM4LjA5ODI4IDEuNzkwODMgOC4wNDc3NSAxLjMxODMzIDcuODI2MTEgMC45MDg4MzVDNy42MDQ0OCAwLjQ5OTMzNSA3LjIzOTMgMC4yMDA2NjggNi43OTgzMyAwLjA3MDAwMTFDNS45ODg3MyAtMC4xNjQ0OTkgNS4xNzEwOSAwLjE5MTMzNSA0LjU3ODU0IDEuMTJMMi40NTk4IDQuNjY2NjdIMFYxNEgyLjcyNzM3VjEzLjk3MDhDMi43NzMzIDEzLjk4MzcgMi44MTkyNCAxNCAyLjg3MDkxIDE0SDEwLjkzNDdDMTEuODg0NCAxNCAxMi42NTczIDEzLjIxNDggMTIuNjU3MyAxMi4yNUMxMi42NTczIDExLjk4NjMgMTIuNTk1MyAxMS43MzkgMTIuNDkxOSAxMS41MTM4QzEzLjA5NDggMTEuMjQwOCAxMy41MTg2IDEwLjYyOTUgMTMuNTE4NiA5LjkxNjY3QzEzLjUxODYgOS41Mzk4MyAxMy4zOTggOS4xOTIxNyAxMy4xOTgyIDguOTA2MzNDMTMuNTY2OCA4LjU4NTUgMTMuODA1NyA4LjExNDE3IDEzLjgwNTcgNy41ODMzM1pNMS4xNDgzNyA1LjgzMzMzSDIuMjk2NzNWMTIuODMzM0gxLjE0ODM3VjUuODMzMzNaTTEwLjkzNDcgMTIuODMzM0gzLjQ0NTFWNS4yNjc1TDUuNTUxMiAxLjc0MTgzQzUuOTE3NTMgMS4xNjY2NyA2LjIwNjkyIDEuMTY2NjcgNi4zMTYwMSAxLjE2NjY3QzYuMzY5OTkgMS4xNjY2NyA2LjQyNTExIDEuMTc0ODMgNi40Nzc5MyAxLjE5MTE3QzYuNzgxMSAxLjI3OTgzIDYuOTU2OCAxLjYwNDE3IDYuODc1MjcgMS44OUw2LjIwMzQ3IDMuODk2NjdDNi4xNDI2MSA0LjA3MjgzIDYuMTcxMzIgNC4yNyA2LjI3OTI3IDQuNDIyODNDNi4zODcyMSA0LjU3NTY3IDYuNTYwNjEgNC42NjY2NyA2Ljc0NjY1IDQuNjY2NjdIMTIuMDgzMUMxMi40MDAxIDQuNjY2NjcgMTIuNjU3MyA0LjkyOTE3IDEyLjY1NzMgNS4yNUMxMi42NTczIDUuNTcwODMgMTIuNDAwMSA1LjgzMzMzIDEyLjA4MzEgNS44MzMzM0gxMC4zNjA2VjdIMTIuMDgzMUMxMi40MDAxIDcgMTIuNjU3MyA3LjI2MjUgMTIuNjU3MyA3LjU4MzMzQzEyLjY1NzMgNy45MDQxNyAxMi40MDAxIDguMTY2NjcgMTIuMDgzMSA4LjE2NjY3SDEwLjM2MDZWOS4zMzMzM0gxMS43OTZDMTIuMTEzIDkuMzMzMzMgMTIuMzcwMiA5LjU5NTgzIDEyLjM3MDIgOS45MTY2N0MxMi4zNzAyIDEwLjIzNzUgMTIuMTEzIDEwLjUgMTEuNzk2IDEwLjVIMTAuMzYwNlYxMS42NjY3SDEwLjkzNDdDMTEuMjUxNyAxMS42NjY3IDExLjUwODkgMTEuOTI5MiAxMS41MDg5IDEyLjI1QzExLjUwODkgMTIuNTcwOCAxMS4yNTE3IDEyLjgzMzMgMTAuOTM0NyAxMi44MzMzWiIgZmlsbD0iIzlBQTBBNiIvPgo8L3N2Zz4K" class="thumb-up thumb-up-full-top thumbs-up-top-down-black" alt="thumb-up"/>\
@@ -1517,6 +1520,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNSAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTExLjkxNDcgMEMxMS45NjU2IDAgMTIuMDE1MSAwLjAwNjUzMzgxIDEyLjA2MjIgMC4wMTg4MDk0TDEyLjA2MDUgMEgxNC44MzEzVjkuMzMzMzNIMTIuMzMxMkwxMC4xNjk5IDEyLjg5NDJDOS43MDY2NiAxMy42MDgxIDkuMTI5NDMgMTQgOC40MTQ2NiAxNEM4LjI1MDcxIDE0IDguMDg1MiAxMy45NzY2IDcuOTI1MjMgMTMuOTMwMkM3LjA1MjE3IDEzLjY3NjUgNi41Mjg5NSAxMi44MDAzIDYuNzAxNzYgMTEuOTAzN0w2Ljc0MjQgMTEuNzM1NUw3LjE2MTY2IDEwLjVIMi41NTU2NkMxLjY0NjMzIDEwLjUgMC44OTg1MTEgOS44MDU2NyAwLjgxMzY3OCA4LjkxODQ4TDAuODA1NjY0IDguNzVDMC44MDU2NjQgOC4zMDEzNCAwLjk3NDY4NyA3Ljg5MjAxIDEuMjUyNSA3LjU4MjIyQzAuOTc0Mjc2IDcuMjczNjYgMC44MDU2NjQgNi44NjQ3OCAwLjgwNTY2NCA2LjQxNjY3QzAuODA1NjY0IDUuODg1NDkgMS4wNDI1OCA1LjQwOTQzIDEuNDE2NDYgNS4wODg0M0MxLjIxNTQxIDQuODA1ODYgMS4wOTczMyA0LjQ1ODMzIDEuMDk3MzMgNC4wODMzM0MxLjA5NzMzIDMuMzcwNjYgMS41MjM4MSAyLjc1NzIgMi4xMzUzNyAyLjQ4NDM0QzIuMDMwNCAyLjI2MjQzIDEuOTcyMzMgMi4wMTI5NyAxLjk3MjMzIDEuNzVDMS45NzIzMyAwLjg0MDY2NyAyLjY2NjY2IDAuMDkyODQ2NyAzLjU1Mzg1IDAuMDA4MDE0MjVMMy43MjIzMyAwSDExLjkxNDdaTTQuMzMxMzMgN1Y4LjE2NjY3SDIuNTU1NjZDMi4yMzM4MyA4LjE2NjY3IDEuOTcyMzMgOC40MjgxNyAxLjk3MjMzIDguNzVDMS45NzIzMyA5LjAzNjA3IDIuMTc4OTUgOS4yNzQ0OCAyLjQ1MDkgOS4zMjM5MkwyLjU1NTY2IDkuMzMzMzNINy45NzcxNkM4LjM0MzUxIDkuMzMzMzMgOC42MTA0MSA5LjY2MzM5IDguNTUzMjMgMTAuMDA5OEw4LjUyOTQzIDEwLjEwNDVMNy44NTQ4MyAxMi4wODYxQzcuNzY0ODMgMTIuMzk1OCA3Ljk0MjU4IDEyLjcyMDMgOC4yNTA2NCAxMi44MDk4QzguMzA0NDUgMTIuODI1NCA4LjM2MDQzIDEyLjgzMzMgOC40MTQ2NiAxMi44MzMzQzguNjUwMiAxMi44MzMzIDguODY0MDYgMTIuNzA4MSA5LjA4NjA5IDEyLjQxMTdMOS4xODE4MyAxMi4yNzRMMTEuMzMxMyA4LjczMTMzVjEuMTY2NjdIMy43MjIzM0MzLjQzNjI2IDEuMTY2NjcgMy4xOTc4NSAxLjM3MzI4IDMuMTQ4NDEgMS42NDUyM0wzLjEzOSAxLjc1QzMuMTM5IDIuMDM2MDcgMy4zNDU2MSAyLjI3NDQ4IDMuNjE3NTYgMi4zMjM5MkwzLjcyMjMzIDIuMzMzMzNINC4zMzEzM1YzLjVIMi44NDczM0MyLjUyNTUgMy41IDIuMjY0IDMuNzYxNSAyLjI2NCA0LjA4MzMzQzIuMjY0IDQuMzY5NDEgMi40NzA2MSA0LjYwNzgxIDIuNzQyNTYgNC42NTcyNkwyLjg0NzMzIDQuNjY2NjdINC4zMzEzM1Y1LjgzMzMzSDIuNTU1NjZDMi4yMzM4MyA1LjgzMzMzIDEuOTcyMzMgNi4wOTQ4MyAxLjk3MjMzIDYuNDE2NjdDMS45NzIzMyA2LjcwMjc0IDIuMTc4OTUgNi45NDExNCAyLjQ1MDkgNi45OTA1OUwyLjU1NTY2IDdINC4zMzEzM1pNMTIuNDk4IDguMTY2NjdIMTMuNjY0N1YxLjE2NjY3SDEyLjQ5OFY4LjE2NjY3WiIgZmlsbD0iIzlBQTBBNiIvPgo8L3N2Zz4K" class="thumb-down thumb-up-full-top thumbs-down-top-down-black" alt="thumb-down"/>\
               <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNSAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTExLjkxNDcgMEMxMS45NjU2IDAgMTIuMDE1MSAwLjAwNjUzMzgxIDEyLjA2MjIgMC4wMTg4MDk0TDEyLjA2MDUgMEgxNC44MzEzVjkuMzMzMzNIMTIuMzMxMkwxMC4xNjk5IDEyLjg5NDJDOS43MDY2NiAxMy42MDgxIDkuMTI5NDMgMTQgOC40MTQ2NiAxNEM4LjI1MDcxIDE0IDguMDg1MiAxMy45NzY2IDcuOTI1MjMgMTMuOTMwMkM3LjA1MjE3IDEzLjY3NjUgNi41Mjg5NSAxMi44MDAzIDYuNzAxNzYgMTEuOTAzN0w2Ljc0MjQgMTEuNzM1NUw3LjE2MTY2IDEwLjVIMi41NTU2NkMxLjY0NjMzIDEwLjUgMC44OTg1MTEgOS44MDU2NyAwLjgxMzY3OCA4LjkxODQ4TDAuODA1NjY0IDguNzVDMC44MDU2NjQgOC4zMDEzNCAwLjk3NDY4NyA3Ljg5MjAxIDEuMjUyNSA3LjU4MjIyQzAuOTc0Mjc2IDcuMjczNjYgMC44MDU2NjQgNi44NjQ3OCAwLjgwNTY2NCA2LjQxNjY3QzAuODA1NjY0IDUuODg1NDkgMS4wNDI1OCA1LjQwOTQzIDEuNDE2NDYgNS4wODg0M0MxLjIxNTQxIDQuODA1ODYgMS4wOTczMyA0LjQ1ODMzIDEuMDk3MzMgNC4wODMzM0MxLjA5NzMzIDMuMzcwNjYgMS41MjM4MSAyLjc1NzIgMi4xMzUzNyAyLjQ4NDM0QzIuMDMwNCAyLjI2MjQzIDEuOTcyMzMgMi4wMTI5NyAxLjk3MjMzIDEuNzVDMS45NzIzMyAwLjg0MDY2NyAyLjY2NjY2IDAuMDkyODQ2NyAzLjU1Mzg1IDAuMDA4MDE0MjVMMy43MjIzMyAwSDExLjkxNDdaTTQuMzMxMzMgN1Y4LjE2NjY3SDIuNTU1NjZDMi4yMzM4MyA4LjE2NjY3IDEuOTcyMzMgOC40MjgxNyAxLjk3MjMzIDguNzVDMS45NzIzMyA5LjAzNjA3IDIuMTc4OTUgOS4yNzQ0OCAyLjQ1MDkgOS4zMjM5MkwyLjU1NTY2IDkuMzMzMzNINy45NzcxNkM4LjM0MzUxIDkuMzMzMzMgOC42MTA0MSA5LjY2MzM5IDguNTUzMjMgMTAuMDA5OEw4LjUyOTQzIDEwLjEwNDVMNy44NTQ4MyAxMi4wODYxQzcuNzY0ODMgMTIuMzk1OCA3Ljk0MjU4IDEyLjcyMDMgOC4yNTA2NCAxMi44MDk4QzguMzA0NDUgMTIuODI1NCA4LjM2MDQzIDEyLjgzMzMgOC40MTQ2NiAxMi44MzMzQzguNjUwMiAxMi44MzMzIDguODY0MDYgMTIuNzA4MSA5LjA4NjA5IDEyLjQxMTdMOS4xODE4MyAxMi4yNzRMMTEuMzMxMyA4LjczMTMzVjEuMTY2NjdIMy43MjIzM0MzLjQzNjI2IDEuMTY2NjcgMy4xOTc4NSAxLjM3MzI4IDMuMTQ4NDEgMS42NDUyM0wzLjEzOSAxLjc1QzMuMTM5IDIuMDM2MDcgMy4zNDU2MSAyLjI3NDQ4IDMuNjE3NTYgMi4zMjM5MkwzLjcyMjMzIDIuMzMzMzNINC4zMzEzM1YzLjVIMi44NDczM0MyLjUyNTUgMy41IDIuMjY0IDMuNzYxNSAyLjI2NCA0LjA4MzMzQzIuMjY0IDQuMzY5NDEgMi40NzA2MSA0LjYwNzgxIDIuNzQyNTYgNC42NTcyNkwyLjg0NzMzIDQuNjY2NjdINC4zMzEzM1Y1LjgzMzMzSDIuNTU1NjZDMi4yMzM4MyA1LjgzMzMzIDEuOTcyMzMgNi4wOTQ4MyAxLjk3MjMzIDYuNDE2NjdDMS45NzIzMyA2LjcwMjc0IDIuMTc4OTUgNi45NDExNCAyLjQ1MDkgNi45OTA1OUwyLjU1NTY2IDdINC4zMzEzM1pNMTIuNDk4IDguMTY2NjdIMTMuNjY0N1YxLjE2NjY3SDEyLjQ5OFY4LjE2NjY3WiIgZmlsbD0iI0REMzY0NiIvPgo8L3N2Zz4K" class="thumb-down thumb-up-full-top thumbs-up-top-down-red" alt="thumb-down"/>\
               </div>\
+              {{/if}}\
               <div id="searchChatContainer" class="sdk-chat-container">\
               <div class="history-chat-tag-info" id="histroybutton">\
                 <div class="history-tag-click">\
@@ -1571,6 +1575,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               </div>-->\
               <div class="search-body"></div>\
               <div id="autoSuggestionContainer"></div>\
+              <div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>\
             </div>\
             <div class="more-results"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS4zNjQzNyA1LjE0OTQ5QzUuMTc0OTcgNS4zMzgzNyA0Ljg3NDgxIDUuMzQ5NDggNC42NzIzOSA1LjE4MjgyTDQuNjM1NjMgNS4xNDk0OUwwLjE1MDkyNyAwLjg3NzI2NUMtMC4wNTAzMDkxIDAuNjc2NTc5IC0wLjA1MDMwOTEgMC4zNTEyMDIgMC4xNTA5MjcgMC4xNTA1MTVDMC4zNDAzMjYgLTAuMDM4MzY2NCAwLjY0MDQ4IC0wLjA0OTQ3NzMgMC44NDI5MDkgMC4xMTcxODNMMC44Nzk2NjggMC4xNTA1MTVMNSA0LjA1OTI4TDkuMTIwMzMgMC4xNTA1MTVDOS4zMDk3MyAtMC4wMzgzNjY0IDkuNjA5ODggLTAuMDQ5NDc3MyA5LjgxMjMxIDAuMTE3MTgzTDkuODQ5MDcgMC4xNTA1MTVDMTAuMDM4NSAwLjMzOTM5NyAxMC4wNDk2IDAuNjM4NzMxIDkuODgyNSAwLjg0MDYwN0w5Ljg0OTA3IDAuODc3MjY1TDUuMzY0MzcgNS4xNDk0OVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=">More Results</div> \
           </div>\
@@ -1600,6 +1605,9 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               <button class="search-button" {{if searchConfig}}style="border : solid 1px ${searchConfig.buttonBorderColor}; background : ${searchConfig.buttonFillColor}; color : ${searchConfig.buttonTextColor}"{{/if}} disabled>${searchConfig.buttonText}</button>\
             {{/if}}\
             <div class="sdkFooterIcon microphoneBtn"> \
+            {{if searchConfig.freePlan}}\
+                <div class="kore-sponsored-bottom"><img src="data:image/png;base64,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"></div>\
+              {{/if}}\
                 <button class="notRecordingMicrophone" title="Microphone On"> \
                     <i class="microphone"></i> \
                 </button> \
@@ -2353,7 +2361,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
           {{if msgData && msgData.from==="user"}}\
             <div class="userMessage {{if msgData && msgData.isFromHistory===true}}mb-60{{/if}}\">\
               {{if msgData && msgData.isSearchResultsMessage===true}}\
-                <div class="sdk-query-retry-icon" searchQuery="${msgData.text}"><img src="assets/icons/SDK-Icons/reply.svg"><span class="tooltiptext_top center">Retry Query</span></div>\
+                <div class="sdk-query-retry-icon" searchQuery="${msgData.text}"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/reply.svg"><span class="tooltiptext_top center">Retry Query</span></div>\
               {{/if}}\
               <span>${msgData.text}</span>\
               <div class="time-info">${msgData.timeStamp}</div>\
@@ -2400,7 +2408,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
           </div>\
           {{/if}}\
           {{if msgData && msgData.isSearchResultsMessage===true}}\
-            <div class="sdk-results-customize-icon"><img src="assets/icons/SDK-Icons/rangeslider.svg"><span class="tooltiptext-top">Customize Results</span></div>\
+            <div class="sdk-results-customize-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/rangeslider.svg"><span class="tooltiptext-top">Customize Results</span></div>\
           {{/if}}\
           {{if msgData && msgData.from==="searchResult"}}\
             <div class="serachContent"><span>{{html helpers.convertMDtoHTML(msgData.text)}}</span></div>\
@@ -2420,21 +2428,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               </div>\
         </div>\
        </script>';
-  // <div class="row mostrcentOther">\
-  //     <div class="mostAsked">\
-  //       {{if searchResults && searchResults.results && searchResults.results.length}}\
-  //         <span class="search-heads">MOSTLY ASKED</span>\
-  //         <div class="asstFaq" id="accordionExample">\
-  //           {{each(key, searchResult) searchResults.results}}\
-  //               <button class="accordion">${searchResult.titleText} </button>\
-  //               <div class="panel">\
-  //                 <p> ${searchResult.answer} </p>\
-  //               </div>\
-  //           {{/each}}\
-  //         </div>\
-  //       {{/if}}\
-  //     </div>\
-  //   </div>\
   switch (type) {
     case "searchContainer":
       return searchContainer;
@@ -2463,107 +2456,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
     case "confirmationModal":
       return confirmationModal;
   }
-};
-FindlySDK.prototype.getListViewTemplate = function (messageData, helpers) {
-  var listT =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-            {{if msgData.message}} \
-                <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="kore-list-template-div {{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon listView"> \
-                    <div class="listViewTmplContent {{if msgData.message[0].component.payload.boxShadow}}noShadow{{/if}}"> \
-                        {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                        {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                        <ul class="listViewTmplContentBox"> \
-                            {{if msgData.message[0].component.payload.text || msgData.message[0].component.payload.heading}} \
-                                <li class="listViewTmplContentHeading"> \
-                                    {{if msgData.type === "bot_response" && msgData.message[0].component.payload.heading}} {{html msgData.message[0].component.payload.text}} {{else}} {{html msgData.message[0].component.payload.text}} {{/if}} \
-                                    {{if msgData.message[0].component.payload.sliderView}} <button class="close-button" title="Close"><img src="data:image/svg+xml;base64,           PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button>{{/if}}\
-                                    {{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
-                                        <span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
-                                    {{/if}} \
-                                </li> \
-                            {{/if}} \
-                            <div class="listItems">\
-                            {{each(key, msgItem) msgData.message[0].component.payload.elements}} \
-                            {{if (msgData.message[0].component.payload.seeMore && key < msgData.message[0].component.payload.moreCount) || (!msgData.message[0].component.payload.seeMore)}}\
-                                        <li class="listViewTmplContentChild"> \
-                                            {{if msgItem.image_url}} \
-                                                <div class="listViewRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-                                                    <img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
-                                                </div> \
-                                            {{/if}} \
-                                            <div class="listViewLeftContent" data-url="${msgItem.default_action.url}" data-title="${msgItem.default_action.title}" data-value="${msgItem.default_action.title}"> \
-                                                <span class="titleDesc">\
-                                                <div class="listViewItemTitle" title="${msgItem.title}">{{if msgData.type === "bot_response"}} {{html msgItem.title}} {{else}} {{html msgItem.title}} {{/if}}</div> \
-                                                {{if msgItem.subtitle}}<div class="listViewItemSubtitle" title="${msgItem.subtitle}">{{if msgData.type === "bot_response"}} {{html msgItem.subtitle}} {{else}} {{html msgItem.subtitle}} {{/if}}</div>{{/if}} \
-                                                </span>\
-                                            {{if msgItem.value}}<div class="listViewItemValue" title="${msgItem.value}">{{if msgData.type === "bot_response"}} {{html msgItem.value}} {{else}} {{html msgItem.value}} {{/if}}</div>{{/if}} \
-                                            </div>\
-                                        </li> \
-                                        {{/if}}\
-                            {{/each}} \
-                            </div>\
-                            {{if msgData.message[0].component.payload.seeMore}}\
-                            <li class="seeMore"> \
-                                <span class="seeMoreList">${msgData.message[0].component.payload.buttons[0].title}</span> \
-                            </li> \
-                            {{/if}}\
-                        </ul> \
-                    </div> \
-                </li> \
-            {{/if}} \
-          </script>';
-  var template = $(listT).tmpl({
-    msgData: messageData,
-    helpers: helpers || this.helpers,
-    extension: {},
-  });
-  return template;
-};
-
-FindlySDK.prototype.getCarouselTemplate = function (messageData, helpers) {
-  var carouselTemplate =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-                    {{if msgData.message}} \
-                      <div class="messageBubble">\
-                        <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon"> \
-                            {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                            {{if msgData.icon}}<div aria-live="off" class="profile-photo extraBottom"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                            {{if msgData.message[0].component.payload.text}}<div class="messageBubble tableChart">\
-                                <span>{{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "bot")}}</span>\
-                            </div>{{/if}}\
-                            <div class="carousel" id="carousel-one-by-one" style="height: 0px;">\
-                                {{each(key, msgItem) msgData.message[0].component.payload.elements}} \
-                                    <div class="slide">\
-                                        {{if msgItem.image_url}} \
-                                            <div class="carouselImageContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-                                                <img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
-                                            </div> \
-                                        {{/if}} \
-                                        <div class="carouselTitleBox"> \
-                                            <p class="carouselTitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.title, "user")}} {{/if}}</p> \
-                                            {{if msgItem.subtitle}}<p class="carouselDescription">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "user")}} {{/if}}</p>{{/if}} \
-                                            {{if msgItem.default_action && msgItem.default_action.type === "web_url"}}<div class="listItemPath carouselDefaultAction" type="url" url="${msgItem.default_action.url}">${msgItem.default_action.url}</div>{{/if}} \
-                                            {{if msgItem.buttons}} \
-                                                {{each(key, msgBtn) msgItem.buttons}} \
-                                                    <div {{if msgBtn.payload}}value="${msgBtn.payload}"{{/if}} {{if msgBtn.url}}url="${msgBtn.url}"{{/if}} class="listItemPath carouselButton" data-value="${msgBtn.value}" type="${msgBtn.type}">\
-                                                        {{html convertMDtoHTMLForCarousel(msgBtn.title, "bot")}}\
-                                                    </div> \
-                                                {{/each}} \
-                                            {{/if}} \
-                                        </div>\
-                                    </div>\
-                                {{/each}} \
-                            </div>\
-                        </li> \
-                      </div>\
-                    {{/if}}\
-                </script>';
-  var template = $(carouselTemplate).tmpl({
-    msgData: messageData,
-    helpers: helpers || this.helpers,
-    extension: {},
-  });
-  return template;
 };
 
 FindlySDK.prototype.enableAutoSuggest = function () {
@@ -2604,46 +2496,6 @@ FindlySDK.prototype.getSuggestion = function (suggestions) {
   _self.vars.showingMatchedResults = false;
 
   // compare input with suggestion array
-  if (false) {
-    $.each(suggestions, function (i, term) {
-      // _self.vars.customizeView = false;
-      let wrdArray = needle.split(" ");
-      // for(let i=needle.length-1; i>0; i--) {
-      // 	let regex = new RegExp('^' + needle[i], 'i');
-
-      // }
-      let regex = new RegExp("^" + needle, "i");
-      if (regex.test(term)) {
-        $suggest.val(needle + term.slice(needle.length));
-        // use first result
-        return false;
-      } else if ($suggest.val() == "") {
-        wrdArray = needle.trim().split(" ");
-        let lastWords =
-          wrdArray[wrdArray.length - 2] + " " + wrdArray[wrdArray.length - 1];
-        //wrdArray[wrdArray.length - 1] == '' ? wrdArray[wrdArray.length - 2] : wrdArray[wrdArray.length - 1];
-        regex = new RegExp("^" + lastWords, "i");
-        if (regex.test(term)) {
-          $suggest.val(needle.trim() + term.slice(lastWords.length));
-          // use first result
-          return false;
-        }
-      }
-      if ($suggest.val() == "") {
-        wrdArray = needle.trim().split(" ");
-        let lastWords = wrdArray[wrdArray.length - 1];
-        //wrdArray[wrdArray.length - 1] == '' ? wrdArray[wrdArray.length - 2] : wrdArray[wrdArray.length - 1];
-        regex = new RegExp("^" + lastWords, "i");
-        if (regex.test(term)) {
-          $suggest.val(needle.trim() + term.slice(lastWords.length));
-          // use first result
-          return false;
-        }
-      }
-
-      $suggest.val("");
-    });
-  }
   if (suggestions.length) {
     var searchQuery = $.trim(needle);
     var searchQueryArr = searchQuery.split(" ");
@@ -2879,7 +2731,6 @@ FindlySDK.prototype.prepAllSearchData = function (
     web: _self.vars.searchObject.liveData.web,
     selectedFacet: selectedFacet ? selectedFacet : "all results",
     faqs: _self.vars.searchObject.liveData.faqs,
-
     files: _self.vars.searchObject.liveData.files,
     searchFacets: _self.vars.searchFacetFilters,
     viewType: viewType,
@@ -2938,10 +2789,6 @@ FindlySDK.prototype.prepAllSearchData = function (
   } else {
     //top-down-search-start//
     $(".skelton-load-img").hide();
-    // _self.pubSub.publish('sa-st-data-search', { container: '.structured-search-data-container', isFullResults: true, selectedFacet: selectedFacet_temp, isLiveSearch: false, isSearch: false, dataObj, isShowAllBtn: false });
-    // _self.pubSub.publish('sa-faq-search', { container: '.faqs-search-data-container', isFullResults: true, selectedFacet: selectedFacet_temp, isLiveSearch: false, isSearch: false, dataObj, isShowAllBtn: false });
-    // _self.pubSub.publish('sa-web-search', { container: '.web-search-data-container', isFullResults: true, selectedFacet: selectedFacet_temp, isLiveSearch: false, isSearch: false, dataObj, isShowAllBtn: false });
-    // _self.pubSub.publish('sa-file-search', { container: '.files-search-data-container', isFullResults: true, selectedFacet: selectedFacet_temp, isLiveSearch: false, isSearch: false, dataObj, isShowAllBtn: false });
     if (_self.isDev) {
       $(".custom-header-container-center").removeClass("display-none");
       if (_self.vars.customizeView) {
@@ -2969,7 +2816,7 @@ FindlySDK.prototype.prepAllSearchData = function (
     _self.pubSub.publish("sa-search-facets", _self.vars.searchFacetFilters);
   }
   if ($("body").hasClass("top-down")) {
-    $(".content-data-sec").scrollTop(0);
+    $(".all-product-details").scrollTop(0);
     // _self.pubSub.publish('sa-search-result', { ...tmplData, ...{ isLiveSearch: false, isFullResults: true, selectedFacet: selectedFacet_temp } });
     setTimeout(() => {
       _self.pubSub.publish("facet-selected", {
@@ -3411,9 +3258,6 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                 totalResultsCount + (res.tasks || []).length;
               // $('#loaderDIV').show();
               _self.showAllResults();
-              setTimeout(() => {
-                _self.bindCustomizeAction();
-              }, 300);
               dataObj.tasks = res.tasks || [];
               _self.pubSub.publish("sa-search-full-results", {
                 container: container,
@@ -3444,7 +3288,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
               $("#live-search-result-box").hide();
               $("#frequently-searched-box").hide();
               $("#loaderDIV").hide();
-              $(".content-data-sec").scrollTop(2);
+              $(".all-product-details").scrollTop(2);
             }
             $(".full-search-data-container").empty();
             if (res && res.results && res.resultType == "grouped") {
@@ -3584,9 +3428,9 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                   _self.vars.searchFacetFilters
                 );
                 _self.markSelectedFilters();
-                setTimeout(function () {
-                  _self.bindStructuredDataTriggeringOptions();
-                }, 100);
+                // setTimeout(function () {
+                //   _self.bindStructuredDataTriggeringOptions();
+                // }, 100);
               }
               setTimeout(function () {
                 _self.vars["selectedFacetFromSearch"] =
@@ -3618,7 +3462,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
               }
             }, 600);
             _self.fullResultsScrollTop();
-            $(".content-data-sec").scrollTop(0);
+            $(".all-product-details").scrollTop(0);
             $(".data-body-sec").scrollTop(0);
           }
           
@@ -3636,9 +3480,6 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
 
     $(".custom-insights-control-container").hide();
     _self.showAllResults();
-    setTimeout(() => {
-      _self.bindCustomizeAction();
-    }, 300);
   
   }
  
@@ -3661,137 +3502,6 @@ FindlySDK.prototype.bindAllResultsView = function () {
       });
   }
 
-  $(".custom-header-nav-link-item")
-    .off("click")
-    .on("click", function (event) {
-      if ($("body").hasClass("top-down")) {
-        if (
-          ($(event.currentTarget).attr("id") == "viewTypeCustomize" &&
-            _self.vars.customizeView) ||
-          ($(event.currentTarget).attr("id") == "viewTypePreview" &&
-            !_self.vars.customizeView)
-        ) {
-          return;
-        }
-      }
-
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      var navLinks = document.getElementsByClassName(
-        "custom-header-nav-link-item"
-      );
-
-      if (
-        _self.config.viaSocket &&
-        _self.vars.resultRankingActionPerformed == true
-      ) {
-        var scrollHeight =
-          $("#searchChatContainer").scrollTop() +
-          $("#searchChatContainer").prop("scrollHeight");
-        $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
-        if (!$("body").hasClass("top-down")) {
-          _self.sendMessage(_self.vars.searchObject.searchText);
-        }
-      }
-      
-
-      for (var i = 0; i < navLinks.length; i++) {
-        navLinks[i].className = navLinks[i].className.replace(
-          " nav-link-item-active",
-          ""
-        );
-      }
-      event.currentTarget.className += " nav-link-item-active";
-      if ($("body").hasClass("top-down")) {
-        var searchData;
-        // _self.vars.selectedFacetsList = [];
-        // _self.searchFacetsList([]);
-      }
-      if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
-        $(searchData)
-          .find(".tasks-wrp .faqs-shadow")
-          .find(".accordion.acc-active")
-          .trigger("click");
-      }
-      if (_self.vars.showingMatchedResults == true) {
-        if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-          _self.vars.customizeView = true;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").show();
-            $(".custom-add-result-container").removeClass("display-none");
-            $(".content-data-sec").addClass("if-customize-mode");
-          }
-
-          // $(".custom-insights-control-container").show();
-
-          // $(".query-analytics-control-container").show(); // Temporary modification, made as per FLY-1012
-
-          $(".tasks-wrp").sortable();
-          $(".tasks-wrp").sortable("option", "disabled", false);
-          $(".tasks-wrp").disableSelection();
-
-          $(".faqs-shadow").addClass("custom-faqs-shadow");
-          $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
-
-          $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
-
-          $(".image-url-sec").css("display", "none");
-          $(".faqs-bottom-actions").css("display", "table");
-
-          $(".divfeedback").css("display", "none");
-        } else {
-          _self.vars.customizeView = false;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").hide();
-            $(".custom-add-result-container").addClass("display-none");
-            $(".content-data-sec").removeClass("if-customize-mode");
-          }
-
-          $(".faqs-shadow").removeClass("custom-faqs-shadow");
-          $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
-
-          $(".faqs-bottom-actions").removeClass("custom-faqs-bottom-actions");
-
-          // $(".tasks-wrp").sortable("disable");
-          $(".image-url-sec").css("display", "table-cell");
-          $(".faqs-bottom-actions").css("display", "none");
-
-          // $(".divfeedback").css('display', 'block');
-
-          $(".notification-div").hide();
-        }
-        if ($("body").hasClass("top-down")) {
-          _self.invokeSearch();
-        }
-      } else {
-        $(".search-container").css("top", 50);
-        if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-          _self.vars.customizeView = true;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").show();
-            $(".custom-add-result-container").removeClass("display-none");
-            $(".content-data-sec").addClass("if-customize-mode");
-          }
-        } else {
-          _self.vars.customizeView = false;
-          if ($("body").hasClass("top-down") && _self.isDev) {
-            $(".show_insights_top_down").hide();
-            $(".custom-add-result-container").addClass("display-none");
-            $(".content-data-sec").removeClass("if-customize-mode");
-          }
-        }
-        if ($("body").hasClass("top-down")) {
-          _self.pubSub.publish("sa-show-all-results-top-down", {});
-        }
-      }
-      if (!$("body").hasClass("top-down")) {
-        _self.pubSub.publish("sa-update-search-customozation");
-      }
-      $(".structured-data-bottom-actions").css("display", "none");
-      $(".structured-data-wrp-content").removeClass("custom-faqs-wrp-content");
-      $(".moreStructredData").addClass("display-none");
-    });
   $(".sdk-tours-info-nxt")
     .off("click")
     .on("click", function (e) { });
@@ -5666,15 +5376,12 @@ FindlySDK.prototype.searchByFacetFilters = function (
           }, 100);
         }
         _self.clickNavigateToUrl();
-        setTimeout(() => {
-          _self.bindCustomizeAction();
-        }, 300);
 
         $("#loaderDIV").hide();
         _self.markSelectedFilters();
       }
       _self.fullResultsScrollTop();
-      $(".content-data-sec").scrollTop(0);
+      $(".all-product-details").scrollTop(0);
       $(".data-body-sec").scrollTop(0);
     });
 };
@@ -6017,7 +5724,9 @@ FindlySDK.prototype.searchEventBinding = function (
   if (templateType === "search-container") {
     $(dataHTML)
       .off("keydown", "#search")
-      .on("keydown", "#search", function (e) {
+      .on("keydown", "#search", debounce(function (e) {
+        $('#query-feedback').empty()
+         $('#snippet-feedback-template').empty();
         _self.trimSearchQuery(e);
         var keyCode = e.keyCode || e.which;
         keyCode = Number(keyCode);
@@ -6142,6 +5851,10 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.suggestionSelectedByNavigationKeys(e);
         }
         if (code == 13) {
+          recognition.stop();
+          final_transcript = "";
+          $(".recordingMicrophone").css("display", "none");
+          $(".notRecordingMicrophone").css("display", "block");
           if ($('body').hasClass('top-down')) {
             _self.vars.enteredQuery = $('.search-top-down').val();
           }
@@ -6270,7 +5983,7 @@ FindlySDK.prototype.searchEventBinding = function (
               : false;
           _self.vars.countOfSelectedFilters = 0;
         }
-      });
+      },300));
     $(dataHTML)
       .off("click", ".search-button")
       .on("click", ".search-button", function (e) {
@@ -6319,7 +6032,7 @@ FindlySDK.prototype.searchEventBinding = function (
         $("#search").trigger({ type: "keydown", which: 39 });
       });
     var handle = setInterval(function () {
-      if (_self.bot.options.accessToken) {
+      if (_self.bot?.options?.accessToken) {
         initPopularSearchList();
         clearInterval(handle);
         handle = 0;
@@ -6393,37 +6106,12 @@ FindlySDK.prototype.searchEventBinding = function (
       });
     }
 
-    var timerId;
-    var searchBoxDom = document.getElementById("search");
-
-    // This represents a very heavy method. Which takes a lot of time to execute
-    function makeAPICall(event) {
-      // $('#search').trigger("keydown");
-      if (_self.vars.enterIsClicked) {
-        return;
-      }
-      $("#search").trigger("keyup");
-      _self.pubSub.publish("sa-input-keyup",event);
-    }
-
-    // Debounce function: Input as function which needs to be debounced and delay is the debounced time in milliseconds
-    var debounceFunction = function (func, delay) {
-      // Cancels the setTimeout method execution
-      clearTimeout(timerId);
-      // Executes the func after delay time.
-      timerId = setTimeout(func, delay);
-    };
-
-    // Event listener on the input box
-    searchBoxDom.addEventListener("input", function (event) {
-      // Debounces makeAPICall method
-      debounceFunction(makeAPICall(event), 200, event);
-    });
-
     $(dataHTML)
       .off("keyup", "#search")
-      .on("keyup", "#search", function (e) {
+      .on("keyup", "#search", debounce(function (e) {
         _self.trimSearchQuery(e);
+         $('#query-feedback').empty()
+         $('#snippet-feedback-template').empty();
         if (!$("body").hasClass("top-down") && $(".bottom-up-search").val()) {
           $(".search-container").removeClass("no-history");
           if (!$(".search-container").hasClass("active")) {
@@ -6443,10 +6131,10 @@ FindlySDK.prototype.searchEventBinding = function (
           $("#frequently-searched-box").hide();
           return;
         }
-        _self.pubSub.unsubscribe("sa-input-keyup");
+        // _self.pubSub.unsubscribe("sa-input-keyup");
         _self.pubSub.publish("sa-handel-go-button");
         _self.hideBottomUpAllResults();
-        _self.pubSub.subscribe("sa-input-keyup", (msg, data) => {
+        // _self.pubSub.subscribe("sa-input-keyup", (msg, data) => {
           if (!$("body").hasClass("top-down") && _self.vars.enterIsClicked) {
             $(".search-body").css("display", "none");
             $(".search-body").addClass("hide");
@@ -6458,13 +6146,6 @@ FindlySDK.prototype.searchEventBinding = function (
           } else {
             $(".bottom-up-suggestion").val("");
           }
-          // if ((!$('body').hasClass('top-down') && $('.bottom-up-search').val()) && !window.isBotLocked && !_self.vars.enterIsClicked) {
-          //   $('.search-body').css('display', 'block');
-          //   $('.search-body').removeClass('hide');
-          //   if (!window.isBotLocked) {
-          //     $('.parent-search-live-auto-suggesition').show();
-          //   }
-          // } else
           if (
             (!$("body").hasClass("top-down") &&
               !$(".bottom-up-search").val()) ||
@@ -6727,87 +6408,14 @@ FindlySDK.prototype.searchEventBinding = function (
                               $(".live-search-data-container").empty().append(showAllHTML);
                             }
                           });
-                          // var tmplData = {
-                          //   faqs: [],
-                          //   web: [],
-                          //   tasks: [],
-                          //   files: [],
-                          //   data: [],
-                          //   showAllResults: true,
-                          //   noResults: false,
-                          //   taskPrefix: "SUGGESTED",
-                          //   viewType: viewType,
-                          //   customSearchResult: _self.customSearchResult,
-                          // };
+                         
                           _self.pubSub.publish(
                             "sa-show-live-search-suggestion",
                             dataObj
                           );
-                          // searchData = $(
-                          //   _self.getSearchTemplate("liveSearchData")
-                          // ).tmplProxy(tmplData);
-                          // $(searchData).data(dataObj);
-                          // $(".search-body").html(searchData);
                           $(".search-body").show();
                           $(".search-body").removeClass("hide");
-                         
-                          // if (
-                          //   res &&
-                          //   res.results &&
-                          //   res.resultType == "grouped"
-                          // ) {
-                          //   var availableGroups = Object.keys(res.results);
-                          //   var selectedGroup = availableGroups[0];
-                          //   availableGroups.forEach((group) => {
-                          //     var results = res.results[group].data;
-                          //     var groupName =
-                          //       group == "default_group"
-                          //         ? "defaultTemplate"
-                          //         : group;
-                          //     var dataObj = {
-                          //       facets: [],
-                          //       searchFacets: [],
-                          //       originalQuery: res.originalQuery || "",
-                          //       customSearchResult: _self.customSearchResult,
-                          //       data: results,
-                          //       groupName: groupName,
-                          //     };
-
-                          //     var publishSearchData =
-                          //       "sa-" + groupName + "-search-data";
-                          //     _self.pubSub.publish(publishSearchData, {
-                          //       container: ".live-search-data-container",
-                          //       isFullResults: false,
-                          //       selectedFacet: "all results",
-                          //       isLiveSearch: true,
-                          //       isSearch: false,
-                          //       dataObj,
-                          //     });
-                          //   });
-                          //   res.results = results;
-                          // } else {
-                          //   var results = res.results.data;
-                          //   res.results = results;
-                          //   var dataObj = {
-                          //     facets: facets || [],
-                          //     searchFacets: searchFacets || [],
-                          //     originalQuery: res.originalQuery || "",
-                          //     customSearchResult: _self.customSearchResult,
-                          //     data: results,
-                          //     groupName: "defaultTemplate",
-                          //   };
-                          //   _self.pubSub.publish(
-                          //     "sa-defaultTemplate-search-data",
-                          //     {
-                          //       container: ".live-search-data-container",
-                          //       isFullResults: false,
-                          //       selectedFacet: "all results",
-                          //       isLiveSearch: true,
-                          //       isSearch: false,
-                          //       dataObj,
-                          //     }
-                          //   );
-                          // }
+                        
 
                           _self.closeGreetingMsg();
 
@@ -7001,12 +6609,14 @@ FindlySDK.prototype.searchEventBinding = function (
             );
           }
           //top-down-suggestion box perfect scroll -end//
-        });
-      });
+        // });
+      },300));
 
     $(dataHTML)
       .off("focus", "#search")
       .on("focus", "#search", function (e) {
+        $('#query-feedback').empty()
+         $('#snippet-feedback-template').empty();
         _self.vars.enterIsClicked = false;
         if (!$("body").hasClass("top-down")) {
           $(".search-container").removeClass("no-history");
@@ -7019,7 +6629,8 @@ FindlySDK.prototype.searchEventBinding = function (
             ? $(".search-top-down").val()
             : $(".bottom-up-search").val()
         ) {
-          _self.pubSub.publish("sa-input-keyup", e);
+          $("#search").trigger("keyup");
+          // _self.pubSub.publish("sa-input-keyup", e);
         }
         if (!_self.vars.isSocketInitialize) {
           _self.bot.init(
@@ -7131,7 +6742,7 @@ FindlySDK.prototype.searchEventBinding = function (
             : $(".bottom-up-search").val()
         ) {
           $("#search").trigger("keyup");
-          _self.pubSub.publish("sa-input-keyup");
+          // _self.pubSub.publish("sa-input-keyup");
           if (!$("body").hasClass("top-down")) {
             $(".custom-header-container-center").css("visibility", "hidden");
           }
@@ -7550,20 +7161,34 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       var searchContainerName = $("body").hasClass("top-down")
         ? ".full-search-data-container"
         : ".search-data-container";
-
-      if (!$("body").hasClass("top-down")) {
         var snippetObj={};
-              if(res?.graph_answer?.payload?.center_panel){
-                if(Object.keys(res.graph_answer.payload.center_panel).length>0){
-                  snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer),page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source};
-                }
-                else{
-                  snippetObj={};
-                }
-              }
-              else{
-                snippetObj={};
-              }
+        if(res?.graph_answer?.payload?.center_panel){
+          if(Object.keys(res.graph_answer.payload?.center_panel).length>0){
+            var listSnippetData = '';
+            if(['paragraph_snippet','answer_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+              listSnippetData = helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content);
+            } else {
+              var listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content //(helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content)).split('<br /> * ');
+              var filterData = listSnippetData.filter(e => e == " ");
+              filterData.forEach(f => listSnippetData.splice(listSnippetData.findIndex(e => e == f),1));
+            }
+            snippetObj = {'title':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title,
+            'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,
+            'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,
+            'template_type':res?.graph_answer?.payload?.center_panel?.type,
+            'searchQuery': _self.vars.searchObject.searchText,
+            'displayFeedback':_self.vars.feedBackExperience.smartAnswer
+          };
+          }
+          else{
+            snippetObj={};
+          }
+        }
+        else{
+          snippetObj={};
+        }
+      if (!$("body").hasClass("top-down")) {
+        
         _self.countTotalResults(res, 0);
         var dataObj = {
           faqs: [],
@@ -7624,7 +7249,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                     groupData: _self.vars.mergedData,
                     searchType: 'isSearch',
                     helpers: helpers,
-                    snippetData:snippetObj
+                    snippetData:snippetObj,
+                    diaplayFeedback:_self.vars.feedBackExperience
                   }
                 }
               }]
@@ -7726,7 +7352,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                   filterFacetData: searchFacets||[],
                   sortableFacetList: _self.vars.sortableFacetList || [],
                   displaySortable: _self.vars.displaySortable,
-                  displayFeedback:_self.vars.feedBackExperience
+                  displayFeedback:_self.vars.feedBackExperience,
+                  snippetData:snippetObj
                 }
               }
 
@@ -8165,34 +7792,9 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       _self.vars.totalNumOfResults = 0;
     }
 
-    // if ($("body").hasClass("top-down")) {
-    //   _self.showMoreClick();
-    //   facets.push({
-    //     key: "all results",
-    //     doc_count: _self.vars.totalNumOfResults + (res.tasks || []).length,
-    //     name: "ALL",
-    //   });
-    //   facets = facets.concat((res.tabFacet || {}).buckets || []);
-    //   facets = _self.rearrangeTabsList(facets);
-    //   if ((res.tasks || []).length) {
-    //     facets.push({
-    //       key: "task",
-    //       doc_count: (res.tasks || []).length,
-    //       name: "Actions",
-    //     });
-    //   }
-    //   _self.vars.tabsList = facets;
-    //   if (!_self.vars.searchObject.liveData) {
-    //     _self.vars.searchObject.liveData = { facets: facets };
-    //   } else {
-    //     _self.vars.searchObject.liveData.facets = facets;
-    //   }
-    //   _self.pubSub.publish("sa-source-type", facets);
-    //   _self.pubSub.publish("sa-search-facets", searchFacets);
-    //   _self.pubSub.publish("facet-selected", { selectedFacet: "all results" });
-    // }
+    
     _self.fullResultsScrollTop();
-    $(".content-data-sec").scrollTop(0);
+    $(".all-product-details").scrollTop(0);
     $(".data-body-sec").scrollTop(0);
   } else if (res.templateType === "botAction") {
     // debugger;
@@ -8221,7 +7823,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     }
   }
   $(".parent-search-live-auto-suggesition").hide();
-  if (_self.vars.feedBackExperience) {
+  if ((_self.vars.feedBackExperience.queryLevel || _self.vars.feedBackExperience.smartAnswer) && !_self.isDev) {
     _self.getFeedBackResult();
     }
 };
@@ -8902,15 +8504,15 @@ FindlySDK.prototype.getFrequentlySearched = function (url, type, payload) {
     ":" +
     currentDate.getSeconds();
 
-  payload.userId = this.bot.userInfo.userInfo.userId;
+  payload.userId = this.bot?.userInfo?.userInfo?.userId;
 
-  payload.streamId = this.bot.options.botInfo.taskBotId;
+  payload.streamId = this.bot.options?.botInfo?.taskBotId;
   var _self = this;
   _self.vars.deselectedAutoFilters = [];
-  if (!$("body").hasClass("demo")) {
-    payload.indexPipelineId = _self.API.indexpipelineId;
-    payload.queryPipelineId = _self.API.pipelineId;
-  }
+  // if ($("body").hasClass("demo")) {
+    payload.indexPipelineId =  _self.API.indexpipelineId;
+    payload.queryPipelineId =  _self.API.pipelineId;
+  // }
 
   payload["messagePayload"] = {
     clientMessageId: new Date().getTime(),
@@ -9033,12 +8635,13 @@ FindlySDK.prototype.newSearchFeedbackPost = function (url, type, payload) {
   });
 };
 FindlySDK.prototype.makeAPItoFindly = function (url, type, payload) {
+  var _self = this;
   return $.ajax({
     url: url,
     type: type,
     dataType: "json",
     headers: {
-      Authorization: "bearer " + window.findlyAccessToken,
+      Authorization: "bearer " + (window.findlyAccessToken || _self.config?.botOptions?.accessToken),
       AccountId: window.findlyAccountId,
       "Content-Type": "application/json",
     },
@@ -9358,9 +8961,14 @@ FindlySDK.prototype.initialize = function (findlyConfig, fromTopDown) {
   if (findlyConfig.botOptions) {
     _findlyConfig = findlyConfig.botOptions;
   }
-  _self.isDev = false;
+  // _self.isDev = false;
   //window["KoreSDK"].findlyConfig.botOptions.assertionFn = this.getJWT;
-  if (_findlyConfig.searchIndexID) {
+  if ((_self.config && _self.config.API_KEY_CONFIG && _self.config.API_KEY_CONFIG.KEY !== 'YOUR_API_KEY') || _self.config.isDev) {
+    findlyConfig.botOptions.assertionFn = _self.getAssertionToken.bind(this);
+  } else {
+    findlyConfig.botOptions.assertionFn = this.getJWT;
+  }
+  if (_findlyConfig.searchIndexID && _findlyConfig.queryPipelineId) {
     const searchData = {
       _id: _findlyConfig.searchIndexID,
       pipelineId: _findlyConfig.queryPipelineId,
@@ -9377,7 +8985,7 @@ FindlySDK.prototype.initialize = function (findlyConfig, fromTopDown) {
   /*if (!$('body').hasClass('demo')) {
         _self.isDev = true;
       }*/
-  if (window.appConfig.API_SERVER_URL) {
+  if (window.appConfig && window.appConfig.API_SERVER_URL) {
     _self.baseAPIServer = window.appConfig.API_SERVER_URL;
   }
   if (fromTopDown) {
@@ -9387,9 +8995,6 @@ FindlySDK.prototype.initialize = function (findlyConfig, fromTopDown) {
   if (findlyConfig.autoConnect) {
     _self.initWebKitSpeech();
     _self.setAPIDetails();
-    if (fromTopDown) {
-      _self.initKoreSDK(_findlyConfig);
-    }
     setTimeout(() => {
       _self.initWebKitSpeech();
     }, 1000);
@@ -9656,7 +9261,14 @@ FindlySDK.prototype.markSelectedFilters = function () {
   if (_self.vars.selectedFiltersArr.length > 0) {
     _self.vars.selectedFiltersArr.forEach(function (filter) {
       $("#" + filter).prop("checked", true);
+      if (!$('.filters-reset-anchor').hasClass('enabled')) {
+        $('.filters-reset-anchor').addClass('enabled')
+      }
     });
+  } else {
+    if($('.filters-reset-anchor').hasClass('enabled')){
+      $('.filters-reset-anchor').removeClass('enabled');
+    }
   }
 };
 FindlySDK.prototype.addSearchResult = function (config) {
@@ -9908,7 +9520,7 @@ FindlySDK.prototype.addConversationBox = function (config) {
 };
 FindlySDK.prototype.addSearchText = function (config) {
   var _self = this;
-  if ($("body").hasClass("demo")) {
+  if (!_self.isDev) {
     $("body").removeClass("demo");
     $("body").addClass("top-down");
     $("body").addClass("sdk-top-down-interface");
@@ -10028,12 +9640,15 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
   _self.isDev = false;
   if (!$("body").hasClass("demo")) {
     _self.isDev = true;
+    if (!$("body").hasClass("builder-sdk")) {
+      $("body").addClass("builder-sdk");
+    }
   }
   _self.initWebKitSpeech();
   // _self.initKoreSDK();
-  if (isDev) {
-    _self.initKoreSDK(config);
-  }
+  // if (isDev) {
+  //   _self.initKoreSDK(config);
+  // }
   _self.setAPIDetails();
   // _self.pubSub.subscribe("sa-register-all-template", (msg, data) => {
   //   _self.registerAllTemplateConfig(data, _self.customConfig);
@@ -10173,45 +9788,52 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
-  setTimeout(()=>{
-  _self
-    .configureSearchInterface(findlyConfig.botOptions)
-    .then(function (response) {
-      _self.vars.indexPipelineId = response.indexPipelineId;
-      if (response.experienceConfig.searchBarPosition == "top") {
-        _self.initializeTopDown(findlyConfig, null, response);
-      } else {
-        if (
-          ((response || {}).interactionsConfig || {}).defaultStatus == "avatar"
-        ) {
-          $("body").addClass("setDefaultSearchTemplate1");
-        } else {
-          $("body").addClass("setDefaultSearchTemplate");
-        }
-
-        _self.initialize(findlyConfig);
-        _self.showSearch(null, response, _self.isDev);
-        var searchConfig = {
-          avatarURL: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAsYSURBVHgBnVhLb11XFV57n8d92Ne+buoKUIWuJaoWgaiLxJS6/6AVP4AOmDCKwwAxIvEvqIM6YEYkBkhMipBgWnfChEGMQAK1qDFCIlBocpP4vs5jb75vrX2u+0ibNDc6OT7n7Me3v/Wtx95OnvD3z8P/HjR1uy9OXhbv9p2XcZQwdlHEeT+NbXvWOn8W2vZPuZQne2/unsgT/NwXaXzz9VvjLT+8HKU5bFarsQBNcEGyrBSXi0QfJM8zyft9PGcSATasGmke1JjInTmfn1RFOPr6z7989rhzPhbAm6/eGm/0elebEA7r1VzqeibeZ9K2K2lDA5wRYFoJuJzjoLn4vCdZ0ZPh9rYMn9qUWEdZ3Ku4Jsl9diMbhaO9xwD6SIDvfu/Dy3VYXmvrdtw0jYRQSdvUoKtdA4RNJeIeYwBAgA14lXm0cVhIT8qiLxuXtmV0aUuaRS1LMJrl/qzsFUd7v3z6xhMDfPfVD96oVtVh2wJME6QBsLqpBIYFuEoBxghgABgCQAsF6PDOSeZ5jzpF7gvIYCA5pPD0s7sy2BrI8s5CF1IU+fHery9d+UIAadKdYvzW/N7ioK4JrpG6bYRAl9WM8BRQAzYJkKCUSQ5IG0cPgBmeMvFUn/fwowLfcgW5OerL7lcuCbvWy0byMj+V2r2y95ud6Sex5A8DOG623ob37dcwBwFWYG1V1wqsAovR0dQtAJpZgyPgABBeNUjmuHLvI95Bjy1MzRfo1zZR2gp9Z1Ge2h1Lv18CZLtflO4ttHjlkQy+990P3ihH5eH8fCGz2VyWAEf2Kpi0ge6aWKkz8CJ7yqYyCjCerhyTpTPJHFn0CpJ/Q53kUwpfSi8rpAdH2h5tysZooECyvDj+6m+3r3wmwL9+5/breT//RdHP5e6d+zKvllLBlHWsZQW9BbDFvxE8ADQk/UU1L9XmFRDfex2Pz14BIvQ4MxZB4kkB97JcNvK+bA43cQ0tRJXuyrO/2zn+FMCb+7cnhQtvD0b9SVXVcnd2X1bNCoAQx3AtgwFsqWyxO7njhIFiUm6cBEVBCsEoww1s7gDYw8YJrs0aRSUxyoYAOZCtwZYM+j0AzKYxuL29E9PjWoNFbK+i58S3IufzuequBjNkjOZsoDmCIiDVHe4toWoMdPpMUGZhgGeokVodiL8SIAuw2MPFhVCnlMxClmA3k/lyLnnM6TjjsiyBRa6sGbz5wq0JIv+tYTlQQB8u78kKHlqli61m0GBQSAAWozJFMwcFa6aLCtPZ+zR4IkvBEdpm1lPPphhoAb7fzjZkiDA0KkYyhMnzAlwP/Q5ZVLEURXGVq8qw2gerGZyi1okrZRB3rHSF+wozLboLTlEDKODje8S3qO94p8rs8tKoINgG/fFmjvuCY2I+trW+JhnO2zDmVnC++82h6pj/tSEclK4Hp4Dm4BRogk61MCRzsFngQJLA2oDkUyfC+xUB4GLG5XOj7Di9ZA02w3sDNYdc2HepYwnuJhlKB1gAMjBRXVYN/vmbtw8w3ITsTeuFrpQgHjAoqyN4XZ1OCq1pYFGWyIxpL+C9adMM2ugXp6vX2Kj/zI1qlUbUnFyrM2EJALWEtYY+miOyXQjjW/t3D3IkqYMcUX4VVqq/ORrO2EFNGVPs4wqDTtKoQ5i3hqTFoClNLrQYuRjzbDoAtWchh9pzulinY5tAMzV9lHFyWHNCzBGafYSd8kW2W8AZaMo5Hs4Bqk5gquiVkVq906UBPs5c8m0FZCwzkFvUY0uC8gDQR06GnypzdBKO6aNlmQdKSpARC4+4HhEMumyyjCsV/jmFjvuM4g3mHJUy2KiZHTuLZYp1DFQ2wJ7mODN/res3wKLycNqXYWsANMFqCmXSa2DnAK2CfKaLpdo7exEA/WQGvf0PHvQAjbiqBqwtySJWx+e601to12EjpL9C0paBpv6MWa1q0jefgrfmY02RVorRxFn0ElOOuZcyEufMHRcSxjn+Hi911V6ZIwN0jOisYxdiUKxarWcEKgAyF7W8Mo2GFIBVWnSE5CAhLUoLW/uqJrdYKqmvx1wuzSnC7IzHcc4BKFDSyxCgsS2a5ioNBa2+CxooTI+qrZSq6EQaqpKjtEbWegGcUkswQo0GlksvuF1IXs2+OUbuYuoS9w30LRhmoMHpKsh4kcy7ihYG1EmSU1DmbQoPkljS0j6xENfAUi5xF4yRRZMtFui6RdrYra1JTe9SdFjg3sXVfpQp6gc3hXeNWR5pJwXkU+TiQDkar9K6TfxRGfGao42j1oJyMncSlcg6+okqUS3hbJFVIoI9+whzWpVDj4wicwyxwFiDGM9gYjnd9MUkJpbqKImtjkEGBBqg+dikrEpqdYt4UcUYH8k5otaEF8Emai9ty+yhmb1V87LqYQBqAJKhjvH3HJLbcP4fiN3xnQ3Epx4uA8k45vXOri0mCWn1ndmbZKao38h6d3eWeVz3t6TxxN6vFy4pR7vEHPcwNv88OQlBohA/zVHAn7JmG6LK9a7U+GYDmGdRf9iiGeBUylP0XUXDb+a5VqRqthNLYd78VVlrU/oTBXRhCdY44ugOhT6x4CAJLCZKkRO/dzo6QdMpGw99oZOr+ytLUY3oVSM5VuS1Y62rI+hcY2arC/FrZ2pT/mjWFlGDJ1azxLxXUAF/OyUn13EeaCHBOf3ZS3/ZPfGmGne9x10XOpTYx+J8IE1gE7Ojw3e+j86tPZrZI5CRBMiCd66mMsBO7wQYXK7ALO75xD6054a6BSDAFdoxm7H9puQnhg2/oW+On8lLncyh7OoYu2AhUzNEBW4TdjrrwHVMseSi2DUaOGtLs7bM6Wu2bbzCD1V7OaTFRTFRnCMKDPENieNoDXDvdGe6Ldn1EaimYLnrcqmGCwloUNOQHegFA9o7Yyv63L4lGYRU+9XRHGSlrBhgtqE1SoArYK1MjAwmi/tIddxcDZy/8drfds7WAPkb54Nrz5f9aYnJOHCmLJpZO41p0ekSsMRyTMzyLrrfKJIJ8+S5BljB4Z55lPQepwwOyYwLxXi1em2r/QZZ76z2xdFF0Eq/vVM33cvLo+eLDYScUvXgOt2oPrxqMqZ4xfzNNLiMXYq08qwLQ7XKwK+ZjQAjrp/uPbWMVefIHlpkZJBaX/pSHv0wsSfyiZOFvdPy+A/fWk6m0V1mRL8blsmUMcU3b7s4ZUSrDaufU85NxwqpHFDnS1vPzBarsilU08tUE3pNfxmyCQ6ZXHb9x+/t3Pgopoeezfz+G9XbZ0198MfqvtwJC7BjNWGNUwVW3VFTVNp4RoNi1X6X4yyXsJigw3mFyp0dHaJIkTHqnrkEcILb9f3Tn71/6aVPYvEPA/ifonht4PPTb5cjeSbbgh57qpfCb2BQM5PpkxrqmZPQw1WXPb0E5qIp26RbPrf4TmfRCobHIdCihxb7rjzxwb/yMCyfe/z20+fOj3vOX/43vOtf7UKmMLlVLEH3y+A0lefykX2whRUvWXrrreRPG/Yc3+ipZeJxy/nrvzr70uFnYXjkAeaPnjt/HZNcnYZ2wj3tjBsrPW2IKdk3ejzSduBSUdAVETqJs2MPao0bdSpxA2XejvdHN97fPf68+R/rCPjaC4vJnTpcO3fy/Q9Ck6pu0b2HnS60qTYJ6+MRG9zUR615sR3e0wjMY4nXt4O/dnz26fPAJwLY/X4CoPM2XLvdxpfvSJysoqz3c220SrIzdVdy0bybMOuuz6ZD567jGPn4xmMAeyKAH/394GuLg/s4kVg59+IyxEnjZAKPG5vq3BRhewp3Oi28e2dX3Ombfx+cyBP8/g+ZJSj/kSQYmQAAAABJRU5ErkJggg==",
-          welcomeMsg:
-            ((response || {}).interactionsConfig || {}).welcomeMsg ||
-            "Hello! How can I help you today?",
-          welcomeMsgColor:
-            ((response || {}).interactionsConfig || {}).welcomeMsgColor ||
-            "#3C4043",
-          welcomeMsgFillColor:
-            ((response || {}).interactionsConfig || {}).welcomeMsgFillColor ||
-            "#F8F9FA",
-        };
-        _self.configureSearchAvatar(searchConfig);
-      }
-
-      _self.initKorePicker(findlyConfig);
-    });
-  },1000);
+  if(findlyConfig.searchInterfaceConfig){
+    _self.showSearchExperience(findlyConfig,findlyConfig.searchInterfaceConfig)
+  }else{
+    setTimeout(()=>{
+      _self
+        .configureSearchInterface(findlyConfig.botOptions)
+        .then(function (response) {
+          _self.showSearchExperience(findlyConfig,response)
+        });
+      },1000);
+  }
+ 
 };
 var searchConfigurationCopy = {};
 
+FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
+  var _self = this;
+  _self.vars.indexPipelineId = response.indexPipelineId;
+  if (response.experienceConfig.searchBarPosition == "top") {
+    _self.initializeTopDown(findlyConfig, null, response);
+  } else {
+    if (
+      ((response || {}).interactionsConfig || {}).defaultStatus == "avatar"
+    ) {
+      $("body").addClass("setDefaultSearchTemplate1");
+    } else {
+      $("body").addClass("setDefaultSearchTemplate");
+    }
+    _self.initialize(findlyConfig);
+    _self.showSearch(null, response, _self.isDev);
+    var searchConfig = {
+      avatarURL: "https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg",
+      welcomeMsg:
+        ((response || {}).interactionsConfig || {}).welcomeMsg ||
+        "Hello! How can I help you today?",
+      welcomeMsgColor:
+        ((response || {}).interactionsConfig || {}).welcomeMsgColor ||
+        "#3C4043",
+      welcomeMsgFillColor:
+        ((response || {}).interactionsConfig || {}).welcomeMsgFillColor ||
+        "#F8F9FA",
+    };
+    _self.configureSearchAvatar(searchConfig);
+  }
+  _self.initKorePicker(findlyConfig);
+}
 FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
   var _self = this;
   var searchConfiguration = {};
@@ -10282,7 +9904,7 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
         searchConfig.interactionsConfig.liveSearchResultsLimit;
       searchConfiguration.feedbackExperience =
         searchConfig.interactionsConfig.feedbackExperience;
-        _self.vars.feedBackExperience = searchConfig.interactionsConfig.feedbackExperience.queryLevel;
+        _self.vars.feedBackExperience = searchConfig.interactionsConfig.feedbackExperience;
     } else {
       searchConfiguration.welcomeMsg = "Hello! How can I help you today?";
       searchConfiguration.welcomeMsgFillColor = "#3C4043";
@@ -10339,6 +9961,7 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
   }
   //default showsearches as recent
   searchConfiguration.showSearches = "recent";
+  searchConfiguration.freePlan = searchConfig?.freePlan;
   searchConfigurationCopy = searchConfiguration;
   return searchConfiguration;
 };
@@ -10363,17 +9986,25 @@ FindlySDK.prototype.getGreetingMsgTemplate = function () {
 };
 FindlySDK.prototype.getJWT = function (options, callback) {
   var jsonData = {
-    clientId: options.clientId,
-    clientSecret: options.clientSecret,
-    identity: options.userIdentity,
-    aud: "",
-    isAnonymous: false,
+    // clientId: options.clientId,
+    // clientSecret: options.clientSecret,
+    // identity: options.userIdentity,
+    // aud: "",
+    // isAnonymous: false,
   };
+  var bearer =  "bearer " + this.bot.options.accessToken ||
+  this.API.jstBarrer;
+var headers = {};
+headers["AccountId"]= "60547150f60ec050f4dfea8b";
+headers["Authorization"] = bearer;
+headers["Content-Type"] = "application/json;charset=UTF-8";
+headers["state"] = "configured";
   return $.ajax({
     url: options.JWTUrl,
     type: "post",
     data: jsonData,
     dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if (callback) {
@@ -10665,7 +10296,7 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
 
     messageToBot["maxNumOfResults"] = (messageToBot["interface"]=="conversationalSearch")? 2 : 5;
   //payload end//
-  if (!$("body").hasClass("demo")) {
+  if (_self.isDev) {
     messageToBot.indexPipelineId = _self.API.indexpipelineId;
     messageToBot.queryPipelineId = _self.API.pipelineId;
   }
@@ -17070,6 +16701,7 @@ FindlySDK.prototype.bindSearchContainerViewHadler = function () {
           .off("scroll")
           .on("scroll", function (event) {
             $(".query_analytics_content").hide();
+            $(".query-analytics-control-container").show();
             $(".typingIndicatorContent").css("display", "none");
           });
       });
@@ -17088,12 +16720,14 @@ FindlySDK.prototype.bindSearchContainerViewHadler = function () {
             $("#searchChatContainer").scrollTop() +
             $("#searchChatContainer").prop("scrollHeight");
           $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
+          _self.appendTextToSearchContainer('user', searchQuery);
           _self.sendMessage(searchQuery);
         } else {
           var scrollHeight =
             $("#searchChatContainer").scrollTop() +
             $("#searchChatContainer").prop("scrollHeight");
           $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
+          _self.appendTextToSearchContainer('user', _self.vars.searchObject.searchText);
           _self.sendMessage(_self.vars.searchObject.searchText);
         }
       });
@@ -17385,136 +17019,7 @@ FindlySDK.prototype.showAllResults = function () {
   });
 };
 
-FindlySDK.prototype.bindCustomizeAction = function () {
-  var _self = this;
-  if (!$("body").hasClass("top-down")) {
-    if (_self.isDev) {
-      if (_self.vars.customizeView) {
-        $("#viewTypePreview").removeClass("nav-link-item-active");
-        $("#viewTypeCustomize").addClass("nav-link-item-active");
-        $(".data-body-sec").css("height", "calc(100vh - 260px)");
-      } else {
-        $(".query-analytics-control-container").hide();
-        $("#viewTypePreview").addClass("nav-link-item-active");
-        $("#viewTypeCustomize").removeClass("nav-link-item-active");
-        if (
-          _self.vars.selectedFiltersArr &&
-          _self.vars.selectedFiltersArr.length > 0
-        ) {
-          $(".data-body-sec").css("height", "calc(100vh - 225px)");
-        } else {
-          $(".data-body-sec").css("height", "calc(100vh - 195px)");
-        }
-      }
 
-      $(".sdk-customize-nav")
-        .off("click")
-        .on("click", function (event) {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-
-          var navLinks = document.getElementsByClassName(
-            "custom-header-nav-link-item"
-          );
-
-          if (
-            _self.config.viaSocket &&
-            _self.vars.resultRankingActionPerformed == true
-          ) {
-            var scrollHeight =
-              $("#searchChatContainer").scrollTop() +
-              $("#searchChatContainer").prop("scrollHeight");
-            $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
-            if (!$("body").hasClass("top-down")) {
-              _self.sendMessage(_self.vars.searchObject.searchText);
-            }
-          }
-
-          for (var i = 0; i < navLinks.length; i++) {
-            navLinks[i].className = navLinks[i].className.replace(
-              " nav-link-item-active",
-              ""
-            );
-          }
-          event.currentTarget.className += " nav-link-item-active";
-          if ($("body").hasClass("top-down")) {
-            var searchData;
-          }
-          if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
-            $(searchData)
-              .find(".tasks-wrp .faqs-shadow")
-              .find(".accordion.acc-active")
-              .trigger("click");
-          }
-          if (_self.vars.showingMatchedResults == true) {
-            if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-              _self.vars.customizeView = true;
-              // $(".custom-insights-control-container").show();
-
-              $(".query-analytics-control-container").show(); // Temporary modification, made as per FLY-1012
-
-              $(".tasks-wrp").sortable();
-              $(".tasks-wrp").sortable("option", "disabled", false);
-              $(".tasks-wrp").disableSelection();
-
-              $(".faqs-shadow").addClass("custom-faqs-shadow");
-              $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
-
-              $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
-
-              $(".image-url-sec").css("display", "none");
-              $(".faqs-bottom-actions").css("display", "table");
-
-              $(".divfeedback").css("display", "none");
-              $("#searchChatContainer")
-                .off("scroll")
-                .on("scroll", function (event) {
-                  $(".query_analytics_content").hide();
-                });
-            } else {
-              _self.vars.customizeView = false;
-
-              // $(".custom-insights-control-container").hide();
-
-              $(".query-analytics-control-container").hide(); // Temporary modification, made as per FLY-1012
-
-              $(".faqs-shadow").removeClass("custom-faqs-shadow");
-              $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
-
-              $(".faqs-bottom-actions").removeClass(
-                "custom-faqs-bottom-actions"
-              );
-
-              $(".tasks-wrp").sortable("disable");
-              $(".image-url-sec").css("display", "table-cell");
-              $(".faqs-bottom-actions").css("display", "none");
-
-              // $(".divfeedback").css('display', 'block');
-
-              $(".notification-div").hide();
-            }
-            /*_self.getFrequentlySearched(url, 'POST', JSON.stringify(payload)).then(function (response) {
-              _self.handleSearchRes(response);
-              });*/
-          } else {
-            if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
-              _self.vars.customizeView = true;
-            } else {
-              _self.vars.customizeView = false;
-            }
-          }
-          if (!$("body").hasClass("top-down")) {
-            _self.pubSub.publish("sa-update-search-customozation");
-          }
-          $(".structured-data-bottom-actions").css("display", "none");
-          $(".structured-data-wrp-content").removeClass(
-            "custom-faqs-wrp-content"
-          );
-          $(".moreStructredData").addClass("display-none");
-        });
-    }
-  }
-};
 
 FindlySDK.prototype.seeAllResultsInifiteScroll = function () {
   // call the required API
@@ -17629,9 +17134,7 @@ FindlySDK.prototype.invokeSpecificSearch = function (selectedFacet) {
         var dataObj = _self.vars.searchObject.liveData;
         var facetdata = _self.vars.searchFacetFilters;
         $(".data-body-sec").scrollTop(0);
-        // _self.calculatePageNumber(selectedFacet, dataObj);
         if (!$("body").hasClass("top-down")) {
-          // _self.handlePaginationUI(selectedFacet, dataObj);
 
           _self.pubSub.publish("sa-action-full-search", {
             container: "#actions-full-search-container",
@@ -17790,7 +17293,7 @@ FindlySDK.prototype.invokeSpecificSearch = function (selectedFacet) {
         // }, 400);
       }
       _self.fullResultsScrollTop();
-      $(".content-data-sec").scrollTop(0);
+      $(".all-product-details").scrollTop(0);
       $(".data-body-sec").scrollTop(0);
     });
 };
@@ -17986,64 +17489,7 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
       //var bucket = $(event.target).closest('.sdk-bottomup-search-face').attr('data-bucket');
     });
 
-  $(showAllHTML)
-    .off("click", ".kore-sdk-bottom-up-first")
-    .on("click", ".kore-sdk-bottom-up-first", function () {
-      // $('#loaderDIV').show();
-      _self.vars.scrollPageNumber = 0;
-      _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-    });
-  $(showAllHTML)
-    .off("click", ".kore-sdk-bottom-up-last")
-    .on("click", ".kore-sdk-bottom-up-last", function () {
-      // $('#loaderDIV').show();
-      var totalPages;
-      totalPages = $("#kore-total-page-number").text();
-      if (totalPages) {
-        _self.vars.scrollPageNumber = totalPages - 1;
-      }
-      _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-    });
-  $(showAllHTML)
-    .off("click", ".kore-sdk-bottom-up-next")
-    .on("click", ".kore-sdk-bottom-up-next", function () {
-      if (
-        _self.vars.totalNumOfResults >
-        (_self.vars.scrollPageNumber + 1) * 10
-      ) {
-        _self.vars.scrollPageNumber = _self.vars.scrollPageNumber + 1;
-        $("#loaderDIV").show();
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      }
-    });
-  $(showAllHTML)
-    .off("click", ".kore-sdk-bottom-up-previous")
-    .on("click", ".kore-sdk-bottom-up-previous", function () {
-      if (_self.vars.scrollPageNumber > 0) {
-        _self.vars.scrollPageNumber = _self.vars.scrollPageNumber - 1;
-        $("#loaderDIV").show();
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      }
-    });
-  $(showAllHTML)
-    .off("keyup", ".kore-current-page-number")
-    .on("keyup", ".kore-current-page-number", function (event) {
-      var totalPages;
-      totalPages = $("#kore-total-page-number").text();
-      if (event.keyCode == 13 || event.which == 13) {
-        if (parseInt(event.target.value) > 0) {
-          if (parseInt(event.target.value) > parseInt(totalPages)) {
-            _self.vars.scrollPageNumber = parseInt(totalPages) - 1;
-          } else {
-            _self.vars.scrollPageNumber = parseInt(event.target.value) - 1;
-          }
-        } else {
-          $("#kore-current-page-number").val(_self.vars.scrollPageNumber + 1);
-        }
-        // $('#loaderDIV').show();
-        _self.invokeSpecificSearch(_self.vars.selectedFacetFromSearch);
-      }
-    });
+  
   // Search Facet
 
   $(showAllHTML)
@@ -18139,43 +17585,6 @@ FindlySDK.prototype.bindShowAllResultsTrigger = function (
     });
 };
 
-FindlySDK.prototype.calculatePageNumber = function (selectedFacet, data) {
-  var _self = this;
-  var totalPages = 1;
-  if (data && data.facets) {
-    totalPages = data.facets[selectedFacet] / 10;
-    if (totalPages) {
-      var temp_totalPages;
-      temp_totalPages = Math.round(totalPages);
-      if (totalPages > temp_totalPages) {
-        totalPages = temp_totalPages + 1;
-      } else {
-        totalPages = temp_totalPages;
-      }
-    } else {
-      totalPages = 1;
-    }
-    $("#kore-current-page-number").val(_self.vars.scrollPageNumber + 1);
-    $("#kore-total-page-number").text(totalPages);
-  } else {
-    $("#kore-current-page-number").val(1);
-    $("#kore-total-page-number").text(1);
-  }
-  if (_self.vars.scrollPageNumber == 0) {
-    $(".kore-sdk-bottom-up-previous").addClass("disabled");
-    $(".kore-sdk-bottom-up-first").addClass("disabled");
-  } else {
-    $(".kore-sdk-bottom-up-previous").removeClass("disabled");
-    $(".kore-sdk-bottom-up-first").removeClass("disabled");
-  }
-  if (data.facets[selectedFacet] < (_self.vars.scrollPageNumber + 1) * 10) {
-    $(".kore-sdk-bottom-up-next").addClass("disabled");
-    $(".kore-sdk-bottom-up-last").addClass("disabled");
-  } else {
-    $(".kore-sdk-bottom-up-next").removeClass("disabled");
-    $(".kore-sdk-bottom-up-last").removeClass("disabled");
-  }
-};
 
 FindlySDK.prototype.facetTemplateTopIcon = function () {
   var facet =
@@ -18252,64 +17661,6 @@ FindlySDK.prototype.facetFilter = function () {
 </script>';
   return facet;
 };
-FindlySDK.prototype.topFacetFilter = function () {
-  var facet =
-    '<script id="top-search_facets_tmpl" type="text/x-jqury-tmpl"> \
-      {{if searchFacets.length}}\
-      <div class="horizantal-filter-sec">\
-      {{each(i, searchFacet) searchFacets}}\
-      <div class="dropdown_custom_filter">\
-      <div  class="openDropdownFacets dropbtn">${searchFacet.name}{{if searchFacet.selectedFieldsCount && searchFacet.selectedFieldsCount>0}} <span class="count">${searchFacet.selectedFieldsCount}</span> {{/if}} <img class="down-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBbY6xDYMwEEX/yQuc5QUOmfRZIRskEyQjZJyU6VJmBGoqREcHJVT2AsiAhQRGvO7+vdM/JVleMevBe9fgBBF7Z21+itmUIPzZ6N47VyeStU+APgj0WK8uV8lsK5K/99Lc5pbdMtNWIQJSBYi+MQjhhTDeuplETOQobhLOn4/wMZ8As5kn7D+3/a0AAAAASUVORK5CYII="><img class="up-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACQSURBVHgBhY7BDYJQDIb/ggM8wgI14llXYBJ1A48e3YAVvHpyBHUC4gCYTmDeAGrpAw48LnxJk+bv16aEEczskKRV6OXdHMazJJJocccfFIqXRd1lAxRJqi+RZt9nqwuINtBvKSKeTGKTbiY9TTrGrxRnkO6gvzJ1WV5D6WrSCRO8/zycyzO7XNnWeosZgtMCupEtrTPwmiYAAAAASUVORK5CYII="></div>\
-      <div id="myDropdown" class="dropdown-content filters-content-top-down myDropdown-${i}" data-facetType="${searchFacet.subtype}" data-facetName="${searchFacet.name}" data-fieldName="${searchFacet.fieldName}">\
-      {{each(j, bucket) searchFacet.buckets}}\
-      <div class="option-text">\
-      {{if searchFacet.subtype == "value"&& searchFacet.multiselect }}\
-      <div class="kr-sg-checkbox d-block">\
-      <input id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down" type="checkbox" name="${bucket.key}" value="true" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
-      <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
-          <span class="count">(${bucket.doc_count})</span>\
-        </div>\
-        {{/if}}\
-        {{if searchFacet.subtype == "range" && searchFacet.multiselect}}\
-        <div class="kr-sg-checkbox d-block">\
-        <input  id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down" type="checkbox" name="${bucket.key}" value="true" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
-        <label  id="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
-            <span class="count">(${bucket.doc_count})</span>\
-          </div>\
-          {{/if}}\
-          {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
-          <div class="kr-sg-checkbox d-block">\
-            <input id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
-              <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-              <span class="count">(${bucket.doc_count})</span>\
-            </div>\
-            {{/if}}\
-            {{if searchFacet.subtype == "range" && !searchFacet.multiselect }}\
-            <div class="kr-sg-checkbox d-block">\
-              <input  id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
-                <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
-              </div>\
-              {{/if}}\
-      </div>\
-      {{/each}}\
-      <div class="action-bar">\
-      {{if searchFacet.multiselect}}<button class="btn clear-btn">Clear</button>{{/if}}\
-      {{if !searchFacet.multiselect}}<button class="btn apply-btn">Apply</button>{{/if}}\
-    </div>\
-      </div>\
-      </div>\
-      {{/each}}\
-      {{if searchFacets.length>4}}\
-      <div class="h-scroll-filter">\
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAYAAACulacQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB9SURBVHgBpZDBDUBAEEX/EvcVDQzLXQk6EBUoRTtuzk5qUAFHJ7YAybISEmvFwT9MJnl/MjMfdCjOYJEDeBwMDQlRmtCVcp44D9q9r3ngT3JZ+gvq8mZwT5fNwMw9REkKpjooFM7zRJUDSgLreJ+K4opCMejn/oI9HSv40gaMjzPqJ5ysbwAAAABJRU5ErkJggg==">\
-      </div>\
-      {{/if}}\
-      </div>\
-      {{/if}}\
-             </script>';
-  return facet;
-};
 FindlySDK.prototype.facetFilterTop = function () {
   var facet =
     '<script type="text/x-jqury-tmpl">\
@@ -18379,135 +17730,6 @@ FindlySDK.prototype.facetFilterTop = function () {
         </div>\
       </script>';
   return facet;
-};
-FindlySDK.prototype.facetFilterleft = function () {
-  var facet = `
-      <div>
-      <div class="fliter-right-btn left-filter">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAKCAYAAACE2W/HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA/SURBVHgB1c+hEQAgDATBfyqJwVMKpaYUPCadwCAyGATgcursUiQXYFQ8RU0IE33urFSz3tZFNHpn67Z538YJjc8On2EvoL4AAAAASUVORK5CYII=">
-
-      <div class="filter-data">
-        <div class="header-sec">
-          <div class="f-heading">FILTERS</div>
-          <div class="clear-all">Clear All</div>
-        </div>
-            <div class="scroll-data">
-                <div class="group-checkbox">
-                  <div class="heading-title">Type</div>
-                  <div class="custom_checkbox kr-sg-checkbox d-block">
-                      <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                      <label for="checkbox_grpb" class="checkbox-custom-label">Sapphire Cards <span class="count">(1)</span></label>
-                  </div>
-                  <div class="custom_checkbox kr-sg-checkbox d-block">
-                      <input id="checkbox_grpc" class="checkbox-custom" type="checkbox">
-                      <label for="checkbox_grpc" class="checkbox-custom-label">Platinum Cards <span class="count">(3)</span></label>
-                  </div>
-                  <div class="custom_checkbox kr-sg-checkbox d-block">
-                    <input id="checkbox_grpc" class="checkbox-custom" type="checkbox">
-                    <label for="checkbox_grpc" class="checkbox-custom-label">Travel Master Cards <span class="count">(2)</span></label>
-                </div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpc" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpc" class="checkbox-custom-label">Rewards Cards <span class="count">(3)</span></label>
-              </div>
-            </div>
-            <div class="group-checkbox">
-                <div class="heading-title">Benefits</div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">Accelarated Rewards <span class="count">(2)</span></label>
-                </div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">No Joining Fees <span class="count">(2)</span></label>
-                </div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">Annual Fee Waiver <span class="count">(1)</span></label>
-                </div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">Exclusive Events <span class="count">(1)</span></label>
-                </div>
-            </div>
-            <div class="group-checkbox">
-                <div class="heading-title">Min. Balance</div>
-                <div class="custom_checkbox kr-sg-checkbox d-block">
-                  <input id="checkbox_grpb" class="checkbox-custom" type="checkbox">
-                  <label for="checkbox_grpb" class="checkbox-custom-label">0 to 500 <span class="count">(8)</span></label>
-                </div>
-            </div>
-          </div>
-          <div class="footer-filter">
-                <button class="apply-btn">Apply</button>
-          </div>
-      </div>
-    </div>
-      </div>
-      `;
-  return facet;
-};
-FindlySDK.prototype.fullResultAllType = function () {
-  var template =
-    '<script type="text/x-jqury-tmpl">\
-      <div style="height:100%">\
-      <!--<div id="loaderDIV" class="loader-container">Loading...</div>-->\
-        <div class="data-body-sec {{if facetPosition == `top`}}iffilteristop{{/if}}">\
-        <div class="no-templates-defined-full-results-container">\
-        <div class="img-block"><img class="no-data-mapped">\
-          <div class="title">Result templates are not mapped with a proper field value</div>\
-        </div>\
-      </div>\
-        <div class="scroll-top-container">\
-         <div class="title-scroll-top">\
-           <img>Scroll to top\
-          </div>\
-        </div>\
-        <div class="empty-full-results-container hide" id="top-down-all-tab-empty-state">\
-        <div class="img-block">\
-        <img src="data:image/png;base64,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">\
-        </div>\
-        <div class="title">Sorry, we could not find any results for that</div>\
-        <div class="title-info">Please try searching with another term</div>\
-        </div>\
-        <div class="full-search-data-container matched-structured-data-contaniers">\
-        </div>\
-        <div class="kore-sdk-pagination-div hide">\
-          <div class="kore-sdk-custom-pagination">\
-            <div class="kore-sdk-bottom-up-first pagination-tootlip-buttons">\
-              <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAAQABADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+zn9pz9o/XPhre6B8H/gxpfhzxb+0d8Q9H1XxB4esPF8t9B8MfhH8OtBmjh8WfH74+6vpdzZXXh34V+Et722l6XFqWk+IPin4vFt4F8I3th/xUvirwe0r77fi/JeYiT9mv49eP/2j9X8SfEbRPCulaJ+y3/ZVjpXwe8b61p+taZ49+POsxXLtrnxc8OaBd33keEPgTfQKlj8NW1221DxV8RoXm8cW0ujeDG8M3PjAat69fLy9e4LX0Iv2m/2bda+JWoaD8Yvg1q2g+Ef2jvh9oupeHdAvvFYvZfhj8Xfh1rU4uPFPwB+PujafZ6nL4g+FXi9g89jqtvpOp+Jvhj4qa38beD7e7ceIfDPisT6Pb8vNef5g/wAST9mv4C/ED9nDV/Enw50XxVpWufst/wBlWOq/B7wRrWo61qfj74DazLcuuufCLw5r93YeR4v+BNjAyXvw0Gu3On+KvhzAk3ge3i1nwYnhm38IDaevXr2fn5PuMP/Z">\
-              <span class="tooltip_text"> First</span>\
-              </div>\
-            <div class="kore-sdk-bottom-up-previous pagination-tootlip-buttons">\
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACuSURBVHgB3VKxDcIwEDwTD2AEA3xk0zMCbMAGrMAIGYWSjhFQJgipEcIlnTMAknloaPImSZecZMnS3+nuTw+MAkRk+FHbbNZBTFBZBegd+uLrnLuKyBUSR6XEUPqCGEvv7weJJ6+g9JnFdUoM2d0Vn+hduEKC1xGI3Lzr7/5Lwcjtg6zdp3iZNGgYxixL/p7MYv5sQqgxLMlqzX0EXmfTNv97SN7frohqy50Qpok3s14tS5MeJgUAAAAASUVORK5CYII=">\
-              <span class="tooltip_text"> Previous</span>\
-              </div>\
-            <div class="input-text-data">\
-              <div class="title">Page</div>\
-              <div>\
-                <input id="kore-current-page-number" class="kore-current-page-number" type="text" value="1">\
-              </div>\
-              <div class="title">of</div>\
-              <div id="kore-total-page-number" class="kore-total-page-number">15</div>\
-            </div>\
-            <div class="kore-sdk-bottom-up-next pagination-tootlip-buttons">\
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAALCAYAAABcUvyWAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACdSURBVHgBXY+xDQIxEAT3bAIiZEQD99gf4xKgEuiEkDY+JUJUQEoGxAjhCsAhwUvmEHqw/8LZW2lWM9femNEwyiE7BaQ5SB+Y2eSBjvFxNGYyBqmNNLdSfH0C6j6YbQOiGVK7CCFE1QUh3FZI6QIa7IrGr1m5ExL2qoBTtxYZkWibP7R2yZW9ix33oHuWUAZ+Ye17A+GRSBSv5zx4A80eMIB299aVAAAAAElFTkSuQmCC">\
-              <span class="tooltip_text">Next</span>\
-              </div>\
-            <div class="kore-sdk-bottom-up-last pagination-tootlip-buttons">\
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAC8SURBVHgB3ZKxEcIwDEUVZwAEWUCJnJ5R2AA2YAQYIRswAkdJyQRQ0kEJTewFOBBxjos5QkI68htbOn//d7YA+iWK9Z4oHb9q4owSvfjmCasF4vAKAawRo621+QVxcAQIMhxFaE2+g1YUxDMhMSRytSjmUx1J+N6w1hwciVoJweYseq4dSPSySCZCj4R5Wj2nam9QcC936PVv8kqN6Uk6L9PJSxeqZrMgdjcTT9wPuFn4yVwYPg1SW/P/6gGaqz4/5BlCXQAAAABJRU5ErkJggg==">\
-              <span class="tooltip_text">Last </span>\
-              </div>\
-          </div>\
-        </div>\
-        <div class="custom-add-result-container1 display-none {{if devMode== false || viewType != "Customize"}}display-none{{/if}}">\
-          <div class="custom-add-new-result-content">\
-            <div class="bold-text">Not finding the result?</div>\
-            <div class="link-text"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABrSURBVHgBzVHBCYAwEMuV/lRwBDdykoojuIoTiBs5Qt8KjVZfLdeHD8FAyJEQOO4ABZXbx0gts5opIi0KMHiJ7wvSuLBcmu4s7G6lbHnBgmGGZAWa/hnCmvrw0FAPxxSpZT+8kvppkr5UOAH/GRicle7qIwAAAABJRU5ErkJggg==">Add from repository</div>\
-          </div>\
-        </div>\
-        </script>';
-  return template;
 };
 FindlySDK.prototype.fullResultRanking = function () {
   var template =
@@ -18590,205 +17812,205 @@ FindlySDK.prototype.fullResultRanking = function () {
 };
 
 FindlySDK.prototype.bindAllResultRankingOperations = function () {
-  var _self = this;
-  if (_self.vars.customizeView) {
-    setTimeout(function () {
-      $(".results-wrap").sortable({
-        items: "li:not(.ui-state-disabled)",
-        cancel: ".ui-state-disabled",
-        stop: function (event, ui) {
-          var element = ui.item[0];
-          if ($(element).find(".pinning").length) {
-            var pinningElement = $(element).find(".pinning")[0];
-            if (pinningElement) {
-              $(pinningElement).closest(".pinning").attr("type", "Pin");
-              $(pinningElement).trigger("click");
-            }
-          } else if ($(element).attr("manuallyadded") == "true") {
-            var pinIndex = 0;
-            var _selectedElement = ui.item[0];
-            var _parentElement = $(event.target).closest(".results-wrap");
-            var childNodes = Array.prototype.slice.call(
-              _parentElement[0].children
-            );
-            pinIndex = childNodes.indexOf(_selectedElement);
-            if (pinIndex >= 0) {
-              _self.performRankActionsOnFullPage(
-                ui.item,
-                { pinIndex: pinIndex },
-                _self.vars.searchObject.searchText,
-                "pinning",
-                true
-              );
-              //
-            }
-          }
-        },
-      });
-    }, 200);
-  }
-  $(".customization")
-    .off("click", ".visibility")
-    .on("click", ".visibility", function (event) {
-      // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
-      if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-        _self.performRankActionsOnFullPage(
-          event,
-          { visible: false },
-          _self.vars.searchObject.searchText,
-          "visibility"
-        );
-      } else {
-        _self.performRankActionsOnFullPage(
-          event,
-          { visible: true },
-          _self.vars.searchObject.searchText,
-          "visibility"
-        );
-      }
-      // }
-    });
+  // var _self = this;
+  // if (_self.vars.customizeView) {
+  //   setTimeout(function () {
+  //     $(".results-wrap").sortable({
+  //       items: "li:not(.ui-state-disabled)",
+  //       cancel: ".ui-state-disabled",
+  //       stop: function (event, ui) {
+  //         var element = ui.item[0];
+  //         if ($(element).find(".pinning").length) {
+  //           var pinningElement = $(element).find(".pinning")[0];
+  //           if (pinningElement) {
+  //             $(pinningElement).closest(".pinning").attr("type", "Pin");
+  //             $(pinningElement).trigger("click");
+  //           }
+  //         } else if ($(element).attr("manuallyadded") == "true") {
+  //           var pinIndex = 0;
+  //           var _selectedElement = ui.item[0];
+  //           var _parentElement = $(event.target).closest(".results-wrap");
+  //           var childNodes = Array.prototype.slice.call(
+  //             _parentElement[0].children
+  //           );
+  //           pinIndex = childNodes.indexOf(_selectedElement);
+  //           if (pinIndex >= 0) {
+  //             _self.performRankActionsOnFullPage(
+  //               ui.item,
+  //               { pinIndex: pinIndex },
+  //               _self.vars.searchObject.searchText,
+  //               "pinning",
+  //               true
+  //             );
+  //             //
+  //           }
+  //         }
+  //       },
+  //     });
+  //   }, 200);
+  // }
+  // $(".customization")
+  //   .off("click", ".visibility")
+  //   .on("click", ".visibility", function (event) {
+  //     // if (parseInt($(event.target).closest('.data-wrap').attr('pinindex')) == -1) {
+  //     if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
+  //       _self.performRankActionsOnFullPage(
+  //         event,
+  //         { visible: false },
+  //         _self.vars.searchObject.searchText,
+  //         "visibility"
+  //       );
+  //     } else {
+  //       _self.performRankActionsOnFullPage(
+  //         event,
+  //         { visible: true },
+  //         _self.vars.searchObject.searchText,
+  //         "visibility"
+  //       );
+  //     }
+  //     // }
+  //   });
 
-  $(".customization")
-    .off("click", ".unpin_added_result")
-    .on("click", ".unpin_added_result", function (event) {
-      _self.performRankActionsOnFullPage(
-        event,
-        { pinIndex: -1 },
-        _self.vars.searchObject.searchText,
-        "unpin_added_result"
-      );
-    });
+  // $(".customization")
+  //   .off("click", ".unpin_added_result")
+  //   .on("click", ".unpin_added_result", function (event) {
+  //     _self.performRankActionsOnFullPage(
+  //       event,
+  //       { pinIndex: -1 },
+  //       _self.vars.searchObject.searchText,
+  //       "unpin_added_result"
+  //     );
+  //   });
 
-  $(".customization")
-    .off("click", ".pinning")
-    .on("click", ".pinning", function (event) {
-      if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
-        var _selectedElement = $(event.target).closest(".structure-data-wrp");
-        var _parentElement = $(event.target).closest(".results-wrap");
-        var childNodes = Array.prototype.slice.call(_parentElement[0].children);
-        var pinIndex = 0;
-        if ($(event.target).closest(".pinning").attr("type") == "UnPin") {
-          pinIndex = -1;
-        } else {
-          pinIndex = childNodes.indexOf(_selectedElement[0]);
-        }
-        _self.performRankActionsOnFullPage(
-          event,
-          { pinIndex: pinIndex },
-          _self.vars.searchObject.searchText,
-          "pinning"
-        );
-      }
-    });
-  $(".customization")
-    .off("click", ".boosting")
-    .on("click", ".boosting", function (event) {
-      if (
-        $(event.target).closest(".data-wrap").attr("visible") == "true" &&
-        parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
-      ) {
-        var boostByValue = parseFloat(
-          $(event.target).closest(".data-wrap").attr("boost")
-        );
-        boostByValue = boostByValue + 0.25;
-        _self.performRankActionsOnFullPage(
-          event,
-          { boost: boostByValue },
-          _self.vars.searchObject.searchText,
-          "boosting"
-        );
-      }
-    });
-  $(".customization")
-    .off("click", ".burying")
-    .on("click", ".burying", function (event) {
-      if (
-        $(event.target).closest(".data-wrap").attr("visible") == "true" &&
-        parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
-      ) {
-        var buryByValue = parseFloat(
-          $(event.target).closest(".data-wrap").attr("boost")
-        );
-        if (buryByValue > 0.25) {
-          buryByValue = buryByValue - 0.25;
-          _self.performRankActionsOnFullPage(
-            event,
-            { boost: buryByValue },
-            _self.vars.searchObject.searchText,
-            "burying"
-          );
-        } else if (buryByValue != 0) {
-          buryByValue = 0.25 - buryByValue;
-          _self.performRankActionsOnFullPage(
-            event,
-            { boost: buryByValue },
-            _self.vars.searchObject.searchText,
-            "burying"
-          );
-        } else {
-          buryByValue = 0;
-          _self.performRankActionsOnFullPage(
-            event,
-            { boost: buryByValue },
-            _self.vars.searchObject.searchText,
-            "burying"
-          );
-        }
-      }
-    });
+  // $(".customization")
+  //   .off("click", ".pinning")
+  //   .on("click", ".pinning", function (event) {
+  //     if ($(event.target).closest(".data-wrap").attr("visible") == "true") {
+  //       var _selectedElement = $(event.target).closest(".structure-data-wrp");
+  //       var _parentElement = $(event.target).closest(".results-wrap");
+  //       var childNodes = Array.prototype.slice.call(_parentElement[0].children);
+  //       var pinIndex = 0;
+  //       if ($(event.target).closest(".pinning").attr("type") == "UnPin") {
+  //         pinIndex = -1;
+  //       } else {
+  //         pinIndex = childNodes.indexOf(_selectedElement[0]);
+  //       }
+  //       _self.performRankActionsOnFullPage(
+  //         event,
+  //         { pinIndex: pinIndex },
+  //         _self.vars.searchObject.searchText,
+  //         "pinning"
+  //       );
+  //     }
+  //   });
+  // $(".customization")
+  //   .off("click", ".boosting")
+  //   .on("click", ".boosting", function (event) {
+  //     if (
+  //       $(event.target).closest(".data-wrap").attr("visible") == "true" &&
+  //       parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
+  //     ) {
+  //       var boostByValue = parseFloat(
+  //         $(event.target).closest(".data-wrap").attr("boost")
+  //       );
+  //       boostByValue = boostByValue + 0.25;
+  //       _self.performRankActionsOnFullPage(
+  //         event,
+  //         { boost: boostByValue },
+  //         _self.vars.searchObject.searchText,
+  //         "boosting"
+  //       );
+  //     }
+  //   });
+  // $(".customization")
+  //   .off("click", ".burying")
+  //   .on("click", ".burying", function (event) {
+  //     if (
+  //       $(event.target).closest(".data-wrap").attr("visible") == "true" &&
+  //       parseInt($(event.target).closest(".data-wrap").attr("pinindex")) == -1
+  //     ) {
+  //       var buryByValue = parseFloat(
+  //         $(event.target).closest(".data-wrap").attr("boost")
+  //       );
+  //       if (buryByValue > 0.25) {
+  //         buryByValue = buryByValue - 0.25;
+  //         _self.performRankActionsOnFullPage(
+  //           event,
+  //           { boost: buryByValue },
+  //           _self.vars.searchObject.searchText,
+  //           "burying"
+  //         );
+  //       } else if (buryByValue != 0) {
+  //         buryByValue = 0.25 - buryByValue;
+  //         _self.performRankActionsOnFullPage(
+  //           event,
+  //           { boost: buryByValue },
+  //           _self.vars.searchObject.searchText,
+  //           "burying"
+  //         );
+  //       } else {
+  //         buryByValue = 0;
+  //         _self.performRankActionsOnFullPage(
+  //           event,
+  //           { boost: buryByValue },
+  //           _self.vars.searchObject.searchText,
+  //           "burying"
+  //         );
+  //       }
+  //     }
+  //   });
 
-  $(".custom-add-result-container")
-    .off("click", ".link-text")
-    .on("click", ".link-text", function (event) {
-      var structure = "bottom";
-      if ($("body").hasClass("top-down")) {
-        structure = "top";
-        if (
-          $("body").hasClass("top-down")
-            ? $(".search-top-down").val()
-            : $(".bottom-up-search").val()
-        ) {
-          _self.vars.searchObject.searchText = $("body").hasClass("top-down")
-            ? $(".search-top-down").val()
-            : $(".bottom-up-search").val();
-        }
-      } else {
-        structure = "bottom";
-      }
-      if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
-        var responseObject = {
-          type: "addNew",
-          data: true,
-          query: _self.vars.searchObject.searchText,
-          structure: structure,
-        };
-        _self.parentEvent(responseObject);
-      }
-    });
-  //Tour RR
-  $(".sdk-tours-info-nxt")
-    .off("click")
-    .on("click", function (e) {
-      $(".sdk-tours-info-start").hide();
-      $(".sdk-tours-info-end").removeClass("hide");
-      $(".sdk-tours-info-end").show();
-    });
-  $(".sdk-tours-info-pre")
-    .off("click")
-    .on("click", function (e) {
-      $(".sdk-tours-info-start").show();
-      //$("sdk-tours-info-end").removeClass("hide");
-      $(".sdk-tours-info-end").hide();
-    });
+  // $(".custom-add-result-container")
+  //   .off("click", ".link-text")
+  //   .on("click", ".link-text", function (event) {
+  //     var structure = "bottom";
+  //     if ($("body").hasClass("top-down")) {
+  //       structure = "top";
+  //       if (
+  //         $("body").hasClass("top-down")
+  //           ? $(".search-top-down").val()
+  //           : $(".bottom-up-search").val()
+  //       ) {
+  //         _self.vars.searchObject.searchText = $("body").hasClass("top-down")
+  //           ? $(".search-top-down").val()
+  //           : $(".bottom-up-search").val();
+  //       }
+  //     } else {
+  //       structure = "bottom";
+  //     }
+  //     if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
+  //       var responseObject = {
+  //         type: "addNew",
+  //         data: true,
+  //         query: _self.vars.searchObject.searchText,
+  //         structure: structure,
+  //       };
+  //       _self.parentEvent(responseObject);
+  //     }
+  //   });
+  // //Tour RR
+  // $(".sdk-tours-info-nxt")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     $(".sdk-tours-info-start").hide();
+  //     $(".sdk-tours-info-end").removeClass("hide");
+  //     $(".sdk-tours-info-end").show();
+  //   });
+  // $(".sdk-tours-info-pre")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     $(".sdk-tours-info-start").show();
+  //     //$("sdk-tours-info-end").removeClass("hide");
+  //     $(".sdk-tours-info-end").hide();
+  //   });
 
-  $(".sdk-tours-info-close")
-    .off("click")
-    .on("click", function (e) {
-      $(".tours-information").hide();
-      _self.vars.customTourResultRank = false;
-    });
-  //Tour RR
+  // $(".sdk-tours-info-close")
+  //   .off("click")
+  //   .on("click", function (e) {
+  //     $(".tours-information").hide();
+  //     _self.vars.customTourResultRank = false;
+  //   });
+  // //Tour RR
 };
 
 FindlySDK.prototype.performRankActionsOnFullPage = function (
@@ -18803,18 +18025,17 @@ FindlySDK.prototype.performRankActionsOnFullPage = function (
     event.preventDefault();
     event.stopPropagation();
   }
-  var selectedElement;
+  return new Promise((resolve, reject) => {
+    var selectedElement;
 
   if (!isManuallyAdded) {
     selectedElement = $(event.target).closest(".data-wrap");
   } else {
     selectedElement = $(event).find(".data-wrap");
   }
-
   var contentID = selectedElement.attr("contentid");
   var contentType = selectedElement.attr("contentType");
   var queryString = _self.vars.searchObject.searchText;
-
   var payload = {
     searchQuery: queryString,
     result: {
@@ -18823,14 +18044,10 @@ FindlySDK.prototype.performRankActionsOnFullPage = function (
       config: conf,
     },
   };
-
   if (actionType === "unpin_added_result") {
     payload.result["addedResult"] = false;
   }
 
-  // $('#loaderDIV').show();
-  // fqp-0357ee01-975c-56ab-bfd3-0a577ed1ed8b
-  // var url = 'https://dev.findly.ai/searchassistapi/findly/sidx-05441d26-7bb8-5886-a84b-0dd7768f0a44/queryPipeline/fqp-0357ee01-975c-56ab-bfd3-0a577ed1ed8b/rankingAndPinning';
   var url = _self.API.queryConfig;
   _self.makeAPItoFindly(url, "PUT", JSON.stringify(payload)).then(
     (res) => {
@@ -18843,17 +18060,15 @@ FindlySDK.prototype.performRankActionsOnFullPage = function (
           bottomUp: true,
         };
         _self.parentEvent(responseObject);
+        resolve(res);
       }
-
-      _self.refreshFullResultsPage();
-      // }
     },
     (err) => {
       $("#loaderDIV").hide();
-      // $('.show-all-results').click();
-      _self.refreshFullResultsPage();
+      resolve('');
     }
   );
+  })
 };
 
 FindlySDK.prototype.refreshFullResultsPage = function () {
@@ -18949,7 +18164,7 @@ FindlySDK.prototype.appendSuggestions = function (autoComplete) {
     lang: "en",
     isDev: _self.isDev,
   };
-  payload.userId = this.bot.userInfo.userInfo.userId;
+  payload.userId = this.bot?.userInfo?.userInfo?.userId;
   payload.indexPipelineId = _self.API.indexpipelineId;
   var bearer =
     "bearer " + this.bot.options.accessToken ||
@@ -19120,9 +18335,6 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
     $("#search-box-container")
       .off("keydown", "#search")
       .on("keydown", "#search", function (e) {
-        // if ($('body').hasClass('top-down')) {
-        //   _self.vars.enterIsClicked = false;
-        // }
         _self.pubSub.publish("sa-handel-submit-button");
         var code = e.keyCode || e.which;
         code = Number(code);
@@ -19144,10 +18356,6 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
             : $(".bottom-up-search").val();
           _self.vars.showingMatchedResults = true;
           _self.searchFacetsList([]);
-          // $('#loaderDIV').show();
-          // _self.invokeSearch();
-          //$('#loaderDIV').hide();
-          // _self.pubSub.publish('sa-search-facets', _self.vars.searchFacetFilters);
           $(".all-result-container").show();
           setTimeout(function () {
             $("#frequently-searched-box").hide();
@@ -19210,12 +18418,7 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
         // _self.invokeSearch();
         var e = $.Event("keydown", { which: 13 });
         $("#search").trigger(e);
-        // _self.pubSub.publish('sa-search-facets', _self.vars.searchFacetFilters);
-        //$('#search').trigger("keyup");
         setTimeout(function () {
-          //   var e = $.Event( "keydown", { which: 13 } );
-          // $('#search').trigger(e);
-          // $('#loaderDIV').show();
           $(".all-result-container").show();
           //top-down-searc-facets active -start//
           _self.pubSub.publish("facet-selected", {
@@ -19258,12 +18461,8 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
             : $(".bottom-up-search").val();
           _self.vars.showingMatchedResults = true;
           _self.searchFacetsList([]);
-          // $('#loaderDIV').show();
-          // _self.invokeSearch();
           var e1 = $.Event("keydown", { which: 13 });
           $("#search").trigger(e1);
-          //$('#loaderDIV').hide();
-          // _self.pubSub.publish('sa-search-facets', _self.vars.searchFacetFilters);
           $(".all-result-container").show();
           setTimeout(function () {
             $("#frequently-searched-box").hide();
@@ -20030,6 +19229,11 @@ FindlySDK.prototype.getTopDownTemplate = function () {
       <div class="topdown-search-main-container">
           <div id="heading" class="search-input-box">
               <div id="search-box-container" class="search-box-container-data">
+              {{if searchConfig.freePlan}}\
+                <div class="kore-sponsored">\
+                   <img src="data:image/png;base64,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"/>\
+                </div>\
+                {{/if}}\
                   <div class="cancel-search">
                       <img
                           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII=" />
@@ -20061,11 +19265,17 @@ FindlySDK.prototype.initializeTopDown = function (
   search_container,
   searchExperienceConfig
 ) {
+  $('body').addClass('sdk-body');
   var _self = this;
-  if (search_container && search_container.length) {
+  if(findlyConfig.isDev){
     _self.isDev = true;
-  } else {
-    _self.isDev = false;
+    if (!$("body").hasClass("builder-sdk")) {
+      $("body").addClass("builder-sdk");
+    }
+    if(!$('.top-down-search-background-div').length){
+  $('body').append('<div class="top-down-search-background-div"><div class="bgDullOpacity"></div></div>');
+    }
+    search_container = 'top-down-search-background-div';
   }
   var devMode = _self.isDev ? true : false;
   var searchConfiguration = _self.mapSearchConfiguration(
@@ -20194,11 +19404,7 @@ FindlySDK.prototype.initializeTopDown = function (
       closeConversation();
     }
   }
-  if (search_container && search_container.length) {
-    _self.isDev = true;
-  } else {
-    _self.isDev = false;
-  }
+
   _self.pubSub.subscribe("sa-show-live-search-suggestion", (msg, data) => {
     if (_self.vars.enterIsClicked) {
       $("#live-search-result-box").hide();
@@ -20241,42 +19447,7 @@ FindlySDK.prototype.initializeTopDown = function (
         $("#greeting-msg-top-down").hide();
       }
     });
-  if (_self.isDev) {
-    $(".show_insights_top_down")
-      .off("click", ".query_analytics_top_down")
-      .on("click", ".query_analytics_top_down", function (event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
-          var responseObject = {
-            type: "show",
-            data: true,
-            query: _self.vars.searchObject.searchText,
-          };
-          _self.parentEvent(responseObject);
-          setTimeout(function () {
-            $(".query_analytics_content").css("top", event.pageY - 50);
-            $(".query_analytics_content").css(
-              "left",
-              event.pageX - 200 - event.offsetX
-            );
-            $(document).on("click", function (event) {
-              if (!$(event.target).closest(".query_analytics_content").length) {
-                $(".query_analytics_content").hide();
-              }
-            });
-          }, 100);
-        }
-      });
-  }
-  var resultsContainerHtml = $(".all-product-details");
-  _self.bindPerfectScroll(
-    resultsContainerHtml,
-    "#show-filters-added-data",
-    null,
-    "y",
-    "facetsListContainer"
-  );
+  
   var conversationContainerHtml = $("#conversation-container");
   _self.bindPerfectScroll(
     conversationContainerHtml,
@@ -21211,9 +20382,9 @@ FindlySDK.prototype.unlockBot = function () {
 
   headers["Authorization"] = bearer;
   headers["Content-Type"] = "application/json";
-  payload.userId = this.bot.userInfo.userInfo.userId;
-  payload.streamId = this.bot.options.botInfo.taskBotId;
-  payload.botInfo = this.bot.options.botInfo;
+  payload.userId = this.bot?.userInfo?.userInfo?.userId;
+  payload.streamId = this.bot?.options?.botInfo?.taskBotId;
+  payload.botInfo = this.bot?.options?.botInfo;
   if (!_self.isDev) {
     if (_self.config.botOptions.assertion) {
       headers.auth = _self.config.botOptions.assertion;
@@ -21915,10 +21086,10 @@ FindlySDK.prototype.rearrangeTabsList = function (facets) {
 FindlySDK.prototype.fullResultsScrollTop = function () {
   $(".scroll-top-container").css("display", "none");
   if ($("body").hasClass("top-down")) {
-    $(".content-data-sec")
+    $(".all-product-details")
       .off("scroll")
       .on("scroll", function () {
-        if ($(".content-data-sec").scrollTop() > 50) {
+        if ($(".all-product-details").scrollTop() > 50) {
           $(".scroll-top-container").css("display", "flex");
         } else {
           $(".scroll-top-container").css("display", "none");
@@ -21927,7 +21098,7 @@ FindlySDK.prototype.fullResultsScrollTop = function () {
     $(".title-scroll-top")
       .off("click")
       .on("click", function () {
-        $(".content-data-sec").scrollTop(0);
+        $(".all-product-details").scrollTop(0);
       });
   } else {
     $(".data-body-sec")
@@ -21996,17 +21167,26 @@ FindlySDK.prototype.countTotalResults = function (res, totalResultsCount) {
 FindlySDK.prototype.getJWT = function (options, callback) {
   var me = this;
   var jsonData = {
-    clientId: options.clientId,
-    clientSecret: options.clientSecret,
-    identity: options.userIdentity,
-    aud: "",
-    isAnonymous: false,
+    // clientId: options.clientId,
+    // clientSecret: options.clientSecret,
+    // identity: options.userIdentity,
+    // aud: "",
+    // isAnonymous: false,
   };
+  var bearer = "bearer 9WACY7nGJHx-SBo3cUgqMwvhTaytdUm5LoGkHX4vYKlO2WAqLhkjJsE39yY3eBV7" ||
+  "bearer " + this.bot.options.accessToken ||
+  this.API.jstBarrer;
+var headers = {};
+headers["AccountId"]= "60547150f60ec050f4dfea8b";
+headers["Authorization"] = bearer;
+headers["Content-Type"] = "application/json;charset=UTF-8";
+headers["state"] = "configured";
   return $.ajax({
     url: options.JWTUrl,
     type: "post",
     data: jsonData,
     dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if(!me.vars.sdkInitialized){
@@ -22230,9 +21410,17 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                 isDemoTemplate = 'bankingTemplate'
               }
             }
-            const searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
-
             var isDropdownEnabled = true;
+            var searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
+            if(_self.vars.customizeView && _self.isDev){
+              viewType = 'Customize';
+              searchTemplateType = "List";
+              data.isClickable = true;
+              isDropdownEnabled = false;
+            }
+
+            
+
             var messageData = {
               "message": [
                 {
@@ -22250,7 +21438,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'appearanceType': 'data',
                       'maxSearchResultsAllowed': maxSearchResultsAllowed,
                       'isDropdownEnabled': isDropdownEnabled,
-                      'tour': false,
+                      'tour': _self.vars.customTourResultRank || false,
                       'helpers': helpers,
                       'renderTitle': data.renderTitle,
                       'titleName': data.titleName,
@@ -22265,7 +21453,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'fieldName': data.fieldName,
                       'gridLayoutType': gridLayoutType,
                       "isButtonTemplate": false,
-                      "isDemoTemplate":isDemoTemplate
+                      "isDemoTemplate":isDemoTemplate,
                     }
                   }
                 }
@@ -22483,7 +21671,7 @@ FindlySDK.prototype.seeAllBtnClickEvent = function (e) {
   if($(e.target).hasClass("live-search-close-icon")){
     _self.vars.searchObject.searchText = $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
   }
-  if (_self.vars.feedBackExperience) {
+  if (_self.vars.feedBackExperience.queryLevel  && !_self.isDev) {
     _self.getFeedBackResult();
     }
   _self.vars.showingMatchedResults = true;
@@ -22593,7 +21781,7 @@ FindlySDK.prototype.botActionTrigger = function (e) {
 }
 FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
   if ($("body").hasClass("top-down")) {
-    $(".content-data-sec").scrollTop(0);
+    $(".all-product-details").scrollTop(0);
   }else{
     $(".data-body-sec").scrollTop(0);
   }
@@ -22953,6 +22141,7 @@ return new Promise((resolve, reject) => {
             _self.vars.isTopFacets
           ).then((res)=>{
             res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            _self.markSelectedFilters();
             resolve(res);
           });
         } else {
@@ -22977,6 +22166,7 @@ return new Promise((resolve, reject) => {
             _self.vars.isTopFacets
           ).then((res)=>{
             res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
+            _self.markSelectedFilters();
             resolve(res);
           });
         }
@@ -23014,7 +22204,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
               });
               _self.filterResultsTopDown(event, false).then((res)=>{
                 res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-                resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
               });
             } else {
               _self.vars.selectedFiltersArr.push($(event.target).attr("id"));
@@ -23034,7 +22225,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
               _self.vars.countOfSelectedFilters += 1;
               _self.filterResultsTopDown(event, true).then((res)=>{
                 res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-                resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
               });
             }
           } else {
@@ -23055,7 +22247,8 @@ FindlySDK.prototype.topdownFacetRadioClick = function(event){
             _self.vars.countOfSelectedFilters += 1;
             _self.filterResultsTopDown(event, true).then((res)=>{
               res.isFilterAlignedTop=_self.vars.filterConfiguration.aligned=='top'?true:false;
-              resolve(res);
+            _self.markSelectedFilters();
+            resolve(res);
             });
           }
         })
@@ -23215,6 +22408,9 @@ FindlySDK.prototype.appendTextToSearchContainer = function (type, text) {
     messageData.timeStamp = moment().format('LT');
   }
   var devMode = _self.isDev ? 'true' : 'false';
+  if(_self.isDev){
+    messageData.isSearchResultsMessage = true;
+  }
   var viewType = _self.vars.customizeView ? 'Customize' : 'Preview';
   var template = $(_self.getSearchTemplate('messageBubbles')).tmplProxy({
     msgData: messageData,
@@ -23395,26 +22591,38 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
     }
 
     $(".custom-insights-control-container").hide();
-    // _self.showAllResults();
-    // setTimeout(() => {
-    //   _self.bindCustomizeAction();
-    // }, 300);
+
   }
  })
 }
 FindlySDK.prototype.getJWTWithoutAPIKey = function (options, callback) {
-  var jsonData = {
-    "clientId": options.clientId,
-    "clientSecret": options.clientSecret,
-    "identity": options.userIdentity,
-    "aud": "",
-    "isAnonymous": false
-  };
+  var _self=this;
+  var jsonData = {}
+
+var headers = {};
+  if(_self.isDev){
+    var bearer = "bearer " + this.bot?.options?.accessToken ||
+    this.API.jstBarrer;
+    headers["Authorization"] = bearer;
+    headers["Content-Type"] = "application/json;charset=UTF-8";
+    headers["state"] = "configured";
+  }else{
+    jsonData = {
+      "clientId": options.clientId,
+      "clientSecret": options.clientSecret,
+      "identity": options.userIdentity,
+      "aud": "",
+      "isAnonymous": false
+    };
+  }
+
+
   return $.ajax({
     url: options.JWTUrl,
-    type: 'post',
+    type: "post",
     data: jsonData,
-    dataType: 'json',
+    dataType: "json",
+    headers: headers,
     success: function (data) {
       options.assertion = data.jwt;
       if (callback) {
@@ -23432,6 +22640,9 @@ FindlySDK.prototype.getJWTByAPIKey = function (options, callback) {
     apiKey = options.apiKey;
   }
   var jsonData = {};
+  if(_self.config.botOptions && _self.config.botOptions.userMailId){
+      jsonData['identity'] = _self.config.botOptions.userMailId;
+    }
   return $.ajax({
     url: options.koreAPIUrl + 'websdk/' + apiKey,
     type: 'post',
@@ -23493,8 +22704,18 @@ FindlySDK.prototype.setupInternalAssertionFunctionWithAPIKey = function () {
 FindlySDK.prototype.show = function (config) {
   var _self = this;
   _self.vars.isHostedSdk = true;
+
   if (config && config.API_KEY_CONFIG && config.API_KEY_CONFIG.KEY != 'YOUR_API_KEY') {
     _self.config.botOptions["apiKey"] = config["API_KEY_CONFIG"].KEY;
+  }
+  if(config.isDev){
+    _self.isDev = config.isDev;
+    _self.config.findlyBusinessConfig = config.findlyBusinessConfig;
+    _self.config.viaSocket = config.viaSocket;
+    _self.config.searchInterfaceConfig = config.searchInterfaceConfig;
+  }
+  if(config.botOptions){
+    _self.config.botOptions = {..._self.config.botOptions, ...config.botOptions}
   }
   _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
   _self.initKoreSDK();
@@ -23680,7 +22901,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
   var payload =
   {
   "query": query_text,
-  "userId": this.bot.userInfo.userInfo.userId
+  "userId": this.bot?.userInfo?.userInfo?.userId
   }
   var headers = {};
   var bearer = "bearer " + this.bot.options.accessToken;
@@ -23724,22 +22945,27 @@ FindlySDK.prototype.getFeedBackResult = function () {
   }
   })
   }
-  FindlySDK.prototype.updateFeedBackResult = function (type, text) {
+  FindlySDK.prototype.updateFeedBackResult = function (type,text,feedbackType,feedbackButton,feedbackInputText) {
   var _self = this;
   var url = _self.API.feedbackPostUrl;
   var payload = {
-  "feedbackLevel": "query",
-  "event": type,
-  "feedbackLevel": "query",
-  "indexPipelineId": _self.vars.experimentsObject.indexPipelineId,
-  "searchIndexId":_self.config.botOptions ? _self.config.botOptions.searchIndexID : '',
-  "isDev": _self.isDev,
-  "query": text ? text : _self.vars.searchObject.searchText,
-  "queryPipelineId": _self.vars.experimentsObject.queryPipelineId,//_self.API.pipelineId,
-  "relay": "default",
-  "searchRequestId": _self.vars.previousSearchObj.requestId,
-  "streamId": _self.API.streamId
-  }
+    "feedbackLevel": feedbackType,
+    "event": type,
+    "indexPipelineId": _self.vars.experimentsObject.indexPipelineId,
+    "searchIndexId":_self.config.botOptions ? _self.config.botOptions.searchIndexID : '',
+    "isDev": _self.isDev,
+    "query": text ? text : _self.vars.searchObject.searchText,
+    "queryPipelineId":  _self.vars.experimentsObject.queryPipelineId,
+    "relay": "default",
+    "searchRequestId": _self.vars.previousSearchObj.requestId,
+    "streamId":  _self.API.streamId
+ }
+ if(feedbackButton || feedbackInputText){
+  payload.comments = {};
+  if(feedbackButton) payload.comments['issueType'] = feedbackButton || '';
+  if(feedbackInputText) payload.comments['text'] = feedbackInputText || '';
+ }
+
   var headers = {};
   var bearer = "bearer " + this.bot.options.accessToken;
   headers["Authorization"] = bearer;
@@ -23770,17 +22996,34 @@ FindlySDK.prototype.getFeedBackResult = function () {
   const text = $('.search-top-down').val();
   if (type === 'thumbsUp') {
   $('.thumbs-up-top-down-black').hide();
+  if(!$('.thumbs-up-top-down-blue').is(":visible")){
+    _self.updateFeedBackResult(type, text,'query');
+    }
   $('.thumbs-up-top-down-blue').show();
   $('.thumbs-down-top-down-black').show();
   $('.thumbs-up-top-down-red').hide();
   }
   else if (type === 'thumbsDown') {
   $('.thumbs-down-top-down-black').hide();
+  if(!$('.thumbs-up-top-down-red').is(":visible") ){
+    let feedbackMsgData = {
+      message: [{
+        component: {
+          type: 'template',
+          payload: {
+            template_type: "feedbackFormTemplate",
+            query: _self.vars?.searchObject.searchText || '',
+            feedBackType:'query'
+          }
+        }
+      }]
+    };
+    $('#snippet-feedback-template').empty().append(_self.customTemplateObj.renderMessage(feedbackMsgData));
+  }
   $('.thumbs-up-top-down-red').show();
   $('.thumbs-up-top-down-black').show();
   $('.thumbs-up-top-down-blue').hide();
   }
-  _self.updateFeedBackResult(type, text);
   });
   }
   FindlySDK.prototype.focusInputTextbox = function () {
@@ -23793,6 +23036,237 @@ FindlySDK.prototype.getFeedBackResult = function () {
     var _self = this;
     return;
   }
+
+
+  //Business SDk Custimize and Preview click Events (Author by: Pavan)//
+  FindlySDK.prototype.customizePreviewBtnClick = function (event,isTopDown) {
+    if ($("body").hasClass("top-down")) {
+      $(".content-data-sec").scrollTop(0);
+    }else{
+      $(".data-body-sec").scrollTop(0);
+    }
+    var _self = this;
+    _self.isDev =  true;
+    // if (isTopDown) {
+    //   if (
+    //     ($(event.currentTarget).attr("id") == "viewTypeCustomize" &&
+    //       _self.vars.customizeView) ||
+    //     ($(event.currentTarget).attr("id") == "viewTypePreview" &&
+    //       !_self.vars.customizeView)
+    //   ) {
+    //     return;
+    //   }
+    // }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    var navLinks = document.getElementsByClassName(
+      "custom-header-nav-link-item"
+    );
+
+    if (
+      _self.config.viaSocket &&
+      _self.vars.resultRankingActionPerformed == true
+    ) {
+      var scrollHeight =
+        $("#searchChatContainer").scrollTop() +
+        $("#searchChatContainer").prop("scrollHeight");
+      $("#searchChatContainer").animate({ scrollTop: scrollHeight }, 500);
+      if (!isTopDown) {
+        _self.sendMessage(_self.vars.searchObject.searchText);
+      }
+    }
+    
+    for (var i = 0; i < navLinks.length; i++) {
+      navLinks[i].className = navLinks[i].className.replace(
+        " nav-link-item-active",
+        ""
+      );
+    }
+    event.currentTarget.className += " nav-link-item-active";
+    if (isTopDown) {
+      var searchData;
+    }
+    if ($(searchData).find(".tasks-wrp .faqs-shadow")) {
+      $(searchData)
+        .find(".tasks-wrp .faqs-shadow")
+        .find(".accordion.acc-active")
+        .trigger("click");
+    }
+    if (_self.vars.showingMatchedResults == true) {
+      if ($(event.currentTarget).attr("id") == "viewTypeCustomize") {
+        _self.vars.customizeView = true;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").show();
+          $(".custom-add-result-container").removeClass("display-none");
+          $(".content-data-sec").addClass("if-customize-mode");
+        }
+        $(".faqs-shadow").addClass("custom-faqs-shadow");
+        $(".faqs-wrp-content").addClass("custom-faqs-wrp-content");
+        $(".faqs-bottom-actions").addClass("custom-faqs-bottom-actions");
+        $(".image-url-sec").css("display", "none");
+        $(".faqs-bottom-actions").css("display", "table");
+        $(".divfeedback").css("display", "none");
+        $(".query-analytics-control-container").show();
+      } else {
+        _self.vars.customizeView = false;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").hide();
+          $(".custom-add-result-container").addClass("display-none");
+          $(".content-data-sec").removeClass("if-customize-mode");
+        }
+        $(".query-analytics-control-container").hide();
+        $(".faqs-shadow").removeClass("custom-faqs-shadow");
+        $(".faqs-wrp-content").removeClass("custom-faqs-wrp-content");
+        $(".faqs-bottom-actions").removeClass("custom-faqs-bottom-actions");
+        $(".image-url-sec").css("display", "table-cell");
+        $(".faqs-bottom-actions").css("display", "none");
+        $(".notification-div").hide();
+      }
+    } else {
+      $(".search-container").css("top", 50);
+      if (($(event.currentTarget).attr("id") == "viewTypeCustomize") || _self.vars.customizeView) {
+        _self.vars.customizeView = true;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").show();
+          $(".custom-add-result-container").removeClass("display-none");
+          $(".content-data-sec").addClass("if-customize-mode");
+        }
+        $(".query-analytics-control-container").show();
+      } else {
+        _self.vars.customizeView = false;
+        if (isTopDown && _self.isDev) {
+          $(".show_insights_top_down").hide();
+          $(".custom-add-result-container").addClass("display-none");
+          $(".content-data-sec").removeClass("if-customize-mode");
+        }
+        $(".query-analytics-control-container").hide();
+      }
+    }
+    
+      var url = _self.API.searchUrl;
+      var payload = {
+        query: _self.vars.searchObject.searchText,
+        // "maxNumOfResults": 9,
+        maxNumOfResults: 5,
+        userId: _self.API.uuid,
+        streamId: _self.API.streamId,
+        lang: "en",
+        // "isDev": true,
+        isDev: _self.isDev,
+        searchRequestId: _self.vars.requestId,
+      };
+      if (_self.vars.isFilterModified) {
+        payload['isFilterModified'] = true;
+      }
+      if (_self.isDev) {
+        payload["customize"] = _self.vars.customizeView;
+      }
+      if (_self.vars.displaySortable) {
+        payload['sortableFacets'] = [_self.vars.displaySortable];
+      }
+      if (_self.vars.filterObject.length > 0) {
+        payload.filters = JSON.parse(JSON.stringify(_self.vars.filterObject));
+      }
+      if (
+        _self.vars.selectedFacetFromSearch &&
+        _self.vars.selectedFacetFromSearch !== "all results"
+      ) {
+        var tabConfig = {
+          filter: {
+            fieldName: _self.vars.tabFacetFieldName,
+            facetValue: [_self.vars.selectedFacetFromSearch],
+          },
+        };
+        payload.tabConfig = tabConfig;
+      } else {
+        let filters = payload.filters;
+        for (let i = (filters || []).length - 1; i >= 0; i--) {
+          if (
+            filters[i].facetValue[0] == "faq" ||
+            filters[i].facetValue[0] == "task" ||
+            filters[i].facetValue[0] == "web" ||
+            filters[i].facetValue[0] == "file" ||
+            filters[i].facetValue[0] == "data"
+          ) {
+            payload.filters.splice(i, 1);
+          }
+        }
+      }
+      return new Promise((resolve, reject) => {
+        _self
+          .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
+            _self.getMergedData(_self.vars.resultSettings, data, 'isFullResults').then((res) => {
+              resolve(res);
+            })
+          })
+          .catch((error) => {
+            reject(error);
+          })
+      })
+
+    }
+  FindlySDK.prototype.openExternalLink = function  (link_url,e) {
+    const me = this;
+    me.appendTextToSearchContainer('user', $(e.currentTarget).attr('data-title'));
+    const a = document.createElement('a');
+    $('.search-chat-container').append(a);
+    a.href = link_url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';// for tabnabbing security attack
+    a.click();
+    $(a).remove();
+  }
+  FindlySDK.prototype.openPopup = function  (link_url) {
+    const me = this;
+    const popupHtml = $(me.getChatTemplate('popup')).tmpl({
+      link_url,
+    });
+    $('.search-chat-container').append(popupHtml);
+    me.popupOpened = true;
+    me.bindIframeEvents($(popupHtml));
+  }
+  FindlySDK.prototype.getChatTemplate= function  (link_url) {
+    //chat templates
+  }
+  FindlySDK.prototype.bindIframeEvents= function  (html) {
+    //bind iframe events
+  }
+  function debounce(func, timeout = 300) {
+    var timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
+FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
+  var _self = this;
+  if (_self.isDev) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
+          var responseObject = {
+            type: "show",
+            data: true,
+            query: _self.vars.searchObject.searchText,
+          };
+          _self.parentEvent(responseObject);
+          setTimeout(function () {
+            $(".query_analytics_content").css("top", event.pageY - 50);
+            $(".query_analytics_content").css(
+              "left",
+              event.pageX - 300 - event.offsetX
+            );
+            $(document).off('click').on("click", function (event) {
+              if (!$(event.target).closest(".query_analytics_content").length) {
+                $(".query_analytics_content").hide();
+              }
+            });
+          }, 100);
+        }
+  }
+}
 
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

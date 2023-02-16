@@ -3779,7 +3779,7 @@ display: block;
     display: none;
 }
 .no-data-mapped{
-    content: url(../images/data-not-match.png); 
+    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/data-not-match.png); 
 }
 .no-templates-defined-full-results-container{
     display: none;
@@ -3813,7 +3813,7 @@ display: block;
 }
 .scroll-top-container .title-scroll-top img{
     margin-right: 5px;
-    // content: url(../images/scroll-top.svg);
+    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/scroll-top.svg);
 }
 .data-body-sec .carousel{
     width: 100%;
@@ -3831,7 +3831,7 @@ display: block;
     margin: 0 !important;
 }
 .skelton-load-img img{
-    content: url(../images/skeletonImage.png);
+    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/skeletonImage.png);
 }
 
 .sdk-body .purejscarousel-dots-container {
@@ -3857,6 +3857,9 @@ display: none !important;
     box-shadow: 14px 4px 64px 12px rgb(18 61 101 / 40%), -16px -16px 64px 0 rgb(255 255 255 / 80%), inset -8px -6px 80px 0 rgb(255 255 255 / 18%);
 }
 //Feedback CSS Starts
+.builder-sdk .feedback-template-positions{
+    display: none !important;
+}
 .feedback-template-positions {
     background: #F3F8FF;
     border: 1px solid #F3F8FF;
@@ -3954,3 +3957,16 @@ display: none !important;
 		background-color: rgb(0, 0, 0);
 		background-color: rgba(0, 0, 0, 0.7);
 	}
+    .searchAssist-kore-chat-window.search-container .sdkFooterIcon .kore-sponsored-bottom{
+        right: 30px;
+        position: absolute;
+        top: 2px;
+        display: block;
+    }
+    .builder-sdk{
+        .search-temp-one{
+            .temp-right{
+                display:none !important;
+            }
+        }
+    }

@@ -77,6 +77,9 @@
     cursor: pointer;
     max-width: 230px;
     margin: -5px 2px 8px 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .kore-chat-window .carouselTitleBox .carouselButton {

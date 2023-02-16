@@ -682,15 +682,15 @@
                                 }
                             }
                             .content-data-sec{
-                                max-height: calc(100vh - 238px);
+                                // max-height: calc(100vh - 238px);
                                 padding: 9px 15px 0 20px;
                                 &.filter-added{
                                     padding: 0 15px 0 20px;
                                     &.if-customize-mode{
-                                        max-height: calc(100vh - 458px) !important;
+                                        // max-height: calc(100vh - 458px) !important;
                                     }
                                     &.facets-height-isMore {
-                                        max-height: calc(100vh - 356px) !important;
+                                        // max-height: calc(100vh - 356px) !important;
                                     }
                                 }
                             }
@@ -703,13 +703,13 @@
                         .full-results-data-container{
                             .all-product-details{
                                 .content-data-sec{
-                                    max-height: calc(100vh - 302px) !important;
+                                    // max-height: calc(100vh - 302px) !important;
                                     padding: 1px 15px 0 20px;
                                     &.filter-added {
-                                        max-height: calc(100vh - 344px) !important;
+                                        // max-height: calc(100vh - 344px) !important;
                                     }
                                     &.facets-disabled{
-                                        max-height: calc(100vh - 237px) !important;
+                                        // max-height: calc(100vh - 237px) !important;
                                     }
                                 }
                             }
@@ -1019,17 +1019,17 @@
                         .content-data-sec{
                             padding: 9px 15px 0 20px;
                             position: relative; 
-                            max-height: calc(100vh - 267px);
+                            // max-height: calc(100vh - 267px);
                             &.filter-added {
-                                max-height: calc(100vh - 305px) !important;
+                                // max-height: calc(100vh - 305px) !important;
                                 &.facets-height-isMore {
-                                    max-height: calc(100vh - 345px) !important;
+                                    // max-height: calc(100vh - 345px) !important;
                                 }
                             }
                             &.facets-disabled{
                                 padding: 9px 15px 0 20px;
                                 position: relative; 
-                                max-height: calc(100vh - 220px);
+                                // max-height: calc(100vh - 220px);
                             }
                         }
                     }
@@ -1089,11 +1089,16 @@
                         }
                         .clear-all {
                             float: right;
-                            color: var(--sdk-primary-blue-color);
+                            color: #9aa0a6;
                             font-weight: normal;
                             font-size: 14px;
                             line-height: 17px;
-                            cursor: pointer;
+                            cursor: context-menu !important;
+                            &.enabled {
+                                cursor: pointer !important;
+                                color: #0d6efd !important;
+                                pointer-events: all;
+                            }
                         }
                     }
                     .category-wise-container {
@@ -1122,21 +1127,22 @@
                 }
                 .all-product-details {
                     width: calc(100% - 230px);
+                    height: calc(100vh - 156px);
                     float: left;
                     position: relative;
                     .content-data-sec{
                         padding: 17px 15px 0 20px;
-                        max-height: calc(100vh - 232px);
-                        overflow: scroll;
+                        // max-height: calc(100vh - 232px);
+                        // overflow: scroll;
                         position: relative;
                         &.filter-added{
                             padding: 0 15px 0 20px;
-                            max-height: calc(100vh - 275px);
-                            overflow: scroll;
+                            // max-height: calc(100vh - 275px);
+                            // overflow: scroll;
                             position: relative;
                         }
                         &.facets-height-isMore{
-                            max-height: calc(100vh - 314px);
+                            // max-height: calc(100vh - 314px);
                         }
                         .customization{
                             .customization-tile {
@@ -1662,7 +1668,7 @@ $color_1: #9AA0A6;
             align-items: center;
             right: 30px;
             bottom: 10px;
-            z-index: 1;
+            z-index: 17;
 
             .helpfull-title {
                 font-weight: normal;
@@ -1686,6 +1692,26 @@ $color_1: #9AA0A6;
         }
     }
 }
-
+#query-feedback{
+    .temp-feed-back-form{
+        box-shadow: 0px 5px 26px rgb(32 33 36 / 25%);
+        border-radius: 8px;
+        background: #FFFFFF;
+        height: auto;
+        width: 420px;
+        position: absolute;
+        right: 75px;
+        bottom: 76px;
+        padding: 20px 20px;
+        z-index: 20;
+        .temp-feed-back-header-block{
+            .temp-right-indicator-block{
+                position: absolute;
+                top: 288px;
+                right: -34px;
+            }
+        }
+    }
+}
 //Feedback CSS Ends
 
