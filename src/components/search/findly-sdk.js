@@ -7551,6 +7551,51 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         ? ".full-search-data-container"
         : ".search-data-container";
         var snippetObj={};
+        // res.graph_answer = {
+        //   "payload": {
+        //   "center_panel": {
+        //   "type": "active_citation_snippet",
+        //   "data": [
+        //   {
+        //   "title": "",
+        //   "answer": [
+        //   {
+        //   "answer_fragment": "The target price of Microsoft is $307.00 ",
+        //   "sources": [
+        //   {
+        //   "title": "microsoft",
+        //   "url": "https://searchassist-dev.kore.ai:443/searchassistapi/getMediaStream/findly/f-10471e43-2074-56d2-9a08-08fd1cdc3e74.pdf?n=4069468571&s=Im1GS0tZQm1OS3ErREdQKzY5SHRiUThYOG1WaWdzYVgzOWh3blI3RnBwQVk9Ig$$#page=5"
+        //   }
+        //   ]
+        //   },
+        //   {
+        //   "answer_fragment": ", Tesla is $220.00 ",
+        //   "sources": [
+        //   {
+        //   "title": "tesla",
+        //   "url": "https://searchassist-dev.kore.ai:443/searchassistapi/getMediaStream/findly/f-f2dca13a-3407-5538-81cb-25ed8f3134c5.pdf?n=8273921686&s=IlBYRWkyK2VLTXNYb0dDNFBTMWNKa0JURzJUQUMrY0pCSGx3ajl4d1Npb1k9Ig$$#page=4"
+        //   }
+        //   ]
+        //   },
+        //   {
+        //   "answer_fragment": ", and Salesforce is $236.00 ",
+        //   "sources": [
+        //   {
+        //   "title": "salesforce.com",
+        //   "url": "https://searchassist-dev.kore.ai:443/searchassistapi/getMediaStream/findly/f-ed6dd979-99ed-5182-bc31-da36bd6a1617.pdf?n=3019030135&s=InZvUGlJUEN5T1UzanBXL3Vnd2JlSUJJMlhsWTJiOTc3QWozTWpmK0ppalk9Ig$$#page=1"
+        //   }
+        //   ]
+        //   }
+        //   ],
+        //   "url": "",
+        //   "reference": [],
+        //   "source": "Answered by AI",
+        //   "score": 75
+        //   }
+        //   ]
+        //   }
+        //   }
+        //   };
       //   res.graph_answer = {
       //     "payload":
       //     {
@@ -7623,7 +7668,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
               var filterData = listSnippetData.filter(e => e == " ");
               filterData.forEach(f => listSnippetData.splice(listSnippetData.findIndex(e => e == f),1));
             }
-            snippetObj = {'title':helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title),'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,'template_type':res?.graph_answer?.payload?.center_panel?.type, 'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||'')}; 
+            let title = res?.graph_answer?.payload?.center_panel?.data[0]?.title?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.title) : '';
+            snippetObj = {'title':title,'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,'template_type':res?.graph_answer?.payload?.center_panel?.type, 'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||'')}; 
             if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               snippetObj['reference']=snippetReference;
             }

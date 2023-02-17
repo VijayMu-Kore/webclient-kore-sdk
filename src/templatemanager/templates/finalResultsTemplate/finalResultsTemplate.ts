@@ -127,7 +127,7 @@ class FinalResultsTemplate {
           </div>\
           </div>\
         {{/if}}\
-        {{if snippetData && snippetData?.title}}\
+        {{if snippetData && snippetData?.template_type}}\
         {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
           <div class="search-temp-one snippet-margin">\
             <div class="top-header">\
@@ -323,8 +323,8 @@ class FinalResultsTemplate {
         {{/if}}\
         <div class="citation-data-desc">\
         {{each(key, data) snippetData.answer}}\
-        <span class="snippet-answer-fragment-block fragment-hover-event {{each(itemKey, item) data.sources}} fragment-${itemKey+1} {{/each}}"\
-          fragment="{{each(itemKey, item) data.sources}} .fragment-${itemKey+1}, {{/each}}"><span class="sub-fragment"><span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a href="${source.url}" target="_blank"><span class="reference-no">${sourceKey+1}</span></a></sup>{{/each}}</span></span></span>\
+        <span class="snippet-answer-fragment-block fragment-hover-event {{each(itemKey, item) data.sources}} fragment-${key+itemKey+1} {{/each}}"\
+          fragment="{{each(itemKey, item) data.sources}} .fragment-${key+itemKey+1}, {{/each}}"><span class="sub-fragment"><span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a href="${source.url}" target="_blank"><span class="reference-no">${key+sourceKey+1}</span></a></sup>{{/each}}</span></span></span>\
         {{/each}}\
         </div>\
         <div class="active-snippet-referene-block">\
@@ -358,7 +358,7 @@ class FinalResultsTemplate {
     </div>\
     {{/if}}\
     {{/if}}\
-      <div class="finalResults {{if snippetData && snippetData?.title}}snippet-margin{{/if}}">\
+      <div class="finalResults {{if snippetData && snippetData?.template_type}}snippet-margin{{/if}}">\
         {{if taskPrefix === "SUGGESTED"}}\
         <span class="live-search-close-icon show-all-results">See All Results</span>\
         {{/if}}\
