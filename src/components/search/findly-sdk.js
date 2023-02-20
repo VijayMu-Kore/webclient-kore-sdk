@@ -9806,7 +9806,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition == "top") {
+  if (response.experienceConfig.searchBarPosition !== "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
@@ -19249,11 +19249,12 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                       </div>
                   </div>
               </div>
+              <div id="top-down-full-results-container"></div>
           </div>
           <div class="skelton-load-img" style="display:none">\
           <img alt="" />\
           </div>\
-          <div id="top-down-full-results-container"></div>
+          <!--<div id="top-down-full-results-container"></div>-->\
       </div>
   <div>
 <div>`;
