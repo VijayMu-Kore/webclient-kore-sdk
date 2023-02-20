@@ -40,7 +40,7 @@ class SnippetImageTemplate {
       </div>\
       {{/if}}\
       {{if snippetData && snippetData.image_url}}\
-      <div class="snippet-image-block"><img src="${snippetData.image_url}"/></div>\
+      <div class="snippet-image-block {{if snippetData.answer=="" && snippetData.title==""}}snippet_margin_top_0{{/if}}"><img src="${snippetData.image_url}"/></div>\
       {{/if}}\
       {{if snippetData && snippetData.source !== "Answered by AI"}}\
       <div class="snippet-source-block">\

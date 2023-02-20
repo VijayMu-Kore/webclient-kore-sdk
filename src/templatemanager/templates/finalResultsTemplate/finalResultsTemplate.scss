@@ -812,8 +812,11 @@ margin-bottom: 10px;
                     background: #FFFFFF;
                     border: 1px solid #f0f1f2;
                     border-radius: 20px;
-                    width: 150px;
+                    /* width: 150px; */
                     margin: 5px 5px 0px 0px;
+                    max-width: 125px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                     a{
                         word-break: break-word;
                         display: -webkit-box;
@@ -888,4 +891,16 @@ margin-bottom: 10px;
         z-index: 99999;
         transform: rotate(45deg) !important;
     }
+}
+.snippet_margin_top_0{
+    margin-top: 0px !important;
+}
+.snippet_padding_top_0{
+    padding-top: 0px !important;
+}
+.final-results-container .messageBubble.show-info-text-snippet .messageBubble-content {
+display: none !important;
+}
+.final-results-container .messageBubble.show-info-text-snippet{
+    margin-top:45px;
 }

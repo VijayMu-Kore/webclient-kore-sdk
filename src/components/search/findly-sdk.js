@@ -7562,6 +7562,10 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         //   {
         //   "answer_fragment": "The target price of Microsoft is $307.00 ",
         //   "sources": [
+        //     {
+        //       "title": "Wiki Michael Jordan",
+        //       "url": "https://en.wikipedia.org/wiki/Michael_Jordan"
+        //   },
         //   {
         //   "title": "microsoft",
         //   "url": "https://searchassist-dev.kore.ai:443/searchassistapi/getMediaStream/findly/f-10471e43-2074-56d2-9a08-08fd1cdc3e74.pdf?n=4069468571&s=Im1GS0tZQm1OS3ErREdQKzY5SHRiUThYOG1WaWdzYVgzOWh3blI3RnBwQVk9Ig$$#page=5"
@@ -7571,6 +7575,10 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         //   {
         //   "answer_fragment": ", Tesla is $220.00 ",
         //   "sources": [
+        //     {
+        //       "title": "salesforce.com",
+        //       "url": "https://searchassist-dev.kore.ai:443/searchassistapi/getMediaStream/findly/f-ed6dd979-99ed-5182-bc31-da36bd6a1617.pdf?n=3019030135&s=InZvUGlJUEN5T1UzanBXL3Vnd2JlSUJJMlhsWTJiOTc3QWozTWpmK0ppalk9Ig$$#page=1"
+        //       },
         //   {
         //   "title": "tesla",
         //   "url": "https://searchassist-dev.kore.ai:443/searchassistapi/getMediaStream/findly/f-f2dca13a-3407-5538-81cb-25ed8f3134c5.pdf?n=8273921686&s=IlBYRWkyK2VLTXNYb0dDNFBTMWNKa0JURzJUQUMrY0pCSGx3ajl4d1Npb1k9Ig$$#page=4"
@@ -7580,10 +7588,15 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         //   {
         //   "answer_fragment": ", and Salesforce is $236.00 ",
         //   "sources": [
-        //   {
-        //   "title": "salesforce.com",
-        //   "url": "https://searchassist-dev.kore.ai:443/searchassistapi/getMediaStream/findly/f-ed6dd979-99ed-5182-bc31-da36bd6a1617.pdf?n=3019030135&s=InZvUGlJUEN5T1UzanBXL3Vnd2JlSUJJMlhsWTJiOTc3QWozTWpmK0ppalk9Ig$$#page=1"
+        //     {
+        //       "title": "salesforce.com",
+        //       "url": "https://searchassist-dev.kore.ai:443/searchassistapi/getMediaStream/findly/f-ed6dd979-99ed-5182-bc31-da36bd6a1617.pdf?n=3019030135&s=InZvUGlJUEN5T1UzanBXL3Vnd2JlSUJJMlhsWTJiOTc3QWozTWpmK0ppalk9Ig$$#page=1"
+        //       },
+        //     {
+        //       "title": "Wiki Michael Jordan",
+        //       "url": "https://en.wikipedia.org/wiki/Michael_Jordan"
         //   }
+          
         //   ]
         //   }
         //   ],
@@ -7596,59 +7609,14 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         //   }
         //   }
         //   };
-      //   res.graph_answer = {
-      //     "payload":
-      //     {
-      //         "center_panel":
-      //         {
-      //             "type": "active_citation_snippet",
-      //             "data":
-      //             [
-      //                 {
-      //                     "title": "Finanace and developemnt overview and Introduction",
-      //                     "answer":
-      //                     [
-      //                         {
-      //                             "answer_fragment": "The relationship between financial development and economic growth has long been of interest to economists and goes back to at least Schumpeter’s",
-      //                             "sources":
-      //                             [
-      //                                 {
-      //                                     "title": "Wiki Michael Jordan",
-      //                                     "url": "https://en.wikipedia.org/wiki/Michael_Jordan"
-      //                                 }
-      //                             ]
-      //                         },
-      //                         {
-      //                             "answer_fragment": "Advances in growth theory have shown the complexities and variety of ways in which the financial system can affect economic growth, once allowance is made for asymmetric information in financial markets and increasing returns to scale in production, According to Pagano",
-      //                             "sources":
-      //                             [
-      //                                 {
-      //                                     "title": "Wiki Michael Jordan",
-      //                                     "url": "https://en.wikipedia.org/wiki/Michael_Jordan"
-      //                                 },
-      //                                 {
-      //                                     "title": "google Michael Jordan",
-      //                                     "url": "https://en.google.org/wiki/Michael_Jordan"
-      //                                 }
-      //                             ]
-      //                         }
-      //                     ],
-      //                     "reference":
-      //                     [],
-      //                     "score": 0.8504485383978129,
-      //                     "source": "refinitive Morgan stanley Research.pdf"
-      //                 }
-      //             ]
-      //         }
-      //     }
-      // };
+      
         if(res?.graph_answer?.payload?.center_panel){
          
           if(Object.keys(res.graph_answer.payload.center_panel).length>0){
             var listSnippetData = '';
             var snippetReference = [];
             if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              listSnippetData = helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer);
+              listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.answer?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer) : '';
             } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               res.graph_answer.payload.center_panel.data[0].answer.forEach((item)=>{
                 snippetReference = [...snippetReference,...item.sources];
@@ -7662,6 +7630,14 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 return false;
               }, set);
               snippetReference = unionArray;
+              res.graph_answer.payload.center_panel.data[0].answer.forEach((item)=>{
+                item.sources.forEach((source)=>{
+                  let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title && d.url == source.url);
+                  if(sourceIndex>-1){
+                    source['_id']= sourceIndex+1;
+                  }
+                })
+              })
               listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
             } else {
               listSnippetData = (helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)).split('<br /> * ');
@@ -7708,7 +7684,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         if (dataObj.smallTalk) {
           _self.sendMessageToSearch("bot", dataObj.smallTalk);
         } else {
-          // var _botMessage = "Sure, please find the matched results below";
+          // var _botMessage = "Here are the relevant results";
           var searchData = $(_self.getSearchTemplate("liveSearchData")).tmplProxy({
             faqs: [],
             web: [],
@@ -7730,7 +7706,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 component: {
                   type: 'template',
                   payload: {
-                    infoText: 'Sure, please find the matched results below',
+                    infoText: 'Here are the relevant results',
                     template_type: "finalResultsTemplate",
                     isDev: _self.isDev,
                     devMode: devMode,
@@ -7876,7 +7852,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       // } 
       if (!$('body').hasClass('top-down')) {
         setTimeout(() => {
-          if ($('.messageBubble .userMessage span').last().text() == _self.vars.searchObject.searchText && $('.messageBubble .messageBubble-content .botMessage span:nth-child(2)').last().text() === 'Sure, please find the matched results below') {
+          if ($('.messageBubble .userMessage span').last().text() == _self.vars.searchObject.searchText && $('.messageBubble .messageBubble-content .botMessage span:nth-child(2)').last().text() === 'Here are the relevant results') {
             if ($('#searchChatContainer').prop('offsetHeight') < $('.finalResults .resultsOfSearch .bottom-search-show-all-results').last().position().top) {
               $("#searchChatContainer").off('scroll').on('scroll', function () {
                 if ($('.sdk-chat-container').scrollTop() == 0 && !$('#histroybutton').is(':visible')) {
@@ -7992,7 +7968,22 @@ FindlySDK.prototype.handleSearchRes = function (res) {
               {
                 scrollTop:
                   $("#searchChatContainer").scrollTop() +
-                  $(".messageBubble-content").last().parent().position().top -
+                  ($(".messageBubble-content")
+                  .last()
+                  .parent()
+                  .prev()
+                  .find(".userMessage").length?$(".messageBubble-content")
+                  .last()
+                  .parent()
+                  .prev()
+                  .find(".userMessage").parent().position().top:($(".messageBubble-content")
+                  .last()
+                  .parent()
+                  .prev().parent()
+                  .find(".search-temp-one").length?$(".messageBubble-content")
+                  .last()
+                  .parent()
+                  .prev().parent().prev().find('.userMessage').parent().position().top:$(".userMessage").last().parent().position().top)) -
                   60,
               },
               500
@@ -8221,7 +8212,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             if (dataObj.smallTalk) {
               _self.sendMessageToSearch("bot", dataObj.smallTalk);
             } else {
-              var _botMessage = "Sure, please find the matched results below";
+              var _botMessage = "Here are the relevant results";
               searchData = $(
                 _self.getSearchTemplate("liveSearchData")
               ).tmplProxy({
@@ -21533,7 +21524,7 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
             messageData.isFromHistory = true;
             //messageData.timestamp = history.timestamp;
           } else {
-            messageData.text = 'Sure, please find the matched results below';
+            messageData.text = 'Here are the relevant results';
             messageData.from = 'bot';
             messageData.count = _self.countTotalResults(history.response.message[0].component.payload.template, 0);
             messageData.timeStamp = _self.extractTime(history.timestamp);
