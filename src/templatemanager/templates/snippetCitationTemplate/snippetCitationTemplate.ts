@@ -35,14 +35,14 @@ class SnippetCitationTemplate {
         {{/if}}\
         <div class="citation-data-desc  {{if snippetData.title==""}}snippet_padding_top_0{{/if}}">\
         {{each(key, data) snippetData.answer}}\
-        <span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a href="${source.url}" target="_blank">[${sourceKey+1}]</a></sup>{{/each}}. </span>\
+        <span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a href="${source.url}" target="_blank">[${source._id}]</a></sup>{{/each}}. </span>\
         {{/each}}\
         </div>\
         <div class="snippet-referene-block">\
           <div class="reference-block-header">References: </div>\
           <ol type="1" class="reference-list-temp-ul">\
                   {{each(key, item) snippetData.reference}}\
-                      <li class="reference-list-temp-li" ><a class="sa-sdk-title" href="${item.url}" data-title="{{html helpers.convertMDtoHTML(item.title)}}" target="_blank"><span>{{html helpers.convertMDtoHTML(item.title)}}</span></a></li>\
+                      <li class="reference-list-temp-li" title="{{html helpers.convertMDtoHTML(item.title)}} ><a  href="${item.url}" " target="_blank"><span>{{html helpers.convertMDtoHTML(item.title)}}</span></a></li>\
                       {{/each}}\
                   </ol>\
         </div>\

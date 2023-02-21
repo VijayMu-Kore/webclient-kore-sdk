@@ -4894,7 +4894,8 @@ li{
                         }
                     }
                     .botMessage{
-                        background: var(--sdk-bg-athens-gray-color);
+                        // background: var(--sdk-bg-athens-gray-color);
+                        background: #eff0f1;
                         border: 1px solid var(--sdk-border-mischka-color);
                         box-sizing: border-box;
                         border-radius: 8px;
@@ -4902,13 +4903,17 @@ li{
                         position: relative;
                         padding: 15px 15px 15px 17px;
                         max-width: 85%;
-                        min-height: 48px;      
+                        // min-height: 48px;      
+                        min-height: 39px;      
                         float: left;
                         position: relative;
                         clear: both;
-                        margin-bottom: 35px;  
+                        margin-bottom: 20px;  
                         margin-left: 30px;  
-                        font-size: 14px; 
+                        // font-size: 14px; 
+                        font-size: 12px;
+                        padding: 12px;
+                        border: none;
                         .result-found-text{
                             position: absolute;
                             bottom: -27px;
@@ -4930,4 +4935,8 @@ li{
             }
         }
     }
+}
+
+.fda-demo .search-temp-one.active-citation-snippet .active-snippet-referene-block .active-reference-list-temp-block .active-reference-list-temp{
+    padding: 9px 10px 9px 5px;
 }
