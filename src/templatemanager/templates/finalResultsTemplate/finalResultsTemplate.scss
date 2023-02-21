@@ -755,8 +755,8 @@ margin-bottom: 10px;
                 line-height: 16px;
                 .sub-fragment{
                     background: #fff;
-                    border-radius: 8px;
-                    padding: 0px 5px;
+                    // border-radius: 8px;
+                    padding-right: 3px;
                     .snippet-citation{
                         vertical-align: text-bottom;
                     }
@@ -778,8 +778,8 @@ margin-bottom: 10px;
                 &:hover, &.active{
                     .sub-fragment{
                     background: #EAF1FC;
-                    border-radius: 4px;
-                    padding: 0px 5px;
+                    // border-radius: 4px;
+                    // padding: 0px 5px;
                     .reference-no{
                         background: #5591E9;
                         color: #fff;

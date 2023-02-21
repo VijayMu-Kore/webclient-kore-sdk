@@ -2659,7 +2659,15 @@ FindlySDK.prototype.getSuggestion = function (suggestions) {
       searchQueryArr[searchQueryArr.length - 1] = suggestions[0];
     }
     searchQuery = searchQueryArr.join(" ");
-    $suggest.val(searchQuery);
+  var canvas = document.createElement("canvas");
+  var ctx = canvas.getContext("2d");
+  ctx.font = $suggest.css('font-size')+' '+$suggest.css('font-family');
+  var width = ctx.measureText(searchQuery).width;
+  if(width>$suggest.width()+40){
+      $suggest.val("");
+    }else{
+      $suggest.val(searchQuery);
+    }
   }
   if (!suggestions.length) {
     $suggest.val("");
@@ -7632,7 +7640,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
               snippetReference = unionArray;
               res.graph_answer.payload.center_panel.data[0].answer.forEach((item)=>{
                 item.sources.forEach((source)=>{
-                  let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title && d.url == source.url);
+                  let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title);
                   if(sourceIndex>-1){
                     source['_id']= sourceIndex+1;
                   }
