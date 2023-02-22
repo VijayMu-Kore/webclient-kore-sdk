@@ -10299,6 +10299,7 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
+  $("body").addClass("ms-sdk-body");
   setTimeout(()=>{
   _self
     .configureSearchInterface(findlyConfig.botOptions)

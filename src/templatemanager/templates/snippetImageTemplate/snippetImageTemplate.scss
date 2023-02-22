@@ -53,12 +53,19 @@
 }
 /* snippet templates css styles */
 .search-temp-one{
-    background: #FFFFFF;
-    border-bottom: 2px solid #784BD1;
-    box-shadow: 0px 1px 2px #bdc1c6;
-    border-radius: 8px;
-    padding: 20px 20px;
+    // background: #FFFFFF;
+    // border-bottom: 2px solid #784BD1;
+    // box-shadow: 0px 1px 2px #bdc1c6;
+    // border-radius: 8px;
+    // padding: 20px 20px;
     margin-bottom: 25px;
+    background: linear-gradient(180deg, #F8F9FF 0%, #FFFFFF 100%);
+    border-width: 2px 0px;
+    border-style: solid;
+    border-color: #784BD1;
+    border-radius: 4px;
+    filter: drop-shadow(0px 4px 8px #E6D6FF);
+    padding: 15px 15px 10px;
 }
 
 .search-temp-one .top-header{
@@ -80,7 +87,7 @@
     display: none !important;
     }
     #searchChatContainer .search-temp-one {
-        margin-top: -25px !important;
+        // margin-top: -25px !important;
     }
 .search-temp-one .top-header .top-header-with-img{
     display: flex;

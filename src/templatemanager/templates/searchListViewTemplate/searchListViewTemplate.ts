@@ -462,17 +462,38 @@ class SearchListViewTemplate {
     <div class="parent-list-template search-list-template{{if isClickable == true}}-no{{/if}}-clickble-{{if listType=="classic"}}classic{{else}}plain{{/if}}-group{{if gridLayoutType=="img_left"}}-if-img{{/if}}">\
         {{if isClickable == true}}\
         {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
-        <div class="content-info {{if isSearchSDK&&textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+        <div class="content-info {{if isSearchSDK&&textAlignment==" center"}}text-center{{/if}} click-to-navigate-url click-log-metrics  {{if (data.img.length && data.heading.length && data.description.length)}} sa-list-block-container {{/if}}" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}" href="${data.url}" target="_blank">\
+            {{if !(data.img.length && data.heading.length && data.description.length)}}\
             {{if data.img.length}}\
             <div class="img_block">\
                 <img src="${data.img}">\
             </div>\
             {{/if}}\
             {{if data.heading.length}}\
-            <div class="heading-title" title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+            <div class="heading-title sa-sdk-title" data-title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
             {{/if}}\
             {{if data.description.length}}\
-            <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+            <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}  sa-sdk-title" data-title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+            {{/if}}\
+            {{/if}}\
+            {{if (data.img.length && data.heading.length && data.description.length)}}\
+              <div class="sa-list-image-title-desc-container">\
+                <div class="sa-img-container">\
+                {{if data.img.length}}\
+                <div class="img_block">\
+                    <img src="${data.img}">\
+                </div>\
+                {{/if}}\
+                </div>\
+                <div class="sa-desc-container">\
+                  {{if data.heading.length}}\
+                  <div class="heading-title sa-sdk-title" data-title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                  {{/if}}\
+                  {{if data.description.length}}\
+                  <div class="desc_text_info {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}  sa-sdk-title" data-title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                  {{/if}}\
+                </div>\
+              </div>\
             {{/if}}\
         </div>\
         {{/each}}\
@@ -482,7 +503,7 @@ class SearchListViewTemplate {
         <div class="accordion-content-info">\
             <div class="content-info accordion" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
                 {{if data.heading.length}}\
-                <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                <div class="heading-title  sa-sdk-title" data-title="{{html helpers.convertMDtoHTML(data.heading)}}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                 {{/if}}\
                 {{if data.description.length}}\
                 <div class="desc_text_info {{if !data.heading || !data.heading.length}}two-line-desc{{else}}text-truncate{{/if}}">{{html helpers.convertMDtoHTML(data.description)}}</div>\

@@ -116,7 +116,7 @@ class FinalResultsTemplate {
     var finalResultsTemplate = '<script type="text/x-jqury-tmpl">\
     <div class="final-results-container">\
         {{if infoText && infoText.length}}\
-          <div class="messageBubble  {{if  (snippetData && snippetData?.template_type && snippetData.template_type !=="image_snippet")}} show-info-text-snippet {{/if}}">\
+          <div class="messageBubble  show-info-text-snippet">\
             <div class="messageBubble-content">\
                 <div class="botMessage">\
                 <span class="bot_Img">\
@@ -358,19 +358,10 @@ class FinalResultsTemplate {
     </div>\
     {{/if}}\
     {{/if}}\
-    {{if infoText && infoText.length && snippetData && snippetData?.template_type && snippetData.template_type !=="image_snippet"}}\
-          <div class="messageBubble">\
-            <div class="messageBubble-content">\
-                <div class="botMessage">\
-                <span class="bot_Img">\
-                    <img class="default-bot-icon" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg">\
-                </span>\
-                <span class="bot_info_text">{{html helpers.convertMDtoHTML(infoText)}}</span>\
-                </div>\
-          </div>\
-          </div>\
-        {{/if}}\
-      <div class="finalResults {{if snippetData && snippetData?.template_type}}snippet-margin{{/if}}">\
+    {{if snippetData && snippetData?.template_type}}\
+    <div class="show-more-results-block" ><span class="show-more-results-btn" id="sa-sdk-show-more-results-btn">Show more results</span></div>\
+    {{/if}}\
+      <div class="finalResults snippet-margin {{if snippetData && snippetData?.template_type}} display-none{{/if}}">\
         {{if taskPrefix === "SUGGESTED"}}\
         <span class="live-search-close-icon show-all-results">See All Results</span>\
         {{/if}}\
@@ -442,6 +433,10 @@ class FinalResultsTemplate {
       });
     }
     FinalResultsTemplate.prototype.bindFragmentHoverEvent(me,messageHtml)
+    $(messageHtml).off('click', '#sa-sdk-show-more-results-btn').on('click', '#sa-sdk-show-more-results-btn', function (event:any) {
+      $(event.currentTarget).parent().next().closest('.finalResults').removeClass('display-none');
+      $(event.currentTarget).parent().remove();
+    });
   }
   bindFragmentHoverEvent(me:any,messageHtml:any){
     let $ = me.hostInstance.$;
