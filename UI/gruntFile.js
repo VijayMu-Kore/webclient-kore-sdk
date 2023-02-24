@@ -1,6 +1,7 @@
 module.exports = function (grunt) {
     
-    var _type = grunt.option('type');
+//     var _type = grunt.option('type');
+    var _type = "widgets_chat"; // Using "widgets_chat" config always to build this which will cater both "widgets_chat" and "chat" cases
     console.log(_type)
     var cacheBustConst = '-' + new Date().getTime();
     var jsFiles=[];
