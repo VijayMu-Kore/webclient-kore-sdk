@@ -20550,6 +20550,13 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
       "userIdentity": _self.config.botOptions.userIdentity,
     }
   };
+  if (!_self.vars) {
+    _self.vars = {
+      historySkip: 0,
+      historyLimit: 50,
+      loadingHistory: false
+    }
+  }
   var skip = _self.vars.historySkip;
   var limit = _self.vars.historyLimit;
   if (_self.vars.loadingHistory) {
