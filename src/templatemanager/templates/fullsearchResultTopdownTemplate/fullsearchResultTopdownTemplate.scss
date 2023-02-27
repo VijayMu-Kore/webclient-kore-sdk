@@ -1002,7 +1002,7 @@
         .all-result-container{
             background: var(--sdk-white-bg);
             margin-top: 12px;
-            height: calc(100% - 93px);
+            // height: calc(100% - 93px);
             padding: 20px;
             overflow: hidden;
             &.center-align-filter{
@@ -1059,6 +1059,7 @@
                 display: inline-block;
                 width: 100%;
                 .filters-sec {
+                    display: none;
                     float: left;
                     width: 230px;
                     padding: 0px 10px;
