@@ -20,7 +20,7 @@ class SearchListViewTemplate {
       else{
         msgData.message[0].component.payload.isSearchSDK = false;
       }
-      me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString(msgData?.message[0].component?.payload?.template_type)).tmpl(msgData?.message[0].component?.payload);
+      me.messageListHtml = $(SearchListViewTemplate.prototype.getTemplateString(msgData?.message[0].component?.payload?.template_type,me)).tmpl(msgData?.message[0].component?.payload);
       setTimeout(()=>{
         SearchListViewTemplate.prototype.bindEvents(me, me.messageListHtml);
     },500)
@@ -230,7 +230,7 @@ class SearchListViewTemplate {
       if(result?.message[0].component?.payload?.viewType == 'Customize'){
         result.message[0].component.payload.template_type = 'searchCustomizeListTemplate';
       }
-      const listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type)).tmpl(result?.message[0].component.payload);
+      const listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type,me)).tmpl(result?.message[0].component.payload);
       $(listHTML).find(".show-more-list").remove();
       $(
         ".full-search-data-container [templateName=" +
@@ -403,8 +403,8 @@ class SearchListViewTemplate {
     });
     SearchListViewTemplate.prototype.tooltipBindEvent(me);
   }
-  getTemplateString(type: any) {
-  
+  getTemplateString(type: any,me:any) {
+    let $ = me.hostInstance.$;
     var searchListTemplates = '<script type="text/x-jqury-tmpl">\
     {{if isButtonTemplate == false}}\
     <div>\
@@ -808,13 +808,55 @@ class SearchListViewTemplate {
     {{/if}}\
   </script>';
 
-    if (type === 'searchListTemplate') {
+  var koreListTemplate = 
+  '<script type="text/x-jqury-tmpl">\
+     <div class="temp-block-header">Page Results</div>\
+     <div class="search-temp-results-tiles sa-pages-tiles-block">\
+        <div class="search-temp-width-90">\
+              {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
+              <div class="search-temp-one-top-tile page-result-tile">\
+                  {{if data.heading.length}}\
+                  <div class="top-header">\
+                    <div class="top-header-txt">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                  </div>\
+                  {{/if}}\
+                  {{if data.description.length}}\
+                  <div class="temp-data-desc">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                  {{/if}}\
+                  <div class="temp-footer-block">\
+                      <div class="temp-footer">\
+                          <div class="btn-link">\
+                          {{html helpers.convertMDtoHTML(data.page_url)}}\
+                          </div>\
+                          <div class="temp-right">\
+                              <div class="is-it-usefull">Go to Page</div>\
+                              <div class="temp-fotter-actions">\
+                                 <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg"/>\
+                              </div>\
+                          </div>\
+                      </div>\
+                  </div>\
+              </div>\
+              {{/each}}\
+              </div>\
+            <div class="search-temp-see-more">\
+              <div class="sa-card-tile-readmore" {{if doc_count==0 || doc_count<6 }}display-none{{/if}} show-more-list" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}>\
+              See More \
+              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img" />\
+              </div>\
+          </div>\
+          </div>\
+  </script>';
+
+    if (type === 'searchListTemplate' && !$("body").hasClass("kore-sdk-body")) {
       return searchListTemplates;
     }
-    if(type === 'searchCustomizeListTemplate'){
+    if(type === 'searchCustomizeListTemplate'  && !$("body").hasClass("kore-sdk-body") ){
       return  customizeList;
     }
-
+    if(type === 'searchListTemplate' && $("body").hasClass("kore-sdk-body")){
+      return  koreListTemplate;
+    }
   }
 
   postPerformRankingActions(me:any,event:any,pinObj:object,searchText:string,actionType:string){

@@ -9,7 +9,7 @@ class SnippetListTemplate {
         let helpersObj = helpers;
 
         if (msgData?.message?.[0]?.component?.payload?.template_type === "list_element_snippet" || msgData?.message?.[0]?.component?.payload?.template_type === "heading_snippet") {
-            me.messageHtml = $(SnippetListTemplate.prototype.getTemplateString()).tmpl({
+            me.messageHtml = $(SnippetListTemplate.prototype.getTemplateString(me)).tmpl({
                 'snippetData': msgData?.message?.[0]?.component?.payload?.snippetData,
                 'helpers': helpersObj.helpers,
                 'displayFeedback':msgData?.message?.[0]?.component?.payload?.feedbackDisplay
@@ -21,7 +21,8 @@ class SnippetListTemplate {
             return me.messageHtml;
         }
     }
-    getTemplateString() {
+    getTemplateString(me:any) {
+      let $ = me.hostInstance.$;
         var snippetListTemplate = '<script type="text/x-jqury-tmpl">\
         <div class="search-temp-one list-snippet-temp">\
         <div class="top-header">\
@@ -69,7 +70,34 @@ class SnippetListTemplate {
         </div>\
     </div>\
           </script>';
+
+     var koreSnippetListTemplate = 
+     '<script type="text/x-jqury-tmpl">\
+          <div class="search-temp-one-top-tile">\
+          <div class="search-temp-one-top-tile-block top-search-template">\
+              <div class="top-header"><div class="top-header-txt">SmartAssist</div>\
+              </div>\
+              <div class="top-sub-header">AI-Powered, Omnichannel, Call Routing Solution</div>\
+              <div class="temp-data-desc">Delivering optimized experiences for your customers, agents and contact center operations...</div>\
+              <div class="temp-footer-block">\
+                <div class="temp-footer">\
+                    <div class="btn-link">kore.ai/smartassist/</div>\
+                    <div class="temp-right"><div class="is-it-usefull">Go to Page</div><div class="temp-fotter-actions">\
+                          <img src="img/goto-page.svg" />\</div>\
+                    </div>\
+                </div>\
+              </div>\
+          </div>\
+          <div class="sa-right-magnifier">\
+              <img src="img/sa-search-magnifier.svg" />\
+          </div>\
+          </div>  \
+      </script>';
+     if($("body").hasClass("kore-sdk-body")){
+        return koreSnippetListTemplate;
+      }else{
         return snippetListTemplate;
+      }
     }
     bindSnippetEvents(me:any,messageHtml:any, snippetData:any){
       let $ = me.hostInstance.$;

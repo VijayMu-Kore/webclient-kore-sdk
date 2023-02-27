@@ -9,7 +9,7 @@ class SnippetParagraphTemplate {
         let helpersObj = helpers;
 
         if (msgData?.message?.[0]?.component?.payload?.template_type === "paragraph_snippet" || msgData?.message?.[0]?.component?.payload?.template_type === "answer_snippet") {
-            me.messageHtml = $(SnippetParagraphTemplate.prototype.getTemplateString()).tmpl({
+            me.messageHtml = $(SnippetParagraphTemplate.prototype.getTemplateString(me)).tmpl({
                 'snippetData': msgData?.message?.[0]?.component?.payload?.snippetData,
                 'helpers': helpersObj.helpers,
                 'displayFeedback':msgData?.message?.[0]?.component?.payload?.feedbackDisplay
@@ -21,7 +21,8 @@ class SnippetParagraphTemplate {
             return me.messageHtml;
         }
     }
-    getTemplateString() {
+    getTemplateString(me:any) {
+      let $ = me.hostInstance.$;
         var snipppetParagaraphTemplate  = '<script type="text/x-jqury-tmpl">\
       <div class="search-temp-one">\
       <div class="top-header">\
@@ -65,7 +66,42 @@ class SnippetParagraphTemplate {
       </div>\
   </div>\
       </script>';
+      var koreSnippetParagaraphTemplate = 
+     '<script type="text/x-jqury-tmpl">\
+     <div class="search-temp-one-top-tile">\
+     <div class="search-temp-one-top-tile-block top-search-template">\
+         <div class="top-header">\
+             {{if snippetData && snippetData.title}}<div class="top-header-txt">SmartAssist</div>{{/if}}\
+          </div>\
+          <!-- <div class="top-sub-header">AI-Powered, Omnichannel, Call Routing Solution</div>\ -->\
+          <div class="temp-data-desc">\
+             {{html snippetData?.answer}}\
+          </div>\
+          <div class="temp-footer-block">\
+              <div class="temp-footer">\
+                  <div class="btn-link" {{if !snippetData.source}} display-none{{/if}}" title="{{html snippetData.source}}">\
+                     {{html snippetData.source}}\
+                  </div>\
+                  <div class="temp-right">\
+                      <div class="is-it-usefull">Go to Page</div>\
+                      <div class="temp-fotter-actions">\
+                      <a href="${snippetData?.page_url}" target="_blank" target="_blank"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
+                      </div>\
+                  </div>\
+              </div>\
+          </div>\
+     </div>\
+     <div class="sa-right-magnifier">\
+     <img class="magnifier-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/sa-search-magnifier.svg" />\
+     </div>\
+    </div>\
+      </script>';
+     if($("body").hasClass("kore-sdk-body")){
+        return koreSnippetParagaraphTemplate;
+      }else{
         return snipppetParagaraphTemplate;
+      }
+
     }
     bindSnippetEvents(me:any,messageHtml:any, snippetData:any){
       let $ = me.hostInstance.$;

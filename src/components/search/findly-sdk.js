@@ -18,6 +18,7 @@ import './css/fonts/inter.css';
 import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
 import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
+import './css/koreWeb.scss';
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // import './findly-demo.scss'
@@ -9806,7 +9807,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition !== "top") {
+  if (response.experienceConfig.searchBarPosition == "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
@@ -19266,7 +19267,12 @@ FindlySDK.prototype.initializeTopDown = function (
   search_container,
   searchExperienceConfig
 ) {
-  $('body').addClass('sdk-body');
+  if(!$('body').hasClass('sdk-body')){
+    $('body').addClass('sdk-body');
+  }
+  if(!$('body').hasClass('kore-sdk-body')){
+    $('body').addClass('kore-sdk-body');
+  }
   var _self = this;
   if(findlyConfig.isDev){
     _self.isDev = true;
@@ -21563,6 +21569,9 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
           }
           if (obj.prod_image) {
             item.ecommerce_image = obj.prod_image;
+          }
+          if (obj.page_url) {
+            item.page_url = obj.page_url;
           }
                 item.addedResult = (obj.addedResult || (obj.addedResult == false)) ? obj.addedResult : false;
                 item.bestMatch = (obj.bestMatch || (obj.bestMatch == false)) ? obj.bestMatch : false;
