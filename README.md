@@ -1,7 +1,7 @@
-﻿# Kore.ai SDK
-Kore.ai offers SearchAssist SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore.ai Bots chat capability into custom applications.
+﻿# SearchAssist SDK
+The SearchAssist web SDK is a tool for developers to add the capabilities of the SearchAssist application to their web applications. It is a client-side library that makes it easy for third-party web applications to access and use the features of SearchAssist..
 
-With just few lines of code, you can embed our Kore.ai chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to
+With just few lines of code, you can embed our SearchAssist SDK into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to
 
 [SearchAssist SDK](https://docs.kore.ai/searchassist/)
 
@@ -16,7 +16,7 @@ With just few lines of code, you can embed our Kore.ai chat widget into your app
 
 ## 💡 Getting Started
 
-First, install kore web SDK via the [npm](https://www.npmjs.com/get-npm) package manager:
+First, install searchassist SDK via the [npm](https://www.npmjs.com/get-npm) package manager:
 
 ```bash
 npm install --save git+ssh://github.com/Koredotcom/SearchAssist-web-sdk#1.0.0
