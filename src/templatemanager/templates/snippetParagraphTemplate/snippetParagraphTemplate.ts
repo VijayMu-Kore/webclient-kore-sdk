@@ -33,7 +33,7 @@ class SnippetParagraphTemplate {
           <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
           {{/if}}\
       </div>\
-      {{if snippetData && snippetData.title}}<div class="paragraph-temp-header" title="${snippetData?.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>{{/if}}\
+      {{if snippetData && snippetData.title}}<div class="paragraph-temp-header sa-sdk-title" data-title="${snippetData?.title}">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>{{/if}}\
       <div class="temp-data-desc">\
       {{html snippetData?.answer}}\
       </div>\
@@ -43,7 +43,7 @@ class SnippetParagraphTemplate {
       {{if snippetData && snippetData.source !== "Answered by AI"}}\
       <div class="snippet-source-block">\
         <div class="snippet-source-file-name {{if !snippetData.source}} display-none{{/if}}">{{html snippetData.source}}</div>\
-        <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name" title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
+        <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name sa-sdk-title" data-title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
       </div>\
       {{/if}}\
       <div class="temp-footer-block">\
@@ -106,7 +106,7 @@ class SnippetParagraphTemplate {
             });
           },300)
         }
-        
+        SnippetParagraphTemplate.prototype.tooltipBindEvent(me);
     }
 
     appendFeedBaackData(me: any, messageHtml: any,snippetData:any){
@@ -125,6 +125,20 @@ class SnippetParagraphTemplate {
       };
         $(messageHtml).find('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
      } 
+     tooltipBindEvent(me:any){
+      let $ = me.hostInstance.$;
+    $('.sa-sdk-title').off('mouseover').on('mouseover',function(e:any){
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      $(e.currentTarget).before('<div class="sdk-tooltip-container">'+$(e.currentTarget).attr('data-title')+'<span class="sa-tooltip-arrow"></span></div>');
+      $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top',($(e.currentTarget).position().top-($(e.currentTarget).parent().find('.sdk-tooltip-container').height()+25))+'px');
+    })
+    $('.sa-sdk-title').off('mouseout').on('mouseout',function(e:any){
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
+      })
+    }
 }
 
 

@@ -1,7 +1,7 @@
 {
   "name": "kore-web-sdk",
-  "version": "9.3.0",
-  "description": "Kore.ai offers SearchAssist SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore.ai Bots chat capability into custom applications",
+  "version": "1.0.0",
+  "description": "Kore.ai offers Bots SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore.ai Bots chat capability into custom applications",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-umd": "webpack --env=kore_env=prod --env=target_module=umd",
@@ -22,14 +22,14 @@
   "module": "dist/kore-web-sdk.esm.browser.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:RajasekharBa-Kore/web-kore-sdk.git#SA_Revamp_sdk_public_repo_changes"
+    "url": "git@github.com:Koredotcom/SearchAssist-web-sdk#1.0.0"
   },
   "author": "Pavan Kumar Ichapurapu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Koredotcom/web-kore-sdk/issues"
+    "url": "https://github.com/Koredotcom/SearchAssist-web-sdk/issues"
   },
-  "homepage": "https://github.com/Koredotcom/web-kore-sdk#readme",
+  "homepage": "https://github.com/Koredotcom/SearchAssist-web-sdk#readme",
   "sideEffects": [
     "**/*.css",
     "**/*.scss"

@@ -2457,107 +2457,6 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
       return confirmationModal;
   }
 };
-FindlySDK.prototype.getListViewTemplate = function (messageData, helpers) {
-  var listT =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-            {{if msgData.message}} \
-                <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="kore-list-template-div {{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon listView"> \
-                    <div class="listViewTmplContent {{if msgData.message[0].component.payload.boxShadow}}noShadow{{/if}}"> \
-                        {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                        {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                        <ul class="listViewTmplContentBox"> \
-                            {{if msgData.message[0].component.payload.text || msgData.message[0].component.payload.heading}} \
-                                <li class="listViewTmplContentHeading"> \
-                                    {{if msgData.type === "bot_response" && msgData.message[0].component.payload.heading}} {{html msgData.message[0].component.payload.text}} {{else}} {{html msgData.message[0].component.payload.text}} {{/if}} \
-                                    {{if msgData.message[0].component.payload.sliderView}} <button class="close-button" title="Close"><img src="data:image/svg+xml;base64,           PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button>{{/if}}\
-                                    {{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
-                                        <span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
-                                    {{/if}} \
-                                </li> \
-                            {{/if}} \
-                            <div class="listItems">\
-                            {{each(key, msgItem) msgData.message[0].component.payload.elements}} \
-                            {{if (msgData.message[0].component.payload.seeMore && key < msgData.message[0].component.payload.moreCount) || (!msgData.message[0].component.payload.seeMore)}}\
-                                        <li class="listViewTmplContentChild"> \
-                                            {{if msgItem.image_url}} \
-                                                <div class="listViewRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-                                                    <img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
-                                                </div> \
-                                            {{/if}} \
-                                            <div class="listViewLeftContent" data-url="${msgItem.default_action.url}" data-title="${msgItem.default_action.title}" data-value="${msgItem.default_action.title}"> \
-                                                <span class="titleDesc">\
-                                                <div class="listViewItemTitle" title="${msgItem.title}">{{if msgData.type === "bot_response"}} {{html msgItem.title}} {{else}} {{html msgItem.title}} {{/if}}</div> \
-                                                {{if msgItem.subtitle}}<div class="listViewItemSubtitle" title="${msgItem.subtitle}">{{if msgData.type === "bot_response"}} {{html msgItem.subtitle}} {{else}} {{html msgItem.subtitle}} {{/if}}</div>{{/if}} \
-                                                </span>\
-                                            {{if msgItem.value}}<div class="listViewItemValue" title="${msgItem.value}">{{if msgData.type === "bot_response"}} {{html msgItem.value}} {{else}} {{html msgItem.value}} {{/if}}</div>{{/if}} \
-                                            </div>\
-                                        </li> \
-                                        {{/if}}\
-                            {{/each}} \
-                            </div>\
-                            {{if msgData.message[0].component.payload.seeMore}}\
-                            <li class="seeMore"> \
-                                <span class="seeMoreList">${msgData.message[0].component.payload.buttons[0].title}</span> \
-                            </li> \
-                            {{/if}}\
-                        </ul> \
-                    </div> \
-                </li> \
-            {{/if}} \
-          </script>';
-  var template = $(listT).tmpl({
-    msgData: messageData,
-    helpers: helpers || this.helpers,
-    extension: {},
-  });
-  return template;
-};
-
-FindlySDK.prototype.getCarouselTemplate = function (messageData, helpers) {
-  var carouselTemplate =
-    '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
-                    {{if msgData.message}} \
-                      <div class="messageBubble">\
-                        <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon"> \
-                            {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
-                            {{if msgData.icon}}<div aria-live="off" class="profile-photo extraBottom"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-                            {{if msgData.message[0].component.payload.text}}<div class="messageBubble tableChart">\
-                                <span>{{html convertMDtoHTMLForCarousel(msgData.message[0].component.payload.text, "bot")}}</span>\
-                            </div>{{/if}}\
-                            <div class="carousel" id="carousel-one-by-one" style="height: 0px;">\
-                                {{each(key, msgItem) msgData.message[0].component.payload.elements}} \
-                                    <div class="slide">\
-                                        {{if msgItem.image_url}} \
-                                            <div class="carouselImageContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-                                                <img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
-                                            </div> \
-                                        {{/if}} \
-                                        <div class="carouselTitleBox"> \
-                                            <p class="carouselTitle">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.title, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.title, "user")}} {{/if}}</p> \
-                                            {{if msgItem.subtitle}}<p class="carouselDescription">{{if msgData.type === "bot_response"}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "bot")}} {{else}} {{html convertMDtoHTMLForCarousel(msgItem.subtitle, "user")}} {{/if}}</p>{{/if}} \
-                                            {{if msgItem.default_action && msgItem.default_action.type === "web_url"}}<div class="listItemPath carouselDefaultAction" type="url" url="${msgItem.default_action.url}">${msgItem.default_action.url}</div>{{/if}} \
-                                            {{if msgItem.buttons}} \
-                                                {{each(key, msgBtn) msgItem.buttons}} \
-                                                    <div {{if msgBtn.payload}}value="${msgBtn.payload}"{{/if}} {{if msgBtn.url}}url="${msgBtn.url}"{{/if}} class="listItemPath carouselButton" data-value="${msgBtn.value}" type="${msgBtn.type}">\
-                                                        {{html convertMDtoHTMLForCarousel(msgBtn.title, "bot")}}\
-                                                    </div> \
-                                                {{/each}} \
-                                            {{/if}} \
-                                        </div>\
-                                    </div>\
-                                {{/each}} \
-                            </div>\
-                        </li> \
-                      </div>\
-                    {{/if}}\
-                </script>';
-  var template = $(carouselTemplate).tmpl({
-    msgData: messageData,
-    helpers: helpers || this.helpers,
-    extension: {},
-  });
-  return template;
-};
 
 FindlySDK.prototype.enableAutoSuggest = function () {
   var _self = this;
@@ -2597,46 +2496,6 @@ FindlySDK.prototype.getSuggestion = function (suggestions) {
   _self.vars.showingMatchedResults = false;
 
   // compare input with suggestion array
-  if (false) {
-    $.each(suggestions, function (i, term) {
-      // _self.vars.customizeView = false;
-      let wrdArray = needle.split(" ");
-      // for(let i=needle.length-1; i>0; i--) {
-      // 	let regex = new RegExp('^' + needle[i], 'i');
-
-      // }
-      let regex = new RegExp("^" + needle, "i");
-      if (regex.test(term)) {
-        $suggest.val(needle + term.slice(needle.length));
-        // use first result
-        return false;
-      } else if ($suggest.val() == "") {
-        wrdArray = needle.trim().split(" ");
-        let lastWords =
-          wrdArray[wrdArray.length - 2] + " " + wrdArray[wrdArray.length - 1];
-        //wrdArray[wrdArray.length - 1] == '' ? wrdArray[wrdArray.length - 2] : wrdArray[wrdArray.length - 1];
-        regex = new RegExp("^" + lastWords, "i");
-        if (regex.test(term)) {
-          $suggest.val(needle.trim() + term.slice(lastWords.length));
-          // use first result
-          return false;
-        }
-      }
-      if ($suggest.val() == "") {
-        wrdArray = needle.trim().split(" ");
-        let lastWords = wrdArray[wrdArray.length - 1];
-        //wrdArray[wrdArray.length - 1] == '' ? wrdArray[wrdArray.length - 2] : wrdArray[wrdArray.length - 1];
-        regex = new RegExp("^" + lastWords, "i");
-        if (regex.test(term)) {
-          $suggest.val(needle.trim() + term.slice(lastWords.length));
-          // use first result
-          return false;
-        }
-      }
-
-      $suggest.val("");
-    });
-  }
   if (suggestions.length) {
     var searchQuery = $.trim(needle);
     var searchQueryArr = searchQuery.split(" ");
@@ -20684,6 +20543,13 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
       "userIdentity": _self.config.botOptions.userIdentity,
     }
   };
+  if (!_self.vars) {
+    _self.vars = {
+      historySkip: 0,
+      historyLimit: 50,
+      loadingHistory: false
+    }
+  }
   var skip = _self.vars.historySkip;
   var limit = _self.vars.historyLimit;
   if (_self.vars.loadingHistory) {
@@ -23408,5 +23274,6 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
         }
   }
 }
+
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

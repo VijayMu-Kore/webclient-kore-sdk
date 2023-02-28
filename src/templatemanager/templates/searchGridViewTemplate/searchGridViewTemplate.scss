@@ -367,3 +367,24 @@
     }
    
 }
+
+.sdk-tooltip-container {
+    color: #fff;
+    background: #000000;
+    position: absolute;
+    padding: 8px;
+    top: -32px;
+    font-size: 10px;
+    font-weight: normal;
+    z-index: 99999;
+    border-radius: 8px;
+    .sa-tooltip-arrow{
+        background: #000000;
+        position: absolute;
+        padding: 6px;
+        left: 50%;
+        bottom: -5px;
+        z-index: 99999;
+        transform: rotate(45deg) !important;
+    }
+}

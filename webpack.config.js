@@ -144,16 +144,16 @@ module.exports= function(env,argv){
             filename: 'kore-web-sdk-umd-search.js',
             chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
           },
-          KorePickersPluginSDK: {
-            import: "./src/index_plugins/korepicker_umd.ts",
-            filename: 'plugins/kore-picker-plugin-umd.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
-          KoreGraphTemplatesPluginSDK: {
-            import: "./src/index_plugins/graphTemplates_umd.ts",
-            filename: 'plugins/kore-graph-templates-plugin-umd.js',
-            chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
-          },
+          // KorePickersPluginSDK: {
+          //   import: "./src/index_plugins/korepicker_umd.ts",
+          //   filename: 'plugins/kore-picker-plugin-umd.js',
+          //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
+          // },
+          // KoreGraphTemplatesPluginSDK: {
+          //   import: "./src/index_plugins/graphTemplates_umd.ts",
+          //   filename: 'plugins/kore-graph-templates-plugin-umd.js',
+          //   chunkLoading: false, // Disable chunks that are loaded on demand and put everything in the main chunk.
+          // },
           // SpeechToTextPluginSDK: {
           //   import: "./src/index_plugins/speechtotext_umd.ts",
           //   filename: 'plugins/speech-to-text-plugin-umd.js',
