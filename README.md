@@ -13,7 +13,6 @@ With just few lines of code, you can embed our Kore.ai chat widget into your app
 
 [Message Templates](https://developer.kore.ai/docs/bots/sdks/message-templates/)
 
-[API Referernce](https://rajasekharba-kore.github.io/web-kore-sdk/)
 
 
 ## 💡 Getting Started
@@ -21,7 +20,7 @@ With just few lines of code, you can embed our Kore.ai chat widget into your app
 First, install kore web SDK via the [npm](https://www.npmjs.com/get-npm) package manager:
 
 ```bash
-npm install --save git+ssh://github.com/Koredotcom/SearchAssist-web-sdk#branchNAME
+npm install --save git+ssh://github.com/Koredotcom/SearchAssist-web-sdk#1.0.0
 ```
 
 Get KRSearch and KRSearchConfig
