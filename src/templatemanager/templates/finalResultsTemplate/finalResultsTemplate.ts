@@ -127,7 +127,7 @@ class FinalResultsTemplate {
                 <span>{{html helpers.convertMDtoHTML(infoText)}}</span>\
                 </div>\
           </div>\
-            <div class="sdk-results-customize-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/rangeslider.svg"><span class="tooltiptext-top sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize_results">Customize Results</span></div>\
+            <div class="sdk-results-customize-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/rangeslider.svg"><span class="tooltiptext-top sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize_results">{{html langTranslator("sa_sdk_customize_results")}}</span></div>\
           </div>\
         {{/if}}\
         {{if snippetData && snippetData?.searchQuery}}\
@@ -224,7 +224,7 @@ class FinalResultsTemplate {
     {{/if}}\
       <div class="finalResults {{if snippetData && snippetData?.searchQuery}}snippet-margin{{/if}}">\
         {{if taskPrefix === "SUGGESTED"}}\
-        <span class="live-search-close-icon show-all-results">See All Results</span>\
+        <span class="live-search-close-icon sdk-i18n-lang" sdk-i18n-key="sa_sdk_see_all_results">{{html langTranslator("sa_sdk_see_all_results")}}</span>\
         {{/if}}\
         <div class="resultsOfSearch">\
             {{if taskPrefix !== "SUGGESTED"}}\
@@ -237,7 +237,7 @@ class FinalResultsTemplate {
             {{if showAllResults && !customSearchResult}}\
                 {{if taskPrefix !== "SUGGESTED"}}\
                     <div class="bottom-search-show-all-results">\
-                        <span class="pointer show-all-results" >See all <span class="search-results-count">(${totalSearchResults} results)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
+                    <span class="pointer show-all-results" ><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_see_all">{{html langTranslator("sa_sdk_see_all")}}</span> <span class="search-results-count">(${totalSearchResults} <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_results">{{html langTranslator("sa_sdk_results")}}</span>)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
                     </div>\
                 {{/if}}\
             {{/if}}\
