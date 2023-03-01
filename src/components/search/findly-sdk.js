@@ -7823,7 +7823,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     }
   }
   $(".parent-search-live-auto-suggesition").hide();
-  if ((_self.vars.feedBackExperience.queryLevel || _self.vars.feedBackExperience.smartAnswer) && !_self.isDev) {
+  if ((_self.vars.feedBackExperience.queryLevel) && !_self.isDev) { //|| _self.vars.feedBackExperience.smartAnswer
     _self.getFeedBackResult();
     }
 };
