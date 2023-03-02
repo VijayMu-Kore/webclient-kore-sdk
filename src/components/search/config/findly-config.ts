@@ -3,7 +3,7 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-qa.kore.ai";
+var paramUrl="searchassist.kore.ai";
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
     paramUrl=serverUrl.split('/')[2]
 }  
