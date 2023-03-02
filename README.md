@@ -3,15 +3,7 @@ The SearchAssist web SDK is a tool for developers to add the capabilities of the
 
 With just few lines of code, you can embed our SearchAssist SDK into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to
 
-[SearchAssist SDK](https://docs.kore.ai/searchassist/)
-
-[Web Socket Endpoints and Events](https://developer.kore.ai/docs/bots/sdks/bots-platform-api-reference/)
-
-
-[SDK App Registration](https://docs.kore.ai/searchassist/administration/managing-channels-3/)
-
-[Message Templates](https://developer.kore.ai/docs/bots/sdks/message-templates/)
-
+[SearchAssist SDK](https://docs.kore.ai/searchassist/administration/web-sdk-integration/)
 
 
 ## 💡 Getting Started
@@ -36,7 +28,6 @@ Configure KRSearchConfig
 
 let botOptions=KRSearchConfig.botOptions;
 	
- botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";
  botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';// Provide users email id here
  botOptions.botInfo = { chatBot: "PLEASE_ENTER_APP_NAME", "taskBotId": "PLEASE_ENTER_APP_ID" }; // APP name is case sensitive
  botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
@@ -60,9 +51,6 @@ var KRSearchInstance = new KRSearch(KRSearchConfig);
 KRSearchInstance.show(KRSearchConfig);
 
 ```
-### Examples
-Click [here](/docs/sdkdeveloper) to explore different variations how SDK can be consumed 
-
 
 ## 💡 Custom Templates
 
