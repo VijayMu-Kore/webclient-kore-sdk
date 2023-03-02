@@ -3322,17 +3322,7 @@ let requireKr=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeo
       }
     }
     //END QS
-    function generateRandomNum() {
-      var dateObj = new Date();
-      var month = dateObj.getUTCMonth() + 1;
-      var day = dateObj.getUTCDate();
-      var year = dateObj.getUTCFullYear();
-      var seconds = dateObj.getSeconds();
-      var minutes = dateObj.getMinutes();
-      var hour = dateObj.getHours();
-      var generatedNum = year * month * day * (hour + minutes * seconds);
-      return generatedNum;
-    }
+
     //BEGIN FORM
     var multipart = function(obj) {
       //todo: support file type (useful?)
@@ -4876,7 +4866,7 @@ let requireKr=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeo
           nativeMin = Math.min,
           nativeNow = getNative(Date, 'now'),
           nativeParseInt = context.parseInt,
-          nativeRandom = Math.random;
+          nativeRandom = generateRandomNum();
   
       /** Used as references for `-Infinity` and `Infinity`. */
       var NEGATIVE_INFINITY = Number.NEGATIVE_INFINITY,
@@ -8053,7 +8043,17 @@ let requireKr=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeo
         var value = object == null ? undefined : object[key];
         return isNative(value) ? value : undefined;
       }
-  
+      function generateRandomNum() {
+        var dateObj = new Date();
+        var month = dateObj.getUTCMonth() + 1;
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();
+        var seconds = dateObj.getSeconds();
+        var minutes = dateObj.getMinutes();
+        var hour = dateObj.getHours();
+        var generatedNum = year * month * day * (hour + minutes * seconds);
+        return generatedNum;
+      }
       /**
        * Gets the view, applying any `transforms` to the `start` and `end` positions.
        *
