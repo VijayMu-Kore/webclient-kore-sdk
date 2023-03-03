@@ -12,8 +12,22 @@
 		width: 96%;
 	}
 }
+.search-temp-one .temp-data-desc{
+    position: relative;
+}
 
-
+.search-temp-one .temp-data-desc .read-more-less{
+    position: absolute;
+    right: 4px;
+    bottom: 0px;
+    background: #fff;
+    padding: 0 0px 0 0;
+    color: #0D6EFD;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+}
 .top-down-search-background-div {
 	.total-search-results-block {
 		.tsrb-right-filters {

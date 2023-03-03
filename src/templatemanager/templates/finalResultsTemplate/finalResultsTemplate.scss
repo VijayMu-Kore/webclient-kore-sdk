@@ -456,6 +456,20 @@ margin-bottom: 10px;
     -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    position: relative;
+}
+
+.search-temp-one .temp-data-desc .read-more-less{
+    position: absolute;
+    right: 4px;
+    bottom: 0px;
+    background: #fff;
+    padding: 0 0px 0 0;
+    color: #0D6EFD;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
 }
 .search-temp-one .temp-data-desc br:first-child {
     display: none;
