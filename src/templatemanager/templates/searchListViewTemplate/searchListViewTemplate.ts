@@ -208,7 +208,7 @@ class SearchListViewTemplate {
     //Tour RR 
 
     //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
-    $(messageHtml)
+    $('.parent-list-template')
     .off("click", ".show-more-list")
     .on("click", ".show-more-list", function (e: any) {
     const showMoreData = {
