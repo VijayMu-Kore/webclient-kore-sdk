@@ -115,6 +115,11 @@
 			}
 			 this.bindEvents(messageHtml);
 			 $(messageHtml).data(msgData);
+			 if(msgData && msgData.message && msgData.message.length && msgData.message[0]&& msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.selectedValue === 0 || msgData.message[0].component.payload.selectedValue !== 0)){
+				$(messageHtml).find('.numbersComponent .ratingValue.emoji-rating #rating_'+msgData.message[0].component.payload.selectedValue+'').parent().addClass("active");
+				$(messageHtml).find('.thumpsUpDownComponent .ratingValue.emoji-rating #rating_'+msgData.message[0].component.payload.selectedValue+'').parent().addClass("active");
+				$(messageHtml).find('.emojiComponent.version2 .emoji-rating #rating_'+msgData.message[0].component.payload.selectedValue+'').parent().addClass("active");
+			}
 		}
 		else if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "listWidget"){
 			messageHtml = $(this.getChatTemplate("listWidget")).tmpl({
@@ -1209,7 +1214,7 @@ var ratingTemplate='<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
 			  {{if msgData.message[0].component.payload.text}}<div class="templateHeading text-heading-info">${msgData.message[0].component.payload.text}</div>{{else}}Rate the chat session{{/if}}\
 			  <div class="emojis-data">\
 			  {{each(key, msgItem) msgData.message[0].component.payload.smileyArrays}}\
-			  <div class="emoji-rating" value="${msgItem.value}">\
+			  <div class="emoji-rating" value="${msgItem.value}" data-id="${msgItem.smileyId}">\
 				 <div class="rating" id="rating_${msgItem.smileyId}" value="${msgItem.value}"></div>\
 				 <div class="emoji-desc" title="${msgItem.reviewText}">${msgItem.reviewText}</div>\
 				 </div>\
@@ -1221,7 +1226,7 @@ var ratingTemplate='<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
 			  {{if msgData.message[0].component.payload.text}}<div class="templateHeading text-heading-info">${msgData.message[0].component.payload.text}</div>{{else}}Rate the chat session{{/if}}\
 			  <div class="emojis-data">\
 			  {{each(key, msgItem) msgData.message[0].component.payload.thumpsUpDownArrays}}\
-			  <div class="ratingValue emoji-rating" value="${msgItem.value}">\
+			  <div class="ratingValue emoji-rating" value="${msgItem.value}" data-id="${msgItem.thumpUpId}">\
 				 <div class="rating" id="rating_${msgItem.thumpUpId}" value="${msgItem.value}"></div>\
 				 <div class="emoji-desc" title="${msgItem.reviewText}">${msgItem.reviewText}</div></div>\
 			  {{/each}}\
@@ -1232,7 +1237,7 @@ var ratingTemplate='<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
 			  {{if msgData.message[0].component.payload.text}}<div class="templateHeading text-heading-info">${msgData.message[0].component.payload.text}</div>{{else}}Rate the chat session{{/if}}\
 			  <div class="rating-numbers-data">\
 			  {{each(key, msgItem) msgData.message[0].component.payload.numbersArrays}}\
-			  <div class="ratingValue numbers-rating" value="${msgItem.value}">\
+			  <div class="ratingValue emoji-rating" value="${msgItem.value}" data-id="${msgItem.numberId}">\
 			  	<div class="rating" id="rating_${msgItem.numberId}" value="${msgItem.value}">${msgItem.numberId}</div>\
 				  <div class="emoji-desc" title="${msgItem.reviewText}">${msgItem.reviewText}</div></div>\
 			  {{/each}}\
@@ -3654,7 +3659,7 @@ var bankingFeedbackTemplate = '<script id="chat-window-listTemplate" type="text/
 			bottomSliderAction("hide");
 			e.stopPropagation();
 		});
-		$(messageHtml).find(".emojiComponent,.thumpsUpDownComponent,.numbersComponent").off('click','.emoji-rating,.numbers-rating').on('click','.emoji-rating,.numbers-rating',function(e){
+		$(messageHtml).find(".emojiComponent,.thumpsUpDownComponent,.numbersComponent").off('click','.emoji-rating').on('click','.emoji-rating',function(e){
 			var msgData=$(messageHtml).data();
 			var sliderValue=msgData.message[0].component.payload.sliderView;
 			if($(messageHtml).find(".emojiComponent .emoji-rating.active").length!=="0"){
@@ -3665,11 +3670,12 @@ var bankingFeedbackTemplate = '<script id="chat-window-listTemplate" type="text/
 				$(".thumpsUpDownComponent .emoji-rating").removeClass("active");
 				$(".emojiElement").remove();
 			}
-			if($(messageHtml).find(".numbersComponent .numbers-rating.active").length!=="0"){
-				$(".numbersComponent .numbers-rating").removeClass("active");
+			if($(messageHtml).find(".numbersComponent .emoji-rating.active").length!=="0"){
+				$(".numbersComponent .emoji-rating").removeClass("active");
 				$(".emojiElement").remove();
 			}
 			var emojiValue=$(this).attr("value");
+			var dataIdValue = $(this).attr("data-id");
 			$(e.currentTarget).addClass("active");
 			if($(messageHtml).find(".emojiComponent.version2").length === 0 && $(messageHtml).find(".thumpsUpDownComponent").length === 0 && $(messageHtml).find('.numbersComponent').length === 0){
 			if($(this).attr("id")=="rating_1" && $("#rating_1.active")){
@@ -3689,6 +3695,7 @@ var bankingFeedbackTemplate = '<script id="chat-window-listTemplate" type="text/
 				$(e.currentTarget).removeClass("active");
 			  }
 			}
+			if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.view !== "CSAT" && msgData.message[0].component.payload.view !== "NPS" && msgData.message[0].component.payload.view !== "ThumbsUpDown")){
 			if($(this).attr("value") < "5"){
 				$(".ratingStar").remove();
 				if($(".submitButton")){
@@ -3722,6 +3729,14 @@ var bankingFeedbackTemplate = '<script id="chat-window-listTemplate" type="text/
 				$(".kore-action-sheet").find(".emojiComponent").append('<div class="ratingStar">'+messageTodisplay+'</div><div class="submitButton"><button type="button" class="submitBtn">Submit</button></div>')
 				}
 			}
+		}else{
+			msgData.message[0].component.payload.sliderView=false;
+			msgData.message[0].component.payload.selectedValue = JSON.parse(dataIdValue);
+			chatInitialize.renderMessage(msgData);
+			chatInitialize.sendMessage($('.chatInputBox').text(emojiValue),emojiValue);
+			bottomSliderAction("hide");
+			msgData.message[0].component.payload.sliderView=true;
+		}
 			if(sliderValue===false){
 				chatInitialize.sendMessage($('.chatInputBox').text(emojiValue),emojiValue);
 				$(".rating-main-component").css({"pointer-events":"none"});
