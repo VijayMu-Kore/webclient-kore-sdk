@@ -663,17 +663,40 @@
                 }
                 .all-result-container {
                     margin: 0;
+                    padding: 20px 0px;
                     .full-results-data-container {
                         .back-search{
-                            position: absolute;
-                            right: 34px;
-                            top: 11px;
-                            z-index: 100000;
-                            padding: 7px 12px;
+                            // position: absolute;
+                            // right: 34px;
+                            // top: 11px;
+                            // z-index: 100000;
+                            // padding: 7px 12px;
+                            // cursor: pointer;
+                            // background: var(--sdk-white-bg);
+                            // box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
+                            // border-radius: 50%;
+
                             cursor: pointer;
-                            background: var(--sdk-white-bg);
-                            box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
-                            border-radius: 50%;
+                            position: absolute;
+                            right: 0px;
+                            z-index: 0;
+                            background: #F9FAFB;
+                            box-shadow: none;
+                            height: auto;
+                            width: 85px;
+                            border-radius: 0;
+                            top: -40px;
+                            padding: 6px 12px;
+                            border-top-left-radius: 25px;
+                            border-top-right-radius: 25px;
+                            img{
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 0 auto;
+                                width: 8px;
+                                height: 8px;
+                            }
                         }
                         .all-product-details {
                             .filters-added-data{
