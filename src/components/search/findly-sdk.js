@@ -19211,7 +19211,7 @@ FindlySDK.prototype.configureSearchInterface = function (botOptions) {
 // Top -down Template //
 FindlySDK.prototype.getTopDownTemplate = function () {
   var topDownTemplate = `<div>
-  <div class="top-down-wrapper searchAssist-kore-chat-window">
+  <div class="top-down-wrapper searchAssist-kore-chat-window ka-search-results-block">
   <div id="conversation-container" class="conversation-container">\
                     <div class="conversation-title">\
                         <div class="custom-header-container-left searchAssist" style="padding-left: 20px;">\

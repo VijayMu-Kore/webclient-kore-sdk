@@ -30,6 +30,95 @@ body{
             }
         }
 
+        .top-down-wrapper{
+            &.searchAssist-kore-chat-window, .ka-search-results-block{
+                .topdown-search-main-container{
+                    .search-input-box{
+                        width: 100%;
+                        .search-box-container-data{
+                            width: 100%;
+                            .cancel-search{
+                                right: 20px !important;
+                            }
+                            .search-bar{
+                                .top-down-suggestion, .search-input{
+                                    width: 100%;
+                                }
+                                .search-top-down, .chatInputBox{
+                                    width: 100%;
+                                }
+                            }
+                        }
+                        .live_search_result_box{
+                            width: 100%;
+                        }
+                        #top-down-full-results-container{
+                            width: 100%;
+                            .all-result-container{
+                                &.left-align-filter{
+                                    margin-top: 0px;
+                                    .full-results-data-container{
+                                        .all-product-details{
+                                            width: calc(100% - 0px);
+                                            .snippet-demo-template{
+                                                .search-temp-one-top-tile{
+                                                    .search-temp-one-top-tile-block, .top-search-template{
+                                                        .temp-footer-block{
+                                                            .temp-footer{
+                                                                .btn-link{
+                                                                    overflow: hidden;
+                                                                    text-overflow: ellipsis;
+                                                                    white-space: nowrap;
+                                                                    max-width: 250px;
+                                                                }
+                                                                .temp-right{
+                                                                    .temp-fotter-actions{
+                                                                        top: 3px;
+                                                                        position: relative;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            .total-search-results-block{
+                                                .content-data-sec{
+                                                    .full-search-data-container{
+                                                        .search-temp-results-tiles, .sa-pages-tiles-block{
+                                                            .search-temp-width-90{
+                                                                .search-temp-one-top-tile, .page-result-tile{
+                                                                    .temp-footer-block{
+                                                                        .temp-footer{
+                                                                            .btn-link{
+                                                                                overflow: hidden;
+                                                                                text-overflow: ellipsis;
+                                                                                white-space: nowrap;
+                                                                                max-width: 250px;
+                                                                                .isLink{
+                                                                                    a{
+                                                                                        color: #1E1F65 !important;
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
     &.showFullResults{
         &.top-down{
