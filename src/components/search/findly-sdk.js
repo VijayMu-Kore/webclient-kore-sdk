@@ -19,6 +19,7 @@ import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 import enJsonObj from '../../libs/languageConversion/i18n/en.json'
 import jaJsonObj from '../../libs/languageConversion/i18n/ja.json'
 import koJsonObj from '../../libs/languageConversion/i18n/ko.json'
+import './css/lang.scss'
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -7257,7 +7258,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 component: {
                   type: 'template',
                   payload: {
-                    infoText: 'Sure, please find the matched results below',
+                    infoText: langTranslator("sa_sdk_sure_please_find_the_matched_results_below"),
                     template_type: "finalResultsTemplate",
                     isDev: _self.isDev,
                     devMode: devMode,
@@ -7407,7 +7408,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       // } 
       if (!$('body').hasClass('top-down')) {
         setTimeout(() => {
-          if ($('.messageBubble .userMessage span').last().text() == _self.vars.searchObject.searchText && $('.messageBubble .messageBubble-content .botMessage span:nth-child(2)').last().text() === 'Sure, please find the matched results below') {
+          if ($('.messageBubble .userMessage span').last().text() == _self.vars.searchObject.searchText && $('.messageBubble .messageBubble-content .botMessage span:nth-child(2)').last().text() === langTranslator("sa_sdk_sure_please_find_the_matched_results_below")) {
             if ($('#searchChatContainer').prop('offsetHeight') < $('.finalResults .resultsOfSearch .bottom-search-show-all-results').last().position().top) {
               $("#searchChatContainer").off('scroll').on('scroll', function () {
                 if ($('.sdk-chat-container').scrollTop() == 0 && !$('#histroybutton').is(':visible')) {
@@ -7753,7 +7754,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             if (dataObj.smallTalk) {
               _self.sendMessageToSearch("bot", dataObj.smallTalk);
             } else {
-              var _botMessage = "Sure, please find the matched results below";
+              var _botMessage = langTranslator("sa_sdk_sure_please_find_the_matched_results_below");
               searchData = $(
                 _self.getSearchTemplate("liveSearchData")
               ).tmplProxy({
@@ -8230,6 +8231,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
         msgData: {
           from: "bot",
           text: messageData.payload.text,
+          langTranslator:langTranslator
         },
         helpers: helpers,
       });
@@ -9832,7 +9834,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition !== "top") {
+  if (response.experienceConfig.searchBarPosition == "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
@@ -20614,7 +20616,7 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
             messageData.isFromHistory = true;
             //messageData.timestamp = history.timestamp;
           } else {
-            messageData.text = 'Sure, please find the matched results below';
+            messageData.text = langTranslator("sa_sdk_sure_please_find_the_matched_results_below");
             messageData.from = 'bot';
             messageData.count = _self.countTotalResults(history.response.message[0].component.payload.template, 0);
             messageData.timeStamp = _self.extractTime(history.timestamp);
