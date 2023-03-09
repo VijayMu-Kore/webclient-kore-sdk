@@ -9870,7 +9870,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition !== "top") {
+  if (response.experienceConfig.searchBarPosition == "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
