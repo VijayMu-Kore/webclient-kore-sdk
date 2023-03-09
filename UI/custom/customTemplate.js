@@ -3729,7 +3729,7 @@ var bankingFeedbackTemplate = '<script id="chat-window-listTemplate" type="text/
 				$(".kore-action-sheet").find(".emojiComponent").append('<div class="ratingStar">'+messageTodisplay+'</div><div class="submitButton"><button type="button" class="submitBtn">Submit</button></div>')
 				}
 			}
-		}else{
+		}else if(msgData.message[0].component.payload.sliderView){
 			msgData.message[0].component.payload.sliderView=false;
 			msgData.message[0].component.payload.selectedValue = JSON.parse(dataIdValue);
 			chatInitialize.renderMessage(msgData);
