@@ -3,7 +3,7 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-app.kore.ai"
+var paramUrl="searchassist-dev.kore.ai"
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
@@ -48,12 +48,12 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "Answer snippets1",
-  taskBotId: "st-bb827e73-55ec-5ebe-8e95-f585a5f152b4",
+  chatBot: "Morgan Stanley 2.0",
+  taskBotId: "st-b34b8824-f7da-5a76-b2c7-ff697ab9ae5a",
 };
-botOptionsFindly.clientId = "cs-b2affdb1-c681-5b9a-b4a0-0ce3cefa7a7c";
-botOptionsFindly.clientSecret = "ffVC9WlZsyAzII115FaY6YYRVzdIt6lefezTMdnzCBw=";
-botOptionsFindly.searchIndexID = "sidx-2867c11d-2ab6-5916-be5c-b33c9ba15e70";
+botOptionsFindly.clientId = "cs-630b46fe-88d4-5062-8f62-91430ba7ee6c";
+botOptionsFindly.clientSecret = "1CMKi9EZvsbZsdKigv+1CEtEVsgxPp7/yFSvtZB2hgk=";
+botOptionsFindly.searchIndexID = "sidx-51e15cfb-7395-5acc-9560-ed40552a1b7f";
 
 
 // To modify the web socket url use the following option

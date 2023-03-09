@@ -1690,6 +1690,14 @@ $color_1: #9AA0A6;
                 margin: 0px 20px 0 13px;
             }
         }
+        .search-temp-one{
+            .snippet-image-block{
+                img {
+                    max-height: 261px;
+                    width: initial;
+                }
+            }
+        }  
     }
 }
 #query-feedback{
