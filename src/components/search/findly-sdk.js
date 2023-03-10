@@ -7177,7 +7177,6 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           if(Object.keys(res.graph_answer.payload.center_panel).length>0){
             var listSnippetData = '';
             var snippetReference = [];
-            
             if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
             res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
@@ -7222,7 +7221,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             'template_type':res?.graph_answer?.payload?.center_panel?.type, 
             'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||''),
             'searchQuery': _self.vars.searchObject.searchText,
-            'displayFeedback':_self.vars.feedBackExperience.smartAnswer
+            'displayFeedback':_self.vars.feedBackExperience.smartAnswer,
+            'snippet_type':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_type //generative_model
           }; 
             if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
               snippetObj['reference']=snippetReference;
@@ -21484,7 +21484,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
             }
             var isDropdownEnabled = true;
             var searchTemplateType = (selected[groupName + templateInterfaceType + 'TemplateType']).charAt(0).toUpperCase() + (selected[groupName + templateInterfaceType + 'TemplateType']).slice(1);
-            if(_self.vars.customizeView && _self.isDev){
+            if(_self.vars.customizeView && _self.isDev && isFullResults){
               viewType = 'Customize';
               searchTemplateType = "List";
               data.isClickable = true;

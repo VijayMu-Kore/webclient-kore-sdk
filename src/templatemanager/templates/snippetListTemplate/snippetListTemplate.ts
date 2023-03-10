@@ -29,7 +29,7 @@ class SnippetListTemplate {
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
                 <div class="btn-chip">SUGGESTED ANSWER</div>\
             </div>\
-            {{if snippetData && snippetData.source === "Answered by AI"}}\
+            {{if snippetData && snippetData.snippet_type === "generative_model"}}\
             <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
             {{/if}}\
         </div>\
@@ -44,15 +44,15 @@ class SnippetListTemplate {
                 <span class="desc-read-more display-block"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Read more</span> <span class="desc-read-less  display-none"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Show Less</span>\
                 {{/if}}\
         </div>\
-        {{if snippetData && snippetData.source !== "Answered by AI"}}\
+        {{if snippetData && snippetData.source}}\
           <div class="snippet-source-block">\
             <div class="snippet-source-file-name sa-sdk-title  {{if !snippetData.source}} display-none {{/if}}" data-title="${snippetData?.source}">{{html snippetData?.source}}</div>\
             <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none {{/if}}"><span class="snippet-source-url-name">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/> </div></a>\
           </div>\
         {{/if}}\
         <div class="temp-footer-block">\
-            <div class="temp-footer {{if snippetData && snippetData.source !== "Answered by AI"}} justify-content-end {{/if}}">\
-                {{if snippetData && snippetData.source === "Answered by AI"}}\
+            <div class="temp-footer {{if snippetData && snippetData.snippet_type !== "generative_model"}} justify-content-end {{/if}}">\
+                {{if snippetData && snippetData.snippet_type === "generative_model"}}\
                 <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
                 {{/if}}\
                 {{if displayFeedback}}\
