@@ -31,18 +31,36 @@ body{
         }
 
         .top-down-wrapper{
-            &.searchAssist-kore-chat-window, .ka-search-results-block{
+            &.searchAssist-kore-chat-window, &.ka-search-results-block{
                 height: 100% !important;
                 top: 0 !important;
                 background: rgb(17 24 39 / 80%);
+                transition: all 1s ease;
                 .topdown-search-main-container{
+                    .back-search{
+                        cursor: pointer;
+                        position: absolute;
+                        right: 11%;
+                        // z-index: 100000;
+                        background: #F9FAFB;
+                        height: 26px;
+                        padding: 0px 0px;
+                        width: 85px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 35px 35px 0px 0px;
+                        top: 14px;
+                        box-shadow: none;
+                    }
                     width: 80%;
                     margin: 0 auto;
-                    height: 100%;
-                    margin-top: 45px;
+                    height: auto;
+                    margin-top: 40px;
                     background: #fff;
                     padding: 20px 20px;
                     border-radius: 12px;
+                    transition: all .3s ease-in;
                     .search-input-box{
                         width: 100%;
                         .search-box-container-data{
@@ -56,6 +74,9 @@ body{
                                 }
                                 .search-top-down, .chatInputBox{
                                     width: 100%;
+                                    background: #F3F4F6!important;
+                                    border-radius: 10px;
+                                    border: solid 1px #F3F4F6 !important;
                                 }
                             }
                         }
@@ -68,11 +89,31 @@ body{
                                 &.left-align-filter{
                                     margin-top: 0px;
                                     .full-results-data-container{
+                                        // .back-search{
+                                        //     cursor: pointer;
+                                        //     position: absolute;
+                                        //     right: 150px;
+                                        //     z-index: 100000;
+                                        //     background: #F9FAFB;
+                                        //     height: 26px;
+                                        //     padding: 0px 0px;
+                                        //     width: 85px;
+                                        //     display: flex;
+                                        //     align-items: center;
+                                        //     justify-content: center;
+                                        //     border-radius: 35px 35px 0px 0px;
+                                        //     top: 14px;
+                                        //     box-shadow: none;
+                                        // }
                                         .all-product-details{
-                                            width: calc(100% - 0px);
-                                            .snippet-demo-template{
+                                            // width: calc(100% - 0px);
+                                            width: 100%;
+                                            padding-right: 10px !important;
+                                            #snippet-demo-template{
                                                 .search-temp-one-top-tile{
+                                                    min-height: 170px;
                                                     .search-temp-one-top-tile-block, .top-search-template{
+                                                        width: 75%;
                                                         .temp-footer-block{
                                                             .temp-footer{
                                                                 .btn-link{

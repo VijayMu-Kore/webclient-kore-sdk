@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <button onclick="openKoreSdk()" >search</button>
 
     <script src="../../../dist/umd/kore-web-sdk-umd-search.js"></script>
     <script>
@@ -18,7 +19,10 @@
         KoreSearchSDK.KRSearchConfig.botOptions.baseAPIServer = "https://" + envURL;
         KoreSearchSDK.KRSearchConfig.botOptions.reWriteSocketURL.hostname = envURL;
         var findlySDK = new KoreSearchSDK.KRSearch(KoreSearchSDK.KRSearchConfig);
-        findlySDK.show(KoreSearchSDK.KRSearchConfig);
+        function openKoreSdk ()  {
+         findlySDK.show(KoreSearchSDK.KRSearchConfig);
+        }
+       
 
     </script>
 </body>

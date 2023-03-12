@@ -24,11 +24,12 @@ body::-webkit-scrollbar {
 }
 
 .topdown-search-main-container {
-  height: 100%;
+  height: auto;
   /* background: linear-gradient(106.58deg, rgba(0, 0, 0, 0.66) 35.56%, rgba(0, 0, 0, 0) 79.55%); */
   #top-down-full-results-container{
     height: 100%;
-    width: 92%;
+    width: 100%;
+    transition: all 2s ease;
   }
 }
 .topdown-search-main-container .logo_img {

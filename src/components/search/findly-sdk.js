@@ -1364,10 +1364,12 @@ FindlySDK.prototype.getSearchControl = function () {
   var searchControl =
     '<script type="text/x-jqury-tmpl">\
             <div class="search-bar">\
+           <!-- {{if searchConfig.searchBarIcon}}\
               <div class="widget-icon"><img style="vertical-align:middle" \
-              {{if searchConfig.searchBarIcon}}\
               src="${searchConfig.searchBarIcon}"> </div>\
-              {{/if}}\
+              {{/if}}\-->\
+              <div class="widget-icon"><img style="vertical-align:middle" \
+              src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/Search.svg"> </div>\
               {{if searchConfig.autocompleteOpt == true}}\
             <input id="suggestion" name="search"  disabled="disabled" class="top-down-suggestion search \
             {{if classes}}\
@@ -5538,7 +5540,7 @@ FindlySDK.prototype.getRecentSearches = function (url, type) {
                 searchConfigurationCopy &&
                 searchConfigurationCopy.showSearchesEnabled
               ) {
-                $("#frequently-searched-box").show();
+                // $("#frequently-searched-box").show();   // commented for Kore Web Site
               }
               // _self.frequentlySearchedRecentTextClickEvent();
             }
@@ -6168,7 +6170,7 @@ FindlySDK.prototype.searchEventBinding = function (
             }
             $(".top-down-suggestion").val("");
             $("#live-search-result-box").hide();
-            $("#frequently-searched-box").show();
+            // $("#frequently-searched-box").show(); // commented for Kore Web Site
 
             // _self.frequentlySearchedRecentTextClickEvent();
             if (
@@ -9057,7 +9059,7 @@ FindlySDK.prototype.addFrequentlyUsedControl = function (config) {
             !$(".search-top-down").val()
           ) {
             if (config.searchConfig.showSearchesEnabled) {
-              $("#frequently-searched-box").show();
+              // $("#frequently-searched-box").show();   // commented for Kore Web Site
               setTimeout(() => {
                 _self.frequentlySearchedRecentTextClickEvent();
               }, 150);
@@ -9621,6 +9623,11 @@ FindlySDK.prototype.addSearchText = function (config) {
         $("#search").trigger("click");
       }
     });
+  $(".back-search")    // added for for Kore Web Site
+    .off("click")
+    .on("click", function (event) {
+      _self.backToSearchClickEvent();
+    });
   _self.searchEventBinding(dataHTML, "search-container", {}, config);
 };
 var overrideDefaultPoisition = false;
@@ -9807,7 +9814,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition !== "top") {
+  if (response.experienceConfig.searchBarPosition == "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
@@ -18561,7 +18568,7 @@ FindlySDK.prototype.showSuggestionbox = function (suggestions) {
       $("#live-search-result-box").hide();
       return;
     } else {
-      $("#live-search-result-box").show();
+      // $("#live-search-result-box").show();  // commented for Kore Web Site
     }
     $("#auto-query-box")
       .off("click")
@@ -19235,13 +19242,13 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                    <img src="data:image/png;base64,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"/>\
                 </div>\
                 {{/if}}\
-                  <div class="cancel-search">
-                      <img
-                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII=" />
+                  <div class="cancel-search">Clear
+                     <!--<img
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII=" />-->
                   </div>
               </div>
               <div id="greeting-msg-top-down"></div>
-              <div id="frequently-searched-box" class="frequently_searched_box"> </div>
+              <div id="frequently-searched-box"  class="frequently_searched_box"> </div>
               <div id="live-search-result-box" class="live_search_result_box">
                   <div id="auto-query-box" class="auto_query_box">
                   </div>
@@ -19250,12 +19257,17 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                       </div>
                   </div>
               </div>
-              <div id="top-down-full-results-container"></div>
+              <!--<div id="top-down-full-results-container"></div>-->\
           </div>
           <div class="skelton-load-img" style="display:none">\
           <img alt="" />\
           </div>\
+          <div class="back-search">\
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuNzA3MDMgNS4wMDAwOUw5Ljg1MzU1IDAuODUzNTUzQzEwLjA0ODggMC42NTgyOTEgMTAuMDQ4OCAwLjM0MTcwOSA5Ljg1MzU1IDAuMTQ2NDQ3QzkuNjU4MjkgLTAuMDQ4ODE1NyA5LjM0MTcxIC0wLjA0ODgxNTQgOS4xNDY0NSAwLjE0NjQ0N0w0Ljk5OTkxIDQuMjkzTDAuODUzNTU1IDAuMTQ2ODE0QzAuNjU4Mjg4IC0wLjA0ODQ0NDQgMC4zNDE3MDYgLTAuMDQ4NDM4IDAuMTQ2NDQ4IDAuMTQ2ODI4Qy0wLjA0ODgxMDQgMC4zNDIwOTQgLTAuMDQ4ODA0IDAuNjU4Njc3IDAuMTQ2NDYyIDAuODUzOTM1TDQuMjkyOCA1LjAwMDFMMC4xNDY0NDcgOS4xNDY0NkMtMC4wNDg4MTU3IDkuMzQxNzMgLTAuMDQ4ODE1NSA5LjY1ODMxIDAuMTQ2NDQ3IDkuODUzNTdDMC4zNDE3MDkgMTAuMDQ4OCAwLjY1ODI5MiAxMC4wNDg4IDAuODUzNTUzIDkuODUzNTdMNC45OTk5MiA1LjcwNzJMOS4xNDY0NiA5Ljg1MzU3QzkuMzQxNzMgMTAuMDQ4OCA5LjY1ODMxIDEwLjA0ODggOS44NTM1NyA5Ljg1MzU1QzEwLjA0ODggOS42NTgyOSAxMC4wNDg4IDkuMzQxNzEgOS44NTM1NSA5LjE0NjQ1TDUuNzA3MDMgNS4wMDAwOVoiIGZpbGw9IiMyMDIxMjQiLz4KPC9zdmc+Cg=="/>\
+           </div>\
           <!--<div id="top-down-full-results-container"></div>-->\
+          <div id="top-down-full-results-container">
+          </div>
       </div>
   <div>
 <div>`;
@@ -19270,10 +19282,8 @@ FindlySDK.prototype.initializeTopDown = function (
   if(!$('body').hasClass('sdk-body')){
     $('body').addClass('sdk-body');
   }
-  if(!$('body').hasClass('kore-sdk-body')){
-    $('body').addClass('kore-sdk-body');
-  }
   var _self = this;
+  _self.displayKoreSDK()  
   if(findlyConfig.isDev){
     _self.isDev = true;
     if (!$("body").hasClass("builder-sdk")) {
@@ -19357,10 +19367,10 @@ FindlySDK.prototype.initializeTopDown = function (
     templateId: "frequently-searched-template",
     searchConfig: searchConfiguration,
   });
-  _self.addGreetingMsgControl({
-    container: "greeting-msg-top-down",
-    searchConfig: searchConfiguration,
-  });
+  // _self.addGreetingMsgControl({      // commented for Kore Web Site
+  //   container: "greeting-msg-top-down",
+  //   searchConfig: searchConfiguration,
+  // });
   _self.addCustomTemplateConfig();
   var searchText = "";
   function searchHandler(data) {
@@ -19422,7 +19432,7 @@ FindlySDK.prototype.initializeTopDown = function (
         $(".live-search-data-container").children().length ||
         $("#auto-query-box").children().length
       ) {
-        $("#live-search-result-box").show();
+        // $("#live-search-result-box").show(); // commented for Kore Web Site
       } else {
         $("#live-search-result-box").hide();
       }
@@ -20419,7 +20429,7 @@ FindlySDK.prototype.checkIsPreviousLiveSearchDataExists = function () {
         $("#live-search-result-box").hide();
         return;
       }
-      $("#live-search-result-box").show();
+      // $("#live-search-result-box").show();  // commented for Kore Web Site
     } else {
       $("#live-search-result-box").hide();
     }
@@ -22440,7 +22450,7 @@ FindlySDK.prototype.appendTextToSearchContainer = function (type, text) {
 FindlySDK.prototype.actionHandler = function(e) {
   var _self = this;
   if($(e.target).closest('.live-search-data-container').length){{}
-  $("#live-search-result-box").show();
+  // $("#live-search-result-box").show(); // commented for Kore Web Site
     if(!$("#conversation-container").hasClass("live-search-action-chat-container")){
     $("#conversation-container").addClass("live-search-action-chat-container");
   }
@@ -22903,6 +22913,7 @@ FindlySDK.prototype.backToSearchClickEvent = function (event) {
   var _self = this;
   $(".all-result-container").hide();
       $("body").removeClass("showFullResults");
+      $("body").find(".searchAssist-kore-chat-window").remove();
       $("#search").val("");
       $("#suggestion").val("");
       $(".top-down-suggestion").val("");
@@ -22910,6 +22921,7 @@ FindlySDK.prototype.backToSearchClickEvent = function (event) {
       $(".full-search-data-container").empty();
       $(".skelton-load-img").hide();
       _self.destroy();
+      // $("body").removeClass(".kore-sdk-body")
 }
 FindlySDK.prototype.getFeedBackResult = function () {
   var _self = this;
@@ -23257,33 +23269,44 @@ FindlySDK.prototype.getFeedBackResult = function () {
         timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };
 }
-FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
-  var _self = this;
-  if (_self.isDev) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
-          var responseObject = {
-            type: "show",
-            data: true,
-            query: _self.vars.searchObject.searchText,
-          };
-          _self.parentEvent(responseObject);
-          setTimeout(function () {
-            $(".query_analytics_content").css("top", event.pageY - 50);
-            $(".query_analytics_content").css(
-              "left",
-              event.pageX - 300 - event.offsetX
-            );
-            $(document).off('click').on("click", function (event) {
-              if (!$(event.target).closest(".query_analytics_content").length) {
-                $(".query_analytics_content").hide();
-              }
-            });
-          }, 100);
-        }
+  FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
+    var _self = this;
+    if (_self.isDev) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
+            var responseObject = {
+              type: "show",
+              data: true,
+              query: _self.vars.searchObject.searchText,
+            };
+            _self.parentEvent(responseObject);
+            setTimeout(function () {
+              $(".query_analytics_content").css("top", event.pageY - 50);
+              $(".query_analytics_content").css(
+                "left",
+                event.pageX - 300 - event.offsetX
+              );
+              $(document).off('click').on("click", function (event) {
+                if (!$(event.target).closest(".query_analytics_content").length) {
+                  $(".query_analytics_content").hide();
+                }
+              });
+            }, 100);
+          }
+    }
   }
-}
+  
+  FindlySDK.prototype.displayKoreSDK = function(){
+      if(!$('body').hasClass('kore-sdk-body')){
+        $('body').addClass('kore-sdk-body');
+        $(".topdown-search-main-container").addClass('slide-down');
+      }
+    //  if( window.location.href === window.localStorage.searchLocation){
+    //    searchQuery = window.localStorage.query;
+    //   if(searchQuery)$("#search").trigger({ type: "keydown", which: 39 })
+    //  }
+  }
 
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

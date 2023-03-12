@@ -231,12 +231,13 @@ class SearchListViewTemplate {
         result.message[0].component.payload.template_type = 'searchCustomizeListTemplate';
       }
       const listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type,me)).tmpl(result?.message[0].component.payload);
-      $(listHTML).find(".show-more-list").remove();
-      $(
-        ".full-search-data-container [templateName=" +
-        showMoreData.templateName +
-        "]"
-      ).before($(listHTML).find(".parent-list-template").children());
+      // $(listHTML).find(".show-more-list").remove();   // commented for Kore Web Site
+      // $(
+      //   ".full-search-data-container [templateName=" +
+      //   showMoreData.templateName +
+      //   "]"
+      // ).before($(listHTML).find(".search-temp-width-90").children());
+      $(".search-temp-width-90").append($(listHTML).find(".search-temp-width-90").children());  //added for Kore Web Site
       if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * 5 >= result?.message[0].component.payload.doc_count) {
         $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").hide();
       }
@@ -400,6 +401,9 @@ class SearchListViewTemplate {
           }
         }
       }, 500);
+    });
+    $(messageHtml).find('.temp-right').off('click', '.snippet-go-to').on('click', '.snippet-go-to', function (event:any) {   // added for Kore Web Site
+      SearchListViewTemplate.prototype.pagesGoToPage(hostWindowInstance.vars.searchObject.searchText);
     });
     SearchListViewTemplate.prototype.tooltipBindEvent(me);
   }
@@ -825,27 +829,27 @@ class SearchListViewTemplate {
                   {{/if}}\
                   <div class="temp-footer-block">\
                       <div class="temp-footer">\
-                          <div class="btn-link">\
-                          {{html helpers.convertMDtoHTML(data.page_url)}}\
+                          <div class="btn-link" title="${data.page_url}">\
+                          ${data.page_url}\
                           </div>\
                           <div class="temp-right">\
                               <div class="is-it-usefull">Go to Page</div>\
                               <div class="temp-fotter-actions">\
-                                 <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg"/>\
+                              <a class="snippet-go-to" href="${data.page_url}"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
                               </div>\
                           </div>\
                       </div>\
                   </div>\
               </div>\
               {{/each}}\
-              </div>\
-            <div class="search-temp-see-more">\
-              <div class="sa-card-tile-readmore" {{if doc_count==0 || doc_count<6 }}display-none{{/if}} show-more-list" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}>\
-              See More \
-              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img" />\
-              </div>\
+        </div>\
+          <div class="search-temp-see-more">\
+            <div class="sa-card-tile-readmore  show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+                <span class="see-more-txt">See More</span>\
+                <img class="read-more-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg"  />\
+            </div>\
           </div>\
-          </div>\
+      </div>\
   </script>';
 
     if (type === 'searchListTemplate' && !$("body").hasClass("kore-sdk-body")) {
@@ -879,6 +883,10 @@ class SearchListViewTemplate {
     e.stopImmediatePropagation();
     $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
     })
+  }
+  pagesGoToPage(query:any){  // added for Kore Web Site
+    window.localStorage.setItem("query",query);
+    window.localStorage.setItem("searchLocation",window.location.href);
   }
 }
 

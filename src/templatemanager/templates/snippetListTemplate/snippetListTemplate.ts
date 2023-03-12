@@ -109,6 +109,9 @@ class SnippetListTemplate {
         $(event.currentTarget).addClass('active');
       }
       });
+      $(messageHtml).find('.temp-right').off('click', '.snippet-go-to').on('click', '.snippet-go-to', function (event:any) { // added for Kore Web Site
+        SnippetListTemplate.prototype.snippetgoToPage(snippetData);
+      });
       $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
         if(!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')){
         SnippetListTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
@@ -162,6 +165,11 @@ class SnippetListTemplate {
       e.stopImmediatePropagation();
       $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
       })
+    }
+    snippetgoToPage(snippetData:any){   // added for Kore Web Site
+      // window.location.href+"/search/query="+snippetData.searchQuery
+        window.localStorage.setItem("query",snippetData.searchQuery);
+        window.localStorage.setItem("searchLocation",window.location.href);
     }
 }
 

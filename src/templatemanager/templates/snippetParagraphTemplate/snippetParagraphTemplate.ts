@@ -85,7 +85,7 @@ class SnippetParagraphTemplate {
                   <div class="temp-right">\
                       <div class="is-it-usefull">Go to Page</div>\
                       <div class="temp-fotter-actions">\
-                      <a href="${snippetData?.page_url}" target="_blank" target="_blank"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
+                      <a class="snippet-go-to" href="${snippetData?.page_url}"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
                       </div>\
                   </div>\
               </div>\
@@ -113,7 +113,9 @@ class SnippetParagraphTemplate {
             $(event.currentTarget).addClass('active');
           }
           });
-
+          $(messageHtml).find('.temp-right').off('click', '.snippet-go-to').on('click', '.snippet-go-to', function (event:any) {   // added for Kore Web Site
+            SnippetParagraphTemplate.prototype.snippetgoToPage(snippetData);
+          });
           $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
             if(!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')){
             SnippetParagraphTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
@@ -174,6 +176,11 @@ class SnippetParagraphTemplate {
       e.stopImmediatePropagation();
       $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
       })
+    }
+    snippetgoToPage(snippetData:any){    // added for Kore Web Site
+      // window.location.href+"/search/query="+snippetData.searchQuery
+        window.localStorage.setItem("query",snippetData.searchQuery);
+        window.localStorage.setItem("searchLocation",window.location.href);
     }
 }
 
