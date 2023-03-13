@@ -814,7 +814,7 @@ class SearchListViewTemplate {
 
   var koreListTemplate = 
   '<script type="text/x-jqury-tmpl">\
-     <div class="temp-block-header">Page Results</div>\
+  {{if renderTitle}}<div class="temp-block-header">${titleName}</div>{{/if}}\
      <div class="search-temp-results-tiles sa-pages-tiles-block">\
         <div class="search-temp-width-90">\
               {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
@@ -827,6 +827,7 @@ class SearchListViewTemplate {
                   {{if data.description.length}}\
                   <div class="temp-data-desc">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                   {{/if}}\
+                  {{if data.page_url}}\
                   <div class="temp-footer-block">\
                       <div class="temp-footer">\
                           <div class="btn-link" title="${data.page_url}">\
@@ -840,6 +841,7 @@ class SearchListViewTemplate {
                           </div>\
                       </div>\
                   </div>\
+                  {{/if}}\
               </div>\
               {{/each}}\
         </div>\
