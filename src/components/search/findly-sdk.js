@@ -5730,9 +5730,15 @@ FindlySDK.prototype.searchEventBinding = function (
 
   // $('.pay-button').off('click').on('click')
   if (templateType === "search-container") {
+    $(dataHTML).off('keypress','#search').on('keypress','#search',function(e){
+      var $suggest = $("body").hasClass("top-down")?$(".top-down-suggestion") : $(".bottom-up-suggestion");
+      $suggest.val('');
+    })
     $(dataHTML)
       .off("keydown", "#search")
       .on("keydown", "#search", debounce(function (e) {
+        var $suggest = $("body").hasClass("top-down")?$(".top-down-suggestion") : $(".bottom-up-suggestion");
+       $suggest.val('');
         $('#query-feedback').empty()
          $('#snippet-feedback-template').empty();
         _self.trimSearchQuery(e);
@@ -6117,6 +6123,8 @@ FindlySDK.prototype.searchEventBinding = function (
     $(dataHTML)
       .off("keyup", "#search")
       .on("keyup", "#search", debounce(function (e) {
+       var $suggest = $("body").hasClass("top-down")?$(".top-down-suggestion") : $(".bottom-up-suggestion");
+       $suggest.val('');
         _self.trimSearchQuery(e);
          $('#query-feedback').empty()
          $('#snippet-feedback-template').empty();
