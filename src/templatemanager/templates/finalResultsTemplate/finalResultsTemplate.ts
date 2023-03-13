@@ -147,10 +147,12 @@ class FinalResultsTemplate {
             {{/if}}\
             <div class="temp-data-desc">\
             {{html snippetData?.answer}}\
+            <span class="read-more-less desc-read-more">...Read More</span>\
+            <span class="desc-read-less">Show Less</span>\
             </div>\
-            <div class="temp-read-link">\
+            <!--<div class="temp-read-link">\
             <span class="desc-read-more">Read more</span> <span class="desc-read-less">Show Less</span>\
-            </div>\
+            </div>\-->\
             {{if snippetData && snippetData.source}}\
             <div class="snippet-source-block">\
               <div class="snippet-source-file-name sa-sdk-title {{if !snippetData.source}} display-none{{/if}}" data-title="${snippetData.source}">{{html snippetData.source}}</div>\
