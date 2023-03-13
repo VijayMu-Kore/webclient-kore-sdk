@@ -842,4 +842,3 @@ class SearchListViewTemplate {
 
 export default SearchListViewTemplate;
 
-
