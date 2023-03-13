@@ -911,6 +911,7 @@ body{
         font-weight: 500;     
         display: inline-block;
         float: left;
+        margin-bottom: 15px;
         img{
             margin-left: 8px;    
             position: relative;
@@ -3993,7 +3994,7 @@ body{
     .sdk-results-customize-icon{
         position: absolute;
         right: 0;
-        bottom: 48px;
+        bottom: 27px;
         cursor: pointer;
         display: none;
         &:hover{
@@ -4075,7 +4076,7 @@ body{
         top: 0;
         right: 0;
         cursor: pointer;
-        display: none;
+        display: none !important;
         position: absolute;
         right: 0;
         &:hover{
@@ -5037,7 +5038,8 @@ li{
                         }
                     }
                     .botMessage{
-                        background: var(--sdk-bg-athens-gray-color);
+                        // background: var(--sdk-bg-athens-gray-color);
+                        background: #eff0f1;
                         border: 1px solid var(--sdk-border-mischka-color);
                         box-sizing: border-box;
                         border-radius: 8px;
@@ -5045,13 +5047,17 @@ li{
                         position: relative;
                         padding: 15px 15px 15px 17px;
                         max-width: 85%;
-                        min-height: 48px;      
+                        // min-height: 48px;      
+                        min-height: 39px;      
                         float: left;
                         position: relative;
                         clear: both;
-                        margin-bottom: 35px;  
+                        margin-bottom: 20px;  
                         margin-left: 30px;  
-                        font-size: 14px; 
+                        // font-size: 14px; 
+                        font-size: 12px;
+                        padding: 12px;
+                        border: none;
                         .result-found-text{
                             position: absolute;
                             bottom: -27px;
@@ -5079,4 +5085,7 @@ li{
 }
 .builder-sdk .searchAssist-kore-chat-window .top-down-customize-btns.custom-header-container-center{
     display: block;
+}
+.search-temp-one.active-citation-snippet .active-snippet-referene-block .active-reference-list-temp-block .active-reference-list-temp{
+    padding: 6px 10px 9px 5px;
 }
