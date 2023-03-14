@@ -7218,9 +7218,11 @@ FindlySDK.prototype.handleSearchRes = function (res) {
               })
               listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
             } else {
+              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
+            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
+            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
+            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
               listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
-              var filterData = listSnippetData.filter(e => e == " ");
-              filterData.forEach(f => listSnippetData.splice(listSnippetData.findIndex(e => e == f),1));
             }
             let title = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title) : '';
             snippetObj = {'title':title,
