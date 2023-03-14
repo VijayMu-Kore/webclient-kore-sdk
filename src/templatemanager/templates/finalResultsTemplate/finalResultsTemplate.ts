@@ -90,7 +90,7 @@ class FinalResultsTemplate {
                 facetPosition: 'left',
                 filterFacetData: [],
                 groupData: modifyGroupData,
-                displayFeedback:null,
+                displayFeedback:msgData.message[0].component.payload.displayFeedback,
                 feedbackData: null
               }
             }
