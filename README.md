@@ -13,7 +13,6 @@ With just few lines of code, you can embed our Kore.ai chat widget into your app
 
 [Message Templates](https://developer.kore.ai/docs/bots/sdks/message-templates/)
 
-[API Referernce](https://rajasekharba-kore.github.io/web-kore-sdk/)
 
 
 ## 💡 Getting Started
@@ -21,7 +20,7 @@ With just few lines of code, you can embed our Kore.ai chat widget into your app
 First, install kore web SDK via the [npm](https://www.npmjs.com/get-npm) package manager:
 
 ```bash
-npm install --save git+ssh://github.com/Koredotcom/SearchAssist-web-sdk#branchNAME
+npm install --save git+ssh://github.com/Koredotcom/SearchAssist-web-sdk#1.0.0
 ```
 
 Get KRSearch and KRSearchConfig
@@ -63,63 +62,6 @@ KRSearchInstance.show(KRSearchConfig);
 ### Examples
 Click [here](/docs/sdkdeveloper) to explore different variations how SDK can be consumed 
 
-### Other options
-<details>
- <summary>Legacy</summary>
-
-include the following script in your html file and configure bot configurations 
-
-```js
-
-<script  src="https://cdn.jsdelivr.net/gh/Koredotcom/SearchAssist-web-sdk@BranchName/dist/umd/kore-web-sdk-umd-search.js"></script>
-<script>
-        //searchassist chat window declaration
-        var KRSearchConfig=KoreSearchSDK.KRSearchConfig;
-        var KRSearch=KoreSearchSDK.KRSearch;
-        
-        //create searchassist  chat window instance
-        var KRSearchInstance = new KRSearch();
-
-        //configure bot configurations
-        var botOptions=chatConfig.botOptions;
-        botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";
-        botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';
-        botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
-        botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
-        botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
-
-        KRSearchConfig.API_KEY_CONFIG.KEY="PLEASE_ENTER_API_KEY_HERE";
-
-	/* 
-	Important Note: These keys are provided here for quick demos to generate JWT token at client side but not for Production environment.
-	Refer below document for JWT token generation at server side. Client Id and Client secret should maintained at server end.
-	https://developer.kore.ai/docs/bots/sdks/user-authorization-and-assertion/
-	**/
-
-        //show searchassist chatwindow
-        KRSearchInstance.show(KRSearchConfig);
-
-</script>
-
-```
-	
-</details>
-
-
-<details>
- <summary>For quick demo</summary>
- 
- 
-
-####  Instructions
-	1.Open examples/umd/chat-with-plugins/index.html  
-	2.configure bot configurations   
-	3.Open same file in any browser 
-	
-
- 
-
-</details>
 
 ## 💡 Custom Templates
 

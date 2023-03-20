@@ -1,9 +1,9 @@
 // import chatWindow from './components/chatwindow/chatWindow';
 // import chatConfig from './components/chatwindow/config/kore-config';
 
-import Korei18nPlugin from './plugins/i18n';
-import KoreFileUploaderPlugin from './plugins/fileUploaderPlugin/fileUploader';
-import KorePickersPlugin from './plugins/korePickers';
+// import Korei18nPlugin from './plugins/i18n';
+// import KoreFileUploaderPlugin from './plugins/fileUploaderPlugin/fileUploader';
+// import KorePickersPlugin from './plugins/korePickers';
 import GraphTemplatesPlugin from './plugins/graphTemplatesPlugin';
 // import SpeechToTextPlugin from './plugins/textSpeechPlugins/speechToTextPlugin';
 // import TtsSpeechPlugin from './plugins/textSpeechPlugins/ttsSpeechPlugin';
@@ -21,9 +21,9 @@ export {
   // chatWindow,
   // widgetsConfig,
   // KoreWidgetSDK,
-  Korei18nPlugin,
-  KoreFileUploaderPlugin,
-  KorePickersPlugin,
+  // Korei18nPlugin,
+  // KoreFileUploaderPlugin,
+  // KorePickersPlugin,
   GraphTemplatesPlugin,
   KRSearch,
   KRSearchConfig,
