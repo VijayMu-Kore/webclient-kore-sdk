@@ -13,6 +13,9 @@ class SearchListViewTemplate {
       if (!msgData?.message[0].component?.payload?.helpers) {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
+      if (!msgData?.message[0].component?.payload?.langTranslator) {
+        msgData.message[0].component.payload['langTranslator'] = me.langTranslator;
+      }
       const isSearchSDK = document.body.className.match('sdk-body');
       if(isSearchSDK!==null){
         msgData.message[0].component.payload.isSearchSDK = true;

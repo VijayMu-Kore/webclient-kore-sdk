@@ -27,9 +27,9 @@ class SnippetListTemplate {
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
-                <div class="btn-chip">SUGGESTED ANSWER</div>\
-            </div>\
-            {{if snippetData && snippetData.snippet_type === "generative_model"}}\
+                <div class="btn-chip sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</div>\
+                </div>\
+            {{if snippetData && snippetData.source === "Answered by AI"}}\
             <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
             {{/if}}\
         </div>\
@@ -57,8 +57,7 @@ class SnippetListTemplate {
                 {{/if}}\
                 {{if displayFeedback}}\
                 <div class="temp-right">\
-                    <div class="is-it-usefull">Is it useful?</div>\
-                    <div class="temp-fotter-actions">\
+                <div class="is-it-usefull sdk-i18n-lang"  sdk-i18n-key="sa_sdk_is_useful">{{html langTranslator("sa_sdk_is_useful")}}</div>\                    <div class="temp-fotter-actions">\
                         <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
                         <img  class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
                     </div>\

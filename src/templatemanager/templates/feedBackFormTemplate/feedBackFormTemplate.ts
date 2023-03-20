@@ -10,7 +10,8 @@ class FeedBackFormTemplate {
           me.messageHtml = $(FeedBackFormTemplate.prototype.getTemplateString()).tmpl({
             'feedbackData': msgData?.message?.[0]?.component?.payload?.query,
             'feedBackType':msgData?.message?.[0]?.component?.payload?.feedBackType,
-            'helpers': helpersObj.helpers
+            'helpers': helpersObj.helpers,
+             langTranslator: msgData.message[0].component.payload.langTranslator
         });
         setTimeout(()=>{
           FeedBackFormTemplate.prototype.bindFeedbackEvents(me,me.messageHtml,msgData.message[0].component.payload);
@@ -24,7 +25,7 @@ class FeedBackFormTemplate {
       <div class="temp-feed-back-form">\
       <div class="temp-feed-back-header-block">\
           <div class="temp-feed-back-header">\
-              <div class="temp-feed-back-header-samll">Feedback for</div>\
+              <div class="temp-feed-back-header-samll sdk-i18n-lang" sdk-i18n-key="sa_sdk_feedback_for">{{html langTranslator("sa_sdk_feedback_for")}}</div>\
               <div class="temp-feed-back-header-large" title="${feedbackData}">“${feedbackData}”</div>\
           </div>\
           <div class="close-feedback"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/feedback-close.png"/></div>\

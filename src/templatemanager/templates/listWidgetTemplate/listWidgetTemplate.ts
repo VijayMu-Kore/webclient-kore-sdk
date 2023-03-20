@@ -14,6 +14,7 @@ class ListWidgetTemplate {
         'tempdata': msgData.message[0].component.payload,
         'dataItems': msgData.message[0].component.payload.elements || {},
         'viewmore': null,
+         langTranslator: msgData.message[0].component.payload.langTranslator
       });
       me.bindEvents(me.messageHtml, 'listWidget');
       return me.messageHtml;

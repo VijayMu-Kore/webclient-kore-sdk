@@ -81,5 +81,9 @@
     "sa_sdk_unpin_caps": "핀 해제",
     "sa_sdk_unhide": "비표시 해제",
     "sa_sdk_unhide_caps": "비표시 해제",
-    "sa_sdk_unpin": "핀 해제"
+    "sa_sdk_unpin": "핀 해제",
+    "sa_sdk_Suggested_answer":"제안된 답변",
+    "sa_sdk_is_useful":"유용합니까?",
+    "sa_sdk_feedback_for":"다음에 대한 피드백"
+
 }

@@ -83,7 +83,7 @@ class FullSearchResultTopdownTemplate {
           $(messageHtml).find(".all-product-details").scrollTop(0);
         });
       if(msgData.message[0].component.payload.displayFeedback.queryLevel){
-        FullSearchResultTopdownTemplate.prototype.feedBackResultEvents(me, messageHtml);
+        FullSearchResultTopdownTemplate.prototype.feedBackResultEvents(me, messageHtml,msgData);
         }
     }, 300);
 
@@ -848,7 +848,7 @@ class FullSearchResultTopdownTemplate {
     hostWindowInstance.backToSearchClickEvent();
     });
   }
-  feedBackResultEvents(me: any, messageHtml: any){
+  feedBackResultEvents(me: any, messageHtml: any,msgData:any){
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     $(messageHtml).find('.feedback-top-down-full').off('click','.thumb-up-full-top').on('click','.thumb-up-full-top', function (event:any) {
@@ -876,7 +876,8 @@ class FullSearchResultTopdownTemplate {
           payload: {
             template_type: "feedbackFormTemplate",
             query: hostWindowInstance?.vars?.searchObject.searchText || '',
-            feedBackType:'query'
+            feedBackType:'query',
+            langTranslator:msgData.message[0].component.payload.langTranslator
           }
         }
       }]
@@ -948,7 +949,8 @@ class FullSearchResultTopdownTemplate {
           template_type: msgData.message[0].component.payload.snippetData.template_type,
           helpers: msgData.message[0].component.payload.helpers,
           snippetData: msgData.message[0].component.payload.snippetData,
-          feedbackDisplay:msgData.message[0].component.payload.displayFeedback.smartAnswer
+          feedbackDisplay:msgData.message[0].component.payload.displayFeedback.smartAnswer,
+          langTranslator: msgData.message[0].component.payload.langTranslator
         }
       }
     }]

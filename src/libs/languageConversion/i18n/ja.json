@@ -81,5 +81,9 @@
     "sa_sdk_unhide": "非表示を戻す",
     "sa_sdk_unpin_caps": "ピンを外す",
     "sa_sdk_unhide_caps": "非表示を戻す",
-    "sa_sdk_unpin": "ピンを外す"
+    "sa_sdk_unpin": "ピンを外す",
+    "sa_sdk_Suggested_answer":"推奨される回答",
+    "sa_sdk_is_useful":"それは役に立ちますか?",
+    "sa_sdk_feedback_for":"フィードバック"
+
 }

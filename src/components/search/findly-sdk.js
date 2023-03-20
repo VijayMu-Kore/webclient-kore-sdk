@@ -9002,6 +9002,7 @@ FindlySDK.prototype.initializeCustomTemplate = function (findlyConfig) {
   _self.customTemplateObj = new customTemplate(_self);
   _self.customTemplateObj.helpers = helpers;
   _self.customTemplateObj.config = findlyConfig;
+  _self.customTemplateObj.langTranslator = langTranslator;
   var searchAssistTemplates = [new SearchListViewTemplate(), new SearchGridViewTemplate(), new SearchCarouselViewTemplate(), new FinalResultsTemplate(), new FullSearchResultsTemplate(), new FullSearchResultTopdownTemplate()]
   searchAssistTemplates.forEach((template)=>{
     _self.customTemplateObj.installTemplate(template);
@@ -9908,7 +9909,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition == "top") {
+  if (response.experienceConfig.searchBarPosition !== "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (

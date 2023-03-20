@@ -16,7 +16,7 @@
     "sa_sdk_search_results": "Search Results",
     "sa_sdk_sort_by_caps": "SORT BY",
     "sa_sdk_know_more": "Know More",
-    "sa_sdk_sure_please_find_the_matched_results_below": "Sure, please find the matched results below",
+    "sa_sdk_sure_please_find_the_matched_results_below": "Here are the relevant results",
     "sa_sdk_unable_to_find_results_at_this_moment": "Unable to find results at this moment",
     "sa_sdk_filters_caps": "FILTERS",
     "sa_sdk_apply": "Apply",
@@ -74,6 +74,9 @@
     "sa_sdk_more": "More",
     "sa_sdk_you_can_order_the_results_by_clicking": "You can order the results by clicking on this icon and dragging up and down.",
     "sa_sdk_retry_query": "Retry Query",
+    "sa_sdk_Suggested_answer":"SUGGESTED ANSWER",
+    "sa_sdk_is_useful":"Is it useful?",
+    "sa_sdk_feedback_for":"Feedback for",
 
 
     
