@@ -5737,8 +5737,6 @@ FindlySDK.prototype.searchEventBinding = function (
     $(dataHTML)
       .off("keydown", "#search")
       .on("keydown", "#search", debounce(function (e) {
-        var $suggest = $("body").hasClass("top-down")?$(".top-down-suggestion") : $(".bottom-up-suggestion");
-       $suggest.val('');
         $('#query-feedback').empty()
          $('#snippet-feedback-template').empty();
         _self.trimSearchQuery(e);
