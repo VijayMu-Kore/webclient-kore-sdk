@@ -22994,7 +22994,8 @@ FindlySDK.prototype.backToSearchClickEvent = function (event) {
       $(".full-search-data-container").empty();
       $(".skelton-load-img").hide();
       _self.destroy();
-      // $("body").removeClass(".kore-sdk-body")
+      window.localStorage.setItem("query", "");
+      window.localStorage.setItem("searchLocation", "");
 }
 FindlySDK.prototype.getFeedBackResult = function () {
   var _self = this;
