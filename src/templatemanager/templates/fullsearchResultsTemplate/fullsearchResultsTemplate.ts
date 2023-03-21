@@ -17,6 +17,9 @@ class FullSearchResultsTemplate {
       if (!msgData.message[0].component.payload.helpers) {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
+      if (msgData.message[0].component.payload.langTranslator) {
+         me.langTranslator = msgData.message[0].component.payload.langTranslator;
+      }
       me.messageHtml = $(FullSearchResultsTemplate.prototype.getTemplateString(msgData.message[0].component.payload.template_type)).tmpl(msgData.message[0].component.payload);
       FullSearchResultsTemplate.prototype.bindEvents(me, me.messageHtml, msgData);
       me.customTemplateObj = new customTemplate(me);
@@ -37,6 +40,7 @@ class FullSearchResultsTemplate {
       $(messageHtml).find('.full-search-data-container').empty();
       if (formatedTemplatesData && formatedTemplatesData.length) {
         formatedTemplatesData.forEach((d: any) => {
+          d.message[0].component.payload.langTranslator = msgData.message[0].component.payload.langTranslator
           let showAllHTML: any;
           if (d.message[0].component.payload.template_type == 'searchListTemplate') {
             showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);

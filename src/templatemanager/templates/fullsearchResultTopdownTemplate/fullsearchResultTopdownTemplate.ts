@@ -41,10 +41,12 @@ class FullSearchResultTopdownTemplate {
 
     me.searchConfigurationCopy = msgData.message[0].component.payload;
     let formatedTemplatesData: any = msgData.message[0].component.payload.groupData;
+    // formatedTemplatesData.groupData.langTranslator = msgData.message[0].component.payload.langTranslator;
     setTimeout(() => {
       $(messageHtml).find('.full-search-data-container').empty();
       if (formatedTemplatesData && formatedTemplatesData.length) {
         formatedTemplatesData.forEach((d: any) => {
+          d.message[0].component.payload =  msgData.message[0].component.payload.langTranslator
           var showAllHTML;
           if (d.message[0].component.payload.template_type == 'searchListTemplate') {
             showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
@@ -247,6 +249,7 @@ class FullSearchResultTopdownTemplate {
           $(messageHtml).find('.full-search-data-container').empty();
           if (formatedTemplatesData && formatedTemplatesData.length) {
             formatedTemplatesData.forEach((d: any) => {
+              
               var showAllHTML;
               if (d.message[0].component.payload.template_type == 'searchListTemplate') {
                 showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);

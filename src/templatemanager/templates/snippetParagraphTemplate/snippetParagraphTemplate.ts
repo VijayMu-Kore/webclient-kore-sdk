@@ -17,7 +17,7 @@ class SnippetParagraphTemplate {
             });
             me.feedBackTemplateObj = new FeedBackFormTemplate();
             setTimeout(()=>{
-              SnippetParagraphTemplate.prototype.bindSnippetEvents(me, me.messageHtml,msgData?.message?.[0]?.component?.payload?.snippetData);
+              SnippetParagraphTemplate.prototype.bindSnippetEvents(me, me.messageHtml,msgData?.message?.[0]?.component?.payload?.snippetData,msgData);
             },500)
             return me.messageHtml;
         }
@@ -69,7 +69,7 @@ class SnippetParagraphTemplate {
       </script>';
         return snipppetParagaraphTemplate;
     }
-    bindSnippetEvents(me:any,messageHtml:any, snippetData:any){
+    bindSnippetEvents(me:any,messageHtml:any, snippetData:any, msgData:any){
       let $ = me.hostInstance.$;
       let hostInstance= me.hostInstance;
           $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
@@ -82,7 +82,7 @@ class SnippetParagraphTemplate {
 
           $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
             if(!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')){
-            SnippetParagraphTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
+            SnippetParagraphTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData,msgData)
             $(messageHtml).find('.snippet-feedback').removeClass('active');
             $(event.currentTarget).addClass('active');
           }
@@ -111,7 +111,7 @@ class SnippetParagraphTemplate {
         SnippetParagraphTemplate.prototype.tooltipBindEvent(me);
     }
 
-    appendFeedBaackData(me: any, messageHtml: any,snippetData:any){
+    appendFeedBaackData(me: any, messageHtml: any,snippetData:any, msgData:any){
       let $ = me.hostInstance.$;
       let feedbackMsgData = {
         message: [{
@@ -120,7 +120,8 @@ class SnippetParagraphTemplate {
             payload: {
               template_type: "feedbackFormTemplate",
               query: snippetData.searchQuery,
-              feedBackType:'smartAnswer'
+              feedBackType:'smartAnswer',
+              langTranslator:msgData?.message?.[0]?.component?.payload?.langTranslator
             }
           }
         }]

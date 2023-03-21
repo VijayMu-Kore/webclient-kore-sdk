@@ -19,6 +19,9 @@ class FinalResultsTemplate {
       if (msgData?.message[0].component?.payload?.helpers) {
         me.helpersObj = msgData.message[0].component.payload.helpers
       }
+      if (msgData?.message[0].component?.payload?.langTranslator) {
+        me.langTranslator = msgData.message[0].component.payload.langTranslator
+      }
       else {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
@@ -48,6 +51,7 @@ class FinalResultsTemplate {
     }
     if (me.groupData && me.groupData.length) {
       me.groupData.forEach((d: any) => {
+        d.message[0].component.payload.langTranslator = me.langTranslator
         var showAllHTML;
         if (d.message[0].component.payload.template_type == 'searchListTemplate') {
           showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
@@ -91,7 +95,8 @@ class FinalResultsTemplate {
                 filterFacetData: [],
                 groupData: modifyGroupData,
                 displayFeedback:msgData.message[0].component.payload.displayFeedback,
-                feedbackData: null
+                feedbackData: null,
+                langTranslator:msgData.message[0].component.payload?.langTranslator
               }
             }
           }]
@@ -375,7 +380,7 @@ class FinalResultsTemplate {
     {{/if}}\
     {{/if}}\
     {{if snippetData && snippetData?.template_type}}\
-    <div class="show-more-results-block" ><span class="show-more-results-btn" id="sa-sdk-show-more-results-btn">Show more results</span></div>\
+    <div class="show-more-results-block" ><span class="show-more-results-btn" id="sa-sdk-show-more-results-btn"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_show_more_results">{{html langTranslator("sa_sdk_show_more_results")}}</span> </span></div>\
     {{/if}}\
       <div class="finalResults snippet-margin {{if snippetData && snippetData?.template_type}}  display-none{{/if}}">\
         {{if taskPrefix === "SUGGESTED"}}\
@@ -476,6 +481,7 @@ class FinalResultsTemplate {
             template_type: "feedbackFormTemplate",
             query: hostWindowInstance?.vars?.searchObject.searchText || '',
             feedBackType:feedBackType,
+            langTranslator: me?.langTranslator
           }
         }
       }]

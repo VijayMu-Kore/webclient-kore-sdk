@@ -84,6 +84,15 @@
     "sa_sdk_unpin": "ピンを外す",
     "sa_sdk_Suggested_answer":"推奨される回答",
     "sa_sdk_is_useful":"それは役に立ちますか?",
-    "sa_sdk_feedback_for":"フィードバック"
+    "sa_sdk_feedback_for":"フィードバック",
+    "sa_sdk_what_seems_to_be_the_issue":"問題は何ですか？",
+    "sa_sdk_incorrect":"正しくない",
+    "sa_sdk_outdated":"時代遅れ",
+    "sa_sdk_few_results":"いくつかの結果",
+    "sa_sdk_other":"他の",
+    "sa_sdk_please_help_with_more_details":"詳細を教えてください（オプション）",
+    "sa_sdk_start_typing_here":"ここに入力を開始...",
+    "sa_sdk_submit":"送信",
+    "sa_sdk_show_more_results":"さらに結果を表示"
 
 }

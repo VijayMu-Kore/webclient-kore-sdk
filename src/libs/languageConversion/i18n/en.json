@@ -77,6 +77,15 @@
     "sa_sdk_Suggested_answer":"SUGGESTED ANSWER",
     "sa_sdk_is_useful":"Is it useful?",
     "sa_sdk_feedback_for":"Feedback for",
+    "sa_sdk_what_seems_to_be_the_issue":"What seems to be the issue?",
+    "sa_sdk_incorrect":"Incorrect",
+    "sa_sdk_outdated":"Outdated",
+    "sa_sdk_few_results":"Few Results",
+    "sa_sdk_other":"Other",
+    "sa_sdk_please_help_with_more_details":"Please help us with more details (Optional)",
+    "sa_sdk_start_typing_here":"Start typing here...",
+    "sa_sdk_submit":"Submit",
+    "sa_sdk_show_more_results":"Show more results",
 
 
     

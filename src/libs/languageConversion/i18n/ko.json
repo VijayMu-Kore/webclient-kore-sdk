@@ -84,6 +84,15 @@
     "sa_sdk_unpin": "핀 해제",
     "sa_sdk_Suggested_answer":"제안된 답변",
     "sa_sdk_is_useful":"유용합니까?",
-    "sa_sdk_feedback_for":"다음에 대한 피드백"
+    "sa_sdk_feedback_for":"다음에 대한 피드백",
+    "sa_sdk_what_seems_to_be_the_issue":"무엇이 문제인 것 같습니까?",
+    "sa_sdk_incorrect":"잘못된",
+    "sa_sdk_outdated":"시대에 뒤쳐진",
+    "sa_sdk_few_results":"몇 가지 결과",
+    "sa_sdk_other":"다른",
+    "sa_sdk_please_help_with_more_details":"자세한 내용을 알려주세요(선택 사항).",
+    "sa_sdk_start_typing_here":"여기에 입력을 시작하세요...",
+    "sa_sdk_submit":"제출하다",
+    "sa_sdk_show_more_results":"더 많은 결과 보기"
 
 }

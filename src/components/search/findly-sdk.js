@@ -2753,6 +2753,7 @@ FindlySDK.prototype.prepAllSearchData = function (
     devMode: devMode,
     customSearchResult: _self.customSearchResult,
     getFacetDisplayName: getFacetDisplayName,
+    langTranslator:langTranslator
   };
   // using for bypassing the condition in StructureData
   if (!$(".topdown-search-main-container").length) {
@@ -4041,6 +4042,7 @@ FindlySDK.prototype.deleteRecents = function () {
           _self.vars.searchObject.recentTasks.length &&
           _self.vars.searchObject.recentTasks.slice(0, 2),
         popularSearches: [],
+        langTranslator:langTranslator
       };
       if (!_self.customSearchResult) {
         var freqData = $(_self.getSearchTemplate("freqData")).tmplProxy(
@@ -5572,6 +5574,7 @@ FindlySDK.prototype.getRecentSearches = function (url, type) {
                 showSearches: searchConfigurationCopy
                   ? searchConfigurationCopy.showSearches
                   : "recent",
+                  langTranslator:langTranslator
               });
               if (
                 _self.vars.searchObject.recents.length &&
@@ -6125,6 +6128,7 @@ FindlySDK.prototype.searchEventBinding = function (
             _self.vars.searchObject.recentTasks.length &&
             _self.vars.searchObject.recentTasks.slice(0, 2),
           popularSearches: [],
+          langTranslator:langTranslator
         };
         if (!_self.customSearchResult) {
           var freqData = $(_self.getSearchTemplate("freqData")).tmplProxy(
@@ -6884,6 +6888,7 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.getSearchTemplate("paymentGateWayDemo")
         ).tmplProxy({
           paymentDetails: JSON.parse(payData),
+          langTranslator:langTranslator
         });
         var defaultlibConfig = {
           format: "MM-DD-YYYY",
@@ -7305,6 +7310,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             viewType: viewType,
             customSearchResult: _self.customSearchResult,
             totalSearchResults: _self.vars.totalNumOfResults,
+            langTranslator:langTranslator
           });
           _self.getMergedData(_self.vars.resultSettings, responseData, 'isSearch').then((res) => {
             // setTimeout(function () {
@@ -7840,6 +7846,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 viewType: viewType,
                 customSearchResult: _self.customSearchResult,
                 totalSearchResults: (res.tasks || []).length,
+                langTranslator:langTranslator
               });
               setTimeout(function () {
                 _self.appendActionsContainerForBottomUp("search");
@@ -8176,6 +8183,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
         devMode: devMode,
         viewType: viewType,
         helpers: helpers,
+        langTranslator:langTranslator
       });
       $("#searchChatContainer").append(template);
       var scrollBottom =
@@ -8234,6 +8242,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
         devMode: devMode,
         viewType: viewType,
         helpers: helpers,
+        langTranslator:langTranslator
       });
       $("#searchChatContainer").append(template);
     }
@@ -8288,12 +8297,14 @@ FindlySDK.prototype.sendMessageToSearch = function (
               text: messageData,
             },
             helpers: helpers,
+            langTranslator:langTranslator
           });
           $("#searchChatContainer").append(messageHtml);
         } else {
           messageHtml = $(_self.getSearchTemplate("messageBubbles")).tmplProxy({
             msgData: messageData,
             helpers: helpers,
+            langTranslator:langTranslator
           });
           // $('#searchChatContainer').append(template);
         }
@@ -8417,6 +8428,7 @@ FindlySDK.prototype.sendMessageToSearch = function (
       devMode: devMode,
       viewType: viewType,
       helpers: helpers,
+      langTranslator:langTranslator
     });
     //$('#searchChatContainer').append(template);
     $(".search-body").hide();
@@ -9026,6 +9038,7 @@ FindlySDK.prototype.initializeCustomTemplateEvent = function () {
       devMode: devMode,
       viewType: viewType,
       helpers: helpers,
+      langTranslator:langTranslator
     });
     $("#searchChatContainer").append(templateBotMessageBubble);
     var scrollBottom =
@@ -9795,6 +9808,7 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
   };
   var dataHTML = $(_self.getSearchTemplate("searchContainer")).tmplProxy({
     searchConfig: searchConfiguration,
+    langTranslator:langTranslator
   });
 
   $(dataHTML)
@@ -9909,7 +9923,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition !== "top") {
+  if (response.experienceConfig.searchBarPosition == "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
@@ -20703,7 +20717,8 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
             msgData: messageData,
             devMode: devMode,
             viewType: viewType,
-            helpers: helpers
+            helpers: helpers,
+            langTranslator:langTranslator
           });
           $('#histroyChatContainer').append(templateMessageBubble);
           $('#searchChatContainer').animate({ scrollTop: ($('#searchChatContainer').scrollTop() + $('.userMessage').first().parent().position().top - 0) }, 500)
@@ -22531,7 +22546,8 @@ FindlySDK.prototype.appendTextToSearchContainer = function (type, text) {
     msgData: messageData,
     devMode: devMode,
     viewType: viewType,
-    helpers: helpers
+    helpers: helpers,
+    langTranslator:langTranslator
   });
   $('#searchChatContainer').append(template);
 }
