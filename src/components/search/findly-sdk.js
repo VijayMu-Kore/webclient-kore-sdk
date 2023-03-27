@@ -611,7 +611,9 @@ FindlySDK.prototype.setAPIDetails = function () {
       "searchsdk/stream/" + 
       streamId + '/' + 
       "history",
-      sortableFacetsUrl: baseAPIServer + "searchsdk/stream/" + streamId + '/' + SearchIndexID + "/facets?type=sortable"
+      sortableFacetsUrl: baseAPIServer + "searchsdk/stream/" + streamId + '/' + SearchIndexID + "/facets?type=sortable",
+      queryLevelAnalyticsUrl : businessTooBaseURLForPinning +
+      SearchIndexID +"/search/analytics"
   };
   // _self.API.uuid = uuid.v4();
   _self.API.uuid = _self.config.botOptions.userIdentity;
@@ -5684,30 +5686,40 @@ FindlySDK.prototype.searchEventBinding = function (
     .on("click", ".query-analytics-control-container", function (event) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
-        var responseObject = {
-          type: "show",
-          data: true,
-          query: _self.vars.searchObject.searchText,
-        };
-        _self.parentEvent(responseObject);
-        setTimeout(function () {
-          $(".query_analytics_content").css("top", event.pageY - 50);
-          $(".query_analytics_content").css(
-            "left",
-            event.pageX - 178 - event.offsetX
-          );
+      var template = $( _self.getQueryLevelAnalyticsTemplate()).tmplProxy({});
+      if($('body').find('.query_analytics_content').length){$(".query_analytics_content").remove();}
+       $('body').append(template);
+       $(".query_analytics_content").css("top", event.pageY - 50);
+       $(".query_analytics_content").css(
+         "left",
+         event.pageX - 298 - event.offsetX
+       );
+    _self.getQueryLevelAnalytics(_self.vars.searchObject.searchText).then(data => {
+      $('#sa-analystics-searches').html(data.searches);
+      $('#sa-analystics-clicks').html(data.clicks);
+      $('#sa-analystics-thumbsUp').html(data.thumbsUp);
+      $('#sa-analystics-thumbsDown').html(data.thumbsDown);
+         setTimeout(function () {
           $(document).on("click", function (event) {
             if (!$(event.target).closest(".query_analytics_content").length) {
-              $(".query_analytics_content").hide();
+              $(".query_analytics_content").remove();
             }
           });
-        }, 100);
-      }
+          $('#close-analytics-Cross').off('click').on("click", function (event) {
+            $(".query_analytics_content").remove();
+        });
+        $('.query_analytics_content').off('mouseover').on("mouseover", function (event) {
+          $(".query_analytics_content").show();
+      });
+        $('.query_analytics_content').off('mouseout').on("mouseout", function (event) {
+            $(".query_analytics_content").hide();
+        });
+        });
+      })
       /*$('.custom-header-container-left').css('visibility', 'visible');
         $('.custom-insights-control-container').hide();*/
     });
-
+   
   /*$('.custom-header-container-left').off('click').on('click', function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -23324,28 +23336,105 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
   if (_self.isDev) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        if (_self.vars.searchObject && _self.vars.searchObject.searchText) {
-          var responseObject = {
-            type: "show",
-            data: true,
-            query: _self.vars.searchObject.searchText,
-          };
-          _self.parentEvent(responseObject);
-          setTimeout(function () {
-            $(".query_analytics_content").css("top", event.pageY - 50);
+        var template = $( _self.getQueryLevelAnalyticsTemplate()).tmplProxy({});
+          if($('body').find('.query_analytics_content').length){$(".query_analytics_content").remove();}
+           $('body').append(template);
+           $(".query_analytics_content").css("top", event.pageY - 50);
             $(".query_analytics_content").css(
               "left",
               event.pageX - 300 - event.offsetX
             );
+        _self.getQueryLevelAnalytics(_self.vars.searchObject.searchText).then(data => {
+          $('#sa-analystics-searches').html(data.searches);
+          $('#sa-analystics-clicks').html(data.clicks);
+          $('#sa-analystics-thumbsUp').html(data.thumbsUp);
+          $('#sa-analystics-thumbsDown').html(data.thumbsDown);
+          setTimeout(function () {
             $(document).off('click').on("click", function (event) {
               if (!$(event.target).closest(".query_analytics_content").length) {
-                $(".query_analytics_content").hide();
+                $(".query_analytics_content").remove();
               }
             });
-          }, 100);
-        }
+            $('#close-analytics-Cross').off('click').on("click", function (event) {
+                $(".query_analytics_content").remove();
+            });
+            $('.query_analytics_content').off('mouseover').on("mouseover", function (event) {
+              $(".query_analytics_content").show();
+          });
+            $('.query_analytics_content').off('mouseout').on("mouseout", function (event) {
+                $(".query_analytics_content").hide();
+            });
+          });
+        })
   }
 }
-
+FindlySDK.prototype.getQueryLevelAnalytics = function(query){
+  var _self = this;
+  let _month_old_date = (new Date(Date.now() - (30 * 864e5))).toJSON();
+  let sdate = (new Date(Date.now())).toJSON();
+  var payload = {"searchQuery": query};
+  var headers = {
+    'x-timezone-offset': '-330'
+  };
+  var bearer = "bearer " + _self.bot.options.accessToken;
+  headers["Authorization"] = bearer;
+  headers["Content-Type"] = "application/json";
+  var URL= _self.API.queryLevelAnalyticsUrl+'?startDate='+_month_old_date+'&endDate='+sdate+'&rnd=dwz8x';
+  headers.auth = _self.config.botOptions.assertion;
+  return $.ajax({
+    url: URL,
+    type: 'POST',
+    headers: headers,
+    data: JSON.stringify(payload),
+    success: function (data) {
+    },
+    error: function (err) {
+    }
+  })
+  // this.service.invoke('get.QueryLevelAnalytics', quaryparms, payload,header).subscribe(res => {
+  //   this.analystic = res;
+  // }, error => {
+  // });
+}
+FindlySDK.prototype.getQueryLevelAnalyticsTemplate = function(){
+  return '<script id="query_analytics_tmpl" type="text/x-jqury-tmpl">\
+  <div class="query_analytics_content">\
+    <div class="header-sec">\
+        <div class="title" >Query Analytics</div>\
+        <div class="close-analytics" id="close-analytics-Cross">\
+            <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/close-analytics.svg"/>\
+        </div>\
+    </div>\
+    <div class="analytics-counts" >\
+        <div class="count-sec">\
+            <div class="title">Searches</div>\
+            <div class="count">\
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/searches.svg"/><span id="sa-analystics-searches"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/loading-spin-orange.gif" style="\
+                margin-right: 0px;"></span></span>\
+            </div>\
+        </div>\
+        <div class="count-sec">\
+            <div class="title">Clicks</div>\
+            <div class="count">\
+                <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/clicks.svg"/><span id="sa-analystics-clicks"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/loading-spin-orange.gif" style="\
+                margin-right: 0px;"></span></span>\
+            </div>\
+        </div>\
+        <div class="count-sec m-0">\
+            <div class="title">Feedback</div>\
+            <div class="count">\
+                <span class="feedback-thumb">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/thumb-success.svg"/><span id="sa-analystics-thumbsUp"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/loading-spin-orange.gif" style="\
+                    margin-right: 0px;"></span></span>\
+                <span class="feedback-thumb">\
+                    <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/thumb-red.svg"/><span id="sa-analystics-thumbsDown"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/loading-spin-orange.gif" style="\
+                    margin-right: 0px;"></span></span>\
+                </span>\
+            </div>\
+    </div>\
+  </div>\
+  </div>\
+  </script>';
+}
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
