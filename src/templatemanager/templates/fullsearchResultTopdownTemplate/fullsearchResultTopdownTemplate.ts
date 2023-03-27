@@ -46,7 +46,7 @@ class FullSearchResultTopdownTemplate {
       $(messageHtml).find('.full-search-data-container').empty();
       if (formatedTemplatesData && formatedTemplatesData.length) {
         formatedTemplatesData.forEach((d: any) => {
-          d.message[0].component.payload =  msgData.message[0].component.payload.langTranslator
+          d.message[0].component.payload.langTranslator =  msgData.message[0].component.payload.langTranslator
           var showAllHTML;
           if (d.message[0].component.payload.template_type == 'searchListTemplate') {
             showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
