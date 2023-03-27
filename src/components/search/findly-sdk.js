@@ -23396,6 +23396,15 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
     return text;
   }
   FindlySDK.prototype.getSetI18nLangData = function (selectedlang){
+    window.addEventListener('message', (event) => {
+      const { type, data } = event.data;
+      if (event.origin !== event.data.originUrlValue) {
+        return;
+      }
+      if (type === 'localStorageData') {
+        localStorage.setItem('appLanguage', JSON.stringify(event.data.languageValue));
+      }
+    });
     let lang = selectedlang || window.localStorage.getItem('appLanguage') || 'en';
     if(lang !== 'en')$('body').addClass('SDK'+lang)
     sdk_i18n = lang=='en'?enJsonObj:(lang=='ja'?jaJsonObj:koJsonObj);
