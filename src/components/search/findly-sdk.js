@@ -23398,11 +23398,11 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
   FindlySDK.prototype.getSetI18nLangData = function (selectedlang){
     window.addEventListener('message', (event) => {
       const { type, data } = event.data;
-      if (event.origin !== event.data.originUrlValue) {
+      if (event.origin !== data.originUrlValue) {
         return;
       }
       if (type === 'localStorageData') {
-        localStorage.setItem('appLanguage', JSON.stringify(event.data.languageValue));
+        localStorage.setItem('appLanguage', JSON.stringify(data.languageValue));
       }
     });
     let lang = selectedlang || window.localStorage.getItem('appLanguage') || 'en';
