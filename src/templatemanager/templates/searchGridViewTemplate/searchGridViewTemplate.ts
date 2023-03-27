@@ -11,7 +11,7 @@ class SearchGridViewTemplate {
       if (!msgData.message[0].component.payload.helpers) {
                 msgData.message[0].component.payload['helpers'] = me.helpersObj;
             }
-            me.messageGridHtml = $(SearchGridViewTemplate.prototype.getTemplateString(msgData?.message[0].component.payload.template_type)).tmpl(msgData?.message[0].component.payload);
+            me.messageGridHtml = $(SearchGridViewTemplate.prototype.getTemplateString(msgData?.message[0].component.payload.template_type,me)).tmpl(msgData?.message[0].component.payload);
             SearchGridViewTemplate.prototype.bindEvents(me, me.messageGridHtml);
             return me.messageGridHtml;
         }
@@ -29,7 +29,7 @@ class SearchGridViewTemplate {
           fieldName: $(e.currentTarget).attr("fieldName"),
         };
         hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
-          const listHTML = $(SearchGridViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type)).tmpl(result?.message[0].component.payload);
+          const listHTML = $(SearchGridViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type,me)).tmpl(result?.message[0].component.payload);
           $(listHTML).find(".show-more-list").remove();
           $(
             ".full-search-data-container [templateName=" +
@@ -60,7 +60,8 @@ class SearchGridViewTemplate {
         });
         SearchGridViewTemplate.prototype.tooltipBindEvent(me);
     }
-    getTemplateString(type: any) {
+    getTemplateString(type: any,me:any) {
+        let $ = me.hostInstance.$;
         const searchGridTemplate = '<script type="text/x-jqury-tmpl">\
         {{if isButtonTemplate == false}}\
         <div>\
@@ -212,8 +213,37 @@ class SearchGridViewTemplate {
   {{/if}}\
     {{/if}}\
         </script>'
-        if (type === 'searchGridTemplate') {
+        const koreGridTemplate = '<script type="text/x-jqury-tmpl">\
+        <div class="temp-block-header">${titleName}</div>\
+        <div class="search-temp-resources-tiles-block sa-resource-tiles-block">\
+                <div class="search-temp-width-90">\
+                    <div class="search-temp-resources-tiles">\
+                    {{each(key, data) structuredData.slice(0, 5)}}\
+                        <div class="sa-card-tile">\
+                        {{if data.img.length}}\
+                            <div class="sa-card-tile-img-block">\
+                            <img src="${data.img}">\
+                            </div>\
+                        {{/if}}\
+                            <div class="sa-card-tile-content-block">\
+                            <div class="sa-card-tile-content-header"  title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                            <div class="sa-card-tile-content-desc"  title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
+                            </div>\
+                            <div class="sa-card-tile-readmore"> <a href="${data.page_url}">Read More<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img"></div>\
+                        </div>\
+                    {{/each}}\
+                    </div>\
+                </div>\
+                <div class="search-temp-see-more show-more-data {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}} show-more-list" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+                    <div class="sa-card-tile-readmore">See More<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img"></div>\
+                </div>\
+                </div>\
+        </script>'
+        if (type === 'searchGridTemplate' && !$("body").hasClass("kore-sdk-body") ) {
             return searchGridTemplate;
+        }
+        if (type === 'searchGridTemplate' && $("body").hasClass("kore-sdk-body") ) {
+            return koreGridTemplate;
         }
     }
     tooltipBindEvent(me:any){
