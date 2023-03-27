@@ -282,12 +282,14 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    color: #4B4EDE;
+    color: #4B4EDE !important;
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
     padding: 0 15px 70px 15px;
     cursor: pointer;
+    width: auto;
+    flex-shrink: 0;
 }
 
 .search-temp-results-tiles.sa-pages-tiles-block .search-temp-see-more .sa-card-tile-readmore{
@@ -314,16 +316,17 @@
 }
 
 .search-temp-resources-tiles-block .search-temp-width-90{
-    width: 90%;
+    width: 100%;
 }
 
 .search-temp-resources-tiles-block .search-temp-see-more{
-    width: 10%;
+    // width: 10%;
 }
 
 .search-temp-resources-tiles-block .sa-card-tile-readmore{
     display: flex;
     align-items: center;
+    white-space: nowrap;
 }
 
 
@@ -331,12 +334,14 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    color: #4B4EDE;
+    color: #4B4EDE !important;
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
     padding: 0 15px 10px 15px;
     cursor: pointer;
+    width: auto;
+    flex-shrink: 0;
 }
 
 .search-temp-resources-tiles-block .search-temp-see-more .read-more-img{
@@ -411,8 +416,14 @@
     padding: 0 15px;
 }
 
+.search-temp-resources-tiles .sa-card-tile .sa-card-tile-img-block{
+    height: 200px;
+}
 .search-temp-resources-tiles .sa-card-tile .sa-card-tile-img-block img{
     width: 100%;
+    max-width: 100%;
+    height: 100%;
+    object-fit: fill;
 }
 
 .search-temp-resources-tiles .sa-card-tile .sa-card-tile-content-block .sa-card-tile-content-header{
@@ -444,9 +455,13 @@
 }
 
 .search-temp-resources-tiles .sa-card-tile .sa-card-tile-readmore .read-more-img{
-    width: 14px;
+    width: auto;
     height: 14px;
     padding-left: 10px;
+}
+.search-temp-resources-tiles .sa-card-tile .sa-card-tile-readmore a{
+    display: flex;
+    align-items: center;
 }
 
 .search-temp-results-tiles .search-temp-width-90 .search-temp-one-top-tile.careers-tile .top-header .top-header-txt .top-header-sub-txt{

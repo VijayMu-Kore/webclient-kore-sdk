@@ -396,16 +396,17 @@
 }
 
 .search-temp-resources-tiles-block .search-temp-width-90{
-    width: 90%;
+    width: 100%;
 }
 
 .search-temp-resources-tiles-block .search-temp-see-more{
-    width: 10%;
+    // width: 10%;
 }
 
 .search-temp-resources-tiles-block .sa-card-tile-readmore{
     display: flex;
     align-items: center;
+    white-space: nowrap;
 }
 
 
@@ -413,12 +414,14 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    color: #4B4EDE;
+    color: #4B4EDE !important;
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
     padding: 0 15px 10px 15px;
     cursor: pointer;
+    width: auto;
+    flex-shrink: 0;
 }
 
 .search-temp-resources-tiles-block .search-temp-see-more .read-more-img{

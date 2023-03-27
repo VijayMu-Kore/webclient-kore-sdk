@@ -8,9 +8,9 @@ if(serverUrl && (serverUrl.includes("https"))){ // for installer
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
 }  
-if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
-  paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
-}
+// if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
+//   paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
+// }
 
 botOptionsFindly.logLevel = 'debug';
 // botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
