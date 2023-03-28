@@ -1565,6 +1565,16 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                 </div>\
               </div>\
             </div>\
+            {{if searchConfig.showPlanWarningMsg}}\
+              <div id="plan-warning-block" class="bottom-up-plan-msg">\
+                <div class="plan_warning_content">\
+                  <div class="plan_warning_icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/Recommendations.svg"/></div>\
+                  <div class="plan_warning_msg">You have reached your query limit as per your current plan. Please opt in for overages to continue uninterrupted services.\
+                  <span  id="plan_warning_link">Click Here</span> to Opt in Overage</div>\
+                  <div class="plan_warning_close"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/Union.svg"/></div>\
+                </div>\
+              </div>\
+          {{/if}}\
             <div class="parent-search-live-auto-suggesition"></div>\
             <div class="live-seach-auto-suggestion-parent">\
             <!--<div class="feedback-template-positions if-live-search-top-down bottom-up-show-all">\
@@ -5507,6 +5517,7 @@ FindlySDK.prototype.getRecentSearches = function (url, type) {
       }
     }
     $("#autoSuggestionContainer").empty();
+    if($('#plan-warning-block').length) return;
     $.ajax({
       url: url,
       type: type,
@@ -5743,6 +5754,7 @@ FindlySDK.prototype.searchEventBinding = function (
     $(dataHTML).off('keypress','#search').on('keypress','#search',function(e){
       var $suggest = $("body").hasClass("top-down")?$(".top-down-suggestion") : $(".bottom-up-suggestion");
       $suggest.val('');
+      $('#plan-warning-block').remove();
     })
     $(dataHTML)
       .off("keydown", "#search")
@@ -6053,6 +6065,22 @@ FindlySDK.prototype.searchEventBinding = function (
         }
         $("#search").trigger({ type: "keydown", which: 39 });
       });
+      $(dataHTML)
+      .off("click", ".plan_warning_close")
+      .on("click", ".plan_warning_close", function (e) {
+        $('#plan-warning-block').remove();
+      })
+      $(dataHTML)
+      .off("click", "#plan_warning_link")
+      .on("click", "#plan_warning_link", function (e) {
+        $('#plan-warning-block').remove();
+        var responseObject = {
+          type: "planLimitExceeds",
+          data: true,
+          bottomUp:true
+        };
+        _self.parentEvent(responseObject);
+      })
     var handle = setInterval(function () {
       if (_self.bot?.options?.accessToken) {
         initPopularSearchList();
@@ -10045,6 +10073,7 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
   //default showsearches as recent
   searchConfiguration.showSearches = "recent";
   searchConfiguration.freePlan = searchConfig?.freePlan;
+  searchConfiguration.showPlanWarningMsg = searchConfig?.showPlanWarningMsg || false;
   searchConfigurationCopy = searchConfiguration;
   return searchConfiguration;
 };
@@ -19328,6 +19357,16 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                       </div>
                   </div>
               </div>
+              {{if searchConfig.showPlanWarningMsg}}\
+              <div id="plan-warning-block">
+              <div class="plan_warning_content">\
+              <div class="plan_warning_icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/Recommendations.svg"/></div>\
+              <div class="plan_warning_msg">You have reached your query limit as per your current plan. Please opt in for overages to continue uninterrupted services.\
+              <span  id="plan_warning_link">Click Here</span> to Opt in Overage</div>\
+              <div class="plan_warning_close"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/Union.svg"/></div>\
+             </div>\
+              </div>
+              {{/if}}\
           </div>
           <div class="skelton-load-img" style="display:none">\
           <img alt="" />\
@@ -19541,6 +19580,21 @@ FindlySDK.prototype.initializeTopDown = function (
   if (_self.isDev) {
     _self.initKorePicker(findlyConfig);
   }
+  $('.topdown-search-main-container')
+  .off("click", ".plan_warning_close")
+  .on("click", ".plan_warning_close", function (e) {
+    $('#plan-warning-block').remove();
+  })
+  $('.topdown-search-main-container')
+  .off("click", "#plan_warning_link")
+  .on("click", "#plan_warning_link", function (e) {
+    $('#plan-warning-block').remove();
+    var responseObject = {
+      type: "planLimitExceeds",
+      data: true
+    };
+    _self.parentEvent(responseObject);
+  })
 };
 
 FindlySDK.prototype.getTopDownActionTemplate = function () {
