@@ -27,11 +27,12 @@ class FullSearchResultTopdownTemplate {
       me.snippetImageTemplateObj = new SnippetImageTemplate();
       me.snippetCitationTemplateObj = new SnippetCitationTemplate();
       me.snippetActiveCitationTemplateObj = new SnippetActiveCitationTemplate();
-      FullSearchResultTopdownTemplate.prototype.bindEvents(me, me.messageFullResultHtml, msgData);
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
       me.carouselTemplateObj = new searchCarouselViewTemplate();
       me.feedBackTemplateObj = new FeedBackFormTemplate();
+      FullSearchResultTopdownTemplate.prototype.bindEvents(me, me.messageFullResultHtml, msgData);
+     
       return me.messageFullResultHtml;
     }
   }
@@ -58,7 +59,7 @@ class FullSearchResultTopdownTemplate {
           $(messageHtml).find('.full-search-data-container').append(showAllHTML);
         })
       }
-      var resultsContainerHtml = $(".full-results-data-container");
+      var resultsContainerHtml = $('.full-results-data-container');
       hostWindowInstance.bindPerfectScroll(
         resultsContainerHtml,
         ".all-product-details",
