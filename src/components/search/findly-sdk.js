@@ -7409,7 +7409,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           }
           facets.forEach((tab) => {
             if (tab && tab.key) {
-              tab["className"] = tab.key.replaceAll(" ", "-");
+              tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
             }
           });
           _self.vars.tabsList = facets;
@@ -7766,7 +7766,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           }
           facets.forEach((tab) => {
             if (tab && tab.key) {
-              tab["className"] = tab.key.replaceAll(" ", "-");
+              tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
             }
           });
           var isFilterEnabled = _self.vars.filterConfiguration.isEnabled;
@@ -22114,7 +22114,7 @@ return new Promise((resolve, reject) => {
     }
     facets.forEach((tab) => {
       if (tab && tab.key) {
-        tab["className"] = tab.key.replaceAll(" ", "-");
+        tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
       }
     });
     _self.vars.tabsList = facets; 
@@ -22703,7 +22703,7 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
         }
         facets.forEach((tab) => {
           if (tab && tab.key) {
-            tab["className"] = tab.key.replaceAll(" ", "-");
+            tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
           }
         });
         _self.vars.tabsList = facets; 
