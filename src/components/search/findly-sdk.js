@@ -4008,7 +4008,7 @@ FindlySDK.prototype.recentClick = function () {
     var url = _self.API.deleteRecentSearch;
     var payload = { "searches": [search] };
     var headers = {};
-    var bearer = "bearer " + this.bot.options.accessToken;
+    var bearer = "bearer " + this.bot?.options?.accessToken;
     headers["Authorization"] = bearer;
     headers["Content-Type"] = "application/json";
     headers.auth = _self.config.botOptions.assertion;
@@ -5508,7 +5508,7 @@ FindlySDK.prototype.getRecentSearches = function (url, type) {
     }
     _self.vars.isRecentSearchesLoading = true;
     var headers = {
-      Authorization: "bearer " + this.bot.options.accessToken,
+      Authorization: "bearer " + this.bot?.options?.accessToken,
       "Content-Type": "application/json",
     };
     if (!_self.isDev) {
@@ -7409,7 +7409,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           }
           facets.forEach((tab) => {
             if (tab && tab.key) {
-              tab["className"] = tab.key.replaceAll(" ", "-");
+              tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
             }
           });
           _self.vars.tabsList = facets;
@@ -7766,7 +7766,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           }
           facets.forEach((tab) => {
             if (tab && tab.key) {
-              tab["className"] = tab.key.replaceAll(" ", "-");
+              tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
             }
           });
           var isFilterEnabled = _self.vars.filterConfiguration.isEnabled;
@@ -8594,7 +8594,7 @@ FindlySDK.prototype.userLogin = function (clickedAction) {
 };
 FindlySDK.prototype.getFrequentlySearched = function (url, type, payload) {
   var bearer =
-    "bearer " + this.bot.options.accessToken || '';
+    "bearer " + this.bot?.options?.accessToken || '';
   var headers = {};
 
   payload = JSON.parse(payload);
@@ -8712,7 +8712,7 @@ FindlySDK.prototype.getPopularSearchList = function (url, type) {
   var bearer = this.API.jstBarrer;
   var _self = this;
   var headers = {
-    Authorization: "bearer " + this.bot.options.accessToken,
+    Authorization: "bearer " + this.bot?.options?.accessToken,
     "Content-Type": "application/json",
   };
   if (!_self.isDev) {
@@ -8730,7 +8730,7 @@ FindlySDK.prototype.getPopularSearchList = function (url, type) {
   });
 };
 FindlySDK.prototype.newSearchFeedbackPost = function (url, type, payload) {
-  var bearer = "bearer " + this.bot.options.accessToken ||'';
+  var bearer = "bearer " + this.bot?.options?.accessToken ||'';
   return $.ajax({
     url: url,
     type: type,
@@ -8762,7 +8762,7 @@ FindlySDK.prototype.makeAPItoFindly = function (url, type, payload) {
 };
 
 FindlySDK.prototype.dumpClickAnalyticsData = function (url, type, payload) {
-  var bearer = "bearer " + this.bot.options.accessToken;
+  var bearer = "bearer " + this.bot?.options?.accessToken;
   var _self = this;
   var headers = {
     Authorization: bearer,
@@ -10104,7 +10104,7 @@ FindlySDK.prototype.getJWT = function (options, callback) {
     // aud: "",
     // isAnonymous: false,
   };
-  var bearer =  "bearer " + this.bot.options.accessToken || '';
+  var bearer =  "bearer " + this.bot?.options?.accessToken || '';
 var headers = {};
 headers["AccountId"]= "60547150f60ec050f4dfea8b";
 headers["Authorization"] = bearer;
@@ -16917,7 +16917,7 @@ var searchInterfaceConfig;
 FindlySDK.prototype.getSearchResultsConfig = function (url, type) {
   var _self = this;
   var bearer =
-    "bearer " + this.bot.options.accessToken ||
+    "bearer " + this.bot?.options?.accessToken ||
     this.API.jstBarrer ||
     "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.wrUCyDpNEwAaf4aU5Jf2-0ajbiwmTU3Yf7ST8yFJdqM";
   var headers = {};
@@ -16955,7 +16955,7 @@ FindlySDK.prototype.getSearchResultsConfig = function (url, type) {
 FindlySDK.prototype.getTabFacetList = function (url, type) {
   var _self = this;
   var bearer =
-    "bearer " + this.bot.options.accessToken ||
+    "bearer " + this.bot?.options?.accessToken ||
     this.API.jstBarrer || "";
   var headers = {};
 
@@ -18277,7 +18277,7 @@ FindlySDK.prototype.appendSuggestions = function (autoComplete) {
   payload.userId = this.bot?.userInfo?.userInfo?.userId;
   payload.indexPipelineId = _self.API.indexpipelineId;
   var bearer =
-    "bearer " + this.bot.options.accessToken ||'';
+    "bearer " + this.bot?.options?.accessToken ||'';
   var headers = {};
   headers["Authorization"] = bearer;
   headers['Content-Type'] = "application/json";
@@ -19294,7 +19294,7 @@ FindlySDK.prototype.configureSearchInterface = function (botOptions) {
     botOptions.searchIndexID +
     "/searchInterface";
   var type = "GET";
-  var bearer = "bearer " + this.bot.options.accessToken;
+  var bearer = "bearer " + this.bot?.options?.accessToken;
   return $.ajax({
     url: searchExperienceAPIUrl,
     type: type,
@@ -20508,7 +20508,7 @@ FindlySDK.prototype.unlockBot = function () {
   };
   var url = _self.API.unlockbotUrl;
   var bearer =
-    "bearer " + this.bot.options.accessToken ||
+    "bearer " + this.bot?.options?.accessToken ||
     this.API.jstBarrer ||
     "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.wrUCyDpNEwAaf4aU5Jf2-0ajbiwmTU3Yf7ST8yFJdqM";
   var headers = {};
@@ -20657,11 +20657,11 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
 
   var _self = this;
   // var headers = {
-  //   "Authorization": 'bearer ' + this.bot.options.accessToken,
+  //   "Authorization": 'bearer ' + this.bot?.options?.accessToken,
   //   "Content-Type": "application/json"
   // };
   var headers = {};
-  var bearer = "bearer " + this.bot.options.accessToken;
+  var bearer = "bearer " + this.bot?.options?.accessToken;
   headers["Authorization"] = bearer;
   headers["Content-Type"] = "application/json";
   headers.auth = _self.config.botOptions.assertion;
@@ -21314,7 +21314,7 @@ FindlySDK.prototype.getJWT = function (options, callback) {
     // aud: "",
     // isAnonymous: false,
   };
-  var bearer =  "bearer " + this.bot.options.accessToken ||'';
+  var bearer =  "bearer " + this.bot?.options?.accessToken ||'';
 var headers = {};
 headers["AccountId"]= "60547150f60ec050f4dfea8b";
 headers["Authorization"] = bearer;
@@ -22114,7 +22114,7 @@ return new Promise((resolve, reject) => {
     }
     facets.forEach((tab) => {
       if (tab && tab.key) {
-        tab["className"] = tab.key.replaceAll(" ", "-");
+        tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
       }
     });
     _self.vars.tabsList = facets; 
@@ -22580,7 +22580,7 @@ FindlySDK.prototype.actionHandler = function(e) {
 }
 FindlySDK.prototype.getSortableFacetList = function (url, type) {
   var _self = this;
-  var bearer = "bearer " + this.bot.options.accessToken || '';
+  var bearer = "bearer " + this.bot?.options?.accessToken || '';
   var headers = {};
 
   headers["Authorization"] = bearer;
@@ -22703,7 +22703,7 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
         }
         facets.forEach((tab) => {
           if (tab && tab.key) {
-            tab["className"] = tab.key.replaceAll(" ", "-");
+            tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
           }
         });
         _self.vars.tabsList = facets; 
@@ -22852,6 +22852,8 @@ FindlySDK.prototype.show = function (config) {
     _self.config.findlyBusinessConfig = config.findlyBusinessConfig;
     _self.config.viaSocket = config.viaSocket;
     _self.config.searchInterfaceConfig = config.searchInterfaceConfig;
+  }else{
+    _self.isDev = false;
   }
   if(config.botOptions){
     _self.config.botOptions = {..._self.config.botOptions, ...config.botOptions}
@@ -23043,7 +23045,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
   "userId": this.bot?.userInfo?.userInfo?.userId
   }
   var headers = {};
-  var bearer = "bearer " + this.bot.options.accessToken;
+  var bearer = "bearer " + this.bot?.options?.accessToken;
   headers["Authorization"] = bearer;
   headers["Content-Type"] = "application/json";
   headers.auth = _self.config.botOptions.assertion;
@@ -23112,7 +23114,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
  }
 
   var headers = {};
-  var bearer = "bearer " + this.bot.options.accessToken;
+  var bearer = "bearer " + this.bot?.options?.accessToken;
   headers["Authorization"] = bearer;
   headers["Content-Type"] = "application/json";
   headers.auth = _self.config.botOptions.assertion;
