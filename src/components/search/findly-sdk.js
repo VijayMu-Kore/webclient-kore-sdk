@@ -18,6 +18,7 @@ import './css/fonts/inter.css';
 import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
 import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
+import './css/knowledgeAI.scss';
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // import './findly-demo.scss'
@@ -1629,6 +1630,8 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                 <div id="textFromServer"></div> \
             </div> \
           </div>\
+          <div class="sa-clear-chat">Clear Chat</div>\
+          <div class="sa-poweredbykore">Powered by<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/kore-ai-logo.svg"></div>\
           <div id="myPreviewModal" class="modalImagePreview display-none">\
           <span class="closeElePreview">&times;</span>\
          <div class="largePreviewContent"></div>\
@@ -5751,6 +5754,12 @@ FindlySDK.prototype.searchEventBinding = function (
 
   // $('.pay-button').off('click').on('click')
   if (templateType === "search-container") {
+    if($('body').hasClass('sa-knowledgeai-sdk-body')){
+      $(dataHTML).find('#histroyChatContainer').remove();
+      $(dataHTML).off('click','.sa-clear-chat').on('click','.sa-clear-chat',function(e){
+        $('#searchChatContainer').empty();
+      })
+    }
     $(dataHTML).off('keypress','#search').on('keypress','#search',function(e){
       var $suggest = $("body").hasClass("top-down")?$(".top-down-suggestion") : $(".bottom-up-suggestion");
       $suggest.val('');
@@ -9898,7 +9907,7 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
-  $("body").addClass("ms-sdk-body");
+  $("body").addClass("sa-knowledgeai-sdk-body");
   if(findlyConfig.searchInterfaceConfig){
     _self.showSearchExperience(findlyConfig,findlyConfig.searchInterfaceConfig)
   }else{
@@ -10071,6 +10080,19 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
     };
   }
   //default showsearches as recent
+  if($('body').hasClass('sa-knowledgeai-sdk-body')){
+    // searchConfiguration.buttonBorderColor= "transparent";
+    // searchConfiguration.buttonFillColor= "transparent";
+    // searchConfiguration.buttonText= "SEND";
+    // searchConfiguration.buttonTextColor= "#777A80";
+    searchConfiguration.searchBarPlaceholderText= "Ask me here ...";
+    searchConfiguration.searchBarPlaceholderTextColor= "#777A80";
+    // searchConfiguration.searchButtonEnabled= true,
+    // searchConfiguration.buttonPlacementPosition= "inside";
+    searchConfiguration.showSearchesEnabled =false;
+    searchConfiguration.liveSearchResultsLimit = 0;
+    searchConfiguration.querySuggestionsLimit = 0;
+  }
   searchConfiguration.showSearches = "recent";
   searchConfiguration.freePlan = searchConfig?.freePlan;
   searchConfiguration.showPlanWarningMsg = searchConfig?.showPlanWarningMsg || false;
@@ -10451,7 +10473,14 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
       }
     }
   }
-
+  if(_self.config.extractionSourceIdList){
+    if(!messageToBot["message"].customdata) messageToBot["message"].customdata={};
+    if(messageToBot["message"].customdata && messageToBot["message"].customdata['userContext']){
+      messageToBot["message"].customdata['userContext']['extractionSourceIdList'] = _self.config.extractionSourceIdList
+    }else{
+      messageToBot["message"].customdata['userContext']={"extractionSourceIdList": _self.config.extractionSourceIdList} ;
+    }
+  }
   attachmentInfo = {};
   websockeRrefreshed = false;
   _self.checkWbInitialized(messageToBot, clientMessageId);
@@ -20660,6 +20689,9 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
   //   "Authorization": 'bearer ' + this.bot?.options?.accessToken,
   //   "Content-Type": "application/json"
   // };
+  if($('body').hasClass('sa-knowledgeai-sdk-body')){
+    return;
+  }
   var headers = {};
   var bearer = "bearer " + this.bot?.options?.accessToken;
   headers["Authorization"] = bearer;
@@ -22858,9 +22890,34 @@ FindlySDK.prototype.show = function (config) {
   if(config.botOptions){
     _self.config.botOptions = {..._self.config.botOptions, ...config.botOptions}
   }
-  _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
+  if(!config.knowledgeAIConfig){
+    _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
+  } else {
+    _self.config.extractionSourceIdList = config.extractionSourceIdList;
+    _self.config.knowledgeAIConfig = config.knowledgeAIConfig;
+    _self.config.botOptions.assertionFn = _self.getKnowledgeAIAssertionToken.bind(this);
+  }
   _self.initKoreSDK();
 };
+FindlySDK.prototype.getKnowledgeAIAssertionToken = function (options, callback){
+  var _self = this;
+  var knowledgeAIConfig = _self.config.knowledgeAIConfig;
+  _self.setJWT(knowledgeAIConfig.userInfo.jwt);
+  _self.config.botOptions.searchIndexID = knowledgeAIConfig?.userInfo?.botInfo?.searchIndexId;
+  if (knowledgeAIConfig.userInfo.botInfo) {
+    _self.config.botOptions.botInfo.chatBot = knowledgeAIConfig.userInfo.botInfo.name;
+    _self.config.botOptions.botInfo.taskBotId = knowledgeAIConfig.userInfo.botInfo._id;
+    _self.config.botOptions.clientId = knowledgeAIConfig.userInfo.botInfo.clientId;
+    _self.config.botOptions.clientSecretId = knowledgeAIConfig.userInfo.botInfo.clientSecretId;
+  }
+  if (knowledgeAIConfig.userInfo.identity) {
+    _self.config.botOptions.userIdentity = knowledgeAIConfig.userInfo.identity;
+  }
+    _self.initSearchAssistSDK(_self.config);
+    _self.vars.isHostedSdk = false;
+    options = _self.config.botOptions;
+    callback(null, _self.config.botOptions);
+}
 FindlySDK.prototype.getAssertionToken = function (options, callback) {
   var _self = this;
   options.callback = callback;

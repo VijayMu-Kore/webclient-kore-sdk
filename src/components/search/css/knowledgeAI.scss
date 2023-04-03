@@ -1,0 +1,358 @@
+.sa-poweredbykore,.sa-clear-chat{
+    display: none;
+}
+.sa-knowledgeai-sdk-body {
+    .searchAssist-kore-chat-window {
+        &.search-container {
+            max-height: calc(100% - 37px);
+            right: 87px !important;
+            width: 750px !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            bottom: 40px !important;
+
+            .sdkFooterIcon {
+                &.microphoneBtn {
+                    bottom: -12px !important;
+                    .notRecordingMicrophone {
+                        .microphone {
+                            background-image: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-microphone.svg);
+                        }
+                    }
+                }
+            }
+
+            .box-header {
+                display: none !important;
+            }
+
+            .search {
+                padding: 0 120px 0 16px;
+                width: 622px;
+                height: 49px;
+            }
+
+            .search-bar {
+                box-shadow: none !important;
+                left: 52px;
+                width: 622px;
+                height: 49px;
+                margin: 0px 0px;
+
+                #suggestion {
+                    box-shadow: none !important;
+                }
+
+                .search-button {
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 12px;
+                    line-height: 15px;
+                    color: #777A80;
+                    padding-left: 30px;
+                    margin-top: 8px;
+
+                    &:before {
+                        content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-send-icon.svg);
+                        width: 40px;
+                        height: 40px;
+                        position: absolute;
+                        left: -7px;
+                        top: 10px;
+                    }
+                }
+            }
+
+            &.conversation {
+                height: auto;
+
+                .greetingMsg {
+                    display: none !important;
+                }
+
+                #searchChatContainer {
+                    height: auto;
+                    max-height: calc(100vh - 121px);
+                    padding: 0px 0px 34px 20px;
+                    .history-chat-tag-info {
+                        display: none !important;
+                    }
+
+                    .messageBubble {
+                        .botMessage {
+                            align-items: center;
+                            padding: 8px 16px;
+                            gap: 8px;
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 14px;
+                            line-height: 24px;
+                            color: #1D2939;
+                            background: #FFFFFF;
+                            box-shadow: inset 3px 0px 0px #FEC412;
+                            border-radius: 0px 8px 8px 8px;
+                            margin-bottom: 5px;
+                            margin-top: 11px;
+                        }
+                    }
+                }
+            }
+
+            #searchBox {
+                background-color: transparent !important;
+                display: block;
+
+                .parent-data-scroll {
+                    padding-bottom: 54px;
+                }
+
+                .parent-search-live-auto-suggesition {
+                    display: none !important;
+                }
+            }
+
+            &.active {
+                #searchBox {
+                    background-color: transparent !important;
+                }
+                .sa-clear-chat{
+                    position: absolute;
+                    right: -95px;
+                    bottom: 16px;
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 17px;
+                    display: flex;
+                    align-items: center;
+                    text-align: center;
+                    color: #777A80;
+                    cursor: pointer;
+                }
+            }
+            .sa-poweredbykore{
+                display: block;
+                position: absolute;
+                bottom: -31px;
+                right: 0px;
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 15px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+                color: #6B7280;
+                img{
+                    padding-left: 7px;
+                }
+            }
+            
+        }
+
+        .messageBubble {
+            .userMessage {
+                background: #FFFFFF;
+                border-radius: 0px 8px 8px 8px;
+                align-items: start;
+                padding: 8px 16px;
+                gap: 8px;
+                filter: drop-shadow(0px 2px 5px rgba(32, 33, 36, 0.09));
+                float: left;
+                margin-left: 30px;
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 24px;
+                color: #1D2939;
+                margin-top: 10px;
+                
+                &:before {
+                    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-profile-icon.svg);
+                    width: 40px;
+                    height: 40px;
+                    position: absolute;
+                    left: -49px;
+                    top: 0px;
+                }
+
+                .time-info {
+                    display: none !important;
+                }
+            }
+
+            .messageBubble-content {
+                .botImg {
+                    bottom: 0px;
+                    left: -19px;
+                    width: 40px;
+                    height: 40px;
+                    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-sa-icon.svg);
+                }
+
+                .botMessage {
+                    background: #FAF0D0;
+                    border-radius: 0px 8px 8px 8px;
+                    align-items: center;
+                    padding: 8px 16px;
+                    gap: 8px;
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 24px;
+                    color: #1D2939;
+                }
+            }
+        }
+
+        .parent-search-live-auto-suggesition {
+            display: none;
+        }
+
+        .live-seach-auto-suggestion-parent {
+            display: none !important;
+        }
+    }
+
+    .widget-icon {
+        img {
+            display: none;
+        }
+    }
+
+    .default-data-show-not-loaded {
+        height: inherit !important;
+        background: transparent !important;
+        padding: 13px;
+        bottom: 31px;
+        .default-suggestions-content {
+            .pl-5 {
+                padding-left: 5px !important;
+                display: inline;
+            }
+
+            .suggestion-text {
+                padding: 8px 14px;
+                gap: 8px;
+                background: #FFFFFF;
+                border: 1px solid #D0D5DD;
+                box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+                border-radius: 8px;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 15px;
+                color: #3C4043;
+
+                img {
+                    display: none !important;
+                }
+
+                span {
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 12px;
+                    line-height: 15px;
+                    color: #3C4043;
+                }
+            }
+        }
+
+        .defalut-message-babble {
+            display: none !important;
+        }
+    }
+
+    &.setDefaultSearchTemplate {
+        .searchAssist-kore-chat-window {
+            &.search-container {
+                right: 155px !important;
+                width: 673px !important;
+                box-shadow: none !important;
+                background: transparent !important;
+            }
+        }
+    }
+
+    .final-results-container {
+        .show-more-results-block {
+            margin-right: 0px;
+            .show-more-results-btn {
+                background: #FAF0D0;
+                color: #806D16;
+            }
+        }
+
+        .messageBubble {
+            &.show-info-text-snippet {
+                position: absolute !important;
+                margin-top: -26px;
+
+                .messageBubble-content {
+                    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-sa-icon.svg);
+                    width: 40px;
+                    height: 40px;
+                    left: -19px;
+                }
+            }
+        }
+
+        .snippet-margin {
+            margin-top: 15px;
+        }
+
+        .search-temp-one {
+            background: #FFFFFF;
+            box-shadow: inset 3px 0px 0px #FEC412;
+            border-radius: 0px 8px 8px 8px;
+            filter: drop-shadow(1px 3px 6px rgba(32, 33, 36, 0.12));
+            border: 0px;
+            border-color: transparent;
+            &.active-citation-snippet {
+                .citation-data-desc {
+                    .snippet-answer-fragment-block {
+                        .sub-fragment {
+                            padding-right: 3px;
+                        }
+                    }
+                }
+            }
+            .temp-footer-block {
+                .btn-link {
+                    font-weight: 500;
+                    font-size: 10px;
+                    line-height: 12px;
+                    display: flex;
+                    align-items: center;
+                    text-align: center;
+                    color: #9AA0A6;
+                    .bot-bg-purple {
+                        background: transparent; 
+                        border-radius: 0px; 
+                        padding: 0px 5px 0px 0px; 
+                        display: flex;
+                        margin-right: 0px;
+                        img{
+                            content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-answered-by-ai-icon.svg);
+                        }
+                   }
+                }
+            }
+        }
+    }
+
+    .show-all-results {
+        display: none !important;
+    }
+
+    .typingIndicatorContent {
+        width: 140px;
+        left: -31px;
+
+        .typingIndicator {
+            background: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-sa-icon.svg);
+            width: 40px;
+            height: 40px;
+        }
+    }
+}
