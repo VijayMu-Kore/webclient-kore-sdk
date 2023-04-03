@@ -10474,11 +10474,11 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
     }
   }
   if(_self.config.extractionSourceIdList){
-    if(!messageToBot["botInfo"].customData) messageToBot["botInfo"].customData={};
-    if(messageToBot["botInfo"].customData && messageToBot["botInfo"].customData['userContext']){
-      messageToBot["botInfo"].customData['userContext']['extractionSourceIdList'] = _self.config.extractionSourceIdList
+    if(!_self.bot.options.botInfo.customData) _self.bot.options.botInfo.customData={};
+    if(_self.bot.options.botInfo.customData && _self.bot.options.botInfo.customData['userContext']){
+      _self.bot.options.botInfo.customData['userContext']['extractionSourceIdList'] = _self.config.extractionSourceIdList
     }else{
-      messageToBot["botInfo"].customData['userContext']={"extractionSourceIdList": _self.config.extractionSourceIdList} ;
+      _self.bot.options.botInfo.customData['userContext']={"extractionSourceIdList": _self.config.extractionSourceIdList} ;
     }
   }
   attachmentInfo = {};
