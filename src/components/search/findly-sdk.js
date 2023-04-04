@@ -23081,15 +23081,23 @@ FindlySDK.prototype.removeSelectFacetFilter = function (event, selectedFacet) {
 
 }
 FindlySDK.prototype.backToSearchClickEvent = function (event) {
-  var _self = this;
-  $(".all-result-container").hide();
-      $("body").removeClass("showFullResults");
-      $("#search").val("");
-      $("#suggestion").val("");
-      $(".top-down-suggestion").val("");
-      $(".search-top-down").val("");
-      $(".full-search-data-container").empty();
-      $(".skelton-load-img").hide();
+      var _self = this;
+      if ($('body').hasClass('top-down')){
+        $(".all-result-container").hide();
+        $("body").removeClass("showFullResults");
+        $("#search").val("");
+        $("#suggestion").val("");
+        $(".top-down-suggestion").val("");
+        $(".search-top-down").val("");
+        $(".full-search-data-container").empty();
+        $(".skelton-load-img").hide();
+      } else{
+        $(".search-container").remove();
+        $(".botMessage").remove();
+        $(".start-search-icon-div").remove();
+        $("body").removeClass('sdk-body sa-knowledgeai-sdk-body setDefaultSearchTemplate searchAssist-defaultTheme-kore demo');
+      }
+
       _self.destroy();
 }
 FindlySDK.prototype.getFeedBackResult = function () {
