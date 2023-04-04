@@ -203,6 +203,21 @@
                 //return compObj[0].componentBody;
 
             }
+            function sanitizeXSS(input) {
+                try {
+                    var sanitizedInput = input
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#x27;")
+                        .replace(/\//g, "&#x2F;")
+                        .replace(/\(/g, "&#40;")
+                        .replace(/\)/g, "&#41;");
+                    return sanitizedInput;
+                } catch (error) {
+                    return input
+                }
+            }
 
             var helpers = {
                 'nl2br': function (str, runEmojiCheck) {
@@ -421,6 +436,8 @@
                     var newStr = '', wrapper1;
                     if (responseType === 'user') {
                         str = str.replace(/onerror=/gi, 'abc-error=');
+                        str = str.replace(/onmouseover=/gi, 'abc-on-mouse-over=');
+                         str = sanitizeXSS(str);
                         wrapper1 = document.createElement('div');
                         newStr = str.replace(/“/g, '\"').replace(/”/g, '\"');
                         newStr = newStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -432,6 +449,9 @@
                         }
                     } else {
                         wrapper1 = document.createElement('div');
+                        str = str.replace(/onerror=/gi, 'abc-error=');
+                        str = str.replace(/onmouseover=/gi, 'abc-on-mouse-over=');
+                        str = sanitizeXSS(str);
                         //str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
                         wrapper1.innerHTML = xssAttack(str);
                         if ($(wrapper1).find('a').attr('href')) {
@@ -556,7 +576,7 @@
                                     hyperLinksMap[_randomKey] = _imgLink;
                                     _imgLink = _randomKey;
                                 }
-                                _imgLink = '<img src="' + _imgLink + '" alt="' + _imgTxt + '">';
+                                _imgLink = '<img src="' + _imgLink + '" alt="' + sanitizeXSS(_imgTxt) + '">';
                                 var _tempImg = txtArr[i].split(' ');
                                 for (var k = 0; k < _tempImg.length; k++) {
                                     if (_tempImg[k] === _matchImage[j]) {
