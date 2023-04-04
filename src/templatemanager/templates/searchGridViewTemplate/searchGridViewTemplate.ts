@@ -72,7 +72,7 @@ class SearchGridViewTemplate {
                 $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
         });
         SearchGridViewTemplate.prototype.tooltipBindEvent(me);
-        $(messageHtml).find('.sa-card-tile-readmore').off('click', '.snippet-go-to').on('click', '.snippet-go-to', function (event:any) {   // added for Kore Web Site
+        $(messageHtml).off('click', '.snippet-go-to').on('click', '.snippet-go-to', function (event:any) {   // added for Kore Web Site
             SearchGridViewTemplate.prototype.pagesGoToPage(hostWindowInstance.vars.searchObject.searchText);
           });
     }

@@ -23044,6 +23044,7 @@ FindlySDK.prototype.backToSearchClickEvent = function (event) {
   var _self = this;
   $(".all-result-container").hide();
       $("body").removeClass("showFullResults");
+      $("body").removeClass("kore-sdk-body");
       $("body").find(".searchAssist-kore-chat-window").remove();
       $("#search").val("");
       $("#suggestion").val("");
