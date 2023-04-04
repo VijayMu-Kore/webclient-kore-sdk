@@ -14,43 +14,7 @@
 }
 
 
-.top-down-search-background-div {
-	.total-search-results-block {
-		.tsrb-right-filters {
-			.top-down-customize-btns.custom-header-container-center {
-				position: initial;
-				margin: 0px 0px 0px 16px;
-				right: auto;
-				top: auto;
-				z-index: 8 !important;
-			}
-			.dropdown_sortable_filter {
-				position: initial;
-				top: auto;
-				right: auto;
-			}
-		}
-	}
-}
-.sdk-top-down-interface {
-	.all-product-details {
-		.total-search-results-block {
-			position: sticky;
-			top: 0;
-			z-index: 8;
-			background: #fff;
-			.tsrb-header-sec {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-			}
-            .tsrb-right-filters {
-                display: flex;
-                align-items: center;
-            }
-		}
-	}
-}
+
 /* snippet templates css styles */
 .search-temp-one{
     // background: #FFFFFF;

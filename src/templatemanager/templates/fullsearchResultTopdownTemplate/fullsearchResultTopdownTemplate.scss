@@ -1090,7 +1090,7 @@
                     padding: 0px 10px;
                     border-right: 1px solid var(--sdk-border-iron-color);
                     flex-shrink: 0;
-                    margin-top: 70px;
+                    margin-top: 21px;
                     max-height: calc(100vh - 248px);
                     overflow: auto;
                     position: relative;
@@ -1641,9 +1641,9 @@
     }
     .sa-sortable-dropdown {
         position: absolute;
-        width: 100%;
+        width: 200px;
         z-index: 1;
-        top: 34px;
+        top: 52px;
         border: 0px;
         background: #FFFFFF;
         box-shadow: 0px 4px 8px rgba(32, 33, 36, 0.15);
