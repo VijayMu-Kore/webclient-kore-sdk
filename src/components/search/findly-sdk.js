@@ -5771,6 +5771,7 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.vars.enterIsClicked = false;
         } else if ($("body").hasClass("top-down") && keyCode == 13) {
           _self.vars.enterIsClicked = true;
+          $("#top-down-full-results-container").hide();
           $(".skelton-load-img").show();
           $("#live-search-result-box").hide();
           $("#frequently-searched-box").hide();
@@ -5824,18 +5825,11 @@ FindlySDK.prototype.searchEventBinding = function (
         //   // }
         // }
         if (code == 9 || code == 39) {
-          $(".suggestion-box.highlightSuggestion").removeClass(
-            "highlightSuggestion"
-          );
-          $(".search-suggested-title.highlightSuggestion").removeClass(
-            "highlightSuggestion"
-          );
-          if (
-            ($("body").hasClass("top-down") &&
-              !$(".top-down-suggestion").val()) ||
-            (!$("body").hasClass("top-down") &&
-              !$(".bottom-up-suggestion").val())
-          ) {
+          e.preventDefault()
+          $(".suggestion-box.highlightSuggestion").removeClass("highlightSuggestion");
+          $(".search-suggested-title.highlightSuggestion").removeClass("highlightSuggestion");
+          if (($("body").hasClass("top-down") && !$(".top-down-suggestion").val()) ||
+          (!$("body").hasClass("top-down") && !$(".bottom-up-suggestion").val())) {
             setTimeout(() => {
               if (!$("body").hasClass("top-down")) {
                 $(".bottom-up-search").focus();
@@ -6253,6 +6247,7 @@ FindlySDK.prototype.searchEventBinding = function (
               return;
             }
             if (code == 9 || code == 39) {
+              e.preventDefault()
               if (
                 ($("body").hasClass("top-down") &&
                   !$(".top-down-suggestion").val()) ||
@@ -7464,6 +7459,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
           $("#top-down-full-results-container").empty().append(showAllHTML);
           $(".skelton-load-img").hide();
+          $("#top-down-full-results-container").show();
         });
       }
       
@@ -9722,6 +9718,7 @@ FindlySDK.prototype.addSearchText = function (config) {
   $(".cancel-search")
     .off("click")
     .on("click", function (event) {
+      event.stopImmediatePropagation();
       $("#search").val("");
       $("#suggestion").val("");
       $(".search-top-down").val("");
@@ -21605,7 +21602,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'groupName': groupName,
                       'doc_count': doc_count || 0,
                       'pageNumber': pageNumber || 0,
-                      'templateName': groupName.replaceAll(' ', ''),
+                      'templateName': groupName.replaceAll(' ', '').replaceAll(/\./g, ''),
                       'fieldName': data.fieldName,
                       'gridLayoutType': gridLayoutType,
                       "isButtonTemplate": false,
@@ -23400,7 +23397,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
   FindlySDK.prototype.getChatTemplate= function  (link_url) {
     //chat templates
   }
-  FindlySDK.prototype.bindIframeEvents= function  (html) {
+FindlySDK.prototype.bindIframeEvents= function  (html) {
     //bind iframe events
   }
   function debounce(func, timeout = 300) {

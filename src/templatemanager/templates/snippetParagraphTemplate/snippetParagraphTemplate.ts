@@ -85,9 +85,8 @@ class SnippetParagraphTemplate {
                      {{html snippetData.source}}\
                   </div>\
                   <div class="temp-right">\
-                      <div class="is-it-usefull">Go to Page</div>\
                       <div class="temp-fotter-actions">\
-                      <a class="snippet-go-to" href="${snippetData?.page_url}"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
+                      <a class="snippet-go-to" href="${snippetData?.page_url}"> <div class="is-it-usefull">Go to Page</div> <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
                       </div>\
                   </div>\
               </div>\

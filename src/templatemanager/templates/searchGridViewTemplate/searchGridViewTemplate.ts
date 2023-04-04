@@ -22,6 +22,8 @@ class SearchGridViewTemplate {
         $(messageHtml)
         .off("click", ".show-more-list")
         .on("click", ".show-more-list", function (e: any) {
+            $(e.currentTarget).find('.read-more-img').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/show-more.gif');
+            $(e.currentTarget).find('.sa-card-tile-readmore').hide();
         const showMoreData = {
           groupName: $(e.currentTarget).attr("groupName"),
           templateName: $(e.currentTarget).attr("templateName"),
@@ -30,12 +32,23 @@ class SearchGridViewTemplate {
         };
         hostWindowInstance.showMoreClick(showMoreData).then((result: any) => {
           const listHTML = $(SearchGridViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type,me)).tmpl(result?.message[0].component.payload);
-          $(listHTML).find(".show-more-list").remove();
+        //   $(listHTML).find(".show-more-list").remove();
+        //   $(
+        //     ".full-search-data-container [templateName=" +
+        //     showMoreData.templateName +
+        //     "]"
+        //   ).before($(listHTML).find(".search-temp-resources-tiles").children());
           $(
             ".full-search-data-container [templateName=" +
             showMoreData.templateName +
             "]"
-          ).before($(listHTML).find(".search-list-template-grid-img-title").children());
+          ).parent().parent().find(".search-temp-resources-tiles").append($(listHTML).find(".search-temp-resources-tiles").children());
+          $('.all-product-details').animate({
+            scrollTop: $('.all-product-details').scrollTop() + 300
+          }, 1000, 'linear');
+          // $('.all-product-details').scrollTop($('.all-product-details').scrollTop() - 30);
+          $(e.currentTarget).find('.sa-card-tile-readmore').show();
+          $(e.currentTarget).find('.read-more-img').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg');  
           SearchGridViewTemplate.prototype.bindEvents(me, listHTML);
         })
         $(e.currentTarget).attr("pageNumber", Number($(e.currentTarget).attr("pageNumber")) + 1);
@@ -59,6 +72,9 @@ class SearchGridViewTemplate {
                 $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
         });
         SearchGridViewTemplate.prototype.tooltipBindEvent(me);
+        $(messageHtml).find('.sa-card-tile-readmore').off('click', '.snippet-go-to').on('click', '.snippet-go-to', function (event:any) {   // added for Kore Web Site
+            SearchGridViewTemplate.prototype.pagesGoToPage(hostWindowInstance.vars.searchObject.searchText);
+          });
     }
     getTemplateString(type: any,me:any) {
         let $ = me.hostInstance.$;
@@ -217,8 +233,8 @@ class SearchGridViewTemplate {
         <div class="temp-block-header">${titleName}</div>\
         <div class="search-temp-resources-tiles-block sa-resource-tiles-block">\
                 <div class="search-temp-width-90">\
-                    <div class="search-temp-resources-tiles">\
-                    {{each(key, data) structuredData.slice(0, 5)}}\
+                    <div class="search-temp-resources-tiles parent-grid-template">\
+                    {{each(key, data) structuredData.slice(0, 4)}}\
                         <div class="sa-card-tile">\
                         {{if data.img.length}}\
                             <div class="sa-card-tile-img-block">\
@@ -229,12 +245,12 @@ class SearchGridViewTemplate {
                             <div class="sa-card-tile-content-header"  title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                             <div class="sa-card-tile-content-desc"  title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                             </div>\
-                            <div class="sa-card-tile-readmore"> <a href="${data.page_url}">Read More<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img"></a></div>\
+                            <div class="sa-card-tile-readmore snippet-go-to"> <a href="${data.page_url}">Read More<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img"></a></div>\
                         </div>\
                     {{/each}}\
                     </div>\
                 </div>\
-                <div class="search-temp-see-more show-more-data {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}} show-more-list" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
+                <div class="search-temp-see-more show-more-list {{if doc_count==0 || doc_count<6 || isLiveSearch || isSearch}}display-none{{/if}}" groupName="${groupName}" templateName="${templateName}" pageNumber="${pageNumber}" fieldName="${fieldName}">\
                     <div class="sa-card-tile-readmore">See More <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img"></div>\
                 </div>\
                 </div>\
@@ -259,6 +275,10 @@ class SearchGridViewTemplate {
         e.stopImmediatePropagation();
         $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
         })
+      }
+      pagesGoToPage(query:any){  // added for Kore Web Site
+        window.localStorage.setItem("query",query);
+        window.localStorage.setItem("searchLocation",window.location.href);
       }
 }
 

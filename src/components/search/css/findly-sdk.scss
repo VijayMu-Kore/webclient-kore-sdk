@@ -3795,6 +3795,7 @@ display: block;
     justify-content: left;
     z-index: 1;
     display: none;
+    white-space: nowrap;
 }
 .scroll-top-container .title-scroll-top{
     border: 1px solid #D2D3FE;
@@ -3830,9 +3831,21 @@ display: block;
 .sdk-body .carousel{
     margin: 0 !important;
 }
+.skelton-load-img{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+}
 .skelton-load-img img{
-    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/skeletonImage.png);
-    display: none;
+    // content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/images/skeletonImage.png);
+    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/search-loading.gif);
+    position: relative;
+    height: 200px;
+    width: 200px;
+    // display: none;
 }
 
 .sdk-body .purejscarousel-dots-container {

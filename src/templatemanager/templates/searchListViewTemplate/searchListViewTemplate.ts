@@ -208,9 +208,12 @@ class SearchListViewTemplate {
     //Tour RR 
 
     //me.hostWindowInstance.sendMessage() //bindAllResultRankingOperations
-    $(messageHtml)
+    $('.parent-list-template')
     .off("click", ".show-more-list")
     .on("click", ".show-more-list", function (e: any) {
+      $(e.currentTarget).find('.read-more-img').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/show-more.gif');
+      $(e.currentTarget).find('.see-more-txt').hide();
+     
     const showMoreData = {
       groupName: $(e.currentTarget).attr("groupName"),
       templateName: $(e.currentTarget).attr("templateName"),
@@ -237,7 +240,18 @@ class SearchListViewTemplate {
       //   showMoreData.templateName +
       //   "]"
       // ).before($(listHTML).find(".search-temp-width-90").children());
-      $(".search-temp-width-90").append($(listHTML).find(".search-temp-width-90").children());  //added for Kore Web Site
+      $(
+        ".full-search-data-container [templateName=" +
+        showMoreData.templateName +
+        "]"
+        ).parent().parent().find(".search-temp-width-90").append($(listHTML).find(".search-temp-width-90").children());
+        $('.all-product-details').animate({
+          scrollTop: $('.all-product-details').scrollTop() + 300
+        }, 1000, 'linear');
+        // $('.all-product-details').scrollTop($('.all-product-details').scrollTop() - 30);
+        $(e.currentTarget).find('.see-more-txt').show();
+        $(e.currentTarget).find('.read-more-img').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg');
+      // $(".search-temp-width-90").append($(listHTML).find(".search-temp-width-90").children());  //added for Kore Web Site
       if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * 5 >= result?.message[0].component.payload.doc_count) {
         $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").hide();
       }
@@ -402,7 +416,8 @@ class SearchListViewTemplate {
         }
       }, 500);
     });
-    $(messageHtml).find('.temp-right').off('click', '.snippet-go-to').on('click', '.snippet-go-to', function (event:any) {   // added for Kore Web Site
+    $('.parent-list-template').find('.temp-right').off('click', '.is-it-usefull').on('click', '.is-it-usefull', function (event:any) {   // added for Kore Web Site
+      console.log(event);
       SearchListViewTemplate.prototype.pagesGoToPage(hostWindowInstance.vars.searchObject.searchText);
     });
     SearchListViewTemplate.prototype.tooltipBindEvent(me);
@@ -815,7 +830,7 @@ class SearchListViewTemplate {
   var koreListTemplate = 
   '<script type="text/x-jqury-tmpl">\
   {{if renderTitle}}<div class="temp-block-header">${titleName}</div>{{/if}}\
-     <div class="search-temp-results-tiles sa-pages-tiles-block">\
+     <div class="search-temp-results-tiles sa-pages-tiles-block parent-list-template">\
         <div class="search-temp-width-90">\
               {{each(key, data) structuredData.slice(0, maxSearchResultsAllowed)}}\
               <div class="search-temp-one-top-tile page-result-tile">\
@@ -834,9 +849,9 @@ class SearchListViewTemplate {
                           ${data.page_url}\
                           </div>\
                           <div class="temp-right">\
-                              <div class="is-it-usefull">Go to Page</div>\
                               <div class="temp-fotter-actions">\
-                              <a class="snippet-go-to" href="${data.page_url}"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
+                              <a class="snippet-go-to" href="${data.page_url}"><div class="is-it-usefull">Go to Page</div>\
+                              <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
                               </div>\
                           </div>\
                       </div>\

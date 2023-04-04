@@ -172,6 +172,7 @@ class FullSearchResultTopdownTemplate {
                                 </div>\
                             </div>\
                         </div>\
+                        <div class="powered-by-footer"><span class="logo-powered-by">Powered By</span> <img class="product-logo" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/search-assist-product-logo.svg" /></div>\
                     </div>\
             </div>\
     </script>';

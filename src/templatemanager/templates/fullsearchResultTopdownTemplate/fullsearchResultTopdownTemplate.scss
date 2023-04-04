@@ -1723,6 +1723,7 @@ $color_1: #9AA0A6;
                                     text-overflow: ellipsis;
                                     white-space: nowrap;
                                     max-width: 250px;
+                                    cursor: default;
                                 }
                                 .temp-right{
                                     .temp-fotter-actions{
@@ -1748,6 +1749,7 @@ $color_1: #9AA0A6;
                                                 text-overflow: ellipsis;
                                                 white-space: nowrap;
                                                 max-width: 250px;
+                                                cursor: default;
                                                 .isLink{
                                                     a{
                                                         color: #1E1F65 !important;
@@ -1786,6 +1788,26 @@ $color_1: #9AA0A6;
         }
     }
 }
+
+.powered-by-footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 0;
+    text-align: center;
+    .logo-powered-by{
+        font-style: italic;
+        color: #111827;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 5px;
+    }
+    .product-logo{
+        width: auto;
+    }
+}
+
 // .addTrasitionheight{
 //     height: 450px !important;
 // }
