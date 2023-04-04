@@ -7173,6 +7173,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     }
   }
   if (res.templateType === "search") {
+    
     _self.vars.isFilterModified = false;
     _self.vars.deselectedAutoFilters = [];
     _self.vars.requestId = res.requestId;
@@ -7516,7 +7517,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           if (!$('.search-data-container').last().children().length) {
             $('#searchChatContainer .messageBubble').last().remove();
             $('#searchChatContainer .finalResults').last().remove();
-            _self.sendMessageToSearch('bot', 'Unable to find results at this moment');
+            $('.final-results-container').last().find('.show-more-results-block').remove();
+            if(!$('.final-results-container').last().find('.search-temp-one').length) _self.sendMessageToSearch('bot', 'Unable to find results at this moment');
           }
         }, 500)
       }else {
