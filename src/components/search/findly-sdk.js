@@ -1837,20 +1837,17 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                               <span class="img-action pin pinning" data-viewMode="full">\
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB+SURBVHgBjU8BDYAwDFsIApBwHCABCUjAySWABBwg4RKQgIRLgC0pyfI9H02abX+3bkQ+NubDjFL0jngBR+bpaGli3oiCAKdf4q/eSXUnTBDminjWExPoOZF2kI9YvOeauNVkjuxUPiCuZJ0M9K4Budx0eWK9XkI0OKhxWIkXQpkdq3Ea0+4AAAAASUVORK5CYII=">\
                                 {{if pageInfo.config.pinIndex==-1}}\
-                                  <span class="custom-actions-content">PIN</span>\
+                                  <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_pin_caps">{{html langTranslator("sa_sdk_pin_caps")}}</span>\
                                 {{/if}}\
                                 {{if pageInfo.config.pinIndex>-1}}\
-                                  <span class="custom-actions-content">UNPIN</span>\
-                                {{/if}}\
+                                <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_unpin_caps">{{html langTranslator("sa_sdk_unpin_caps")}}</span>\                                {{/if}}\
                               </span>\
                               <span class="img-action boostup boosting" data-viewMode="full">\
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABySURBVHgBhY1RDYAwDAWbYGAS+ORzEpCCE3AADjYH04CCScAKhbTJy2jZSy6w5S4jsrcKnw2OPDOBmZiTfrYzGc6ZnJeeJZBHQaNkyQfIl6DRhlGRC5QXwYyCIevaSL/vT21kjCrKUS4i+YsYlY6MUbkBGj8attkkmHEAAAAASUVORK5CYII=">\
-                                <span class="custom-actions-content">BOOST</span>\
-                              </span>\
+                                <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_boost_caps">{{html langTranslator("sa_sdk_boost_caps")}}</span>\                              </span>\
                               <span class="img-action boostdown burying" data-viewMode="full">\
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABzSURBVHgBhY8BDYAgEEW/DYxAA2lEFGigDaCBGUxgBKsI8/52smP87cOA98YOAM5aj3m8sHC190TyPUMpGHCQN6dh7k8nBbkjs7Yl10ZD6uHIGVqKIWl4F+aXIr9RIpwtmElKInxoYBlIG74BLzlPk0bgC7ouGvZUI7q8AAAAAElFTkSuQmCC">\
-                                <span class="custom-actions-content">LOWER</span>\
-                            </span>\
+                                <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_lower_caps">{{html langTranslator("sa_sdk_lower_caps")}}</span>\                            </span>\
                           </div>\
                         </div>\
                         <img class="external-link-show" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACwSURBVHgBjZHRDcIgGIR/CAO5gTqJfWlf6wbWCUwfCw8yCm7gCE4C3k9ogtgSLmn+tnyXO0AYYx5EdKVCfd+LZVmslPKS/1cMCyGs9/5VmgDbEILD+ojPw2oghodhsBspDg1uCX7zlFRRgic8dyTNMbUFRtKEWh+urlrgtR6GUy0wS2vdIeEpC/i0Bef6MaTY8x78Z8hMu4p7wAUd0bHGRQZHSwobmfEyYnY1A8PMfgGDQ1B/OCu3QAAAAABJRU5ErkJggg=="><img class="external-link-show" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACwSURBVHgBjZHRDcIgGIR/CAO5gTqJfWlf6wbWCUwfCw8yCm7gCE4C3k9ogtgSLmn+tnyXO0AYYx5EdKVCfd+LZVmslPKS/1cMCyGs9/5VmgDbEILD+ojPw2oghodhsBspDg1uCX7zlFRRgic8dyTNMbUFRtKEWh+urlrgtR6GUy0wS2vdIeEpC/i0Bef6MaTY8x78Z8hMu4p7wAUd0bHGRQZHSwobmfEyYnY1A8PMfgGDQ1B/OCu3QAAAAABJRU5ErkJggg==">\
@@ -1948,20 +1945,16 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                             <span class="img-action pin pinning" data-viewMode="full">\
                               <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB+SURBVHgBjU8BDYAwDFsIApBwHCABCUjAySWABBwg4RKQgIRLgC0pyfI9H02abX+3bkQ+NubDjFL0jngBR+bpaGli3oiCAKdf4q/eSXUnTBDminjWExPoOZF2kI9YvOeauNVkjuxUPiCuZJ0M9K4Budx0eWK9XkI0OKhxWIkXQpkdq3Ea0+4AAAAASUVORK5CYII=">\
                               {{if faq.config.pinIndex==-1}}\
-                                <span class="custom-actions-content">PIN</span>\
-                              {{/if}}\
+                              <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_pin_caps">{{html langTranslator("sa_sdk_pin_caps")}}</span>\                              {{/if}}\
                               {{if faq.config.pinIndex>-1}}\
-                                <span class="custom-actions-content">UNPIN</span>\
-                              {{/if}}\
+                              <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_unpin_caps">{{html langTranslator("sa_sdk_unpin_caps")}}</span>\                              {{/if}}\
                             </span>\
                             <span class="img-action boostup boosting" data-viewMode="full">\
                               <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABySURBVHgBhY1RDYAwDAWbYGAS+ORzEpCCE3AADjYH04CCScAKhbTJy2jZSy6w5S4jsrcKnw2OPDOBmZiTfrYzGc6ZnJeeJZBHQaNkyQfIl6DRhlGRC5QXwYyCIevaSL/vT21kjCrKUS4i+YsYlY6MUbkBGj8attkkmHEAAAAASUVORK5CYII=">\
-                              <span class="custom-actions-content">BOOST</span>\
-                            </span>\
+                              <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_boost_caps">{{html langTranslator("sa_sdk_boost_caps")}}</span>\                            </span>\
                             <span class="img-action boostdown burying" data-viewMode="full">\
                               <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABzSURBVHgBhY8BDYAgEEW/DYxAA2lEFGigDaCBGUxgBKsI8/52smP87cOA98YOAM5aj3m8sHC190TyPUMpGHCQN6dh7k8nBbkjs7Yl10ZD6uHIGVqKIWl4F+aXIr9RIpwtmElKInxoYBlIG74BLzlPk0bgC7ouGvZUI7q8AAAAAElFTkSuQmCC">\
-                              <span class="custom-actions-content">LOWER</span>\
-                            </span>\
+                              <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_lower_caps">{{html langTranslator("sa_sdk_lower_caps")}}</span>\                            </span>\
                           </div>\
                     </div>\
                   <div class="faqs-bottom-actions">\
@@ -2048,20 +2041,16 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
                               <span class="img-action pin pinning" data-viewMode="full">\
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB+SURBVHgBjU8BDYAwDFsIApBwHCABCUjAySWABBwg4RKQgIRLgC0pyfI9H02abX+3bkQ+NubDjFL0jngBR+bpaGli3oiCAKdf4q/eSXUnTBDminjWExPoOZF2kI9YvOeauNVkjuxUPiCuZJ0M9K4Budx0eWK9XkI0OKhxWIkXQpkdq3Ea0+4AAAAASUVORK5CYII=">\
                                 {{if file.config.pinIndex==-1}}\
-                                  <span class="custom-actions-content">PIN</span>\
-                                {{/if}}\
+                                <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_pin_caps">{{html langTranslator("sa_sdk_pin_caps")}}</span>\                                {{/if}}\
                                 {{if file.config.pinIndex>-1}}\
-                                  <span class="custom-actions-content">UNPIN</span>\
-                                {{/if}}\
+                                <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_unpin_caps">{{html langTranslator("sa_sdk_unpin_caps")}}</span>\                                {{/if}}\
                               </span>\
                               <span class="img-action boostup boosting" data-viewMode="full">\
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABySURBVHgBhY1RDYAwDAWbYGAS+ORzEpCCE3AADjYH04CCScAKhbTJy2jZSy6w5S4jsrcKnw2OPDOBmZiTfrYzGc6ZnJeeJZBHQaNkyQfIl6DRhlGRC5QXwYyCIevaSL/vT21kjCrKUS4i+YsYlY6MUbkBGj8attkkmHEAAAAASUVORK5CYII=">\
-                                <span class="custom-actions-content">BOOST</span>\
-                              </span>\
+                                <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_boost_caps">{{html langTranslator("sa_sdk_boost_caps")}}</span>\                              </span>\
                               <span class="img-action boostdown burying" data-viewMode="full">\
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABzSURBVHgBhY8BDYAgEEW/DYxAA2lEFGigDaCBGUxgBKsI8/52smP87cOA98YOAM5aj3m8sHC190TyPUMpGHCQN6dh7k8nBbkjs7Yl10ZD6uHIGVqKIWl4F+aXIr9RIpwtmElKInxoYBlIG74BLzlPk0bgC7ouGvZUI7q8AAAAAElFTkSuQmCC">\
-                                <span class="custom-actions-content">LOWER</span>\
-                            </span>\
+                                <span class="custom-actions-content sdk-i18n-lang" sdk-i18n-key="sa_sdk_lower_caps">{{html langTranslator("sa_sdk_lower_caps")}}</span>\                            </span>\
                           </div>\
                         </div>\
                         <img class="external-link-show" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACwSURBVHgBjZHRDcIgGIR/CAO5gTqJfWlf6wbWCUwfCw8yCm7gCE4C3k9ogtgSLmn+tnyXO0AYYx5EdKVCfd+LZVmslPKS/1cMCyGs9/5VmgDbEILD+ojPw2oghodhsBspDg1uCX7zlFRRgic8dyTNMbUFRtKEWh+urlrgtR6GUy0wS2vdIeEpC/i0Bef6MaTY8x78Z8hMu4p7wAUd0bHGRQZHSwobmfEyYnY1A8PMfgGDQ1B/OCu3QAAAAABJRU5ErkJggg=="><img class="external-link-show" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACwSURBVHgBjZHRDcIgGIR/CAO5gTqJfWlf6wbWCUwfCw8yCm7gCE4C3k9ogtgSLmn+tnyXO0AYYx5EdKVCfd+LZVmslPKS/1cMCyGs9/5VmgDbEILD+ojPw2oghodhsBspDg1uCX7zlFRRgic8dyTNMbUFRtKEWh+urlrgtR6GUy0wS2vdIeEpC/i0Bef6MaTY8x78Z8hMu4p7wAUd0bHGRQZHSwobmfEyYnY1A8PMfgGDQ1B/OCu3QAAAAABJRU5ErkJggg==">\
@@ -5706,7 +5695,7 @@ FindlySDK.prototype.searchEventBinding = function (
     .on("click", ".query-analytics-control-container", function (event) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      var template = $( _self.getQueryLevelAnalyticsTemplate()).tmplProxy({});
+      var template = $( _self.getQueryLevelAnalyticsTemplate()).tmplProxy({langTranslator:langTranslator});
       if($('body').find('.query_analytics_content').length){$(".query_analytics_content").remove();}
        $('body').append(template);
        $(".query_analytics_content").css("top", event.pageY - 50);
@@ -21641,6 +21630,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
                       'gridLayoutType': gridLayoutType,
                       "isButtonTemplate": false,
                       "isDemoTemplate":isDemoTemplate,
+                      'langTranslator':langTranslator
                     }
                   }
                 }
@@ -23442,7 +23432,7 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
   if (_self.isDev) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        var template = $( _self.getQueryLevelAnalyticsTemplate()).tmplProxy({});
+        var template = $( _self.getQueryLevelAnalyticsTemplate()).tmplProxy({langTranslator:langTranslator});
           if($('body').find('.query_analytics_content').length){$(".query_analytics_content").remove();}
            $('body').append(template);
            $(".query_analytics_content").css("top", event.pageY - 50);
@@ -23482,12 +23472,8 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
   }
   FindlySDK.prototype.getSetI18nLangData = function (selectedlang){
     window.addEventListener('message', (event) => {
-      const { type, data } = event.data;
-      if (event.origin !== data.originUrlValue) {
-        return;
-      }
-      if (type === 'localStorageData') {
-        localStorage.setItem('appLanguage', JSON.stringify(data.languageValue));
+      if (event?.data?.type === 'localStorageData' && event.origin === event?.data?.originUrlValue) {
+        localStorage.setItem('appLanguage', JSON.stringify(event?.data?.languageValue));
       }
     });
     let lang = selectedlang || window.localStorage.getItem('appLanguage') || 'en';
@@ -23541,28 +23527,28 @@ FindlySDK.prototype.getQueryLevelAnalyticsTemplate = function(){
   return '<script id="query_analytics_tmpl" type="text/x-jqury-tmpl">\
   <div class="query_analytics_content">\
     <div class="header-sec">\
-        <div class="title" >Query Analytics</div>\
+        <div class="title sdk-i18n-lang" sdk-i18n-lang" sdk-i18n-key="sa_sdk_query_analytics">{{html langTranslator("sa_sdk_query_analytics")}}</div>\
         <div class="close-analytics" id="close-analytics-Cross">\
             <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/close-analytics.svg"/>\
         </div>\
     </div>\
     <div class="analytics-counts" >\
         <div class="count-sec">\
-            <div class="title">Searches</div>\
+            <div class="title sdk-i18n-lang" sdk-i18n-lang" sdk-i18n-key="sa_sdk_searches">{{html langTranslator("sa_sdk_searches")}}</div>\
             <div class="count">\
                 <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/searches.svg"/><span id="sa-analystics-searches"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/loading-spin-orange.gif" style="\
                 margin-right: 0px;"></span></span>\
             </div>\
         </div>\
         <div class="count-sec">\
-            <div class="title">Clicks</div>\
+        <div class="title sdk-i18n-lang" sdk-i18n-lang" sdk-i18n-key="sa_sdk_clicks">{{html langTranslator("sa_sdk_clicks")}}</div>\
             <div class="count">\
                 <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/clicks.svg"/><span id="sa-analystics-clicks"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/loading-spin-orange.gif" style="\
                 margin-right: 0px;"></span></span>\
             </div>\
         </div>\
         <div class="count-sec m-0">\
-            <div class="title">Feedback</div>\
+        <div class="title sdk-i18n-lang" sdk-i18n-lang" sdk-i18n-key="sa_sdk_feedback">{{html langTranslator("sa_sdk_feedback")}}</div>\
             <div class="count">\
                 <span class="feedback-thumb">\
                     <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/thumb-success.svg"/><span id="sa-analystics-thumbsUp"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/analytics/loading-spin-orange.gif" style="\
