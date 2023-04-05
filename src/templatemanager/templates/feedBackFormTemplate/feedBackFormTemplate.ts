@@ -15,7 +15,6 @@ class FeedBackFormTemplate {
         });
         setTimeout(()=>{
           FeedBackFormTemplate.prototype.bindFeedbackEvents(me,me.messageHtml,msgData.message[0].component.payload);
-          FeedBackFormTemplate.prototype.convertStringTo18(me,me.messageHtml,msgData.message[0].component.payload.langTranslator);
         },500)
             return me.messageHtml;
           }
@@ -75,10 +74,6 @@ class FeedBackFormTemplate {
           $('#snippet-feedback-template').empty();
           $('#query-feedback').empty()
       });
-    }
-    convertStringTo18(me:any,messageHtml:any,langTranslator:any){
-      let $ = me.hostInstance.$;
-      $(messageHtml).find('#feed-back-placeholder-i18').attr("placeholder", langTranslator('sa_sdk_start_typing_here'));
     }
 }
 

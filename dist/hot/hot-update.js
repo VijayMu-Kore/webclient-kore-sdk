@@ -31,7 +31,6 @@ var FeedBackFormTemplate = /** @class */ (function () {
             });
             setTimeout(function () {
                 FeedBackFormTemplate.prototype.bindFeedbackEvents(me, me.messageHtml, msgData.message[0].component.payload);
-                FeedBackFormTemplate.prototype.convertStringTo18(me, me.messageHtml, msgData.message[0].component.payload.langTranslator);
             }, 500);
             return me.messageHtml;
         }
@@ -90,10 +89,6 @@ var FeedBackFormTemplate = /** @class */ (function () {
             $('#query-feedback').empty();
         });
     };
-    FeedBackFormTemplate.prototype.convertStringTo18 = function (me, messageHtml, langTranslator) {
-        var $ = me.hostInstance.$;
-        $(messageHtml).find('#feed-back-placeholder-i18').attr("placeholder", langTranslator('sa_sdk_start_typing_here'));
-    };
     return FeedBackFormTemplate;
 }());
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FeedBackFormTemplate);
@@ -105,7 +100,7 @@ var FeedBackFormTemplate = /** @class */ (function () {
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("15a70b74e90f45c92be3")
+/******/ 	__webpack_require__.h = () => ("2c6adcb9c4e6a96a556f")
 /******/ })();
 /******/ 
 /******/ }
