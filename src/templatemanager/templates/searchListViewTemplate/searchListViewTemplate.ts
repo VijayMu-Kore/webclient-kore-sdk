@@ -232,8 +232,12 @@ class SearchListViewTemplate {
       }
       const listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type)).tmpl(result?.message[0].component.payload);
       $(listHTML).find(".show-more-list").remove();
-      if(result?.message[0].component.payload.template_type !== "cosmeticsTemplate") $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").before($(listHTML).find(".parent-list-template").children());
-      $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").before($(listHTML).find(".arrivals-grids-template").parent());
+        if(result.message[0].component.payload.isDemoTemplate !== "cosmeticsTemplate"){
+          $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").before($(listHTML).find(".parent-list-template").children());
+        }
+        else{
+          $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").before($(listHTML).find(".arrivals-grids-template").parent());
+        }  
       if ((Number($(".full-search-data-container [templateName=" + showMoreData.templateName + "]").attr('pageNumber')) + 1) * 5 >= result?.message[0].component.payload.doc_count) {
         $(".full-search-data-container [templateName=" + showMoreData.templateName + "]").hide();
       }
