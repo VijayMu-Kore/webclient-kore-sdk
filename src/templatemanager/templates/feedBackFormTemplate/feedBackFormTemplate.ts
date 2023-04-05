@@ -15,6 +15,7 @@ class FeedBackFormTemplate {
         });
         setTimeout(()=>{
           FeedBackFormTemplate.prototype.bindFeedbackEvents(me,me.messageHtml,msgData.message[0].component.payload);
+          FeedBackFormTemplate.prototype.convertStringTo18(me,me.messageHtml,msgData.message[0].component.payload.langTranslator);
         },500)
             return me.messageHtml;
           }
@@ -41,7 +42,7 @@ class FeedBackFormTemplate {
       </div>\
       <div class="temp-feed-back-opt-qns"><span class="sdk-i18n-lang"  sdk-i18n-key="sa_sdk_please_help_with_more_details">{{html langTranslator("sa_sdk_please_help_with_more_details")}}</span></div>\
       <div class="temp-feed-back-opt-ans">\
-          <textarea id="feedback-input-text" placeholder="Start typing here..."></textarea>\
+          <textarea id="feedback-input-text feed-back-placeholder-i18" placeholder=""></textarea>\
       </div>\
       <div class="temp-feed-back-footer-block">\
           <button class="temp-feed-back-footer-btn-secondary close-feedback"><span class="sdk-i18n-lang"  sdk-i18n-key="sa_sdk_close">{{html langTranslator("sa_sdk_close")}}</span></button>\
@@ -75,7 +76,10 @@ class FeedBackFormTemplate {
           $('#query-feedback').empty()
       });
     }
-
+    convertStringTo18(me:any,messageHtml:any,langTranslator:any){
+      let $ = me.hostInstance.$;
+      $(messageHtml).find('#feed-back-placeholder-i18').attr("placeholder", langTranslator('sa_sdk_start_typing_here'));
+    }
 }
 
 export default FeedBackFormTemplate;

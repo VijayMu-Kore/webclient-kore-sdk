@@ -93,6 +93,11 @@
     "sa_sdk_please_help_with_more_details":"詳細を教えてください（オプション）",
     "sa_sdk_start_typing_here":"ここに入力を開始...",
     "sa_sdk_submit":"送信",
-    "sa_sdk_show_more_results":"さらに結果を表示"
+    "sa_sdk_show_more_results":"さらに結果を表示",
+    "sa_sdk_how_can_i_help_u":"こんにちは！今日はなんか手伝うことある?",
+    "sa_sdk_clear":"クリア",
+    "sa_sdk_OK":"いいとも",
+    "sa_sdk_sure_find_the_results_below":"一致した結果を以下で見つけてください",
+    "sa_sdk_no_results_found_for_the_query":"このクエリの結果は見つかりませんでした"
 
 }

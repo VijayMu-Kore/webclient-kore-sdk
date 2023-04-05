@@ -57,7 +57,7 @@ class FullSearchResultsTemplate {
         $('.show-all-results-outer-wrap').css({ 'left': '200px', 'box-shadow': '0 10px 25px 0 rgb(0 0 0 / 20%)' });
       }
       if(msgData.message[0].component.payload.displayFeedback){
-        FullSearchResultsTemplate.prototype.feedBackResultEvents(me, messageHtml,msgData.message[0].component.payload.feedbackData);
+        FullSearchResultsTemplate.prototype.feedBackResultEvents(me, messageHtml,msgData.message[0].component.payload.feedbackData,msgData);
         }
         if($('.filter-sec-tab').height()>30){
           $('.scroll-top-container').css('bottom', 41);
@@ -813,7 +813,7 @@ class FullSearchResultsTemplate {
     });
    }
   $ = $;
-  feedBackResultEvents(me: any, messageHtml: any, feedbackData:any){
+  feedBackResultEvents(me: any, messageHtml: any, feedbackData:any,msgData:any){
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     
@@ -842,7 +842,8 @@ class FullSearchResultsTemplate {
             payload: {
               template_type: "feedbackFormTemplate",
               query: hostWindowInstance?.vars?.searchObject.searchText || '',
-              feedBackType:'query'
+              feedBackType:'query',
+              langTranslator:msgData.message[0].component.payload.langTranslator
             }
           }
         }]

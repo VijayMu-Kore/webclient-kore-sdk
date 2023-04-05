@@ -21,6 +21,7 @@ import jaJsonObj from '../../libs/languageConversion/i18n/ja.json'
 import koJsonObj from '../../libs/languageConversion/i18n/ko.json'
 import './css/lang.scss'
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
+import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // import './findly-demo.scss'
@@ -1274,8 +1275,8 @@ FindlySDK.prototype.addSearchContainer = function (config) {
           <div class="context_variables_textarea hide">\
             <textarea id="contextjsonfield" name="w3review" rows="4" cols="50" placeholder="Provide context object"></textarea>\
             <div class="btn_actions">\
-                <button class="button_secondary">Clear</button>\
-                <button class="button_blue">Ok</button>\
+                <button class="button_secondary"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_clear">{{html langTranslator("sa_sdk_clear")}}</span>\</button>\
+                <button class="button_blue"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_OK">{{html langTranslator("sa_sdk_OK")}}</span>\</button>\
             </div>\
           </div>\
           <div id="searchBox" >\
@@ -1467,8 +1468,8 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
           <div class="context_variables_textarea hide">\
             <textarea id="contextjsonfield" name="w3review" rows="4" cols="50" placeholder="Provide context object"></textarea>\
             <div class="btn_actions">\
-                <button class="button_secondary">Clear</button>\
-                <button class="button_blue">Ok</button>\
+                <button class="button_secondary"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_clear">{{html langTranslator("sa_sdk_clear")}}</span>\</button>\
+                <button class="button_blue"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_OK">{{html langTranslator("sa_sdk_OK")}}</span>\</button>\
             </div>\
           </div>\
           <div id="searchBox" >\
@@ -1643,7 +1644,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
   var greetingMsg =
     '<script type="text/x-jqury-tmpl">\
         <div class="search-greeting-box">\
-          <span class="search-greeting-text">Hello! How can I help you today?</span>\
+          <span class="search-greeting-text sdk-i18n-lang" sdk-i18n-key="sa_sdk_how_can_i_help_u">{{html langTranslator("sa_sdk_how_can_i_help_u")}}</span>\
         </div>\
         <div class="search-greeting-close-container pointer" >\
           <span class="search-greeting-close-body">\
@@ -1741,7 +1742,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
           <div class="custom-full-page-view-header-container-center-secondary {{if devMode=="false"||showingMatchedResults=="false"}}display-none{{/if}}">\
             <label class="kr-sg-toggle custom_toggle">\
               <input id="viewTypeCheckboxControl" type="checkbox">\
-              <div class="slider"><span class="enabled">Customize</span><span class="disabled">Preview</span></div>\
+              <div class="slider"><span class="enabled sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize">{{html langTranslator("sa_sdk_customize")}}</span><span class="disabled sdk-i18n-lang" sdk-i18n-key="sa_sdk_preview">{{html langTranslator("sa_sdk_preview")}}</span></div>\
             </label>\
             <div class="show_insights display-none" data-displayInsights="true">\
               <span class="show_insights_text display-none">SHOW INSIGHTS </span><img class="show_insights_icon display-none" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACUSURBVHgBdY7NCcJAEIVnx58IZmVLSAe2oJ149OAmKSGWEC1AO0gJlmAJYg0Kgsm+0REEDcmDObz3fYch61FN1o+EeuJySawPB0ZotuMo6pRVAqRCCOVniDf1Ypbi/AbuR3I2Cxdl2s0XWN+sjOGM2Sy1Q+QkQHnbD49/ombqnznTYE5MJILrfTcq+n6nOK0Lvfb+ArpOOQuJ5trnAAAAAElFTkSuQmCC">\
@@ -5768,11 +5769,11 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.vars.enterIsClicked = true;
            // convert text to selected language //
            var searchText =  $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
-          if(searchText == 'language=en' || searchText == 'language=ja' || searchText == 'language=ko'){
-            _self.convertTextToSelectLang(searchText.split('=')[1]);
-            $('.search-top-down').val('') ;
-            return;
-          }
+          // if(searchText == 'language=en' || searchText == 'language=ja' || searchText == 'language=ko'){
+          //   _self.convertTextToSelectLang(searchText.split('=')[1]);
+          //   $('.search-top-down').val('') ;
+          //   return;
+          // }
           $(".skelton-load-img").show();
           $("#live-search-result-box").hide();
           $("#frequently-searched-box").hide();
@@ -5781,11 +5782,11 @@ FindlySDK.prototype.searchEventBinding = function (
           $(".default-data-show-not-loaded").hide();
           _self.vars.enterIsClicked = true; // convert text to selected language //
           var searchText =  $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
-          if(searchText == 'language=en' || searchText == 'language=ja' || searchText == 'language=ko'){
-            _self.convertTextToSelectLang(searchText.split('=')[1]);
-            $('.search-top-down').val('') ;
-            return;
-          }
+          // if(searchText == 'language=en' || searchText == 'language=ja' || searchText == 'language=ko'){
+          //   _self.convertTextToSelectLang(searchText.split('=')[1]);
+          //   $('.search-top-down').val('') ;
+          //   return;
+          // }
           $(".search-body").css("display", "none");
           $(".search-body").addClass("hide");
          
@@ -10047,11 +10048,7 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
         searchConfig.interactionsConfig.liveSearchResultsLimit;
       searchConfiguration.feedbackExperience =
         searchConfig.interactionsConfig.feedbackExperience;
-        // _self.vars.feedBackExperience = searchConfig.interactionsConfig.feedbackExperience;
-        _self.vars.feedBackExperience = {
-          smartAnswer: true,
-          queryLevel: false,
-        };;
+        _self.vars.feedBackExperience = searchConfig.interactionsConfig.feedbackExperience;
     } else {
       searchConfiguration.welcomeMsg = "Hello! How can I help you today?";
       searchConfiguration.welcomeMsgFillColor = "#3C4043";
@@ -17890,10 +17887,10 @@ FindlySDK.prototype.fullResultRanking = function () {
                 <div class="customization-tile">\
                     <div class="drag-content"></div>\
                     <div class="actions-content">\
-                      <span class="action-item visibility" type="{{if record.config.visible == true}}Hide{{/if}}{{if record.config.visible == false}}UnHide{{/if}}">\
+                      <span class="action-item visibility" type="{{if record.config.visible == true}}Hide{{/if}}{{if record.config.visible == false}}UnHide{{/if}}" >\
                         <span class="tooltiptext">\
-                          <span class="hide {{if record.config.visible == true}}display-block{{else}}display-none{{/if}}">\
-                              Hide\
+                          <span class="hide sdk-i18n-lang {{if record.config.visible == true}}display-block{{else}}display-none{{/if}}" sdk-i18n-key="sa_sdk_hide">\
+                          {{html langTranslator("sa_sdk_hide")}}\
                           </span>\
                           <span class="unhide sdk-i18n-lang {{if record.config.visible == false}}display-block{{else}}display-none{{/if}} sdk-i18n-key="sa_sdk_unhide">\
                           {{html langTranslator("sa_sdk_unhide")}}\
@@ -17903,8 +17900,8 @@ FindlySDK.prototype.fullResultRanking = function () {
                       </span>\
                       <span class="action-item pinning" type="{{if record.config.pinIndex > 0}}UnPin{{/if}}{{if record.config.pinIndex < 0}}Pin{{/if}}">\
                         <span class="tooltiptext">\
-                          <span class="unpin {{if record.config.pinIndex >= 0}}display-block{{else}}display-none{{/if}}">\
-                            UnPin\
+                          <span class="unpin sdk-i18n-lang {{if record.config.pinIndex >= 0}}display-block{{else}}display-none{{/if}}" sdk-i18n-key="sa_sdk_Unpin">\
+                          {{html langTranslator("sa_sdk_Unpin")}}\
                           </span>\
                           <span class="pin sdk-i18n-lang {{if record.config.pinIndex < 0}}display-block{{else}}display-none{{/if}}" sdk-i18n-key="sa_sdk_pin">\
                           {{html langTranslator("sa_sdk_pin")}}\
@@ -17946,7 +17943,7 @@ FindlySDK.prototype.fullResultRanking = function () {
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAMCAYAAABbayygAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADJSURBVHgBdZDRDYIwEIZbEFKDTRiBEVzBSfDRmBRxA11BX3xTJ3AE4ghOgE7ggyaalvbskZCUWP633n253neUC31USm6/h/GdeJKWkDXG5AFQ84jiuGKLT+aDNJiKEEPbwqRQG17o2oUR4itdYw/ftGtggZIgV1LOGGMEJwGY83sX9UEXxqoLeYNwImT51+DCXHwiXZKlnOJlrLW+DVkjFIxCaw3XQet2UqGfXDTzQeswCNN2EsD6tR+demDP2p7RhfzLW+PuOzc/5PRxOXt0QzUAAAAASUVORK5CYII=">\
                     <span class="count lowered">${record.config.boost}X <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_lowered_caps">{{html langTranslator("sa_sdk_lowered_caps")}}</span></span>\
                   </div>\
-                    <div class="tag-ref">FAQ Response</div>\
+                    <div class="tag-ref"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_faq_response">{{html langTranslator("sa_sdk_faq_response")}}</span>\</div>\
                 </div>\
               </div>\
             {{/each}}\
@@ -20756,7 +20753,7 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
             messageData.text = langTranslator("sa_sdk_sure_please_find_the_matched_results_below");
             messageData.from = 'bot';
             messageData.count = _self.countTotalResults(history.response.message[0].component.payload.template, 0);
-            messageData.text = messageData.count?'Sure, please find the matched results below':'No results were found for this query';
+            messageData.text = messageData.count? langTranslator("sa_sdk_sure_find_the_results_below"): langTranslator("sa_sdk_no_results_found_for_the_query");
             messageData.timeStamp = _self.extractTime(history.timestamp);
           }
           var viewType = _self.vars.customizeView ? 'Customize' : 'Preview';
