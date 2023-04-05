@@ -213,13 +213,13 @@ class FullSearchResultTopdownTemplate {
         if (facet.key == "task") {
           isAction = true;
         }
-        $(tabsHtml).find("." + facet.key.replaceAll(" ", "-"))
+        $(tabsHtml).find("." + facet.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___'))
           .removeClass('active-tab')
           .addClass("un-selected-type");
       }
     });
     if (facetSelected) {
-      $(tabsHtml).find("." + facetSelected.replaceAll(" ", "-"))
+      $(tabsHtml).find("." + facetSelected.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___'))
         .removeClass("un-selected-type")
         .addClass('active-tab');
     }
@@ -235,7 +235,7 @@ class FullSearchResultTopdownTemplate {
       $(tabsHtml).find(".tab-name.capital.facet.active-tab")
         .removeClass("active-tab")
         .addClass('un-selected-type');
-      $(tabsHtml).find("." + selectedFacet.replaceAll(" ", "-"))
+      $(tabsHtml).find("." + selectedFacet.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___'))
         .removeClass("un-selected-type").addClass('active-tab');
 
       hostWindowInstance.tabFacetTrigger(e, selectedFacet).then((result: any) => {
