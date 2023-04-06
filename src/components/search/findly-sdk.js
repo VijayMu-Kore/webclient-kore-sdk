@@ -7353,7 +7353,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                 component: {
                   type: 'template',
                   payload: {
-                    infoText: langTranslator("sa_sdk_sure_please_find_the_matched_results_below"),
+                    infoText: langTranslator("sa_sdk_here_are_relevent_results"),
                     template_type: "finalResultsTemplate",
                     isDev: _self.isDev,
                     devMode: devMode,
@@ -7503,7 +7503,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       // } 
       if (!$('body').hasClass('top-down')) {
         setTimeout(() => {
-          if ($('.messageBubble .userMessage span').last().text() == _self.vars.searchObject.searchText && $('.messageBubble .messageBubble-content .botMessage span:nth-child(2)').last().text() === langTranslator("sa_sdk_sure_please_find_the_matched_results_below")) {
+          if ($('.messageBubble .userMessage span').last().text() == _self.vars.searchObject.searchText && $('.messageBubble .messageBubble-content .botMessage span:nth-child(2)').last().text() === langTranslator("sa_sdk_here_are_relevent_results")) {
             if ($('#searchChatContainer').prop('offsetHeight') < $('.finalResults .resultsOfSearch .bottom-search-show-all-results').last().position().top) {
               $("#searchChatContainer").off('scroll').on('scroll', function () {
                 if ($('.sdk-chat-container').scrollTop() == 0 && !$('#histroybutton').is(':visible')) {
@@ -7864,7 +7864,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             if (dataObj.smallTalk) {
               _self.sendMessageToSearch("bot", dataObj.smallTalk);
             } else {
-              var _botMessage = langTranslator("sa_sdk_sure_please_find_the_matched_results_below");
+              var _botMessage = langTranslator("sa_sdk_here_are_relevent_results");
               searchData = $(
                 _self.getSearchTemplate("liveSearchData")
               ).tmplProxy({
@@ -20753,7 +20753,7 @@ FindlySDK.prototype.searchHistroy = function (findlyConfig) {
             messageData.isFromHistory = true;
             //messageData.timestamp = history.timestamp;
           } else {
-            messageData.text = langTranslator("sa_sdk_sure_please_find_the_matched_results_below");
+            messageData.text = langTranslator("sa_sdk_here_are_relevent_results");
             messageData.from = 'bot';
             messageData.count = _self.countTotalResults(history.response.message[0].component.payload.template, 0);
             messageData.text = messageData.count? langTranslator("sa_sdk_sure_find_the_results_below"): langTranslator("sa_sdk_no_results_found_for_the_query");
