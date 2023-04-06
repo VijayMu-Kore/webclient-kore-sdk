@@ -430,6 +430,7 @@
                 .actions-content{
                     &.manually_added_pin {
                         .tooltiptext{
+                            white-space: nowrap;
                             width: 186px !important;
                             left: -150px !important;
                             &::after{
@@ -1518,6 +1519,7 @@
                         .tooltip-appearnces-clicks{
                             &:hover{
                                 .tooltip_text{
+                                    white-space: nowrap;
                                     visibility: visible;
                                     opacity: 1;
                                 }

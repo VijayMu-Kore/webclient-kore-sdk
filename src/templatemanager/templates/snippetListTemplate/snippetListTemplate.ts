@@ -16,7 +16,7 @@ class SnippetListTemplate {
             });
             me.feedBackTemplateObj = new FeedBackFormTemplate();
             setTimeout(()=>{
-              SnippetListTemplate.prototype.bindSnippetEvents(me,me.messageHtml,msgData?.message?.[0]?.component?.payload?.snippetData);
+              SnippetListTemplate.prototype.bindSnippetEvents(me,me.messageHtml,msgData?.message?.[0]?.component?.payload?.snippetData,msgData);
             },500)
             return me.messageHtml;
         }
@@ -28,10 +28,10 @@ class SnippetListTemplate {
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
-                <div class="btn-chip">SUGGESTED ANSWER</div>\
-            </div>\
-            {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                <div class="btn-chip sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</div>\
+                </div>\
+            {{if snippetData && snippetData.source === "Answered by AI"}}\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
             {{/if}}\
         </div>\
         <div class="list-temp-block">\
@@ -54,12 +54,11 @@ class SnippetListTemplate {
         <div class="temp-footer-block">\
             <div class="temp-footer {{if snippetData && snippetData.snippet_type !== "generative_model"}} justify-content-end {{/if}}">\
                 {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
                 {{/if}}\
                 {{if displayFeedback}}\
                 <div class="temp-right">\
-                    <div class="is-it-usefull">Is it useful?</div>\
-                    <div class="temp-fotter-actions">\
+                <div class="is-it-usefull sdk-i18n-lang"  sdk-i18n-key="sa_sdk_is_useful">{{html langTranslator("sa_sdk_is_useful")}}</div>\                    <div class="temp-fotter-actions">\
                         <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
                         <img  class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
                     </div>\
@@ -99,7 +98,7 @@ class SnippetListTemplate {
         return snippetListTemplate;
       }
     }
-    bindSnippetEvents(me:any,messageHtml:any, snippetData:any){
+    bindSnippetEvents(me:any,messageHtml:any, snippetData:any,msgData:any){
       let $ = me.hostInstance.$;
       let hostInstance= me.hostInstance;
       $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
@@ -114,7 +113,7 @@ class SnippetListTemplate {
       });
       $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
         if(!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')){
-        SnippetListTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
+        SnippetListTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData,msgData)
         $(messageHtml).find('.snippet-feedback').removeClass('active');
         $(event.currentTarget).addClass('active');
       }
@@ -135,7 +134,7 @@ class SnippetListTemplate {
       }
 
       
-    appendFeedBaackData(me: any, messageHtml: any,snippetData:any){
+    appendFeedBaackData(me: any, messageHtml: any,snippetData:any,msgData:any){
       let $ = me.hostInstance.$;
       let feedbackMsgData = {
       message: [{
@@ -144,7 +143,8 @@ class SnippetListTemplate {
           payload: {
             template_type: "feedbackFormTemplate",
             query: snippetData.searchQuery,
-            feedBackType:'smartAnswer'
+            feedBackType:'smartAnswer',
+            langTranslator:msgData?.message?.[0]?.component?.payload?.langTranslator
           }
         }
       }]

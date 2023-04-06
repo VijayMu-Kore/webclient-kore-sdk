@@ -19,6 +19,9 @@ class FinalResultsTemplate {
       if (msgData?.message[0].component?.payload?.helpers) {
         me.helpersObj = msgData.message[0].component.payload.helpers
       }
+      if (msgData?.message[0].component?.payload?.langTranslator) {
+        me.langTranslator = msgData.message[0].component.payload.langTranslator
+      }
       else {
         msgData.message[0].component.payload['helpers'] = me.helpersObj;
       }
@@ -48,6 +51,7 @@ class FinalResultsTemplate {
     }
     if (me.groupData && me.groupData.length) {
       me.groupData.forEach((d: any) => {
+        d.message[0].component.payload.langTranslator = me.langTranslator
         var showAllHTML;
         if (d.message[0].component.payload.template_type == 'searchListTemplate') {
           showAllHTML = me.listTemplateObj.renderMessage.bind(me, d);
@@ -91,7 +95,8 @@ class FinalResultsTemplate {
                 filterFacetData: [],
                 groupData: modifyGroupData,
                 displayFeedback:msgData.message[0].component.payload.displayFeedback,
-                feedbackData: null
+                feedbackData: null,
+                langTranslator:msgData.message[0].component.payload?.langTranslator
               }
             }
           }]
@@ -127,7 +132,7 @@ class FinalResultsTemplate {
                 <span class="bot_info_text">{{html helpers.convertMDtoHTML(infoText)}}</span>\
                 </div>\
           </div>\
-            <div class="sdk-results-customize-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/rangeslider.svg"><span class="tooltiptext-top sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize_results">Customize Results</span></div>\
+            <div class="sdk-results-customize-icon"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/rangeslider.svg"><span class="tooltiptext-top sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize_results">{{html langTranslator("sa_sdk_customize_results")}}</span></div>\
           </div>\
         {{/if}}\
         {{if snippetData && snippetData?.template_type}}\
@@ -136,10 +141,10 @@ class FinalResultsTemplate {
             <div class="top-header">\
                 <div class="top-header-with-img">\
                     <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
-                    <div class="btn-chip">SUGGESTED ANSWER</div>\
+                    <div class="btn-chip sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</div>\
                 </div>\
                 {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
                 {{/if}}\
             </div>\
             {{if snippetData && snippetData.title}}\
@@ -162,11 +167,11 @@ class FinalResultsTemplate {
             <div class="temp-footer-block">\
                 <div class="temp-footer {{if snippetData && snippetData.snippet_type!== "generative_model"}} justify-content-end {{/if}}">\
                     {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                    <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                    <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
                     {{/if}}\
                     {{if snippetData.displayFeedback == true}}\
                     <div class="temp-right">\
-                        <div class="is-it-usefull">Is it useful?</div>\
+                        <div class="is-it-usefull sdk-i18n-lang"  sdk-i18n-key="sa_sdk_is_useful">{{html langTranslator("sa_sdk_is_useful")}}</div>\
                         <div class="temp-fotter-actions">\
                             <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
                             <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
@@ -183,10 +188,10 @@ class FinalResultsTemplate {
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
-                <div class="btn-chip">SUGGESTED ANSWER</div>\
-            </div>\
-            {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                <div class="btn-chip sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</div>\
+                </div>\
+            {{if snippetData && snippetData.source === "Answered by AI"}}\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
             {{/if}}\
         </div>\
         <div class="list-temp-block">\
@@ -209,12 +214,11 @@ class FinalResultsTemplate {
         <div class="temp-footer-block">\
             <div class="temp-footer {{if snippetData && snippetData.snippet_type!== "generative_model"}} justify-content-end {{/if}}">\
                 {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
                 {{/if}}\
                 {{if snippetData.displayFeedback == true}}\
                 <div class="temp-right">\
-                    <div class="is-it-usefull">Is it useful?</div>\
-                    <div class="temp-fotter-actions">\
+                   <div class="is-it-usefull sdk-i18n-lang"  sdk-i18n-key="sa_sdk_is_useful">{{html langTranslator("sa_sdk_is_useful")}}</div>\                    <div class="temp-fotter-actions">\
                         <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
                         <img  class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
                     </div>\
@@ -230,10 +234,10 @@ class FinalResultsTemplate {
             <div class="top-header">\
                 <div class="top-header-with-img">\
                     <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
-                    <div class="btn-chip">SUGGESTED ANSWER</div>\
+                    <div class="btn-chip"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</span>\</div>\
                 </div>\
                 {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
                 {{/if}}\
             </div>\
             {{if snippetData && snippetData.title}}\
@@ -256,7 +260,7 @@ class FinalResultsTemplate {
             <div class="temp-footer-block">\
                 <div class="temp-footer {{if snippetData && snippetData.snippet_type!== "generative_model"}} justify-content-end {{/if}}">\
                     {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                    <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                    <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
                     {{/if}}\
                     {{if snippetData.displayFeedback == true}}\
                     <div class="temp-right">\
@@ -276,10 +280,10 @@ class FinalResultsTemplate {
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
-                <div class="btn-chip">SUGGESTED ANSWER</div>\
+                <div class="btn-chip"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</span>\</div>\
             </div>\
             {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
             {{/if}}\
         </div>\
         {{if snippetData && snippetData.title}}\
@@ -307,7 +311,7 @@ class FinalResultsTemplate {
         <div class="temp-footer-block">\
             <div class="temp-footer {{if snippetData && snippetData.snippet_type!== "generative_model"}} justify-content-end {{/if}}">\
                 {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
                 {{/if}}\
                 {{if snippetData.displayFeedback == true}}\
                 <div class="temp-right">\
@@ -327,10 +331,10 @@ class FinalResultsTemplate {
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
-                <div class="btn-chip">SUGGESTED ANSWER</div>\
+                <div class="btn-chip"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</span>\</div>\
             </div>\
             {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
             {{/if}}\
         </div>\
         {{if snippetData && snippetData.title}}\
@@ -359,7 +363,7 @@ class FinalResultsTemplate {
         <div class="temp-footer-block">\
             <div class="temp-footer {{if snippetData && snippetData.snippet_type!== "generative_model"}} justify-content-end {{/if}}">\
                 {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span>ANSWERED BY AI</div>\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
                 {{/if}}\
                 {{if snippetData.displayFeedback == true}}\
                     <div class="temp-right">\
@@ -376,11 +380,11 @@ class FinalResultsTemplate {
     {{/if}}\
     {{/if}}\
     {{if snippetData && snippetData?.template_type}}\
-    <div class="show-more-results-block" ><span class="show-more-results-btn" id="sa-sdk-show-more-results-btn">Show more results</span></div>\
+    <div class="show-more-results-block" ><span class="show-more-results-btn" id="sa-sdk-show-more-results-btn"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_show_more_results">{{html langTranslator("sa_sdk_show_more_results")}}</span> </span></div>\
     {{/if}}\
       <div class="finalResults snippet-margin {{if snippetData && snippetData?.template_type}}  display-none{{/if}}">\
         {{if taskPrefix === "SUGGESTED"}}\
-        <span class="live-search-close-icon show-all-results">See All Results</span>\
+        <span class="live-search-close-icon sdk-i18n-lang" sdk-i18n-key="sa_sdk_see_all_results">{{html langTranslator("sa_sdk_see_all_results")}}</span>\
         {{/if}}\
         <div class="resultsOfSearch">\
             {{if taskPrefix !== "SUGGESTED"}}\
@@ -393,7 +397,7 @@ class FinalResultsTemplate {
             {{if showAllResults && !customSearchResult}}\
                 {{if taskPrefix !== "SUGGESTED"}}\
                     <div class="bottom-search-show-all-results">\
-                        <span class="pointer show-all-results" >See all <span class="search-results-count">(${totalSearchResults} results)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
+                    <span class="pointer show-all-results" ><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_see_all">{{html langTranslator("sa_sdk_see_all")}}</span> <span class="search-results-count">(${totalSearchResults} <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_results">{{html langTranslator("sa_sdk_results")}}</span>)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
                     </div>\
                 {{/if}}\
             {{/if}}\
@@ -476,7 +480,8 @@ class FinalResultsTemplate {
           payload: {
             template_type: "feedbackFormTemplate",
             query: hostWindowInstance?.vars?.searchObject.searchText || '',
-            feedBackType:feedBackType
+            feedBackType:feedBackType,
+            langTranslator: me?.langTranslator
           }
         }
       }]

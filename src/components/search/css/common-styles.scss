@@ -5024,7 +5024,7 @@ li{
                             border-radius: 4px;
                             padding: 5px 8px;
                             min-height: 29px;
-                            width: 113px;
+                            width: max-content;
                             cursor: pointer;
                             img{
                                 margin-right: 8px;
@@ -5136,6 +5136,7 @@ li{
         .count-sec{
             margin-right: 30px;
             .title{
+                white-space: nowrap;
                 color: #9AA0A6;
                 font-weight: 500;
                 font-size: 10px;
