@@ -470,7 +470,7 @@ class FullSearchResultsTemplate {
                     {{if searchFacet.multiselect}}\
                     <div class="apply-btn sdk-i18n-lang" sdk-i18n-key="sa_sdk_apply">{{html langTranslator("sa_sdk_apply")}}</div>\                    {{/if}}\
                       {{if !searchFacet.multiselect}}\
-                      <div class="clear-all sdk-clear-all-facet-top">Clear</div>\
+                      <div class="clear-all sdk-clear-all-facet-top"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_clear">{{html langTranslator("sa_sdk_clear")}}</span>\</div>\
                       {{/if}}\
                     </div>\
                 </div>\

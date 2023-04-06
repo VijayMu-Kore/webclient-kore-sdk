@@ -637,7 +637,7 @@ class SearchListViewTemplate {
             </div>\
           </div>\
           <div class="tours-information tour-customization-info sdk-tours-info-end hide">\
-            <div class="tourtitle">Customize</div>\
+            <div class="tourtitle"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize">{{html langTranslator("sa_sdk_customize")}}</span>\</div>\
             <div class="tour-info mb-2 pb-1 sdk-i18n-lang" sdk-i18n-key="sa_sdk_you_can_order_the_results_by_clicking">{{html langTranslator("sa_sdk_you_can_order_the_results_by_clicking")}}</div>\
             <div class="footer-tour">\
               <div class="tour-length">2 of 2</div>\

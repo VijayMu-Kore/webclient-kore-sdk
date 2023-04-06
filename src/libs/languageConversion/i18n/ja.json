@@ -98,6 +98,7 @@
     "sa_sdk_clear":"クリア",
     "sa_sdk_OK":"いいとも",
     "sa_sdk_sure_find_the_results_below":"一致した結果を以下で見つけてください",
-    "sa_sdk_no_results_found_for_the_query":"このクエリの結果は見つかりませんでした"
+    "sa_sdk_no_results_found_for_the_query":"このクエリの結果は見つかりませんでした",
+    "sa_sdk_answered_by_ai":"AIが答える"
 
 }

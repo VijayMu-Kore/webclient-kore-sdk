@@ -634,7 +634,7 @@ class FullSearchResultTopdownTemplate {
         </div>\
         {{/each}}\
         <div class="action-bar">\
-        {{if !searchFacet.multiselect}}<button class="btn clear-btn">Clear</button>{{/if}}\
+        {{if !searchFacet.multiselect}}<button class="btn clear-btn"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_clear">{{html langTranslator("sa_sdk_clear")}}</span>\</button>{{/if}}\
         {{if searchFacet.multiselect}} <button class="apply-btn sdk-i18n-lang" sdk-i18n-key="sa_sdk_apply">{{html langTranslator("sa_sdk_apply")}}</button>\{{/if}}\
       </div>\
         </div>\
@@ -715,7 +715,7 @@ class FullSearchResultTopdownTemplate {
         </div>\
         {{if isTopFacets}}\
         <div class="filters-reset" style="padding: 4px 10px;">\
-              <div class="filters-reset-anchor">Clear all</div>\
+              <div class="filters-reset-anchor"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_clear_all">{{html langTranslator("sa_sdk_clear_all")}}</span>\</div>\
         </div>\
         {{/if}}\
       {{/if}} \
