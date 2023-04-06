@@ -18443,9 +18443,12 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
     $("#search-box-container")
       .off("keydown", "#search")
       .on("keydown", "#search", function (e) {
-        _self.pubSub.publish("sa-handel-submit-button");
         var code = e.keyCode || e.which;
         code = Number(code);
+        if(code == 9){
+          e.preventDefault();
+        }
+        _self.pubSub.publish("sa-handel-submit-button");
         if (code == 13) {
           if (!$(".search-top-down").val()) {
             return;
