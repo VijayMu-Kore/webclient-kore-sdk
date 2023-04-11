@@ -9928,6 +9928,7 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
 };
 FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   var _self = this;
+  _self.getSetI18nLangData();
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
   $("body").addClass("ms-sdk-body");
@@ -9942,7 +9943,7 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
         });
       },1000);
   }
-  _self.getSetI18nLangData()
+ 
 };
 
 var searchConfigurationCopy = {};
