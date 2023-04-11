@@ -267,7 +267,7 @@ class SearchListViewTemplate {
         $(e.currentTarget).closest(".click-log-metrics").attr("id"),
         $(e.currentTarget).closest(".click-log-metrics").attr("data-title") || $(e.currentTarget).attr("title"));
     });
-    $(messageHtml)
+    $('.parent-list-template')
     .off("click", ".accordion")
     .on("click", ".accordion", function (evet:any) {
       $(evet.target).closest(".accordion").toggleClass("acc-active");
