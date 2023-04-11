@@ -435,9 +435,9 @@
                     
                     var newStr = '', wrapper1;
                     if (responseType === 'user') {
-                        str = str.replace(/onerror=/gi, 'abc-error=');
-                        str = str.replace(/onmouseover=/gi, 'abc-on-mouse-over=');
-                         str = sanitizeXSS(str);
+                        str = str.replace(/onerror=/gi, '');
+                        str = str.replace(/onmouseover=/gi, '');
+                        //  str = sanitizeXSS(str);
                         wrapper1 = document.createElement('div');
                         newStr = str.replace(/“/g, '\"').replace(/”/g, '\"');
                         newStr = newStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -449,9 +449,9 @@
                         }
                     } else {
                         wrapper1 = document.createElement('div');
-                        str = str.replace(/onerror=/gi, 'abc-error=');
-                        str = str.replace(/onmouseover=/gi, 'abc-on-mouse-over=');
-                        str = sanitizeXSS(str);
+                        str = str.replace(/onerror=/gi, '');
+                        str = str.replace(/onmouseover=/gi, '');
+                        // str = sanitizeXSS(str);
                         //str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
                         wrapper1.innerHTML = xssAttack(str);
                         if ($(wrapper1).find('a').attr('href')) {
@@ -497,7 +497,7 @@
                     str = str.replaceAll('target="underscoreblank"', 'target="_blank"');
                     str = str.replaceAll("target='underscoreblank'", 'target="_blank"');
                     if (responseType === 'user') {
-                        str = str.replace(/abc-error=/gi, 'onerror=');
+                        // str = str.replace(/abc-error=/gi, 'onerror=');
                     }
                     return helpers.nl2br(str, true);
                 },
@@ -576,7 +576,7 @@
                                     hyperLinksMap[_randomKey] = _imgLink;
                                     _imgLink = _randomKey;
                                 }
-                                _imgLink = '<img src="' + _imgLink + '" alt="' + sanitizeXSS(_imgTxt) + '">';
+                                _imgLink = '<img src="' + _imgLink + '" alt="' + _imgTxt + '">';
                                 var _tempImg = txtArr[i].split(' ');
                                 for (var k = 0; k < _tempImg.length; k++) {
                                     if (_tempImg[k] === _matchImage[j]) {
