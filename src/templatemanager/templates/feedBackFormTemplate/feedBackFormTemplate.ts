@@ -33,18 +33,20 @@ class FeedBackFormTemplate {
       <div class="temp-break-line"></div>\
       <div class="temp-feed-back-qns">What seems to be the issue?</div>\
       <div class="temp-feed-back-ans-tags">\
-          <button class="temp-feed-back-ans-tag-btn" value="incorrect">Incorrect</button>\
-          <button class="temp-feed-back-ans-tag-btn" value="outdated">Outdated</button>\
-          <button class="temp-feed-back-ans-tag-btn" value="few_results">Few Results</button>\
-          <button class="temp-feed-back-ans-tag-btn" value="other">Other</button>\
+          <button class="temp-feed-back-ans-tag-btn" value="incorrect"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-checked.svg" /> Incorrect</button>\
+          <button class="temp-feed-back-ans-tag-btn partially-correct-tag-btn" value="partially_correct"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-checked.svg" /> Partially Correct</button>\
+          <button class="temp-feed-back-ans-tag-btn outdated-tag-btn" value="outdated"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-checked.svg" /> Outdated</button>\
+          <button class="temp-feed-back-ans-tag-btn few-results-tag-btn" value="few_results"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-checked.svg" /> Few Results</button>\
+          <button class="temp-feed-back-ans-tag-btn other-tag-btn" value="other"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-checked.svg"/> Other</button>\
       </div>\
       <div class="temp-feed-back-opt-qns">Please help us with more details (Optional)</div>\
       <div class="temp-feed-back-opt-ans">\
           <textarea id="feedback-input-text" placeholder="Start typing here..."></textarea>\
       </div>\
       <div class="temp-feed-back-footer-block">\
+          <button class="temp-feed-back-footer-btn-primary mobile-view-submit-btn submit-feedback">Submit</button>\
           <button class="temp-feed-back-footer-btn-secondary close-feedback">Close</button>\
-          <button class="temp-feed-back-footer-btn-primary submit-feedback">Submit</button>\
+          <button class="temp-feed-back-footer-btn-primary desktop-view-submit-btn submit-feedback">Submit</button>\
       </div>\
   </div>\
       </script>';
