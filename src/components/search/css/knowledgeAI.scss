@@ -498,6 +498,103 @@
         }
     }
 }
+@media (max-width:1024px) and (min-width:769px) {
+    .sa-knowledgeai-sdk-body {
+        .searchAssist-kore-chat-window {
+            .typingIndicatorContent {
+                width: 140px;
+                left: -7px;
+            }
+            &.search-container {
+                max-height: calc(100% - 76px);
+                bottom: 40px !important;
+                right: 155px !important;
+                left: inherit !important;
+                width: calc(100% - 565px)!important;
+                box-shadow: none !important;
+                background: transparent !important;
+                padding-left: 24px;
+                padding-right: 24px;
+                .search {
+                    padding: 0 35px 0 16px;
+                    width: 100%;
+                    height: 49px;
+                }
+                
+                .search-bar {
+                    // right: 24px;
+                    left: 30px;
+                    width: calc(100% - 40px);
+                    margin: auto;
+                    z-index: 1;
+                }
+                .sa-poweredbykore{
+                    right: 24px;
+                }
+                // &.active {
+                //     .sa-clear-chat{
+                //         display: none !important;
+                //     }
+                // }
+                &.conversation {
+                    #searchChatContainer {
+                        height: auto;
+                        max-height: calc(100vh - 125px);
+                        padding: 0px 0px 40px 20px;
+                    }
+                }
+            }
+            #snippet-feedback-template{
+                &.sinnpet-feedback-template-assiatance-temp {
+                    .temp-feed-back-form {
+                        right: 0px;
+                        bottom: 88px;
+                        left: 0px;
+                        width: calc(100% - 48px) !important;
+                    }
+                    .snippet-bg-blur {
+                        display: block;
+                        backdrop-filter: blur(6px);
+                        background: rgba(255, 255, 255, 0.01);
+                        width: 100% !important;
+                        right: 0px;
+                    }
+                }
+            }
+        }
+        &.setDefaultSearchTemplate {
+            .searchAssist-kore-chat-window {
+                &.search-container {
+                    max-height: calc(100% - 76px);
+                    bottom: 40px !important;
+                    right: 155px !important;
+                    left: inherit !important;
+                    width: calc(100% - 565px)!important;
+                    box-shadow: none !important;
+                    background: transparent !important;
+                    padding-left: 24px;
+                    padding-right: 24px;
+                }
+            }
+        }
+        .default-data-show-not-loaded {
+            padding: 13px 0px;
+            z-index: 7;
+            .default-suggestions-content {
+                 padding-left: 0px;
+                 .pl-5 {
+                    padding-left: 0px !important;
+                 }
+            }
+        }
+        .final-results-container {
+            .snippet-margin {
+                width: 91% !important;
+                margin-left: 30px;
+            }
+        }
+    }
+}
 @media (max-width:768px) and (min-width:481px) {
     .sa-knowledgeai-sdk-body {
         .searchAssist-kore-chat-window {
