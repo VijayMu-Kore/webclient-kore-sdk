@@ -437,6 +437,7 @@
                     if (responseType === 'user') {
                         str = str.replace(/onerror=/gi, '');
                         str = str.replace(/onmouseover=/gi, '');
+                        str = str.replace(/onload=/gi, '');
                         //  str = sanitizeXSS(str);
                         wrapper1 = document.createElement('div');
                         newStr = str.replace(/“/g, '\"').replace(/”/g, '\"');
@@ -451,6 +452,7 @@
                         wrapper1 = document.createElement('div');
                         str = str.replace(/onerror=/gi, '');
                         str = str.replace(/onmouseover=/gi, '');
+                        str = str.replace(/onload=/gi, '');
                         // str = sanitizeXSS(str);
                         //str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
                         wrapper1.innerHTML = xssAttack(str);
