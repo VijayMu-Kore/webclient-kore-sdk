@@ -432,6 +432,7 @@
                 }
                 .temp-footer {
                     .temp-fotter-actions {
+                        height: 40px;
                         .snippet-like-img{
                             content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-thumbs-up.svg);
                             &:hover {
@@ -578,6 +579,7 @@
         }
         .default-data-show-not-loaded {
             padding: 13px 0px;
+            z-index: 7;
             .default-suggestions-content {
                  padding-left: 0px;
                  .pl-5 {
@@ -741,9 +743,23 @@
                 }
             }
         }
+    }
+}
+@media (max-width:426px) and (min-width:322px) {
+    .sa-knowledgeai-sdk-body {
         .final-results-container {
             .snippet-margin {
                 width: 89% !important;
+                margin-left: 30px;
+            }
+        }
+    }
+}
+@media (max-width:321px) {
+    .sa-knowledgeai-sdk-body {
+        .final-results-container {
+            .snippet-margin {
+                width: 86% !important;
                 margin-left: 30px;
             }
         }
