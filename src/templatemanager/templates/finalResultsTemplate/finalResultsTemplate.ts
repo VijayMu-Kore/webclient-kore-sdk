@@ -462,7 +462,15 @@ class FinalResultsTemplate {
     FinalResultsTemplate.prototype.bindFragmentHoverEvent(me,messageHtml)
     $(messageHtml).off('click', '#sa-sdk-show-more-results-btn').on('click', '#sa-sdk-show-more-results-btn', function (event:any) {
       $(event.currentTarget).parent().next().closest('.finalResults').removeClass('display-none');
+      if($(event.currentTarget).position() && $(event.currentTarget).position().top > $('#searchChatContainer').height()/2){
+        $("#searchChatContainer").animate(
+          { scrollTop: $("#searchChatContainer").scrollTop()+150 },
+          0
+        );
+      }
       $(event.currentTarget).parent().remove();
+
+      
     });
   }
 

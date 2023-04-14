@@ -5494,6 +5494,7 @@ FindlySDK.prototype.captureClickAnalytics = function (
 
 FindlySDK.prototype.getRecentSearches = function (url, type) {
   var _self = this;
+  return;
   _self.vars.isRecentSearchesLoading = false;
   _self.pubSub.unsubscribe("sa-generate-recent-search");
   _self.pubSub.subscribe("sa-generate-recent-search", (data) => {
@@ -10086,14 +10087,14 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
   }
   //default showsearches as recent
   if($('.sa-k-ai-body').hasClass('sa-knowledgeai-sdk-body')){
-    // searchConfiguration.buttonBorderColor= "transparent";
-    // searchConfiguration.buttonFillColor= "transparent";
-    // searchConfiguration.buttonText= "SEND";
+    searchConfiguration.buttonBorderColor= "transparent";
+    searchConfiguration.buttonFillColor= "transparent";
+    searchConfiguration.buttonText= "";
     // searchConfiguration.buttonTextColor= "#777A80";
     searchConfiguration.searchBarPlaceholderText= "Ask me anything...";
     searchConfiguration.searchBarPlaceholderTextColor= "#777A80";
-    // searchConfiguration.searchButtonEnabled= true,
-    // searchConfiguration.buttonPlacementPosition= "inside";
+    searchConfiguration.searchButtonEnabled= true,
+    searchConfiguration.buttonPlacementPosition= "inside";
     searchConfiguration.showSearchesEnabled =false;
     searchConfiguration.liveSearchResultsLimit = 0;
     searchConfiguration.querySuggestionsLimit = 0;
@@ -16988,6 +16989,7 @@ FindlySDK.prototype.getSearchResultsConfig = function (url, type) {
 };
 FindlySDK.prototype.getTabFacetList = function (url, type) {
   var _self = this;
+  return;
   var bearer =
     "bearer " + this.bot?.options?.accessToken ||
     this.API.jstBarrer || "";
@@ -22617,6 +22619,7 @@ FindlySDK.prototype.actionHandler = function(e) {
 }
 FindlySDK.prototype.getSortableFacetList = function (url, type) {
   var _self = this;
+  return;
   var bearer = "bearer " + this.bot?.options?.accessToken || '';
   var headers = {};
 

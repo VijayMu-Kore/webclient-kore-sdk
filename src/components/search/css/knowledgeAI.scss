@@ -12,11 +12,12 @@
             bottom: 40px !important;
 
             .sdkFooterIcon {
+                display: none !important;
                 &.microphoneBtn {
                     bottom: -12px !important;
                     .notRecordingMicrophone {
                         .microphone {
-                            background-image: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-microphone.svg);
+                            background-image: url(../images/k-ai-imgs/k-ai-microphone.svg);
                         }
                     }
                 }
@@ -53,12 +54,12 @@
                     margin-top: 8px;
 
                     &:before {
-                        content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-send-icon.svg);
+                        content: url(../images/k-ai-imgs/send.svg);
                         width: 40px;
                         height: 40px;
                         position: absolute;
-                        left: -7px;
-                        top: 10px;
+                        left: 7px;
+                        top: 7px;
                     }
                 }
             }
@@ -168,7 +169,7 @@
                 margin-top: 10px;
                 
                 &:before {
-                    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-profile-icon.svg);
+                    content: url(../images/k-ai-imgs/k-ai-profile-icon.svg);
                     width: 40px;
                     height: 40px;
                     position: absolute;
@@ -187,7 +188,7 @@
                     left: -19px;
                     width: 40px;
                     height: 40px;
-                    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-sa-icon.svg);
+                    content: url(../images/k-ai-imgs/k-ai-sa-icon.svg);
                 }
 
                 .botMessage {
@@ -382,7 +383,7 @@
                 margin-top: -26px;
 
                 .messageBubble-content {
-                    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-sa-icon.svg);
+                    content: url(../images/k-ai-imgs/k-ai-sa-icon.svg);
                     width: 40px;
                     height: 40px;
                     left: -19px;
@@ -426,7 +427,7 @@
                         display: flex;
                         margin-right: 0px;
                         img{
-                            content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-answered-by-ai-icon.svg);
+                            content: url(../images/k-ai-imgs/k-ai-answered-by-ai-icon.svg);
                         }
                    }
                 }
@@ -434,21 +435,33 @@
                     .temp-fotter-actions {
                         height: 40px;
                         .snippet-like-img{
-                            content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-thumbs-up.svg);
+                            content: url(../images/k-ai-imgs/k-ai-thumbs-up.svg);
                             &:hover {
-                                content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-green.svg);
+                                content: url(../images/k-ai-imgs/like-green.svg);
                             }
                             &.active {
-                                content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-thumbs-up.gif);
+                                content: url(../images/k-ai-imgs/k-ai-thumbs-up.gif);
                                 width: 40px;
                                 height: 40px;
-                                    margin-right: 0px;
+                                margin-right: 0px;
+                                -moz-animation: thumbsupAnimation 0s ease-in 1s forwards;
+                                /* Firefox */
+                                -webkit-animation: thumbsupAnimation 0s ease-in 1s forwards;
+                                /* Safari and Chrome */
+                                -o-animation: thumbsupAnimation 0s ease-in 1s forwards;
+                                /* Opera */
+                                animation: thumbsupAnimation 0s ease-in 1s forwards;
+                                -webkit-animation-fill-mode: forwards;
+                                animation-fill-mode: forwards;
                             }
                         }
                         .snippet-dislike-img{
-                            content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-thumbs-down.svg);
+                            content: url(../images/k-ai-imgs/k-ai-thumbs-down.svg);
                             &:hover {
-                                content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-red.svg);
+                                content: url(../images/k-ai-imgs/dislike-red.svg);
+                            }
+                            &.active{
+                                content: url(../images/k-ai-imgs/dislike-red-fill.svg);
                             }
                         }
                     }
@@ -466,7 +479,7 @@
         left: -31px;
 
         .typingIndicator {
-            background: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-sa-icon.svg);
+            background: url(../images/k-ai-imgs/k-ai-sa-icon.svg);
             width: 40px;
             height: 40px;
         }
@@ -480,19 +493,29 @@
             img{
                 &.thumb-up{
                     &.thumbs-up-top-down-black{
-                        content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-thumbs-up.svg);
+                        content: url(../images/k-ai-imgs/k-ai-thumbs-up.svg);
                     }
                 }
                 &.thumb-down{
                     &.thumbs-down-top-down-black{
-                        content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-thumbs-down.svg);
+                        content: url(../images/k-ai-imgs/k-ai-thumbs-down.svg);
                     }
                 }
                 &.thumbs-up-top-down-blue {
-                    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-thumbs-up.gif);
+                    content: url(../images/k-ai-imgs/k-ai-thumbs-up.gif);
                     width: 40px;
                     height: 40px;
                     margin-right: 0px;
+                    width: 40px;
+                    -moz-animation: thumbsupAnimation 0s ease-in 1s forwards;
+                    /* Firefox */
+                    -webkit-animation: thumbsupAnimation 0s ease-in 1s forwards;
+                     /* Safari and Chrome */
+                    -o-animation: thumbsupAnimation 0s ease-in 1s forwards;
+                    /* Opera */
+                    animation: thumbsupAnimation 0s ease-in 1s forwards;
+                    -webkit-animation-fill-mode: forwards;
+                    animation-fill-mode: forwards;
                 }
             }
         }
@@ -958,5 +981,16 @@
                 margin-left: 30px;
             }
         }
+    }
+}
+
+@keyframes thumbsupAnimation {
+    to {
+        content: url(../images/k-ai-imgs/k-ai-thumps-up-gif.PNG);
+    }
+}
+@-webkit-keyframes thumbsupAnimation {
+    to {
+        content: url(../images/k-ai-imgs/k-ai-thumps-up-gif.PNG);
     }
 }
