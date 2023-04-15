@@ -486,15 +486,28 @@
             .search-box-container-data{
                 .cancel-search{
                     position: absolute;
-                    display: none;
                     right: 72px;
-                    top: -32px;
+                    top: -37px;
                     z-index: 1;
                     padding: 3px 5px;
                     cursor: pointer;
                     color: #5F6368;
                     font-weight: 400;
                     font-size: 15px;
+                    .ai-logo {
+                        img {
+                            position: absolute;
+                            height: 30px;
+                            width: 30px;
+                            top: -3px;
+                            left: -28px;
+                            opacity: .5;
+                          
+                        }
+                    }
+                     .clear-search{
+                        display: none;
+                      }
                 }
             }
         }
@@ -889,13 +902,13 @@
         }
         .search-bar{
             .widget-icon{
-                bottom: 15px;
+                bottom: 20px;
                 left: 14px;
                 width: 16px;
                 height: 16px;
                 img{
-                    width: 16px;
-                    height: 16px;
+                    width: 18px;
+                    height: 20px;             
                 }
             }
         }
@@ -1717,7 +1730,7 @@ $color_1: #9AA0A6;
                 .search-temp-one-top-tile{
                     min-height: 170px;
                     .search-temp-one-top-tile-block, .top-search-template{
-                        width: 75%;
+                        width: 100%;
                         .temp-footer-block{
                             .temp-footer{
                                 .btn-link{
@@ -1788,25 +1801,6 @@ $color_1: #9AA0A6;
                 right: -34px;
             }
         }
-    }
-}
-
-.powered-by-footer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 25px 0;
-    text-align: center;
-    .logo-powered-by{
-        font-style: italic;
-        color: #111827;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        padding-right: 5px;
-    }
-    .product-logo{
-        width: auto;
     }
 }
 

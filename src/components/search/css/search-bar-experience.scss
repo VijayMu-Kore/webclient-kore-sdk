@@ -274,12 +274,14 @@ body::-webkit-scrollbar {
 		.search-box-container-data {
 			.cancel-search {
 				position: absolute;
-				display: none;
 				right: 72px;
 				top: -24px;
 				z-index: 1;
 				padding: 3px 5px;
 				cursor: pointer;
+        .clear-search{
+          display: none;
+        }
 			}
 		}
 	}

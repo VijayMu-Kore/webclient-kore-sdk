@@ -270,3 +270,15 @@ box-shadow: none;
         border-radius: 6px;
     }
 }
+.kore-sdk-body{
+    .temp-feed-back-footer-block .temp-feed-back-footer-btn-primary:hover{
+        background: #5353da;
+        color: #fff;
+    }
+    .temp-feed-back-form .temp-feed-back-ans-tags .temp-feed-back-ans-tag-btn.active{
+       border: 2px solid #7e7ffd;
+    }
+    .submit-feedback{
+        background: #7e7ffd;
+    }
+}

@@ -1,8 +1,8 @@
 .search-temp-one-top-tile{
     box-shadow: none;
-    border: 1px solid #9C9EFD;
+    border: 1px solid #d4a1f8;;
     border-radius: 8px;
-    background: rgba(237, 237, 255, 0.5);
+    background: #f9f0ff;
     padding: 20px 20px;
     position: relative;
 }
@@ -33,6 +33,7 @@
 }
 
 .search-temp-one-top-tile .sa-right-magnifier{
+    display: none;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -104,7 +105,7 @@
 
 .search-temp-one-top-tile .temp-data-desc{
     font-weight: 400;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 20px;
     padding: 5px 0 5px 0;
     color: #202124;
@@ -137,13 +138,13 @@
     z-index: 1;
 }
 .search-temp-one-top-tile .temp-footer-block .btn-link{
-    background: #D2D3FE;
+    background: #eff0f1;
     mix-blend-mode: multiply;
     border-radius: 16px;
-    padding: 6px 12px;
-    color: #1E1F65;
+    padding: 0px 6px;
+    color:#777a80;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 20px;
     cursor: pointer;
     overflow: hidden;
@@ -239,15 +240,15 @@
 
 .search-temp-one-top-tile.page-result-tile{
     border: 1px solid #EAECF0;
-    border-radius: 16px;
-    background: #F9FAFB;
-    margin-bottom: 25px;
+    border-radius: 5px;
+    background: #ffffff;
+    margin-bottom: 10px;
 }
 
 .search-temp-one-top-tile.page-result-tile .top-header .top-header-txt{
     color: #202124;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 19px;
 }
 
@@ -281,12 +282,12 @@
 /* resource and video tile common css styles are start from here */
 
 .search-temp-results-tiles.sa-pages-tiles-block{
-    display: flex;
+    // display: flex;
     align-items: flex-end;
 }
 
 .search-temp-results-tiles.sa-pages-tiles-block .search-temp-width-90{
-    width: 90%;
+    width: 100%;
 }
 
 .search-temp-results-tiles.sa-pages-tiles-block .search-temp-see-more{
@@ -309,6 +310,7 @@
 }
 
 .search-temp-results-tiles.sa-pages-tiles-block .search-temp-see-more .sa-card-tile-readmore{
+    justify-content: end;
     display: flex;
     align-items: center;
 }
@@ -354,7 +356,7 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
-    padding: 0 15px 10px 15px;
+    padding: 10px 15px 10px 15px;
     cursor: pointer;
     width: auto;
     flex-shrink: 0;

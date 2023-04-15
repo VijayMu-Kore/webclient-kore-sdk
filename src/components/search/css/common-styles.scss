@@ -59,7 +59,7 @@ body{
                     height: auto;
                     margin-top: 40px;
                     background: #fff;
-                    padding: 20px 20px;
+                    padding: 20px 20px 10px 20px !important;;
                     border-radius: 12px;
                     transition: all .3s ease-in;
                     .search-input-box{
@@ -67,18 +67,31 @@ body{
                         .search-box-container-data{
                             width: 100%;
                             .cancel-search{
-                                right: 20px !important;
+                                right: 10px !important;
                             }
                             .search-bar{
                                 .top-down-suggestion, .search-input{
+                                    font-weight: 600;
+                                    font-size: 20px;
+                                    height: 50px;
                                     width: 100%;
                                 }
                                 .search-top-down, .chatInputBox{
+                                    font-weight: 600;
+                                    font-size: 20px;
+                                    background: #f1f1f1 !important;
+                                    height: 50px;
                                     width: 100%;
-                                    background: #F3F4F6!important;
+                                    // background: #F3F4F6!important;
+                                    background: #f1f1f1 !important;
                                     border-radius: 10px;
                                     border: solid 1px #F3F4F6 !important;
                                 }
+                                ::placeholder {
+                                    font-weight: 600;
+                                    font-size: 20px;
+                                    opacity: .5;
+                                  }
                             }
                         }
                         .live_search_result_box{
