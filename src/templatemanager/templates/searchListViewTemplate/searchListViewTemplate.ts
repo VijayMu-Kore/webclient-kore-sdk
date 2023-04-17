@@ -215,8 +215,7 @@ class SearchListViewTemplate {
     .off("click", ".show-more-list")
     .on("click", ".show-more-list", function (e: any) {
       $(e.currentTarget).find('.read-more-img').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/show-more.gif');
-      $(e.currentTarget).find('.see-more-txt').hide();
-     
+      $(e.currentTarget).find('.see-more-txt').hide(); 
     const showMoreData = {
       groupName: $(e.currentTarget).attr("groupName"),
       templateName: $(e.currentTarget).attr("templateName"),
@@ -237,14 +236,10 @@ class SearchListViewTemplate {
         result.message[0].component.payload.template_type = 'searchCustomizeListTemplate';
       }
       const listHTML = $(SearchListViewTemplate.prototype.getTemplateString(result?.message[0].component.payload.template_type,me)).tmpl(result?.message[0].component.payload);
-      $(
-        ".full-search-data-container [templateName=" +
-        showMoreData.templateName +
-        "]"
-        ).parent().parent().find(".search-temp-width-90")
-          $('.all-product-details').animate({
-            scrollTop: $('.all-product-details').scrollTop() + 300
-          }, 1000, 'linear');
+      //  $(listHTML).find(".show-more-list").remove();  
+      $(".full-search-data-container [templateName=" +showMoreData.templateName +"]" ).parent().before($(listHTML).find(".search-temp-one-top-tile"));
+      $(".full-search-data-container [templateName=" +showMoreData.templateName +"]" ).parent().parent().find(".search-temp-width-90")
+      $('.all-product-details').animate({scrollTop: $('.all-product-details').scrollTop() + 300}, 1000, 'linear');
           // $('.all-product-details').scrollTop($('.all-product-details').scrollTop() - 30);
           $(e.currentTarget).find('.see-more-txt').show();
           $(e.currentTarget).find('.read-more-img').attr('src', 'https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg');
