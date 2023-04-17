@@ -5865,7 +5865,10 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.suggestionSelectedByNavigationKeys(e);
         }
         if (code == 13) {
-          recognition.stop();
+          if (recognizing && recognition) {
+            recognition.stop();
+            recognizing = false;
+          }
           final_transcript = "";
           $(".recordingMicrophone").css("display", "none");
           $(".notRecordingMicrophone").css("display", "block");
