@@ -104,7 +104,7 @@
             var _escPressed = 0;
             String.prototype.isNotAllowedHTMLTags = function () {
                 var wrapper = document.createElement('div');
-                wrapper.innerHTML = this;
+                wrapper.innerText = this;
 
                 var setFlags = {
                     isValid: true,
@@ -442,7 +442,7 @@
                         wrapper1 = document.createElement('div');
                         newStr = str.replace(/“/g, '\"').replace(/”/g, '\"');
                         newStr = newStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                        wrapper1.innerHTML = xssAttack(newStr);
+                        wrapper1.innerText = xssAttack(newStr);
                         if ($(wrapper1).find('a').attr('href')) {
                             str = newStr;
                         } else {
@@ -455,20 +455,20 @@
                         str = str.replace(/onload=/gi, '');
                         // str = sanitizeXSS(str);
                         //str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-                        wrapper1.innerHTML = xssAttack(str);
+                        wrapper1.innerText = xssAttack(str);
                         if ($(wrapper1).find('a').attr('href')) {
                             var linkArray = str.match(/<a[^>]*>([^<]+)<\/a>/g);
                             for (var x = 0; x < linkArray.length; x++) {
                                 var _newLA = document.createElement('div');
                                 var _detectedLink=linkArray[x];
-                                _newLA.innerHTML = linkArray[x];
+                                _newLA.innerText = linkArray[x];
                                 //for mailto: links, new line character need to be repaced with %0A 
                                 if (_detectedLink.indexOf("href='mailto:") > -1 || _detectedLink.indexOf('href="mailto:') > -1) {
                                     _detectedLink = _detectedLink.split('\n').join("%0A")
 
                                 }
                                 var _randomKey = "korerandom://" + Object.keys(hyperLinksMap).length;
-                                _newLA.innerHTML = _detectedLink;
+                                _newLA.innerText = _detectedLink;
 
                                 var _aEle = _newLA.getElementsByTagName('a');
                                 if (_aEle && _aEle[0] && _aEle[0].href) {
@@ -476,10 +476,10 @@
                                     _aEle[0].href = _randomKey;
                                 }
                                 $(_newLA).find('a').attr('target', 'underscoreblank');
-                                str = str.replace(linkArray[x], _newLA.innerHTML);
+                                str = str.replace(linkArray[x], _newLA.innerText);
                             }
                         } else {
-                            str = wrapper1.innerHTML.replace(_regExForLink, linkreplacer);
+                            str = wrapper1.innerText.replace(_regExForLink, linkreplacer);
                         }
                     }
                     if(ignoreCheckMark){
@@ -1055,7 +1055,7 @@
                             e.stopImmediatePropagation();
                             modal.style.display = "block";
                             modalImg.src = this.src;
-                            captionText.innerHTML = this.alt;
+                            captionText.innerText = this.alt;
                         });
                     }
                 }
@@ -1064,7 +1064,7 @@
                 /*img.onclick = function(){
                     modal.style.display = "block";
                     modalImg.src = this.src;
-                    captionText.innerHTML = this.alt;
+                    captionText.innerText = this.alt;
                 }*/
 
                 // Get the <span> element that closes the modal
@@ -4001,7 +4001,7 @@
                     node = document.createElement("span");
                     prevRange.insertNode(node);
                     var _span = document.createElement("span");
-                    _span.innerHTML = _html;
+                    _span.innerText = _html;
                     prevRange.insertNode(_span);
                     prevRange.setEndAfter(node);
                     prevRange.setStartAfter(node);
