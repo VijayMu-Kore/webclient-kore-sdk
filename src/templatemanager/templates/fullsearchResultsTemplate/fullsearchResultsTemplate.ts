@@ -283,16 +283,19 @@ class FullSearchResultsTemplate {
         position: facetObj.position,
         show: facetObj.show,
         searchFacets: facetData,
+        langTranslator :msgData.message[0].component.payload.langTranslator
       });
       var facetTemplateTop = $(FullSearchResultsTemplate.prototype.facetFilterTop()).tmpl({
         position: facetObj.position,
         show: facetObj.show,
         searchFacets: facetData,
+        langTranslator :msgData.message[0].component.payload.langTranslator
       });
       var facetTemplateTopIcon = $(FullSearchResultsTemplate.prototype.facetTemplateTopIcon()).tmpl({
         position: facetObj.position,
         show: facetObj.show,
         searchFacets: facetData,
+        langTranslator :msgData.message[0].component.payload.langTranslator
       });
       if (facetObj.position == "right") {
         $(messageHtml).find("#rightFacetFilterId").empty().append(facetTemplate);
