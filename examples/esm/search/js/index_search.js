@@ -19,23 +19,23 @@ import {
 // };
 let findlyConfig = KRSearchConfig;
 // findlyConfig.botOptions = {
-//     "queryPipelineId": "fqp-bcd6cde0-7e1c-5e03-9bcb-724d44fb5ee1",
+//     "queryPipelineId": "fqp-9b63ffd3-3ed6-59e7-95ca-05af11fdd906",
 //   "logLevel": "debug",
-//   "userIdentity": "bharadwaj.adapala@kore.com",
+//   "userIdentity": "vaishali.addala@kore.com",
 //   "client": "botbuilder",
 //   "botInfo": {
-//       "chatBot": "Data Application",
-//       "taskBotId": "st-66820211-476c-59d6-8615-cb4a9387c102"
+//       "chatBot": "SA demo",
+//       "taskBotId": "st-aec7ef8c-c05c-5111-8658-9ed903e2ec34"
 //   },
-//   "clientId": "cs-343fda98-783f-5644-82d6-d3f09796b56d",
-//   "searchIndexID": "sidx-1c4e40f0-0cd4-58af-b1b6-ece48cf1e20f",
+//   "clientId": "cs-cc7a0cbc-03fe-5d25-b4e2-3f9802d5c46c",
+//   "searchIndexID": "sidx-5e988156-845c-529a-8ad4-d01a86d50cdc",
 //   "koreAPIUrl": "https://searchassist-qa.kore.ai/searchassistapi",
 //   "reWriteSocketURL": {
 //       "protocol": "wss",
 //       "hostname": "searchassist-qa.kore.ai"
 //   },
 //   JWTUrl : "https://searchassist-qa.kore.ai/searchassistapi/users/sts?rnd=fle73l",
-//   accessToken:"Z1mxF0-IRsLGAzE57M-2ri5CFb64oE4GfIesnrzEjSWm8hA1vSE4RW7Npt9_I97N"
+//   accessToken:"4pqWQ1SXHM7eE8Jo8TYoMknmCcTTo6u2hshBHkPewG1pWAEkXMfH6PIEFKHC9EuY"
 // };
 // findlyConfig.pickersConfig ={
 //   "showDatePickerIcon": false,
@@ -46,8 +46,9 @@ let findlyConfig = KRSearchConfig;
 // };
 // findlyConfig.viaSocket = true;
 // findlyConfig.isDev = true;
-// findlyConfig.searchInterfaceConfig = {"_id":"fsin-446bb1f1-e3a2-5c63-9822-3fde24092408","experienceConfig":{"searchBarPosition":"top"},"widgetConfig":{"searchBarFillColor":"#FFFFFF","searchBarBorderColor":"#E4E5E7","searchBarPlaceholderText":"Type here to search","searchBarPlaceholderTextColor":"#3C4043","searchButtonEnabled":false,"buttonText":"BUTTON","buttonTextColor":"#BDC1C6","buttonFillColor":"#EFF0F1","buttonBorderColor":"#EFF0F1","userSelectedColors":["#202124","#3C4043","#5F6368","#9AA0A6","#BDC1C6","#07377F","#0D6EFD","#FF784B","#7027E5","#FFFFFF"],"buttonPlacementPosition":"outside","searchBarIcon":"https://searchassist-qa.kore.ai:443/searchassistapi/getMediaStream/findly/f-99f75785-3e97-52ef-b23c-ad2a937c5600.png?n=8843398486&s=ImZ1SFJSMWtjdWpOaFJBV0RqVCsrbnVHMURpdnI1eXA1cS9aY29EYXVqbTA9Ig$$"},"interactionsConfig":{"welcomeMsg":"Hi, How can I help you?","welcomeMsgColor":"#3C4043","showSearchesEnabled":true,"showSearches":"frequent","autocompleteOpt":true,"querySuggestionsLimit":5,"liveSearchResultsLimit":10,"feedbackExperience":{"queryLevel":false,"smartAnswer":false,"lmod":"2023-03-26T15:25:42.509Z"}},"streamId":"st-66820211-476c-59d6-8615-cb4a9387c102","searchIndexId":"sidx-1c4e40f0-0cd4-58af-b1b6-ece48cf1e20f","indexPipelineId":"fip-90194d62-66fc-520c-99d2-933c86412a37","queryPipelineId":"fqp-bcd6cde0-7e1c-5e03-9bcb-724d44fb5ee1","createdBy":"u-e3165796-308b-5ceb-a4eb-6d6849dec83f","lModifiedBy":"u-e3165796-308b-5ceb-a4eb-6d6849dec83f","createdOn":"2023-03-26T15:25:42.507Z","lModifiedOn":"2023-03-27T04:37:39.492Z","__v":0,"config":{"botActionTemplate":"grid","botActionResultsExperience":"top"}}
-               var fSdk = new KRSearch(findlyConfig);
+// findlyConfig.searchInterfaceConfig = {"_id":"fsin-de74ac00-0a66-5e69-aa6f-315213da42fa","experienceConfig":{"searchBarPosition":"bottom"},"widgetConfig":{"searchBarFillColor":"#FFFFFF","searchBarBorderColor":"#E4E5E7","searchBarPlaceholderText":"Search","searchBarPlaceholderTextColor":"#BDC1C6","searchButtonEnabled":false,"buttonText":"Button","buttonTextColor":"#BDC1C6","buttonFillColor":"#EFF0F1","buttonBorderColor":"#EFF0F1","userSelectedColors":[],"buttonPlacementPosition":"inside","searchBarIcon":"https://searchassist-qa.kore.ai:443/searchassistapi/getMediaStream/findly/f-84055fd3-fa7b-5f3c-80b8-060ce0b85dbd.png?n=2675452435&s=InFOanAwSC9GRHEva0pxb055Y3Y1ZUtBSXljdjRpWjZneU1tYkEyZmw0cVU9Ig$$"},"interactionsConfig":{"welcomeMsg":"Hi, How can I help you","welcomeMsgColor":"#000080","showSearchesEnabled":false,"showSearches":"frequent","autocompleteOpt":true,"feedbackExperience":{"queryLevel":false,"lmod":"2023-01-30T11:01:30.831Z"},"querySuggestionsLimit":3,"liveSearchResultsLimit":0,"defaultStatus":"searchBar","welcomeMsgFillColor":"#EFF0F1"},"streamId":"st-aec7ef8c-c05c-5111-8658-9ed903e2ec34","searchIndexId":"sidx-5e988156-845c-529a-8ad4-d01a86d50cdc","indexPipelineId":"fip-847103c9-9cee-5fda-84ef-48ea2529ca2c","createdBy":"u-4e0c8e48-0126-51bb-bb74-ad7bd6d9b53c","lModifiedBy":"u-4e0c8e48-0126-51bb-bb74-ad7bd6d9b53c","createdOn":"2022-08-05T17:07:05.805Z","lModifiedOn":"2023-02-07T10:18:29.260Z","__v":0,"queryPipelineId":"fqp-9b63ffd3-3ed6-59e7-95ca-05af11fdd906","config":{"botActionTemplate":"carousel","botActionResultsExperience":"top"}}
+findlyConfig.API_KEY_CONFIG.KEY="eec1839a8c02437cb130c0d64f8f5695317092ba6c7341bea80b480781047bd3st6d";       
+var fSdk = new KRSearch(findlyConfig);
            
             // fSdk.initializeTopDown(findlyConfig,'top-down-search-background-div',searchConfig)
 //window.fsdk = fSdk;
