@@ -631,9 +631,9 @@ class SearchListViewTemplate {
         {{if tour && isFullResults == true && viewType=="Customize" && devMode==true}}\
           <div class="tours-information sdk-tours-info-start">\
           <div class="tourtitle sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize">{{html langTranslator("sa_sdk_customize")}}</div>\
-          <div class="tour-infosdk-i18n-lang" sdk-i18n-key="sa_sdk_start_customixing_your_search_results_by_hovering">{{html langTranslator("sa_sdk_start_customixing_your_search_results_by_hovering")}}</div>\
+          <div class="tour-info sdk-i18n-lang" sdk-i18n-key="sa_sdk_start_customixing_your_search_results_by_hovering">{{html langTranslator("sa_sdk_start_customixing_your_search_results_by_hovering")}}</div>\
           <div class="tour-action-info"><b class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_hide_caps">{{html langTranslator("sa_sdk_hide_caps")}}</b> - <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_hide_the_search_result">{{html langTranslator("sa_sdk_hide_the_search_result")}}</span></div>\
-          <div class="tour-action-info"><b class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_pin_caps">{{html langTranslator("sa_sdk_pin_caps")}}</b> - <span class="sdk-i18n-lang" sdk-i18n-key="Pin results in a specific position">{{html langTranslator("Pin results in a specific position")}}</span></div>\
+          <div class="tour-action-info"><b class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_pin_caps">{{html langTranslator("sa_sdk_pin_caps")}}</b> - <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_pin_results_in_a_specific_position">{{html langTranslator("sa_sdk_pin_results_in_a_specific_position")}}</span></div>\
           <div class="tour-action-info"><b class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_boost_caps">{{html langTranslator("sa_sdk_boost_caps")}}</b> - <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_boost_the_relevance_score">{{html langTranslator("sa_sdk_boost_the_relevance_score")}}</span></div>\
           <div class="tour-action-info"><b class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_lower_caps">{{html langTranslator("sa_sdk_lower_caps")}}</b> - <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_lower_the_relelavance_score">{{html langTranslator("sa_sdk_lower_the_relelavance_score")}}</span></div>\
           <div class="footer-tour">\

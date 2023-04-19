@@ -1527,7 +1527,7 @@ FindlySDK.prototype.getSearchTemplate = function (type) {
               <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNSAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTExLjkxNDcgMEMxMS45NjU2IDAgMTIuMDE1MSAwLjAwNjUzMzgxIDEyLjA2MjIgMC4wMTg4MDk0TDEyLjA2MDUgMEgxNC44MzEzVjkuMzMzMzNIMTIuMzMxMkwxMC4xNjk5IDEyLjg5NDJDOS43MDY2NiAxMy42MDgxIDkuMTI5NDMgMTQgOC40MTQ2NiAxNEM4LjI1MDcxIDE0IDguMDg1MiAxMy45NzY2IDcuOTI1MjMgMTMuOTMwMkM3LjA1MjE3IDEzLjY3NjUgNi41Mjg5NSAxMi44MDAzIDYuNzAxNzYgMTEuOTAzN0w2Ljc0MjQgMTEuNzM1NUw3LjE2MTY2IDEwLjVIMi41NTU2NkMxLjY0NjMzIDEwLjUgMC44OTg1MTEgOS44MDU2NyAwLjgxMzY3OCA4LjkxODQ4TDAuODA1NjY0IDguNzVDMC44MDU2NjQgOC4zMDEzNCAwLjk3NDY4NyA3Ljg5MjAxIDEuMjUyNSA3LjU4MjIyQzAuOTc0Mjc2IDcuMjczNjYgMC44MDU2NjQgNi44NjQ3OCAwLjgwNTY2NCA2LjQxNjY3QzAuODA1NjY0IDUuODg1NDkgMS4wNDI1OCA1LjQwOTQzIDEuNDE2NDYgNS4wODg0M0MxLjIxNTQxIDQuODA1ODYgMS4wOTczMyA0LjQ1ODMzIDEuMDk3MzMgNC4wODMzM0MxLjA5NzMzIDMuMzcwNjYgMS41MjM4MSAyLjc1NzIgMi4xMzUzNyAyLjQ4NDM0QzIuMDMwNCAyLjI2MjQzIDEuOTcyMzMgMi4wMTI5NyAxLjk3MjMzIDEuNzVDMS45NzIzMyAwLjg0MDY2NyAyLjY2NjY2IDAuMDkyODQ2NyAzLjU1Mzg1IDAuMDA4MDE0MjVMMy43MjIzMyAwSDExLjkxNDdaTTQuMzMxMzMgN1Y4LjE2NjY3SDIuNTU1NjZDMi4yMzM4MyA4LjE2NjY3IDEuOTcyMzMgOC40MjgxNyAxLjk3MjMzIDguNzVDMS45NzIzMyA5LjAzNjA3IDIuMTc4OTUgOS4yNzQ0OCAyLjQ1MDkgOS4zMjM5MkwyLjU1NTY2IDkuMzMzMzNINy45NzcxNkM4LjM0MzUxIDkuMzMzMzMgOC42MTA0MSA5LjY2MzM5IDguNTUzMjMgMTAuMDA5OEw4LjUyOTQzIDEwLjEwNDVMNy44NTQ4MyAxMi4wODYxQzcuNzY0ODMgMTIuMzk1OCA3Ljk0MjU4IDEyLjcyMDMgOC4yNTA2NCAxMi44MDk4QzguMzA0NDUgMTIuODI1NCA4LjM2MDQzIDEyLjgzMzMgOC40MTQ2NiAxMi44MzMzQzguNjUwMiAxMi44MzMzIDguODY0MDYgMTIuNzA4MSA5LjA4NjA5IDEyLjQxMTdMOS4xODE4MyAxMi4yNzRMMTEuMzMxMyA4LjczMTMzVjEuMTY2NjdIMy43MjIzM0MzLjQzNjI2IDEuMTY2NjcgMy4xOTc4NSAxLjM3MzI4IDMuMTQ4NDEgMS42NDUyM0wzLjEzOSAxLjc1QzMuMTM5IDIuMDM2MDcgMy4zNDU2MSAyLjI3NDQ4IDMuNjE3NTYgMi4zMjM5MkwzLjcyMjMzIDIuMzMzMzNINC4zMzEzM1YzLjVIMi44NDczM0MyLjUyNTUgMy41IDIuMjY0IDMuNzYxNSAyLjI2NCA0LjA4MzMzQzIuMjY0IDQuMzY5NDEgMi40NzA2MSA0LjYwNzgxIDIuNzQyNTYgNC42NTcyNkwyLjg0NzMzIDQuNjY2NjdINC4zMzEzM1Y1LjgzMzMzSDIuNTU1NjZDMi4yMzM4MyA1LjgzMzMzIDEuOTcyMzMgNi4wOTQ4MyAxLjk3MjMzIDYuNDE2NjdDMS45NzIzMyA2LjcwMjc0IDIuMTc4OTUgNi45NDExNCAyLjQ1MDkgNi45OTA1OUwyLjU1NTY2IDdINC4zMzEzM1pNMTIuNDk4IDguMTY2NjdIMTMuNjY0N1YxLjE2NjY3SDEyLjQ5OFY4LjE2NjY3WiIgZmlsbD0iI0REMzY0NiIvPgo8L3N2Zz4K" class="thumb-down thumb-up-full-top thumbs-up-top-down-red" alt="thumb-down"/>\
               </div>\
               {{/if}}\
-              <div id="searchChatContainer" class="sdk-chat-container">\
+              <div id="searchChatContainer" class="sdk-chat-container {{if searchConfig.feedbackExperience.queryLevel == true}} results-feedback-added{{/if}}">\
               <div class="history-chat-tag-info" id="histroybutton">\
                 <div class="history-tag-click">\
                   <div class="images-history">\
@@ -5709,23 +5709,23 @@ FindlySDK.prototype.searchEventBinding = function (
       $('#sa-analystics-clicks').html(data.clicks);
       $('#sa-analystics-thumbsUp').html(data.thumbsUp);
       $('#sa-analystics-thumbsDown').html(data.thumbsDown);
-         setTimeout(function () {
-          $(document).on("click", function (event) {
-            if (!$(event.target).closest(".query_analytics_content").length) {
-              $(".query_analytics_content").remove();
-            }
-          });
-          $('#close-analytics-Cross').off('click').on("click", function (event) {
-            $(".query_analytics_content").remove();
-        });
-        $('.query_analytics_content').off('mouseover').on("mouseover", function (event) {
-          $(".query_analytics_content").show();
-      });
-        $('.query_analytics_content').off('mouseout').on("mouseout", function (event) {
-            $(".query_analytics_content").hide();
-        });
-        });
       })
+      setTimeout(function () {
+        $(document).on("click", function (event) {
+          if (!$(event.target).closest(".query_analytics_content").length) {
+            $(".query_analytics_content").remove();
+          }
+        });
+        $('#close-analytics-Cross').off('click').on("click", function (event) {
+          $(".query_analytics_content").remove();
+      });
+      $('.query_analytics_content').off('mouseover').on("mouseover", function (event) {
+        $(".query_analytics_content").show();
+    });
+      $('.query_analytics_content').off('mouseout').on("mouseout", function (event) {
+          $(".query_analytics_content").hide();
+      });
+      });
       /*$('.custom-header-container-left').css('visibility', 'visible');
         $('.custom-insights-control-container').hide();*/
     });
@@ -7793,7 +7793,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
               tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
             }
           });
-          var isFilterEnabled = _self.vars.filterConfiguration.isEnabled;
+          
+          var isFilterEnabled = _self.vars.filterConfiguration?.isEnabled;
         if (isFilterEnabled || isFilterEnabled == false) {
           isFilterEnabled = isFilterEnabled;
         } else {
@@ -17086,7 +17087,7 @@ FindlySDK.prototype.showAllResults = function () {
       count = _self.vars.selectedFiltersArr.length;
     }
     if (data && data.container) {
-      var isFilterEnabled = _self.vars.filterConfiguration.isEnabled;
+      var isFilterEnabled = _self.vars.filterConfiguration?.isEnabled;
       if (isFilterEnabled || isFilterEnabled == false) {
         isFilterEnabled = isFilterEnabled;
       } else {
@@ -18927,13 +18928,13 @@ FindlySDK.prototype.getSearchFacetsTopDown = function (data, config) {
             f["maxCount"] = 5;
           }
         });
-        if (_self.vars.filterConfiguration.isEnabled) {
+        if (_self.vars?.filterConfiguration?.isEnabled) {
           $("#filters-left-sec").show();
           _self.facetsAlignTopdownClass(_self.vars.filterConfiguration.aligned);
         }
         $(".content-data-sec").removeClass("facets-disabled");
       } else {
-        if (_self.vars.filterConfiguration.isEnabled) {
+        if (_self.vars?.filterConfiguration?.isEnabled) {
           $("#filters-left-sec").hide();
           _self.facetsAlignTopdownClass("top");
           $(".content-data-sec").addClass("facets-disabled");
@@ -19064,7 +19065,7 @@ FindlySDK.prototype.getSearchFacetsTopDown = function (data, config) {
           }
         });
       });
-      if (_self.vars.filterConfiguration.isEnabled) {
+      if (_self.vars?.filterConfiguration?.isEnabled) {
         _self.facetsAlignTopdownClass(_self.vars.filterConfiguration.aligned);
         var topDownDataHTML = $(
           _self.getSearchFacetsTopDownTemplate(
@@ -23449,23 +23450,23 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
           $('#sa-analystics-clicks').html(data.clicks);
           $('#sa-analystics-thumbsUp').html(data.thumbsUp);
           $('#sa-analystics-thumbsDown').html(data.thumbsDown);
-          setTimeout(function () {
-            $(document).off('click').on("click", function (event) {
-              if (!$(event.target).closest(".query_analytics_content").length) {
-                $(".query_analytics_content").remove();
-              }
-            });
-            $('#close-analytics-Cross').off('click').on("click", function (event) {
-                $(".query_analytics_content").remove();
-            });
-            $('.query_analytics_content').off('mouseover').on("mouseover", function (event) {
-              $(".query_analytics_content").show();
-          });
-            $('.query_analytics_content').off('mouseout').on("mouseout", function (event) {
-                $(".query_analytics_content").hide();
-            });
-          });
         })
+        setTimeout(function () {
+          $(document).off('click').on("click", function (event) {
+            if (!$(event.target).closest(".query_analytics_content").length) {
+              $(".query_analytics_content").remove();
+            }
+          });
+          $('#close-analytics-Cross').off('click').on("click", function (event) {
+              $(".query_analytics_content").remove();
+          });
+          $('.query_analytics_content').off('mouseover').on("mouseover", function (event) {
+            $(".query_analytics_content").show();
+        });
+          $('.query_analytics_content').off('mouseout').on("mouseout", function (event) {
+              $(".query_analytics_content").hide();
+          });
+        });
   }
 }
 
