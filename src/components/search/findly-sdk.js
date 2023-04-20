@@ -19379,9 +19379,18 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                 </div>\
                 {{/if}}\
                   <div class="cancel-search">
+<<<<<<< Updated upstream
                       <img
                           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII=" />
                   </div>
+=======
+                    <span class="clear-search">Clear</span>\
+                    <span class="ai-logo">\
+                    <img class="sa-sdk-title" data-title="Al powered search with SearchAssist by Kore.ai.Feel free to type in natural language as you would to a human." src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/ai-logo-black.svg"/>\
+                    </span>\
+                    <span class="input-pressEnter" style="display:none">Press[Enter]</span>\
+                  </div>\
+>>>>>>> Stashed changes
               </div>
               <div id="greeting-msg-top-down"></div>
               <div id="frequently-searched-box" class="frequently_searched_box"> </div>
@@ -19631,6 +19640,7 @@ FindlySDK.prototype.initializeTopDown = function (
     };
     _self.parentEvent(responseObject);
   })
+  _self.tooltipBindEvent();
 };
 
 FindlySDK.prototype.getTopDownActionTemplate = function () {
@@ -21158,10 +21168,10 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
   var _self = this;
   if (showMoreData) {
     var url = _self.API.searchUrl;
+    let maxNumOfResults = $('body').hasClass('kore-sdk-body')?3:5
     var payload = {
       query: _self.vars.searchObject.searchText,
-      // "maxNumOfResults": 9,
-      maxNumOfResults: 5,
+      maxNumOfResults: maxNumOfResults,
       userId: _self.API.uuid,
       streamId: _self.API.streamId,
       lang: "en",
