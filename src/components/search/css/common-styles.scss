@@ -181,6 +181,9 @@ body{
         #searchChatContainer{
             display: none;
             height: calc(100vh - 157px);
+            &.results-feedback-added {
+                height: calc(100vh - 200px);
+            }
         }
         &.defaultPosition{
             left: auto !important;
@@ -4958,7 +4961,7 @@ li{
     border-radius: 8px;
     width: 288px;
     padding: 17px 15px;
-    z-index: 10000;
+    z-index: 999999;
     &::before{
         content: "";
         position: absolute;

@@ -18,7 +18,7 @@
     "sa_sdk_know_more": "Know More",
     "sa_sdk_sure_please_find_the_matched_results_below": "Sure, please find the matched results below",
     "sa_sdk_here_are_relevent_results": "Here are the relevant results",
-    "sa_sdk_unable_to_find_results_at_this_moment": "Unable to find results at this moment",
+    "sa-sdk-unable-to-find-results-at-this-moment": "Unable to find results at this moment",
     "sa_sdk_filters_caps": "FILTERS",
     "sa_sdk_apply": "Apply",
     "sa_sdk_clear_all": "Clear All",
