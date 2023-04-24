@@ -32,7 +32,7 @@
     "sa_sdk_no_suggestion_found": "提案が見つかりませんでした",
     "sa_sdk_no_results_found": "結果が見つかりませんでした",
     "sa_sdk_see_all_results": "すべての結果を見る",
-    "sa_sdk_unable_to_find_results_at_this_moment": "現在、結果を見つけることができません",
+    "sa-sdk-unable-to-find-results-at-this-moment": "現在、結果を見つけることができません",
     "sa_sdk_filter": "フィルター",
     "sa_sdk_filters": "フィルター",
     "sa_sdk_applied": "適用済",

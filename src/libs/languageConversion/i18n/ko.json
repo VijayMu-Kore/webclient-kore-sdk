@@ -32,7 +32,7 @@
     "sa_sdk_no_suggestion_found": "추천 사항을 찾을 수 없습니다",
     "sa_sdk_no_results_found": "검색 결과가 없음",
     "sa_sdk_see_all_results": "모든 결과 보기",
-    "sa_sdk_unable_to_find_results_at_this_moment": "지금 결과를 찾는것이 불가능합니다",
+    "sa-sdk-unable-to-find-results-at-this-moment": "지금 결과를 찾는것이 불가능합니다",
     "sa_sdk_filter": "필터",
     "sa_sdk_filters": "필터",
     "sa_sdk_applied": "적용 완료",
