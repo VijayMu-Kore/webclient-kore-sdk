@@ -239,6 +239,11 @@ class SearchGridViewTemplate {
                             <img src="${data.img}">\
                             </div>\
                         {{/if}}\
+                        {{if data.img.length == 0}}\
+                            <div class="sa-card-tile-img-block">\
+                            <img src="https://staging-site.kore.ai/testing-new-layouts-2022/wp-content/uploads/2022/03/Kore.ai_favicon.svg">\
+                        </div>\
+                       {{/if}}\
                             <div class="sa-card-tile-content-block">\
                             <div class="sa-card-tile-content-header"  title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                             <div class="sa-card-tile-content-desc"  title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\

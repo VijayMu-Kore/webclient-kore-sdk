@@ -5768,8 +5768,9 @@ FindlySDK.prototype.searchEventBinding = function (
         keyCode = Number(keyCode);
         if (keyCode !== 13) {
           _self.vars.enterIsClicked = false;
-        } else if ($("body").hasClass("top-down") && keyCode == 13) {
+        } else if ($("body").hasClass("top-down") && (keyCode == 13 || keyCode == 36) ) {
           _self.vars.enterIsClicked = true;
+          $('#search').blur();
           // $("#top-down-full-results-container").hide();
            // convert text to selected language //
            var searchText =  $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
@@ -5782,8 +5783,9 @@ FindlySDK.prototype.searchEventBinding = function (
           $("#live-search-result-box").hide();
           $("#frequently-searched-box").hide();
           
-        } else if (!$("body").hasClass("top-down") && keyCode == 13) {
+        } else if (!$("body").hasClass("top-down") && (keyCode == 13 || keyCode == 36)) {
           $(".default-data-show-not-loaded").hide();
+          $('#search').blur();
           _self.vars.enterIsClicked = true; // convert text to selected language //
           var searchText =  $('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val();
           // if(searchText == 'language=en' || searchText == 'language=ja' || searchText == 'language=ko'){
@@ -5895,7 +5897,8 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.vars.isQueryEntered = false;
           _self.suggestionSelectedByNavigationKeys(e);
         }
-        if (code == 13) {
+        if (code == 13 || code == 36) {
+          $('#search').blur();
           recognition.stop();
           final_transcript = "";
           $(".recordingMicrophone").css("display", "none");
@@ -6187,8 +6190,9 @@ FindlySDK.prototype.searchEventBinding = function (
         keyCode = Number(keyCode);
         if ($("body").hasClass("top-down") && keyCode !== 13) {
           _self.vars.enterIsClicked = false;
-        } else if ($("body").hasClass("top-down") && keyCode == 13) {
+        } else if ($("body").hasClass("top-down") && (keyCode == 13 || keyCode == 36)) {
           _self.vars.enterIsClicked = true;
+          $('#search').blur();
           $("#live-search-result-box").hide();
           $("#frequently-searched-box").hide();
           return;
@@ -6313,7 +6317,7 @@ FindlySDK.prototype.searchEventBinding = function (
 
               var url = _self.API.livesearchUrl; //'https://qa-bots.kore.ai/searchAssistant/liveSearch';
               var searchData;
-              if (code == 13) {
+              if (code == 13 || code == 36) {
                 // if (!($('.topdown-search-main-container').length)) {
                 //   $('#search').val('');
                 //   $('#suggestion').val('');
@@ -6831,7 +6835,7 @@ FindlySDK.prototype.searchEventBinding = function (
         ? $(".search-top-down").val()
         : $(".bottom-up-search").val()) ||
       _self.vars.searchObject.liveData.originalQuery;
-    if (e.keyCode == 13) {
+    if (e.keyCode == 13 || e.keyCode == 36) {
       if ($(".search-container").hasClass("conversation")) {
         $(".search-body").addClass("hide");
         $("#searchChatContainer").removeClass("bgfocus");
@@ -18491,7 +18495,8 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
           e.preventDefault();
         }
         _self.pubSub.publish("sa-handel-submit-button");
-        if (code == 13) {
+        if (code == 13 || code == 36) {
+          $('#search').blur();
           if (!$(".search-top-down").val()) {
             return;
           }
@@ -19369,7 +19374,9 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                 {{/if}}\
                   <div class="cancel-search">
                     <span class="clear-search">Clear</span>\
-                    <span class="ai-logo"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/ai-logo-black.svg"/></span>\
+                    <span class="ai-logo">\
+                    <img class="sa-sdk-title" data-title="Al powered search with SearchAssist by Kore.ai.Feel free to type in natural language as you would to a human." src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/ai-logo-black.svg"/>\
+                    </span>\
                     <span class="input-pressEnter" style="display:none">Press[Enter]</span>\
                   </div>\
               </div>
@@ -19632,6 +19639,7 @@ FindlySDK.prototype.initializeTopDown = function (
     };
     _self.parentEvent(responseObject);
   })
+  _self.tooltipBindEvent();
 };
 
 FindlySDK.prototype.getTopDownActionTemplate = function () {
@@ -21158,10 +21166,10 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
   var _self = this;
   if (showMoreData) {
     var url = _self.API.searchUrl;
+    let maxNumOfResults = $('body').hasClass('kore-sdk-body')?3:5
     var payload = {
       query: _self.vars.searchObject.searchText,
-      // "maxNumOfResults": 9,
-      maxNumOfResults: 5,
+      maxNumOfResults: maxNumOfResults,
       userId: _self.API.uuid,
       streamId: _self.API.streamId,
       lang: "en",
@@ -23574,6 +23582,7 @@ FindlySDK.prototype.getQueryLevelAnalyticsTemplate = function(){
   FindlySDK.prototype.displayKoreSDK = function(){
       if(!$('body').hasClass('kore-sdk-body')){
         $('body').addClass('kore-sdk-body');
+        $('#search').removeAttr('autofocus');
         $(".topdown-search-main-container").addClass('slide-down');
       }
   }
@@ -23605,5 +23614,18 @@ FindlySDK.prototype.getQueryLevelAnalyticsTemplate = function(){
       $('.clear-search').show();
     }
   };
+  FindlySDK.prototype.tooltipBindEvent = function(){
+    $('.sa-sdk-title').off('mouseover').on('mouseover',function(e){
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      $(e.currentTarget).before('<div class="sdk-tooltip-container">'+$(e.currentTarget).attr('data-title')+'<span class="sa-tooltip-arrow"></span></div>');
+      //$(e.currentTarget).parent().find('.sdk-tooltip-container').css('left',($(e.currentTarget).position().left-($(e.currentTarget).parent().find('.sdk-tooltip-container').height()+10))+'px');
+    })
+    $('.sa-sdk-title').off('mouseout').on('mouseout',function(e){
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
+      })
+    }
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

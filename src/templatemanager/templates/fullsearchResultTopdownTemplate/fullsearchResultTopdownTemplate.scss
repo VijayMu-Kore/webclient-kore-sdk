@@ -497,12 +497,15 @@
                     .ai-logo {
                         img {
                             position: absolute;
-                            height: 30px;
-                            width: 30px;
+                            height: 30px !important;
+                            width: 30px !important;
                             top: -3px;
                             left: -28px;
-                            opacity: .5;
+                            opacity: .3;
                           
+                        }
+                        & :hover {
+                            opacity: 1;
                         }
                     }
                      .clear-search{
@@ -1801,6 +1804,17 @@ $color_1: #9AA0A6;
                 right: -34px;
             }
         }
+    }
+}
+.kore-sdk-body{
+    #query-feedback{
+        .temp-feed-back-form{
+            right: 72px;
+            top: -15px !important
+        }
+    }
+    .search-input-box {
+padding-bottom: 5px;
     }
 }
 
