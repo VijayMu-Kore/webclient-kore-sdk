@@ -7484,6 +7484,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           }
           var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
           $("#top-down-full-results-container").empty().append(showAllHTML);
+          $(".top-down-debug").show();
           $(".skelton-load-img").hide();
         });
       }
@@ -7834,6 +7835,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           $(".skelton-load-img").hide();
           $(".empty-full-results-container").removeClass("hide");
           $(".no-templates-defined-full-results-container").hide();
+          $(".top-down-debug").show();
         }
       } else {
         if ((res.tasks || []).length) {
@@ -9763,6 +9765,18 @@ FindlySDK.prototype.addSearchText = function (config) {
         $("#live-search-result-box").hide();
         //$('#frequently-searched-box').show();
         $("#search").trigger("click");
+        $("body").removeClass('debug');
+        $(".top-down-debug").css("display","none");
+      }
+    });
+  $(".top-down-debug")
+    .off("click")
+    .on("click", function (event) {
+      if(!$("body").hasClass("debug")){
+        $("body").addClass("debug");
+      }
+      else{
+        $("body").removeClass("debug");
       }
     });
   _self.searchEventBinding(dataHTML, "search-container", {}, config);
@@ -18685,6 +18699,8 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
       $(".top-down-suggestion").val("");
       $(".search-top-down").val("");
       $(".full-search-data-container").empty();
+      $(".top-down-debug").css("display","none");
+      $("body").removeClass('debug'); 
       $(".skelton-load-img").show();
       _self.destroy();
     });
@@ -19376,6 +19392,7 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                     <div id="conversation-box-container" class="conv"></div>\
                 </div>\
       <div class="topdown-search-main-container">
+      <div class="top-down-debug" style="display:none">D</div>\
           <div id="heading" class="search-input-box">
               <div id="search-box-container" class="search-box-container-data">
               {{if searchConfig.freePlan}}\

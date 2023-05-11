@@ -29,6 +29,21 @@ body::-webkit-scrollbar {
   #top-down-full-results-container{
     height: 100%;
   }
+  .top-down-debug{
+    display: block;
+    background: #ffffff;
+    width: 50px;
+    height: 30px;
+    position: absolute;
+    align-items: center !important;
+    right: 100px;
+    top: 17px;
+    /* padding: 5px; */
+    border-radius: 10px;
+    &:hover{
+      cursor: pointer;
+    }
+  }
 }
 .topdown-search-main-container .logo_img {
   position: absolute;
@@ -1074,4 +1089,11 @@ body::-webkit-scrollbar {
             }
 		}
 	}
+}
+.debug {
+  .topdown-search-main-container #top-down-full-results-container{
+    width: 40%;
+    float: right;
+    transition: width 1s;
+  }
 }
