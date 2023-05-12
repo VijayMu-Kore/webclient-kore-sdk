@@ -54,6 +54,69 @@ body{
             }
         }
     }
+    &.answer-begug-data-sdk{
+        background: #EEF1FF !important;
+        .skelton-load-img{
+            margin-top: 12px;
+        }
+        .all-result-container {
+            .full-results-data-container {
+                .back-search{
+                    width: 28px;
+                    height: 28px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    left: 20px;
+                    right: auto;
+                    top: 14px;
+                }
+            }
+        }
+        .topdown-search-main-container {
+            .top-down-debug{
+                background: #ffffff;
+                width: 28px;
+                height: 28px;
+                position: absolute;
+                align-items: center !important;
+                right: 20px;
+                top: 14px;
+                border-radius: 100%;
+                display: flex;
+                justify-content: center;
+            }
+            .search-input-box {
+                width: 500px;
+                .search-box-container-data {
+                    .search-bar {
+                        .search-input{
+                            height: 34px;
+                            width: 500px;
+                            border: 1px solid #B9BCBF;
+                            border-radius: 150px !important;
+                        }
+                    }
+                }
+            }
+            .live_search_result_box{
+                width: 500px;
+            }
+            .frequently_searched_box{
+                width: 500px;
+            }
+        }
+        .search-input-box {
+            .search-box-container-data {
+                .cancel-search{
+                    top: -30px;
+                    padding: 3px 5px;
+                    cursor: pointer;
+                    right: 6px !important;
+                }
+            }
+        }
+    }
 }
 
 

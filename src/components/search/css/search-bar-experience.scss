@@ -32,17 +32,16 @@ body::-webkit-scrollbar {
   .top-down-debug{
     display: block;
     background: #ffffff;
-    width: 50px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     position: absolute;
     align-items: center !important;
-    right: 100px;
-    top: 17px;
-    /* padding: 5px; */
-    border-radius: 10px;
-    &:hover{
-      cursor: pointer;
-    }
+    right: 20px;
+    top: 14px;
+    border-radius: 100%;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
   }
 }
 .topdown-search-main-container .logo_img {
