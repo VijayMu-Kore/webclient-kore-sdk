@@ -328,6 +328,7 @@ FindlySDK.prototype.initVariables = function () {
   vars.isHostedSdk = false;
   vars.isSocketReInitialize = true;
   vars.locationObject = {};
+  vars.allMessageData = {};
   vars.botConfig = {};
   vars.isCustomDataInitialize = false;
   vars.userContextData = {};
@@ -7484,7 +7485,9 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           }
           var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
           $("#top-down-full-results-container").empty().append(showAllHTML);
-          $(".top-down-debug").show();
+          if(_self.isDev){
+            $(".top-down-debug").show();
+          }
           $(".skelton-load-img").hide();
         });
       }
@@ -7835,7 +7838,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           $(".skelton-load-img").hide();
           $(".empty-full-results-container").removeClass("hide");
           $(".no-templates-defined-full-results-container").hide();
-          $(".top-down-debug").show();
+          _self.isDev? $(".top-down-debug").show(): $(".top-down-debug").hide();
         }
       } else {
         if ((res.tasks || []).length) {
@@ -9765,22 +9768,37 @@ FindlySDK.prototype.addSearchText = function (config) {
         $("#live-search-result-box").hide();
         //$('#frequently-searched-box').show();
         $("#search").trigger("click");
+        if($("body").hasClass("debug")){
+          $("#closeDebugPreview").trigger("click");
+        }
         $("body").removeClass('debug');
-        $(".top-down-debug").css("display","none");
+        $(".top-down-debug").css("display","none"); 
       }
     });
-  $(".top-down-debug")
-    .off("click")
-    .on("click", function (event) {
+    $(".top-down-debug").off("click").on("click", function (event) {
       if(!$("body").hasClass("debug")){
-        $("body").addClass("debug");
+        $("body").addClass("debug"); 
+        var responseObject = {
+          type: "debugClick",
+        };
+        _self.parentEvent(responseObject)
       }
       else{
         $("body").removeClass("debug");
+        $("#closeDebugPreview").trigger("click");
       }
     });
   _self.searchEventBinding(dataHTML, "search-container", {}, config);
 };
+ FindlySDK.prototype.runtimeDebugEvents = function(){
+  var _self = this;
+  var responseObject = {
+    type: "messageData",
+    data: true,
+    messageData:_self.vars.allMessageData,
+  };
+  _self.parentEvent(responseObject)
+ }
 var overrideDefaultPoisition = false;
 // FindlySDK.prototype.showSearch = function () {
 FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
@@ -10235,7 +10253,10 @@ FindlySDK.prototype.bindSocketEvents = function () {
     //     $('.kore-auth-popup .close-popup').trigger("click");
     // }
     var tempData = JSON.parse(message.data);
-
+    if(tempData && tempData.type === "bot_response"){
+      _self.vars.allMessageData = tempData?.message[0]?.component?.payload
+      _self.runtimeDebugEvents();
+    }
     if (tempData.from === "bot" && tempData.type === "bot_response") {
       if (
         (tempData || {}).message &&
@@ -18699,8 +18720,10 @@ FindlySDK.prototype.initializeTopSearchTemplate = function () {
       $(".top-down-suggestion").val("");
       $(".search-top-down").val("");
       $(".full-search-data-container").empty();
-      $(".top-down-debug").css("display","none");
-      $("body").removeClass('debug'); 
+      if(_self.vars.isDev){
+        $(".top-down-debug").css("display","none");
+        $("body").removeClass('debug'); 
+      }
       $(".skelton-load-img").show();
       _self.destroy();
     });
@@ -19392,7 +19415,7 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                     <div id="conversation-box-container" class="conv"></div>\
                 </div>\
       <div class="topdown-search-main-container">
-      <div class="top-down-debug" style="display:none">D</div>\
+      <div class="top-down-debug" style="display:none"><img src=""></div>\
           <div id="heading" class="search-input-box">
               <div id="search-box-container" class="search-box-container-data">
               {{if searchConfig.freePlan}}\
@@ -19402,7 +19425,7 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                 {{/if}}\
                   <div class="cancel-search">
                       <img
-                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADeSURBVHgBnZI/C8IwEMUviRUHkdKp0KWgBccu/QAOgrj1k2arbtLZJXtFOpVOpXtoYyKk+CeJ4BtCEt7vuHscwJ8i6timh3gZbvy+vfUuc5Ie01W4XigfVh+Dh/25hy9Jtk9dECKC6vcTrK4FEwA5Ao+aYA2JAeU1O9dTq0pdU7VBlJQICA2iuOyae/sJVaxg2o++qmfSCEAF8By4BybICL7CMAowQUozEwhcDSGnxhLH3GjB4AjCFRixQao9W2BvoC09GzxtjrydbEGY4GlGG6SllgTzccc5ca7lTz0A2yqRYknu6twAAAAASUVORK5CYII=" />
+                          src="" />
                   </div>
               </div>
               <div id="greeting-msg-top-down"></div>
@@ -19442,6 +19465,7 @@ FindlySDK.prototype.initializeTopDown = function (
   searchExperienceConfig
 ) {
   $('body').addClass('sdk-body');
+  $('body').addClass('answer-begug-data-sdk');
   var _self = this;
   if(findlyConfig.isDev){
     _self.isDev = true;

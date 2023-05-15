@@ -26,7 +26,8 @@ body{
                 top: 0px;
                 padding-bottom: 0;
                 background-image: none;
-                background: var(--sdk-bg-iron-color);
+                // background: var(--sdk-bg-iron-color);
+                background: #EEF1FF;
             }
         }
 
@@ -70,21 +71,27 @@ body{
                     left: 20px;
                     right: auto;
                     top: 14px;
+                    img{
+                        content: url('/src/components/search/images/carrot-icon.svg');
+                    }
                 }
             }
         }
         .topdown-search-main-container {
             .top-down-debug{
-                background: #ffffff;
-                width: 28px;
-                height: 28px;
+                background: #fff;
+                width: 35px;
+                height: 35px;
                 position: absolute;
                 align-items: center !important;
-                right: 20px;
-                top: 14px;
+                right: 32px;
+                top: 18px;
                 border-radius: 100%;
                 display: flex;
                 justify-content: center;
+                img{
+                    content: url('/src/components/search/images/debug.svg') !important;
+                }
             }
             .search-input-box {
                 width: 500px;
