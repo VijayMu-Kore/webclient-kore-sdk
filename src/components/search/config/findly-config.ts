@@ -3,14 +3,14 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist.kore.ai"
+var paramUrl="searchassist-app.kore.ai"
 if(serverUrl && (serverUrl.includes("https"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
     paramUrl=serverUrl.split('/')[2]
 }  
-// if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
-//   paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
-// }
+if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
+  paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
+}
 botOptionsFindly.logLevel = 'debug';
 // botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
 botOptionsFindly.koreAPIUrl = "https://"+paramUrl+"/searchassistapi/";
@@ -48,12 +48,12 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "Bharadwaj",
-  taskBotId: "st-88884a79-f862-5258-b082-c952d872af02",
+  chatBot: "debug_payload_test",
+  taskBotId: "st-ffec6f37-caec-51fb-bcb8-430a34a3a579",
 };
-botOptionsFindly.clientId = "cs-ceab646d-f89f-581b-9577-dcabb99cb89e";
-botOptionsFindly.clientSecret = "F8xJAqvfR9shXxwhuHKTgb2Bo1vUQwNeNJIbhEXdpo0=";
-botOptionsFindly.searchIndexID = "sidx-5c1d98bd-138b-5a53-89e7-c69e4ad77cd5";
+botOptionsFindly.clientId = "cs-9510d399-1f66-5dc6-a1c4-66282f5af266";
+botOptionsFindly.clientSecret = "P4KpMGTZr4qPxqX9tfuFJRk3Zmcuvb+ihYSRymQ+FyU=";
+botOptionsFindly.searchIndexID = "sidx-b14e41f1-d50a-5fc2-bbd2-3c89594b2f47";
 
 
 // To modify the web socket url use the following option
