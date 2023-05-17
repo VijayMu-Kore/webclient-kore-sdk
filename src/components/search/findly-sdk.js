@@ -10200,6 +10200,7 @@ FindlySDK.prototype.initKoreSDK = function (config) {
 FindlySDK.prototype.destroy = function (config) {
   var _self = this;
   this.bot.destroy();
+  $('body').removeClass('answer-begug-data-sdk')
   _self.clearAllTimeoutTimer();
 };
 FindlySDK.prototype.clearAllTimeoutTimer = function (config) {
@@ -16950,6 +16951,9 @@ FindlySDK.prototype.bindSearchContainerViewHadler = function () {
     $(".debug-results").off("click").on("click", function (event) {
       _self.debugClickEvents();
     });
+    $(".debug-assistent").off("click").on("click", function (event) {
+      $('.show-all-results-outer-wrap').css('z-index','10000')
+    });
   if (!$("body").hasClass("top-down")) {
     // if (searchConfigurationCopy.searchBarPlaceholderTextColor && searchConfigurationCopy.searchBarPlaceholderTextColor.length) {
     //   $("body").append("<style>#search::placeholder {color:" + searchConfigurationCopy.searchBarPlaceholderTextColor + "!important;}</style>")
@@ -23622,6 +23626,12 @@ FindlySDK.prototype.sendMessageToBuilder = function(){
       var responseObject = {
         type: "debugClick",
       };
+      if($('.show-all-results-outer-wrap').css('display') !== 'none'){
+        $('.show-all-results-outer-wrap').css('z-index','9999')
+      }
+      else {
+        $('.show-all-results-outer-wrap').css('z-index','99999') 
+      }
       _self.parentEvent(responseObject)
     }
     else{

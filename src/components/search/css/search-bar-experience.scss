@@ -1167,4 +1167,20 @@ body::-webkit-scrollbar {
     float: right;
     transition: width 1s;
   }
+  #heading{
+    margin-left: 62%;
+  }
+  .close-top-down-search-outer{
+    background: #fff;
+    position: absolute;
+    align-items: center !important;
+    right: 32px;
+    top: 80px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    margin-left: 57%;
+    height: 33px;
+    width: 33px;
+  }
 }
