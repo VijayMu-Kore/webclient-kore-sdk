@@ -3778,7 +3778,7 @@
                     }
                 },0,me);
             }
-            chatWindow.prototype.historySyncing = function (msgData) {
+            chatWindow.prototype.historySyncing = function (msgData,res,index) {
                 var me = this;
                 try {
                     msgData.message[0].cInfo.body = JSON.parse(msgData.message[0].cInfo.body);
@@ -3824,7 +3824,7 @@
                                 setTimeout(function () {
                                     if (msgData.type === "outgoing" || msgData.type === "bot_response") {
                                         //if ($('.kore-chat-window .chat-container li#' + msgData.messageId).length < 1) {
-                                         me.historySyncing(msgData);
+                                         me.historySyncing(msgData,res,index);
                                         // if (msgData.message[0].cInfo.body.includes('live_agent')) {
                                         //     msgData.message[0].cInfo.body = JSON.parse(msgData.message[0].cInfo.body);
                                         //     if (msgData.message[0].cInfo.body && msgData.message[0].cInfo.body.text) {
@@ -3860,7 +3860,7 @@
                                 });
                                 //dont show the the history message if we already have same message came from socket connect  
                                 if (!_ignoreMsgs.length) {
-                                    me.historySyncing(msgData);
+                                    me.historySyncing(msgData,res,index);
                                 }
                                 if (index === res[1].messages.length - 1) {
                                     setTimeout(function (messagesQueue) {
