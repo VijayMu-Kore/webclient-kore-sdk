@@ -23540,7 +23540,18 @@ FindlySDK.prototype.queryAnalyticsClickEvent = function(event,messageHtml){
   
   // Language Translator i18n end//
 
-// Language Translator i18n end//
+// Toggle Z-index of see all container 
+FindlySDK.prototype.toggleSeeAllZindex = function (){
+      var targetDiv = $('.show-all-results-outer-wrap');
+      var currentZIndex = parseInt(targetDiv.css('z-index'));  
+      // Toggle the z-index between two values
+      if($('body').hasClass('debug') && currentZIndex === 9999 ){
+        var newZIndex = currentZIndex === 9999 ? 99999 : 9999;
+        targetDiv.css('z-index', newZIndex);
+      }
+      console.log (currentZIndex);
+ }
+
 
 FindlySDK.prototype.getQueryLevelAnalytics = function(query){
   var _self = this;

@@ -99,10 +99,10 @@ class FullSearchResultsTemplate {
       $(messageHtml).find('#sa-sdk-sortable-facets-added-list').empty().append(sortableAddedListHtml);
       FullSearchResultsTemplate.prototype.bindSortableFacetClickEvent(me, messageHtml,sortableHtml, 'all results',sortableAddedListHtml);
     }
-    $(".show-all-results-outer-wrap").off("click", ".show-all-results-outer-wrap").on("click", ".show-all-results-outer-wrap", function () {
-      if (msgData.message[0].component.payload.isDev && $('body').hasClass('debug')) {
-        $('.show-all-results-outer-wrap').css('z-index','99999');
-      }
+    $(messageHtml)
+    .off("click", ".show-all-results-outer-wrap, .show-all-results-outer-wrap *")
+    .on("click", ".show-all-results-outer-wrap, .show-all-results-outer-wrap *", function () {
+       hostWindowInstance.toggleSeeAllZindex();
     });
     $(messageHtml)
       .off("click", "#btn-close-show-all")
