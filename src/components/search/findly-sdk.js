@@ -7497,6 +7497,9 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           $("#top-down-full-results-container").empty().append(showAllHTML);
           if(_self.isDev){
             $(".debug-results").show();
+            if($('body').hasClass('debug')){
+              $('.tsrb-right-filters').hide()
+            }
           }
           $(".skelton-load-img").hide();
         });
@@ -7849,6 +7852,9 @@ FindlySDK.prototype.handleSearchRes = function (res) {
           $(".empty-full-results-container").removeClass("hide");
           $(".no-templates-defined-full-results-container").hide();
           _self.isDev? $(".debug-results").show(): $(".debug-results").hide();
+          if($('body').hasClass('debug')){
+            $('.tsrb-right-filters').hide()
+          }
         }
       } else {
         if ((res.tasks || []).length) {
@@ -23633,7 +23639,8 @@ FindlySDK.prototype.sendMessageToBuilder = function(){
  FindlySDK.prototype.debugClickEvents = function(){
   var _self = this;
     if(!$("body").hasClass("debug")){
-      $("body").addClass("debug"); 
+      $("body").addClass("debug");
+        $('.tsrb-right-filters').hide()
       var responseObject = {
         type: "debugClick",
       };
@@ -23648,6 +23655,7 @@ FindlySDK.prototype.sendMessageToBuilder = function(){
     else{
       $("#closeDebugPreview").trigger("click");
       $("body").removeClass('debug');
+      $('.tsrb-right-filters').show();
     }
  }
  FindlySDK.prototype.closeDebug = function(){
