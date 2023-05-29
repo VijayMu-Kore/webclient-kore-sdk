@@ -457,18 +457,34 @@ body::-webkit-scrollbar {
   position: fixed;
   left: 30px;
   top: 78px;
+  height: 40px;
+  width: 40px;
   z-index: 99998;
   padding: 7px 12px;
   cursor: pointer;
   background: var(--sdk-white-bg);
   box-shadow: 0px 0px 4px rgba(0,0,0,.25);
   border-radius: 50%;
+}
   .close-top-down-search{
+    position: fixed;
     img{
       content: url('/src/components/search/images/carrot-icon.svg') !important;
     }
   }
-}
+  .close-text{
+    position: fixed;
+    display: none;
+  }
+  .search-preview{
+    position: fixed;
+    font-style: normal;
+    font-weight: 600;
+    color: #202124;
+    left: 89px;
+    top: 89px;
+    z-index: 99998;
+  }
 .top-down-search-background-div .topdown-search-main-container .search-input-box .search-box-container-data .search-icon{
   top: -26px;
 }
@@ -1163,24 +1179,37 @@ body::-webkit-scrollbar {
 }
 .debug {
   .topdown-search-main-container #top-down-full-results-container{
-    width: 42%;
+    width: 40%;
     float: right;
     transition: width 1s;
   }
   #heading{
     margin-left: 62%;
   }
+  .debug-results{
+    display: none !important;
+  }
   .close-top-down-search-outer{
-    background: #fff;
+    display: none;
+  }
+  .close-text{
+    color: #0D6EFD;
+    font-weight: 600;
     position: absolute;
-    align-items: center !important;
-    right: 32px;
-    top: 10px;
-    border-radius: 100%;
-    display: flex;
-    justify-content: center;
+    display: block;
+    right: 15px;
+    top: 84px;
     margin-left: 94%;
     height: 33px;
-    width: 33px;
+    width: 53px;
+    z-index: 99998;
+  }
+  .close-top-down-search{
+    img{
+      display: none;
+    }
+  }
+  .search-preview{
+    display: none;
   }
 }
