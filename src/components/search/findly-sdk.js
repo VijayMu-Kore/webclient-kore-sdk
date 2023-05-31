@@ -20610,7 +20610,7 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   } else {
     $("#introText").css("left", 2);
   }
-  $("#introText").css("top", position.y - 59);
+  $("#introText").css("top", position.y - 65);
   $("#introText").css("display", "block");
 };
 
