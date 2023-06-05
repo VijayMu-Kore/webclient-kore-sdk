@@ -3855,6 +3855,10 @@ display: none !important;
     cursor: pointer;
     background-color: #fff;
     box-shadow: 14px 4px 64px 12px rgb(18 61 101 / 40%), -16px -16px 64px 0 rgb(255 255 255 / 80%), inset -8px -6px 80px 0 rgb(255 255 255 / 18%);
+    img{
+        width: 40px;
+    height: 40px;
+    }
 }
 //Feedback CSS Starts
 .builder-sdk .feedback-template-positions{
