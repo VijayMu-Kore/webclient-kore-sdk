@@ -1369,7 +1369,7 @@ FindlySDK.prototype.getSearchControl = function () {
   var searchControl =
     '<script type="text/x-jqury-tmpl">\
             <div class="search-bar">\
-              <div class="widget-icon"><img style="vertical-align:middle" \
+              <div class="widget-icon"><img style="vertical-align:inherit" \
               {{if searchConfig.searchBarIcon}}\
               src="${searchConfig.searchBarIcon}"> </div>\
               {{/if}}\
