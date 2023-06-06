@@ -3350,15 +3350,6 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                   if (!$(".empty-full-results-container").hasClass("hide")) {
                     $(".empty-full-results-container").addClass("hide");
                   }
-                  var publishSearchData = "sa-" + groupName + "-search-data";
-                  // _self.pubSub.publish(publishSearchData, {
-                  //   container: ".full-search-data-container",
-                  //   isFullResults: true,
-                  //   selectedFacet: "all results",
-                  //   isLiveSearch: false,
-                  //   isSearch: false,
-                  //   dataObj,
-                  // });
                 });
               } else {
                 var dataObj = {
@@ -3370,7 +3361,6 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                   groupName: "defaultTemplate",
                   doc_count: 0,
                 };
-                // _self.pubSub.publish('sa-defaultTemplate-search-data', { container: '.full-search-data-container', isFullResults: true, selectedFacet: 'all results', isLiveSearch: false, isSearch: false, dataObj });
                 if (!(res.tasks || []).length) {
                   $(".empty-full-results-container").removeClass("hide");
                   $(".no-templates-defined-full-results-container").hide();
@@ -3437,24 +3427,78 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
             var dataObj = _self.vars.searchObject.liveData;
             _self.showMoreClick();
             if ($("body").hasClass("top-down")) {
-              if (
-                !_self.vars.filterObject.length &&
-                _self.vars.scrollPageNumber == 0
-              ) {
-                _self.vars.searchFacetFilters = searchFacets;
-                _self.pubSub.publish(
-                  "sa-search-facets",
-                  _self.vars.searchFacetFilters
-                );
-                _self.markSelectedFilters();
-                // setTimeout(function () {
-                //   _self.bindStructuredDataTriggeringOptions();
-                // }, 100);
+
+              var snippetObj=_self.getSnippetObject(res);
+              _self.countTotalResults(res, 0);
+              if ($("body").hasClass("top-down")) {
+                // _self.showMoreClick();
+                facets.push({
+                  key: "all results",
+                  doc_count: _self.vars.totalNumOfResults,
+                  name: "ALL",
+                });
+                facets = facets.concat((res.tabFacet || {}).buckets || []);
+                facets = _self.rearrangeTabsList(facets);
+                if ((res.tasks || []).length) {
+                  facets.push({
+                    key: "task",
+                    doc_count: (res.tasks || []).length,
+                    name: "Actions",
+                  });
+                }
+                facets.forEach((tab) => {
+                  if (tab && tab.key) {
+                    tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
+                  }
+                });
+                _self.vars.tabsList = facets;
+                if (!_self.vars.searchObject.liveData) {
+                  _self.vars.searchObject.liveData = { facets: facets };
+                } else {
+                  _self.vars.searchObject.liveData.facets = facets;
+                }
               }
-              setTimeout(function () {
-                _self.vars["selectedFacetFromSearch"] =
-                  _self.vars.selectedFacetFromSearch || "all results";
-              }, 100);
+              var isFilterEnabled = _self.vars.filterConfiguration.isEnabled;
+              if (isFilterEnabled || isFilterEnabled == false) {
+                isFilterEnabled = isFilterEnabled;
+              } else {
+                isFilterEnabled = false;
+              }
+              _self.getMergedData(_self.vars.resultSettings, responseData, 'isFullResults').then((res) => {
+                let me = this;
+                var devMode = _self.isDev ? true : false;
+                var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+                var msgData = {
+                  message: [{
+                    component: {
+                      type: 'template',
+                      payload: {
+                        template_type: "fullSearchResultTopdownTemplate",
+                        isDev: _self.isDev,
+                        devMode: devMode,
+                        viewType: viewType,
+                        totalSearchResults: _self.vars.totalNumOfResults,
+                        groupData: _self.vars.mergedData,
+                        searchType: 'isFullResults',
+                        helpers: helpers,
+                        tabsList: _self.vars.tabsList,
+                        facetPosition:_self.vars.filterConfiguration.aligned,
+                        isFilterEnabled: isFilterEnabled,
+                        filterFacetData: searchFacets||[],
+                        sortableFacetList: _self.vars.sortableFacetList || [],
+                        displaySortable: _self.vars.displaySortable,
+                        displayFeedback:_self.vars.feedBackExperience,
+                        snippetData:snippetObj,
+                        langTranslator:langTranslator
+                      }
+                    }
+
+                  }]
+                }
+                var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
+                $("#top-down-full-results-container").empty().append(showAllHTML);
+                $(".skelton-load-img").hide();
+              });
             }
 
             //live search hightlight faq start//
@@ -7164,6 +7208,10 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         }
         $("#sa-conversation-box").prop("disabled", false);
         $("#sa-conversation-box").attr("placeholder", "Type message...");
+
+        _self.vars.selectedFacetFromSearch = "all results"
+        _self.vars.showingMatchedResults = true;
+        _self.invokeSearch(false, true);
       }
     }
     if (!$("body").hasClass("top-down")) {
@@ -7233,81 +7281,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       var searchContainerName = $("body").hasClass("top-down")
         ? ".full-search-data-container"
         : ".search-data-container";
-        var snippetObj={};
-       
+        var snippetObj=_self.getSnippetObject(res);
       
-        if(res?.graph_answer?.payload?.center_panel){
-         
-          if(Object.keys(res.graph_answer.payload.center_panel).length>0){
-            var listSnippetData = '';
-            var snippetReference = [];
-            if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-              listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
-            } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-              res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
-                snippetReference = [...snippetReference,...item.sources];
-              })
-              var set = new Set();
-              var unionArray =  snippetReference.filter(item => {
-                if (!set.has(item.title)) {
-                  set.add(item.title);
-                  return true;
-                }
-                return false;
-              }, set);
-              snippetReference = unionArray;
-              res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
-                item.sources.forEach((source)=>{
-                  let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title);
-                  if(sourceIndex>-1){
-                    source['_id']= sourceIndex+1;
-                  }
-                })
-              })
-              listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
-            } else {
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content && Array.isArray(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) && res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.length){
-              res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.forEach((content)=>{
-                content = helpers.convertMDtoHTML(content);
-              })
-              listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
-            }else{
-              listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
-            }
-            }
-            let title = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title) : '';
-            snippetObj = {'title':title,
-            'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,
-            'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,
-            'template_type':res?.graph_answer?.payload?.center_panel?.type, 
-            'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||''),
-            'searchQuery': _self.vars.searchObject.searchText,
-            'displayFeedback':_self.vars.feedBackExperience.smartAnswer,
-            'snippet_type':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_type //generative_model
-          }; 
-            if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              snippetObj['reference']=snippetReference;
-            }
-          }
-          else{
-            snippetObj={};
-          }
-        }
-        else{
-          snippetObj={};
-        }
       if (!$("body").hasClass("top-down")) {
         
         _self.countTotalResults(res, 0);
@@ -20642,7 +20617,7 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   } else {
     $("#introText").css("left", 2);
   }
-  $("#introText").css("top", position.y - 59);
+  $("#introText").css("top", position.y - 65);
   $("#introText").css("display", "block");
 };
 
@@ -23631,5 +23606,83 @@ FindlySDK.prototype.getQueryLevelAnalyticsTemplate = function(){
       $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
       })
     }
+FindlySDK.prototype.getSnippetObject = function(res){
+  var _self = this;
+var snippetObj = {};
+if(res?.graph_answer?.payload?.center_panel){
+               
+  if(Object.keys(res.graph_answer.payload.center_panel).length>0){
+    var listSnippetData = '';
+    var snippetReference = [];
+    if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+      if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
+    res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
+    if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
+    res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
+      listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
+    } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+      if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
+    res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
+    if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
+    res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
+      res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
+        snippetReference = [...snippetReference,...item.sources];
+      })
+      var set = new Set();
+      var unionArray =  snippetReference.filter(item => {
+        if (!set.has(item.title)) {
+          set.add(item.title);
+          return true;
+        }
+        return false;
+      }, set);
+      snippetReference = unionArray;
+      res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
+        item.sources.forEach((source)=>{
+          let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title);
+          if(sourceIndex>-1){
+            source['_id']= sourceIndex+1;
+          }
+        })
+      })
+      listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
+    } else {
+      if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
+    res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
+    if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
+    res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
+    if(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content && Array.isArray(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) && res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.length){
+      res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.forEach((content)=>{
+        content = helpers.convertMDtoHTML(content);
+      })
+      listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
+    }else{
+      listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
+    }
+    }
+    let title = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title) : '';
+    snippetObj = {'title':title,
+    'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,
+    'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,
+    'template_type':res?.graph_answer?.payload?.center_panel?.type, 
+    'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||''),
+    'searchQuery': _self.vars.searchObject.searchText,
+    'displayFeedback':_self.vars.feedBackExperience.smartAnswer,
+    'snippet_type':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_type //generative_model
+  }; 
+    if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+      snippetObj['reference']=snippetReference;
+    }
+  }
+  else{
+    snippetObj={};
+  }
+}
+else{
+  snippetObj={};
+}
+  return snippetObj;
+}
+
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

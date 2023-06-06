@@ -4706,6 +4706,19 @@ li{
         box-sizing: border-box;
         border-radius: 6px;
         padding: 13px 20px 14px;
+        &::before{
+            border-bottom: 1px solid #E0E1E9;
+            content: "";
+            width: 14px;
+            height: 14px;
+            position: absolute;
+            background: #eff0f1;
+            color: #3c4043;
+            right: 20px;
+            bottom: -8px;
+            border-right: 1px solid #E0E1E9;
+            transform: rotate(45deg);
+        }
     }
 }
 .setDefaultSearchTemplate{
