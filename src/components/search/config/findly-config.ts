@@ -49,7 +49,7 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "kokoreWebsitere",
+  chatBot: "koreWebsite",
   taskBotId: "st-0318f73f-e149-5ef2-8b1b-65b9346a2b02",
 };
 botOptionsFindly.clientId = "cs-c9b25da6-8db4-51cb-a588-8f940fee0bec";

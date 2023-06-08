@@ -86,7 +86,7 @@ class SnippetParagraphTemplate {
                   </div>\
                   <div class="temp-right">\
                       <div class="temp-fotter-actions">\
-                      <a class="snippet-go-to" href="${snippetData?.page_url}"> <div class="is-it-usefull">Go to Page</div> <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
+                      <a class="snippet-go-to" href="${snippetData?.page_url}" target="_blank"> <div class="is-it-usefull">Go to Page</div> <img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" />\</a>\
                       </div>\
                   </div>\
               </div>\
@@ -180,7 +180,6 @@ class SnippetParagraphTemplate {
       })
     }
     snippetgoToPage(snippetData:any){    // added for Kore Web Site
-      // window.location.href+"/search/query="+snippetData.searchQuery
         window.localStorage.setItem("query",snippetData.searchQuery);
         window.localStorage.setItem("searchLocation",window.location.href);
     }

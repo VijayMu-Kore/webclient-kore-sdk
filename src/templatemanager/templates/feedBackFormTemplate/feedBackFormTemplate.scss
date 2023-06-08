@@ -214,6 +214,7 @@ box-shadow: none;
     width: 100%;
 }
  .temp-feed-back-opt-ans{
+    height: 90px;
     width: 100%;
 }
 #snippet-feedback-template .temp-feed-back-opt-ans #feedback-input-text{
@@ -286,7 +287,14 @@ box-shadow: none;
     }
     .temp-feed-back-opt-ans{
         textarea{
-            width: 100%;
+             width: 100%;
+             height: 100%;
+             resize: none;
+             user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
         }
     }
 }

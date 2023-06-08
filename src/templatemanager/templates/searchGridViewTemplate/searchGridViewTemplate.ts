@@ -248,7 +248,7 @@ class SearchGridViewTemplate {
                             <div class="sa-card-tile-content-header"  title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
                             <div class="sa-card-tile-content-desc"  title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
                             </div>\
-                            <div class="sa-card-tile-readmore snippet-go-to"> <a href="${data.page_url}">Read More<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img"></a></div>\
+                            <div class="sa-card-tile-readmore snippet-go-to"> <a href="${data.page_url}" target="_blank">Read More<img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/kore_website_images/goto-page.svg" class="read-more-img"></a></div>\
                         </div>\
                     {{/each}}\
                     </div>\

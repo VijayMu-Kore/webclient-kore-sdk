@@ -1384,7 +1384,7 @@ FindlySDK.prototype.getSearchControl = function () {
             {{if hideSearchIcon}}\
               style="position: absolute; bottom: 0px; color:#8a959f;">\
             {{else}}\
-              style="position: absolute; bottom: 0px; color:#8a959f; padding-left:37px!important; background : ${searchConfig.searchBarFillColor} !important;"> \
+              style="position: absolute; bottom: 0px; color:#8a959f; padding: 0 118px 0 36px; background : ${searchConfig.searchBarFillColor} !important;"> \
             {{/if}}\
             {{/if}}\
             <input autocomplete="off" id="search" name="search"\
@@ -1396,7 +1396,7 @@ FindlySDK.prototype.getSearchControl = function () {
             {{if hideSearchIcon}}\
               style="position: absolute; bottom: 0px;  \
             {{else}}\
-              style="position: absolute; bottom: 0px; padding-left:36px!important; border : solid 1px ${searchConfig.searchBarBorderColor} !important; background : ${searchConfig.searchBarFillColor} !important; color :  ${searchConfig.searchBarPlaceholderTextColor} !important; \
+              style="position: absolute; bottom: 0px; padding: 0 118px 0 36px; border : solid 1px ${searchConfig.searchBarBorderColor} !important; background : ${searchConfig.searchBarFillColor} !important; color :  ${searchConfig.searchBarPlaceholderTextColor} !important; \
               {{if searchConfig.autocompleteOpt == true}}\
               background : transparent !important; \
               {{else}}\
@@ -9923,7 +9923,11 @@ FindlySDK.prototype.initSearchAssistSDK = function (findlyConfig) {
   _self.vars.configuration = findlyConfig;
   $("body").addClass("sdk-body");
   $("body").addClass("ms-sdk-body");
-  if(findlyConfig.searchInterfaceConfig){
+  _self.openSDK(_self.vars.configuration);
+};
+FindlySDK.prototype.openSDK = function (findlyConfig) {
+  var _self = this;
+    if(findlyConfig.searchInterfaceConfig){
     _self.showSearchExperience(findlyConfig,findlyConfig.searchInterfaceConfig)
   }else{
     setTimeout(()=>{
