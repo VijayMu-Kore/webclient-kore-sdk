@@ -19442,7 +19442,7 @@ FindlySDK.prototype.initializeTopDown = function (
   _self.addSearchText({
     container: "search-box-container",
     classes: (searchConfiguration.searchButtonEnabled && searchConfiguration.buttonPlacementPosition
-      =="inside")?' search-btn-inside search-input':'search-input',
+      =="inside")?' search-btn-inside search-input':'search-input right-padding-freeplan',
     placeholder: "Search here",
     showGreeting: false,
     microphone: true,
@@ -19829,18 +19829,18 @@ FindlySDK.prototype.bindPlaceholderStyle = function (config) {
       "<style>.cancel-search {right:" +
       rightPosition +
       "px !important;} .search-btn-inside{padding-right:" +
-      (rightPosition-40) +
+      (rightPosition-40 +(config?.searchConfig?.freePlan == true ? Number(110) : Number(0)))+
+      "px !important;} .kore-sponsored{right:" +
+      (rightPosition+20)+
       "px !important;}</style>"
     );
   } else {
-    $("body").append("<style>.cancel-search {right: 72px !important;}</style>");
+    $("body").append("<style>.cancel-search {right: 72px !important;} .kore-sponsored{right:92px !important;}</style>");
     if (config.searchConfig.buttonPlacementPosition == "outside") {
       let rightPosition = 812;
      
       $("body").append(
-        "<style>.submit-button-outside {left: " +
-        rightPosition +
-        "px !important;}</style>"
+        "<style>.submit-button-outside {left: " + rightPosition + "px !important;}" + (config?.searchConfig?.freePlan ? ".right-padding-freeplan {padding-right:160px !important}" : '')+" </style>"
       );
     }
   }
