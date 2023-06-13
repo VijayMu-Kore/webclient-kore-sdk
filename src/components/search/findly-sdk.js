@@ -19606,7 +19606,6 @@ FindlySDK.prototype.initializeTopDown = function (
   if (_self.isDev) {
     _self.initKorePicker(findlyConfig);
   }
-  if(window.localStorage.query && window.localStorage.searchLocation)_self.backToTheResultssearch();  
   $('.topdown-search-main-container')
   .off("click", ".plan_warning_close")
   .on("click", ".plan_warning_close", function (e) {
@@ -23058,7 +23057,7 @@ FindlySDK.prototype.removeSelectFacetFilter = function (event, selectedFacet) {
 }
 FindlySDK.prototype.backToSearchClickEvent = function (event) {
   var _self = this;
-  $(".all-result-container").hide();
+  $(".all-result-container").remove();
       $("body").removeClass("showFullResults");
       $("body").removeClass("kore-sdk-body");
       $("body").find(".searchAssist-kore-chat-window").remove();
@@ -23068,7 +23067,9 @@ FindlySDK.prototype.backToSearchClickEvent = function (event) {
       $(".search-top-down").val("");
       $(".full-search-data-container").empty();
       $(".skelton-load-img").hide();
-      _self.destroy();
+      $(".top-down-wrapper").hide();
+      // ("#top-down-full-results-container").hide();
+      // _self.destroy(); // commented for KORE Website.
       window.localStorage.setItem("query", "");
       window.localStorage.setItem("searchLocation", "");
 }
@@ -23569,16 +23570,9 @@ FindlySDK.prototype.getQueryLevelAnalyticsTemplate = function(){
         $(".topdown-search-main-container").addClass('slide-down');
       }
   }
-  FindlySDK.prototype.backToTheResultssearch = function() {
-    let searchQuery = window.localStorage.query;
-    let searchLocation = window.localStorage.searchLocation;
-    if (searchQuery && searchLocation && window.location.href === searchLocation) {
-      $('#search').val(searchQuery);
-      $('#search').trigger($.Event('keydown', {keyCode: 13}));
-      window.localStorage.setItem("query", "");
-      window.localStorage.setItem("searchLocation", "");
-    }
-  };
+  // FindlySDK.prototype.closeSearchExperience = function() {
+  //     const 
+  // };
   FindlySDK.prototype.displayingInputButtons = function() {
     var _self = this;
     if(!(($('body').hasClass('top-down') ? $('.search-top-down').val() : $('.bottom-up-search').val()))){
