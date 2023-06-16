@@ -5911,6 +5911,7 @@ FindlySDK.prototype.searchEventBinding = function (
           final_transcript = "";
           $(".recordingMicrophone").css("display", "none");
           $(".notRecordingMicrophone").css("display", "block");
+        
           if ($('body').hasClass('top-down')) {
             _self.vars.enteredQuery = $('.search-top-down').val();
           }
@@ -6019,7 +6020,13 @@ FindlySDK.prototype.searchEventBinding = function (
           } else {
             _self.bindLiveDataToChat();
           }
-
+          if($("body").hasClass("debug")){
+            var responseObject = {
+              type: "debugClick",
+              loading:true
+            };
+            _self.parentEvent(responseObject)
+          }
           // }
           if ($(".search-body:visible").length) {
             // if (!_self.vars.searchObject.recents.length || (_self.vars.searchObject.recents.length && _self.vars.searchObject.recents.indexOf(searchText.toLowerCase()) == -1)) {
@@ -23651,7 +23658,7 @@ FindlySDK.prototype.sendMessageToBuilder = function(){
       else {
         $('.show-all-results-outer-wrap').css('z-index','99999') 
       }
-      _self.parentEvent(responseObject)
+      _self.parentEvent(responseObject);
     }
  }
  FindlySDK.prototype.closeDebug = function(){
