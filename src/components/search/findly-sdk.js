@@ -15,6 +15,7 @@ import './css/findly-sdk.scss';
 import './css/common-styles.scss';
 import './css/search-bar-experience.scss';
 import './css/fonts/inter.css';
+import './css/bootstrap.min.css';
 import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 import enJsonObj from '../../libs/languageConversion/i18n/en.json'
 import jaJsonObj from '../../libs/languageConversion/i18n/ja.json'
@@ -19385,7 +19386,32 @@ FindlySDK.prototype.getTopDownTemplate = function () {
               {{/if}}\
           </div>
           <div class="skelton-load-img" style="display:none">\
-          <img alt="" />\
+          <!--<img alt="" />-->\
+          <div class="sa-loading-container">
+  <div class="row">
+    <div class = "col-3 "></div>
+    <div class = "offset-1 col-8 ">
+    <div class="row">
+       <div class = "col-2 sa-loading-tab sa-animated-background"></div>
+       {{each(key1,col1) loadingArray}}\
+       <div class = "offset-1 col-2 sa-loading-tab sa-animated-background"></div>
+      {{/each}}\
+    </div>
+    </div>
+  </div>
+  {{each(key2,col2) loadingArray}}\
+  <div class=" row">
+     <div class = "col-3 sa-loading sa-animated-background"></div>
+    <div class = "offset-1 col-8 ">
+    {{each(key3,col3) loadingArray}}\
+      {{if key3!=='3'}}
+        <div class="row sa-loading-2 sa-animated-background"></div>
+      {{/if}}\
+      {{/each}}\
+    </div>
+  </div>
+  {{/each}}\
+</div>
           </div>\
           <div id="top-down-full-results-container"></div>
       </div>
@@ -19418,6 +19444,7 @@ FindlySDK.prototype.initializeTopDown = function (
   var dataHTML = $(FindlySDK.prototype.getTopDownTemplate()).tmplProxy({
     devMode: devMode,
     searchConfig: searchConfiguration,
+    loadingArray: [1,2,3]
   });
   var container = search_container ? $("." + search_container) : $("body");
   // var container = $('body');
