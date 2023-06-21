@@ -15,6 +15,7 @@ import './css/findly-sdk.scss';
 import './css/common-styles.scss';
 import './css/search-bar-experience.scss';
 import './css/fonts/inter.css';
+import './css/bootstrap.min.css';
 import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 import enJsonObj from '../../libs/languageConversion/i18n/en.json'
 import jaJsonObj from '../../libs/languageConversion/i18n/ja.json'
@@ -1371,7 +1372,7 @@ FindlySDK.prototype.getSearchControl = function () {
   var searchControl =
     '<script type="text/x-jqury-tmpl">\
             <div class="search-bar">\
-              <div class="widget-icon"><img style="vertical-align:middle" \
+              <div class="widget-icon"><img style="vertical-align:inherit" \
               {{if searchConfig.searchBarIcon}}\
               src="${searchConfig.searchBarIcon}"> </div>\
               {{/if}}\
@@ -3352,15 +3353,6 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                   if (!$(".empty-full-results-container").hasClass("hide")) {
                     $(".empty-full-results-container").addClass("hide");
                   }
-                  var publishSearchData = "sa-" + groupName + "-search-data";
-                  // _self.pubSub.publish(publishSearchData, {
-                  //   container: ".full-search-data-container",
-                  //   isFullResults: true,
-                  //   selectedFacet: "all results",
-                  //   isLiveSearch: false,
-                  //   isSearch: false,
-                  //   dataObj,
-                  // });
                 });
               } else {
                 var dataObj = {
@@ -3372,7 +3364,6 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
                   groupName: "defaultTemplate",
                   doc_count: 0,
                 };
-                // _self.pubSub.publish('sa-defaultTemplate-search-data', { container: '.full-search-data-container', isFullResults: true, selectedFacet: 'all results', isLiveSearch: false, isSearch: false, dataObj });
                 if (!(res.tasks || []).length) {
                   $(".empty-full-results-container").removeClass("hide");
                   $(".no-templates-defined-full-results-container").hide();
@@ -3439,24 +3430,78 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
             var dataObj = _self.vars.searchObject.liveData;
             _self.showMoreClick();
             if ($("body").hasClass("top-down")) {
-              if (
-                !_self.vars.filterObject.length &&
-                _self.vars.scrollPageNumber == 0
-              ) {
-                _self.vars.searchFacetFilters = searchFacets;
-                _self.pubSub.publish(
-                  "sa-search-facets",
-                  _self.vars.searchFacetFilters
-                );
-                _self.markSelectedFilters();
-                // setTimeout(function () {
-                //   _self.bindStructuredDataTriggeringOptions();
-                // }, 100);
+
+              var snippetObj=_self.getSnippetObject(res);
+              _self.countTotalResults(res, 0);
+              if ($("body").hasClass("top-down")) {
+                // _self.showMoreClick();
+                facets.push({
+                  key: "all results",
+                  doc_count: _self.vars.totalNumOfResults,
+                  name: "ALL",
+                });
+                facets = facets.concat((res.tabFacet || {}).buckets || []);
+                facets = _self.rearrangeTabsList(facets);
+                if ((res.tasks || []).length) {
+                  facets.push({
+                    key: "task",
+                    doc_count: (res.tasks || []).length,
+                    name: "Actions",
+                  });
+                }
+                facets.forEach((tab) => {
+                  if (tab && tab.key) {
+                    tab["className"] = tab.key.replaceAll(" ", "-").split('?').join('_').split('.').join('__').split('|').join('___');
+                  }
+                });
+                _self.vars.tabsList = facets;
+                if (!_self.vars.searchObject.liveData) {
+                  _self.vars.searchObject.liveData = { facets: facets };
+                } else {
+                  _self.vars.searchObject.liveData.facets = facets;
+                }
               }
-              setTimeout(function () {
-                _self.vars["selectedFacetFromSearch"] =
-                  _self.vars.selectedFacetFromSearch || "all results";
-              }, 100);
+              var isFilterEnabled = _self.vars.filterConfiguration.isEnabled;
+              if (isFilterEnabled || isFilterEnabled == false) {
+                isFilterEnabled = isFilterEnabled;
+              } else {
+                isFilterEnabled = false;
+              }
+              _self.getMergedData(_self.vars.resultSettings, responseData, 'isFullResults').then((res) => {
+                let me = this;
+                var devMode = _self.isDev ? true : false;
+                var viewType = _self.vars.customizeView ? "Customize" : "Preview";
+                var msgData = {
+                  message: [{
+                    component: {
+                      type: 'template',
+                      payload: {
+                        template_type: "fullSearchResultTopdownTemplate",
+                        isDev: _self.isDev,
+                        devMode: devMode,
+                        viewType: viewType,
+                        totalSearchResults: _self.vars.totalNumOfResults,
+                        groupData: _self.vars.mergedData,
+                        searchType: 'isFullResults',
+                        helpers: helpers,
+                        tabsList: _self.vars.tabsList,
+                        facetPosition:_self.vars.filterConfiguration.aligned,
+                        isFilterEnabled: isFilterEnabled,
+                        filterFacetData: searchFacets||[],
+                        sortableFacetList: _self.vars.sortableFacetList || [],
+                        displaySortable: _self.vars.displaySortable,
+                        displayFeedback:_self.vars.feedBackExperience,
+                        snippetData:snippetObj,
+                        langTranslator:langTranslator
+                      }
+                    }
+
+                  }]
+                }
+                var showAllHTML = _self.customTemplateObj.renderMessage(msgData);
+                $("#top-down-full-results-container").empty().append(showAllHTML);
+                $(".skelton-load-img").hide();
+              });
             }
 
             //live search hightlight faq start//
@@ -7177,6 +7222,10 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         }
         $("#sa-conversation-box").prop("disabled", false);
         $("#sa-conversation-box").attr("placeholder", "Type message...");
+
+        _self.vars.selectedFacetFromSearch = "all results"
+        _self.vars.showingMatchedResults = true;
+        _self.invokeSearch(false, true);
       }
     }
     if (!$("body").hasClass("top-down")) {
@@ -7246,81 +7295,8 @@ FindlySDK.prototype.handleSearchRes = function (res) {
       var searchContainerName = $("body").hasClass("top-down")
         ? ".full-search-data-container"
         : ".search-data-container";
-        var snippetObj={};
-       
+        var snippetObj=_self.getSnippetObject(res);
       
-        if(res?.graph_answer?.payload?.center_panel){
-         
-          if(Object.keys(res.graph_answer.payload.center_panel).length>0){
-            var listSnippetData = '';
-            var snippetReference = [];
-            if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-              listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
-            } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-              res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
-                snippetReference = [...snippetReference,...item.sources];
-              })
-              var set = new Set();
-              var unionArray =  snippetReference.filter(item => {
-                if (!set.has(item.title)) {
-                  set.add(item.title);
-                  return true;
-                }
-                return false;
-              }, set);
-              snippetReference = unionArray;
-              res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
-                item.sources.forEach((source)=>{
-                  let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title);
-                  if(sourceIndex>-1){
-                    source['_id']= sourceIndex+1;
-                  }
-                })
-              })
-              listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
-            } else {
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content && Array.isArray(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) && res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.length){
-              res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.forEach((content)=>{
-                content = helpers.convertMDtoHTML(content);
-              })
-              listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
-            }else{
-              listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
-            }
-            }
-            let title = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title) : '';
-            snippetObj = {'title':title,
-            'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,
-            'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,
-            'template_type':res?.graph_answer?.payload?.center_panel?.type, 
-            'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||''),
-            'searchQuery': _self.vars.searchObject.searchText,
-            'displayFeedback':_self.vars.feedBackExperience.smartAnswer,
-            'snippet_type':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_type //generative_model
-          }; 
-            if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              snippetObj['reference']=snippetReference;
-            }
-          }
-          else{
-            snippetObj={};
-          }
-        }
-        else{
-          snippetObj={};
-        }
       if (!$("body").hasClass("top-down")) {
         
         _self.countTotalResults(res, 0);
@@ -19463,7 +19439,32 @@ FindlySDK.prototype.getTopDownTemplate = function () {
               {{/if}}\
           </div>
           <div class="skelton-load-img" style="display:none">\
-          <img alt="" />\
+          <!--<img alt="" />-->\
+          <div class="sa-loading-container">
+  <div class="row">
+    <div class = "col-3 "></div>
+    <div class = "offset-1 col-8 ">
+    <div class="row">
+       <div class = "col-2 sa-loading-tab sa-animated-background"></div>
+       {{each(key1,col1) loadingArray}}\
+       <div class = "offset-1 col-2 sa-loading-tab sa-animated-background"></div>
+      {{/each}}\
+    </div>
+    </div>
+  </div>
+  {{each(key2,col2) loadingArray}}\
+  <div class=" row">
+     <div class = "col-3 sa-loading sa-animated-background"></div>
+    <div class = "offset-1 col-8 ">
+    {{each(key3,col3) loadingArray}}\
+      {{if key3!=='3'}}
+        <div class="row sa-loading-2 sa-animated-background"></div>
+      {{/if}}\
+      {{/each}}\
+    </div>
+  </div>
+  {{/each}}\
+</div>
           </div>\
           <div id="top-down-full-results-container"></div>
       </div>
@@ -19498,6 +19499,7 @@ FindlySDK.prototype.initializeTopDown = function (
   var dataHTML = $(FindlySDK.prototype.getTopDownTemplate()).tmplProxy({
     devMode: devMode,
     searchConfig: searchConfiguration,
+    loadingArray: [1,2,3]
   });
   var container = search_container ? $("." + search_container) : $("body");
   // var container = $('body');
@@ -19522,7 +19524,7 @@ FindlySDK.prototype.initializeTopDown = function (
   _self.addSearchText({
     container: "search-box-container",
     classes: (searchConfiguration.searchButtonEnabled && searchConfiguration.buttonPlacementPosition
-      =="inside")?' search-btn-inside search-input':'search-input',
+      =="inside")?' search-btn-inside search-input':'search-input right-padding-freeplan',
     placeholder: "Search here",
     showGreeting: false,
     microphone: true,
@@ -19909,18 +19911,18 @@ FindlySDK.prototype.bindPlaceholderStyle = function (config) {
       "<style>.cancel-search {right:" +
       rightPosition +
       "px !important;} .search-btn-inside{padding-right:" +
-      (rightPosition-40) +
+      (rightPosition-40 +(config?.searchConfig?.freePlan == true ? Number(110) : Number(0)))+
+      "px !important;} .kore-sponsored{right:" +
+      (rightPosition+20)+
       "px !important;}</style>"
     );
   } else {
-    $("body").append("<style>.cancel-search {right: 72px !important;}</style>");
+    $("body").append("<style>.cancel-search {right: 72px !important;} .kore-sponsored{right:92px !important;}</style>");
     if (config.searchConfig.buttonPlacementPosition == "outside") {
       let rightPosition = 812;
      
       $("body").append(
-        "<style>.submit-button-outside {left: " +
-        rightPosition +
-        "px !important;}</style>"
+        "<style>.submit-button-outside {left: " + rightPosition + "px !important;}" + (config?.searchConfig?.freePlan ? ".right-padding-freeplan {padding-right:160px !important}" : '')+" </style>"
       );
     }
   }
@@ -20690,7 +20692,7 @@ FindlySDK.prototype.positionAvatarIntro = function (position) {
   } else {
     $("#introText").css("left", 2);
   }
-  $("#introText").css("top", position.y - 59);
+  $("#introText").css("top", position.y - 65);
   $("#introText").css("display", "block");
 };
 
@@ -23666,5 +23668,84 @@ FindlySDK.prototype.sendMessageToBuilder = function(){
   $("#closeDebugPreview").trigger("click");
   $("body").removeClass('debug');
  }
+
+FindlySDK.prototype.getSnippetObject = function(res){
+  var _self = this;
+var snippetObj = {};
+if(res?.graph_answer?.payload?.center_panel){
+               
+  if(Object.keys(res.graph_answer.payload.center_panel).length>0){
+    var listSnippetData = '';
+    var snippetReference = [];
+    if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+      if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
+    res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
+    if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
+    res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
+      listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
+    } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+      if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
+    res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
+    if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
+    res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
+      res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
+        snippetReference = [...snippetReference,...item.sources];
+      })
+      var set = new Set();
+      var unionArray =  snippetReference.filter(item => {
+        if (!set.has(item.title)) {
+          set.add(item.title);
+          return true;
+        }
+        return false;
+      }, set);
+      snippetReference = unionArray;
+      res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
+        item.sources.forEach((source)=>{
+          let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title);
+          if(sourceIndex>-1){
+            source['_id']= sourceIndex+1;
+          }
+        })
+      })
+      listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
+    } else {
+      if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
+    res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
+    if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
+    res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
+    if(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content && Array.isArray(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) && res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.length){
+      res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.forEach((content)=>{
+        content = helpers.convertMDtoHTML(content);
+      })
+      listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
+    }else{
+      listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
+    }
+    }
+    let title = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title) : '';
+    snippetObj = {'title':title,
+    'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,
+    'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,
+    'template_type':res?.graph_answer?.payload?.center_panel?.type, 
+    'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||''),
+    'searchQuery': _self.vars.searchObject.searchText,
+    'displayFeedback':_self.vars.feedBackExperience.smartAnswer,
+    'snippet_type':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_type //generative_model
+  }; 
+    if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+      snippetObj['reference']=snippetReference;
+    }
+  }
+  else{
+    snippetObj={};
+  }
+}
+else{
+  snippetObj={};
+}
+  return snippetObj;
+}
+
 FindlySDK.prototype.$ = $;
 export default FindlySDK;

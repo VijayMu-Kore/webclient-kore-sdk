@@ -146,7 +146,7 @@ class FullSearchResultTopdownTemplate {
                                 </div>\
                                   <div class="custom-header-container-center top-down-customize-btns">\
                                   <ul class="custom-header-nav">\
-                                  <li id="viewTypePreview" class="custom-header-nav-link-item sdk-customize-nav"><a class="custom-header-nav-link sdk-i18n-lang" sdk-i18n-key="sa_sdk_preview">{{html langTranslator("sa_sdk_preview")}}</a></li>\
+                                  <li id="viewTypePreview" class="custom-header-nav-link-item sdk-customize-nav nav-link-item-active"><a class="custom-header-nav-link sdk-i18n-lang" sdk-i18n-key="sa_sdk_preview">{{html langTranslator("sa_sdk_preview")}}</a></li>\
                                   <li id="viewTypeCustomize" class="custom-header-nav-link-item sdk-customize-nav"><a class="custom-header-nav-link sdk-i18n-lang" sdk-i18n-key="sa_sdk_customize">{{html langTranslator("sa_sdk_customize")}}</a></li>\
                                    </ul>\
                                   </div>\

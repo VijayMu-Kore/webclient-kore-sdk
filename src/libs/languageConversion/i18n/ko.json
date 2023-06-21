@@ -1,6 +1,5 @@
 {
     "sa-sdk-sure-please-find-the-matched-results-below": "물론입니다. 아래에서 일치하는 결과를 찾으십시오.",
-    "sa-sdk-unable-to-find-results-at-this-moment": "지금은 결과를 찾을 수 없습니다",
     "sa_sdk_Unpin": "UnPin",
     "sa_sdk_hi_kindly_type_in_your_query": "안녕하세요, 검색어를 입력하거나 인기 검색어 목록에서 선택하세요.",
     "sa_sdk_searchAssist": "SearchAssist",
@@ -32,7 +31,7 @@
     "sa_sdk_no_suggestion_found": "추천 사항을 찾을 수 없습니다",
     "sa_sdk_no_results_found": "검색 결과가 없음",
     "sa_sdk_see_all_results": "모든 결과 보기",
-    "sa-sdk-unable-to-find-results-at-this-moment": "지금 결과를 찾는것이 불가능합니다",
+    "sa-sdk-unable-to-find-results-at-this-moment": "죄송합니다. 결과를 찾을 수 없습니다",
     "sa_sdk_filter": "필터",
     "sa_sdk_filters": "필터",
     "sa_sdk_applied": "적용 완료",
