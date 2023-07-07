@@ -4,18 +4,35 @@ let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
 var paramUrl="searchassist-app.kore.ai"
-if(serverUrl && (serverUrl.includes("https"))){ // for installer 
+var httpStart = 'http://';
+var wssUrl = "wss";
+if(serverUrl && (serverUrl.includes("https://") || serverUrl.includes("http://"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
-    paramUrl=serverUrl.split('/')[2]
+    paramUrl=serverUrl.split('/')[2];
+    if(serverUrl.includes("https://")){
+      httpStart = "https://";
+      wssUrl = "wss";
+    }else{
+      httpStart = "http://";
+      wssUrl = "ws";
+    }
 }  
 if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
   paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
+    if(window.JWT_OBJ.koreAPIUrl.includes("http://")){
+      httpStart = "http://";
+      wssUrl = "wss";
+    }else{
+      httpStart = "https://";
+      wssUrl = "ws";
+    }
 }
+
 botOptionsFindly.logLevel = 'debug';
 // botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
-botOptionsFindly.koreAPIUrl = "https://"+paramUrl+"/searchassistapi/";
+botOptionsFindly.koreAPIUrl = httpStart+paramUrl+"/searchassistapi/";
 // botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
-botOptionsFindly.baseAPIServer = "https://"+paramUrl;
+botOptionsFindly.baseAPIServer = httpStart+paramUrl;
 function koreGenerateUUID() {
   console.info("generating UUID");
   var d = new Date().getTime();
@@ -59,7 +76,7 @@ botOptionsFindly.searchIndexID = "sidx-b14e41f1-d50a-5fc2-bbd2-3c89594b2f47";
 // To modify the web socket url use the following option
 // For Socket Connection
 botOptionsFindly.reWriteSocketURL = {
-  protocol: "wss",
+  protocol:  wssUrl,
   // hostname: 'searchassist-qa.kore.ai'
   hostname:paramUrl
 };
