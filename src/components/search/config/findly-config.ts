@@ -3,8 +3,8 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-app.kore.ai"
-var httpStart = 'http://';
+var paramUrl="searchassist.kore.ai"
+var httpStart = 'https://';
 var wssUrl = "wss";
 if(serverUrl && (serverUrl.includes("https://") || serverUrl.includes("http://"))){ // for installer 
 // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
@@ -19,11 +19,11 @@ if(serverUrl && (serverUrl.includes("https://") || serverUrl.includes("http://")
 }  
 if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
   paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
-    if(window.JWT_OBJ.koreAPIUrl.includes("http://")){
-      httpStart = "http://";
+    if(window.JWT_OBJ.koreAPIUrl.includes("https://")){
+      httpStart = "https://";
       wssUrl = "wss";
     }else{
-      httpStart = "https://";
+      httpStart = "http://";
       wssUrl = "ws";
     }
 }
