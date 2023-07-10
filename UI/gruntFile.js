@@ -66,7 +66,8 @@ module.exports = function (grunt) {
             'kore-config.js',
             'kore-widgets-config.js',
             'kore-widgets-chat-main.js',
-            'libs/kore-no-conflict-end.js'
+            'libs/kore-no-conflict-end.js',
+            'libs/dompurify.js'
         ];
         cssFiles=[
             'libs/jquery-ui.min.css',
@@ -111,7 +112,8 @@ module.exports = function (grunt) {
             '../libs/client_api.js',
             'kore-config.js',
             'kore-main.js',
-            'libs/kore-no-conflict-end.js'
+            'libs/kore-no-conflict-end.js',
+            'libs/dompurify.js'
         ];
         cssFiles=[
             'libs/jquery-ui.min.css',
