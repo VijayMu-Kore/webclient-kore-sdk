@@ -5766,6 +5766,7 @@ FindlySDK.prototype.searchEventBinding = function (
       $suggest.val('');
       $('#plan-warning-block').remove();
     })
+   
     $(dataHTML)
       .off("keydown", "#search")
       .on("keydown", "#search", debounce(function (e) {
@@ -6043,6 +6044,9 @@ FindlySDK.prototype.searchEventBinding = function (
         // }
 
         //$('#search').trigger(jQuery.Event('keydown', { keycode: 13 }));
+        $("#search").focus().trigger({ type: "keydown", which: 13 });
+      });
+      $(dataHTML).off('touchstart','.search-button').on('touchstart','.search-button',function(e){
         $("#search").focus().trigger({ type: "keydown", which: 13 });
       });
     $(dataHTML)
