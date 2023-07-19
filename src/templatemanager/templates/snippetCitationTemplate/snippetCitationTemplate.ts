@@ -38,7 +38,7 @@ class SnippetCitationTemplate {
         {{/if}}\
         <div class="citation-data-desc  {{if snippetData.title==""}}snippet_padding_top_0{{/if}}">\
         {{each(key, data) snippetData.answer}}\
-        <span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a href="${source.url}" target="_blank">[${source._id}]</a></sup>{{/each}}. </span>\
+        <span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}} {{if data.sources.length  > 1}}<sup class="snippet-citation"><a href="${source.url}" target="_blank">[${source._id}]</a></sup>{{/if}}{{/each}}. </span>\
         {{/each}}\
         </div>\
         <div class="snippet-referene-block">\

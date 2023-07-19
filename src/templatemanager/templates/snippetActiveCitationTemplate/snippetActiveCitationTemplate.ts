@@ -39,7 +39,7 @@ class SnippetActiveCitationTemplate {
         <div class="citation-data-desc {{if snippetData.title==""}}snippet_padding_top_0{{/if}}">\
         {{each(key, data) snippetData.answer}}\
         <span class="snippet-answer-fragment-block fragment-hover-event {{each(itemKey, item) data.sources}} fragment-${item._id} {{/each}}"\
-          fragment="{{each(itemKey, item) data.sources}} .fragment-${item._id}, {{/each}}"><span class="sub-fragment"><span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<span class="snippet-citation"><a href="${source.url}" target="_blank"><span class="reference-no">${source._id}</span></a></span>{{/each}}</span></span></span>\
+          fragment="{{each(itemKey, item) data.sources}} .fragment-${item._id}, {{/each}}"><span class="sub-fragment"><span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}} {{if data.sources.length  > 1}}<span class="snippet-citation"><a href="${source.url}" target="_blank"> <span class="reference-no">${source._id}</span></a></span>{{/if}}{{/each}}</span></span></span>\
         {{/each}}\
         </div>\
         <div class="active-snippet-referene-block">\
