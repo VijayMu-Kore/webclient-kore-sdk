@@ -23683,6 +23683,9 @@ if(res?.graph_answer?.payload?.center_panel){
     if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
     res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
       listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
+      if(res?.graph_answer?.payload?.center_panel?.type === 'image_snippet'){
+        listSnippetData = '';
+      }
     } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
       if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
     res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
