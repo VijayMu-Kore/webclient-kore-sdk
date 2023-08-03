@@ -379,7 +379,7 @@ class FinalResultsTemplate {
     </div>\
     {{/if}}\
     {{/if}}\
-    {{if snippetData && snippetData?.template_type}}\
+    {{if snippetData && snippetData?.template_type && totalSearchResults}}\
     <div class="show-more-results-block" ><span class="show-more-results-btn" id="sa-sdk-show-more-results-btn"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_show_more_results">{{html langTranslator("sa_sdk_show_more_results")}}</span> </span></div>\
     {{/if}}\
       <div class="finalResults snippet-margin {{if snippetData && snippetData?.template_type}}  display-none{{/if}}">\
@@ -396,7 +396,7 @@ class FinalResultsTemplate {
             <!--{{if noResults}} <span class="text-center">No results found</span> {{/if}}-->\
             {{if showAllResults && !customSearchResult}}\
                 {{if taskPrefix !== "SUGGESTED"}}\
-                    <div class="bottom-search-show-all-results">\
+                    <div class="bottom-search-show-all-results {{if totalSearchResults === 0}}d-none{{/if}}">\
                     <span class="pointer show-all-results" ><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_see_all">{{html langTranslator("sa_sdk_see_all")}}</span> <span class="search-results-count">(${totalSearchResults} <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_results">{{html langTranslator("sa_sdk_results")}}</span>)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
                     </div>\
                 {{/if}}\

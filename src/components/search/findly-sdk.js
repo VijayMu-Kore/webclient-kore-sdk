@@ -7290,7 +7290,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     $(".no-templates-defined-full-results-container").hide();
     if (
       ((res.results || {}).data || []).length || ((res.tasks|| []).length)||
-      (res.resultType == "grouped" && Object.keys(res.results).length)
+      (res.resultType == "grouped" && Object.keys(res.results).length) || (Object.keys(res.graph_answer).length)
     ) {
       var searchContainerName = $("body").hasClass("top-down")
         ? ".full-search-data-container"
@@ -19524,7 +19524,7 @@ FindlySDK.prototype.getTopDownTemplate = function () {
     </div>
     </div>
   </div>
-  {{each(key2,col2) loadingArray}}\
+  {{each(key2,col2) bodyLoadingArray}}\
   <div class=" row">
      <div class = "col-3 sa-loading sa-animated-background"></div>
     <div class = "offset-1 col-8 ">
@@ -19571,7 +19571,8 @@ FindlySDK.prototype.initializeTopDown = function (
   var dataHTML = $(FindlySDK.prototype.getTopDownTemplate()).tmplProxy({
     devMode: devMode,
     searchConfig: searchConfiguration,
-    loadingArray: [1,2,3]
+    loadingArray: [1,2,3],
+    bodyLoadingArray:[1,2,3,4,5]
   });
   var container = search_container ? $("." + search_container) : $("body");
   // var container = $('body');
