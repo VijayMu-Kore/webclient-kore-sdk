@@ -21222,7 +21222,8 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
     var url = _self.API.searchUrl;
     var payload = {
       query: _self.vars.searchObject.searchText,
-      maxNumOfResults: maxNumOfResults,
+      // "maxNumOfResults": 9,
+      maxNumOfResults: 5,
       userId: _self.API.uuid,
       streamId: _self.API.streamId,
       lang: "en",
