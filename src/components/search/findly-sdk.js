@@ -7297,78 +7297,6 @@ FindlySDK.prototype.handleSearchRes = function (res) {
         : ".search-data-container";
         var snippetObj=_self.getSnippetObject(res);
       
-        if(res?.graph_answer?.payload?.center_panel){
-         
-          if(Object.keys(res.graph_answer.payload.center_panel).length>0){
-            var listSnippetData = '';
-            var snippetReference = [];
-            if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-              listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
-            } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-              res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
-                snippetReference = [...snippetReference,...item.sources];
-              })
-              var set = new Set();
-              var unionArray =  snippetReference.filter(item => {
-                if (!set.has(item.title)) {
-                  set.add(item.title);
-                  return true;
-                }
-                return false;
-              }, set);
-              snippetReference = unionArray;
-              res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
-                item.sources.forEach((source)=>{
-                  let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title);
-                  if(sourceIndex>-1){
-                    source['_id']= sourceIndex+1;
-                  }
-                })
-              })
-              listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
-            } else {
-              if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
-            res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
-            res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-            if(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content && Array.isArray(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) && res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.length){
-              res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content.forEach((content)=>{
-                content = helpers.convertMDtoHTML(content);
-              })
-              listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
-            }else{
-              listSnippetData =res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
-            }
-            }
-            let title = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title) : '';
-            snippetObj = {'title':title,
-            'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,
-            'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,
-            'template_type':res?.graph_answer?.payload?.center_panel?.type, 
-            'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||''),
-            'searchQuery': _self.vars.searchObject.searchText,
-            'displayFeedback':_self.vars.feedBackExperience.smartAnswer,
-            'snippet_type':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_type //generative_model
-          }; 
-            if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
-              snippetObj['reference']=snippetReference;
-            }
-          }
-          else{
-            snippetObj={};
-          }
-        }
-        else{
-          snippetObj={};
-        }
       if (!$("body").hasClass("top-down")) {
         
         _self.countTotalResults(res, 0);
@@ -19517,18 +19445,17 @@ FindlySDK.prototype.getTopDownTemplate = function () {
     <div class = "col-3 "></div>
     <div class = "offset-1 col-8 ">
     <div class="row">
-       <div class = "col-2 sa-loading-tab sa-animated-background"></div>
-       {{each(key1,col1) loadingArray}}\
+       {{each(key1,col1) loadingArray.slice(0,4)}}\
        <div class = "offset-1 col-2 sa-loading-tab sa-animated-background"></div>
       {{/each}}\
     </div>
     </div>
   </div>
-  {{each(key2,col2) bodyLoadingArray}}\
+  {{each(key2,col2) loadingArray.slice(0,4)}}\
   <div class=" row">
      <div class = "col-3 sa-loading sa-animated-background"></div>
     <div class = "offset-1 col-8 ">
-    {{each(key3,col3) loadingArray}}\
+    {{each(key3,col3) loadingArray.slice(0,4)}}\
       {{if key3!=='3'}}
         <div class="row sa-loading-2 sa-animated-background"></div>
       {{/if}}\
@@ -19571,8 +19498,7 @@ FindlySDK.prototype.initializeTopDown = function (
   var dataHTML = $(FindlySDK.prototype.getTopDownTemplate()).tmplProxy({
     devMode: devMode,
     searchConfig: searchConfiguration,
-    loadingArray: [1,2,3],
-    bodyLoadingArray:[1,2,3,4,5]
+    loadingArray: [1,2,3,4,5],
   });
   var container = search_container ? $("." + search_container) : $("body");
   // var container = $('body');
@@ -21294,7 +21220,6 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
   var _self = this;
   if (showMoreData) {
     var url = _self.API.searchUrl;
-    let maxNumOfResults = $('body').hasClass('kore-sdk-body')?3:5
     var payload = {
       query: _self.vars.searchObject.searchText,
       maxNumOfResults: maxNumOfResults,
