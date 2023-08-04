@@ -19570,7 +19570,12 @@ FindlySDK.prototype.initializeTopDown = function (
   var dataHTML = $(FindlySDK.prototype.getTopDownTemplate()).tmplProxy({
     devMode: devMode,
     searchConfig: searchConfiguration,
+<<<<<<< Updated upstream
     loadingArray: [1,2,3,4,5],
+=======
+    loadingArray: [1,2,3],
+    bodyLoadingArray:[1,2,3,4,5]
+>>>>>>> Stashed changes
   });
   var container = search_container ? $("." + search_container) : $("body");
   // var container = $('body');
