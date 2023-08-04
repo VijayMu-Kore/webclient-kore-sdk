@@ -8,7 +8,7 @@ class SnippetListTemplate {
         let $ = me.hostInstance.$;
         let helpersObj = helpers;
 
-        if (msgData?.message?.[0]?.component?.payload?.template_type === "list_element_snippet" || msgData?.message?.[0]?.component?.payload?.template_type === "heading_snippet") {
+        if (msgData?.message?.[0]?.component?.payload?.template_type === "list_element_snippet" || msgData?.message?.[0]?.component?.payload?.template_type === "headings_snippet") {
             me.messageHtml = $(SnippetListTemplate.prototype.getTemplateString()).tmpl({
                 'snippetData': msgData?.message?.[0]?.component?.payload?.snippetData,
                 'helpers': helpersObj.helpers,
