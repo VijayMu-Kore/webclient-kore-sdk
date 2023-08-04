@@ -19517,18 +19517,17 @@ FindlySDK.prototype.getTopDownTemplate = function () {
     <div class = "col-3 "></div>
     <div class = "offset-1 col-8 ">
     <div class="row">
-       <div class = "col-2 sa-loading-tab sa-animated-background"></div>
-       {{each(key1,col1) loadingArray}}\
+       {{each(key1,col1) loadingArray.slice(0,4)}}\
        <div class = "offset-1 col-2 sa-loading-tab sa-animated-background"></div>
       {{/each}}\
     </div>
     </div>
   </div>
-  {{each(key2,col2) bodyLoadingArray}}\
+  {{each(key2,col2) loadingArray.slice(0,4)}}\
   <div class=" row">
      <div class = "col-3 sa-loading sa-animated-background"></div>
     <div class = "offset-1 col-8 ">
-    {{each(key3,col3) loadingArray}}\
+    {{each(key3,col3) loadingArray.slice(0,4)}}\
       {{if key3!=='3'}}
         <div class="row sa-loading-2 sa-animated-background"></div>
       {{/if}}\
@@ -19571,8 +19570,7 @@ FindlySDK.prototype.initializeTopDown = function (
   var dataHTML = $(FindlySDK.prototype.getTopDownTemplate()).tmplProxy({
     devMode: devMode,
     searchConfig: searchConfiguration,
-    loadingArray: [1,2,3],
-    bodyLoadingArray:[1,2,3,4,5]
+    loadingArray: [1,2,3,4,5],
   });
   var container = search_container ? $("." + search_container) : $("body");
   // var container = $('body');
