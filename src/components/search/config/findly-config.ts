@@ -2,31 +2,31 @@ let findlyConfig:any = {};
 
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
-// var serverUrl = window.location.href;
-var paramUrl="searchassist.pilot.kore.ai"
+var serverUrl = window.location.href;
+var paramUrl="searchassist.kore.ai"
 var httpStart = 'https://';
 var wssUrl = "wss";
-// if(serverUrl && (serverUrl.includes("https://") || serverUrl.includes("http://"))){ // for installer 
-// // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
-//     paramUrl=serverUrl.split('/')[2];
-//     if(serverUrl.includes("https://")){
-//       httpStart = "https://";
-//       wssUrl = "wss";
-//     }else{
-//       httpStart = "http://";
-//       wssUrl = "ws";
-//     }
-// }  
-// if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
-//   paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
-//     if(window.JWT_OBJ.koreAPIUrl.includes("https://")){
-//       httpStart = "https://";
-//       wssUrl = "wss";
-//     }else{
-//       httpStart = "http://";
-//       wssUrl = "ws";
-//     }
-// }
+if(serverUrl && (serverUrl.includes("https://") || serverUrl.includes("http://"))){ // for installer 
+// if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
+    paramUrl=serverUrl.split('/')[2];
+    if(serverUrl.includes("https://")){
+      httpStart = "https://";
+      wssUrl = "wss";
+    }else{
+      httpStart = "http://";
+      wssUrl = "ws";
+    }
+}  
+if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
+  paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
+    if(window.JWT_OBJ.koreAPIUrl.includes("https://")){
+      httpStart = "https://";
+      wssUrl = "wss";
+    }else{
+      httpStart = "http://";
+      wssUrl = "ws";
+    }
+}
 
 botOptionsFindly.logLevel = 'debug';
 // botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
@@ -65,12 +65,12 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "snippets",
-  taskBotId: "st-b28c38c4-dde4-56ab-8153-098204be6e09",
+  chatBot: "debug_payload_test",
+  taskBotId: "st-ffec6f37-caec-51fb-bcb8-430a34a3a579",
 };
-botOptionsFindly.clientId = "cs-cfc0a55d-cb1d-5bd5-8be8-824d94185d43";
-botOptionsFindly.clientSecret = "Dwja7aXe30SIqJT1v6/vCCh2ta2eT1If2rByFuh4fh4=";
-botOptionsFindly.searchIndexID = "sidx-3c97916f-1b0c-5e25-9dbe-c7d338169b95";
+botOptionsFindly.clientId = "cs-9510d399-1f66-5dc6-a1c4-66282f5af266";
+botOptionsFindly.clientSecret = "P4KpMGTZr4qPxqX9tfuFJRk3Zmcuvb+ihYSRymQ+FyU=";
+botOptionsFindly.searchIndexID = "sidx-b14e41f1-d50a-5fc2-bbd2-3c89594b2f47";
 
 
 // To modify the web socket url use the following option
