@@ -28,6 +28,7 @@ if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
     }
 }
 
+
 botOptionsFindly.logLevel = 'debug';
 // botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
 botOptionsFindly.koreAPIUrl = httpStart+paramUrl+"/searchassistapi/";
