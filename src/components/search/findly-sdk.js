@@ -80,7 +80,6 @@ FindlySDK.prototype.$ = $;
 */
 FindlySDK.prototype.sendMessage = function (messageText, options, serverMessageObject, clientMessageObject) {
   var _self = this;
-  window.alert("sendMessage",messageText)
   // const _chatContainer = me.chatEle;
   // const _chatInput = _chatContainer.find('.kore-chat-footer .chatInputBox');
   _self.sendMessageToBot(messageText, options, serverMessageObject, clientMessageObject);
@@ -5896,7 +5895,7 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.vars.isQueryEntered = false;
           _self.suggestionSelectedByNavigationKeys(e);
         }
-        if (code == 13 || keyCode == 13) {
+        if (code == 13) {
           recognition.stop();
           final_transcript = "";
           $(".recordingMicrophone").css("display", "none");
@@ -6045,14 +6044,10 @@ FindlySDK.prototype.searchEventBinding = function (
         // }
 
         //$('#search').trigger(jQuery.Event('keydown', { keycode: 13 }));
-        const userBrowser = getBrowserInfo();
-        userBrowser === 'Safari'?sendMessageToSearch('user',$('#search').val()):null;
         $("#search").focus().trigger({ type: "keydown", which: 13 });
       });
       $(dataHTML).off('touchstart','.search-button').on('touchstart','.search-button',function(e){
         $("#search").focus().trigger({ type: "keydown", which: 13 });
-        const userBrowser = getBrowserInfo();
-        userBrowser === 'Safari'?sendMessageToSearch('user',$('#search').val()):null;
       });
     $(dataHTML)
       .off("click", "#search")
@@ -8182,7 +8177,6 @@ FindlySDK.prototype.sendMessageToSearch = function (
     text: "",
     from: type,
   };
-  window.alert("sendMessageToSearch",mesageData)
   var devMode = _self.isDev ? "true" : "false";
   var viewType = _self.vars.customizeView ? "Customize" : "Preview";
   $(".more-results").css("display", "none");
@@ -23575,30 +23569,5 @@ FindlySDK.prototype.getQueryLevelAnalyticsTemplate = function(){
   </div>\
   </script>';
 }
-function getBrowserInfo() {
-  const userAgent = navigator.userAgent;
-  const isOpera = !!window.opera || userAgent.indexOf(' OPR/') >= 0;
-  const isFirefox = userAgent.indexOf('Firefox') >= 0;
-  const isSafari = userAgent.indexOf('Safari') >= 0 && !userAgent.includes('Chrome');
-  const isIE = userAgent.indexOf('Trident') >= 0 || userAgent.indexOf('MSIE') >= 0;
-  const isEdge = userAgent.indexOf('Edg') >= 0;
-  const isChrome = userAgent.indexOf('Chrome') >= 0 && !isEdge && !isOpera;
-  
-  if (isOpera) {
-  return 'Opera';
-  } else if (isFirefox) {
-  return 'Firefox';
-  } else if (isSafari) {
-  return 'Safari';
-  } else if (isIE) {
-  return 'Internet Explorer';
-  } else if (isEdge) {
-  return 'Microsoft Edge';
-  } else if (isChrome) {
-  return 'Chrome';
-  } else {
-  return 'Unknown';
-  }
-  }  
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
