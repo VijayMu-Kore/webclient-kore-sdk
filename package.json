@@ -4,10 +4,10 @@
   "description": "Kore.ai offers Bots SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore.ai Bots chat capability into custom applications",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-umd": "export NODE_OPTIONS=--openssl-legacy-provider;webpack --env=kore_env=prod --env=target_module=umd",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider;webpack --env=kore_env=prod  --env=target_module=esm",
+    "build-umd": "webpack --env=kore_env=prod --env=target_module=umd",
+    "build": "webpack --env=kore_env=prod  --env=target_module=esm",
     "serve-umd": "webpack-dev-server --env=kore_env=dev  --env=component=chat  --env=target_module=umd",
-    "serve": "export NODE_OPTIONS=--openssl-legacy-provider;webpack-dev-server --env=kore_env=dev --env=component=chat --env=target_module=esm --mode development",
+    "serve": "webpack-dev-server --env=kore_env=dev --env=component=chat --env=target_module=esm --mode development",
     "doc": "jsdoc -c jsdoc.json",
     "eslint": "./node_modules/.bin/eslint 'src/**/*.{ts,js}'",
     "eslint-fix": "./node_modules/.bin/eslint --fix 'src/**/*.{ts,js}'",
