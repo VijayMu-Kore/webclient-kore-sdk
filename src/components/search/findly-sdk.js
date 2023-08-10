@@ -5962,7 +5962,6 @@ FindlySDK.prototype.searchEventBinding = function (
           _self.vars.searchObject.searchText = $(".sdk-body").hasClass("top-down")
             ? $(".search-top-down").val()
             : $(".bottom-up-search").val();
-            window.alert(_self.vars.searchObject.searchText )
           if ($(".sdk-body").hasClass("top-down")) {
             $(".sdk-body").addClass("showFullResults");
             $(".top-down-suggestion").val($(".search-top-down").val());
