@@ -10485,12 +10485,12 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
       }
     }
   }
-  if(_self.config.extractionSourceIdList){
+  if(_self.config.extractionDocIdList){
     if(!_self.bot.options.botInfo.customData) _self.bot.options.botInfo.customData={};
     if(_self.bot.options.botInfo.customData && _self.bot.options.botInfo.customData['userContext']){
-      _self.bot.options.botInfo.customData['userContext']['extractionSourceIdList'] = _self.config.extractionSourceIdList
+      _self.bot.options.botInfo.customData['userContext']['extractionDocIdList'] = _self.config.extractionDocIdList
     }else{
-      _self.bot.options.botInfo.customData['userContext']={"extractionSourceIdList": _self.config.extractionSourceIdList} ;
+      _self.bot.options.botInfo.customData['userContext']={"extractionDocIdList": _self.config.extractionDocIdList} ;
     }
   }
   attachmentInfo = {};
@@ -22907,7 +22907,7 @@ FindlySDK.prototype.show = function (config) {
   if(!config.knowledgeAIConfig){
     _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
   } else {
-    _self.config.extractionSourceIdList = config.extractionSourceIdList;
+    _self.config.extractionDocIdList = config.extractionDocIdList;
     _self.config.knowledgeAIConfig = config.knowledgeAIConfig;
     _self.config.botOptions.assertionFn = _self.getKnowledgeAIAssertionToken.bind(this);
   }
