@@ -3126,7 +3126,7 @@ FindlySDK.prototype.prepAllSearchData = function (
     }
   }, 100);
 };
-FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
+FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP,searchQuery) {
   if ($("body").hasClass("top-down")) {
     // $('#loaderDIV').show();
   }
@@ -3147,7 +3147,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP) {
     currentDate.getSeconds();
 
   var payload = {
-    query: _self.vars.searchObject.searchText,
+    query: searchQuery?searchQuery:_self.vars.searchObject.searchText,
     // "maxNumOfResults": 9,
     maxNumOfResults: 5,
     userId: _self.API.uuid,
@@ -6510,6 +6510,7 @@ FindlySDK.prototype.searchEventBinding = function (
                                   payload: {
                                     infoText:'',
                                     template_type: "finalResultsTemplate",
+                                    query: _self.vars.searchObject.searchText,
                                     isDev: _self.isDev,
                                     devMode: devMode,
                                     viewType: viewType,
@@ -7360,6 +7361,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                     groupData: _self.vars.mergedData,
                     searchType: 'isSearch',
                     helpers: helpers,
+                    query: _self.vars.searchObject.searchText,
                     snippetData:snippetObj,
                     diaplayFeedback:_self.vars.feedBackExperience,
                     langTranslator:langTranslator
@@ -21916,7 +21918,8 @@ FindlySDK.prototype.seeAllBtnClickEvent = function (e) {
   _self.vars.showingMatchedResults = true;
   e.preventDefault();
   e.stopImmediatePropagation();
-  _self.invokeSearch(false, true);
+   const searchQuery = e?.currentTarget?.closest('[data-query]')?.getAttribute('data-query');
+  _self.invokeSearch(false, true,searchQuery);
   // $('#loaderDIV').show()
 }
 FindlySDK.prototype.botActionTrigger = function (e) {
