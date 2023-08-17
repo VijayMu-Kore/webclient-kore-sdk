@@ -439,7 +439,7 @@
                         // str = str.replace(/onmouseover=/gi, '');
                         // str = str.replace(/onload=/gi, '');
                         //  str = sanitizeXSS(str);
-                        str = DOMPurify.sanitize(str,{  ADD_TAGS: ['iframe']})
+                        str = DOMPurify.sanitize(str,{ ALLOWED_TAGS: ['a'] ,ADD_TAGS: ['iframe']})
                         wrapper1 = document.createElement('div');
                         newStr = str.replace(/“/g, '\"').replace(/”/g, '\"');
                         newStr = newStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -456,7 +456,7 @@
                         // str = str.replace(/onload=/gi, '');
                         // str = sanitizeXSS(str);
                         //str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-                        str = DOMPurify.sanitize(str,{  ADD_TAGS: ['iframe']})
+                        str = DOMPurify.sanitize(str,{ ALLOWED_TAGS: ['a'] , ADD_TAGS: ['iframe']})
                         wrapper1.innerHTML = xssAttack(str);
                         if ($(wrapper1).find('a').attr('href')) {
                             var linkArray = str.match(/<a[^>]*>([^<]+)<\/a>/g);
