@@ -421,7 +421,6 @@ class FinalResultsTemplate {
       if(!$(event.currentTarget).closest('.snippet-like-img').hasClass('active')){
       const searchQuery = event?.currentTarget?.closest('[data-query]')?.getAttribute('data-query');
       hostInstance.updateFeedBackResult('thumbsUp',searchQuery,'smartAnswer')
-      console.log(searchQuery);
       $(messageHtml).find('.snippet-feedback').removeClass('active');
       $(event.currentTarget).addClass('active');
       }
