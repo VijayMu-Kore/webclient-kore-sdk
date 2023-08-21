@@ -137,7 +137,7 @@ class FinalResultsTemplate {
         {{/if}}\
         {{if snippetData && snippetData?.template_type}}\
         {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
-          <div class="search-temp-one snippet-margin">\
+          <div class="search-temp-one snippet-margin"  data-query = "${snippetData?.searchQuery}">\
             <div class="top-header">\
                 <div class="top-header-with-img">\
                     <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
@@ -184,7 +184,7 @@ class FinalResultsTemplate {
         </div>\
         {{/if}}\
         {{if snippetData.template_type =="list_element_snippet" || snippetData.template_type =="headings_snippet"}}\
-    <div class="search-temp-one list-snippet-temp snippet-margin">\
+    <div class="search-temp-one list-snippet-temp snippet-margin"  data-query = "${snippetData?.searchQuery}">\
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
@@ -230,7 +230,7 @@ class FinalResultsTemplate {
     </div>\
     {{/if}}\
     {{if snippetData.template_type =="image_snippet"}}\
-          <div class="search-temp-one snippet-margin">\
+          <div class="search-temp-one snippet-margin"  data-query = "${snippetData?.searchQuery}">\
             <div class="top-header">\
                 <div class="top-header-with-img">\
                     <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
@@ -276,7 +276,7 @@ class FinalResultsTemplate {
         </div>\
         {{/if}}\
         {{if snippetData.template_type =="citation_snippet"}}\
-        <div class="search-temp-one snippet-margin">\
+        <div class="search-temp-one snippet-margin"  data-query = "${snippetData?.searchQuery}">\
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
@@ -327,7 +327,7 @@ class FinalResultsTemplate {
     </div>\
     {{/if}}\
     {{if snippetData.template_type =="active_citation_snippet"}}\
-        <div class="search-temp-one active-citation-snippet snippet-margin">\
+        <div class="search-temp-one active-citation-snippet snippet-margin"  data-query = "${snippetData?.searchQuery}">\
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
@@ -397,7 +397,7 @@ class FinalResultsTemplate {
             {{if showAllResults && !customSearchResult}}\
                 {{if taskPrefix !== "SUGGESTED"}}\
                     <div class="bottom-search-show-all-results {{if totalSearchResults === 0}}d-none{{/if}}">\
-                    <span class="pointer show-all-results" ><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_see_all">{{html langTranslator("sa_sdk_see_all")}}</span> <span class="search-results-count">(${totalSearchResults} <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_results">{{html langTranslator("sa_sdk_results")}}</span>)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
+                    <span data-query = "${query}" class="pointer show-all-results" ><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_see_all">{{html langTranslator("sa_sdk_see_all")}}</span> <span class="search-results-count">(${totalSearchResults} <span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_results">{{html langTranslator("sa_sdk_results")}}</span>)</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACHSURBVHgBlZDBDYUwDEOdin/+sEGkMhBMACOwCSuwASMwAwMglQ3YICTAAQ6lwpdUkV9lB4iImXPmsrd537sYEELYAClA2XiHosAJLS1EVrhfjy9i9gN739ibNGenM09SJA3E1RqJNqT1t7+1U0Up51GYskm7zNaJvpht595zP83JKNdBHtoBNXcrtgi1OOQAAAAASUVORK5CYII="></span>\
                     </div>\
                 {{/if}}\
             {{/if}}\
@@ -419,14 +419,16 @@ class FinalResultsTemplate {
     let hostInstance= me.hostInstance;
     $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
       if(!$(event.currentTarget).closest('.snippet-like-img').hasClass('active')){
-      hostInstance.updateFeedBackResult('thumbsUp',hostInstance.searchQuery,'smartAnswer')
+      const searchQuery = event?.currentTarget?.closest('[data-query]')?.getAttribute('data-query');
+      hostInstance.updateFeedBackResult('thumbsUp',searchQuery,'smartAnswer')
       $(messageHtml).find('.snippet-feedback').removeClass('active');
       $(event.currentTarget).addClass('active');
       }
     });
     $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
       if(!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')){
-      FinalResultsTemplate.prototype.appendFeedBaackData(me,messageHtml,'smartAnswer')
+      const searchQuery = event?.currentTarget?.closest('[data-query]')?.getAttribute('data-query');
+      FinalResultsTemplate.prototype.appendFeedBaackData(me,messageHtml,'smartAnswer',searchQuery)
       $(messageHtml).find('.snippet-feedback').removeClass('active');
       $(event.currentTarget).addClass('active');
       }
@@ -470,7 +472,7 @@ class FinalResultsTemplate {
     });
   }
 
-  appendFeedBaackData(me: any, messageHtml: any,feedBackType:any){
+  appendFeedBaackData(me: any, messageHtml: any,feedBackType:any,searchQuery:any){
     let hostWindowInstance = me.hostInstance;
     let $ = me.hostInstance.$;
     let feedbackMsgData = {
@@ -479,7 +481,7 @@ class FinalResultsTemplate {
           type: 'template',
           payload: {
             template_type: "feedbackFormTemplate",
-            query: hostWindowInstance?.vars?.searchObject.searchText || '',
+            query: searchQuery?searchQuery:hostWindowInstance?.vars?.searchObject.searchText || '',
             feedBackType:feedBackType,
             langTranslator: me?.langTranslator
           }
