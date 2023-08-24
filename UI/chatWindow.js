@@ -439,7 +439,13 @@
                         // str = str.replace(/onmouseover=/gi, '');
                         // str = str.replace(/onload=/gi, '');
                         //  str = sanitizeXSS(str);
-                        str = DOMPurify.sanitize(str,{ ALLOWED_TAGS: ['a'] ,ADD_TAGS: ['iframe']})
+                        if (window.DOMPurify) {
+                            str = window.DOMPurify.sanitize(str, { ALLOWED_TAGS: ['a'], ADD_TAGS: ['iframe'] })
+                        } else {
+                            str = str.replace(/onerror=/gi, '');
+                            str = str.replace(/onmouseover=/gi, '');
+                            str = str.replace(/onload=/gi, '');
+                        }
                         wrapper1 = document.createElement('div');
                         newStr = str.replace(/“/g, '\"').replace(/”/g, '\"');
                         newStr = newStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -456,7 +462,13 @@
                         // str = str.replace(/onload=/gi, '');
                         // str = sanitizeXSS(str);
                         //str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-                        str = DOMPurify.sanitize(str,{ ALLOWED_TAGS: ['a'] , ADD_TAGS: ['iframe']})
+                        if (window.DOMPurify) {
+                            str = window.DOMPurify.sanitize(str, { ALLOWED_TAGS: ['a'], ADD_TAGS: ['iframe'] })
+                        } else {
+                            str = str.replace(/onerror=/gi, '');
+                            str = str.replace(/onmouseover=/gi, '');
+                            str = str.replace(/onload=/gi, '');
+                        }
                         wrapper1.innerHTML = xssAttack(str);
                         if ($(wrapper1).find('a').attr('href')) {
                             var linkArray = str.match(/<a[^>]*>([^<]+)<\/a>/g);
@@ -503,7 +515,9 @@
                     if (responseType === 'user') {
                         // str = str.replace(/abc-error=/gi, 'onerror=');
                     }
-                    str = DOMPurify.sanitize(str,{  ADD_TAGS: ['iframe']})
+                    if (window.DOMPurify) {
+                        str = window.DOMPurify.sanitize(str,{  ADD_TAGS: ['iframe']})
+                    }
                     return helpers.nl2br(str, true);
                 },
                 'checkMarkdowns': function (val, hyperLinksMap) {
