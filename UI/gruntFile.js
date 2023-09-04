@@ -36,6 +36,7 @@ module.exports = function (grunt) {
             'libs/jquery.js',
             'libs/jquery.tmpl.min.js',
             'libs/jquery-ui.min.js',
+            'libs/dompurify.js',
             'libs/moment.js',
             '../libs/lodash.min.js',
             '../libs/d3.v4.min.js',
@@ -66,8 +67,7 @@ module.exports = function (grunt) {
             'kore-config.js',
             'kore-widgets-config.js',
             'kore-widgets-chat-main.js',
-            'libs/kore-no-conflict-end.js',
-            'libs/dompurify.js'
+            'libs/kore-no-conflict-end.js'
         ];
         cssFiles=[
             'libs/jquery-ui.min.css',
@@ -90,6 +90,7 @@ module.exports = function (grunt) {
             'libs/jquery.js',
             'libs/jquery.tmpl.min.js',
             'libs/jquery-ui.min.js',
+            'libs/dompurify.js',
             'libs/moment.js',
             '../libs/lodash.min.js',
             '../libs/d3.v4.min.js',
@@ -112,8 +113,7 @@ module.exports = function (grunt) {
             '../libs/client_api.js',
             'kore-config.js',
             'kore-main.js',
-            'libs/kore-no-conflict-end.js',
-            'libs/dompurify.js'
+            'libs/kore-no-conflict-end.js'
         ];
         cssFiles=[
             'libs/jquery-ui.min.css',
