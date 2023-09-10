@@ -98,7 +98,7 @@ class SnippetMultiLangTemplate {
       let $ = me.hostInstance.$;
       let hostInstance= me.hostInstance;
       $(messageHtml).off('change', '.selectTemplateDropdowm').on('change', '.selectTemplateDropdowm', function (event:any) {
-        hostInstance.multiLangSelectEvent($(event.currentTarget).attr('value'), snippetData.searchQuery);
+        hostInstance.multiLangSelectEvent(event.currentTarget.value, snippetData.snippetText);
         console.log('testt');
       });
       $(messageHtml).off('click', '.more_to_ask_list').on('click', '.more_to_ask_list', function (event:any) {
