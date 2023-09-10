@@ -104,6 +104,9 @@ class SnippetMultiLangTemplate {
       $(messageHtml).off('click', '.more_to_ask_list').on('click', '.more_to_ask_list', function (event:any) {
         hostInstance.moreAskListClick($(event.currentTarget).attr('value'));
       });
+      $(messageHtml).off('click', 'b').on('click', 'b', function (event:any) {
+        hostInstance.boldpreview(event.currentTarget.textContent);
+      });
       $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
         if(!$(event.currentTarget).closest('.snippet-like-img').hasClass('active')){
         hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
