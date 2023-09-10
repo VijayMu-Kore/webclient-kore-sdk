@@ -7,6 +7,7 @@ import SnippetListTemplate from '../../templates/snippetListTemplate/snippetList
 import SnippetParagraphTemplate from '../../templates/snippetParagraphTemplate/snippetParagraphTemplate';
 import SnippetImageTemplate from '../../templates/snippetImageTemplate/snippetImageTemplate';
 import SnippetCitationTemplate from '../../templates/snippetCitationTemplate/snippetCitationTemplate';
+import SnippetMultiLangTemplate from '../../templates/snippetMultiLangTemplate/snippetMultiLangTemplate';
 import SnippetActiveCitationTemplate from '../../templates/snippetActiveCitationTemplate/snippetActiveCitationTemplate';
 import korejquery from "../../../libs/korejquery";
 import FeedBackFormTemplate from '../feedBackFormTemplate/feedBackFormTemplate';
@@ -26,6 +27,7 @@ class FullSearchResultTopdownTemplate {
       me.snippetParagraphTemplateObj = new SnippetParagraphTemplate();
       me.snippetImageTemplateObj = new SnippetImageTemplate();
       me.snippetCitationTemplateObj = new SnippetCitationTemplate();
+      me.snippetMultiLangTemplateObj = new SnippetMultiLangTemplate();
       me.snippetActiveCitationTemplateObj = new SnippetActiveCitationTemplate();
       me.listTemplateObj = new searchListViewTemplate();
       me.gridTemplateObj = new searchGridViewTemplate();
@@ -969,6 +971,8 @@ class FullSearchResultTopdownTemplate {
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetCitationTemplateObj.renderMessage.bind(me, snippetMsgData));
   }else if(['active_citation_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetActiveCitationTemplateObj.renderMessage.bind(me, snippetMsgData));
+  }else if(['multi_lang_citation_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
+    $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetMultiLangTemplateObj.renderMessage.bind(me, snippetMsgData));
   }else{
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetListTemplateObj.renderMessage.bind(me, snippetMsgData));
   }

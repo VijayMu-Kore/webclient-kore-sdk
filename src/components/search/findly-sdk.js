@@ -9968,7 +9968,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition == "top") {
+  if (response.experienceConfig.searchBarPosition !== "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
@@ -19694,7 +19694,7 @@ FindlySDK.prototype.initializeTopDown = function (
     };
     _self.parentEvent(responseObject);
   })
-  _self.tooltipBindEvent();
+  // _self.tooltipBindEvent();
 };
 
 FindlySDK.prototype.getTopDownActionTemplate = function () {
@@ -23676,7 +23676,97 @@ FindlySDK.prototype.getSnippetObject = function(res){
   var _self = this;
 var snippetObj = {};
 if(res?.graph_answer?.payload?.center_panel){
-               
+               res.graph_answer.payload.center_panel = {
+                "type": "multi_lang_citation_snippet",
+                "data": [
+                  {
+                    "snippet_title": "",
+                    "snippet_content": [
+                      {
+                        "answer_fragment": "<b>Movies</b> as an essential <b>aspect</b> of popular <b>culture</b> play a pivotal <b>role</b> in one's <b>perception</b> of the <b>discourse</b> they reflect ",
+                        "sources": [
+                          {
+                            "title": "abc.txt",
+                            "url": "https://searchassist-qa.kore.ai:443/searchassistapi/getMediaStream/findly/f-fcd33a35-7c4f-5542-bdae-048f2702434a.txt?n=3884589683&s=IlNHL2R3a0JESUhIb0pJQlZiTVhjUUFKLy9HakRTSWxuUm82UXR0YTB1M3c9Ig$$",
+                            "chunk_id": "chk-2fd1766a-2261-432b-b0f2-3dc7991f6cf1",
+                            "doc_id": "fc-257556ef-6d67-5b77-9318-78ed83110a49",
+                            "source_id": "fs-0832f974-9147-54d7-b8df-cfe4b0848e80",
+                            "source_type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "answer_fragment": ". <b>Marshall</b> <b>McLuhan</b> and <b>Stuart</b> <b>Hall</b> have emphasized the <b>significance</b> of the <b>relationship</b> between <b>movies</b> and <b>socio</b>-cultural <b>patterns</b> of <b>audience</b> <b>development</b> ",
+                        "sources": [
+                          {
+                            "title": "abc.txt",
+                            "url": "https://searchassist-qa.kore.ai:443/searchassistapi/getMediaStream/findly/f-fcd33a35-7c4f-5542-bdae-048f2702434a.txt?n=3884589683&s=IlNHL2R3a0JESUhIb0pJQlZiTVhjUUFKLy9HakRTSWxuUm82UXR0YTB1M3c9Ig$$",
+                            "chunk_id": "chk-2fd1766a-2261-432b-b0f2-3dc7991f6cf1",
+                            "doc_id": "fc-257556ef-6d67-5b77-9318-78ed83110a49",
+                            "source_id": "fs-0832f974-9147-54d7-b8df-cfe4b0848e80",
+                            "source_type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "answer_fragment": ". <b>McLuhan</b> states that <b>movies</b> serve as a <b>means</b> of conveying <b>information</b> and can be a vital <b>learning</b> <b>tool</b> ",
+                        "sources": [
+                          {
+                            "title": "abc.txt",
+                            "url": "https://searchassist-qa.kore.ai:443/searchassistapi/getMediaStream/findly/f-fcd33a35-7c4f-5542-bdae-048f2702434a.txt?n=3884589683&s=IlNHL2R3a0JESUhIb0pJQlZiTVhjUUFKLy9HakRTSWxuUm82UXR0YTB1M3c9Ig$$",
+                            "chunk_id": "chk-2fd1766a-2261-432b-b0f2-3dc7991f6cf1",
+                            "doc_id": "fc-257556ef-6d67-5b77-9318-78ed83110a49",
+                            "source_id": "fs-0832f974-9147-54d7-b8df-cfe4b0848e80",
+                            "source_type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "answer_fragment": ". The <b>perception</b> of the <b>message</b> encoded within a <b>movie</b> depends on the <b>creator</b>'s <b>intention</b> and the <b>socio</b>-cultural <b>background</b> of the <b>audience</b> ",
+                        "sources": [
+                          {
+                            "title": "abc.txt",
+                            "url": "https://searchassist-qa.kore.ai:443/searchassistapi/getMediaStream/findly/f-fcd33a35-7c4f-5542-bdae-048f2702434a.txt?n=3884589683&s=IlNHL2R3a0JESUhIb0pJQlZiTVhjUUFKLy9HakRTSWxuUm82UXR0YTB1M3c9Ig$$",
+                            "chunk_id": "chk-2fd1766a-2261-432b-b0f2-3dc7991f6cf1",
+                            "doc_id": "fc-257556ef-6d67-5b77-9318-78ed83110a49",
+                            "source_id": "fs-0832f974-9147-54d7-b8df-cfe4b0848e80",
+                            "source_type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "answer_fragment": ".However, it is important to note that <b>movies</b> can also perpetuate <b>stereotypes</b> and stigmatize certain <b>communities</b> ",
+                        "sources": [
+                          {
+                            "title": "abc.txt",
+                            "url": "https://searchassist-qa.kore.ai:443/searchassistapi/getMediaStream/findly/f-fcd33a35-7c4f-5542-bdae-048f2702434a.txt?n=3884589683&s=IlNHL2R3a0JESUhIb0pJQlZiTVhjUUFKLy9HakRTSWxuUm82UXR0YTB1M3c9Ig$$",
+                            "chunk_id": "chk-27dd12ea-434f-4c35-8386-75fac526dca4",
+                            "doc_id": "fc-257556ef-6d67-5b77-9318-78ed83110a49",
+                            "source_id": "fs-0832f974-9147-54d7-b8df-cfe4b0848e80",
+                            "source_type": "file"
+                          }
+                        ]
+                      }
+                    ],
+                    "snippet_type": "generative_model",
+                    "more_to_ask": [
+                      "How do movies influence popular culture?",
+                      "What are some examples of movies perpetuating stereotypes?",
+                      "How can movies promote social justice movements?"
+                    ],
+                    "language_list": [
+                      "English",
+                      "Japanese",
+                      "German",
+                      "Korean"
+                    ],
+                    "timeTaken": "10394.15ms",
+                    "message": "Presented Answer",
+                    "isPresentedAnswer": true,
+                    "score": "0%"
+                  }
+                ]
+              };
   if(Object.keys(res.graph_answer.payload.center_panel).length>0){
     var listSnippetData = '';
     var snippetReference = [];
@@ -23689,7 +23779,7 @@ if(res?.graph_answer?.payload?.center_panel){
       if(res?.graph_answer?.payload?.center_panel?.type === 'image_snippet'){
         listSnippetData = '';
       }
-    } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+    } else if(['citation_snippet','active_citation_snippet','multi_lang_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
       if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
     res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
     if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
@@ -23739,8 +23829,12 @@ if(res?.graph_answer?.payload?.center_panel){
     'displayFeedback':_self.vars.feedBackExperience.smartAnswer,
     'snippet_type':res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_type //generative_model
   }; 
-    if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+    if(['citation_snippet','active_citation_snippet','multi_lang_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
       snippetObj['reference']=snippetReference;
+    }
+    if(['multi_lang_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+      snippetObj['more_to_ask']=res?.graph_answer?.payload?.center_panel?.data[0]?.more_to_ask;
+      snippetObj['language_list']=res?.graph_answer?.payload?.center_panel?.data[0]?.language_list;
     }
   }
   else{
@@ -23752,6 +23846,21 @@ else{
 }
   return snippetObj;
 }
+FindlySDK.prototype.multiLangSelectEvent = function(value, query){
+  var _self = this;
+  // _self.handleSearchRes(tempData.message[0].component.payload);
+ }
+ FindlySDK.prototype.moreAskListClick = function(queryText){
+  var _self = this;
+  $("#search").val(queryText);
+  _self.vars.searchObject.searchText = queryText;
+  _self.vars.showingMatchedResults = true;
+  _self.searchFacetsList([]);
+  var e = $.Event("keydown", { which: 13 });
+  $("#search").trigger(e);
+ }
+ 
+
 
 FindlySDK.prototype.$ = $;
 export default FindlySDK;
