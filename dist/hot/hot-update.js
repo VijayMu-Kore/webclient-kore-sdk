@@ -34,7 +34,7 @@ var FinalResultsTemplate = /** @class */ (function () {
         this.$ = $;
     }
     FinalResultsTemplate.prototype.renderMessage = function (msgData) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         var me = this;
         var $ = me.hostInstance.$;
         me.helpersObj = _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"] === null || _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"] === void 0 ? void 0 : _utils_helpers__WEBPACK_IMPORTED_MODULE_2__["default"].helpers;
@@ -55,6 +55,9 @@ var FinalResultsTemplate = /** @class */ (function () {
             me.carouselTemplateObj = new _templates_searchCarouselViewTemplate_searchCarouselViewTemplate__WEBPACK_IMPORTED_MODULE_6__["default"]();
             me.fullSearchTemplateObj = new _templates_fullsearchResultsTemplate_fullsearchResultsTemplate__WEBPACK_IMPORTED_MODULE_7__["default"]();
             me.feedBackTemplateObj = new _templates_feedBackFormTemplate_feedBackFormTemplate__WEBPACK_IMPORTED_MODULE_8__["default"]();
+            if (msgData.message[0].component.payload.snippetData.template_type === 'tour_snippet') {
+                $(me.messageResultHtml).find('#sa-llm-html').html((_h = (_g = (_f = (_e = msgData.message[0]) === null || _e === void 0 ? void 0 : _e.component) === null || _f === void 0 ? void 0 : _f.payload) === null || _g === void 0 ? void 0 : _g.snippetData) === null || _h === void 0 ? void 0 : _h.answer);
+            }
             FinalResultsTemplate.prototype.bindEvents(me, me.messageResultHtml, msgData);
             return me.messageResultHtml;
         }
@@ -161,6 +164,60 @@ var FinalResultsTemplate = /** @class */ (function () {
           </div>\
         {{/if}}\
         {{if snippetData && snippetData?.template_type}}\
+        {{if snippetData.template_type =="tour_snippet"}}\
+        <div class="search-temp-one snippet-margin tour-snippet-temp"  data-query = "${snippetData?.searchQuery}">\
+          <div class="top-header">\
+              <div class="top-header-with-img">\
+                  <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
+                  <div class="btn-chip sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</div>\
+              </div>\
+              {{if snippetData && snippetData.snippet_type === "generative_model"}}\
+              <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
+              {{/if}}\
+          </div>\
+          {{if snippetData && (snippetData.title || snippetData.page_url)}}\
+           <div class="tour-snippet-title">\
+           {{if snippetData && snippetData.title}}\
+           <div class="paragraph-temp-title">{{html helpers.convertMDtoHTML(snippetData?.title)}}</div>\
+           {{/if}}\
+           {{if snippetData && snippetData.page_url}}\
+           <a class="snippet-source-url" href="${snippetData?.page_url}" target="_blank" target="_blank"><div class=" {{if !snippetData.page_url}} display-none{{/if}}"><img class="sa-sdk-title" data-title="${snippetData.source}" sub-title="${snippetData?.page_url}" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
+           {{/if}}\
+           </div>\
+          {{/if}}\
+          {{if snippetData && snippetData.answer}}<div id="sa-llm-html"></div>{{/if}}\
+          {{if snippetData && snippetData.sections}}\
+          <div class="list-temp-block">\
+              <ol type="1" class="list-temp-ul">\
+              {{each(key, subheading) snippetData.sections}}\
+                  <li class="list-temp-li" ><span class="list-section tour-section-summary" data-title="${subheading.title}" followupId="${subheading.followupId}" id="${snippetData?.searchQuery}"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABMklEQVR4nO2WvUoDQRDHF2Jjo5ib8Ys8hGDhOwgp7VSsfAgrX8EyvdVVkvmjdirRwicQBcXkZrYQ7OwsTjaIBEXMh7fb5A9bHr/fDbOz49w0qWJCNwq+K4R3y9zVIoL51cDl53mIJmDg2wFw/yjoyYP2yws3UxlYwcffwVEETPjwN3ClAh6L23+BKxEosLQxLPhfBXrnc/VRwRML+NNlNnA+LngsAQVvqdDLpNCRBXp5Y7Z7kq160Lq2s2b4IHS4Ch+FKqjQtYIeVfg9SQ+Uuas9n9GKgtcKoU0F75nQwZcgqBMmngq9/RAQvkoDBl8OX2pwy4SlslJrO2uasI/eXCFdzC/0/zDmdUo6QJKOTJ/qkbBUz6ImWwSQaPWxwWVP+N6Dd6IsewrqhPU2GnAaV3E+AHcqYKs/nZipAAAAAElFTkSuQmCC"/> {{html subheading.title}}</span></li>\
+              {{/each}}\
+              </ol>\
+              {{if snippetData.sections.length > 4}}\
+              <span class="desc-read-more display-block"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Read more</span> <span class="desc-read-less  display-none"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/show-more.svg" />Show Less</span>\
+              {{/if}}\
+      </div>\
+          {{/if}}\
+          <div class="temp-footer-block">\
+              <div class="temp-footer {{if snippetData && snippetData.snippet_type!== "generative_model"}} justify-content-end {{/if}}">\
+                  {{if snippetData && snippetData.snippet_type === "generative_model"}}\
+                  <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
+                  {{/if}}\
+                  {{if snippetData.displayFeedback == true}}\
+                  <div class="temp-right">\
+                      <div class="is-it-usefull sdk-i18n-lang"  sdk-i18n-key="sa_sdk_is_useful">{{html langTranslator("sa_sdk_is_useful")}}</div>\
+                      <div class="temp-fotter-actions">\
+                          <img  class="snippet-feedback  snippet-like-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/like-gray.svg" />\
+                          <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
+                      </div>\
+                  </div>\
+                  {{/if}}\
+                  <button class="sa-tour-summary-btn tour-section-summary" data-title="Summary" response="${snippetData?.graphAnswer}" id ="${snippetData?.searchQuery}">Summary</button>\
+              </div>\
+          </div>\
+          <!--<div id="snippet-feedback-template" class="sinnpet-feedback-template-assiatance-temp"></div>-->\
+      </div>\
+      {{/if}}\
         {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
           <div class="search-temp-one snippet-margin"  data-query = "${snippetData?.searchQuery}">\
             <div class="top-header">\
@@ -316,7 +373,7 @@ var FinalResultsTemplate = /** @class */ (function () {
         {{/if}}\
         <div class="citation-data-desc {{if snippetData.title==""}}snippet_padding_top_0{{/if}}">\
         {{each(key, data) snippetData.answer}}\
-        <span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a href="${source.url}" target="_blank">[${source._id}]</a></sup>{{/each}}. </span>\
+        <span class="snippet-answer-fragment">{{html helpers.convertMDtoHTML(data.answer_fragment)}}</span>{{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a href="${source.url}" target="_blank">[${source._id}]</a></sup>{{/each}}. </span>\
         {{/each}}\
         </div>\
         <div class="snippet-referene-block">\
@@ -347,6 +404,9 @@ var FinalResultsTemplate = /** @class */ (function () {
                     </div>\
                 </div>\
                 {{/if}}\
+                {{if snippetData.callback_url}}\
+                    <button id="email-btn" class="sa-send-email-btn" callbackUrl="${snippetData.callback_url}"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABUklEQVR4nO2VX0rDQBDGp/4B8QQeQxDMk/Z9tq/FG9QLSHcslrzWI3gDETyDFyhkRqovCt7Df5FNs6WkTbMmbVYwHywEssz+5ss3WYBGjRr9JZGSuI7lGYC/iwFQPtPNz4QclHYUOdBKnjI1iwEGGB1qJZF51shfpPgm7Iz3XQ8O2297pHhkD00gkANbrxAAAKB3NN4l9ahJyXtK/qpRTl26Tpybdc0jAwQQt34FYNVX0bG1cZUbC10jv1wqOZm9D+MtCwV5opyUZotn3ZjvOg+y273bLg2QZ69GvjbLJbRh+2GnMsByN9yCOs1UEsiPSgCLbriOatzSSu7XBmDdmCbcTcYFjXK7NoAyMlnwAnCBk4M+RucrN9GGAJIAokzSEA5qBzCiDp+ZAKbjOgQfGaAiCKp4v5e4modeATTKFdSp+U/wvw7vuY7hJuX0I2oEHvQD1QF6ROrwibIAAAAASUVORK5CYII="/><span class="sa-email-label">Email</span></button>\
+                    {{/if}}\
             </div>\
         </div>\
     </div>\
@@ -368,7 +428,7 @@ var FinalResultsTemplate = /** @class */ (function () {
         <div class="citation-data-desc {{if snippetData.title==""}}snippet_padding_top_0{{/if}}">\
         {{each(key, data) snippetData.answer}}\
         <span class="snippet-answer-fragment-block fragment-hover-event {{each(itemKey, item) data.sources}} fragment-${item._id} {{/each}}"\
-          fragment="{{each(itemKey, item) data.sources}} .fragment-${item._id}, {{/each}}"><span class="sub-fragment"><span class="snippet-answer-fragment">{{html data.answer_fragment}}</span>{{each(sourceKey, source) data.sources}}<span class="snippet-citation"><a href="${source.url}" target="_blank"><span class="reference-no">${source._id}</span></a></span>{{/each}}</span></span></span>\
+          fragment="{{each(itemKey, item) data.sources}} .fragment-${item._id}, {{/each}}"><span class="sub-fragment"><span class="snippet-answer-fragment">{{html  helpers.convertMDtoHTML(data.answer_fragment)}}</span>{{each(sourceKey, source) data.sources}}<span class="snippet-citation"><a href="${source.url}" target="_blank"><span class="reference-no">${source._id}</span></a></span>{{/each}}</span></span></span>\
         {{/each}}\
         </div>\
         <div class="active-snippet-referene-block">\
@@ -398,6 +458,9 @@ var FinalResultsTemplate = /** @class */ (function () {
                             <img class="snippet-feedback  snippet-dislike-img" src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/dislike-gary.svg" />\
                         </div>\
                     </div>\
+                    {{/if}}\
+                    {{if snippetData.callback_url}}\
+                    <button id="email-btn" class="sa-send-email-btn" callbackUrl="${snippetData.callback_url}"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABUklEQVR4nO2VX0rDQBDGp/4B8QQeQxDMk/Z9tq/FG9QLSHcslrzWI3gDETyDFyhkRqovCt7Df5FNs6WkTbMmbVYwHywEssz+5ss3WYBGjRr9JZGSuI7lGYC/iwFQPtPNz4QclHYUOdBKnjI1iwEGGB1qJZF51shfpPgm7Iz3XQ8O2297pHhkD00gkANbrxAAAKB3NN4l9ahJyXtK/qpRTl26Tpybdc0jAwQQt34FYNVX0bG1cZUbC10jv1wqOZm9D+MtCwV5opyUZotn3ZjvOg+y273bLg2QZ69GvjbLJbRh+2GnMsByN9yCOs1UEsiPSgCLbriOatzSSu7XBmDdmCbcTcYFjXK7NoAyMlnwAnCBk4M+RucrN9GGAJIAokzSEA5qBzCiDp+ZAKbjOgQfGaAiCKp4v5e4modeATTKFdSp+U/wvw7vuY7hJuX0I2oEHvQD1QF6ROrwibIAAAAASUVORK5CYII="/><span class="sa-email-label">Email</span></button>\
                     {{/if}}\
             </div>\
         </div>\
@@ -499,6 +562,21 @@ var FinalResultsTemplate = /** @class */ (function () {
             $(event.currentTarget).parent().next().closest('.finalResults').removeClass('display-none');
             $(event.currentTarget).parent().remove();
         });
+        $(messageHtml).off('click', '.sa-send-email-btn').on('click', '.sa-send-email-btn', function (event) {
+            var _a, _b;
+            var callbackUrl = (_b = (_a = event === null || event === void 0 ? void 0 : event.currentTarget) === null || _a === void 0 ? void 0 : _a.closest('[callbackUrl]')) === null || _b === void 0 ? void 0 : _b.getAttribute('callbackUrl');
+            $(event.currentTarget).html('Loading ...');
+            $(event.currentTarget).css('pointer-events', 'none');
+            hostInstance.callbackUrlEvent(callbackUrl).then(function (result) {
+                if (result)
+                    $(event.currentTarget).html('Email Sent');
+            });
+        });
+        $(messageHtml).off('click', '.tour-section-summary').on('click', '.tour-section-summary', function (event) {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            var payload = (_b = (_a = event === null || event === void 0 ? void 0 : event.currentTarget) === null || _a === void 0 ? void 0 : _a.closest('[id]')) === null || _b === void 0 ? void 0 : _b.getAttribute('id');
+            hostInstance.sendMessage(payload, false, false, false, $(event.currentTarget).hasClass('list-section') ? { "title": (_d = (_c = event === null || event === void 0 ? void 0 : event.currentTarget) === null || _c === void 0 ? void 0 : _c.closest('[data-title]')) === null || _d === void 0 ? void 0 : _d.getAttribute('data-title'), "followupId": (_f = (_e = event === null || event === void 0 ? void 0 : event.currentTarget) === null || _e === void 0 ? void 0 : _e.closest('[followupId]')) === null || _f === void 0 ? void 0 : _f.getAttribute('followupId') } : { "title": (_h = (_g = event === null || event === void 0 ? void 0 : event.currentTarget) === null || _g === void 0 ? void 0 : _g.closest('[data-title]')) === null || _h === void 0 ? void 0 : _h.getAttribute('data-title'), "isFromSummary": true, "summeryResponse": (_k = (_j = event === null || event === void 0 ? void 0 : event.currentTarget) === null || _j === void 0 ? void 0 : _j.closest('[response]')) === null || _k === void 0 ? void 0 : _k.getAttribute('response') });
+        });
     };
     FinalResultsTemplate.prototype.appendFeedBaackData = function (me, messageHtml, feedBackType, searchQuery) {
         var _a;
@@ -544,7 +622,7 @@ var FinalResultsTemplate = /** @class */ (function () {
         $('.sa-sdk-title').off('mouseover').on('mouseover', function (e) {
             e.stopPropagation();
             e.stopImmediatePropagation();
-            $(e.currentTarget).before('<div class="sdk-tooltip-container">' + $(e.currentTarget).attr('data-title') + '<span class="sa-tooltip-arrow"></span></div>');
+            $(e.currentTarget).before("<div class=\"sdk-tooltip-container\">" + $(e.currentTarget).attr('data-title') + ($(e.currentTarget).attr('sub-title') ? ("<div>" + $(e.currentTarget).attr('sub-title') + "</div>") : '') + "<span class=\"sa-tooltip-arrow\"></span></div>");
             $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top', ($(e.currentTarget).position().top - ($(e.currentTarget).parent().find('.sdk-tooltip-container').height() + 25)) + 'px');
         });
         $('.sa-sdk-title').off('mouseout').on('mouseout', function (e) {
@@ -565,7 +643,7 @@ FinalResultsTemplate.prototype.$ = $;
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("e8d1480dac7a0a4c5986")
+/******/ 	__webpack_require__.h = () => ("76e5bd75a9fc0cf1a8d0")
 /******/ })();
 /******/ 
 /******/ }

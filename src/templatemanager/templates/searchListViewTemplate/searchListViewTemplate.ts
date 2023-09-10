@@ -836,7 +836,7 @@ class SearchListViewTemplate {
   $('.sa-sdk-title').off('mouseover').on('mouseover',function(e:any){
     e.stopPropagation();
     e.stopImmediatePropagation();
-    $(e.currentTarget).before('<div class="sdk-tooltip-container">'+$(e.currentTarget).attr('data-title')+'<span class="sa-tooltip-arrow"></span></div>');
+    $(e.currentTarget).before(`<div class="sdk-tooltip-container">`+$(e.currentTarget).attr('data-title')+($(e.currentTarget).attr('sub-title')?(`<div>`+$(e.currentTarget).attr('sub-title')+`</div>`):'')+`<span class="sa-tooltip-arrow"></span></div>`);
     $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top',($(e.currentTarget).position().top-($(e.currentTarget).parent().find('.sdk-tooltip-container').height()+25))+'px');
   })
   $('.sa-sdk-title').off('mouseout').on('mouseout',function(e:any){

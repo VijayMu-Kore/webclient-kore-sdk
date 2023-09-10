@@ -946,3 +946,114 @@ margin-bottom: 10px;
         cursor: pointer;
     }
 }
+.search-temp-one {
+    .sa-send-email-btn{
+        background: #F2EDFA;
+        border: none;
+        border-radius: 4px;
+        color: #784BD1;
+        font-weight: 600;
+        font-size: 10px;
+        cursor: pointer;
+        padding: 4px 6px;
+        img{
+            width: 15px;
+            margin-right: 4px;
+        }
+    }
+}
+.search-temp-one{
+    &.tour-snippet-temp{
+        .tour-snippet-title{
+            position: relative;
+            .paragraph-temp-title{
+                margin-bottom: 15px;
+                width: 90%;
+                display: inline-block;
+            }
+            .snippet-source-url{
+                display: inline-block;
+                float: right;
+                img{
+                    width: 15px;
+                }
+                .sdk-tooltip-container{
+                    right: 0px;
+                    width: 75%;
+                    .sa-tooltip-arrow{
+                        display: none;
+                    }
+                }
+            }
+        }
+       
+        #sa-llm-html{
+            p{
+                margin: bottom 12px;
+                font-size: 14px;
+            }
+        }
+        .list-temp-ul {
+			color: #2D2F33;
+			font-weight: 400;
+			font-size: 13px;
+			line-height: 20px;
+			padding: 0 0 0 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			.list-temp-li {
+				list-style-position: outside !important;
+                .list-section{
+                    background: #F9EFD0;
+                    border-radius: 28px;
+                    color: #2D2F33;
+                    padding: 10px 16px;
+                    line-height: 44px;
+                    cursor: pointer;
+                    img{
+                        width: 16px;
+                        margin-right: 10px;
+                    }
+                }
+               
+				&:nth-child(n+5) {
+					display: none;
+				}
+			}
+            &.show-all-list {
+                .list-temp-li {
+                    &:nth-child(n+5) {
+                        display: list-item;
+                    }
+                }
+            }
+		}
+        .desc-read-more{
+            cursor: pointer;
+            img{
+                content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABoElEQVR4nO2XTU7DMBCFXcQRZs7KsikECL+lIFRA/EgsuIC95zL2OYySIhS1jT127NhIfpKX9nwvcSZvGCsqKioqiinFsZICmn9ZV3GslEDdLingIhidve6iV7cZDf+3OFwGp92SEni8XdfLhBJ4tGNgs66dD6PW5FjvqykFzP0OHDZxExpeCjwNCm81wfE2HDycRYG3vwlYa81mvudqzWZS4DIqvM2E5PjkY6KD57iaBN5qQuCznrMDN3i4nxSeYOKFYmJzbeAhCTzhOr2aTLTwisNjUnhCi33bZyIreEJ3eu+b6OAFrNPceW4OVYbr9KW/2WFrRHH4cIVXEcJc45SbOhPw2a6BH2E1ti4ZnpJIDd+E65NfxA1zhkRKMWGEF7tJdNR3EtrEpPAEE1fMYY/l2pxE7VA+s0F/jwW+nqS9eploG4G529ST/htCDjjRBpgpTCSDDzGlRZ++AsTq5dAeyeE8C3iKie0pLTt46qj5O/feZQlvD3O4Gpp7Te01iUKFuaQaG+aykG+Yy0quYS5LUcNc1rKFuaKioqIillo/4qDBNd/QAe0AAAAASUVORK5CYII=);
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+            }   
+        }
+        .desc-read-less{
+            cursor: pointer;
+            img{
+                content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABpklEQVR4nO2Y207EIBCGUV9h5lm93FbX82E1ntZTTLzwwlt4JOY5MMSYtJsOUJa21PAn3BX4Ptq0MxWipKSkpCTXkMRKKzgVc4UnhcaO2UlQA352EtQBPxsJcsBnL0EB8NlKEAOvJd7a0SkisRJ5nzw8GSN27NAKb7K8E8SdvMKVBW9eqyWcZCVB3MlLvObmaAXHWUhQBHw2EsS/ba5C19AKjyaRIB7+MmKt5agSMfC+Yo7GkuCfebgImeOROBxUwgF/3meOU0LhwSASqeAnkSD2IwVnMfCBj1OdTIIU7qeGj5XQCha9BTYlPJsyxRx82tG3mKP2CyAOvrVY4GZtePwy32LPLMQuSfiIuBPV4BWr47F5t+B/19nCjhQ8jvrh8sVx8m9N+JaEhIcsJIiHf+2C35C4n1SC+B7gxQXflNAK7iaRIB7+ebOB8UowraYeu5jTEtd94FsSaqRW09f3xq5rfiVWg0ps032FRg/VpaVsYAL2WiaViOkBtg2l7A26ijlXGZ0q1FFWpyrm2Eo0dahRkaYq5upkdOH71tn8fiwpKSn5v/kB/ZTDV1IJzAIAAAAASUVORK5CYII=);
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+            }   
+        }
+        .sa-tour-summary-btn{
+            background: #F9EFD0;
+            border-radius: 28px;
+            color: #2D2F33;
+            padding: 4px 8px;
+            cursor: pointer;
+            border: none;
+            font-size: 10px;
+        }
+    }
+}
