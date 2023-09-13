@@ -1224,3 +1224,34 @@ body::-webkit-scrollbar {
     display: none;
   }
 }
+
+body{
+  &.ms-sdk-body{
+    &.sdk-top-down-interface {
+     .all-result-container{
+       margin-top: -13px;
+     }
+     .topdown-search-main-container {
+       .search-input-box{
+         padding-top: 38px;
+       }
+     }
+    }
+    
+     &.answer-begug-data-sdk {
+       .all-result-container {
+         .full-results-data-container {
+           .back-search{
+            display: none;
+           }
+           .all-product-details{
+            height: calc(100vh - 161px);
+           }
+         }
+       }
+       .skelton-load-img{
+        margin-top: -12px;
+       }
+     }
+   }
+}

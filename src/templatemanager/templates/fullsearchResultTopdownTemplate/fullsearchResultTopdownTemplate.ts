@@ -6,6 +6,7 @@ import searchCarouselViewTemplate from '../../templates/searchCarouselViewTempla
 import SnippetListTemplate from '../../templates/snippetListTemplate/snippetListTemplate';
 import SnippetParagraphTemplate from '../../templates/snippetParagraphTemplate/snippetParagraphTemplate';
 import SnippetImageTemplate from '../../templates/snippetImageTemplate/snippetImageTemplate';
+import SnippetImageAnswerTemplate from '../../templates/snippetImageAnswerTemplate/snippetImageAnswerTemplate';
 import SnippetCitationTemplate from '../../templates/snippetCitationTemplate/snippetCitationTemplate';
 import SnippetActiveCitationTemplate from '../../templates/snippetActiveCitationTemplate/snippetActiveCitationTemplate';
 import korejquery from "../../../libs/korejquery";
@@ -25,6 +26,7 @@ class FullSearchResultTopdownTemplate {
       me.snippetListTemplateObj = new SnippetListTemplate();
       me.snippetParagraphTemplateObj = new SnippetParagraphTemplate();
       me.snippetImageTemplateObj = new SnippetImageTemplate();
+      me.snippetImageAnswerTemplateObj = new SnippetImageAnswerTemplate();
       me.snippetCitationTemplateObj = new SnippetCitationTemplate();
       me.snippetActiveCitationTemplateObj = new SnippetActiveCitationTemplate();
       me.listTemplateObj = new searchListViewTemplate();
@@ -291,7 +293,8 @@ class FullSearchResultTopdownTemplate {
         });
         var dataHTML = $(FullSearchResultTopdownTemplate.prototype.getSearchFacetsTopDownTemplate('top')).tmpl({
           searchFacets: facetData,
-          position: "top"
+          position: "top",
+          langTranslator : msgData.message[0].component.payload.langTranslator
         });
         $(messageHtml).find("#filters-center-sec")
           .empty()
@@ -303,6 +306,7 @@ class FullSearchResultTopdownTemplate {
           $(dataHTML).off("click", ".more-data").on("click", ".more-data", function (e: any) {
             $(e.target).closest('.more-data').parent().removeClass('hide-more-facets');
             $(e.target).closest('.more-data').hide();
+            $(e.target).closest('.more-count-tag').hide();
           });
         if (facetObj.show) {
           if (!$(".iffilteristop").hasClass("isTopAlignFilterAdded")) {
@@ -323,17 +327,19 @@ class FullSearchResultTopdownTemplate {
         var dataHTML = $(FullSearchResultTopdownTemplate.prototype.getSearchFacetsTopDownTemplate('left')).tmpl({
           searchFacets: facetData,
           position: "left",
+          langTranslator : msgData.message[0].component.payload.langTranslator
         });
         $(messageHtml).find("#filters-left-sec")
           .empty()
           .append(dataHTML);
           setTimeout(function () {
             var facetsDataHTML = $(messageHtml).find("#filters-left-sec");
-            hostWindowInstance.bindPerfectScroll(facetsDataHTML, ".filters-sec");
+            hostWindowInstance.bindPerfectScroll(facetsDataHTML, ".filters-body-sec");
           }, 500);
           $(dataHTML).off("click", ".more-data").on("click", ".more-data", function (e: any) {
              $(e.target).closest('.more-data').parent().removeClass('hide-more-facets');
             $(e.target).closest('.more-data').hide();
+            $(e.target).closest('.more-count-tag').hide();
           });
           if($(messageHtml).hasClass('center-align-filter')){
             $(messageHtml).removeClass('center-align-filter');
@@ -562,6 +568,7 @@ class FullSearchResultTopdownTemplate {
 		<div class="title-main sdk-i18n-lang" sdk-i18n-key="sa_sdk_filters_caps">\{{html langTranslator("sa_sdk_filters_caps")}}</div>\
 		<div class="clear-all filters-reset-anchor  sdk-i18n-lang" sdk-i18n-key="sa_sdk_clear_all" >\{{html langTranslator("sa_sdk_clear_all")}}</div>\
     </div>\
+    <div class="filters-body-sec">\
     {{each(i, searchFacet) searchFacets}}\
     <div class="category-wise-container">\
       <div class="group-checkbox filters-content-top-down {{if searchFacet.maxCount && searchFacet.buckets.length > searchFacet.maxCount}} hide-more-facets{{/if}}" data-facetType="${searchFacet.subtype}" data-facetName="${searchFacet.name}" data-fieldName="${searchFacet.fieldName}">\
@@ -572,30 +579,31 @@ class FullSearchResultTopdownTemplate {
             <div class="kr-sg-checkbox d-block">\
                 <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down c-1" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
                 <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
+                <span class="count">${bucket.doc_count}</span>\
             </div>\
             {{/if}}\
             {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
             <div class="kr-sg-radiobutton d-block">\
                 <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
                 <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
+                <span class="count">${bucket.doc_count}</span>\
             </div>\
             {{/if}}\
             {{if searchFacet.subtype == "range" &&  !searchFacet.multiselect}}\
             <div class="kr-sg-radiobutton d-block">\
                 <input  {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
                 <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
+                <span class="count">${bucket.doc_count}</span>\
             </div>\
             {{/if}}\
         {{/each}}\
         {{if searchFacet.maxCount && searchFacet.buckets.length > searchFacet.maxCount}}\
-          <div class="more-data" name="${searchFacet.name}">+ ${searchFacet.buckets.length-searchFacet.maxCount} More</div> \
+          <div class="more-data" name="${searchFacet.name}"><img class="show-more-down-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADXSURBVHgBzZHdDcIgFIWB/oSkxXSEjuAKTqKPxoS2TqAbmOgA6gSO0Bk6QeMEPmhiQgXsfSOklD72PMHlnu/ecBCalRiXV7r95q73rNJ5WsiDWSPmRWP1jOK4HoKAWWpVI6QwGlNadEdWyNaEgJmVsoU3ux+7IBiRdSfEilKKYLLW6v45R9MAJgQ6XGavAJJwUU02MK4eYykkO7FclPpk1qwUZONKAcwkDGqtZIN8a9spgLmvvRj/bex+bwoBCTKY3P/k/n0Jb5MAJqQ/Zi6zV5DA0Nrz0h+7w2102QFIygAAAABJRU5ErkJggg=="/>Show More</div><span class="more-count-tag">+ ${searchFacet.buckets.length-searchFacet.maxCount}</span> \
         {{/if}}\
         </div>\
       </div>\
     {{/each}}\
+    </div>\
     {{/if}}\
     </div>\
   </script>';
@@ -614,21 +622,21 @@ class FullSearchResultTopdownTemplate {
         <div class="kr-sg-checkbox d-block">\
         <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="checkbox-custom sdk-filter-checkbox-top-down" type="checkbox" name="${bucket.key}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}" data-from="${bucket.from}" data-to="${bucket.to}">\
         <label for="checkbox-${i}${j}" class="checkbox-custom-label" title="${bucket.key}">${bucket.key}</label>\
-            <span class="count">(${bucket.doc_count})</span>\
+            <span class="count">${bucket.doc_count}</span>\
           </div>\
           {{/if}}\
             {{if searchFacet.subtype == "value" && !searchFacet.multiselect}}\
             <div class="kr-sg-radiobutton d-block">\
               <input {{if bucket.auto_select}}checked{{/if}} id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}"  value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}">\
                 <label for="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                <span class="count">(${bucket.doc_count})</span>\
+                <span class="count">${bucket.doc_count}</span>\
               </div>\
               {{/if}}\
               {{if searchFacet.subtype == "range" && !searchFacet.multiselect }}\
               <div class="kr-sg-radiobutton d-block">\
                 <input {{if bucket.auto_select}}checked{{/if}}  id="checkbox-${i}${j}" class="radio-custom sdk-filter-radio-top-down" type="radio" name="radio-top-facet-${i}" value="${bucket.key}" fieldName="${searchFacet.fieldName}" fieldType="${searchFacet.subtype}">\
                   <label  id="checkbox-${i}${j}" class="radio-custom-label" title="${bucket.key}">${bucket.key}</label>\
-                  <span class="count">(${bucket.doc_count})</span>\
+                  <span class="count">${bucket.doc_count}</span>\
                 </div>\
                 {{/if}}\
         </div>\
@@ -965,6 +973,8 @@ class FullSearchResultTopdownTemplate {
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetParagraphTemplateObj.renderMessage.bind(me, snippetMsgData));
   }else if(['image_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetImageTemplateObj.renderMessage.bind(me, snippetMsgData));
+  }else if(['image_answer_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
+    $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetImageAnswerTemplateObj.renderMessage.bind(me, snippetMsgData));
   }else if(['citation_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){
     $(messageHtml).find('#snippet-demo-template').empty().append(me.snippetCitationTemplateObj.renderMessage.bind(me, snippetMsgData));
   }else if(['active_citation_snippet'].includes(msgData.message[0].component.payload.snippetData.template_type)){

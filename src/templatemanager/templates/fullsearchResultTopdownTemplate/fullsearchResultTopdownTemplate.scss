@@ -271,6 +271,9 @@
             }
         }
         .category-wise-container{
+            .heading-title{
+                text-transform: capitalize;
+            }
             .group-checkbox{
                 &.filters-content-top-down{
                     border-bottom: none;
@@ -314,7 +317,7 @@
                         overflow: hidden;
                         white-space: nowrap;
                         text-overflow: ellipsis;
-                        padding-right: 0;
+                        padding-right: 21px;
                         max-width: 86%;
                         text-transform: capitalize;
                         min-height: 21px;
@@ -353,7 +356,7 @@
                         overflow: hidden;
                         white-space: nowrap;
                         text-overflow: ellipsis;
-                        padding-right: 0;
+                        padding-right: 21px;
                         max-width: 86%;
                         text-transform: capitalize;
                     }
@@ -1069,8 +1072,8 @@
                     border-right: 1px solid var(--sdk-border-iron-color);
                     flex-shrink: 0;
                     margin-top: 21px;
-                    max-height: calc(100vh - 248px);
-                    overflow: auto;
+                    // max-height: calc(100vh - 248px);
+                    overflow: hidden;
                     position: relative;
                     &.float-right {
                         float: right;
@@ -1109,13 +1112,32 @@
                         padding: 20px 0 10px 0;
                         border-bottom: 1px solid var(--sdk-border-iron-color);
                         .more-data {
-                            color: var(--sdk-primary-blue-color);
-                            font-weight: normal;
-                            font-size: 14px;
-                            line-height: 17px;
-                            padding: 0px 10px 8px 30px;
+                            padding: 0px 10px 8px 0px;
                             cursor: pointer;
                             display: inline-block;
+                            color: var(--kora-blue-blue-highlight, #0D6EFD);
+                            font-size: 10px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 20px;
+                            .show-more-down-icon{
+                                width: 16px;
+                                height: 16px;
+                                margin-right: 10px;
+                            }
+                        }
+                        .more-count-tag{
+                            background: var(--kora-blue-blue-highlight, #0D6EFD);
+                            color: var(--kora-grey-white, #FFF);
+                            text-align: center;
+                            font-size: 8px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 12px;
+                            padding: 4px;
+                            border-radius: 50%;
+                            float: right;
+                            margin-right: 19px;
                         }
                         .filter-color {
                             width: 12px;
@@ -1732,5 +1754,93 @@ $color_1: #9AA0A6;
         }
     }
 }
-//Feedback CSS Ends
 
+.ms-sdk-body{
+    &.sdk-top-down-interface {
+        .all-result-container {
+            .full-results-data-container {
+                .filters-sec {
+                    background: #F8F8F8;
+                    border-right: none;
+                    margin-top: -20px;
+                    margin-left: -20px;
+                    height: calc(100vh - 0px);
+                    .heading-sec{
+                        padding: 35px 30px 15px;
+                        border-bottom: 1px solid var(--sdk-border-iron-color);
+                        .title-main{
+                            color: var(--kore-grey-kore-grey-dark-6, #777A80);
+                            font-size: 12px;
+                            font-style: normal;
+                            font-weight: 600;
+                            line-height: normal;
+                        }
+                        .clear-all{
+                            color: var(--kore-grey-kore-grey-dark-1, #121314);
+                            font-size: 10px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: normal;
+                        }
+                    }
+                    .filters-body-sec{
+                        max-height: calc(100vh - 230px);
+                        padding: 0px 10px 0px 30px;
+                        .category-wise-container{
+                            border-bottom: none;
+                            .kr-sg-radiobutton {
+                                .radio-custom{
+                                    +.radio-custom-label {
+                                        overflow: hidden;
+                                        white-space: nowrap;
+                                        text-overflow: ellipsis;
+                                        padding-right: 21px;
+                                        max-width: 86%;
+                                        text-transform: capitalize;
+                                        color: var(--kora-grey-grey-dark-1, #202124);
+                                        font-family: Inter;
+                                        font-size: 12px;
+                                        font-style: normal;
+                                        font-weight: 400;
+                                        line-height: 20px;
+                                    }
+                                }
+                                .count{
+                                    color: var(--kora-grey-grey-medium-1, #9AA0A6);
+                                    font-size: 12px;
+                                    font-style: normal;
+                                    font-weight: 500;
+                                    line-height: normal;
+                                }
+                            }
+                            .kr-sg-checkbox{
+                                margin-bottom: 10px;
+                                padding-right: 0;
+                                .count{
+                                    color: var(--kora-grey-grey-medium-1, #9AA0A6);
+                                    font-size: 12px;
+                                    font-style: normal;
+                                    font-weight: 500;
+                                    line-height: normal;
+                                }
+                                .checkbox-custom {
+                                    + .checkbox-custom-label{
+                                        text-transform: capitalize;
+                                        color: var(--kora-grey-grey-dark-1, #202124);
+                                        font-size: 12px;
+                                        font-style: normal;
+                                        font-weight: 400;
+                                        line-height: 20px;
+                                        &::before{
+                                            margin-top: 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
