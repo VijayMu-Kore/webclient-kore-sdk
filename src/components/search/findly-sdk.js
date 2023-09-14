@@ -19695,7 +19695,7 @@ FindlySDK.prototype.initializeTopDown = function (
     };
     _self.parentEvent(responseObject);
   })
-  _self.tooltipBindEvent();
+  // _self.tooltipBindEvent();
 };
 
 FindlySDK.prototype.getTopDownActionTemplate = function () {
