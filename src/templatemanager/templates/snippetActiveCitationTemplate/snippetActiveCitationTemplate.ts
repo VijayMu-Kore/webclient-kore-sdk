@@ -12,7 +12,8 @@ class SnippetActiveCitationTemplate {
             me.messageHtml = $(SnippetActiveCitationTemplate.prototype.getTemplateString()).tmpl({
                 'snippetData': msgData?.message?.[0]?.component?.payload?.snippetData,
                 'helpers': helpersObj.helpers,
-                'displayFeedback':msgData?.message?.[0]?.component?.payload?.feedbackDisplay
+                'displayFeedback':msgData?.message?.[0]?.component?.payload?.feedbackDisplay,
+                langTranslator:msgData?.message?.[0]?.component?.payload?.langTranslator
             });
             me.feedBackTemplateObj = new FeedBackFormTemplate();
             setTimeout(()=>{

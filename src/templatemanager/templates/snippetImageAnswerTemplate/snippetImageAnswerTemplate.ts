@@ -47,7 +47,7 @@ class SnippetImageAnswerTemplate {
       <div class="img-temp-data-desc">\
       <div class="temp-data-desc">\
       {{each(key, data) snippetData.answer}}\
-        {{html data.answer_fragment}}\
+      {{html helpers.convertMDtoHTML(data.answer_fragment)}}\
       {{/each}}\
       </div>\
       <span class="read-more-less desc-read-more">Read More</span>\
