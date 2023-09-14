@@ -1233,9 +1233,26 @@ body{
      }
      .topdown-search-main-container {
        .search-input-box{
+        width: 759px;
          padding-top: 38px;
+         .live_search_result_box{
+          top: 24px;
+          width: 759px;
+          &::before{
+            top: 94px;
+          }
+         }
+         .frequently_searched_box{
+          top: 24px;
+          width: 759px;
+          &::before{
+            top: 94px;
+          }
+         }
        }
      }
+      
+
     }
     
      &.answer-begug-data-sdk {

@@ -92,12 +92,17 @@ body{
                 justify-content: center;
             }
             .search-input-box {
-                width: 500px;
+                width: 759px;
                 .search-box-container-data {
                     .search-bar {
+                         .widget-icon {
+                            img{
+                                margin-top: 3px;
+                            }
+                         }
                         .search-input{
                             height: 34px;
-                            width: 500px;
+                            width: 759px;
                             border: 1px solid #B9BCBF;
                             border-radius: 150px !important;
                         }
@@ -105,10 +110,10 @@ body{
                 }
             }
             .live_search_result_box{
-                width: 500px;
+                width: 759px;
             }
             .frequently_searched_box{
-                width: 500px;
+                width: 759px;
             }
         }
         .search-input-box {

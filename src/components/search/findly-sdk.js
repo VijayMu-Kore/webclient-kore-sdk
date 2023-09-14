@@ -3210,7 +3210,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP,searchQu
   if (_self.vars.resultRankingActionPerformed == true) {
     _self.vars.resultRankingActionPerformed = false;
   }
-
+  payload["answerSearch"] = false;
   if (_self.vars.showingMatchedResults == true) {
     _self
       .getFrequentlySearched(url, "POST", JSON.stringify(payload))
@@ -5260,7 +5260,7 @@ FindlySDK.prototype.searchByFacetFilters = function (
     let filters = payload.filters;
   }
   // payload.isDev = _self.isDev;
-
+  payload["answerSearch"] = false;
   _self
     .getFrequentlySearched(url, "POST", JSON.stringify(payload))
     .then(function (res) {
@@ -6425,6 +6425,7 @@ FindlySDK.prototype.searchEventBinding = function (
                   )
                     ? $(".search-top-down").val()
                     : $(".bottom-up-search").val();
+                    payload["answerSearch"] = false;
                   _self
                     .getFrequentlySearched(url, "POST", JSON.stringify(payload))
                     .then(function (res) {
@@ -7156,7 +7157,7 @@ FindlySDK.prototype.bindLiveDataToChat = function (botAction) {
     payload.isBotAction = true;
   }
   payload.smallTalk = true;
-
+  payload["answerSearch"] = false;
   var url = _self.API.searchUrl; //'https://qa-bots.kore.ai/searchAssistant/liveSearch';
   var searchData;
   if (!botAction) {
@@ -8723,7 +8724,7 @@ FindlySDK.prototype.getFrequentlySearched = function (url, type, payload) {
         _self.bot.options.botInfo.customData || {};
     }
   }
-
+  https://searchassist-app.kore.ai/sdk/HF/demo/
   payload = JSON.stringify(payload);
 
   if (!_self.isDev) {
@@ -17272,7 +17273,7 @@ FindlySDK.prototype.invokeSpecificSearch = function (selectedFacet) {
       // _self.vars.scrollPageNumber = 0;
     }
   }
-
+  payload["answerSearch"] = false;
   _self
     .getFrequentlySearched(url, "POST", JSON.stringify(payload))
     .then(function (res) {
@@ -21289,6 +21290,7 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
     if (_self.vars.resultRankingActionPerformed == true) {
       _self.vars.resultRankingActionPerformed = false;
     }
+    payload["answerSearch"] = false;
     return new Promise((resolve, reject) => {
       _self
         .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
@@ -22079,6 +22081,7 @@ FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
       }
     }
   }
+  payload["answerSearch"] = false;
   return new Promise((resolve, reject) => {
     _self
       .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
@@ -22186,6 +22189,7 @@ var url = _self.API.searchUrl;
   } else {
     let filters = payload.filters;
   }
+  payload["answerSearch"] = false;
 return new Promise((resolve, reject) => {
   _self.getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
     var totalResultsCount = 0;
@@ -22775,7 +22779,7 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
   if (_self.vars.resultRankingActionPerformed == true) {
     _self.vars.resultRankingActionPerformed = false;
   }
-
+  payload["answerSearch"] = false;
   if (_self.vars.showingMatchedResults == true) {
       _self.getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
         var totalResultsCount = 0;
@@ -23446,6 +23450,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
           }
         }
       }
+      payload["answerSearch"] = false;
       return new Promise((resolve, reject) => {
         _self
           .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
