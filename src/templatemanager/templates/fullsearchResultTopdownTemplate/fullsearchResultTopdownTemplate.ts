@@ -291,7 +291,8 @@ class FullSearchResultTopdownTemplate {
         });
         var dataHTML = $(FullSearchResultTopdownTemplate.prototype.getSearchFacetsTopDownTemplate('top')).tmpl({
           searchFacets: facetData,
-          position: "top"
+          position: "top",
+          langTranslator : msgData.message[0].component.payload.langTranslator
         });
         $(messageHtml).find("#filters-center-sec")
           .empty()
@@ -323,6 +324,7 @@ class FullSearchResultTopdownTemplate {
         var dataHTML = $(FullSearchResultTopdownTemplate.prototype.getSearchFacetsTopDownTemplate('left')).tmpl({
           searchFacets: facetData,
           position: "left",
+          langTranslator : msgData.message[0].component.payload.langTranslator
         });
         $(messageHtml).find("#filters-left-sec")
           .empty()

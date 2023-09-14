@@ -3210,7 +3210,7 @@ FindlySDK.prototype.invokeSearch = function (showMoreData, fromBottomUP,searchQu
   if (_self.vars.resultRankingActionPerformed == true) {
     _self.vars.resultRankingActionPerformed = false;
   }
-
+  payload["answerSearch"] = false;
   if (_self.vars.showingMatchedResults == true) {
     _self
       .getFrequentlySearched(url, "POST", JSON.stringify(payload))
@@ -5260,7 +5260,7 @@ FindlySDK.prototype.searchByFacetFilters = function (
     let filters = payload.filters;
   }
   // payload.isDev = _self.isDev;
-
+  payload["answerSearch"] = false;
   _self
     .getFrequentlySearched(url, "POST", JSON.stringify(payload))
     .then(function (res) {
@@ -6425,6 +6425,7 @@ FindlySDK.prototype.searchEventBinding = function (
                   )
                     ? $(".search-top-down").val()
                     : $(".bottom-up-search").val();
+                    payload["answerSearch"] = false;
                   _self
                     .getFrequentlySearched(url, "POST", JSON.stringify(payload))
                     .then(function (res) {
@@ -7156,7 +7157,7 @@ FindlySDK.prototype.bindLiveDataToChat = function (botAction) {
     payload.isBotAction = true;
   }
   payload.smallTalk = true;
-
+  payload["answerSearch"] = false;
   var url = _self.API.searchUrl; //'https://qa-bots.kore.ai/searchAssistant/liveSearch';
   var searchData;
   if (!botAction) {
@@ -17272,7 +17273,7 @@ FindlySDK.prototype.invokeSpecificSearch = function (selectedFacet) {
       // _self.vars.scrollPageNumber = 0;
     }
   }
-
+  payload["answerSearch"] = false;
   _self
     .getFrequentlySearched(url, "POST", JSON.stringify(payload))
     .then(function (res) {
@@ -19416,7 +19417,7 @@ FindlySDK.prototype.getTopDownTemplate = function () {
                 {{/if}}\
                   <div class="cancel-search">
                       <img
-                          src="" />
+                          src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZD0iTTQuNDM0NzUgNC4wMDAxTDYuOTg2NDUgMS40NDgzOUM3LjEwNjYyIDEuMzI4MjMgNy4xMDY2MiAxLjEzMzQxIDYuOTg2NDUgMS4wMTMyNUM2Ljg2NjI5IDAuODkzMDg2IDYuNjcxNDcgMC44OTMwODYgNi41NTEzMSAxLjAxMzI1TDMuOTk5NTkgMy41NjQ5N0wxLjQ0Nzk5IDEuMDEzNDdDMS4zMjc4MyAwLjg5MzMxNCAxLjEzMzAxIDAuODkzMzE4IDEuMDEyODUgMS4wMTM0OEMwLjg5MjY5MiAxLjEzMzY1IDAuODkyNjk2IDEuMzI4NDcgMS4wMTI4NiAxLjQ0ODYyTDMuNTY0NDUgNC4wMDAxMUwxLjAxMjg1IDYuNTUxNzJDMC44OTI2ODkgNi42NzE4OCAwLjg5MjY4OSA2Ljg2NjcgMS4wMTI4NSA2Ljk4Njg2QzEuMTMzMDEgNy4xMDcwMiAxLjMyNzgzIDcuMTA3MDIgMS40NDc5OSA2Ljk4Njg2TDMuOTk5NiA0LjQzNTI1TDYuNTUxMzIgNi45ODY4NkM2LjY3MTQ5IDcuMTA3MDIgNi44NjYzMSA3LjEwNzAyIDYuOTg2NDYgNi45ODY4NUM3LjEwNjYyIDYuODY2NjkgNy4xMDY2MiA2LjY3MTg3IDYuOTg2NDYgNi41NTE3MUw0LjQzNDc1IDQuMDAwMVoiIGZpbGw9IiMyMDIxMjQiLz4NCjwvc3ZnPg0K" />
                   </div>
               </div>
               <div id="greeting-msg-top-down"></div>
@@ -21289,6 +21290,7 @@ FindlySDK.prototype.showMoreClick = function (showMoreData) {
     if (_self.vars.resultRankingActionPerformed == true) {
       _self.vars.resultRankingActionPerformed = false;
     }
+    payload["answerSearch"] = false;
     return new Promise((resolve, reject) => {
       _self
         .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
@@ -22079,6 +22081,7 @@ FindlySDK.prototype.tabFacetTrigger = function (e, facetSelected) {
       }
     }
   }
+  payload["answerSearch"] = false;
   return new Promise((resolve, reject) => {
     _self
       .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
@@ -22186,6 +22189,7 @@ var url = _self.API.searchUrl;
   } else {
     let filters = payload.filters;
   }
+  payload["answerSearch"] = false;
 return new Promise((resolve, reject) => {
   _self.getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
     var totalResultsCount = 0;
@@ -22775,7 +22779,7 @@ FindlySDK.prototype.sortableFacetClick = function (event,displaySortable){
   if (_self.vars.resultRankingActionPerformed == true) {
     _self.vars.resultRankingActionPerformed = false;
   }
-
+  payload["answerSearch"] = false;
   if (_self.vars.showingMatchedResults == true) {
       _self.getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
         var totalResultsCount = 0;
@@ -23446,6 +23450,7 @@ FindlySDK.prototype.getFeedBackResult = function () {
           }
         }
       }
+      payload["answerSearch"] = false;
       return new Promise((resolve, reject) => {
         _self
           .getFrequentlySearched(url, "POST", JSON.stringify(payload)).then(data => {
