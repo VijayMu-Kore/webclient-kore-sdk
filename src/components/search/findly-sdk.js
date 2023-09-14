@@ -23852,7 +23852,7 @@ else{
 }
   return snippetObj;
 }
-FindlySDK.prototype.multiLangSelectEvent = function(value, query){
+FindlySDK.prototype.multiLangSelectEvent = function(value, query,event){
   var _self = this;
   var url= _self.API.multiLangUrl;
   var payload = {
@@ -23870,11 +23870,13 @@ FindlySDK.prototype.multiLangSelectEvent = function(value, query){
     
     data: JSON.stringify(payload, null, "\t"),
     type: "post",
-    success: function (data) { },
+    success: function (data) { 
+      $(event.currentTarget).parent().closest('.search-temp-one').find('.citation-data-desc').html(data.translatedText)
+    },
     error: function (err) { },
   });
   //** able to get the response but unable to bind the translate api response to template below functions parametr issue */
-  _self.handleSearchRes(tempData.message[0].component.payload);
+  // _self.handleSearchRes(tempData.message[0].component.payload);
  }
  FindlySDK.prototype.moreAskListClick = function(queryText){
   var _self = this;

@@ -1,36 +1,47 @@
-
-import helpers from '../../../utils/helpers';
-import './snippetMultiLangTemplate.scss';
-import FeedBackFormTemplate from '../../templates/feedBackFormTemplate/feedBackFormTemplate';
+import helpers from '../../../utils/helpers'
+import './snippetMultiLangTemplate.scss'
+import FeedBackFormTemplate from '../../templates/feedBackFormTemplate/feedBackFormTemplate'
 class SnippetMultiLangTemplate {
     renderMessage(msgData: any) {
-        let me: any = this;
-        let $ = me.hostInstance.$;
-        let helpersObj = helpers;
+        let me: any = this
+        let $ = me.hostInstance.$
+        let helpersObj = helpers
 
-        if (msgData?.message?.[0]?.component?.payload?.template_type === "multi_lang_citation_snippet") {
-            me.messageHtml = $(SnippetMultiLangTemplate.prototype.getTemplateString()).tmpl({
-                'snippetData': msgData?.message?.[0]?.component?.payload?.snippetData,
-                'helpers': helpersObj.helpers,
-                'displayFeedback':msgData?.message?.[0]?.component?.payload?.feedbackDisplay
-            });
-            me.feedBackTemplateObj = new FeedBackFormTemplate();
-            setTimeout(()=>{
-              SnippetMultiLangTemplate.prototype.bindSnippetEvents(me, me.messageHtml,msgData?.message?.[0]?.component?.payload?.snippetData);
-            },500)
-            return me.messageHtml;
+        if (
+            msgData?.message?.[0]?.component?.payload?.template_type ===
+            'multi_lang_citation_snippet'
+        ) {
+            me.messageHtml = $(
+                SnippetMultiLangTemplate.prototype.getTemplateString()
+            ).tmpl({
+                snippetData:
+                    msgData?.message?.[0]?.component?.payload?.snippetData,
+                helpers: helpersObj.helpers,
+                displayFeedback:
+                    msgData?.message?.[0]?.component?.payload?.feedbackDisplay,
+            })
+            me.feedBackTemplateObj = new FeedBackFormTemplate()
+            setTimeout(() => {
+                SnippetMultiLangTemplate.prototype.bindSnippetEvents(
+                    me,
+                    me.messageHtml,
+                    msgData?.message?.[0]?.component?.payload?.snippetData
+                )
+            }, 500)
+            return me.messageHtml
         }
     }
     getTemplateString() {
-        var snippetMultiLangTemplate  = '<script type="text/x-jqury-tmpl">\
+        var snippetMultiLangTemplate =
+            '<script type="text/x-jqury-tmpl">\
         <div class="search-temp-one">\
         <div class="top-header">\
             <div class="top-header-with-img">\
                 <span class="logo-span"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/snippet-avathar.svg"/></span>\
-                <div class="btn-chip"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</span>\</div>\
+                <div class="btn-chip"><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_Suggested_answer">{{html langTranslator("sa_sdk_Suggested_answer")}}</span></div>\
             </div>\
             {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
+            <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span></div>\
             {{/if}}\
             {{if snippetData && snippetData.language_list}}\
             <select class="selectTemplateDropdowm">\
@@ -76,7 +87,7 @@ class SnippetMultiLangTemplate {
         <div class="temp-footer-block">\
             <div class="temp-footer {{if snippetData && snippetData.snippet_type !== "generative_model"}} justify-content-end {{/if}}">\
                 {{if snippetData && snippetData.snippet_type === "generative_model"}}\
-                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span>\</div>\
+                <div class="btn-link"><span class="bot-bg-purple"><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/snippet_imgs/bot.svg"/></span><span class="sdk-i18n-lang" sdk-i18n-key="sa_sdk_answered_by_ai">{{html langTranslator("sa_sdk_answered_by_ai")}}</span></div>\
                 {{/if}}\
                 {{if displayFeedback}}\
                 <div class="temp-right">\
@@ -91,72 +102,138 @@ class SnippetMultiLangTemplate {
             </div>\
         </div>\
     </div>\
-      </script>';
-        return snippetMultiLangTemplate;
+      </script>'
+        return snippetMultiLangTemplate
     }
-    bindSnippetEvents(me:any,messageHtml:any,snippetData:any){
-      let $ = me.hostInstance.$;
-      let hostInstance= me.hostInstance;
-      $(messageHtml).off('change', '.selectTemplateDropdowm').on('change', '.selectTemplateDropdowm', function (event:any) {
-        hostInstance.multiLangSelectEvent(event.currentTarget.value, snippetData.snippetText);
-        console.log('testt');
-      });
-      $(messageHtml).off('click', '.more_to_ask_list').on('click', '.more_to_ask_list', function (event:any) {
-        hostInstance.moreAskListClick($(event.currentTarget).attr('value'));
-      });
-      $(messageHtml).off('click', 'b').on('click', 'b', function (event:any) {
-        hostInstance.boldpreview(event.currentTarget.textContent);
-      });
-      $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-like-img').on('click', '.snippet-like-img', function (event:any) {
-        if(!$(event.currentTarget).closest('.snippet-like-img').hasClass('active')){
-        hostInstance.updateFeedBackResult('thumbsUp',snippetData.searchQuery,'smartAnswer')
-        $(messageHtml).find('.snippet-feedback').removeClass('active');
-        $(event.currentTarget).addClass('active');
-      }
-      });
+    bindSnippetEvents(me: any, messageHtml: any, snippetData: any) {
+        let $ = me.hostInstance.$
+        let hostInstance = me.hostInstance
+        $(messageHtml)
+            .off('change', '.selectTemplateDropdowm')
+            .on('change', '.selectTemplateDropdowm', function (event: any) {
+                hostInstance.multiLangSelectEvent(
+                    event.currentTarget.value,
+                    snippetData.snippetText,
+                    event
+                )
+                console.log('testt')
+            })
+        $(messageHtml)
+            .off('click', '.more_to_ask_list')
+            .on('click', '.more_to_ask_list', function (event: any) {
+                hostInstance.moreAskListClick(
+                    $(event.currentTarget).attr('value')
+                )
+            })
+        $(messageHtml)
+            .off('click', 'b')
+            .on('click', 'b', function (event: any) {
+                hostInstance.boldpreview($(event.currentTarget).attr('value'))
+            })
+        $(messageHtml)
+            .find('.temp-fotter-actions')
+            .off('click', '.snippet-like-img')
+            .on('click', '.snippet-like-img', function (event: any) {
+                if (
+                    !$(event.currentTarget)
+                        .closest('.snippet-like-img')
+                        .hasClass('active')
+                ) {
+                    hostInstance.updateFeedBackResult(
+                        'thumbsUp',
+                        snippetData.searchQuery,
+                        'smartAnswer'
+                    )
+                    $(messageHtml)
+                        .find('.snippet-feedback')
+                        .removeClass('active')
+                    $(event.currentTarget).addClass('active')
+                }
+            })
 
-      $(messageHtml).find('.temp-fotter-actions').off('click', '.snippet-dislike-img').on('click', '.snippet-dislike-img', function (event:any) {
-        if(!$(event.currentTarget).closest('.snippet-dislike-img').hasClass('active')){
-          SnippetMultiLangTemplate.prototype.appendFeedBaackData(me,messageHtml,snippetData)
-        $(messageHtml).find('.snippet-feedback').removeClass('active');
-        $(event.currentTarget).addClass('active');
-      }
-      });
-     
-      
-        SnippetMultiLangTemplate.prototype.tooltipBindEvent(me);
-      }
-      tooltipBindEvent(me:any){
-        let $ = me.hostInstance.$;
-      $('.sa-sdk-title').off('mouseover').on('mouseover',function(e:any){
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        $(e.currentTarget).before('<div class="sdk-tooltip-container">'+$(e.currentTarget).attr('data-title')+'<span class="sa-tooltip-arrow"></span></div>');
-        $(e.currentTarget).parent().find('.sdk-tooltip-container').css('top',($(e.currentTarget).position().top-($(e.currentTarget).parent().find('.sdk-tooltip-container').height()+25))+'px');
-      })
-      $('.sa-sdk-title').off('mouseout').on('mouseout',function(e:any){
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        $(e.currentTarget).parent().find('.sdk-tooltip-container').remove();
-        })
-      }
-      appendFeedBaackData(me: any, messageHtml: any,snippetData:any){
-        let $ = me.hostInstance.$;
+        $(messageHtml)
+            .find('.temp-fotter-actions')
+            .off('click', '.snippet-dislike-img')
+            .on('click', '.snippet-dislike-img', function (event: any) {
+                if (
+                    !$(event.currentTarget)
+                        .closest('.snippet-dislike-img')
+                        .hasClass('active')
+                ) {
+                    SnippetMultiLangTemplate.prototype.appendFeedBaackData(
+                        me,
+                        messageHtml,
+                        snippetData
+                    )
+                    $(messageHtml)
+                        .find('.snippet-feedback')
+                        .removeClass('active')
+                    $(event.currentTarget).addClass('active')
+                }
+            })
+
+        SnippetMultiLangTemplate.prototype.tooltipBindEvent(me)
+    }
+    tooltipBindEvent(me: any) {
+        let $ = me.hostInstance.$
+        $('.sa-sdk-title')
+            .off('mouseover')
+            .on('mouseover', function (e: any) {
+                e.stopPropagation()
+                e.stopImmediatePropagation()
+                $(e.currentTarget).before(
+                    '<div class="sdk-tooltip-container">' +
+                        $(e.currentTarget).attr('data-title') +
+                        '<span class="sa-tooltip-arrow"></span></div>'
+                )
+                $(e.currentTarget)
+                    .parent()
+                    .find('.sdk-tooltip-container')
+                    .css(
+                        'top',
+                        $(e.currentTarget).position().top -
+                            ($(e.currentTarget)
+                                .parent()
+                                .find('.sdk-tooltip-container')
+                                .height() +
+                                25) +
+                            'px'
+                    )
+            })
+        $('.sa-sdk-title')
+            .off('mouseout')
+            .on('mouseout', function (e: any) {
+                e.stopPropagation()
+                e.stopImmediatePropagation()
+                $(e.currentTarget)
+                    .parent()
+                    .find('.sdk-tooltip-container')
+                    .remove()
+            })
+    }
+    appendFeedBaackData(me: any, messageHtml: any, snippetData: any) {
+        let $ = me.hostInstance.$
         let feedbackMsgData = {
-          message: [{
-            component: {
-              type: 'template',
-              payload: {
-                template_type: "feedbackFormTemplate",
-                query: snippetData.searchQuery,
-                feedBackType:'smartAnswer'
-              }
-            }
-          }]
-        };
-          $(messageHtml).find('#snippet-feedback-template').empty().append(me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData));
-       }
+            message: [
+                {
+                    component: {
+                        type: 'template',
+                        payload: {
+                            template_type: 'feedbackFormTemplate',
+                            query: snippetData.searchQuery,
+                            feedBackType: 'smartAnswer',
+                        },
+                    },
+                },
+            ],
+        }
+        $(messageHtml)
+            .find('#snippet-feedback-template')
+            .empty()
+            .append(
+                me.feedBackTemplateObj.renderMessage.bind(me, feedbackMsgData)
+            )
+    }
 }
 
-
-export default SnippetMultiLangTemplate;
+export default SnippetMultiLangTemplate
