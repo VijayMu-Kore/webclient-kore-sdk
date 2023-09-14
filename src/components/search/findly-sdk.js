@@ -9969,7 +9969,7 @@ var searchConfigurationCopy = {};
 FindlySDK.prototype.showSearchExperience = function (findlyConfig,response){
   var _self = this;
   _self.vars.indexPipelineId = response.indexPipelineId;
-  if (response.experienceConfig.searchBarPosition == "top") {
+  if (response.experienceConfig.searchBarPosition !== "top") {
     _self.initializeTopDown(findlyConfig, null, response);
   } else {
     if (
@@ -23685,12 +23685,16 @@ if(res?.graph_answer?.payload?.center_panel){
   if(Object.keys(res.graph_answer.payload.center_panel).length>0){
     var listSnippetData = '';
     var snippetReference = [];
-    if(['paragraph_snippet','answer_snippet','image_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+    if(['paragraph_snippet','answer_snippet','image_snippet', 'image_answer_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
       if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
     res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
     if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
     res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
+    if(['image_answer_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+      listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content
+    }else{
       listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
+    }
       if(res?.graph_answer?.payload?.center_panel?.type === 'image_snippet'){
         listSnippetData = '';
       }
@@ -23737,7 +23741,7 @@ if(res?.graph_answer?.payload?.center_panel){
     let title = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_title) : '';
     snippetObj = {'title':title,
     'answer':listSnippetData, page_url:res?.graph_answer?.payload?.center_panel?.data[0]?.url,
-    'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source,
+    'source':res?.graph_answer?.payload?.center_panel?.data[0]?.source_title || res?.graph_answer?.payload?.center_panel?.data[0]?.source,
     'template_type':res?.graph_answer?.payload?.center_panel?.type, 
     'image_url':(res?.graph_answer?.payload?.center_panel?.data[0]?.image_url ||''),
     'searchQuery': _self.vars.searchObject.searchText,
