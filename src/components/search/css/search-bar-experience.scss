@@ -1282,7 +1282,7 @@ body{
               img{
                 width: 13px;
                 height: 13px;
-                margin-top: 6px;
+                margin-top: 9px;
               }
             }
             .search-bar{
@@ -1324,6 +1324,14 @@ body{
        }
        .skelton-load-img{
         margin-top: -15px;
+        .sa-loading-container{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .loading-text{
+            padding-left:12px;
+          }
+        }
        }
      }
    }
