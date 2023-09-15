@@ -21749,8 +21749,8 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
           if (obj[mapping.chips]) {
             item.chips = obj[mapping.chips];
           }
-          if (obj[mapping.textField1]) {
-            item.textField1 = obj[mapping.textField1];
+           if (obj['author']) {
+            item.textField1 = obj['author'];
           }
           if (obj[mapping.textField2]) {
             item.textField2 = obj[mapping.textField2];
@@ -21769,7 +21769,7 @@ FindlySDK.prototype.getMergedData = function (settingData, responseData, searchT
           }
           // Demo fields start         
           if (obj.chips) {
-            item.scm_author = obj.createdByUser || '';
+            item.scm_author = item.textField1 || '';
             item.scm_createdAt = obj.createdOn == '' ? '-' : moment(obj.createdOn).format('Do MMM YYYY, ddd [at] h:mm A');
             if(Array.isArray(obj.chips)){
               for (var chip of obj.chips) {
