@@ -7248,6 +7248,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
             res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
               res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
+                item.sources = item.sources.filter((ele) => ele.title);
                 snippetReference = [...snippetReference,...item.sources];
               })
               var set = new Set();
