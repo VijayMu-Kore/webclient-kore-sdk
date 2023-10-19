@@ -44,6 +44,7 @@
     "jquery-ui": "^1.13.2",
     "jquery.tmpl": "0.0.2",
     "moment": "^2.29.4",
+    "pdfjs-dist": "^3.11.174",
     "perfect-scrollbar": "^1.5.2",
     "pubsub-js": "^1.9.4",
     "util": "^0.12.4"

@@ -23,6 +23,7 @@ import koJsonObj from '../../libs/languageConversion/i18n/ko.json'
 import './css/lang.scss'
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
 import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
+import SearchPDFJSTemplate from "../../templatemanager/templates/searchPDFJSTemplate/searchPDFJSTemplate";
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // import './findly-demo.scss'
@@ -21036,15 +21037,28 @@ FindlySDK.prototype.clickNavigateToUrl = function (e) {
         link.remove();
       }
     } else {
-      if ($(e.target).closest(".click-to-navigate-url").attr("href")) {
-        // window.open($(e.target).closest('.click-to-navigate-url').attr('href'), '_blank');
-        var link = document.createElement("a");
-        link.href = $(e.target)
-          .closest(".click-to-navigate-url")
-          .attr("href");
-        (link.target = "_blank"), link.click();
-        link.remove();
-      }
+      // if ($(e.target).closest(".click-to-navigate-url").attr("href")) {
+      //   // window.open($(e.target).closest('.click-to-navigate-url').attr('href'), '_blank');
+      //   var link = document.createElement("a");
+      //   link.href = $(e.target)
+      //     .closest(".click-to-navigate-url")
+      //     .attr("href");
+      //   (link.target = "_blank"), link.click();
+      //   link.remove();
+      // }
+      const pdfJsTempObj = new SearchPDFJSTemplate();
+      const pdfData = {
+        message:[{
+          component:{
+            type:'template',
+            payload:{
+              template_type:'pdfJSTemplate',
+              url:$(e.target).closest('.click-to-navigate-url').attr('href')
+            }
+          }
+        }]
+      } 
+      $('body').append(pdfJsTempObj.renderMessage.bind(_self,pdfData));
     }
   }
 };

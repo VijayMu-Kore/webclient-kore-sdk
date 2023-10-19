@@ -3,14 +3,14 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-qa.kore.ai"
-if(serverUrl && (serverUrl.includes("https"))){ // for installer 
-// if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
-    paramUrl=serverUrl.split('/')[2]
-}  
-if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
-  paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
-}
+var paramUrl="searchassist-app.kore.ai"
+// if(serverUrl && (serverUrl.includes("https"))){ // for installer 
+// // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
+//     paramUrl=serverUrl.split('/')[2]
+// }  
+// if(window?.JWT_OBJ && window?.JWT_OBJ?.koreAPIUrl){
+//   paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
+// }
 botOptionsFindly.logLevel = 'debug';
 // botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
 botOptionsFindly.koreAPIUrl = "https://"+paramUrl+"/searchassistapi/";
@@ -48,12 +48,12 @@ botOptionsFindly.JWTUrl =
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
 // botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "kore",
-  taskBotId: "st-33224823-6b08-58df-b4a9-26fae57cfca2",
+  chatBot: "Vector index",
+  taskBotId: "st-500d41f0-af41-589d-8493-4a8084134dae",
 };
-botOptionsFindly.clientId = "cs-160dc715-3d4c-5098-b044-d46d9e8b5b73";
-botOptionsFindly.clientSecret = "QhBAiCkcTe1EBat2ZVcGvJ2MLmgHZ6D8t8Y+U9QNDIs=";
-botOptionsFindly.searchIndexID = "sidx-c3e130fb-d840-52bd-8797-d78f1b9dd04f";
+botOptionsFindly.clientId = "cs-6a10e38d-a93a-52cb-bcba-43490312312c";
+botOptionsFindly.clientSecret = "UzdOUl1fSikf+FDGqy+6O+qIBuCFwB3voafqOUAucGc=";
+botOptionsFindly.searchIndexID = "sidx-838f6eba-493c-594e-a797-1521567f4f1a";
 
 
 // To modify the web socket url use the following option
@@ -83,7 +83,6 @@ findlyConfig = {
     showTaskMenuPickerIcon: true, //set true to show TaskMenu Template icon
     showradioOptionMenuPickerIcon: false, //set true to show Radio Option Template icon
   },
-  API_KEY_CONFIG:{'KEY':"YOUR_API_KEY"}
+  API_KEY_CONFIG:{'KEY':"9835eced7c0141748fc51dd69142055674cbf1f671b44b0cbe06386e9205f811st50"}
 };
-
 export default findlyConfig;
