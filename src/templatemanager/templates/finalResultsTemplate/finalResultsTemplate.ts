@@ -7,6 +7,7 @@ import searchCarouselViewTemplate from '../../templates/searchCarouselViewTempla
 import FullSearchResultsTemplate from '../../templates/fullsearchResultsTemplate/fullsearchResultsTemplate';
 import FeedBackFormTemplate from '../../templates/feedBackFormTemplate/feedBackFormTemplate';
 import korejquery from "../../../libs/korejquery";
+import SearchPDFJSTemplate from '../searchPDFJSTemplate/searchPDFJSTemplate';
 const $ = korejquery;
 
 class FinalResultsTemplate {
@@ -116,6 +117,22 @@ class FinalResultsTemplate {
       var url = $(e.target).attr("snippetURL");
       window.open(url, '_blank','noopener');
     })
+    $(messageHtml).off("click","#hrefPageLinkId").on("click", "#hrefPageLinkId", function (e: any) {
+       const page_url = e?.currentTarget?.attributes?.pageurl?.value;
+       const pdfJsTempObj = new SearchPDFJSTemplate();
+       const pdfData = {
+         message:[{
+           component:{
+             type:'template',
+             payload:{
+               template_type:'pdfJSTemplate',
+               url:page_url
+             }
+           }
+         }]
+       } 
+       $('body').append(pdfJsTempObj.renderMessage.bind(me,pdfData));
+    })
     FinalResultsTemplate.prototype.bindSnippetEvents(me,messageHtml);
     FinalResultsTemplate.prototype.tooltipBindEvent(me);
   }
@@ -161,7 +178,7 @@ class FinalResultsTemplate {
             {{if snippetData && snippetData.source}}\
             <div class="snippet-source-block">\
               <div class="snippet-source-file-name sa-sdk-title {{if !snippetData.source}} display-none{{/if}}" data-title="${snippetData.source}">{{html snippetData.source}}</div>\
-              <a href="${snippetData?.page_url}" target="_blank" target="_blank"><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name sa-sdk-title" data-title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
+              <a href="javascript:void(0)" id="hrefPageLinkId" pageUrl="${snippetData?.page_url}"><div class="snippet-source-url {{if !snippetData.page_url}} display-none{{/if}}"><span class="snippet-source-url-name sa-sdk-title" data-title="${snippetData?.page_url}">${snippetData?.page_url}</span><img src="https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/external-link.svg"/></div></a>\
             </div>\
             {{/if}}\
             <div class="temp-footer-block">\

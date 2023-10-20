@@ -3,7 +3,7 @@ let findlyConfig:any = {};
 let botOptionsFindly: any = {};
 botOptionsFindly.logLevel = "debug";
 var serverUrl = window.location.href;
-var paramUrl="searchassist-app.kore.ai"
+var paramUrl="searchassist.kore.ai"
 // if(serverUrl && (serverUrl.includes("https"))){ // for installer 
 // // if(serverUrl && (serverUrl.includes(".kore.ai") || serverUrl.includes(".korebots.com"))){//for app, dev, qa, pilot, prod
 //     paramUrl=serverUrl.split('/')[2]
@@ -12,9 +12,7 @@ var paramUrl="searchassist-app.kore.ai"
 //   paramUrl=window.JWT_OBJ.koreAPIUrl.split("/")[2].split(':')[0];
 // }
 botOptionsFindly.logLevel = 'debug';
-// botOptionsFindly.koreAPIUrl = "https://searchassist-qa.kore.ai/searchassistapi/";
 botOptionsFindly.koreAPIUrl = "https://"+paramUrl+"/searchassistapi/";
-// botOptionsFindly.baseAPIServer = "https://searchassist-qa.kore.ai";
 botOptionsFindly.baseAPIServer = "https://"+paramUrl;
 function koreGenerateUUID() {
   console.info("generating UUID");
@@ -46,14 +44,13 @@ function generateRandomNum() {
 botOptionsFindly.JWTUrl =
   "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
 botOptionsFindly.userIdentity = koreGenerateUUID(); // Provide users email id here
-// botOptionsFindly.userIdentity = 'vaishali.addala@kore.com';// Provide users email id here
 botOptionsFindly.botInfo = {
-  chatBot: "Vector index",
-  taskBotId: "st-500d41f0-af41-589d-8493-4a8084134dae",
+  chatBot: "Please Enter here",
+  taskBotId: "Please Enter here",
 };
-botOptionsFindly.clientId = "cs-6a10e38d-a93a-52cb-bcba-43490312312c";
-botOptionsFindly.clientSecret = "UzdOUl1fSikf+FDGqy+6O+qIBuCFwB3voafqOUAucGc=";
-botOptionsFindly.searchIndexID = "sidx-838f6eba-493c-594e-a797-1521567f4f1a";
+botOptionsFindly.clientId = "Please Enter here";
+botOptionsFindly.clientSecret = "Please Enter here";
+botOptionsFindly.searchIndexID = "Please Enter here";
 
 
 // To modify the web socket url use the following option
@@ -83,6 +80,6 @@ findlyConfig = {
     showTaskMenuPickerIcon: true, //set true to show TaskMenu Template icon
     showradioOptionMenuPickerIcon: false, //set true to show Radio Option Template icon
   },
-  API_KEY_CONFIG:{'KEY':"9835eced7c0141748fc51dd69142055674cbf1f671b44b0cbe06386e9205f811st50"}
+  API_KEY_CONFIG:{'KEY':"API_KEY"}
 };
 export default findlyConfig;
