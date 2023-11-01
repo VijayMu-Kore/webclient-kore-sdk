@@ -2150,7 +2150,7 @@
                     messageToBot["message"] = { attachments: [me.attachmentInfo] };
                 }
                 else {
-                    messageToBot["message"] = { body: chatInput.text().trim() };
+                    messageToBot["message"] = { body: chatInput.text().trim().replace(/\s/g, ' ') };
                 }
                 messageToBot["resourceid"] = '/bot.message';
 
