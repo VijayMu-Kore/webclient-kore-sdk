@@ -10104,7 +10104,7 @@ FindlySDK.prototype.mapSearchConfiguration = function (searchConfig) {
     searchConfiguration.buttonPlacementPosition= "inside";
     searchConfiguration.showSearchesEnabled =false;
     searchConfiguration.liveSearchResultsLimit = 0;
-    searchConfiguration.querySuggestionsLimit = 0;
+    // searchConfiguration.querySuggestionsLimit = 0;
   }
   searchConfiguration.showSearches = "recent";
   searchConfiguration.freePlan = searchConfig?.freePlan;
