@@ -295,7 +295,7 @@ class FinalResultsTemplate {
           <ol type="1" class="reference-list-temp-ul">\
                   {{each(key, item) snippetData.reference}}\
                     {{if item.title}}\
-                      <li class="reference-list-temp-li" title="{{html helpers.convertMDtoHTML(item.title)}}">{{if item.url}}<a  href="${item.url}" target="_blank"><span>{{html helpers.convertMDtoHTML(item.title)}}</span></a>{{/if}}</li>\
+                      <li class="reference-list-temp-li" title="${item.title}"><a class="{{if !item.url}}pointer-events-none {{/if}}" href="${item.url}" target="_blank"><span>{{html helpers.convertMDtoHTML(item.title)}}</span></a></li>\
                     {{/if}}\
                       {{/each}}\
                   </ol>\
