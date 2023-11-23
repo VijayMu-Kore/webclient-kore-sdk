@@ -211,12 +211,20 @@
         }
 
         .live-seach-auto-suggestion-parent {
+            position: absolute;
+            width: 631px;
+            height: auto;
+            bottom: 40px;
+            right: -5px;
+            background: white;
+            border-radius: 6px;
+            z-index: 999;
             .search-body{
                 display: none !important;
             }
 
             #autoSuggestionContainer{
-                display: none !important;
+                // display: none !important;
             }
             
         }

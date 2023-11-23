@@ -287,7 +287,7 @@ class FinalResultsTemplate {
         {{/if}}\
         <div class="citation-data-desc {{if snippetData.title==""}}snippet_padding_top_0{{/if}}">\
         {{each(key, data) snippetData.answer}}\
-        <span class="snippet-answer-fragment">{{html helpers.convertMDtoHTML(data.answer_fragment)}} {{each(sourceKey, source) data.sources}}{{if source.url}}<sup class="snippet-citation"><a href="${source.url}" target="_blank">[${source._id}]</a></sup>{{/if}}{{/each}}. </span>\
+        <span class="snippet-answer-fragment">{{html helpers.convertMDtoHTML(data.answer_fragment)}} {{each(sourceKey, source) data.sources}}<sup class="snippet-citation"><a class="{{if !source.url}}pointer-events-none {{/if}}" href="${source.url}" target="_blank">[${source._id}]</a></sup>{{/each}}. </span>\
         {{/each}}\
         </div>\
         <div class="snippet-referene-block">\
@@ -295,7 +295,7 @@ class FinalResultsTemplate {
           <ol type="1" class="reference-list-temp-ul">\
                   {{each(key, item) snippetData.reference}}\
                     {{if item.title}}\
-                      <li class="reference-list-temp-li" title="{{html helpers.convertMDtoHTML(item.title)}}">{{if item.url}}<a  href="${item.url}" target="_blank"><span>{{html helpers.convertMDtoHTML(item.title)}}</span></a>{{/if}}</li>\
+                      <li class="reference-list-temp-li" title="{{html helpers.convertMDtoHTML(item.title)}}"><a  href="${item.url}" target="_blank" class="{{if !item.url}}pointer-events-none {{/if}}"><span>{{html helpers.convertMDtoHTML(item.title)}}</span></a></li>\
                     {{/if}}\
                       {{/each}}\
                   </ol>\
@@ -341,7 +341,7 @@ class FinalResultsTemplate {
         <div class="citation-data-desc {{if snippetData.title==""}}snippet_padding_top_0{{/if}}">\
         {{each(key, data) snippetData.answer}}\
         <span class="snippet-answer-fragment-block fragment-hover-event {{each(itemKey, item) data.sources}} fragment-${item._id} {{/each}}"\
-          fragment="{{each(itemKey, item) data.sources}} .fragment-${item._id}, {{/each}}"><span class="sub-fragment"><span class="snippet-answer-fragment">{{html helpers.convertMDtoHTML(data.answer_fragment)}}{{each(sourceKey, source) data.sources}}<span class="snippet-citation">{{if source.url}}<a href="${source.url}" target="_blank"><span class="reference-no">${source._id}</span></a>{{/if}}</span>{{/each}}</span></span></span>\
+          fragment="{{each(itemKey, item) data.sources}} .fragment-${item._id}, {{/each}}"><span class="sub-fragment"><span class="snippet-answer-fragment">{{html helpers.convertMDtoHTML(data.answer_fragment)}}{{each(sourceKey, source) data.sources}}<span class="snippet-citation"><a class="{{if !source.url}}pointer-events-none {{/if}}" href="${source.url}" target="_blank"><span class="reference-no">${source._id}</span></a></span>{{/each}}</span></span></span>\
         {{/each}}\
         </div>\
         <div class="active-snippet-referene-block">\
@@ -349,7 +349,7 @@ class FinalResultsTemplate {
           <div class="active-reference-list-temp-block">\
                   {{each(key, item) snippetData.reference}}\
                     {{if item.title}}\
-                      <div class="active-reference-list-temp fragment-hover-event fragment-${key+1}"  title="{{html item.title}}" fragment=".fragment-${key+1},">{{if item.url}}<a href="${item.url}" target="_blank"><span class="reference-no">${key+1}</span><span class="reference-title">{{html helpers.convertMDtoHTML(item.title)}}</span></a>{{/if}}</div>\
+                      <div class="active-reference-list-temp fragment-hover-event fragment-${key+1}"  title="{{html item.title}}" fragment=".fragment-${key+1},"><a class="{{if !item.url}}pointer-events-none {{/if}}" href="${item.url}" target="_blank"><span class="reference-no">${key+1}</span><span class="reference-title">{{html helpers.convertMDtoHTML(item.title)}}</span></a></div>\
                     {{/if}}\
                       {{/each}}\
                   </div>\
