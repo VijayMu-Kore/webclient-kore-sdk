@@ -423,7 +423,7 @@ class SearchListViewTemplate {
             </div>\
             {{/if}}\
             {{if data.heading.length}}\
-            <div class="heading-title sa-sdk-title" data-title="${data.heading}">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+            <div class="heading-title sa-sdk-title" data-title="${data.heading}">${data.heading}</div>\
             {{/if}}\
             {{if data.description.length}}\
             <div class="desc_text_info  sa-sdk-title {{if listType==" classic"}}clamp-text{{else}}text_overflow{{/if}}" data-title="${data.description}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
@@ -436,7 +436,7 @@ class SearchListViewTemplate {
         <div class="accordion-content-info">\
             <div class="content-info accordion" data-title="${data.heading}" contentId="${data.contentId}" contentType="${data.sys_content_type}" id="${key}">\
                 {{if data.heading.length}}\
-                <div class="heading-title">{{html helpers.convertMDtoHTML(data.heading)}}</div>\
+                <div class="heading-title">${data.heading}</div>\
                 {{/if}}\
                 {{if data.description.length}}\
                 <div class="desc_text_info {{if !data.heading || !data.heading.length}}two-line-desc{{else}}text-truncate{{/if}}">{{html helpers.convertMDtoHTML(data.description)}}</div>\
