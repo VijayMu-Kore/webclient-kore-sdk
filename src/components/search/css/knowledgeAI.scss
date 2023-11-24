@@ -1,3 +1,9 @@
+@mixin fontMethod($weight,$size,$line_height,$color){
+    font-weight: $weight;
+    font-size: $size;
+    line-height: $line_height;
+    color: $color;
+}
 .sa-poweredbykore,.sa-clear-chat{
     display: none;
 }
@@ -13,14 +19,6 @@
 
             .sdkFooterIcon {
                 display: none !important;
-                &.microphoneBtn {
-                    bottom: -12px !important;
-                    .notRecordingMicrophone {
-                        .microphone {
-                            background-image: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-microphone.svg);
-                        }
-                    }
-                }
             }
 
             .box-header {
@@ -46,12 +44,9 @@
 
                 .search-button {
                     font-style: normal;
-                    font-weight: 500;
-                    font-size: 12px;
-                    line-height: 15px;
-                    color: #777A80;
                     padding-left: 30px;
                     margin-top: 8px;
+                    @include fontMethod(500,12px,15px,#777A80);
 
                     &:before {
                         content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/send.svg);
@@ -85,15 +80,12 @@
                             padding: 8px 16px;
                             gap: 8px;
                             font-style: normal;
-                            font-weight: 400;
-                            font-size: 14px;
-                            line-height: 24px;
-                            color: #1D2939;
                             background: #FFFFFF;
                             box-shadow: inset 3px 0px 0px #FEC412;
                             border-radius: 0px 8px 8px 8px;
                             margin-bottom: 5px;
                             margin-top: 11px;
+                            @include fontMethod(400,14px,24px,#1D2939);
                         }
                     }
                 }
@@ -108,7 +100,7 @@
                 }
 
                 .parent-search-live-auto-suggesition {
-                    display: none !important;
+                    // display: none !important;
                 }
             }
 
@@ -121,14 +113,11 @@
                     right: -95px;
                     bottom: 16px;
                     font-style: normal;
-                    font-weight: 400;
-                    font-size: 14px;
-                    line-height: 17px;
                     display: flex;
                     align-items: center;
                     text-align: center;
-                    color: #777A80;
                     cursor: pointer;
+                    @include fontMethod(400,14px,17px,#777A80);
                 }
             }
             .sa-poweredbykore{
@@ -137,13 +126,10 @@
                 bottom: -31px;
                 right: 0px;
                 font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 15px;
                 display: flex;
                 align-items: center;
                 text-align: center;
-                color: #6B7280;
+                @include fontMethod(400,12px,15px,#6B7280);
                 img{
                     padding-left: 7px;
                 }
@@ -162,11 +148,8 @@
                 float: left;
                 margin-left: 30px;
                 font-style: normal;
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 24px;
-                color: #1D2939;
                 margin-top: 10px;
+                @include fontMethod(400,14px,24px,#1D2939);
                 
                 &:before {
                     content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/knowledge_ai_imgs/k-ai-profile-icon.svg);
@@ -198,10 +181,7 @@
                     padding: 8px 16px;
                     gap: 8px;
                     font-style: normal;
-                    font-weight: 400;
-                    font-size: 14px;
-                    line-height: 24px;
-                    color: #1D2939;
+                    @include fontMethod(400,14px,24px,#1D2939);
                 }
             }
         }
@@ -280,16 +260,13 @@
                     .temp-feed-back-footer-btn-secondary {
                         width: 50%;
                         font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 20px;
-                        color: #202124;
                         align-items: center;
                         padding: 7px 10px;
                         gap: 5px;
                         width: 58px;
                         border: transparent;
                         height: 34px;
+                        @include fontMethod(400,14px,20px,#202124);
                     }
                     .temp-feed-back-footer-btn-primary {
                         width: 50%;
@@ -300,10 +277,7 @@
                         background: #FEC412;
                         border-radius: 4px;
                         font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 20px;
-                        color: #121314;
+                        @include fontMethod(400,14px,20px,#121314);
                     }
                     .desktop-view-submit-btn{
                         display: block;
@@ -341,10 +315,7 @@
                 box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
                 border-radius: 8px;
                 font-style: normal;
-                font-weight: 500;
-                font-size: 12px;
-                line-height: 15px;
-                color: #3C4043;
+                @include fontMethod(500,12px,15px,#3C4043);
 
                 img {
                     display: none !important;
@@ -352,10 +323,7 @@
 
                 span {
                     font-style: normal;
-                    font-weight: 500;
-                    font-size: 12px;
-                    line-height: 15px;
-                    color: #3C4043;
+                    @include fontMethod(500,12px,15px,#3C4043);
                 }
             }
         }
@@ -421,13 +389,10 @@
             }
             .temp-footer-block {
                 .btn-link {
-                    font-weight: 500;
-                    font-size: 10px;
-                    line-height: 12px;
                     display: flex;
                     align-items: center;
                     text-align: center;
-                    color: #806D16;
+                    @include fontMethod(500,10px,12px,#806D16);
                     .bot-bg-purple {
                         background: transparent; 
                         border-radius: 0px; 
@@ -529,19 +494,22 @@
         }
     }
 }
+
 @media (max-width:1024px) and (min-width:769px) {
     .sa-knowledgeai-sdk-body {
         .searchAssist-kore-chat-window {
+            .live-seach-auto-suggestion-parent{
+                width: calc(100% - 32px) !important;
+                bottom: 40px !important;
+                right: 6px !important;
+            }
             .typingIndicatorContent {
                 width: 140px;
                 left: -7px;
             }
             &.search-container {
-                max-height: calc(100% - 76px);
                 bottom: 40px !important;
-                right: 155px !important;
                 left: inherit !important;
-                width: calc(100% - 565px)!important;
                 box-shadow: none !important;
                 background: transparent !important;
                 padding-left: 24px;
@@ -562,11 +530,6 @@
                 .sa-poweredbykore{
                     right: 24px;
                 }
-                // &.active {
-                //     .sa-clear-chat{
-                //         display: none !important;
-                //     }
-                // }
                 &.conversation {
                     #searchChatContainer {
                         height: auto;
@@ -593,21 +556,6 @@
                 }
             }
         }
-        &.setDefaultSearchTemplate {
-            .searchAssist-kore-chat-window {
-                &.search-container {
-                    max-height: calc(100% - 76px);
-                    bottom: 40px !important;
-                    right: 155px !important;
-                    left: inherit !important;
-                    width: calc(100% - 565px)!important;
-                    box-shadow: none !important;
-                    background: transparent !important;
-                    padding-left: 24px;
-                    padding-right: 24px;
-                }
-            }
-        }
         .default-data-show-not-loaded {
             padding: 13px 0px;
             z-index: 7;
@@ -624,11 +572,28 @@
                 margin-left: 30px;
             }
         }
+        &.setDefaultSearchTemplate {
+            .searchAssist-kore-chat-window {
+                &.search-container {
+                    bottom: 40px !important;
+                    left: inherit !important;
+                    box-shadow: none !important;
+                    background: transparent !important;
+                    padding-left: 24px;
+                    padding-right: 24px;
+                }
+            }
+        }
     }
 }
 @media (max-width:768px) and (min-width:481px) {
     .sa-knowledgeai-sdk-body {
         .searchAssist-kore-chat-window {
+            .live-seach-auto-suggestion-parent{
+                width: 89.5% !important;
+                bottom: 40px !important;
+                right: 21px !important;
+            }
             .typingIndicatorContent {
                 width: 140px;
                 left: -7px;
@@ -726,6 +691,11 @@
 @media (max-width:480px) {
     .sa-knowledgeai-sdk-body {
         .searchAssist-kore-chat-window {
+            .live-seach-auto-suggestion-parent{
+                width: 90.5% !important;
+                bottom: 40px !important;
+                right: 20px !important;
+            }
             .typingIndicatorContent {
                 width: 140px;
                 left: -7px;
@@ -764,7 +734,8 @@
                 &.conversation {
                     #searchChatContainer {
                         height: auto;
-                        max-height: calc(100vh - 169px);
+                        // max-height: calc(100vh - 169px);
+                        max-height: calc(100vh - 239px) !important;
                         padding: 0px 0px 40px 20px;
                     }
                 }
@@ -814,7 +785,70 @@
         }
     }
 }
-
+@media (max-width:1024px) and (min-width:861px){
+    .sa-knowledgeai-sdk-body {
+        .searchAssist-kore-chat-window {
+            &.search-container {
+                max-height: calc(100% - 76px);
+                right: 155px !important;
+                width: calc(100% - 565px)!important;
+                &.conversation {
+                    #searchChatContainer {
+                        max-height: calc(100vh - 125px);
+                    }
+                }
+            }
+        }
+        &.setDefaultSearchTemplate {
+            .searchAssist-kore-chat-window {
+                &.search-container {
+                    max-height: calc(100% - 76px);
+                    right: 155px !important;
+                    width: calc(100% - 565px)!important;
+                }
+            }
+        }
+    }
+}
+@media (max-width:860px) and (min-width:769px){
+    .sa-knowledgeai-sdk-body {
+        .searchAssist-kore-chat-window {
+            &.search-container {
+                max-height: calc(100% - 76px);
+                right: 37px !important;
+                width: calc(100% - 365px) !important;
+                &.conversation {
+                    #searchChatContainer {
+                        max-height: calc(100vh - 180px) !important;
+                    }
+                }
+                &.active {
+                    .sa-clear-chat{
+                        right: -25px !important;
+                        width: 22px !important;
+                        content: url(../../public/images/sa-k-ai-imgs/k-ai-reset-chat-icon.png);
+                    }
+                }
+            }
+        }
+        &.setDefaultSearchTemplate {
+            .searchAssist-kore-chat-window {
+                &.search-container {
+                    max-height: calc(100% - 76px);
+                    right: 37px !important;
+                    width: calc(100% - 365px) !important;
+                }
+            }
+        }
+    }
+    .kn-ai-wrapper-sdk {
+        .left-kn-wrapper{
+            .banner-parent-signup{
+                padding: 5px 20px 12px;
+            }
+        }
+    }
+}
 @media (max-width:768px) and (min-width:481px) {
     .sa-knowledgeai-sdk-body {
         #snippet-feedback-template {
@@ -829,15 +863,12 @@
                     .temp-feed-back-footer-btn-secondary {
                         width: 100%;
                         font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 20px;
-                        color: #202124;
                         align-items: center;
                         padding: 7px 10px;
                         gap: 5px;
                         border: transparent;
                         height: 34px;
+                        @include fontMethod(400,14px,20px,#202124);
                     }
 
                     .temp-feed-back-footer-btn-primary {
@@ -848,10 +879,7 @@
                         background: #FEC412;
                         border-radius: 4px;
                         font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 20px;
-                        color: #121314;
+                        @include fontMethod(400,14px,20px,#121314);
                         &.desktop-view-submit-btn {
                             display: block;
                         }
@@ -879,15 +907,12 @@
                     .temp-feed-back-footer-btn-secondary {
                         width: 100%;
                         font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 20px;
-                        color: #202124;
                         align-items: center;
                         padding: 7px 10px;
                         gap: 5px;
                         border: transparent;
                         height: 34px;
+                        @include fontMethod(400,14px,20px,#202124);
                     }
 
                     .temp-feed-back-footer-btn-primary {
@@ -898,10 +923,7 @@
                         background: #FEC412;
                         border-radius: 4px;
                         font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 20px;
-                        color: #121314;
+                        @include fontMethod(400,14px,20px,#121314);
                         &.desktop-view-submit-btn {
                             display: block;
                         }
@@ -932,15 +954,12 @@
                     .temp-feed-back-footer-btn-secondary {
                         width: 100%;
                         font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 20px;
-                        color: #202124;
                         align-items: center;
                         padding: 7px 10px;
                         gap: 5px;
                         border: transparent;
                         height: 34px;
+                        @include fontMethod(400,14px,20px,#202124);
                     }
 
                     .temp-feed-back-footer-btn-primary {
@@ -951,10 +970,7 @@
                         background: #FEC412;
                         border-radius: 4px;
                         font-style: normal;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 20px;
-                        color: #121314;
+                        @include fontMethod(400,14px,20px,#121314);
                         &.desktop-view-submit-btn {
                             display: none;
                         }
@@ -981,14 +997,51 @@
         }
     }
 }
+@media (max-width:426px) and (min-width:400px) {
+    .sa-knowledgeai-sdk-body {
+        .searchAssist-kore-chat-window {
+            .live-seach-auto-suggestion-parent {
+                width: 90.3% !important;
+                bottom: 40px !important;
+                right: 20.5px !important;
+            }
+        }
+    }
+}
+@media (max-width:399px) and (min-width:322px) {
+    .sa-knowledgeai-sdk-body {
+        .searchAssist-kore-chat-window {
+            .live-seach-auto-suggestion-parent {
+                width: 89% !important;
+                bottom: 40px !important;
+                right: 21px !important;
+            
+            }
+        }
+    }
+}
 @media (max-width:321px) {
     .sa-knowledgeai-sdk-body {
+        .searchAssist-kore-chat-window {
+            .live-seach-auto-suggestion-parent {
+                width: 87.5% !important;
+                bottom: 40px !important;
+                right: 20.5px !important;
+            
+            }
+        }
         .final-results-container {
             .snippet-margin {
                 width: 86% !important;
                 margin-left: 30px;
             }
         }
+    }
+}
+
+@media (min-width:250px) and (max-width:851px) {
+    .progress-upload{
+        width: 100px !important;
     }
 }
 

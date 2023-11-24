@@ -18,7 +18,7 @@ import './css/fonts/inter.css';
 import '../../libs/perfectscroll/css/perfect-scrollbar.min.css';
 // import "../../../node_modules/jquery-ui/dist/jquery-ui.min";
 import '../../../node_modules/jquery-ui/ui/widgets/draggable.js';
-import './css/knowledgeAI.scss';
+// import './css/knowledgeAI.scss';
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // import './findly-demo.scss'
