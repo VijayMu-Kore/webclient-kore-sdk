@@ -440,7 +440,7 @@
                         // str = str.replace(/onload=/gi, '');
                         //  str = sanitizeXSS(str);
                         if (window.DOMPurify) {
-                            str = window.DOMPurify.sanitize(str, { ALLOWED_TAGS: ['a'], ADD_TAGS: ['iframe'] })
+                            str = window.DOMPurify.sanitize(str, { ALLOWED_TAGS: ['a','b','br'], ADD_TAGS: ['iframe'] })
                         } else {
                             str = str.replace(/onerror=/gi, '');
                             str = str.replace(/onmouseover=/gi, '');
@@ -463,7 +463,7 @@
                         // str = sanitizeXSS(str);
                         //str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
                         if (window.DOMPurify) {
-                            str = window.DOMPurify.sanitize(str, { ALLOWED_TAGS: ['a'], ADD_TAGS: ['iframe'] })
+                            str = window.DOMPurify.sanitize(str, { ALLOWED_TAGS: ['a','b','br'], ADD_TAGS: ['iframe'] })
                         } else {
                             str = str.replace(/onerror=/gi, '');
                             str = str.replace(/onmouseover=/gi, '');
