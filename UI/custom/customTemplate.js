@@ -3983,6 +3983,7 @@ var bankingFeedbackTemplate = '<script id="chat-window-listTemplate" type="text/
 				$('.chatInputBox').text(parsedActionObj.payload ||parsedActionObj.title);
 				var _innerText = parsedActionObj.renderMessage || parsedActionObj.title;
 				chatInitialize.sendMessage($('.chatInputBox'), _innerText);
+				bottomSliderAction('hide');
 				$ele.find(".advanced-list-wrapper").css({"pointer-events":"none"});
 			} else if (type && type == "url" || type == "web_url") {
 				if ($(this).attr('msgData') !== undefined) {
