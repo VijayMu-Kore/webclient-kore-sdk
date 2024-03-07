@@ -71,7 +71,7 @@
                 , "dotx", "dotm", "xls", "xlt", "xlm", "xlsx", "xlsm", "xltx", "xltm", "xlsb", "xla", "xlam", "xll", "xlw", "ppt", "pot", "pps", "pptx", "pptm", "potx", "potm", "ppam",
                 "ppsx", "ppsm", "sldx", "sldm", "zip", "rar", "tar", "wpd", "wps", "rtf", "msg", "dat", "sdf", "vcf", "xml", "3ds", "3dm", "max", "obj", "ai", "eps", "ps", "svg", "indd", "pct", "accdb",
                 "db", "dbf", "mdb", "pdb", "sql", "apk", "cgi", "cfm", "csr", "css", "htm", "html", "jsp", "php", "xhtml", "rss", "fnt", "fon", "otf", "ttf", "cab", "cur", "dll", "dmp", "drv", "7z", "cbr",
-                "deb", "gz", "pkg", "rpm", "zipx", "bak", "avi", "m4v", "mpg", "rm", "swf", "vob", "wmv", "3gp2", "3g2", "asf", "asx", "srt", "wma", "mid", "aif", "iff", "m3u", "mpa", "ra", "aiff", "tiff"];
+                "deb", "gz", "pkg", "rpm", "zipx", "bak", "avi", "m4v", "mpg", "rm", "swf", "vob", "wmv", "3gp2", "3g2", "asf", "asx", "srt", "wma", "mid", "aif", "iff", "m3u", "mpa", "ra", "aiff", "tiff", "log"];
             appConsts.CHUNK_SIZE = 1024 * 1024;
             var filetypes = {}, audio = ['m4a', 'amr', 'wav', 'aac', 'mp3'], video = ['mp4', 'mov', '3gp', 'flv'], image = ['png', 'jpg', 'jpeg','gif'];
             filetypes.audio = audio;
@@ -435,10 +435,17 @@
                     
                     var newStr = '', wrapper1;
                     if (responseType === 'user') {
-                        str = str.replace(/onerror=/gi, '');
-                        str = str.replace(/onmouseover=/gi, '');
-                        str = str.replace(/onload=/gi, '');
+                        // str = str.replace(/onerror=/gi, '');
+                        // str = str.replace(/onmouseover=/gi, '');
+                        // str = str.replace(/onload=/gi, '');
                         //  str = sanitizeXSS(str);
+                        if (window.DOMPurify) {
+                            str = window.DOMPurify.sanitize(str, { ALLOWED_TAGS: ['a','b','br'], ADD_TAGS: ['iframe'] })
+                        } else {
+                            str = str.replace(/onerror=/gi, '');
+                            str = str.replace(/onmouseover=/gi, '');
+                            str = str.replace(/onload=/gi, '');
+                        }
                         wrapper1 = document.createElement('div');
                         newStr = str.replace(/“/g, '\"').replace(/”/g, '\"');
                         newStr = newStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -450,11 +457,18 @@
                         }
                     } else {
                         wrapper1 = document.createElement('div');
-                        str = str.replace(/onerror=/gi, '');
-                        str = str.replace(/onmouseover=/gi, '');
-                        str = str.replace(/onload=/gi, '');
+                        // str = str.replace(/onerror=/gi, '');
+                        // str = str.replace(/onmouseover=/gi, '');
+                        // str = str.replace(/onload=/gi, '');
                         // str = sanitizeXSS(str);
                         //str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+                        if (window.DOMPurify) {
+                            str = window.DOMPurify.sanitize(str, { ALLOWED_TAGS: ['a','b','br'], ADD_TAGS: ['iframe'] })
+                        } else {
+                            str = str.replace(/onerror=/gi, '');
+                            str = str.replace(/onmouseover=/gi, '');
+                            str = str.replace(/onload=/gi, '');
+                        }
                         wrapper1.innerHTML = xssAttack(str);
                         if ($(wrapper1).find('a').attr('href')) {
                             var linkArray = str.match(/<a[^>]*>([^<]+)<\/a>/g);
@@ -500,6 +514,9 @@
                     str = str.replaceAll("target='underscoreblank'", 'target="_blank"');
                     if (responseType === 'user') {
                         // str = str.replace(/abc-error=/gi, 'onerror=');
+                    }
+                    if (window.DOMPurify) {
+                        str = window.DOMPurify.sanitize(str,{  ADD_TAGS: ['iframe']})
                     }
                     return helpers.nl2br(str, true);
                 },
@@ -991,24 +1008,26 @@
                     var btnsParentDiv = quickReplyDivs[i].querySelectorAll('.quick_replies_btn_parent');
                     var leftScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyLeftIcon');
                     var rightScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyRightIcon');
-                    if (btnsParentDiv[0].hasChildNodes()) {
-                        if (btnsParentDiv[0].scrollLeft > 0) {
-                            leftScrollBtn[0].classList.remove('hide');
+                    if (btnsParentDiv && btnsParentDiv[0] && btnsParentDiv[0].hasChildNodes()) {
+                        if (leftScrollBtn && leftScrollBtn.length && leftScrollBtn[0] && leftScrollBtn[0].classList) {
+                            if (btnsParentDiv[0].scrollLeft > 0) {
+                                leftScrollBtn[0].classList.remove('hide');
+                            } else {
+                                leftScrollBtn[0].classList.add('hide');
+                            }
                         }
-                        else {
-                            leftScrollBtn[0].classList.add('hide');
-                        }
-                        if (btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
-                            rightScrollBtn[0].classList.remove('hide');
-                        }
-                        else {
-                            rightScrollBtn[0].classList.add('hide');
+                        if (rightScrollBtn && rightScrollBtn.length && rightScrollBtn[0] && rightScrollBtn[0].classList) {
+                            if (btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
+                                rightScrollBtn[0].classList.remove('hide');
+                            } else {
+                                rightScrollBtn[0].classList.add('hide');
+                            }
                         }
                     }
                 }
 
                 /* Handling for full size table */
-                if ($('.kore-chat-window').width() > 460) {
+                if ($('.kore-chat-window').width() > 490) {
                     $(".accordionTable").each(function () {
                         if ($(this).hasClass("responsive")) {
                             $(this).addClass("hide")
@@ -1510,7 +1529,6 @@
                     var _footerContainer = $(me.config.container).find('.kore-chat-footer');
                     me.sendMessage(_footerContainer.find('.chatInputBox'));
                 });
-
                 _chatContainer.off('click', 'li a').on('click', 'li a', function (e) {
                     e.preventDefault();
                     var a_link = $(this).attr('href');
@@ -1551,6 +1569,17 @@
                     var type = $(this).attr('type');
                     if (type) {
                         type = type.toLowerCase();
+                    }
+                    if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[0] === 'quickReply') {
+                        var _parentQuikReplyEle = e.currentTarget.parentElement.parentElement;
+                        var _leftIcon = _parentQuikReplyEle.parentElement.parentElement.querySelectorAll('.quickreplyLeftIcon');
+                        var _rightIcon = _parentQuikReplyEle.parentElement.parentElement.querySelectorAll('.quickreplyRightIcon');
+                        setTimeout(function () {
+                            _parentQuikReplyEle.parentElement.parentElement.getElementsByClassName('user-account')[0].classList.remove('marginT50');
+                            _parentQuikReplyEle.parentElement.parentElement.removeChild(_leftIcon[0]);
+                            _parentQuikReplyEle.parentElement.parentElement.removeChild(_rightIcon[0]);
+                            _parentQuikReplyEle.parentElement.removeChild(_parentQuikReplyEle);
+                        });
                     }
                     if (type == "postback" || type == "text") {
                         $('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
@@ -1601,17 +1630,7 @@
                         $('.chatInputBox').text($(this).attr('title') +': '+ selectedValue.toString());
                         me.sendMessage($('.chatInputBox'),toShowText.toString());
                     }
-                    if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[0] === 'quickReply') {
-                        var _parentQuikReplyEle = e.currentTarget.parentElement.parentElement;
-                        var _leftIcon = _parentQuikReplyEle.parentElement.parentElement.querySelectorAll('.quickreplyLeftIcon');
-                        var _rightIcon = _parentQuikReplyEle.parentElement.parentElement.querySelectorAll('.quickreplyRightIcon');
-                        setTimeout(function () {
-                            _parentQuikReplyEle.parentElement.parentElement.getElementsByClassName('user-account')[0].classList.remove('marginT50');
-                            _parentQuikReplyEle.parentElement.parentElement.removeChild(_leftIcon[0]);
-                            _parentQuikReplyEle.parentElement.parentElement.removeChild(_rightIcon[0]);
-                            _parentQuikReplyEle.parentElement.removeChild(_parentQuikReplyEle);
-                        }, 50);
-                    }
+
                     setTimeout(function () {
                         var _chatInput = _chatContainer.find('.kore-chat-footer .chatInputBox');
                         _chatInput.focus();
@@ -2132,7 +2151,7 @@
                     messageToBot["message"] = { attachments: [me.attachmentInfo] };
                 }
                 else {
-                    messageToBot["message"] = { body: chatInput.text().trim() };
+                    messageToBot["message"] = { body: chatInput.text().trim().replace(/\s/g, ' ') };
                 }
                 messageToBot["resourceid"] = '/bot.message';
 
@@ -3338,7 +3357,7 @@
             var buttonTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
                 {{if msgData.message}} \
                     <li data-time="${msgData.createdOnTimemillis}" id="${msgData.messageId || msgItem.clientMessageId}"\
-                        class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon"> \
+                        class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} {{if msgData.icon}}with-icon{{/if}}"> \
                         <div class="buttonTmplContent"> \
                             {{if msgData.createdOn}}<div aria-live="off" class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
                             {{if msgData.icon}}<div aria-live="off" class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
@@ -3511,17 +3530,17 @@
                          <div class="accordionTable {{if msgData.message[0].component.payload.table_design && msgData.message[0].component.payload.table_design == "regular"}}hide{{else}}responsive{{/if}}">\
                             {{each(key, tableRow) msgData.message[0].component.payload.elements}} \
                                 {{if key < 4}}\
-                                    <div class="accordionRow">\
+                                    <div class="accordionRow {{if msgData.message[0].component.payload.isExpanded}}open{{/if}}">\
                                         {{each(cellkey, cellValue) tableRow.Values}} \
                                             {{if cellkey < 2}}\
                                                 <div class="accordionCol">\
                                                     <div class="colTitle hideSdkEle">${msgData.message[0].component.payload.columns[cellkey][0]}</div>\
-                                                    <div class="colVal">${cellValue}</div>\
+                                                    <div title="${cellValue}" class="colVal">${cellValue}</div>\
                                                 </div>\
                                             {{else}}\
                                                 <div class="accordionCol hideSdkEle">\
                                                     <div class="colTitle">${msgData.message[0].component.payload.columns[cellkey][0]}</div>\
-                                                    <div class="colVal">${cellValue}</div>\
+                                                    <div title="${cellValue}" class="colVal">${cellValue}</div>\
                                                 </div>\
                                             {{/if}}\
                                         {{/each}} \
