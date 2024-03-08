@@ -10486,14 +10486,16 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
       }
     }
   }
-  if(_self.config.extractionDocIdList){
+  if(_self.config?.extractionDocIdList){
     if(!_self.bot.options.botInfo.customData) _self.bot.options.botInfo.customData={};
     if(_self.bot.options.botInfo.customData && _self.bot.options.botInfo.customData['userContext']){
-      _self.bot.options.botInfo.customData['userContext']['extractionDocIdList'] = _self.config.extractionDocIdList
+      _self.bot.options.botInfo.customData['userContext']['extractionDocIdList'] = _self.config.extractionDocIdList;
+      _self.bot.options.botInfo.customData['userContext']['user_email'] = _self.config?.contextUserEmail;
     }else{
-      _self.bot.options.botInfo.customData['userContext']={"extractionDocIdList": _self.config.extractionDocIdList} ;
+      _self.bot.options.botInfo.customData['userContext']={"extractionDocIdList": _self.config.extractionDocIdList, "user_email":_self.config?.contextUserEmail} ;
     }
   }
+
   attachmentInfo = {};
   websockeRrefreshed = false;
   _self.checkWbInitialized(messageToBot, clientMessageId);
@@ -22909,6 +22911,7 @@ FindlySDK.prototype.show = function (config) {
     _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
   } else {
     _self.config.extractionDocIdList = config.extractionDocIdList;
+    _self.config.contextUserEmail = config.contextUserEmail;
     _self.config.knowledgeAIConfig = config.knowledgeAIConfig;
     _self.config.botOptions.assertionFn = _self.getKnowledgeAIAssertionToken.bind(this);
   }
