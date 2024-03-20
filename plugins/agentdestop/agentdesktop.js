@@ -884,7 +884,11 @@ function AgentDesktop(uuId, aResponse) {
             stream.getTracks().forEach(function(track) {
                 track.stop();
             });
-            self.activeCall = self.phone.call(self.phone.VIDEO, sipUser);
+            if(self.callDetails.videoCall){
+                self.activeCall = self.phone.call(self.phone.VIDEO, sipUser);
+            }else {
+                self.activeCall = self.phone.call(self.phone.AUDIO, sipUser);
+            }
         });
     }
     this.toggleButtons = function () {
