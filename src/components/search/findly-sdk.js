@@ -7244,32 +7244,61 @@ FindlySDK.prototype.handleSearchRes = function (res) {
             res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
               listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content?helpers.convertMDtoHTML(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content) : '';
             } else if(['citation_snippet','active_citation_snippet'].includes(res?.graph_answer?.payload?.center_panel?.type)){
+              if (!res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content && _self.config?.tryNowObj?.siteUrl) {
+                    const url = new URL(_self.config?.tryNowObj?.siteUrl);
+                    const dataObj = [{
+                      "snippet_title": "",
+                      "snippet_content": [
+                        {
+                          "answer_fragment": "Oops! The page you are provided does not exist. \nPlease provide valid URl",
+                          "sources": [
+                            {
+                              "title": url?.host ||_self.config?.tryNowObj?.siteUrl || '',
+                              "url": _self.config?.tryNowObj?.siteUrl,
+                              "source_type": "web"
+                            }
+                          ]
+                        }
+                      ],
+                      "snippet_type": "generative_model",
+                      "timeTaken": "0ms",
+                      "message": "Presented Answer",
+                      "isPresentedAnswer": true,
+                      "score": "0%"
+                    }];
+                    res.graph_answer.payload.center_panel.data = dataObj || [];
+              }
+
               if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
             res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
             if(res?.graph_answer?.payload?.center_panel?.data[0]?.title)
             res.graph_answer.payload.center_panel.data[0].snippet_title = res?.graph_answer?.payload?.center_panel?.data[0]?.title;
-              res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
-                item.sources = item.sources.filter((ele) => ele.title);
-                snippetReference = [...snippetReference,...item.sources];
-              })
-              var set = new Set();
-              var unionArray =  snippetReference.filter(item => {
-                if (!set.has(item.title)) {
-                  set.add(item.title);
-                  return true;
-                }
-                return false;
-              }, set);
-              snippetReference = unionArray;
-              res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
-                item.sources.forEach((source)=>{
-                  let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title);
-                  if(sourceIndex>-1){
-                    source['_id']= sourceIndex+1;
-                  }
+              if(res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content){
+                res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
+                  item.sources = item.sources.filter((ele) => ele.title);
+                  snippetReference = [...snippetReference,...item.sources];
                 })
-              })
-              listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
+                var set = new Set();
+                var unionArray =  snippetReference.filter(item => {
+                  if (!set.has(item.title)) {
+                    set.add(item.title);
+                    return true;
+                  }
+                  return false;
+                }, set);
+                snippetReference = unionArray;
+                res.graph_answer.payload.center_panel.data[0].snippet_content.forEach((item)=>{
+                  item.sources.forEach((source)=>{
+                    let sourceIndex = snippetReference.findIndex((d)=>d.title == source.title);
+                    if(sourceIndex>-1){
+                      source['_id']= sourceIndex+1;
+                    }
+                  })
+                })
+                listSnippetData = res?.graph_answer?.payload?.center_panel?.data[0]?.snippet_content;
+              }
+             
+             
             } else {
               if(res?.graph_answer?.payload?.center_panel?.data[0]?.answer)
             res.graph_answer.payload.center_panel.data[0].snippet_content = res?.graph_answer?.payload?.center_panel?.data[0]?.answer;
