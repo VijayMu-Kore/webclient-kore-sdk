@@ -131,6 +131,10 @@ class FinalResultsTemplate {
           </div>\
         {{/if}}\
         {{if snippetData && snippetData?.template_type}}\
+        <div class="final-results-timestamp">Support <span class="time-stamp">${timeStamp}, Today </span></div>\
+            <div class="sure-messageBubble-content">\
+                <div class="sure-botMessage">Sure! I can help you with that </div>\
+          </div>\
         {{if snippetData.template_type =="paragraph_snippet" || snippetData.template_type =="answer_snippet"}}\
           <div class="search-temp-one snippet-margin">\
             <div class="top-header">\
@@ -291,7 +295,7 @@ class FinalResultsTemplate {
         {{/each}}\
         </div>\
         <div class="snippet-referene-block">\
-          <div class="reference-block-header">References: </div>\
+        <!--<div class="reference-block-header">References: </div>-->\
           <ol type="1" class="reference-list-temp-ul">\
                   {{each(key, item) snippetData.reference}}\
                     {{if item.title}}\
@@ -345,7 +349,7 @@ class FinalResultsTemplate {
         {{/each}}\
         </div>\
         <div class="active-snippet-referene-block">\
-          <div class="active-reference-block-header">Sources </div>\
+          <!--<div class="active-reference-block-header">Sources </div>-->\
           <div class="active-reference-list-temp-block">\
                   {{each(key, item) snippetData.reference}}\
                     {{if item.title}}\
@@ -380,7 +384,7 @@ class FinalResultsTemplate {
     {{/if}}\
     {{/if}}\
     {{if snippetData && snippetData?.template_type}}\
-    <div class="show-more-results-block" ><span class="show-more-results-btn" id="sa-sdk-show-more-results-btn">Show more results</span></div>\
+    <!--<div class="show-more-results-block dispaly-none" ><span class="show-more-results-btn" id="sa-sdk-show-more-results-btn">Show more results</span></div>-->\
     {{/if}}\
       <div class="finalResults snippet-margin {{if snippetData && snippetData?.template_type}}  display-none{{/if}}">\
         {{if taskPrefix === "SUGGESTED"}}\

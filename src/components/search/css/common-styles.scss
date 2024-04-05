@@ -4863,12 +4863,21 @@ li{
                             position: absolute;
                             right: 0;
                             margin-left:25px;
-                            bottom: -18px;
+                            top: -22px;
                             font-weight: 400;
-                            font-size: 10px;
+                            font-size: 12px;
                             line-height: 12px;
                             color: #BDC1C6;
                             min-width: 47px;
+                            display: flex;
+                            align-items: center;
+                            width: 117px;
+                            gap: 3px;
+                            .you-tag{
+                                color: #697586;
+                                font-weight: 600;
+                                font-size: 12px;
+                            }
                         }
                         .search-agin-tag{
                             position: absolute;
