@@ -85,45 +85,46 @@ let findlyConfig = KRSearchConfig;
 //   }
 //   }
 findlyConfig = {
-  "botOptions": {
-      "logLevel": "debug",
-      "koreAPIUrl": "https://searchassist-dev.kore.ai/searchassistapi/",
-      "baseAPIServer": "https://searchassist-dev.kore.ai",
-      "JWTUrl": "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts",
-      "botInfo": {
-          "chatBot": "try now march 27",
-          "taskBotId": "st-dcf040a6-acbc-56c3-92ad-20e00977e344"
-      },
-      "clientId": "cs-e922c1eb-df1d-57e4-ba47-4423a557b966",
-      "clientSecret": "RI3HoE7ndPw5TJ9TTbZH+9V9/T2Inp8Jr0sbjVac1kA=",
-      "searchIndexID": "sidx-dc5cddd0-7349-5ad8-8070-f8ff07b46bfc",
-      "reWriteSocketURL": {
-          "protocol": "wss",
-          "hostname": "searchassist-dev.kore.ai"
-      },
-      "interface": "top-down",
-      "assertion": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTE1MzQyMTQ4ODUsImV4cCI6MTcxMTYyMDYxNDg4NSwiYXVkIjoiaHR0cHM6Ly9pZHByb3h5LmtvcmUuY29tL2F1dGhvcml6ZSIsImlzcyI6ImNzLWU5MjJjMWViLWRmMWQtNTdlNC1iYTQ3LTQ0MjNhNTU3Yjk2NiIsInN1YiI6ImQ4OTgzNmY3LWU4MTAtNDAwMC04MDAwLTAwMDAwMDAwMDAwMCIsImlzQW5vbnltb3VzIjoiZmFsc2UifQ.DgnS84c83-aLtKBQmhbGp2aPVQ__Ao4BdusnsE4qwrI",
-      "accessToken": "lcy-pVEaQyQHNau_EiA7KSFgZWtsZcq03mGLJKDHc-aQHsa9yfjuSyBr3kPs-E7E",
-      "maxRequestConcurrency": 1
-  },
-  "viaSocket": true,
-  "pickersConfig": {
-      "showDatePickerIcon": false,
-      "showDateRangePickerIcon": false,
-      "showClockPickerIcon": false,
-      "showTaskMenuPickerIcon": true,
-      "showradioOptionMenuPickerIcon": false
-  },
-  "API_KEY_CONFIG": {
-      "KEY": "a8c625a113f444ef91c9da6fba552c7b03ac79eddde04ab2b8bde2d22ad396c2stdc"
-  },
-  "knowledgeAIConfig": null,
-  "tryNowObj": {
-      "extractionDocIdList": [],
-      "contextUserEmail": "",
-      "siteUrl": "https://www.idfcfirstbank.com/",
-      "siteSearch": true
-  }
+    "botOptions": {
+        "logLevel": "debug",
+        "koreAPIUrl": "https://searchassist-qa.kore.ai/searchassistapi/",
+        "baseAPIServer": "https://searchassist-qa.kore.ai",
+        "JWTUrl": "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts",
+        "userIdentity": 0.3890283945672628,
+        "botInfo": {
+            "chatBot": "Try Now",
+            "taskBotId": "st-527d681b-d0af-5886-9f02-e34483a2b18d"
+        },
+        "clientId": "cs-33f06b80-9189-5dbe-8803-98930dfb7a82",
+        "clientSecret": "ig3cu5VJTF9catfmWcnasFGCnhXa6vHqw5DBl9UPSco=",
+        "searchIndexID": "sidx-9b137811-a3e6-5504-9164-a9eea73ec5a3",
+        "reWriteSocketURL": {
+            "protocol": "wss",
+            "hostname": "searchassist-qa.kore.ai"
+        },
+        "interface": "top-down",
+        "assertion": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTIzMzUxNTg4MTcsImV4cCI6MTcxMjQyMTU1ODgxNywiYXVkIjoiaHR0cHM6Ly9pZHByb3h5LmtvcmUuY29tL2F1dGhvcml6ZSIsImlzcyI6ImNzLTMzZjA2YjgwLTkxODktNWRiZS04ODAzLTk4OTMwZGZiN2E4MiIsInN1YiI6IjAuMzg5MDI4Mzk0NTY3MjYyOCIsImlzQW5vbnltb3VzIjoiZmFsc2UifQ.2Ji0Zl_n7aRLX_s9LHF5INe4_1FZ8pf95Y-Ft7WXiiM",
+        "accessToken": "jub0Bae4xLn275Mi-DwmAmMtkYFhs1ld1yGKGou3mfg5ohAuDMXwwYfuoGmsmJhz",
+        "maxRequestConcurrency": 1
+    },
+    "viaSocket": true,
+    "pickersConfig": {
+        "showDatePickerIcon": false,
+        "showDateRangePickerIcon": false,
+        "showClockPickerIcon": false,
+        "showTaskMenuPickerIcon": true,
+        "showradioOptionMenuPickerIcon": false
+    },
+    "API_KEY_CONFIG": {
+        "KEY": "YOUR_API_KEY"
+    },
+    "knowledgeAIConfig": null,
+    "tryNowObj": {
+        "extractionDocIdList": [],
+        "contextUserEmail": "",
+        "siteUrl": "https://www.idfcfi3rstbank.com/",
+        "siteSearch": true
+    }
 }
 var fSdk = new KRSearch(findlyConfig);
            

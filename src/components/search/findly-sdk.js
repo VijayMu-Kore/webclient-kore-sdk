@@ -7250,7 +7250,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
                       "snippet_title": "",
                       "snippet_content": [
                         {
-                          "answer_fragment": "Oops! The page you are provided does not exist. \nPlease provide valid URl",
+                          "answer_fragment": "Unable to find the results for this",
                           "sources": [
                             {
                               "title": url?.host ||_self.config?.tryNowObj?.siteUrl || '',
