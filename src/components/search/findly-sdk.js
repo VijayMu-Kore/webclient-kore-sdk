@@ -7223,7 +7223,7 @@ FindlySDK.prototype.handleSearchRes = function (res) {
     $(".no-templates-defined-full-results-container").hide();
     if (
       ((res.results || {}).data || []).length || ((res.tasks|| []).length)||
-      (res.resultType == "grouped" && Object.keys(res.results).length)
+      (res.resultType == "grouped" && Object.keys(res.results).length) || (Object.keys(res?.graph_answer).length)
     ) {
       var searchContainerName = $(".sdk-body").hasClass("top-down")
         ? ".full-search-data-container"
@@ -9841,7 +9841,7 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
   _self.bindFeedbackEvent();
   $(dataHTML).css("left", left);
   // debugger;
-  var container = $(".search-background-div");
+  var container = $(".chat-window-sdk-searchassit-demo");
   if (!container.length && !_self.customSearchResult) {
     container = $(".sdk-body");
   }
@@ -10486,13 +10486,12 @@ FindlySDK.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isb
       }
     }
   }
-  if(_self.config?.extractionDocIdList){
+  if(_self.config?.tryNowObj){
     if(!_self.bot.options.botInfo.customData) _self.bot.options.botInfo.customData={};
     if(_self.bot.options.botInfo.customData && _self.bot.options.botInfo.customData['userContext']){
-      _self.bot.options.botInfo.customData['userContext']['extractionDocIdList'] = _self.config.extractionDocIdList;
-      _self.bot.options.botInfo.customData['userContext']['user_email'] = _self.config?.contextUserEmail;
+      _self.bot.options.botInfo.customData['userContext'] = {..._self.bot.options.botInfo.customData['userContext'],..._self.config?.tryNowObj};
     }else{
-      _self.bot.options.botInfo.customData['userContext']={"extractionDocIdList": _self.config.extractionDocIdList, "user_email":_self.config?.contextUserEmail} ;
+      _self.bot.options.botInfo.customData['userContext']={..._self.config?.tryNowObj} ;
     }
   }
 
@@ -22910,8 +22909,7 @@ FindlySDK.prototype.show = function (config) {
   if(!config.knowledgeAIConfig){
     _self.config.botOptions.assertionFn = _self.getAssertionToken.bind(this);
   } else {
-    _self.config.extractionDocIdList = config.extractionDocIdList;
-    _self.config.contextUserEmail = config.contextUserEmail;
+     _self.config.tryNowObj = config?.tryNowObj || {};
     _self.config.knowledgeAIConfig = config.knowledgeAIConfig;
     _self.config.botOptions.assertionFn = _self.getKnowledgeAIAssertionToken.bind(this);
   }
