@@ -92,6 +92,19 @@ function AgentDesktop(uuId, aResponse) {
         this.removeAudoVideoContainer();
         this.disableMinimizeButton(false);
     }
+
+    this.sendCallTerminateEvent = function(){
+        var payload = _self.callDetails;
+        payload['type'] = "call_agent_webrtc_terminated";
+        var messageToBot = {};
+        messageToBot["event"] = "event";
+        messageToBot["message"] = {
+        "body": _self.callDetails,
+        "type": ""
+        };
+        events.sendMessage(messageToBot, function (err) {});
+    }
+
     this.showFooterButtons = function(callConnected, videoCall) {
         var footerButtonsHTML = null;
         if (callConnected) {
@@ -132,6 +145,7 @@ function AgentDesktop(uuId, aResponse) {
         closecallbutton.off('click').on('click', function (event) {
             if (callConnected) {
                 _self.activeCall.terminate();
+                _self.sendCallTerminateEvent();
             }
         });
         var sendSelfVideo = true;
