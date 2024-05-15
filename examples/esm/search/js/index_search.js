@@ -122,7 +122,7 @@ findlyConfig = {
     "tryNowObj": {
         "extractionDocIdList": [],
         "contextUserEmail": "",
-        "siteUrl": "https://www.idfcfi3rstbank.com/",
+        "siteUrl": "https://www.tutorialspoint.com/How-to-extract-the-hostname-portion-of-a-URL-in-JavaScript#:~:text=Syntax-,Follow%20the%20syntax%20below%20to%20get%20the%20hostname.,property%20from%20the%20URL%20directly.",
         "siteSearch": true
     }
 }

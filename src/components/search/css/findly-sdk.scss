@@ -3970,3 +3970,43 @@ display: none !important;
             }
         }
     }
+    
+.final-results-timestamp-bubble{
+    color: #697586;
+    font-weight: 600;
+    font-size: 12px;
+    padding-left: 4px;
+    padding-bottom: 5px;
+}
+.final-results-timestamp-bubble .time-stamp{
+    font-weight: 400;
+}
+ .messageBubble.show-info-text-snippet .messageBubble-content {
+// display: none !important;
+    content: url(https://koregeneric.s3.amazonaws.com/SearchAssist_UI_Img/Icons/bubble_icon.svg);
+    width: 20px;
+    height: 20px;
+    left: 0px;
+    top: 24px;
+}
+.sure-messageBubble-content-bubble.welcome-msg-bubble{
+    margin-top: 10px;
+    height: auto !important;
+    margin-bottom: 36px;
+}
+.sure-messageBubble-content-bubble{
+    width: fit-content;
+    height: 33px;
+    padding: 8px 12px 8px 12px;
+    margin-left:4px;
+    gap: 4px;
+    border-radius: 8px 8px 8px 2px;
+    background: #F0F1F2;
+
+}
+.sure-messageBubble-content-bubble .sure-botMessage{
+    color: #000000;
+    font-weight: 400;
+    font-size: 14px;
+
+}

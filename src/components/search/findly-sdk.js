@@ -9784,6 +9784,18 @@ FindlySDK.prototype.addSearchText = function (config) {
 };
 var overrideDefaultPoisition = false;
 // FindlySDK.prototype.showSearch = function () {
+  FindlySDK.prototype.appendWelcomeMsg = function (msg){
+    const timeStamp =  moment().format('LT');
+    var msgHtml =`<div class="final-results-timestamp-bubble">Support <span class="time-stamp">${timeStamp}, Today </span></div>\
+    <div class="sure-messageBubble-content-bubble">\
+        <div class="sure-botMessage">Hello! How can I help you today? </div>\
+    </div>
+    <div class="sure-messageBubble-content-bubble welcome-msg-bubble">\
+        <div class="sure-botMessage">Please ask me anything about ${msg} </div>\
+    </div>`;
+    $('#searchChatContainer').append(msgHtml)
+  }
+
 FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
   if (!$(".sdk-body").hasClass("searchAssist-defaultTheme-kore")) {
     $(".sdk-body").addClass("searchAssist-defaultTheme-kore");
@@ -9878,6 +9890,21 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
   }
   $(container).append(dataHTML);
   _self.bindSearchContainerViewHadler();
+
+  if(window.localStorage.getItem('files')){
+    const files  = JSON.parse(window.localStorage.getItem('files'));
+    var displayName = '';
+    if(files.length && files[0].type ==='file'){
+      displayName = files[0]?.name.split('.pdf')[0];
+    }else if(files?.length){
+      files.forEach((file)=>{
+        displayName = file?.name.toLowerCase().replace('http://', '').replace('https://', '').replace('www.', '').replace('.com','');
+      })
+    }
+    _self.appendWelcomeMsg(displayName)
+    // _self.appendTextToSearchContainer('user','Hello! How can I help you today?');
+    // _self.appendTextToSearchContainer('user','Please ask me anything about '+displayName)
+  }
   $(".search-container")
     .off("click", ".more-results")
     .on("click", ".more-results", function (e) {
