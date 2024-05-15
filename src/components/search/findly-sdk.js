@@ -9791,7 +9791,7 @@ var overrideDefaultPoisition = false;
         <div class="sure-botMessage">Hello! How can I help you today? </div>\
     </div>
     <div class="sure-messageBubble-content-bubble welcome-msg-bubble">\
-        <div class="sure-botMessage">Please ask me anything about ${msg} </div>\
+        <div class="sure-botMessage">Please ask me anything about <span class="title-case">${msg}</span> </div>\
     </div>`;
     $('#searchChatContainer').append(msgHtml)
   }
@@ -9898,12 +9898,29 @@ FindlySDK.prototype.showSearch = function (config, searchConfig, isDev) {
       displayName = files[0]?.name.split('.pdf')[0];
     }else if(files?.length){
       files.forEach((file)=>{
-        displayName = file?.name.toLowerCase().replace('http://', '').replace('https://', '').replace('www.', '').replace('.com','');
+        let domain;
+          // Find & remove protocol (http, ftp, etc.) and get domain
+          if (file?.name.indexOf("://") > -1) {
+              domain = file?.name.split('/')[2];
+          } else {
+              domain = file?.name.split('/')[0];
+          }
+          // Find & remove port number
+          domain = domain.split(':')[0];
+          // Find & remove query string
+          domain = domain.split('?')[0];
+          // If the domain starts with 'www.', remove it
+          if (domain.startsWith("www.")) {
+              domain = domain.substr(4);
+          }
+          // If the domain contains a dot, remove everything after the first dot
+          if (domain.includes(".")) {
+              domain = domain.split(".")[0];
+          }
+        displayName = domain;
       })
     }
-    _self.appendWelcomeMsg(displayName)
-    // _self.appendTextToSearchContainer('user','Hello! How can I help you today?');
-    // _self.appendTextToSearchContainer('user','Please ask me anything about '+displayName)
+    _self.appendWelcomeMsg(displayName);
   }
   $(".search-container")
     .off("click", ".more-results")

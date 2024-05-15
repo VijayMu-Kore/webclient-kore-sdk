@@ -3996,7 +3996,7 @@ display: none !important;
 }
 .sure-messageBubble-content-bubble{
     width: fit-content;
-    height: 33px;
+    height: auto !important;
     padding: 8px 12px 8px 12px;
     margin-left:4px;
     gap: 4px;
@@ -4009,4 +4009,7 @@ display: none !important;
     font-weight: 400;
     font-size: 14px;
 
+}
+.sure-messageBubble-content-bubble .sure-botMessage .title-case{
+    text-transform: capitalize !important;
 }
