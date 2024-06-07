@@ -61,7 +61,7 @@
             /***************** Mic initilization code end here ************************/
 
             /******************************* TTS variable initialization **************/
-            var _ttsContext = null, _ttsConnection = null, ttsServerUrl = '', ttsAudioSource = null, _txtToSpeak = "", optionIndex = 65;    // Audio context
+            var _ttsContext = null, _ttsConnection = null, ttsServerUrl = '', ttsAudioSource = null, _txtToSpeak = "", optionIndex = 65; audioMsgs = []; speechSyn = null; audioPlaying = false;   // Audio context
             /************************** TTS initialization code end here **************/
 
             /*************************** file upload variable *******************************/
@@ -1856,7 +1856,7 @@
                     if (ttsAudioSource) {
                         ttsAudioSource.stop();
                     }
-
+                    me.stopSpeaking();
                 });
                 _chatContainer.off('click', '.ttspeaker').on('click', '.ttspeaker', function (event) {
                     if (me.config.isTTSEnabled) {
@@ -4798,15 +4798,17 @@
                     return false;
                 }
                 if('speechSynthesis' in window){
-                    window.speechSynthesis.cancel();
-                    // Create a new instance of SpeechSynthesisUtterance.
-                    var msg = new SpeechSynthesisUtterance();
-                    msg.text =_txtToSpeak;
+                   // window.speechSynthesis.cancel();
+                   // Create a new instance of SpeechSynthesisUtterance.
+                   // var msg = new SpeechSynthesisUtterance();
+                   // msg.text =_txtToSpeak;
                    //  msg.voice = speechSynthesis.getVoices().filter(function(voice) {        
                    //      return voice.default===true;
                    //     })[0];
                    // Queue this utterance.
-                    window.speechSynthesis.speak(msg);
+                   // window.speechSynthesis.speak(msg);
+                   audioMsgs.push(_txtToSpeak);
+                   playMessageSequence();
                }else{
                    console.warn("KORE:Your browser doesn't support TTS(Speech Synthesiser)")
                }
@@ -4816,11 +4818,30 @@
                 if (me.config.isTTSEnabled) {
                     if(me.config.ttsInterface && me.config.ttsInterface==="webapi"){
                         if('speechSynthesis' in window){
+                            audioMsgs = [];
+                            audioPlaying = false;
                             window.speechSynthesis.cancel();
                         }
                     }
                 }
             }
+
+            function playMessageSequence() {
+                if (!speechSyn) {
+                    speechSyn = new SpeechSynthesisUtterance();
+                }
+
+                if (audioMsgs.length > 0 && !audioPlaying) {
+                    audioPlaying = true;
+                    speechSyn.text = audioMsgs.shift();
+                    window.speechSynthesis.speak(speechSyn);
+                    speechSyn.onend = function () {
+                        audioPlaying = false;
+                        playMessageSequence();
+                    }    
+                }
+            }
+
             function createSocketForTTS() {
 
                 if(!ttsServerUrl){
