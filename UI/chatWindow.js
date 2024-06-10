@@ -1419,6 +1419,10 @@
                     var _bodyContainer = $(me.config.container).find('.kore-chat-body');
                     _bodyContainer.css('bottom', _footerContainer.outerHeight());
                     if (event.keyCode === 13) {
+                        if ($('.chatInputBox').text().trim() == '') {
+                            event.preventDefault();
+                            return;
+                        }
                         if (event.shiftKey) {
                             return;
                         }
