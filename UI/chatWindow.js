@@ -1419,7 +1419,7 @@
                     var _bodyContainer = $(me.config.container).find('.kore-chat-body');
                     _bodyContainer.css('bottom', _footerContainer.outerHeight());
                     if (event.keyCode === 13) {
-                        if ($('.chatInputBox').text().trim() == '') {
+                        if ($('.chatInputBox').text().trim() == '' && !me.attachmentInfo && !me.attachmentInfo.fileId) {
                             event.preventDefault();
                             return;
                         }
