@@ -2030,6 +2030,12 @@
                 me.bot.on("webhook_reconnected", function (response) {
                     me.onBotReady();
                 });
+
+                me.bot.on('reconnected', (response) => {
+                    if (me.config?.syncMessages?.onReconnect?.enable && response?.reconnected) {
+                        me.bot.getHistory({ forHistorySync: true, limit: me.config?.syncMessages?.onReconnect?.batchSize });
+                    }
+                });
             };
             chatWindow.prototype.bindCustomEvents = function (){
                 //hook to add custom events
@@ -3851,6 +3857,7 @@
                                 setTimeout(function () {
                                     if (msgData.type === "outgoing" || msgData.type === "bot_response") {
                                         //if ($('.kore-chat-window .chat-container li#' + msgData.messageId).length < 1) {
+                                         msgData.fromHistorySync = true;
                                          me.historySyncing(msgData,res,index);
                                         // if (msgData.message[0].cInfo.body.includes('live_agent')) {
                                         //     msgData.message[0].cInfo.body = JSON.parse(msgData.message[0].cInfo.body);
@@ -3859,8 +3866,7 @@
                                         //     }
                                         //     msgData.message[0].component = msgData.message[0].cInfo.body;
                                         // }
-                                            msgData.fromHistorySync=true;
-                                            me.renderMessage(msgData);
+                                        // me.renderMessage(msgData);
                                         //}
                                     }
                                 }, index * 100);

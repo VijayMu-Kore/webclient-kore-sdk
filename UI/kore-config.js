@@ -70,6 +70,12 @@
         },
         sendFailedMessage:{
             MAX_RETRIES:3
+        },
+        syncMessages: {
+            onReconnect: {
+                enable: false,  // Set true to sync messages on Reconnect
+                batchSize: 10   // To configure the number of messages to fetch
+            }
         }
     };
      /* 
