@@ -2030,6 +2030,12 @@
                 me.bot.on("webhook_reconnected", function (response) {
                     me.onBotReady();
                 });
+
+                me.bot.on('reconnected', (response) => {
+                    if (me.config?.syncMessages?.onReconnect?.enable && response?.reconnected) {
+                        me.bot.getHistory({ forHistorySync: true, limit: me.config?.syncMessages?.onReconnect?.batchSize });
+                    }
+                });
             };
             chatWindow.prototype.bindCustomEvents = function (){
                 //hook to add custom events
@@ -3032,7 +3038,11 @@
                     scrollTop: _chatContainer.prop("scrollHeight")
                 }, 100);
                 if (msgData.type === "bot_response" && me.isTTSOn && me.config.isTTSEnabled && !me.minimized && !me.historyLoading) {
-                    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.type === "template") {
+                    if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type === "live_agent" && msgData.message[0].component.payload.text) {
+						_txtToSpeak = msgData.message[0].component.payload.text;
+					} else if (msgData.message[0] && msgData.message[0].component && typeof msgData.message[0].component != 'object') { // agent transfer waiting message speaking
+                        _txtToSpeak = msgData.message[0].component;
+                    } else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.type === "template") {
                         _txtToSpeak = '';
                     }
                     else {
@@ -3046,7 +3056,7 @@
                             _txtToSpeak = '';
                         }
                     }
-                    if (msgData.message[0].component && msgData.message[0].component.payload.speech_hint) {
+                    if (msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.speech_hint) {
                         _txtToSpeak = msgData.message[0].component.payload.speech_hint;
                     }
                     if (me.config.ttsInterface&&me.config.ttsInterface==="webapi") {
@@ -3832,6 +3842,9 @@
                     if (msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.videoUrl || msgData.message[0].component.payload.audioUrl)) {
                         msgData.message[0].cInfo.body = "";
                     }
+                    if (msgData.message[0].component.payload.template_type == 'SYSTEM') {
+                        msgData.message[0].cInfo.body = msgData.message[0].component.payload.text || '';
+                    }
                     me.renderMessage(msgData);
                 } catch (e) {
                     me.renderMessage(msgData);
@@ -3847,6 +3860,7 @@
                                 setTimeout(function () {
                                     if (msgData.type === "outgoing" || msgData.type === "bot_response") {
                                         //if ($('.kore-chat-window .chat-container li#' + msgData.messageId).length < 1) {
+                                         msgData.fromHistorySync = true;
                                          me.historySyncing(msgData,res,index);
                                         // if (msgData.message[0].cInfo.body.includes('live_agent')) {
                                         //     msgData.message[0].cInfo.body = JSON.parse(msgData.message[0].cInfo.body);
@@ -3855,8 +3869,7 @@
                                         //     }
                                         //     msgData.message[0].component = msgData.message[0].cInfo.body;
                                         // }
-                                            msgData.fromHistorySync=true;
-                                            me.renderMessage(msgData);
+                                        // me.renderMessage(msgData);
                                         //}
                                     }
                                 }, index * 100);
